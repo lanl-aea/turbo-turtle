@@ -217,33 +217,33 @@ def main(center, xpoint, zpoint, plane_angle):
     
     # Step 19 - Find the vertices intersecting faces to remove for the x-axis
     found_face = True
-    JJ = 0
+
     while found_face:
-        try:
-            p = mdb.models[model_name].parts[part_name]
-            vertices = p.vertices
-            x_vectors = ()
-            for v in vertices:
-                pointOn = np.asarray(v.pointOn[0])
-                this_vector = pointOn - center
-                this_vector = this_vector / np.linalg.norm(this_vector)
-                if np.abs(np.abs(np.dot(this_vector, xpoint_vector)) - 1.0) < 0.01:
-                    x_vectors += ((v), )
-            x_points = np.asarray([v.pointOn[0][0] for v in x_vectors])
-            x_points.sort()
-            x_vectors_grabbed = ()
-            for xp in x_points:
-                for v in x_vectors:
-                    pointOn = v.pointOn[0]
-                    if pointOn[0]  == xp:
-                        x_vectors_grabbed += ((v), )
-            x_vectors_grabbed_idxs = [v.index for v in x_vectors_grabbed]
-            
-            # Step 20 - locate faces with a normal at the plane_angle to the local coordinate system
-            # Step 21 - recursively remove the faces and redundant enties as a result of removed faces
-            p = mdb.models[model_name].parts[part_name]
-            for II, face in enumerate(p.faces):
-                this_vert_idxs = face.getVertices()
+        p = mdb.models[model_name].parts[part_name]
+        vertices = p.vertices
+        x_vectors = ()
+        for v in vertices:
+            pointOn = np.asarray(v.pointOn[0])
+            this_vector = pointOn - center
+            this_vector = this_vector / np.linalg.norm(this_vector)
+            if np.abs(np.abs(np.dot(this_vector, xpoint_vector)) - 1.0) < 0.01:
+                x_vectors += ((v), )
+        x_points = np.asarray([v.pointOn[0][0] for v in x_vectors])
+        x_points.sort()
+        x_vectors_grabbed = ()
+        for xp in x_points:
+            for v in x_vectors:
+                pointOn = v.pointOn[0]
+                if pointOn[0]  == xp:
+                    x_vectors_grabbed += ((v), )
+        x_vectors_grabbed_idxs = [v.index for v in x_vectors_grabbed]
+        
+        # Step 20 - locate faces with a normal at the plane_angle to the local coordinate system
+        # Step 21 - recursively remove the faces and redundant enties as a result of removed faces
+        p = mdb.models[model_name].parts[part_name]
+        for II, face in enumerate(p.faces):
+            this_vert_idxs = face.getVertices()
+            try:
                 if x_vectors_grabbed_idxs[1] in this_vert_idxs or x_vectors_grabbed_idxs[2] in this_vert_idxs:
                     this_normal = np.array(face.getNormal())
                     this_normal = this_normal / np.linalg.norm(this_normal)
@@ -254,42 +254,41 @@ def main(center, xpoint, zpoint, plane_angle):
                         p.RemoveRedundantEntities(vertexList = p.vertices[:], edgeList = p.edges[:])
                         found_face = True
                         break
-        except:
-            JJ+=1
-        if II == (len(p.faces)-1) or JJ == (len(p.faces)-1):
+            except:
+                pass
+        if II == (len(p.faces)-1):
             found_face = False
         else:
             pass
     
     #Step 22 - same as 19 but for y
     found_face = True
-    JJ = 0
     while found_face:
-        try:
-            p = mdb.models[model_name].parts[part_name]
-            vertices = p.vertices
-            y_vectors = ()
-            for v in vertices:
-                pointOn = np.asarray(v.pointOn[0])
-                this_vector = pointOn - center
-                this_vector = this_vector / np.linalg.norm(this_vector)
-                if np.abs(np.abs(np.dot(this_vector, ypoint_vector)) - 1.0) < 0.01:
-                    y_vectors += ((v), )
-            y_points = np.asarray([v.pointOn[0][1] for v in y_vectors])
-            y_points.sort()
-            y_vectors_grabbed = ()
-            for yp in y_points:
-                for v in y_vectors:
-                    pointOn = v.pointOn[0]
-                    if pointOn[1] == yp:
-                        y_vectors_grabbed += ((v), )
-            y_vectors_grabbed_idxs = [v.index for v in y_vectors_grabbed]
-            
-            # Step 23 - same as 20 but for y
-            # Step 24 - same as 21 but for y
-            p = mdb.models[model_name].parts[part_name]
-            for II, face in enumerate(p.faces):
-                this_vert_idxs = face.getVertices()
+        p = mdb.models[model_name].parts[part_name]
+        vertices = p.vertices
+        y_vectors = ()
+        for v in vertices:
+            pointOn = np.asarray(v.pointOn[0])
+            this_vector = pointOn - center
+            this_vector = this_vector / np.linalg.norm(this_vector)
+            if np.abs(np.abs(np.dot(this_vector, ypoint_vector)) - 1.0) < 0.01:
+                y_vectors += ((v), )
+        y_points = np.asarray([v.pointOn[0][1] for v in y_vectors])
+        y_points.sort()
+        y_vectors_grabbed = ()
+        for yp in y_points:
+            for v in y_vectors:
+                pointOn = v.pointOn[0]
+                if pointOn[1] == yp:
+                    y_vectors_grabbed += ((v), )
+        y_vectors_grabbed_idxs = [v.index for v in y_vectors_grabbed]
+        
+        # Step 23 - same as 20 but for y
+        # Step 24 - same as 21 but for y
+        p = mdb.models[model_name].parts[part_name]
+        for II, face in enumerate(p.faces):
+            this_vert_idxs = face.getVertices()
+            try:
                 if y_vectors_grabbed_idxs[1] in this_vert_idxs or y_vectors_grabbed_idxs[2] in this_vert_idxs:
                     this_normal = np.array(face.getNormal())
                     this_normal = this_normal / np.linalg.norm(this_normal)
@@ -300,42 +299,41 @@ def main(center, xpoint, zpoint, plane_angle):
                         p.RemoveRedundantEntities(vertexList = p.vertices[:], edgeList = p.edges[:])
                         found_face = True
                         break
-        except:
-            JJ += 1
-        if II == (len(p.faces)-1) or JJ == (len(p.faces)-1):
+            except:
+                pass
+        if II == (len(p.faces)-1):
             found_face = False
         else:
             pass
     
     # Step 25 - same as 19 but for z
     found_face = True
-    JJ = 0
     while found_face:
-        try:
-            p = mdb.models[model_name].parts[part_name]
-            vertices = p.vertices
-            z_vectors = ()
-            for v in vertices:
-                pointOn = np.asarray(v.pointOn[0])
-                this_vector = pointOn - center
-                this_vector = this_vector / np.linalg.norm(this_vector)
-                if np.abs(np.abs(np.dot(this_vector, zpoint_vector)) - 1.0) < 0.01:
-                    z_vectors += ((v), )
-            z_points = np.asarray([v.pointOn[0][2] for v in z_vectors])
-            z_points.sort()
-            z_vectors_grabbed = ()
-            for zp in z_points:
-                for v in z_vectors:
-                    pointOn = v.pointOn[0]
-                    if pointOn[2] == zp:
-                        z_vectors_grabbed += ((v), )
-            z_vectors_grabbed_idxs = [v.index for v in z_vectors_grabbed]
-            
-            # Step 26 - same as 20 but for z
-            # Step 27 - same as 21 but for z
-            p = mdb.models[model_name].parts[part_name]
-            for II, face in enumerate(p.faces):
-                this_vert_idxs = face.getVertices()
+        p = mdb.models[model_name].parts[part_name]
+        vertices = p.vertices
+        z_vectors = ()
+        for v in vertices:
+            pointOn = np.asarray(v.pointOn[0])
+            this_vector = pointOn - center
+            this_vector = this_vector / np.linalg.norm(this_vector)
+            if np.abs(np.abs(np.dot(this_vector, zpoint_vector)) - 1.0) < 0.01:
+                z_vectors += ((v), )
+        z_points = np.asarray([v.pointOn[0][2] for v in z_vectors])
+        z_points.sort()
+        z_vectors_grabbed = ()
+        for zp in z_points:
+            for v in z_vectors:
+                pointOn = v.pointOn[0]
+                if pointOn[2] == zp:
+                    z_vectors_grabbed += ((v), )
+        z_vectors_grabbed_idxs = [v.index for v in z_vectors_grabbed]
+        
+        # Step 26 - same as 20 but for z
+        # Step 27 - same as 21 but for z
+        p = mdb.models[model_name].parts[part_name]
+        for II, face in enumerate(p.faces):
+            this_vert_idxs = face.getVertices()
+            try:
                 if z_vectors_grabbed_idxs[1] in this_vert_idxs or z_vectors_grabbed_idxs[2] in this_vert_idxs:
                     this_normal = np.array(face.getNormal())
                     this_normal = this_normal / np.linalg.norm(this_normal)
@@ -346,9 +344,9 @@ def main(center, xpoint, zpoint, plane_angle):
                         p.RemoveRedundantEntities(vertexList = p.vertices[:], edgeList = p.edges[:])
                         found_face = True
                         break
-        except:
-            JJ += 1
-        if II == (len(p.faces)-1) or JJ == (len(p.faces)-1):
+            except:
+                pass
+        if II == (len(p.faces)-1):
             found_face = False
         else:
             pass
