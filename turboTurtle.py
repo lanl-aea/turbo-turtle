@@ -1,52 +1,26 @@
+import numpy as np
+import ast
+import os
+import argparse
+import inspect
+
 from abaqus import *
 from abaqusConstants import *
 from caeModules import *
-import numpy as np
-
 from abaqus import getInputs
-import ast
-
-def get_inputs():
-    """Interactive Inputs
     
-    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE GUI window with text boxes to 
-    enter values for the outputs listed below:
-    
-    :return: ``center`` - center location of the geometry
-    :rtype: list
-    
-    :return: ``xpoint`` - location on the x-axis local to the geometry
-    :rtype: list
-    
-    :return: ``zpoint`` - location on the z-axis local to the geometry
-    :rtype: list
-    
-    :return: ``plane_angle`` - angle at which partition planes will be created
-    :rtype: float
-    """
-    
-    fields = (('Center:','0.0, 0.0, 0.0'), ('X-Axis Point:', '1.0, 0.0, 0.0'), ('Z-Axis Point:', '0.0, 0.0, 1.0'), ('Partition Angle:', '45.0'), )
-    center, xpoint, zpoint, plane_angle = getInputs(fields=fields, label='Specify Geometric Parameters:',dialogTitle='Create Block', )
-    center = list(ast.literal_eval(center))
-    xpoint = list(ast.literal_eval(xpoint))
-    zpoint = list(ast.literal_eval(zpoint))
-    plane_angle = ast.literal_eval(plane_angle)
-    
-    print('\nPartitioning Parameters Entered By User:')
-    print('----------------------------------------')
-    print('Center: {}'.format(center))
-    print('X-Axis Point: {}'.format(xpoint))
-    print('Z-Axis Point: {}'.format(zpoint))
-    print('Partition Angle: {}'.format(plane_angle))
-    print('')
-    return center, xpoint, zpoint, plane_angle
-    
-def main(center, xpoint, zpoint, plane_angle):
+def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
     """Turbo Turtle
        Main work-horse function
     
     This function partitions an **arbitrary, hollow, enclosed body** using the turtle shell method (also know as the soccer ball method).
     The following list of actions is performed using generalized vector equations to allow nearly any body to be partitioned.
+
+    If the body is modeled with symmetry (e.g. quater or half symmetry), this code will attempt all partitioning and face removal actions anyways. 
+    If certain aspects of the code fail, the code will move on and give no errors.
+
+    **Note:** This behavior means that it is possible to create strange looking partitions if inputs are not defined properly. Always check your 
+    partitions visually after using this tool.
 
     1. Define ``center``
     2. Define ``xpoint``
@@ -88,11 +62,30 @@ def main(center, xpoint, zpoint, plane_angle):
     
     :param plane_angle: angle at which partition planes will be created
     :type plane_angle: float
-   
-    """
+    
+    :param partitions: partitions to be created by offsetting the principal planes. This is only available when using the Abaqus CAE GUI.
+    :type partitions: dict
+    
+    :param model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
+    :type model_name: str
 
-    model_name = session.viewports[session.currentViewportName].displayedObject.modelName
-    part_name = session.viewports[session.currentViewportName].displayedObject.name
+    :param part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
+    :type part_name: str
+
+    :param input_file: Abaqus CAE file to open that already contains a model with a part to be partitioned (only applies when used with ``abaqus cae -nogui``)
+    :type input_file: str
+
+    :param output_file: Abaqus CAE file to save with the newly partitioned part (only applies when used with ``abaqus cae -nogui``)
+    :type output_file: str
+
+    :param partitions: locations of partitions to be created by offsetting the principal planes
+    :type partitions: dict
+    """
+    if input_file is None:
+        model_name = session.viewports[session.currentViewportName].displayedObject.modelName
+        part_name = session.viewports[session.currentViewportName].displayedObject.name
+    else:
+        openMdb(pathName=input_file)
     
     # Step 1 - define center
     p = mdb.models[model_name].parts[part_name]
@@ -355,18 +348,148 @@ def main(center, xpoint, zpoint, plane_angle):
     p = mdb.models[model_name].parts[part_name]
     mdb.models[model_name].parts[part_name].checkGeometry()
     
+    # Partition the offset planes
+    for coord in partitions:
+        if coord == 'x':
+            selected_plane = plane1
+        elif coord == 'y':
+            selected_plane = plane2
+        else:
+            selected_plane = plane3
+        for val in [x for x in partitions[coord] if x != 0.0]:
+            p = mdb.models[model_name].parts[part_name]
+            this_plane = p.datums[p.DatumPlaneByOffset(plane=selected_plane, offset=val).id]
+            try:
+                p.PartitionCellByDatumPlane(datumPlane=this_plane, cells=p.cells[:])
+            except:
+                pass
+
+    # Finally, save the model or set the viewport to remove nasty datum planes and axes
+    if output_file is None:
+        session.viewports[session.currentViewportName].partDisplay.geometryOptions.setValues(datumPoints=OFF, datumAxes=OFF, datumPlanes=OFF)
+    else:
+        mdb.saveAs(pathName=output_file)
+    
     return
 
-if __name__ == "__main__":
+
+def get_inputs():
+    """Interactive Inputs
     
-    center = None
-    xpoint = None
-    zpoint = None
-    plane_angle = None
+    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE GUI window with text boxes to 
+    enter values for the outputs listed below:
     
-    if center is None or xpoint is None or zpoint is None or plane_angle is None:
-        center, xpoint, zpoint, plane_angle = get_inputs()
+    :return: ``center`` - center location of the geometry
+    :rtype: list
+    
+    :return: ``xpoint`` - location on the x-axis local to the geometry
+    :rtype: list
+    
+    :return: ``zpoint`` - location on the z-axis local to the geometry
+    :rtype: list
+    
+    :return: ``plane_angle`` - angle at which partition planes will be created
+    :rtype: float
+
+    :return: ``partitions`` - locations to create partitions by offsetting principal planes
+    :rtype: dict
+    """
+    
+    fields = (('Center:','0.0, 0.0, 0.0'),
+        ('X-Axis Point:', '1.0, 0.0, 0.0'),
+        ('Z-Axis Point:', '0.0, 0.0, 1.0'), 
+        ('Partition Angle:', '45.0'),
+        ('Partitions Along X', '0.0, 0.0'),
+        ('Partitions Along Y', '0.0, 0.0'),
+        ('Partitions Along Z', '0.0, 0.0'), )
+    center, xpoint, zpoint, plane_angle, partition_x, partition_y, partition_z = getInputs(fields=fields,
+        label='Specify Geometric Parameters:', 
+        dialogTitle='Turbo Turtle', )
+    if center is not None:
+        center = list(ast.literal_eval(center))
+        xpoint = list(ast.literal_eval(xpoint))
+        zpoint = list(ast.literal_eval(zpoint))
+        plane_angle = ast.literal_eval(plane_angle)
+        partition_x = [ast.literal_eval(x) for x in partition_x.replace(' ', '').split(',')]
+        partition_y = [ast.literal_eval(x) for x in partition_y.replace(' ', '').split(',')]
+        partition_z = [ast.literal_eval(x) for x in partition_z.replace(' ', '').split(',')]
+        partitions = dict()
+        partitions['x'] = partition_x
+        partitions['y'] = partition_y
+        partitions['z'] = partition_z
+        print('\nPartitioning Parameters Entered By User:')
+        print('----------------------------------------')
+        print('Center: {}'.format(center))
+        print('X-Axis Point: {}'.format(xpoint))
+        print('Z-Axis Point: {}'.format(zpoint))
+        print('Partition Angle: {}'.format(plane_angle))
+        print('Partitions Along X: {}'.format(partition_x))
+        print('Partitions Along Y: {}'.format(partition_y))
+        print('Partitions Along Z: {}'.format(partition_z))
+        print('')
     else:
-        pass
+        partitions = None
+    return center, xpoint, zpoint, plane_angle, partitions
+
+
+def get_parser():
+    # The global '__file__' variable doesn't appear to be set when executing from Abaqus CAE
+    filename = inspect.getfile(lambda: None)
+    basename = os.path.basename(filename)
+
+    # Set Defaults
+    default_center = [0.0, 0.0, 0.0]
+    default_xpoint = [1.0, 0.0, 0.0]
+    default_zpoint = [0.0, 0.0, 1.0]
+    default_plane_angle = 45.0
+
+    prog = "abaqus cae -noGui {} --".format(basename)
+    cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
+    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    parser.add_argument('--xpoint', type=list, default=default_xpoint,
+                        help="Point on the x-axis")
+    parser.add_argument('--center', type=list, default=default_center,
+                        help="Center of the sphere")
+    parser.add_argument('--zpoint', type=list, default=default_zpoint,
+                        help="Point on the z-axis")
+    parser.add_argument('--plane-angle', type=float, default=default_plane_angle,
+                        help="Angle for non-principal partitions")
     
-    main(center, xpoint, zpoint, plane_angle)
+    requiredNamed = parser.add_argument_group('Required Named Arguments')
+    requiredNamed.add_argument('--model-name', type=str, required=True,
+                        help="Abaqus model name")
+    requiredNamed.add_argument('--part-name', type=str, required=True,
+                        help="Abaqus part name")
+    requiredNamed.add_argument('--input-file', type=str, required=True,
+                        help="Abaqus model database to open")
+    parser.add_argument('--output-file', type=str, default=None,
+                        help="Abaqus model database to save to. Defaults to the specified --input-file")
+    return parser
+
+
+if __name__ == "__main__":
+    try:
+        center, xpoint, zpoint, plane_angle, partitions = get_inputs()
+        model_name=None
+        part_name=None
+        input_file=None
+        output_file=None
+    except:
+        parser = get_parser()
+        args, unknown = parser.parse_known_args()
+        if args.output_file is None:
+            args.output_file = args.input_file
+        center=args.center
+        xpoint=args.xpoint
+        zpoint=args.zpoint
+        plane_angle=args.plane_angle
+        model_name=args.model_name
+        part_name=args.part_name
+        input_file=args.input_file
+        output_file=args.output_file
+        partitions = None
+
+    if center is None and xpoint is None and zpoint is None and plane_angle is None and partitions is None:
+        print('\nTurboTurtle was canceled\n')
+    else:
+        main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
