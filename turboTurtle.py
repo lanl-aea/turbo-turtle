@@ -13,8 +13,9 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     """Turbo Turtle
        Main work-horse function
     
-    This function partitions an **arbitrary, hollow, enclosed body** using the turtle shell method (also know as the soccer ball method).
-    The following list of actions is performed using generalized vector equations to allow nearly any body to be partitioned.
+    This function partitions an **arbitrary, hollow, body** using the turtle shell method (also know as the soccer ball method).
+    The following list of actions is performed using generalized vector equations to allow nearly any body to be 
+    partitioned. This script can be executed from Abaqus CAE from the command line.
 
     If the body is modeled with symmetry (e.g. quater or half symmetry), this code will attempt all partitioning and face removal actions anyways. 
     If certain aspects of the code fail, the code will move on and give no errors.
@@ -49,7 +50,8 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     25. Same as **19** but for z-axis vertices
     26. Same as **20** but for z-axis vertices
     27. Same as **21** bur for z-axis vertices
-    28. Validate the resulting geometry and topology
+    28. Partition an offset principal planes defined by ``partitions``
+    29. Validate the resulting geometry and topology
     
     :param center: center location of the geometry
     :type center: list
@@ -80,7 +82,13 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
 
     :param partitions: locations of partitions to be created by offsetting the principal planes
     :type partitions: dict
+
+    :returns: Abaqus CAE database named ``{output_file}.cae`` if executed from the command line
     """
+    if center is None:
+        print('\nTurboTurtle was canceled\n')
+        return
+    
     if input_file is None:
         model_name = session.viewports[session.currentViewportName].displayedObject.modelName
         part_name = session.viewports[session.currentViewportName].displayedObject.name
@@ -344,25 +352,25 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         else:
             pass
     
-    # Step 28 - validate geometry
-    p = mdb.models[model_name].parts[part_name]
-    mdb.models[model_name].parts[part_name].checkGeometry()
-    
-    # Partition the offset planes
+    # Step 28 - partition the offset planes
     for coord in partitions:
         if coord == 'x':
             selected_plane = plane1
         elif coord == 'y':
             selected_plane = plane2
-        else:
+        elif coord == 'z':
             selected_plane = plane3
         for val in [x for x in partitions[coord] if x != 0.0]:
             p = mdb.models[model_name].parts[part_name]
-            this_plane = p.datums[p.DatumPlaneByOffset(plane=selected_plane, offset=val).id]
+            this_plane = p.datums[p.DatumPlaneByOffset(plane=selected_plane, offset=val, flip=SIDE2).id]
             try:
                 p.PartitionCellByDatumPlane(datumPlane=this_plane, cells=p.cells[:])
             except:
                 pass
+
+    # Step 29 - validate geometry
+    p = mdb.models[model_name].parts[part_name]
+    mdb.models[model_name].parts[part_name].checkGeometry()
 
     # Finally, save the model or set the viewport to remove nasty datum planes and axes
     if output_file is None:
@@ -405,6 +413,7 @@ def get_inputs():
     center, xpoint, zpoint, plane_angle, partition_x, partition_y, partition_z = getInputs(fields=fields,
         label='Specify Geometric Parameters:', 
         dialogTitle='Turbo Turtle', )
+    partitions = {}
     if center is not None:
         center = list(ast.literal_eval(center))
         xpoint = list(ast.literal_eval(xpoint))
@@ -413,7 +422,6 @@ def get_inputs():
         partition_x = [ast.literal_eval(x) for x in partition_x.replace(' ', '').split(',')]
         partition_y = [ast.literal_eval(x) for x in partition_y.replace(' ', '').split(',')]
         partition_z = [ast.literal_eval(x) for x in partition_z.replace(' ', '').split(',')]
-        partitions = dict()
         partitions['x'] = partition_x
         partitions['y'] = partition_y
         partitions['z'] = partition_z
@@ -427,8 +435,6 @@ def get_inputs():
         print('Partitions Along Y: {}'.format(partition_y))
         print('Partitions Along Z: {}'.format(partition_z))
         print('')
-    else:
-        partitions = None
     return center, xpoint, zpoint, plane_angle, partitions
 
 
@@ -442,18 +448,27 @@ def get_parser():
     default_xpoint = [1.0, 0.0, 0.0]
     default_zpoint = [0.0, 0.0, 1.0]
     default_plane_angle = 45.0
+    default_partitions_x = [0.0, 0.0]
+    default_partitions_y = [0.0, 0.0]
+    default_partitions_z = [0.0, 0.0]
 
     prog = "abaqus cae -noGui {} --".format(basename)
     cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
     parser = argparse.ArgumentParser(description=cli_description, prog=prog)
-    parser.add_argument('--xpoint', type=list, default=default_xpoint,
-                        help="Point on the x-axis")
-    parser.add_argument('--center', type=list, default=default_center,
-                        help="Center of the sphere")
-    parser.add_argument('--zpoint', type=list, default=default_zpoint,
-                        help="Point on the z-axis")
+    parser.add_argument('--xpoint', nargs=3, type=float, default=default_xpoint,
+                        help="Point on the x-axis (default: %(default)s)")
+    parser.add_argument('--center', nargs=3, type=float, default=default_center,
+                        help="Center of the sphere (default: %(default)s)")
+    parser.add_argument('--zpoint', nargs=3, type=float, default=default_zpoint,
+                        help="Point on the z-axis (default: %(default)s)")
     parser.add_argument('--plane-angle', type=float, default=default_plane_angle,
-                        help="Angle for non-principal partitions")
+                        help="Angle for non-principal partitions (default: %(default)s)")
+    parser.add_argument('--x-partitions', type=float, nargs='+', default=default_partitions_x,
+                        help="Create a partition offset from the x-principal-plane (default: %(default)s)")
+    parser.add_argument('--y-partitions', type=float, nargs='+', default=default_partitions_y,
+                        help="Create a partition offset from the y-principal-plane (default: %(default)s)")
+    parser.add_argument('--z-partitions', type=float, nargs='+', default=default_partitions_z,
+                        help="Create a partition offset from the z-principal-plane (default: %(default)s)")
     
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--model-name', type=str, required=True,
@@ -487,9 +502,7 @@ if __name__ == "__main__":
         part_name=args.part_name
         input_file=args.input_file
         output_file=args.output_file
-        partitions = None
-
-    if center is None and xpoint is None and zpoint is None and plane_angle is None and partitions is None:
-        print('\nTurboTurtle was canceled\n')
-    else:
-        main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
+        partitions = {'x': args.x_partitions,
+                      'y': args.y_partitions,
+                      'z': args.z_partitions}
+    main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
