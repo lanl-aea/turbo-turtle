@@ -1,5 +1,21 @@
-from abaqus import *
+from abaqus import mdb
 from abaqusConstants import *
+
+def main(model_name, output_file):
+
+    mdb.Model(name=model_name, modelType=STANDARD_EXPLICIT)
+    
+    sphere(model_name)
+    eigth_sphere(model_name)
+    quarter_sphere(model_name)
+    half_sphere(model_name)
+    seveneigths_sphere(model_name)
+    offset_sphere(model_name)
+    swiss_cheese(model_name)
+
+    mdb.saveAs(pathName=output_file)
+    
+    return
 
 def sphere(model_name, part_name='sphere'):
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__', 
@@ -194,7 +210,7 @@ def offset_sphere(model_name, part_name='offset-sphere'):
     return
 
 
-def swiss_cheese():
+def swiss_cheese(model_name, part_name='swiss-cheese'):
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
@@ -278,3 +294,8 @@ def swiss_cheese():
     del mdb.models[model_name].sketches['__profile__']
     return
 
+
+if __name__ == "__main__":
+    model_name = 'Turbo-Turtle-Tests'
+    output_file = 'Turbo-Turtle-Tests'
+    main(model_name, output_file)
