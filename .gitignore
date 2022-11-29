@@ -3,3 +3,5 @@
 *.jnl
 ABQ*
 *.zip
+*.pyc
+*pycache*/
