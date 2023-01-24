@@ -400,28 +400,38 @@ def get_inputs():
     :rtype: float
 
     :return: ``partitions`` - locations to create partitions by offsetting principal planes
-    :rtype: dict
+    :rtype: dict    
     """
-    
     fields = (('Center:','0.0, 0.0, 0.0'),
         ('X-Axis Point:', '1.0, 0.0, 0.0'),
         ('Z-Axis Point:', '0.0, 0.0, 1.0'), 
         ('Partition Angle:', '45.0'),
         ('Partitions Along X', '0.0, 0.0'),
         ('Partitions Along Y', '0.0, 0.0'),
-        ('Partitions Along Z', '0.0, 0.0'), )
-    center, xpoint, zpoint, plane_angle, partition_x, partition_y, partition_z = getInputs(fields=fields,
+        ('Partitions Along Z', '0.0, 0.0'), 
+        ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
+    center, xpoint, zpoint, plane_angle, partition_x, partition_y, partition_z, cp_parameters = getInputs(fields=fields,
         label='Specify Geometric Parameters:', 
         dialogTitle='Turbo Turtle', )
     partitions = {}
     if center is not None:
-        center = list(ast.literal_eval(center))
-        xpoint = list(ast.literal_eval(xpoint))
-        zpoint = list(ast.literal_eval(zpoint))
-        plane_angle = ast.literal_eval(plane_angle)
-        partition_x = [ast.literal_eval(x) for x in partition_x.replace(' ', '').split(',')]
-        partition_y = [ast.literal_eval(x) for x in partition_y.replace(' ', '').split(',')]
-        partition_z = [ast.literal_eval(x) for x in partition_z.replace(' ', '').split(',')]
+        if cp_parameters != fields[-1][-1]:
+            cp_param = [x.replace('\n', '') for x in cp_parameters.split('\n')]
+            center = ast.literal_eval(cp_param[0].replace('Center: ', ''))
+            xpoint = ast.literal_eval(cp_param[1].replace('X-Axis Point: ', ''))
+            zpoint = ast.literal_eval(cp_param[2].replace('Z-Axis Point: ', ''))
+            plane_angle = ast.literal_eval(cp_param[3].replace('Partition Angle: ', ''))
+            partition_x = ast.literal_eval(cp_param[4].replace('Partitions Along X: ', ''))
+            partition_y = ast.literal_eval(cp_param[5].replace('Partitions Along Y: ', ''))
+            partition_z = ast.literal_eval(cp_param[6].replace('Partitions Along Z: ', ''))
+        else:
+            center = list(ast.literal_eval(center))
+            xpoint = list(ast.literal_eval(xpoint))
+            zpoint = list(ast.literal_eval(zpoint))
+            plane_angle = ast.literal_eval(plane_angle)
+            partition_x = [ast.literal_eval(x) for x in partition_x.replace(' ', '').split(',')]
+            partition_y = [ast.literal_eval(x) for x in partition_y.replace(' ', '').split(',')]
+            partition_z = [ast.literal_eval(x) for x in partition_z.replace(' ', '').split(',')]
         partitions['x'] = partition_x
         partitions['y'] = partition_y
         partitions['z'] = partition_z
@@ -490,6 +500,7 @@ if __name__ == "__main__":
         input_file=None
         output_file=None
     except:
+        pass
         parser = get_parser()
         args, unknown = parser.parse_known_args()
         if args.output_file is None:
