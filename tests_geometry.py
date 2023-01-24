@@ -2,7 +2,13 @@ from abaqus import mdb
 from abaqusConstants import *
 
 def main(model_name, output_file):
-
+    """Wrapper for test geometry creation
+    
+    :param str model_name: name of the Abaqus model
+    :param str output_file: name of the output Abaqus CAE database
+    
+    :returns: ``{output_file}.cae`` Abaqus database
+    """
     mdb.Model(name=model_name, modelType=STANDARD_EXPLICIT)
     
     sphere(model_name)
@@ -18,6 +24,11 @@ def main(model_name, output_file):
     return
 
 def sphere(model_name, part_name='sphere'):
+    """Create a hollow, spherical geometry
+    
+    :param str model_name: name of the Abaqus model
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__', 
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
@@ -44,6 +55,11 @@ def sphere(model_name, part_name='sphere'):
 
 
 def eigth_sphere(model_name, part_name='eigth-sphere'):
+    """Create a hollow, eigth-sphere geometry
+    
+    :param str model_name: name of the Abaqus model
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__', 
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
@@ -68,6 +84,11 @@ def eigth_sphere(model_name, part_name='eigth-sphere'):
 
 
 def half_sphere(model_name, part_name='half-sphere'):
+    """Create a hollow, half-sphere geometry
+    
+    :param str model_name: name of the Abaqus model
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__', 
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
@@ -93,6 +114,11 @@ def half_sphere(model_name, part_name='half-sphere'):
 
 
 def quarter_sphere(model_name, part_name='quarter-sphere'):
+    """Create a hollow, quarter-sphere geometry
+    
+    :param str model_name: name of the Abaqus model
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__', 
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
@@ -118,6 +144,11 @@ def quarter_sphere(model_name, part_name='quarter-sphere'):
 
 
 def seveneigths_sphere(model_name, part_name='seveneigths-sphere'):
+    """Create a hollow, seveneigths-sphere geometry
+    
+    :param str model_name: name of the Abaqus model
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__', 
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
@@ -182,6 +213,11 @@ def seveneigths_sphere(model_name, part_name='seveneigths-sphere'):
 
 
 def offset_sphere(model_name, part_name='offset-sphere'):
+    """Create a hollow, spherical geometry with a center offset from the origin
+    
+    :param str model_name: name of the Abaqus model
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__', 
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
@@ -211,6 +247,11 @@ def offset_sphere(model_name, part_name='offset-sphere'):
 
 
 def swiss_cheese(model_name, part_name='swiss-cheese'):
+    """Create a hollow, spherical geometry with a few holes sparsely placed through the thickness
+    
+    :param str model_name: name of the Abaqus model
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
     s = mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints

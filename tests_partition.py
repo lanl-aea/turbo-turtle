@@ -1,7 +1,12 @@
 import turboTurtle
 
 def main(model_name, input_file, output_file):
+    """Testing wrapper script
     
+    :param str model_name: name of the Abaqus model
+    :param str input_file: name of the Abaqus CAE database to open
+    :param str output_file: name of the output Abaqus CAE database
+    """
     sphere(model_name, input_file, output_file, part_name='sphere')
     eigth_sphere(model_name, input_file, output_file, part_name='eigth-sphere')
     quarter_sphere(model_name, input_file, output_file, part_name='quarter-sphere')
@@ -14,6 +19,15 @@ def main(model_name, input_file, output_file):
 
 
 def sphere(model_name, input_file, output_file, part_name='sphere'):
+    """Test sphere
+    
+    Run turboTurtle using the ``sphere`` geometry.
+
+    :param str model_name: name of the Abaqus model
+    :param str input_file: name of the Abaqus CAE database to open
+    :param str output_file: name of the output Abaqus CAE database
+    :param str part_name: name of the part in the Abaqus model
+    """
     center = [0.0, 0.0, 0.0]
     xpoint = [1.0, 0.0, 0.0]
     zpoint = [0.0, 0.0, 1.0]
@@ -24,6 +38,15 @@ def sphere(model_name, input_file, output_file, part_name='sphere'):
 
 
 def eigth_sphere(model_name, input_file, output_file, part_name='eigth-sphere'):
+    """Test eigth_sphere
+    
+    Run turboTurtle using the ``eigth-sphere`` geometry.
+
+    :param str model_name: name of the Abaqus model
+    :param str input_file: name of the Abaqus CAE database to open
+    :param str output_file: name of the output Abaqus CAE database
+    :param str part_name: name of the part in the Abaqus model
+    """
     center = [0.0, 0.0, 0.0]
     xpoint = [1.0, 0.0, 0.0]
     zpoint = [0.0, 0.0, 1.0]
@@ -34,6 +57,15 @@ def eigth_sphere(model_name, input_file, output_file, part_name='eigth-sphere'):
 
 
 def quarter_sphere(model_name, input_file, output_file, part_name='quarter-sphere'):
+    """Test quarter_sphere
+    
+    Run turboTurtle using the ``quarter-sphere`` geometry.
+
+    :param str model_name: name of the Abaqus model
+    :param str input_file: name of the Abaqus CAE database to open
+    :param str output_file: name of the output Abaqus CAE database
+    :param str part_name: name of the part in the Abaqus model
+    """
     center = [0.0, 0.0, 0.0]
     xpoint = [1.0, 0.0, 0.0]
     zpoint = [0.0, 0.0, 1.0]
@@ -44,6 +76,15 @@ def quarter_sphere(model_name, input_file, output_file, part_name='quarter-spher
 
 
 def half_sphere(model_name, input_file, output_file, part_name='half-sphere'):
+    """Test half_sphere
+    
+    Run turboTurtle using the ``half-sphere`` geometry.
+
+    :param str model_name: name of the Abaqus model
+    :param str input_file: name of the Abaqus CAE database to open
+    :param str output_file: name of the output Abaqus CAE database
+    :param str part_name: name of the part in the Abaqus model
+    """
     center = [0.0, 0.0, 0.0]
     xpoint = [1.0, 0.0, 0.0]
     zpoint = [0.0, 0.0, 1.0]
@@ -54,6 +95,15 @@ def half_sphere(model_name, input_file, output_file, part_name='half-sphere'):
 
 
 def seveneigths_sphere(model_name, input_file, output_file, part_name='seveneigths-sphere'):
+    """Test seveneights_sphere
+    
+    Run turboTurtle using the ``seveneights-sphere`` geometry.
+
+    :param str model_name: name of the Abaqus model
+    :param str input_file: name of the Abaqus CAE database to open
+    :param str output_file: name of the output Abaqus CAE database
+    :param str part_name: name of the part in the Abaqus model
+    """
     center = [0.0, 0.0, 0.0]
     xpoint = [1.0, 0.0, 0.0]
     zpoint = [0.0, 0.0, 1.0]
@@ -64,6 +114,15 @@ def seveneigths_sphere(model_name, input_file, output_file, part_name='seveneigt
 
 
 def offset_sphere(model_name, input_file, output_file, part_name='offset-sphere'):
+    """Test offset_sphere
+    
+    Run turboTurtle using the ``offset-sphere`` geometry.
+
+    :param str model_name: name of the Abaqus model
+    :param str input_file: name of the Abaqus CAE database to open
+    :param str output_file: name of the output Abaqus CAE database
+    :param str part_name: name of the part in the Abaqus model
+    """
     center = [1.0, 1.0, 0.0]
     xpoint = [2.0, 1.0, 0.0]
     zpoint = [1.0, 1.0, 1.0]
@@ -74,6 +133,15 @@ def offset_sphere(model_name, input_file, output_file, part_name='offset-sphere'
 
 
 def swiss_cheese(model_name, input_file, output_file, part_name='swiss-cheese'):
+    """Test swiss_cheese
+    
+    Run turboTurtle using the ``swiss-cheese`` geometry.
+
+    :param str model_name: name of the Abaqus model
+    :param str input_file: name of the Abaqus CAE database to open
+    :param str output_file: name of the output Abaqus CAE database
+    :param str part_name: name of the part in the Abaqus model
+    """
     center = [0.0, 0.0, 0.0]
     xpoint = [1.0, 0.0, 0.0]
     zpoint = [0.0, 0.0, 1.0]
