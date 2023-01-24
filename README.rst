@@ -20,7 +20,6 @@ Author Info
 
 * Thomas Roberts: tproberts@lanl.gov
 
-
 ***************
 Getting Started
 ***************
@@ -31,16 +30,16 @@ Coloning the Repository
 .. cloning-the-repo-start-do-not-remove
 
 Cloning the repository is very easy, simply refer to the sample session below. Keep in mind that you get to choose the 
-``/path/to/repos``.
+location of your local ``turbo-turtle`` clone. Here we use ``/projects/roppenheimer/repos`` as an example.
 
 .. code-block:: bash
 
     [roppenheimer@sstelmo]$ pwd
-    /path/to/repos
+    /projects/roppenheimer/repos
     [roppenheimer@sstelmo]$ git clone ssh://git@re-git.lanl.gov:10022/tproberts/turbo-turtle.git
     <output truncated>
-    [roppenheimer@sstelmo]$ ls
-    turbo-turtle    other-repos
+    [roppenheimer@sstelmo]$ ls -d
+    other-repos    turbo-turtle
 
 .. cloning-the-repo-end-do-not-remove
 
@@ -56,8 +55,7 @@ the Abaqus executable is trivial.
 **At the moment, this repository has only been tested using Abaqus 2021**
 
 On a Linux Machine
-******************
-
+==================
 .. code-block:: Bash
 
    [roppenheimer@sstelmo]$ whereis abq2021
@@ -65,3 +63,125 @@ On a Linux Machine
 
 .. compute-env-end-do-not-remove
 
+*****************
+Using turboTurtle
+*****************
+
+``turboTurtle`` can be executed in Abaqus CAE or by using the script's command line interface (CLI).
+
+Abaqus CAE
+==========
+
+.. abaqus-cae-start-do-not-remove
+
+When executing ``turboTurtle`` from Abaqus cae, ``turboTurtle`` will attempt to partition the part that is in the 
+current session's viewport. Execute ``turboTurtle`` in either of two ways:
+
+Run Script Menu
+---------------
+Click File --> Run Script --> /projects/roppenheimer/turbo-turtle/turboTurtle.py
+
+Python Terminal
+---------------
+In the Abaqus CAE Python terminal, use the ``execPyFile`` function
+
+.. code-block:: Python
+
+   >>> execPyFile('/projects/roppenheimer/repos/turbo-turtle/turboTurtle.py')
+
+``turboTurtle`` will pop up a dialoge box where you can specify various parameters for partitioning the part in your 
+current session's viewport. Enter the relevant information, such as ``center`` and points on the ``x`` and ``z`` axis. 
+Click **OK** to run ``turboTurtle``.
+
+Upon successful parsing of input parameters, ``turboTurtle`` will print the parameters you used to the Python terminal 
+in a specific format that ``turboTurtle`` understands. Should you with to re-use a set of previously entered parameters 
+(i.e. partitioning multiple parts whose centers are all offset from the origin in the same way), you can simply copy and 
+paste those parameters into the "Copy and Paste Parametes" text box. In this case, all other values in the text boxes 
+above will be ignored, even if you modify them. Note, do not copy the header text underlined with ``---``.
+
+.. abaqus-cae-end-do-not-remove
+
+Command Line Execution
+======================
+
+.. command-line-execution-start-do-not-remove
+
+``turboTurtle`` can be executed via CLI on any computer with Abaqus available via the command line. This README assumes 
+that a W-13 linux machine is used, so Abaqus 2021 is available at ``/apps/abaqus/Commands/abq2021``.
+
+When using the ``turboTurtle`` CLI, an Abaqus CAE database with the unpartitioned geometry must already exist. The 
+sample terminal output below shows a directory structure that demonstrates the location of both an existing Abaqus CAE 
+database and a local clone of ``turbo-turtle``.
+
+.. code-block:: Bash
+
+   [roppenheimer@sstelmo]$ pwd
+   /projects/roppenheimer
+   [roppenheimer@sstelmo]$ ls -d
+   example_turboTurtle    repos
+   [roppenheimer@sstelmo]$ ls -d repos
+   other-repos    turbo-turtle
+   [roppenheimer@sstelmo]$ ls example_turboTurtle
+   example_geometry.cae
+
+From the directory structure shown above, ``turboTurtle`` can be executed from the command line using minimal required 
+arguments.
+
+.. code-block:: bash
+
+   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turboTurtle.py -- --input-file example_turbotTurtle/example_geometry.cae --model-name example_model_name --part-name example_part_name example_model
+
+Note that all parameters availabel through the Abaqus CAE GUI dialogue box are also available as command line arguments. 
+You can also print the ``turboTurtle`` CLI help message to the most recent ``abaqus.rpy`` file in your current working 
+directory with the ``-h`` flag.
+
+.. code-block:: Bash
+
+   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turboTurtle.py -- -h
+
+.. command-line-execution-end-do-not-remove
+
+*******
+Testing
+*******
+
+.. testing-start-do-not-remove
+
+The ``turbo-turtle`` repository contains three Abaqus Python scripts for testing and demonstrating ``turboTurtle`` 
+capability.
+
+.. code-block:: Bash
+
+   [roppenheimer@sstelmo]$ pwd
+   /projects/roppenheimer/repos
+   [roppenheimer@sstelmo]$ ls turbo-turtle
+   README.rst  tests_geometry.py  tests_main.py  tests_partition.py  turboTurtle.py
+
+* ``tests_geometry.py`` contains multiple functions for generating example geometry, such as a hollow sphere, fractions 
+  of a hollow sphere, and even a hollow sphere with assorted holes through the thickness (like a ball of swiss cheese).
+* ``tests_partition.py`` containts multiple driver functions that call the ``turboTurtle.main`` function using the 
+  geometries created using ``tests_geometry.py``
+* ``tests_main.py`` is the driver script for the tests.
+
+To test ``turboTurtle`` via the command line:
+
+.. code-block:: Bash
+
+   [roppenheimer@sstelmo]$ pwd
+   /projects/roppenheimer/repos/turbo-turtle
+   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui tests_main.py
+   <output truncated>
+
+If all tests are successful, Abaqus will return not return an error code, and your repo directory will contain some new 
+files.
+
+.. code-block:: Bash
+
+   [roppenheimer@sstelmo]$ ls *{.cae,.jnl.rpy}
+   abaqus.rpy  Turbo-Turtle-Tests.cae  Turbo-Turtle-Tests.jnl
+
+All outputs from executing ``tests_main`` are printed to the most recent ``abaqus.rpy`` file in your working directory. 
+Open the ``Turbo-Turtle-Tests.cae`` Abaqus CAE database and inspect the parts to confirm that ``turboTurtle`` worked as 
+expected.
+
+.. testing-end-do-not-remove
