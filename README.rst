@@ -40,7 +40,7 @@ Coloning the Repository
 .. cloning-the-repo-start-do-not-remove
 
 Cloning the repository is very easy, simply refer to the sample session below. Keep in mind that you get to choose the 
-location of your local `` `turbo-turtle`_ `` clone. Here we use ``/projects/roppenheimer/repos`` as an example.
+location of your local `turbo-turtle`_ clone. Here we use ``/projects/roppenheimer/repos`` as an example.
 
 .. code-block:: bash
 
@@ -123,7 +123,7 @@ that a W-13 linux machine is used, so Abaqus 2021 is available at ``/apps/abaqus
 
 When using the ``turboTurtle`` CLI, an Abaqus CAE database with the unpartitioned geometry must already exist. The 
 sample terminal output below shows a directory structure that demonstrates the location of both an existing Abaqus CAE 
-database and a local clone of the ``turbo-turtle`` repository.
+database and a local clone of the `turbo-turtle`_ repository.
 
 .. code-block:: Bash
 
@@ -159,7 +159,7 @@ Testing
 
 .. testing-start-do-not-remove
 
-The ``turbo-turtle`` repository contains three Abaqus Python scripts for testing and demonstrating the ``turboTurtle`` 
+The `turbo-turtle`_ repository contains three Abaqus Python scripts for testing and demonstrating the ``turboTurtle`` 
 capability.
 
 .. code-block:: Bash
@@ -204,13 +204,13 @@ Developer Operations
 
 .. developer-operations-start-do-not-remove
 
-At the moment, the ``turbo-turtle`` repository is not part of the `AEA Gitlab Group`_, so `Gitlab CI/CD`_ cannot yet be 
-used to deploy ``turbo-turtle`` to the W-13 NFS file share Python project directories. In addition, this repository 
-contains code that is reliant on an Abaqus kernel (Abaqus version of Python 2). So, ``turbo-turtle`` cannot be Conda 
+At the moment, the `turbo-turtle`_ repository is not part of the `AEA Gitlab Group`_, so `Gitlab CI/CD`_ cannot yet be 
+used to deploy `turbo-turtle`_ to the W-13 NFS file share Python project directories. In addition, this repository 
+contains code that is reliant on an Abaqus kernel (Abaqus version of Python 2). So, `turbo-turtle`_ cannot be Conda 
 packaged and deployed to the `AEA Compute Environment`_ like other Python 3 packages.
 
 Deployment to a common location for W-13 users is currently a manual process. Deployment is done by using the `Bash 
-rsync`_ command to syncronize files between a local clone of the ``turbo-turtle`` repository and the deploy directory 
+rsync`_ command to syncronize files between a local clone of the `turbo-turtle`_ repository and the deploy directory 
 ``/projects/aea_compute/aea-abaqus-python/turbo-turtle``. The ``DEPLOY.sh`` script is included in this repository for 
 convenience. This script uses the `Bash rsync`_ command against all files in the repository that are not related to Git 
 (i.e. ``.git/`` and ``.gitignore`` are excluded from the ``rsync`` command) and the ``DEPLOY.sh`` script itself.
