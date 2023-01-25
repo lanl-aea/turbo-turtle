@@ -16,7 +16,7 @@ abq_python_dir="aea-abaqus-python"
 deploy_directory="$aea_compute_dir/$abq_python_dir/$project_dir"
 deploy_script=$(basename "$0")
 
-declare -a files_list=$(ls -I ".*" -I $deploy_script)
+declare -a files_list=$(ls -I ".*")
 
 # Make the deploy directory, if it does not already exist
 mkdir -p $deploy_directory
