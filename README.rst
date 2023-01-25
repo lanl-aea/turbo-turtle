@@ -40,7 +40,7 @@ Coloning the Repository
 .. cloning-the-repo-start-do-not-remove
 
 Cloning the repository is very easy, simply refer to the sample session below. Keep in mind that you get to choose the 
-location of your local ```turbo-turtle`_`` clone. Here we use ``/projects/roppenheimer/repos`` as an example.
+location of your local `` `turbo-turtle`_ `` clone. Here we use ``/projects/roppenheimer/repos`` as an example.
 
 .. code-block:: bash
 
