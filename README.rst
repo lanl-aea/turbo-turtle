@@ -89,14 +89,16 @@ In the Abaqus CAE Python terminal, use the ``execPyFile`` function
 
    >>> execPyFile('/projects/roppenheimer/repos/turbo-turtle/turboTurtle.py')
 
+Interactive Input
+-----------------
 ``turboTurtle`` will pop up a dialoge box where you can specify various parameters for partitioning the part in your 
 current session's viewport. Enter the relevant information, such as ``center`` and points on the ``x`` and ``z`` axis. 
 Click **OK** to run ``turboTurtle``.
 
 Upon successful parsing of input parameters, ``turboTurtle`` will print the parameters you used to the Python terminal 
-in a specific format that ``turboTurtle`` understands. Should you with to re-use a set of previously entered parameters 
+in a specific format that ``turboTurtle`` understands. Should you wish to re-use a set of previously entered parameters 
 (i.e. partitioning multiple parts whose centers are all offset from the origin in the same way), you can simply copy and 
-paste those parameters into the "Copy and Paste Parametes" text box. In this case, all other values in the text boxes 
+paste those parameters into the "Copy and Paste Parameters" text box. In this case, all other values in the text boxes 
 above will be ignored, even if you modify them. Note, do not copy the header text underlined with ``---``.
 
 .. abaqus-cae-end-do-not-remove
@@ -111,7 +113,7 @@ that a W-13 linux machine is used, so Abaqus 2021 is available at ``/apps/abaqus
 
 When using the ``turboTurtle`` CLI, an Abaqus CAE database with the unpartitioned geometry must already exist. The 
 sample terminal output below shows a directory structure that demonstrates the location of both an existing Abaqus CAE 
-database and a local clone of ``turbo-turtle``.
+database and a local clone of the ``turbo-turtle`` repository.
 
 .. code-block:: Bash
 
@@ -131,7 +133,7 @@ arguments.
 
    [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turboTurtle.py -- --input-file example_turbotTurtle/example_geometry.cae --model-name example_model_name --part-name example_part_name example_model
 
-Note that all parameters availabel through the Abaqus CAE GUI dialogue box are also available as command line arguments. 
+Note that all parameters available through the Abaqus CAE GUI dialogue box are also available as command line arguments. 
 You can also print the ``turboTurtle`` CLI help message to the most recent ``abaqus.rpy`` file in your current working 
 directory with the ``-h`` flag.
 
@@ -147,7 +149,7 @@ Testing
 
 .. testing-start-do-not-remove
 
-The ``turbo-turtle`` repository contains three Abaqus Python scripts for testing and demonstrating ``turboTurtle`` 
+The ``turbo-turtle`` repository contains three Abaqus Python scripts for testing and demonstrating the ``turboTurtle`` 
 capability.
 
 .. code-block:: Bash
