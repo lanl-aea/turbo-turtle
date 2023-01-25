@@ -1,3 +1,13 @@
+.. target-start-do-not-remove
+
+.. _turbo-turtle: https://re-git.lanl.gov/tproberts/turbo-turtle
+.. _AEA Gitlab Group: https://re-git.lanl.gov/aea
+.. _Gitlab CI/CD: https://docs.gitlab.com/ee/ci/
+.. _AEA Compute Environment: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
+.. _Bash rsync: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
+
+.. target-end-do-not-remove
+
 ############
 Turbo Turtle
 ############
@@ -30,7 +40,7 @@ Coloning the Repository
 .. cloning-the-repo-start-do-not-remove
 
 Cloning the repository is very easy, simply refer to the sample session below. Keep in mind that you get to choose the 
-location of your local ``turbo-turtle`` clone. Here we use ``/projects/roppenheimer/repos`` as an example.
+location of your local ```turbo-turtle`_`` clone. Here we use ``/projects/roppenheimer/repos`` as an example.
 
 .. code-block:: bash
 
@@ -187,3 +197,30 @@ Open the ``Turbo-Turtle-Tests.cae`` Abaqus CAE database and inspect the parts to
 expected.
 
 .. testing-end-do-not-remove
+
+********************
+Developer Operations
+********************
+
+.. developer-operations-start-do-not-remove
+
+At the moment, the ``turbo-turtle`` repository is not part of the `AEA Gitlab Group`_, so `Gitlab CI/CD`_ cannot yet be 
+used to deploy ``turbo-turtle`` to the W-13 NFS file share Python project directories. In addition, this repository 
+contains code that is reliant on an Abaqus kernel (Abaqus version of Python 2). So, ``turbo-turtle`` cannot be Conda 
+packaged and deployed to the `AEA Compute Environment`_ like other Python 3 packages.
+
+Deployment to a common location for W-13 users is currently a manual process. Deployment is done by using the `Bash 
+rsync`_ command to syncronize files between a local clone of the ``turbo-turtle`` repository and the deploy directory 
+``/projects/aea_compute/aea-abaqus-python/turbo-turtle``. The ``DEPLOY.sh`` script is included in this repository for 
+convenience. This script uses the `Bash rsync`_ command against all files in the repository that are not related to Git 
+(i.e. ``.git/`` and ``.gitignore`` are excluded from the ``rsync`` command) and the ``DEPLOY.sh`` script itself.
+
+Manual deployment can be done from the Developer's terminal:
+
+.. code-block:: Bash
+
+   [developer@sstelmo]$ pwd
+   /projects/developer/repos/turbo-turtle
+   [developer@sstelmo]$ bash DEPLOY.sh
+
+.. developer-operations-end-do-not-remove
