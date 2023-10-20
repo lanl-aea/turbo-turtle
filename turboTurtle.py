@@ -11,7 +11,8 @@ from abaqus import getInputs
     
 def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
     """Turbo Turtle
-       Main work-horse function
+
+    Main work-horse function
     
     This function partitions an **arbitrary, hollow, body** using the turtle shell method (also know as the soccer ball method).
     The following list of actions is performed using generalized vector equations to allow nearly any body to be 
