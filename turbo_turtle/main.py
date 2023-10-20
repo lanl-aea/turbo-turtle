@@ -26,8 +26,11 @@ def get_parser():
                         help="Abaqus part name")
     requiredNamed.add_argument('--input-file', type=str, required=True,
                         help="Abaqus model database to open")
+
     parser.add_argument('--output-file', type=str, default=None,
                         help="Abaqus model database to save to. Defaults to the specified --input-file")
+    parser.add_argument('--abaqus-command', type=str, default="abq2023",
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
 
     parser.add_argument('--xpoint', nargs=3, type=float, default=default_xpoint,
                         help="Point on the x-axis (default: %(default)s)")
@@ -57,7 +60,7 @@ def main():
     if args.output_file is None:
         args.output_file = args.input_file
 
-    command = f"abq2023 cae -noGui {abaqus_main} -- "
+    command = f"{args.abaqus_command} cae -noGui {abaqus_main} -- "
     command += f"--model-name {args.model_name} --part-name {args.part_name} --output-file {args.output_file} "
     command += f"--xpoint {' '.join(map(str, args.xpoint))} "
     command += f"--center {' '.join(map(str, args.center))} "
