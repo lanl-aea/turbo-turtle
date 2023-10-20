@@ -4,10 +4,16 @@ import argparse
 import subprocess
 
 from turbo_turtle import _settings
+from turbo_turtle import __version__
 
 
 # TODO: write a Python 2/3 compatible parser and argument handler
 def _partition_parser():
+    """Get parser object for partition subcommand command line options
+
+    :return: parser
+    :rtype: ArgumentParser
+    """
 
     default_center = [0.0, 0.0, 0.0]
     default_xpoint = [1.0, 0.0, 0.0]
@@ -17,12 +23,7 @@ def _partition_parser():
     default_partitions_y = [0.0, 0.0]
     default_partitions_z = [0.0, 0.0]
 
-    cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
-
-    parser = argparse.ArgumentParser(
-        description=cli_description,
-        prog=_settings._project_name_short
-    )
+    parser = argparse.ArgumentParser(add_help=False)
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--model-name', type=str, required=True,
@@ -54,12 +55,9 @@ def _partition_parser():
     return parser
 
 
-def _partition():
+def _partition(args):
     package_root = pathlib.Path(__file__).resolve().parent
     partition_main = package_root / "_partition.py"
-
-    parser = partition_parser()
-    args, unknown = parser.parse_known_args()
 
     # TODO: write a Python 2/3 compatible parser and argument handler
     if args.output_file is None:
@@ -74,10 +72,49 @@ def _partition():
     command += f"--x-partitions {' '.join(map(str, args.x_partitions))} "
     command += f"--y-partitions {' '.join(map(str, args.y_partitions))} "
     command += f"--z-partitions {' '.join(map(str, args.z_partitions))} "
-    print(command)
     command = command.split()
     stdout = subprocess.check_output(command)
 
 
+def get_parser():
+    """Get parser object for command line options
+
+    :return: parser
+    :rtype: ArgumentParser
+    """
+    main_description = \
+        "Common geometry, partition, and meshing utilities. Currently a thin Python 3 driver for Abaqus CAE utilities."
+    main_parser = argparse.ArgumentParser(
+        description=main_description,
+        prog=_settings._project_name_short
+    )
+    main_parser.add_argument(
+        "-V", "--version",
+        action="version",
+        version=f"{_settings._project_name_short} {__version__}"
+    )
+
+    subparsers = main_parser.add_subparsers(dest="subcommand")
+
+    partition_parser = _partition_parser()
+    partition_parser = subparsers.add_parser(
+        "partition",
+        help="Partition a spherical shape into a turtle shell",
+        description="Partition a spherical shape into a turtle shell given a small number of locating parameters",
+        parents=[partition_parser]
+    )
+
+    return main_parser
+
+
+def main():
+
+    parser = get_parser()
+    args, unknown = parser.parse_known_args()
+    if args.subcommand == "partition":
+        _partition(args)
+    else:
+        parser.print_help()
+
 if __name__ == "__main__":
-    sys.exit(_partition())
+    sys.exit(main())  # pragma: no cover
