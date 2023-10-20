@@ -1,0 +1,84 @@
+import sys
+import pathlib
+import datetime
+import unittest.mock
+
+
+# Prevent creation of __pycache__ directories and *.pyc files
+sys.dont_write_bytecode = True
+
+
+# -- Project information -----------------------------------------------------
+project_dir = pathlib.Path(r'@project_dir@').resolve()
+authors = [
+    ('Thomas Roberts', '<tproberts@lanl.gov>'),
+    ('Kyle Brindley', '<kbrindley@lanl.gov>')
+]
+author_latex = r"\and ".join(author for author, email in authors)
+epub_author = ", ".join(author for author, email in authors)
+author_manpage = ""
+for author, email in authors:
+    author_manpage += f"{author} {email}, "
+author_manpage = author_manpage.rstrip(', ')
+
+# Mock modules unavailable in the Conda development environment, e.g. Abaqus Python modules, and large imports not
+# required by the documentation build, e.g. cubit.
+mock_modules = ['abaqus', 'abaqusConstants', 'mesh', 'numpy']
+for mod_name in mock_modules:
+    sys.modules[mod_name] = unittest.mock.Mock()
+
+# Add paths to API/CLI files
+sys.path.insert(0, str(project_dir))
+
+from turbo_turtle import __version__
+from turbo_turtle._settings import _project_name, _project_name_short
+
+project = _project_name_short
+release = __version__
+version = release
+copyright = f"{datetime.date.today().year} Triad National Security, LLC. All Rights Reserved."
+
+# -- General configuration ---------------------------------------------------
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
+    'sphinx_copybutton',
+    'sphinx.ext.extlinks',
+    'sphinxarg.ext'
+]
+extlinks = {
+     "merge": ("https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/merge_requests/%s", "MERGE-%s"),
+     "issue": ("https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/%s", "ISSUE-%s"),
+}
+templates_path = ['_templates']
+source_suffix = ['.rst']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+rst_prolog = f".. |project| replace:: {project.lower()}\n" \
+             f".. |PROJECT| replace:: {project.upper()}\n" \
+             f".. include:: targets.txt"
+
+if tags.has('man'):
+    master_doc='man_index'
+    include_patterns = [f"{master_doc}.rst"]
+else:
+    master_doc = 'index'
+    exclude_patterns.append('man_*.rst')
+
+# Copy button settings
+copybutton_prompt_text = r">>> |> |\.\.\. |\$ |\+(?!\+)"
+copybutton_prompt_is_regexp = True
+
+# -- Options for HTML output -------------------------------------------------
+# Add custom style sheet to make the html docs wider
+def setup(app):
+    app.add_css_file('custom.css')
+
+html_theme = 'sphinx_rtd_theme'
+html_static_path = ['_static']
+html_css_files = ["custom.css"]
+
+# -- Options for manual page output ---------------------------------------
+man_pages = [
+    (master_doc, project.lower(), _project_name,
+     [author_manpage], 1)
+]
