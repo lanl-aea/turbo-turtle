@@ -7,7 +7,7 @@ from turbo_turtle import _settings
 
 
 # TODO: write a Python 2/3 compatible parser and argument handler
-def get_parser():
+def _partition_parser():
 
     default_center = [0.0, 0.0, 0.0]
     default_xpoint = [1.0, 0.0, 0.0]
@@ -54,18 +54,18 @@ def get_parser():
     return parser
 
 
-def main():
+def _partition():
     package_root = pathlib.Path(__file__).resolve().parent
-    abaqus_main = package_root / "_partition.py"
+    partition_main = package_root / "_partition.py"
 
-    parser = get_parser()
+    parser = partition_parser()
     args, unknown = parser.parse_known_args()
 
     # TODO: write a Python 2/3 compatible parser and argument handler
     if args.output_file is None:
         args.output_file = args.input_file
 
-    command = f"{args.abaqus_command} cae -noGui {abaqus_main} -- "
+    command = f"{args.abaqus_command} cae -noGui {partition_main} -- "
     command += f"--model-name {args.model_name} --part-name {args.part_name} --output-file {args.output_file} "
     command += f"--xpoint {' '.join(map(str, args.xpoint))} "
     command += f"--center {' '.join(map(str, args.center))} "
@@ -80,4 +80,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(_partition())
