@@ -28,6 +28,7 @@ test:
     - if: $CI_COMMIT_BRANCH == "main"
   script:
     - project_root=$PWD
-    - cd turbo_turtle/tests && PYTHONPATH=$project_root abq2023 cae -noGui tests_main.py
+    - cd $project_root/turbo_turtle/tests && abq2023 cae -noGui tests_geometry.py
+    - cd $project_root/turbo_turtle/tests && PYTHONPATH=$project_root abq2023 cae -noGui tests_main.py
   tags:
     - shell-aea
