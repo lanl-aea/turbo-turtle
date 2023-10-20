@@ -17,7 +17,9 @@ def get_parser():
 
     cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
 
-    parser = argparse.ArgumentParser(description=cli_description)
+    parser = argparse.ArgumentParser(
+        description=cli_description,
+        prog=_settings._project_cli_utility())
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--model-name', type=str, required=True,
