@@ -1,0 +1,48 @@
+#! /usr/bin/env python
+import waves
+
+
+Import(["env", "project_dir"])
+
+env.Append(SCANNERS=waves.scons_extensions.sphinx_scanner())
+
+env.Substfile("conf.py.in", SUBST_DICT={"@project_dir@": project_dir})
+
+copy_files = (
+    ("README.txt", "#/README.rst"),
+)
+for target, source in copy_files:
+    Command(
+        target=target,
+        source=source,
+        action=Copy("$TARGET", "$SOURCE")
+    )
+
+# Things required for Sphinx configuration or missed by scanning *.rst and *.txt files
+sphinx_configuration_files = [
+    "conf.py",
+    'targets.txt',  # Found in conf.py, which is not currently scanned
+    '_static/custom.css'
+]
+
+sphinx_source_files = [
+    "index.rst",
+    "user.rst",
+    "targets.txt",
+    "SConscript",
+    "README.txt",
+    "api.rst",
+    "cli.rst"
+]
+
+targets = [Dir("html")]
+sources = sphinx_configurtion_files + sphinx_source_files
+workflow = env.Command(
+    target=targets,
+    source=sources,
+    action="sphinx-build ${sphinx_options} -b html ${TARGET.dir.abspath} ${TARGET.abspath}",
+    sphinx_options="-W"
+)
+env.Clean(workflow, targets)
+env.AlwaysBuild(workflow)
+env.Alias("html", workflow)
