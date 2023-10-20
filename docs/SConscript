@@ -36,7 +36,7 @@ sphinx_source_files = [
 ]
 
 targets = [Dir("html")]
-sources = sphinx_configurtion_files + sphinx_source_files
+sources = sphinx_configuration_files + sphinx_source_files
 workflow = env.Command(
     target=targets,
     source=sources,

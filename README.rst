@@ -6,6 +6,9 @@
 .. _AEA Compute Environment: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
 .. _Bash rsync: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
 
+.. _`Kyle Brindley`: kbrindley@lanl.gov
+.. _`Thomas Roberts`: tproberts@lanl.gov
+
 .. target-end-do-not-remove
 
 ############
@@ -34,8 +37,8 @@ Until more in depth documentation is available, this README serves as the Turbo 
 Author Info
 ===========
 
-* Thomas Roberts: tproberts@lanl.gov
-* Kyle Brindley: kbrindley@lanl.gov
+* `Thomas Roberts`_
+* `Kyle Brindley`_
 
 ***************
 Getting Started
