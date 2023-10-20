@@ -32,6 +32,7 @@ test:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
   script:
+    - scons html
     - cd ${project_root}/turbo_turtle/tests && abq2023 cae -noGui tests_geometry.py && cd ${project_root}
     - name='Turbo-Turtle-Tests'
     - python -m turbo_turtle.main --input-file ${project_root}/${name}.cae --output-file ${project_root}/${name}.cae --model-name ${name} --part-name sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
