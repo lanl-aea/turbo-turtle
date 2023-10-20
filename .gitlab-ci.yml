@@ -1,0 +1,32 @@
+workflow:
+  rules:  # Do not create pipelines for tag updates
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: always
+
+stages:
+  - test 
+
+before_script:
+  # Assumes CI executes on AEA compute servers
+  - aea_compute_path="/projects/aea_compute"
+  - aea_modulefiles="${aea_compute_path}/modulefiles"
+  - module use ${aea_modulefiles}
+  - environment_choices="aea-beta aea-release"
+  - for env in ${environment_choices}; do if [[ -d "${aea_compute_path}/${env}" ]]; then environment=${env}; break; fi; done
+  - echo ${environment}
+  - module load ${environment}
+  - conda info
+
+test:
+  stage: test
+  variables:
+    GIT_STRATEGY: clone
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+  script:
+    - abq2023 cae -noGui tests_main.py
+  tags:
+    - shell-aea
