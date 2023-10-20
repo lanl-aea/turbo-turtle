@@ -3,7 +3,7 @@ requires = ["setuptools>=62", "setuptools_scm[toml]>=6.2,<8"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "turbo-turtle"
+name = "turbo_turtle"
 authors = [
     {name = "Thomas Roberts", email = "tproberts@lanl.gov"},
     {name = "Kyle Brindley", email = "kbrindley@lanl.gov"},
