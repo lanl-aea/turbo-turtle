@@ -2,6 +2,12 @@
 |project|
 #########
 
+***********
+Description
+***********
+
+.. include:: project_brief.txt
+
 ********
 Synopsis
 ********
@@ -10,17 +16,3 @@ Synopsis
    :ref: turbo_turtle.main.get_parser
    :nodefault:
    :nosubcommands:
-
-***********
-Description
-***********
-
-.. include:: project_brief.txt
-
-*********************
-|PROJECT| Subcommands
-*********************
-
-.. argparse::
-   :ref: turbo_turtle.main.get_parser
-   :nodefault:
