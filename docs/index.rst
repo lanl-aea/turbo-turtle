@@ -11,8 +11,13 @@
    :caption: User Manual
 
    user
-   api
    cli
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Developer Manual
+
+   api
 
 .. toctree::
    :maxdepth: 1
