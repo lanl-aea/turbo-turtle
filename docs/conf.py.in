@@ -9,10 +9,10 @@ sys.dont_write_bytecode = True
 
 
 # -- Project information -----------------------------------------------------
-project_dir = pathlib.Path(r'@project_dir@').resolve()
+project_dir = pathlib.Path(r"@project_dir@").resolve()
 authors = [
-    ('Thomas Roberts', '<tproberts@lanl.gov>'),
-    ('Kyle Brindley', '<kbrindley@lanl.gov>')
+    ("Thomas Roberts", "<tproberts@lanl.gov>"),
+    ("Kyle Brindley", "<kbrindley@lanl.gov>")
 ]
 author_latex = r"\and ".join(author for author, email in authors)
 epub_author = ", ".join(author for author, email in authors)
@@ -23,7 +23,7 @@ author_manpage = author_manpage.rstrip(', ')
 
 # Mock modules unavailable in the Conda development environment, e.g. Abaqus Python modules, and large imports not
 # required by the documentation build, e.g. cubit.
-mock_modules = ['abaqus', 'abaqusConstants', 'mesh', 'numpy']
+mock_modules = ["abaqus", "abaqusConstants", "caeModules", "mesh", "numpy"]
 for mod_name in mock_modules:
     sys.modules[mod_name] = unittest.mock.Mock()
 
@@ -40,29 +40,29 @@ copyright = f"{datetime.date.today().year} Triad National Security, LLC. All Rig
 
 # -- General configuration ---------------------------------------------------
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
-    'sphinx_copybutton',
-    'sphinx.ext.extlinks',
-    'sphinxarg.ext'
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
+    "sphinx_copybutton",
+    "sphinx.ext.extlinks",
+    "sphinxarg.ext"
 ]
 extlinks = {
      "merge": ("https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/merge_requests/%s", "MERGE-%s"),
      "issue": ("https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/%s", "ISSUE-%s"),
 }
-templates_path = ['_templates']
-source_suffix = ['.rst']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+templates_path = ["_templates"]
+source_suffix = [".rst"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 rst_prolog = f".. |project| replace:: {project.lower()}\n" \
              f".. |PROJECT| replace:: {project.upper()}\n" \
              f".. include:: targets.txt"
 
-if tags.has('man'):
-    master_doc='man_index'
+if tags.has("man"):
+    master_doc="man_index"
     include_patterns = [f"{master_doc}.rst"]
 else:
-    master_doc = 'index'
-    exclude_patterns.append('man_*.rst')
+    master_doc = "index"
+    exclude_patterns.append("man_*.rst")
 
 # Copy button settings
 copybutton_prompt_text = r">>> |> |\.\.\. |\$ |\+(?!\+)"
@@ -71,10 +71,10 @@ copybutton_prompt_is_regexp = True
 # -- Options for HTML output -------------------------------------------------
 # Add custom style sheet to make the html docs wider
 def setup(app):
-    app.add_css_file('custom.css')
+    app.add_css_file("custom.css")
 
-html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_theme = "sphinx_rtd_theme"
+html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 
 # -- Options for manual page output ---------------------------------------
