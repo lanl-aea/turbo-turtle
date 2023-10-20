@@ -21,18 +21,19 @@ for target, source in copy_files:
 # Things required for Sphinx configuration or missed by scanning *.rst and *.txt files
 sphinx_configuration_files = [
     "conf.py",
-    'targets.txt',  # Found in conf.py, which is not currently scanned
-    '_static/custom.css'
+    "targets.txt",  # Found in conf.py, which is not currently scanned
+    "_static/custom.css"
 ]
 
 sphinx_source_files = [
-    "index.rst",
-    "user.rst",
-    "targets.txt",
+    "README.rst",
     "SConscript",
-    "README.txt",
     "api.rst",
-    "cli.rst"
+    "changelog.rst",
+    "cli.rst",
+    "index.rst",
+    "targets.txt",
+    "user.rst",
 ]
 
 targets = [Dir("html")]
