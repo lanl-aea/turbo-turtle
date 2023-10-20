@@ -1,10 +1,8 @@
-#########################
-|project|'s Documentation
-#########################
+#########
+|project|
+#########
 
-.. include:: README.txt
-   :start-after: description-start-do-not-remove
-   :end-before: description-end-do-not-remove
+.. include:: project_brief.txt
 
 .. toctree::
    :maxdepth: 2
