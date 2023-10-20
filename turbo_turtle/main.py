@@ -59,7 +59,13 @@ def main():
 
     command = f"abq2023 cae -noGui {abaqus_main} -- --help "
     command += f"--model-name {args.model_name} --part-name {args.part_name} --output-file {args.output_file} "
-    command += f"--xpoint {' '.join(map(str, args.xpoint))}"
+    command += f"--xpoint {' '.join(map(str, args.xpoint))} "
+    command += f"--ypoint {' '.join(map(str, args.ypoint))} "
+    command += f"--zpoint {' '.join(map(str, args.zpoint))} "
+    command += f"--plane-angle {args.plane_angle} "
+    command += f"--x-partitions {' '.join(map(str(args.x_partitions))} "
+    command += f"--y-partitions {' '.join(map(str(args.y_partitions))} "
+    command += f"--z-partitions {' '.join(map(str(args.z_partitions))} "
     print(command)
     command = command.split()
     stdout = subprocess.check_output(command)
