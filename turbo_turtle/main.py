@@ -64,7 +64,8 @@ def _partition(args):
         args.output_file = args.input_file
 
     command = f"{args.abaqus_command} cae -noGui {partition_main} -- "
-    command += f"--model-name {args.model_name} --part-name {args.part_name} --output-file {args.output_file} "
+    command += f"--input-file {args.input_file} --output-file {args.output_file} "
+    command += f"--model-name {args.model_name} --part-name {args.part_name} "
     command += f"--xpoint {' '.join(map(str, args.xpoint))} "
     command += f"--center {' '.join(map(str, args.center))} "
     command += f"--zpoint {' '.join(map(str, args.zpoint))} "
