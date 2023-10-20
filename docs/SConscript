@@ -32,8 +32,9 @@ sphinx_source_files = [
     "changelog.rst",
     "cli.rst",
     "index.rst",
+    "release_philosophy.rst",
     "targets.txt",
-    "user.rst",
+    "user.rst"
 ]
 
 targets = [Dir("html")]

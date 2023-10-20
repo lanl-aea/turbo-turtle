@@ -24,6 +24,7 @@
    :caption: Reference
 
    changelog
+   release_philosophy
    README
 
 .. only:: html
