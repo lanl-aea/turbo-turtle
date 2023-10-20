@@ -1,3 +1,4 @@
+import sys
 import argparse
 
 
@@ -42,6 +43,10 @@ def get_parser():
     return parser
 
 
-if __name__ == "__main__":
+def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
+
+
+if __name__ == "__main__":
+    sys.exit(main())
