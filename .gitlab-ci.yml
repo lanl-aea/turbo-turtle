@@ -27,6 +27,6 @@ test:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
   script:
-    - abq2023 cae -noGui tests_main.py
+    - abq2023 cae -noGui turbo_turtle/tests/tests_main.py
   tags:
     - shell-aea
