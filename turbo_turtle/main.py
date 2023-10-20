@@ -1,5 +1,7 @@
 import sys
+import pathlib
 import argparse
+import subprocess
 
 
 def get_parser():
@@ -44,8 +46,14 @@ def get_parser():
 
 
 def main():
+    package_root = pathlib.Path(__file__).resolve().parent
+    abaqus_main = package_root / "_abaqus.py"
+
     parser = get_parser()
     args, unknown = parser.parse_known_args()
+
+    command = ["abq2023", "cae", "-noGui", str(abaqus_main), "--", "--help"]
+    stdout = subprocess.check_output(command)
 
 
 if __name__ == "__main__":
