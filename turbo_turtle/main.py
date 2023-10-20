@@ -52,7 +52,9 @@ def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    command = ["abq2023", "cae", "-noGui", str(abaqus_main), "--", "--help"]
+    command = f"abq2023 cae -noGui {abaqus_main} -- --help"
+    command += f"--model-name {args.model_name} --part-name {args.part_name} --output-file {args.output_file}"
+    command = command.split()
     stdout = subprocess.check_output(command)
 
 
