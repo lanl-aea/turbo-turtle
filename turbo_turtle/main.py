@@ -30,7 +30,7 @@ def get_parser():
     parser.add_argument('--output-file', type=str, default=None,
                         help="Abaqus model database to save to. Defaults to the specified --input-file")
     parser.add_argument('--abaqus-command', type=str, default="abq2023",
-                        help='Abaqus executable absolute or relative path')
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
 
     parser.add_argument('--xpoint', nargs=3, type=float, default=default_xpoint,
                         help="Point on the x-axis (default: %(default)s)")
