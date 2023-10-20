@@ -5,8 +5,17 @@ Changelog
 #########
 
 *******************
-v0.3.1 (unreleased)
+v0.4.1 (unreleased)
 *******************
+
+*******************
+v0.4.0 (2023-10-20)
+*******************
+
+Breaking changes
+================
+- Move existing behavior to the ``partition`` subcommand to make room for additional common utilities (:issue:`14`,
+  :merge:`5`). By `Kyle Brindley`_.
 
 *******************
 v0.3.0 (2023-10-20)
