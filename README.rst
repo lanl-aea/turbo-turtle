@@ -18,9 +18,13 @@ Turbo Turtle
 Description
 ***********
 
+.. description-start-do-not-remove
+
 This repository houses a script for partitioning hollow, spherical bodies using a turtle shell (otherwise known as
 soccer ball) partitioning scheme. Turbo Turtle can be used in Abaqus CAE or as a command line utility to partition entire
 spheres or any fraction of the sphere.
+
+.. description-end-do-not-remove
 
 Documentation
 =============
