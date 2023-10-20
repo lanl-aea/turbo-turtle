@@ -56,7 +56,7 @@ def get_parser():
 
 def main():
     package_root = pathlib.Path(__file__).resolve().parent
-    abaqus_main = package_root / "_abaqus.py"
+    abaqus_main = package_root / "_partition.py"
 
     parser = get_parser()
     args, unknown = parser.parse_known_args()

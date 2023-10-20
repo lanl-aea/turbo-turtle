@@ -10,8 +10,8 @@ main
 .. automodule:: turbo_turtle.main
     :members:
 
-_abaqus
-=======
+_partition
+==========
 
-.. automodule:: turbo_turtle._abaqus
+.. automodule:: turbo_turtle._partition
     :members:

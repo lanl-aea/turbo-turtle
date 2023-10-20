@@ -1,4 +1,4 @@
-import turbo_turtle._abaqus
+import turbo_turtle._partition
 
 
 def main(model_name, input_file, output_file):
@@ -34,7 +34,7 @@ def sphere(model_name, input_file, output_file, part_name='sphere'):
     zpoint = [0.0, 0.0, 1.0]
     plane_angle = 45.0
     partitions = {}
-    turbo_turtle._abaqus.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
+    turbo_turtle._partition.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
     return
 
 
@@ -53,7 +53,7 @@ def eigth_sphere(model_name, input_file, output_file, part_name='eigth-sphere'):
     zpoint = [0.0, 0.0, 1.0]
     plane_angle = 45.0
     partitions = {}
-    turbo_turtle._abaqus.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
+    turbo_turtle._partition.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
     return
 
 
@@ -72,7 +72,7 @@ def quarter_sphere(model_name, input_file, output_file, part_name='quarter-spher
     zpoint = [0.0, 0.0, 1.0]
     plane_angle = 45.0
     partitions = {}
-    turbo_turtle._abaqus.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
+    turbo_turtle._partition.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
     return
 
 
@@ -91,7 +91,7 @@ def half_sphere(model_name, input_file, output_file, part_name='half-sphere'):
     zpoint = [0.0, 0.0, 1.0]
     plane_angle = 45.0
     partitions = {}
-    turbo_turtle._abaqus.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
+    turbo_turtle._partition.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
     return
 
 
@@ -110,7 +110,7 @@ def seveneigths_sphere(model_name, input_file, output_file, part_name='seveneigt
     zpoint = [0.0, 0.0, 1.0]
     plane_angle = 45.0
     partitions = {}
-    turbo_turtle._abaqus.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
+    turbo_turtle._partition.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
     return
 
 
@@ -129,7 +129,7 @@ def offset_sphere(model_name, input_file, output_file, part_name='offset-sphere'
     zpoint = [1.0, 1.0, 1.0]
     plane_angle = 45.0
     partitions = {}
-    turbo_turtle._abaqus.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
+    turbo_turtle._partition.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
     return
 
 
@@ -148,7 +148,7 @@ def swiss_cheese(model_name, input_file, output_file, part_name='swiss-cheese'):
     zpoint = [0.0, 0.0, 1.0]
     plane_angle = 45.0
     partitions = {}
-    turbo_turtle._abaqus.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)   
+    turbo_turtle._partition.main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)   
     return
 
 

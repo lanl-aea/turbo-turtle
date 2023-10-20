@@ -138,7 +138,7 @@ current session's viewport. Execute ``turboTurtle`` in either of two ways:
 
 *Run Script Menu*
 
-Click File --> Run Script --> /projects/roppenheimer/turbo-turtle/turbo_turtle/_abaqus.py
+Click File --> Run Script --> /projects/roppenheimer/turbo-turtle/turbo_turtle/_partition.py
 
 *Python Terminal*
 
@@ -146,7 +146,7 @@ In the Abaqus CAE Python terminal, use the ``execPyFile`` function
 
 .. code-block:: Python
 
-   >>> execPyFile('/projects/roppenheimer/repos/turbo-turtle/turbo_turtle/_abaqus.py')
+   >>> execPyFile('/projects/roppenheimer/repos/turbo-turtle/turbo_turtle/_partition.py')
 
 *Interactive Input*
 
@@ -202,7 +202,7 @@ arguments.
 
 .. code-block:: bash
 
-   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2023 cae -noGui repos/turbo-turtle/turbo_turtle/_abaqus.py -- --input-file example_turbotTurtle/example_geometry.cae --model-name example_model_name --part-name example_part_name example_model
+   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2023 cae -noGui repos/turbo-turtle/turbo_turtle/_partition.py -- --input-file example_turbotTurtle/example_geometry.cae --model-name example_model_name --part-name example_part_name example_model
 
 Note that all parameters available through the Abaqus CAE GUI dialogue box are also available as command line arguments.
 You can also print the ``turboTurtle`` CLI help message to the most recent ``abaqus.rpy`` file in your current working
@@ -210,7 +210,7 @@ directory with the ``-h`` flag.
 
 .. code-block:: Bash
 
-   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turbo_turtle/_abaqus.py -- -h
+   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turbo_turtle/_partition.py -- -h
 
 .. command-line-execution-end-do-not-remove
 
