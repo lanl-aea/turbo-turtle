@@ -57,7 +57,7 @@ def main():
     if args.output_file is None:
         args.output_file = args.input_file
 
-    command = f"abq2023 cae -noGui {abaqus_main} -- --help "
+    command = f"abq2023 cae -noGui {abaqus_main} -- "
     command += f"--model-name {args.model_name} --part-name {args.part_name} --output-file {args.output_file} "
     command += f"--xpoint {' '.join(map(str, args.xpoint))} "
     command += f"--center {' '.join(map(str, args.center))} "
