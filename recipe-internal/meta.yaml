@@ -28,6 +28,13 @@ build:
     - python_abi
 
 requirements:
+  build:
+    - scons >=4
+    - sphinx >=5.1
+    - sphinx-argparse
+    - sphinx-copybutton >=0.5.1
+    - sphinx_rtd_theme >=1
+    - waves >=0.7.2
   host:
     - python
     - python-build
