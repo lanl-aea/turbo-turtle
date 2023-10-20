@@ -39,12 +39,29 @@ sphinx_source_files = [
 
 targets = [Dir("html")]
 sources = sphinx_configuration_files + sphinx_source_files
-workflow = env.Command(
+html = env.Command(
     target=targets,
     source=sources,
     action="sphinx-build ${sphinx_options} -b html ${TARGET.dir.abspath} ${TARGET.abspath}",
     sphinx_options="-W"
 )
-env.Clean(workflow, targets)
-env.AlwaysBuild(workflow)
-env.Alias("html", workflow)
+env.Clean(html, targets)
+env.AlwaysBuild(html)
+env.Alias("html", html)
+
+targets = [Dir("man")]
+man_source = [
+    "man_index.rst"
+]
+man = env.Command(
+    target=targets,
+    source=man_source + sphinx_configuration_files,
+    action="sphinx-build ${sphinx_options} -b man ${TARGET.dir.abspath} ${TARGET.abspath} ${tags}",
+    sphinx_options="-W",
+    tags="-t man"
+)
+env.Clean(man, targets)
+env.AlwaysBuild(man)
+env.Alias("man", man)
+
+env.Alias('documentation', html + man)
