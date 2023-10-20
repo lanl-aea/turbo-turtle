@@ -1,3 +1,13 @@
+build/
+dist/
+conda-bld/
+*.egg-info*/
+*.eggs/
+_version.py
+
+.sconsign.dblite
+config.log
+
 *.cae
 *.rpy*
 *.jnl
@@ -5,4 +15,3 @@ ABQ*
 *.zip
 *.pyc
 *pycache*/
-_version.py
