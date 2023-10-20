@@ -17,7 +17,7 @@ Description
 ***********
 
 This repository houses a script for partitioning hollow, spherical bodies using a turtle shell (otherwise known as
-soccer ball) partitioning scheme. Turbo Turtle can be used in Abaqus CAE or as a command line utlity to partition entire
+soccer ball) partitioning scheme. Turbo Turtle can be used in Abaqus CAE or as a command line utility to partition entire
 spheres or any fraction of the sphere.
 
 Documentation
@@ -29,6 +29,7 @@ Author Info
 ===========
 
 * Thomas Roberts: tproberts@lanl.gov
+* Kyle Brindley: kbrindley@lanl.gov
 
 ***************
 Getting Started
@@ -62,14 +63,14 @@ This repository is dependent on the access to an Abaqus kernel either through Ab
 you are using a computer mapped to the W-13 NFS file shares (e.g. ``/home``, ``/projects``, ``/apps``), then access to
 the Abaqus executable is trivial.
 
-**At the moment, this repository has only been tested using Abaqus 2021**
-
-On a Linux Machine
-==================
+On an AEA Linux Machine
+=======================
 .. code-block:: Bash
 
-   [roppenheimer@sstelmo]$ whereis abq2021
-   abq2021: /apps/abaqus/Commands/abq2021
+   [roppenheimer@sstbigbird]$ module use /projects/aea_compute/modulefiles
+   [roppenheimer@sstbigbird]$ module load aea-beta
+   (aea-beta) [roppenheimer@sstbigbird]$ which abq2023
+   /apps/abaqus/Commands/abq2023
 
 .. compute-env-end-do-not-remove
 
@@ -89,7 +90,7 @@ current session's viewport. Execute ``turboTurtle`` in either of two ways:
 
 Run Script Menu
 ---------------
-Click File --> Run Script --> /projects/roppenheimer/turbo-turtle/turboTurtle.py
+Click File --> Run Script --> /projects/roppenheimer/turbo-turtle/turbo_turtle/_abaqus.py
 
 Python Terminal
 ---------------
@@ -97,7 +98,7 @@ In the Abaqus CAE Python terminal, use the ``execPyFile`` function
 
 .. code-block:: Python
 
-   >>> execPyFile('/projects/roppenheimer/repos/turbo-turtle/turboTurtle.py')
+   >>> execPyFile('/projects/roppenheimer/repos/turbo-turtle/turbo_turtle/_abaqus.py')
 
 Interactive Input
 -----------------
@@ -118,8 +119,20 @@ Command Line Execution
 
 .. command-line-execution-start-do-not-remove
 
+This package has a thin Python 3 wrapper. It is no longer necessary to execute via Abaqus Python.
+
+.. code-block::
+
+   [roppenheimer@sstelmo]$ pwd
+   /projects/roppenheimer/repos/turbo-turtle
+   [roppenheimer@sstbigbird]$ module use /projects/aea_compute/modulefiles
+   [roppenheimer@sstbigbird]$ module load aea-beta
+   (aea-beta) [roppenheimer@sstbigbird]$ python -m turbo_turtle.main --help
+
+The legacy instructions for executing the Abaqus Python interface directly have been updated below for reference.
+
 ``turboTurtle`` can be executed via CLI on any computer with Abaqus available via the command line. This README assumes
-that a W-13 linux machine is used, so Abaqus 2021 is available at ``/apps/abaqus/Commands/abq2021``.
+that a W-13 linux machine is used, so Abaqus 2021 is available at ``/apps/abaqus/Commands/abq2023``.
 
 When using the ``turboTurtle`` CLI, an Abaqus CAE database with the unpartitioned geometry must already exist. The
 sample terminal output below shows a directory structure that demonstrates the location of both an existing Abaqus CAE
@@ -141,7 +154,7 @@ arguments.
 
 .. code-block:: bash
 
-   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turboTurtle.py -- --input-file example_turbotTurtle/example_geometry.cae --model-name example_model_name --part-name example_part_name example_model
+   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2023 cae -noGui repos/turbo-turtle/turbo_turtle/_abaqus.py -- --input-file example_turbotTurtle/example_geometry.cae --model-name example_model_name --part-name example_part_name example_model
 
 Note that all parameters available through the Abaqus CAE GUI dialogue box are also available as command line arguments.
 You can also print the ``turboTurtle`` CLI help message to the most recent ``abaqus.rpy`` file in your current working
@@ -149,7 +162,7 @@ directory with the ``-h`` flag.
 
 .. code-block:: Bash
 
-   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turboTurtle.py -- -h
+   [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turbo_turtle/_abaqus.py -- -h
 
 .. command-line-execution-end-do-not-remove
 
@@ -159,15 +172,19 @@ Testing
 
 .. testing-start-do-not-remove
 
+This project now performs CI testing on AEA compute servers. The up-to-date test commands can be found in the
+``.gitlab-ci.yml`` file. The legacy testing instructions are show below, but may be out-of-date as the package works
+towards a Python 3 deployment.
+
 The `turbo-turtle`_ repository contains three Abaqus Python scripts for testing and demonstrating the ``turboTurtle``
 capability.
 
 .. code-block:: Bash
 
    [roppenheimer@sstelmo]$ pwd
-   /projects/roppenheimer/repos
-   [roppenheimer@sstelmo]$ ls turbo-turtle
-   README.rst  tests_geometry.py  tests_main.py  tests_partition.py  turboTurtle.py
+   /projects/roppenheimer/repos/turbo-turtle
+   [roppenheimer@sstelmo]$ ls turbo_turtle/tests
+   tests_geometry.py  tests_main.py  tests_partition.py
 
 * ``tests_geometry.py`` contains multiple functions for generating example geometry, such as a hollow sphere, fractions
   of a hollow sphere, and even a hollow sphere with assorted holes through the thickness (like a ball of swiss cheese).
@@ -180,7 +197,7 @@ To test ``turboTurtle`` via the command line:
 .. code-block:: Bash
 
    [roppenheimer@sstelmo]$ pwd
-   /projects/roppenheimer/repos/turbo-turtle
+   /projects/roppenheimer/repos/turbo-turtle/turbo_turtle/tests
    [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui tests_main.py
    <output truncated>
 
@@ -189,7 +206,7 @@ files.
 
 .. code-block:: Bash
 
-   [roppenheimer@sstelmo]$ ls *{.cae,.jnl.rpy}
+   [roppenheimer@sstelmo]$ ls *.{cae,jnl,rpy}
    abaqus.rpy  Turbo-Turtle-Tests.cae  Turbo-Turtle-Tests.jnl
 
 All outputs from executing ``tests_main`` are printed to the most recent ``abaqus.rpy`` file in your working directory.
