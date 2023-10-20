@@ -1,6 +1,7 @@
 from abaqus import mdb
 from abaqusConstants import *
 
+
 def main(model_name, output_file):
     """Wrapper for test geometry creation
     
@@ -22,6 +23,7 @@ def main(model_name, output_file):
     mdb.saveAs(pathName=output_file)
     
     return
+
 
 def sphere(model_name, part_name='sphere'):
     """Create a hollow, spherical geometry
