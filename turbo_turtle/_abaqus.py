@@ -8,21 +8,21 @@ from abaqus import *
 from abaqusConstants import *
 from caeModules import *
 from abaqus import getInputs
-    
+
 def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
     """Turbo Turtle
 
     Main work-horse function
-    
-    This function partitions an **arbitrary, hollow, body** using the turtle shell method (also know as the soccer ball method).
-    The following list of actions is performed using generalized vector equations to allow nearly any body to be 
-    partitioned. This script can be executed from Abaqus CAE from the command line.
 
-    If the body is modeled with symmetry (e.g. quater or half symmetry), this code will attempt all partitioning and face removal actions anyways. 
-    If certain aspects of the code fail, the code will move on and give no errors.
+    This function partitions an **arbitrary, hollow, body** using the turtle shell method (also know as the soccer ball
+    method). The following list of actions is performed using generalized vector equations to allow nearly any body to
+    be partitioned. This script can be executed from Abaqus CAE from the command line.
 
-    **Note:** This behavior means that it is possible to create strange looking partitions if inputs are not defined properly. Always check your 
-    partitions visually after using this tool.
+    If the body is modeled with symmetry (e.g. quater or half symmetry), this code will attempt all partitioning and
+    face removal actions anyways. If certain aspects of the code fail, the code will move on and give no errors.
+
+    **Note:** This behavior means that it is possible to create strange looking partitions if inputs are not defined
+    properly. Always check your partitions visually after using this tool.
 
     1. Define ``center``
     2. Define ``xpoint``
@@ -41,7 +41,8 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     15. Partition all cells by ``plane2p`` and ``plane2n``
     16. Partition all cells by ``plane3p`` and ``plane3n``
     17.	Define unit vectors of ``xpoint`` and ``zpoint``
-    18. Finalize the orthonormal coordinate system by creating the ``ypoint`` unit vector via the cross product of the ``xpoint`` and ``zpoint`` vectors
+    18. Finalize the orthonormal coordinate system by creating the ``ypoint`` unit vector via the cross product of the
+        ``xpoint`` and ``zpoint`` vectors
     19. Find the vertices that intersect faces to remove along the x-axis
     20. Find faces with a normal at ``plane_angle`` to the local coordinate system
     21. Recursively remove the faces and redundant enties (as a result of removed faces)
@@ -53,32 +54,35 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     27. Same as **21** bur for z-axis vertices
     28. Partition an offset principal planes defined by ``partitions``
     29. Validate the resulting geometry and topology
-    
+
     :param center: center location of the geometry
     :type center: list
-    
+
     :param xpoint: location on the x-axis local to the geometry
     :type xpoint: list
-    
+
     :param zpoint: location on the z-axis local to the geometry
     :type zpoint: list
-    
+
     :param plane_angle: angle at which partition planes will be created
     :type plane_angle: float
-    
-    :param partitions: partitions to be created by offsetting the principal planes. This is only available when using the Abaqus CAE GUI.
+
+    :param partitions: partitions to be created by offsetting the principal planes. This is only available when using
+        the Abaqus CAE GUI.
     :type partitions: dict
-    
+
     :param model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
     :type model_name: str
 
     :param part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
     :type part_name: str
 
-    :param input_file: Abaqus CAE file to open that already contains a model with a part to be partitioned (only applies when used with ``abaqus cae -nogui``)
+    :param input_file: Abaqus CAE file to open that already contains a model with a part to be partitioned (only applies
+        when used with ``abaqus cae -nogui``)
     :type input_file: str
 
-    :param output_file: Abaqus CAE file to save with the newly partitioned part (only applies when used with ``abaqus cae -nogui``)
+    :param output_file: Abaqus CAE file to save with the newly partitioned part (only applies when used with ``abaqus
+        cae -nogui``)
     :type output_file: str
 
     :param partitions: locations of partitions to be created by offsetting the principal planes
@@ -89,21 +93,21 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     if center is None:
         print('\nTurboTurtle was canceled\n')
         return
-    
+
     if input_file is None:
         model_name = session.viewports[session.currentViewportName].displayedObject.modelName
         part_name = session.viewports[session.currentViewportName].displayedObject.name
     else:
         openMdb(pathName=input_file)
-    
+
     # Step 1 - define center
     p = mdb.models[model_name].parts[part_name]
     p.DatumPointByCoordinate(coords=tuple(center))
-    
+
     # Step 2 - define xpoint
     p = mdb.models[model_name].parts[part_name]
     p.DatumPointByCoordinate(coords=tuple(xpoint))
-    
+
     # Step 3 - create main_axis
     p = mdb.models[model_name].parts[part_name]
     main_axis = p.datums[p.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(xpoint)).id]
@@ -111,27 +115,27 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     # Step 4 - create plane1
     p = mdb.models[model_name].parts[part_name]
     plane1 = p.datums[p.DatumPlaneByPointNormal(point=tuple(center), normal=main_axis).id]
-    
+
     # Step 5 - define zpoint
     p = mdb.models[model_name].parts[part_name]
     p.DatumPointByCoordinate(coords=tuple(zpoint))
-    
+
     # Step 6 - create plane2
     p = mdb.models[model_name].parts[part_name]
     plane2 = p.datums[p.DatumPlaneByThreePoints(point1=tuple(center), point2=tuple(xpoint), point3=tuple(zpoint)).id]
-        
+
     # Step 7 - create plane3
     p = mdb.models[model_name].parts[part_name]
     plane3 = p.datums[p.DatumPlaneByRotation(plane=plane2, axis=main_axis, angle=90.0).id]
-    
+
     # Step 8 - create axis21
     p = mdb.models[model_name].parts[part_name]
     axis21 = p.datums[p.DatumAxisByTwoPlane(plane1=plane2, plane2=plane1).id]
-    
+
     # Step 9 - create axis 31
     p = mdb.models[model_name].parts[part_name]
     axis31 = p.datums[p.DatumAxisByTwoPlane(plane1=plane3, plane2=plane1).id]
-    
+
     # Step 10 - partition all cells by plane1, plane2, and plane3
     try:
         p = mdb.models[model_name].parts[part_name]
@@ -148,25 +152,25 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         p.PartitionCellByDatumPlane(datumPlane=plane3, cells=p.cells[:])
     except:
         pass
-    
+
     # Step 11 - create plane1p and plane1n
     p = mdb.models[model_name].parts[part_name]
     plane1p = p.datums[p.DatumPlaneByRotation(plane=plane1, axis=axis21, angle=plane_angle).id]
     p = mdb.models[model_name].parts[part_name]
     plane1n = p.datums[p.DatumPlaneByRotation(plane=plane1, axis=axis21, angle=-plane_angle).id]
-    
+
     # Step 12 - create plane2p and plane2n
     p = mdb.models[model_name].parts[part_name]
     plane2p = p.datums[p.DatumPlaneByRotation(plane=plane2, axis=main_axis, angle=plane_angle).id]
     p = mdb.models[model_name].parts[part_name]
     plane2n = p.datums[p.DatumPlaneByRotation(plane=plane2, axis=main_axis, angle=-plane_angle).id]
-    
+
     # Step 13 - create plane3p and plane3n
     p = mdb.models[model_name].parts[part_name]
     plane3p = p.datums[p.DatumPlaneByRotation(plane=plane3, axis=axis31, angle=plane_angle).id]
     p = mdb.models[model_name].parts[part_name]
     plane3n = p.datums[p.DatumPlaneByRotation(plane=plane3, axis=axis31, angle=-plane_angle).id]
-    
+
     # Step 14 - partition all cells by plane1p and plane1n
     try:
         p = mdb.models[model_name].parts[part_name]
@@ -178,7 +182,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         p.PartitionCellByDatumPlane(datumPlane=plane1n, cells=p.cells[:])
     except:
         pass
-    
+
     # Step 15 - partition all cells by plane2p and plane2n
     try:
         p = mdb.models[model_name].parts[part_name]
@@ -190,7 +194,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         p.PartitionCellByDatumPlane(datumPlane=plane2n, cells=p.cells[:])
     except:
         pass
-    
+
     # Step 16 - partition all cells by plane3p and plane3n
     try:
         p = mdb.models[model_name].parts[part_name]
@@ -207,16 +211,16 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     center = np.array(center)
     xpoint = np.array(xpoint)
     zpoint = np.array(zpoint)
-    
+
     # Step 17 - define unit vectors from xpoint and zpoint
     xpoint_vector = xpoint-center
     xpoint_vector = xpoint_vector / np.linalg.norm(xpoint_vector)
     zpoint_vector = zpoint-center
     zpoint_vector = zpoint_vector / np.linalg.norm(zpoint_vector)
-    
+
     # Step 18 - define a ypoint unit vector
     ypoint_vector = np.cross(zpoint_vector, xpoint_vector)
-    
+
     # Step 19 - Find the vertices intersecting faces to remove for the x-axis
     found_face = True
 
@@ -239,7 +243,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
                 if pointOn[0]  == xp:
                     x_vectors_grabbed += ((v), )
         x_vectors_grabbed_idxs = [v.index for v in x_vectors_grabbed]
-        
+
         # Step 20 - locate faces with a normal at the plane_angle to the local coordinate system
         # Step 21 - recursively remove the faces and redundant enties as a result of removed faces
         p = mdb.models[model_name].parts[part_name]
@@ -262,7 +266,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
             found_face = False
         else:
             pass
-    
+
     #Step 22 - same as 19 but for y
     found_face = True
     while found_face:
@@ -284,7 +288,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
                 if pointOn[1] == yp:
                     y_vectors_grabbed += ((v), )
         y_vectors_grabbed_idxs = [v.index for v in y_vectors_grabbed]
-        
+
         # Step 23 - same as 20 but for y
         # Step 24 - same as 21 but for y
         p = mdb.models[model_name].parts[part_name]
@@ -307,7 +311,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
             found_face = False
         else:
             pass
-    
+
     # Step 25 - same as 19 but for z
     found_face = True
     while found_face:
@@ -329,7 +333,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
                 if pointOn[2] == zp:
                     z_vectors_grabbed += ((v), )
         z_vectors_grabbed_idxs = [v.index for v in z_vectors_grabbed]
-        
+
         # Step 26 - same as 20 but for z
         # Step 27 - same as 21 but for z
         p = mdb.models[model_name].parts[part_name]
@@ -352,7 +356,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
             found_face = False
         else:
             pass
-    
+
     # Step 28 - partition the offset planes
     for coord in partitions:
         if coord == 'x':
@@ -378,41 +382,41 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         session.viewports[session.currentViewportName].partDisplay.geometryOptions.setValues(datumPoints=OFF, datumAxes=OFF, datumPlanes=OFF)
     else:
         mdb.saveAs(pathName=output_file)
-    
+
     return
 
 
 def get_inputs():
     """Interactive Inputs
-    
+
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter values for the outputs listed below:
-    
+
     :return: ``center`` - center location of the geometry
     :rtype: list
-    
+
     :return: ``xpoint`` - location on the x-axis local to the geometry
     :rtype: list
-    
+
     :return: ``zpoint`` - location on the z-axis local to the geometry
     :rtype: list
-    
+
     :return: ``plane_angle`` - angle at which partition planes will be created
     :rtype: float
 
     :return: ``partitions`` - locations to create partitions by offsetting principal planes
-    :rtype: dict    
+    :rtype: dict
     """
     fields = (('Center:','0.0, 0.0, 0.0'),
         ('X-Axis Point:', '1.0, 0.0, 0.0'),
-        ('Z-Axis Point:', '0.0, 0.0, 1.0'), 
+        ('Z-Axis Point:', '0.0, 0.0, 1.0'),
         ('Partition Angle:', '45.0'),
         ('Partitions Along X', '0.0, 0.0'),
         ('Partitions Along Y', '0.0, 0.0'),
-        ('Partitions Along Z', '0.0, 0.0'), 
+        ('Partitions Along Z', '0.0, 0.0'),
         ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
     center, xpoint, zpoint, plane_angle, partition_x, partition_y, partition_z, cp_parameters = getInputs(fields=fields,
-        label='Specify Geometric Parameters:', 
+        label='Specify Geometric Parameters:',
         dialogTitle='Turbo Turtle', )
     partitions = {}
     if center is not None:
@@ -480,7 +484,7 @@ def get_parser():
                         help="Create a partition offset from the y-principal-plane (default: %(default)s)")
     parser.add_argument('--z-partitions', type=float, nargs='+', default=default_partitions_z,
                         help="Create a partition offset from the z-principal-plane (default: %(default)s)")
-    
+
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--model-name', type=str, required=True,
                         help="Abaqus model name")
