@@ -5,3 +5,4 @@ ABQ*
 *.zip
 *.pyc
 *pycache*/
+_version.py
