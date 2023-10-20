@@ -1,0 +1,9 @@
+.. README anchors
+.. include:: README.txt
+    :start-after: target-start-do-not-remove
+    :end-before: target-end-do-not-remove
+
+.. Project references
+.. _`documentation`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/python_stub/main/index.html 
+.. _`repository`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
+.. _`issues`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues
