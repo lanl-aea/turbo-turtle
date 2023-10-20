@@ -8,7 +8,7 @@ authors = [
     {name = "Thomas Roberts", email = "tproberts@lanl.gov"},
     {name = "Kyle Brindley", email = "kbrindley@lanl.gov"},
 ]
-description = "partition hollow, spherical bodies using a turtle shell"
+description = "Partition hollow, spherical bodies using a turtle shell"
 readme = "README.rst"
 requires-python = ">=3.8"
 classifiers = [
