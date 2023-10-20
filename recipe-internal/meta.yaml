@@ -1,0 +1,45 @@
+package:
+  name: turbo_turtle
+  # TODO: Figure out how to use pyproject.toml and a Conda build Jinja template
+  version: {{ VERSION }}
+
+about:
+  home: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
+  summary: 'Partition hollow, spherical bodies using a turtle shell'
+  description: |
+    Partition hollow, spherical bodies using a turtle shell
+  doc_url: https://aea.re-pages.lanl.gov/python-projects/turbo_turtle/main/index.html
+  dev_url: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
+
+source:
+  path: '..'
+
+build:
+  noarch: python
+  number: 0
+  script_env:
+    - SETUPTOOLS_SCM_PRETEND_VERSION={{ VERSION }}
+  script:
+    # Build and install Conda package
+    - $PYTHON -m build --no-isolation
+    - $PYTHON -m pip install dist/$PKG_NAME-$PKG_VERSION.tar.gz --no-deps --ignore-installed -v --no-build-isolation
+    - $PYTHON -m pip show $PKG_NAME
+  ignore_run_exports:
+    - python_abi
+
+requirements:
+  host:
+    - python
+    - python-build
+    - pip
+    - setuptools >=62
+    - setuptools_scm[toml] >=6.2,<8
+  run:
+    - python >=3.8
+
+test:
+  requires:
+  imports:
+    - turbo_turtle
+  commands:
+    - test_root=${PWD}
