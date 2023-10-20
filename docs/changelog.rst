@@ -5,12 +5,16 @@ Changelog
 #########
 
 *******************
-v0.2.1 (unreleased)
+v0.3.1 (unreleased)
+*******************
+
+*******************
+v0.3.0 (2023-10-20)
 *******************
 
 Documentation
 =============
-- HTML documentation (:issue:`1`, ;merge:`4`). By `Kyle Brindley`_.
+- Gitlab-Pages hosted HTML documentation (:issue:`1`, ;merge:`4`). By `Kyle Brindley`_.
 
 *******************
 v0.2.0 (2023-10-19)
