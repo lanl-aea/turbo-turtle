@@ -385,8 +385,8 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
 def get_inputs():
     """Interactive Inputs
     
-    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE GUI window with text boxes to 
-    enter values for the outputs listed below:
+    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
+    GUI window with text boxes to enter values for the outputs listed below:
     
     :return: ``center`` - center location of the geometry
     :rtype: list
