@@ -4,6 +4,7 @@ import argparse
 import subprocess
 
 
+# TODO: write a Python 2/3 compatible parser and argument handler
 def get_parser():
 
     default_center = [0.0, 0.0, 0.0]
@@ -52,8 +53,14 @@ def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    command = f"abq2023 cae -noGui {abaqus_main} -- --help"
-    command += f"--model-name {args.model_name} --part-name {args.part_name} --output-file {args.output_file}"
+    # TODO: write a Python 2/3 compatible parser and argument handler
+    if args.output_file is None:
+        args.output_file = args.input_file
+
+    command = f"abq2023 cae -noGui {abaqus_main} -- --help "
+    command += f"--model-name {args.model_name} --part-name {args.part_name} --output-file {args.output_file} "
+    command += f"--xpoint {' '.join(map(str, args.xpoint))}"
+    print(command)
     command = command.split()
     stdout = subprocess.check_output(command)
 
