@@ -32,7 +32,7 @@ spheres or any fraction of the sphere.
 Documentation
 =============
 
-Until more in depth documentation is available, this README serves as the Turbo Turtle documentation.
+* https://aea.re-pages.lanl.gov/python-projects/turbo-turtle/
 
 Author Info
 ===========
