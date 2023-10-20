@@ -7,7 +7,6 @@ import inspect
 from abaqus import *
 from abaqusConstants import *
 from caeModules import *
-from abaqus import getInputs
 
 
 def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
@@ -408,6 +407,8 @@ def get_inputs():
     :return: ``partitions`` - locations to create partitions by offsetting principal planes
     :rtype: dict
     """
+    from abaqus import getInputs
+
     fields = (('Center:','0.0, 0.0, 0.0'),
         ('X-Axis Point:', '1.0, 0.0, 0.0'),
         ('Z-Axis Point:', '0.0, 0.0, 1.0'),
