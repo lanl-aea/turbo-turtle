@@ -40,6 +40,8 @@ Author Info
 * `Thomas Roberts`_
 * `Kyle Brindley`_
 
+.. user-start-do-not-remove
+
 ***************
 Getting Started
 ***************
@@ -70,6 +72,8 @@ the package matures.
    .. code-block::
 
       $ turbo-turtle -h
+
+.. user-end-do-not-remove
 
 *******************
 Legacy Instructions
