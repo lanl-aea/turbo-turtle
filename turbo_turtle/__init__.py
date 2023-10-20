@@ -15,7 +15,7 @@ try:
     __version__ = version("turbo_turtle")
 except PackageNotFoundError:
     try:
-        from waves import _version
+        from turbo_turtle import _version
         __version__ = _version.version
     except ImportError:
         # Should only hit this when running as an un-installed package in the local repository
