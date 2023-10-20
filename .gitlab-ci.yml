@@ -70,7 +70,8 @@ conda-build:
     paths:
       - conda-bld/noarch/turbo_turtle-*-*.tar.bz2
   tags:
-    - shell-aea
+    # sstelmo's version of git is too old for setuptools_scm
+    - sstbigbird-shell-aea
 
 deploy:
   stage: deploy
