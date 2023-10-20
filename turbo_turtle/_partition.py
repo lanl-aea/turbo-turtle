@@ -4,10 +4,6 @@ import os
 import argparse
 import inspect
 
-from abaqus import *
-from abaqusConstants import *
-from caeModules import *
-
 
 def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
     """Turbo Turtle
@@ -90,6 +86,11 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
 
     :returns: Abaqus CAE database named ``{output_file}.cae`` if executed from the command line
     """
+    import abaqus
+    import abaqusConstants
+    import caeModules
+
+
     if center is None:
         print('\nTurboTurtle was canceled\n')
         return
@@ -408,6 +409,7 @@ def get_inputs():
     :rtype: dict
     """
     from abaqus import getInputs
+
 
     fields = (('Center:','0.0, 0.0, 0.0'),
         ('X-Axis Point:', '1.0, 0.0, 0.0'),
