@@ -19,6 +19,16 @@ def get_parser():
 
     parser = argparse.ArgumentParser(description=cli_description)
 
+    requiredNamed = parser.add_argument_group('Required Named Arguments')
+    requiredNamed.add_argument('--model-name', type=str, required=True,
+                        help="Abaqus model name")
+    requiredNamed.add_argument('--part-name', type=str, required=True,
+                        help="Abaqus part name")
+    requiredNamed.add_argument('--input-file', type=str, required=True,
+                        help="Abaqus model database to open")
+    parser.add_argument('--output-file', type=str, default=None,
+                        help="Abaqus model database to save to. Defaults to the specified --input-file")
+
     parser.add_argument('--xpoint', nargs=3, type=float, default=default_xpoint,
                         help="Point on the x-axis (default: %(default)s)")
     parser.add_argument('--center', nargs=3, type=float, default=default_center,
@@ -33,16 +43,6 @@ def get_parser():
                         help="Create a partition offset from the y-principal-plane (default: %(default)s)")
     parser.add_argument('--z-partitions', type=float, nargs='+', default=default_partitions_z,
                         help="Create a partition offset from the z-principal-plane (default: %(default)s)")
-
-    requiredNamed = parser.add_argument_group('Required Named Arguments')
-    requiredNamed.add_argument('--model-name', type=str, required=True,
-                        help="Abaqus model name")
-    requiredNamed.add_argument('--part-name', type=str, required=True,
-                        help="Abaqus part name")
-    requiredNamed.add_argument('--input-file', type=str, required=True,
-                        help="Abaqus model database to open")
-    parser.add_argument('--output-file', type=str, default=None,
-                        help="Abaqus model database to save to. Defaults to the specified --input-file")
     return parser
 
 
