@@ -16,8 +16,8 @@ Turbo Turtle
 Description
 ***********
 
-This repository houses a script for partitioning hollow, spherical bodies using a turtle shell (otherwise known as 
-soccer ball) partitioning scheme. Turbo Turtle can be used in Abaqus CAE or as a command line utlity to partition entire 
+This repository houses a script for partitioning hollow, spherical bodies using a turtle shell (otherwise known as
+soccer ball) partitioning scheme. Turbo Turtle can be used in Abaqus CAE or as a command line utlity to partition entire
 spheres or any fraction of the sphere.
 
 Documentation
@@ -39,14 +39,14 @@ Coloning the Repository
 
 .. cloning-the-repo-start-do-not-remove
 
-Cloning the repository is very easy, simply refer to the sample session below. Keep in mind that you get to choose the 
+Cloning the repository is very easy, simply refer to the sample session below. Keep in mind that you get to choose the
 location of your local `turbo-turtle`_ clone. Here we use ``/projects/roppenheimer/repos`` as an example.
 
 .. code-block:: bash
 
     [roppenheimer@sstelmo]$ pwd
     /projects/roppenheimer/repos
-    [roppenheimer@sstelmo]$ git clone ssh://git@re-git.lanl.gov:10022/tproberts/turbo-turtle.git
+    [roppenheimer@sstelmo]$ git clone ssh://git@re-git.lanl.gov:10022/aea/python-projects/turbo-turtle.git
     <output truncated>
     [roppenheimer@sstelmo]$ ls -d
     other-repos    turbo-turtle
@@ -58,8 +58,8 @@ Compute Environment
 
 .. compute-env-start-do-not-remove
 
-This repository is dependent on the access to an Abaqus kernel either through Abaqus CAE or through the command line. If 
-you are using a computer mapped to the W-13 NFS file shares (e.g. ``/home``, ``/projects``, ``/apps``), then access to 
+This repository is dependent on the access to an Abaqus kernel either through Abaqus CAE or through the command line. If
+you are using a computer mapped to the W-13 NFS file shares (e.g. ``/home``, ``/projects``, ``/apps``), then access to
 the Abaqus executable is trivial.
 
 **At the moment, this repository has only been tested using Abaqus 2021**
@@ -84,7 +84,7 @@ Abaqus CAE
 
 .. abaqus-cae-start-do-not-remove
 
-When executing ``turboTurtle`` from Abaqus cae, ``turboTurtle`` will attempt to partition the part that is in the 
+When executing ``turboTurtle`` from Abaqus cae, ``turboTurtle`` will attempt to partition the part that is in the
 current session's viewport. Execute ``turboTurtle`` in either of two ways:
 
 Run Script Menu
@@ -101,14 +101,14 @@ In the Abaqus CAE Python terminal, use the ``execPyFile`` function
 
 Interactive Input
 -----------------
-``turboTurtle`` will pop up a dialoge box where you can specify various parameters for partitioning the part in your 
-current session's viewport. Enter the relevant information, such as ``center`` and points on the ``x`` and ``z`` axis. 
+``turboTurtle`` will pop up a dialoge box where you can specify various parameters for partitioning the part in your
+current session's viewport. Enter the relevant information, such as ``center`` and points on the ``x`` and ``z`` axis.
 Click **OK** to run ``turboTurtle``.
 
-Upon successful parsing of input parameters, ``turboTurtle`` will print the parameters you used to the Python terminal 
-in a specific format that ``turboTurtle`` understands. Should you wish to re-use a set of previously entered parameters 
-(i.e. partitioning multiple parts whose centers are all offset from the origin in the same way), you can simply copy and 
-paste those parameters into the "Copy and Paste Parameters" text box. In this case, all other values in the text boxes 
+Upon successful parsing of input parameters, ``turboTurtle`` will print the parameters you used to the Python terminal
+in a specific format that ``turboTurtle`` understands. Should you wish to re-use a set of previously entered parameters
+(i.e. partitioning multiple parts whose centers are all offset from the origin in the same way), you can simply copy and
+paste those parameters into the "Copy and Paste Parameters" text box. In this case, all other values in the text boxes
 above will be ignored, even if you modify them. Note, do not copy the header text underlined with ``---``.
 
 .. abaqus-cae-end-do-not-remove
@@ -118,11 +118,11 @@ Command Line Execution
 
 .. command-line-execution-start-do-not-remove
 
-``turboTurtle`` can be executed via CLI on any computer with Abaqus available via the command line. This README assumes 
+``turboTurtle`` can be executed via CLI on any computer with Abaqus available via the command line. This README assumes
 that a W-13 linux machine is used, so Abaqus 2021 is available at ``/apps/abaqus/Commands/abq2021``.
 
-When using the ``turboTurtle`` CLI, an Abaqus CAE database with the unpartitioned geometry must already exist. The 
-sample terminal output below shows a directory structure that demonstrates the location of both an existing Abaqus CAE 
+When using the ``turboTurtle`` CLI, an Abaqus CAE database with the unpartitioned geometry must already exist. The
+sample terminal output below shows a directory structure that demonstrates the location of both an existing Abaqus CAE
 database and a local clone of the `turbo-turtle`_ repository.
 
 .. code-block:: Bash
@@ -136,15 +136,15 @@ database and a local clone of the `turbo-turtle`_ repository.
    [roppenheimer@sstelmo]$ ls example_turboTurtle
    example_geometry.cae
 
-From the directory structure shown above, ``turboTurtle`` can be executed from the command line using minimal required 
+From the directory structure shown above, ``turboTurtle`` can be executed from the command line using minimal required
 arguments.
 
 .. code-block:: bash
 
    [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui repos/turbo-turtle/turboTurtle.py -- --input-file example_turbotTurtle/example_geometry.cae --model-name example_model_name --part-name example_part_name example_model
 
-Note that all parameters available through the Abaqus CAE GUI dialogue box are also available as command line arguments. 
-You can also print the ``turboTurtle`` CLI help message to the most recent ``abaqus.rpy`` file in your current working 
+Note that all parameters available through the Abaqus CAE GUI dialogue box are also available as command line arguments.
+You can also print the ``turboTurtle`` CLI help message to the most recent ``abaqus.rpy`` file in your current working
 directory with the ``-h`` flag.
 
 .. code-block:: Bash
@@ -159,7 +159,7 @@ Testing
 
 .. testing-start-do-not-remove
 
-The `turbo-turtle`_ repository contains three Abaqus Python scripts for testing and demonstrating the ``turboTurtle`` 
+The `turbo-turtle`_ repository contains three Abaqus Python scripts for testing and demonstrating the ``turboTurtle``
 capability.
 
 .. code-block:: Bash
@@ -169,9 +169,9 @@ capability.
    [roppenheimer@sstelmo]$ ls turbo-turtle
    README.rst  tests_geometry.py  tests_main.py  tests_partition.py  turboTurtle.py
 
-* ``tests_geometry.py`` contains multiple functions for generating example geometry, such as a hollow sphere, fractions 
+* ``tests_geometry.py`` contains multiple functions for generating example geometry, such as a hollow sphere, fractions
   of a hollow sphere, and even a hollow sphere with assorted holes through the thickness (like a ball of swiss cheese).
-* ``tests_partition.py`` containts multiple driver functions that call the ``turboTurtle.main`` function using the 
+* ``tests_partition.py`` containts multiple driver functions that call the ``turboTurtle.main`` function using the
   geometries created using ``tests_geometry.py``
 * ``tests_main.py`` is the driver script for the tests.
 
@@ -184,7 +184,7 @@ To test ``turboTurtle`` via the command line:
    [roppenheimer@sstelmo]$ /apps/abaqus/Commands/abq2021 cae -noGui tests_main.py
    <output truncated>
 
-If all tests are successful, Abaqus will return not return an error code, and your repo directory will contain some new 
+If all tests are successful, Abaqus will return not return an error code, and your repo directory will contain some new
 files.
 
 .. code-block:: Bash
@@ -192,8 +192,8 @@ files.
    [roppenheimer@sstelmo]$ ls *{.cae,.jnl.rpy}
    abaqus.rpy  Turbo-Turtle-Tests.cae  Turbo-Turtle-Tests.jnl
 
-All outputs from executing ``tests_main`` are printed to the most recent ``abaqus.rpy`` file in your working directory. 
-Open the ``Turbo-Turtle-Tests.cae`` Abaqus CAE database and inspect the parts to confirm that ``turboTurtle`` worked as 
+All outputs from executing ``tests_main`` are printed to the most recent ``abaqus.rpy`` file in your working directory.
+Open the ``Turbo-Turtle-Tests.cae`` Abaqus CAE database and inspect the parts to confirm that ``turboTurtle`` worked as
 expected.
 
 .. testing-end-do-not-remove
@@ -204,15 +204,15 @@ Developer Operations
 
 .. developer-operations-start-do-not-remove
 
-At the moment, the `turbo-turtle`_ repository is not part of the `AEA Gitlab Group`_, so `Gitlab CI/CD`_ cannot yet be 
-used to deploy `turbo-turtle`_ to the W-13 NFS file share Python project directories. In addition, this repository 
-contains code that is reliant on an Abaqus kernel (Abaqus version of Python 2). So, `turbo-turtle`_ cannot be Conda 
+At the moment, the `turbo-turtle`_ repository is not part of the `AEA Gitlab Group`_, so `Gitlab CI/CD`_ cannot yet be
+used to deploy `turbo-turtle`_ to the W-13 NFS file share Python project directories. In addition, this repository
+contains code that is reliant on an Abaqus kernel (Abaqus version of Python 2). So, `turbo-turtle`_ cannot be Conda
 packaged and deployed to the `AEA Compute Environment`_ like other Python 3 packages.
 
-Deployment to a common location for W-13 users is currently a manual process. Deployment is done by using the `Bash 
-rsync`_ command to syncronize files between a local clone of the `turbo-turtle`_ repository and the deploy directory 
-``/projects/aea_compute/aea-abaqus-python/turbo-turtle``. The ``DEPLOY.sh`` script is included in this repository for 
-convenience. This script uses the `Bash rsync`_ command against all files in the repository that are not related to Git 
+Deployment to a common location for W-13 users is currently a manual process. Deployment is done by using the `Bash
+rsync`_ command to syncronize files between a local clone of the `turbo-turtle`_ repository and the deploy directory
+``/projects/aea_compute/aea-abaqus-python/turbo-turtle``. The ``DEPLOY.sh`` script is included in this repository for
+convenience. This script uses the `Bash rsync`_ command against all files in the repository that are not related to Git
 (i.e. ``.git/`` and ``.gitignore`` are excluded from the ``rsync`` command) and the ``DEPLOY.sh`` script itself.
 
 Manual deployment can be done from the Developer's terminal:
