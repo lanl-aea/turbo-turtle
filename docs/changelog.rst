@@ -8,6 +8,15 @@ Changelog
 v0.4.1 (unreleased)
 *******************
 
+Bug fixes
+=========
+- Fix partition abaqus CAE command construction (:issue:`9`, :merge:`7`). By `Kyle Brindley`_.
+
+Internal Changes
+================
+- Move abaqus imports internal to the partition function to allow future re-use of the parser (:issue:`9`, :merge:`7`).
+  By `Kyle Brindley`_.
+
 *******************
 v0.4.0 (2023-10-20)
 *******************
