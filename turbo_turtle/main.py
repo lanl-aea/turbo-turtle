@@ -3,6 +3,8 @@ import pathlib
 import argparse
 import subprocess
 
+from turbo_turtle import _settings
+
 
 # TODO: write a Python 2/3 compatible parser and argument handler
 def get_parser():
@@ -19,7 +21,8 @@ def get_parser():
 
     parser = argparse.ArgumentParser(
         description=cli_description,
-        prog=_settings._project_name_short)
+        prog=_settings._project_name_short
+    )
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--model-name', type=str, required=True,
