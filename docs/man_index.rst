@@ -7,7 +7,7 @@ Synopsis
 ********
 
 .. argparse::
-   :ref: waves.main.get_parser
+   :ref: turbo_turtle.main.get_parser
    :nodefault:
    :nosubcommands:
 
