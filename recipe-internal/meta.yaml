@@ -58,6 +58,6 @@ test:
     - turbo-turtle partition --input-file ${test_root}/${name}.cae --output-file ${test_root}/${name}.cae --model-name ${name} --part-name eigth-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
     - turbo-turtle partition --input-file ${test_root}/${name}.cae --output-file ${test_root}/${name}.cae --model-name ${name} --part-name quarter-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
     - turbo-turtle partition --input-file ${test_root}/${name}.cae --output-file ${test_root}/${name}.cae --model-name ${name} --part-name half-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
-    - turbo-turtle partition --input-file ${test_root}/${name}.cae --output-file ${test_root}/${name}.cae --model-name ${name} --part-name seveneighths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
+    - turbo-turtle partition --input-file ${test_root}/${name}.cae --output-file ${test_root}/${name}.cae --model-name ${name} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
     - turbo-turtle partition --input-file ${test_root}/${name}.cae --output-file ${test_root}/${name}.cae --model-name ${name} --part-name offset-sphere --center 1 1 0 --xpoint 2 1 0 --zpoint 1 1 1 --plane-angle 45
     - turbo-turtle partition --input-file ${test_root}/${name}.cae --output-file ${test_root}/${name}.cae --model-name ${name} --part-name swiss-cheese --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
