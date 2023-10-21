@@ -2,17 +2,29 @@
 |project|
 #########
 
+********
+Synopsis
+********
+
+.. argparse::
+   :ref: waves.main.get_parser
+   :nodefault:
+   :nosubcommands:
+
 ***********
 Description
 ***********
 
 .. include:: project_brief.txt
 
-********
-Synopsis
-********
+*********************
+|PROJECT| Subcommands
+*********************
+*********
+partition
+*********
 
 .. argparse::
    :ref: turbo_turtle.main.get_parser
    :nodefault:
-   :nosubcommands:
+   :path: partition
