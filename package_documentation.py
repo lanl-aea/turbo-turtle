@@ -7,7 +7,7 @@ sp_dir = pathlib.Path(os.getenv("SP_DIR")).resolve()
 pkg_name = os.getenv("PKG_NAME")
 
 man_path = pathlib.Path("build/docs/man/turbo-turtle.1").resolve()
-html_path_external = pathlib.Path("build/docs/html").resolve()
+html_path = pathlib.Path("build/docs/html").resolve()
 # FIXME: setuptools claims that these should be included by default, but they aren't
 readme_path = pathlib.Path("README.rst").resolve()
 pyproject = pathlib.Path("pyproject.toml").resolve()
