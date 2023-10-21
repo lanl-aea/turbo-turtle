@@ -463,6 +463,7 @@ def get_parser():
     basename = os.path.basename(filename)
 
     # Set Defaults
+    # TODO: These CLI lists will fail if a user tries to provide a negative number
     default_center = [0.0, 0.0, 0.0]
     default_xpoint = [1.0, 0.0, 0.0]
     default_zpoint = [0.0, 0.0, 1.0]
