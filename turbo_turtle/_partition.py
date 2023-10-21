@@ -1,6 +1,7 @@
 import numpy as np
 import ast
 import os
+import sys
 import argparse
 import inspect
 
@@ -515,8 +516,10 @@ if __name__ == "__main__":
         pass
         parser = get_parser()
         args, unknown = parser.parse_known_args()
+
         if args.output_file is None:
             args.output_file = args.input_file
+
         center=args.center
         xpoint=args.xpoint
         zpoint=args.zpoint
@@ -528,4 +531,5 @@ if __name__ == "__main__":
         partitions = {'x': args.x_partitions,
                       'y': args.y_partitions,
                       'z': args.z_partitions}
-    main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions)
+
+    sys.exit(main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions))
