@@ -100,116 +100,116 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         model_name = session.viewports[session.currentViewportName].displayedObject.modelName
         part_name = session.viewports[session.currentViewportName].displayedObject.name
     else:
-        openMdb(pathName=input_file)
+        abaqus.openMdb(pathName=input_file)
 
     # Step 1 - define center
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     p.DatumPointByCoordinate(coords=tuple(center))
 
     # Step 2 - define xpoint
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     p.DatumPointByCoordinate(coords=tuple(xpoint))
 
     # Step 3 - create main_axis
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     main_axis = p.datums[p.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(xpoint)).id]
 
     # Step 4 - create plane1
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane1 = p.datums[p.DatumPlaneByPointNormal(point=tuple(center), normal=main_axis).id]
 
     # Step 5 - define zpoint
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     p.DatumPointByCoordinate(coords=tuple(zpoint))
 
     # Step 6 - create plane2
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane2 = p.datums[p.DatumPlaneByThreePoints(point1=tuple(center), point2=tuple(xpoint), point3=tuple(zpoint)).id]
 
     # Step 7 - create plane3
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane3 = p.datums[p.DatumPlaneByRotation(plane=plane2, axis=main_axis, angle=90.0).id]
 
     # Step 8 - create axis21
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     axis21 = p.datums[p.DatumAxisByTwoPlane(plane1=plane2, plane2=plane1).id]
 
     # Step 9 - create axis 31
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     axis31 = p.datums[p.DatumAxisByTwoPlane(plane1=plane3, plane2=plane1).id]
 
     # Step 10 - partition all cells by plane1, plane2, and plane3
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane1, cells=p.cells[:])
     except:
         pass
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane2, cells=p.cells[:])
     except:
         pass
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane3, cells=p.cells[:])
     except:
         pass
 
     # Step 11 - create plane1p and plane1n
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane1p = p.datums[p.DatumPlaneByRotation(plane=plane1, axis=axis21, angle=plane_angle).id]
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane1n = p.datums[p.DatumPlaneByRotation(plane=plane1, axis=axis21, angle=-plane_angle).id]
 
     # Step 12 - create plane2p and plane2n
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane2p = p.datums[p.DatumPlaneByRotation(plane=plane2, axis=main_axis, angle=plane_angle).id]
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane2n = p.datums[p.DatumPlaneByRotation(plane=plane2, axis=main_axis, angle=-plane_angle).id]
 
     # Step 13 - create plane3p and plane3n
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane3p = p.datums[p.DatumPlaneByRotation(plane=plane3, axis=axis31, angle=plane_angle).id]
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     plane3n = p.datums[p.DatumPlaneByRotation(plane=plane3, axis=axis31, angle=-plane_angle).id]
 
     # Step 14 - partition all cells by plane1p and plane1n
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane1p, cells=p.cells[:])
     except:
         pass
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane1n, cells=p.cells[:])
     except:
         pass
 
     # Step 15 - partition all cells by plane2p and plane2n
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane2p, cells=p.cells[:])
     except:
         pass
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane2n, cells=p.cells[:])
     except:
         pass
 
     # Step 16 - partition all cells by plane3p and plane3n
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane3p, cells=p.cells[:])
     except:
         pass
     try:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         p.PartitionCellByDatumPlane(datumPlane=plane3n, cells=p.cells[:])
     except:
         pass
 
-    p = mdb.models[model_name].parts[part_name]
+    p = abaqus.mdb.models[model_name].parts[part_name]
     center = np.array(center)
     xpoint = np.array(xpoint)
     zpoint = np.array(zpoint)
@@ -227,7 +227,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     found_face = True
 
     while found_face:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         vertices = p.vertices
         x_vectors = ()
         for v in vertices:
@@ -248,7 +248,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
 
         # Step 20 - locate faces with a normal at the plane_angle to the local coordinate system
         # Step 21 - recursively remove the faces and redundant enties as a result of removed faces
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         for II, face in enumerate(p.faces):
             this_vert_idxs = face.getVertices()
             try:
@@ -258,7 +258,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
                     if np.abs(np.abs(np.dot(this_normal, zpoint_vector))-np.abs(np.cos(plane_angle*np.pi/180.0))) < 0.001:
                         # p.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         p.RemoveFaces(faceList=p.faces[face.index:(face.index+1)], deleteCells=False)
-                        p = mdb.models[model_name].parts[part_name]
+                        p = abaqus.mdb.models[model_name].parts[part_name]
                         p.RemoveRedundantEntities(vertexList = p.vertices[:], edgeList = p.edges[:])
                         found_face = True
                         break
@@ -272,7 +272,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     #Step 22 - same as 19 but for y
     found_face = True
     while found_face:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         vertices = p.vertices
         y_vectors = ()
         for v in vertices:
@@ -293,7 +293,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
 
         # Step 23 - same as 20 but for y
         # Step 24 - same as 21 but for y
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         for II, face in enumerate(p.faces):
             this_vert_idxs = face.getVertices()
             try:
@@ -303,7 +303,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
                     if np.abs(np.abs(np.dot(this_normal, xpoint_vector))-np.cos(plane_angle*np.pi/180.0)) < 0.001:
                         # p.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         p.RemoveFaces(faceList=p.faces[face.index:(face.index+1)], deleteCells=False)
-                        p = mdb.models[model_name].parts[part_name]
+                        p = abaqus.mdb.models[model_name].parts[part_name]
                         p.RemoveRedundantEntities(vertexList = p.vertices[:], edgeList = p.edges[:])
                         found_face = True
                         break
@@ -317,7 +317,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     # Step 25 - same as 19 but for z
     found_face = True
     while found_face:
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         vertices = p.vertices
         z_vectors = ()
         for v in vertices:
@@ -338,7 +338,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
 
         # Step 26 - same as 20 but for z
         # Step 27 - same as 21 but for z
-        p = mdb.models[model_name].parts[part_name]
+        p = abaqus.mdb.models[model_name].parts[part_name]
         for II, face in enumerate(p.faces):
             this_vert_idxs = face.getVertices()
             try:
@@ -348,7 +348,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
                     if np.abs(np.abs(np.dot(this_normal, ypoint_vector))-np.cos(plane_angle*np.pi/180.0)) < 0.001:
                         # p.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         p.RemoveFaces(faceList=p.faces[face.index:(face.index+1)], deleteCells=False)
-                        p = mdb.models[model_name].parts[part_name]
+                        p = abaqus.mdb.models[model_name].parts[part_name]
                         p.RemoveRedundantEntities(vertexList = p.vertices[:], edgeList = p.edges[:])
                         found_face = True
                         break
@@ -368,7 +368,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         elif coord == 'z':
             selected_plane = plane3
         for val in [x for x in partitions[coord] if x != 0.0]:
-            p = mdb.models[model_name].parts[part_name]
+            p = abaqus.mdb.models[model_name].parts[part_name]
             this_plane = p.datums[p.DatumPlaneByOffset(plane=selected_plane, offset=val, flip=SIDE2).id]
             try:
                 p.PartitionCellByDatumPlane(datumPlane=this_plane, cells=p.cells[:])
@@ -376,14 +376,14 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
                 pass
 
     # Step 29 - validate geometry
-    p = mdb.models[model_name].parts[part_name]
-    mdb.models[model_name].parts[part_name].checkGeometry()
+    p = abaqus.mdb.models[model_name].parts[part_name]
+    abaqus.mdb.models[model_name].parts[part_name].checkGeometry()
 
     # Finally, save the model or set the viewport to remove nasty datum planes and axes
     if output_file is None:
         session.viewports[session.currentViewportName].partDisplay.geometryOptions.setValues(datumPoints=OFF, datumAxes=OFF, datumPlanes=OFF)
     else:
-        mdb.saveAs(pathName=output_file)
+        abaqus.mdb.saveAs(pathName=output_file)
 
     return
 
