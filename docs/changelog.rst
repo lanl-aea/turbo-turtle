@@ -8,6 +8,10 @@ Changelog
 v0.4.2 (unreleased)
 *******************
 
+Documentation
+=============
+- Package HTML documentation and man page (:issue:`11`, :merge:`8`). By `Kyle Brindley`_.
+
 *******************
 v0.4.1 (2023-10-20)
 *******************
