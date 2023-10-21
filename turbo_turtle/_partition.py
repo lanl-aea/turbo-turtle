@@ -88,7 +88,6 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     :returns: Abaqus CAE database named ``{output_file}.cae`` if executed from the command line
     """
     import abaqus
-    import abaqusConstants
     import caeModules
 
 
