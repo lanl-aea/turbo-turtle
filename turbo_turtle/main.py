@@ -95,12 +95,11 @@ def _docs(print_local_path=False):
         else:
             # This should only be reached if the package installation structure doesn't match the assumptions in
             # _settings.py. It is used by the Conda build tests as a sign-of-life that the assumptions are correct.
-            print('Could not find package documentation HTML index file', file=sys.stderr)
-            return 1
+            print("Could not find package documentation HTML index file", file=sys.stderr)
+            sys.exit(1)
     else:
         import webbrowser
         webbrowser.open(str(_settings._installed_docs_index))
-    return 0
 
 
 def get_parser():
@@ -148,6 +147,8 @@ def main():
     args, unknown = parser.parse_known_args()
     if args.subcommand == "partition":
         _partition(args)
+    if args.subcommand == "docs":
+        _docs(print_local_path=args.print_local_path)
     else:
         parser.print_help()
 
