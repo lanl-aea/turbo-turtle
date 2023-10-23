@@ -30,11 +30,10 @@ for mod_name in mock_modules:
 # Add paths to API/CLI files
 sys.path.insert(0, str(project_dir))
 
-from turbo_turtle import __version__
 from turbo_turtle._settings import _project_name, _project_name_short
 
 project = _project_name_short
-release = __version__
+release = "@version@"
 version = release
 copyright = f"{datetime.date.today().year} Triad National Security, LLC. All Rights Reserved."
 

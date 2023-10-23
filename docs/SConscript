@@ -4,7 +4,7 @@ import pathlib
 import waves
 
 
-Import(["env", "project_dir"])
+Import(["env", "project_variables"])
 
 
 # VVV Sphinx Builder prototype
@@ -21,7 +21,7 @@ def sphinx_build(program="sphinx-build", options=""):
 env.Append(SCANNERS=waves.scons_extensions.sphinx_scanner())
 env.Append(BUILDERS={"SphinxBuild": sphinx_build(options="-W")})
 
-env.Substfile("conf.py.in", SUBST_DICT={"@project_dir@": project_dir})
+env.Substfile("conf.py.in", SUBST_DICT=project_variables)
 
 copy_files = (
     ("README.txt", "#/README.rst"),

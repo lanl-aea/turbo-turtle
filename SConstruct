@@ -2,9 +2,19 @@
 
 import os
 import pathlib
+import warnings
 
 import waves
+import setuptools_scm
 
+
+warnings.filterwarnings(action="ignore", message="tag", category=UserWarning, module="setuptools_scm")
+
+project_variables = {
+    'project_dir': Dir('.').abspath,
+    'version': setuptools_scm.get_version(),
+}
+project_variables = waves.scons_extensions.substitution_syntax(project_variables)
 
 AddOption(
     "--build-dir",
@@ -21,11 +31,10 @@ env = Environment(
     ENV=os.environ.copy(),
     variant_dir_base=GetOption("variant_dir_base")
 )
-project_dir = Dir(".").abspath
 
 variant_dir_base = pathlib.Path(env["variant_dir_base"])
 build_dir = variant_dir_base / "docs"
-SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_dir"])
+SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_variables"])
 
 build_dir = variant_dir_base / "systemtests"
 SConscript(build_dir.name, variant_dir=build_dir, exports="env", duplicate=False)
