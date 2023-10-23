@@ -97,15 +97,21 @@ def _docs_parser():
 
 
 def _docs(print_local_path=False):
+    """Open or print the package's installed documentation
+
+    Exits with a non-zero exit code if the installed index file is not found.
+
+    :param bool print_local_path: If True, print the index file path instead of opening with a web browser
+    """
+
+    if not _settings._installed_docs_index.exists():
+        # This should only be reached if the package installation structure doesn't match the assumptions in
+        # _settings.py. It is used by the Conda build tests as a sign-of-life that the assumptions are correct.
+        print("Could not find package documentation HTML index file", file=sys.stderr)
+        sys.exit(1)
 
     if print_local_path:
-        if _settings._installed_docs_index.exists():
-            print(_settings._installed_docs_index, file=sys.stdout)
-        else:
-            # This should only be reached if the package installation structure doesn't match the assumptions in
-            # _settings.py. It is used by the Conda build tests as a sign-of-life that the assumptions are correct.
-            print("Could not find package documentation HTML index file", file=sys.stderr)
-            sys.exit(1)
+        print(_settings._installed_docs_index, file=sys.stdout)
     else:
         import webbrowser
         webbrowser.open(str(_settings._installed_docs_index))
