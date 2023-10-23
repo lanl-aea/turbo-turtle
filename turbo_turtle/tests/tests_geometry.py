@@ -80,7 +80,10 @@ def wedge_sphere(inner_radius, outer_radius, output_file, quadrant="both", model
     s.Line(point1=outer_point1, point2=inner_point1)
     s.VerticalConstraint(entity=g[5], addUndoState=False)
     s.Line(point1=outer_point2, point2=inner_point2)
-    s.VerticalConstraint(entity=g[6], addUndoState=False)
+    if quadrant in ("upper", "lower"):
+        s.HorizontalConstraint(entity=g[6], addUndoState=False)
+    else:
+        s.VerticalConstraint(entity=g[6], addUndoState=False)
     s.ConstructionLine(point1=center, angle=90.0)
     s.VerticalConstraint(entity=g[7], addUndoState=False)
     s.sketchOptions.setValues(constructionGeometry=abaqusConstants.ON)
