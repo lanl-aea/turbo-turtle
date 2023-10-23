@@ -1,3 +1,5 @@
+import numpy
+
 import abaqus
 import abaqusConstants
 
@@ -17,7 +19,7 @@ def main(model_name, output_file):
     wedge_sphere(model_name, part_name="quarter-sphere", angle=90.)
     upper_sphere(model_name, part_name="half-sphere", angle=360.)
     seveneigths_sphere(model_name)
-    offset_sphere(model_name)
+    wedge_sphere(model_name, part_name="offset-sphere", angle=360., center=(1., 1.))
     swiss_cheese(model_name)
 
     abaqus.mdb.saveAs(pathName=output_file)
@@ -25,28 +27,37 @@ def main(model_name, output_file):
     return
 
 
-def wedge_sphere(model_name, part_name='wedge-sphere', angle=360.):
+def wedge_sphere(model_name, part_name='wedge-sphere', angle=360., center=(0., 0.)):
     """Create a hollow, spherical geometry with both upper (+Y) and lower (-Y) quadrants
 
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     :param float angle: angle of rotation 0.-360.0 degrees.
     """
+    inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  1.)))
+    inner_point2 = tuple(numpy.array(center) + numpy.array((0., -1.)))
+
+    outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  2.)))
+    outer_point2 = tuple(numpy.array(center) + numpy.array((0., -2.)))
+
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
     g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
     s.setPrimaryObject(option=abaqusConstants.STANDALONE)
     s.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
     s.FixedConstraint(entity=g[2])
-    s.ArcByCenterEnds(center=(0.0, 0.0), point1=(0.0, 1.0), point2=(0.0, -1.0),
+    s.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
         direction=abaqusConstants.CLOCKWISE)
-    s.CoincidentConstraint(entity1=v[2], entity2=g[2], addUndoState=False)
-    s.ArcByCenterEnds(center=(0.0, 0.0), point1=(0.0, 2.0), point2=(0.0, -2.0),
+    s.ArcByCenterEnds(center=center, point1=outer_point1, point2=outer_point2,
         direction=abaqusConstants.CLOCKWISE)
-    s.Line(point1=(0.0, 2.0), point2=(0.0, 1.0))
+    s.Line(point1=outer_point1, point2=inner_point1)
     s.VerticalConstraint(entity=g[5], addUndoState=False)
-    s.Line(point1=(0.0, -2.0), point2=(0.0, -1.0))
+    s.Line(point1=outer_point2, point2=inner_point2)
     s.VerticalConstraint(entity=g[6], addUndoState=False)
+    s.ConstructionLine(point1=center, angle=90.0)
+    s.VerticalConstraint(entity=g[7], addUndoState=False)
+    s.sketchOptions.setValues(constructionGeometry=abaqusConstants.ON)
+    s.assignCenterline(line=g[7])
     p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
         type=abaqusConstants.DEFORMABLE_BODY)
     p = abaqus.mdb.models[model_name].parts[part_name]
@@ -151,40 +162,6 @@ def seveneigths_sphere(model_name, part_name='seveneigths-sphere'):
         sketchOrientation=abaqusConstants.RIGHT, sketch=s, angle=90.0,
         flipRevolveDirection=abaqusConstants.OFF)
     s.unsetPrimaryObject()
-    del abaqus.mdb.models[model_name].sketches['__profile__']
-    return
-
-
-def offset_sphere(model_name, part_name='offset-sphere'):
-    """Create a hollow, spherical geometry with a center offset from the origin
-
-    :param str model_name: name of the Abaqus model
-    :param str part_name: name of the part to be created in the Abaqus model
-    """
-    s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
-        sheetSize=200.0)
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
-    s.setPrimaryObject(option=abaqusConstants.STANDALONE)
-    s.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
-    s.FixedConstraint(entity=g[2])
-    s.ArcByCenterEnds(center=(1.0, 1.0), point1=(1.0, 2.0), point2=(1.0, -2.0),
-        direction=abaqusConstants.CLOCKWISE)
-    s.ArcByCenterEnds(center=(1.0, 1.0), point1=(1.0, 3.0), point2=(1.0, -1.0),
-        direction=abaqusConstants.CLOCKWISE)
-    s.Line(point1=(1.0, 3.0), point2=(1.0, 2.0))
-    s.VerticalConstraint(entity=g[5], addUndoState=False)
-    s.Line(point1=(1.0, -1.0), point2=(1.0, 0.0))
-    s.VerticalConstraint(entity=g[6], addUndoState=False)
-    s.ConstructionLine(point1=(1.0, 1.0), angle=90.0)
-    s.VerticalConstraint(entity=g[7], addUndoState=False)
-    s.sketchOptions.setValues(constructionGeometry=abaqusConstants.ON)
-    s.assignCenterline(line=g[7])
-    p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
-        type=abaqusConstants.DEFORMABLE_BODY)
-    p = abaqus.mdb.models[model_name].parts[part_name]
-    p.BaseSolidRevolve(sketch=s, angle=360.0, flipRevolveDirection=abaqusConstants.OFF)
-    s.unsetPrimaryObject()
-    p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
     return
 
