@@ -60,6 +60,7 @@ test:
     - turbo-turtle -h
     - turbo-turtle docs -h
     - turbo-turtle docs --print-local-path
+    - turbo-turtle sphere -h
     - turbo-turtle partition -h
     - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cae --model-name sphere --part-name sphere --center 0.0 0.0 --quadrant both
     - turbo-turtle partition --input-file sphere.cae --output-file sphere.cae --model-name sphere --part-name sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
