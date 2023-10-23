@@ -20,6 +20,30 @@ Description
 *********************
 |PROJECT| Subcommands
 *********************
+****
+docs
+****
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: docs
+
+*********************
+|PROJECT| Subcommands
+*********************
+******
+sphere
+******
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: sphere
+
+*********************
+|PROJECT| Subcommands
+*********************
 *********
 partition
 *********

@@ -15,3 +15,9 @@ _partition
 
 .. automodule:: turbo_turtle._partition
     :members:
+
+_sphere
+=======
+
+.. automodule:: turbo_turtle._sphere
+    :members:
