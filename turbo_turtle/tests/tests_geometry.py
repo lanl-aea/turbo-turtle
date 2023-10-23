@@ -90,10 +90,7 @@ def wedge_sphere(inner_radius, outer_radius, output_file, quadrant="both", model
     s.assignCenterline(line=g[7])
     p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
         type=abaqusConstants.DEFORMABLE_BODY)
-    p = abaqus.mdb.models[model_name].parts[part_name]
     p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
-    s.unsetPrimaryObject()
-    p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
 
     abaqus.mdb.saveAs(pathName=output_file)
