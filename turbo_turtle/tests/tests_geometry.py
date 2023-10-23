@@ -1,3 +1,4 @@
+import sys
 import numpy
 
 import abaqus
@@ -14,34 +15,57 @@ def main(model_name, output_file):
     """
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
 
-    wedge_sphere(1, 2, model_name=model_name, part_name="sphere", angle=360.)
-    wedge_sphere(1, 2, model_name=model_name, part_name="quarter-sphere", angle=90.)
-    wedge_sphere(1, 2, model_name=model_name, part_name="offset-sphere", angle=360., center=(1., 1.))
-    upper_sphere(model_name, part_name="eigth-sphere", angle=90.)
-    upper_sphere(model_name, part_name="half-sphere", angle=360.)
+    wedge_sphere(1, 2, output_file, model_name=model_name, part_name="sphere", angle=360.)
+    wedge_sphere(1, 2, output_file, model_name=model_name, part_name="quarter-sphere", angle=90.)
+    wedge_sphere(1, 2, output_file, model_name=model_name, part_name="offset-sphere", angle=360., center=(1., 1.))
+    wedge_sphere(1, 2, output_file, quadrant="upper", model_name=model_name, part_name="eigth-sphere", angle=90.)
+    wedge_sphere(1, 2, output_file, quadrant="upper", model_name=model_name, part_name="half-sphere", angle=360.)
     seveneigths_sphere(model_name)
     swiss_cheese(model_name)
 
-    abaqus.mdb.saveAs(pathName=output_file)
 
-    return
-
-
-def wedge_sphere(inner_radius, outer_radius, model_name="Model-1", part_name='wedge-sphere', angle=360., center=(0., 0.)):
+def wedge_sphere(inner_radius, outer_radius, output_file, quadrant="both", model_name="Model-1", part_name='wedge-sphere', angle=360., center=(0., 0.)):
     """Create a hollow, spherical geometry with both upper (+Y) and lower (-Y) quadrants
 
+    :param float inner_radius: inner radius (size of hollow)
+    :param float outer_radius: outer radius (size of sphere)
+    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     :param float angle: angle of rotation 0.-360.0 degrees.
+    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
     """
+    quadrant_options = ("both", "upper", "lower")
+    if not quadrant in quadrant_options:
+        sys.stderr.write("Quadrant option must be one of: {}".format(quadrant_options))
+        sys.exit(1)
+
     inner_radius = abs(inner_radius)
     outer_radius = abs(outer_radius)
 
     inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  inner_radius)))
-    inner_point2 = tuple(numpy.array(center) + numpy.array((0., -inner_radius)))
-
     outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  outer_radius)))
-    outer_point2 = tuple(numpy.array(center) + numpy.array((0., -outer_radius)))
+
+    if quadrant == "both":
+        inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  inner_radius)))
+        outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  outer_radius)))
+
+        inner_point2 = tuple(numpy.array(center) + numpy.array((0., -inner_radius)))
+        outer_point2 = tuple(numpy.array(center) + numpy.array((0., -outer_radius)))
+
+    elif quadrant == "upper":
+        inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  inner_radius)))
+        outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  outer_radius)))
+
+        inner_point2 = tuple(numpy.array(center) + numpy.array((inner_radius, 0.)))
+        outer_point2 = tuple(numpy.array(center) + numpy.array((outer_radius, 0.)))
+
+    elif quadrant == "lower":
+        inner_point2 = tuple(numpy.array(center) + numpy.array((0.,  -inner_radius)))
+        outer_point2 = tuple(numpy.array(center) + numpy.array((0.,  -outer_radius)))
+
+        inner_point1 = tuple(numpy.array(center) + numpy.array((inner_radius, 0.)))
+        outer_point1 = tuple(numpy.array(center) + numpy.array((outer_radius, 0.)))
 
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
@@ -69,35 +93,7 @@ def wedge_sphere(inner_radius, outer_radius, model_name="Model-1", part_name='we
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
 
-
-def upper_sphere(model_name, part_name='upper-sphere', angle=90.):
-    """Create a hollow, partial sphere geometry using the upper (+Y) quadrant
-
-    :param str model_name: name of the Abaqus model
-    :param str part_name: name of the part to be created in the Abaqus model
-    :param float angle: angle of rotation 0.-360.0 degrees.
-    """
-    s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
-        sheetSize=200.0)
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
-    s.setPrimaryObject(option=abaqusConstants.STANDALONE)
-    s.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
-    s.FixedConstraint(entity=g[2])
-    s.ArcByCenterEnds(center=(0.0, 0.0), point1=(0.0, 1.0), point2=(1.0, 0.0),
-        direction=abaqusConstants.CLOCKWISE)
-    s.ArcByCenterEnds(center=(0.0, 0.0), point1=(0.0, 2.0), point2=(2.0, 0.0),
-        direction=abaqusConstants.CLOCKWISE)
-    s.Line(point1=(0.0, 2.0), point2=(0.0, 1.0))
-    s.VerticalConstraint(entity=g[5], addUndoState=False)
-    s.Line(point1=(2.0, 0.0), point2=(1.0, 0.0))
-    s.HorizontalConstraint(entity=g[6], addUndoState=False)
-    p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
-        type=abaqusConstants.DEFORMABLE_BODY)
-    p = abaqus.mdb.models[model_name].parts[part_name]
-    p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
-    s.unsetPrimaryObject()
-    p = abaqus.mdb.models[model_name].parts[part_name]
-    del abaqus.mdb.models[model_name].sketches['__profile__']
+    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def seveneigths_sphere(model_name, part_name='seveneigths-sphere'):
@@ -166,7 +162,8 @@ def seveneigths_sphere(model_name, part_name='seveneigths-sphere'):
         flipRevolveDirection=abaqusConstants.OFF)
     s.unsetPrimaryObject()
     del abaqus.mdb.models[model_name].sketches['__profile__']
-    return
+
+    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def swiss_cheese(model_name, part_name='swiss-cheese'):
@@ -256,7 +253,8 @@ def swiss_cheese(model_name, part_name='swiss-cheese'):
         sketchOrientation=abaqusConstants.RIGHT, sketch=s1, flipExtrudeDirection=abaqusConstants.OFF)
     s1.unsetPrimaryObject()
     del abaqus.mdb.models[model_name].sketches['__profile__']
-    return
+
+    abaqus.mdb.saveAs(pathName=output_file)
 
 
 if __name__ == "__main__":
