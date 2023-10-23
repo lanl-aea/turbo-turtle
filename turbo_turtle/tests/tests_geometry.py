@@ -12,10 +12,10 @@ def main(model_name, output_file):
     """
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
 
-    sphere(model_name)
-    partial_sphere(model_name, part_name="eigth-sphere", angle=90.)
-    quarter_sphere(model_name)
-    partial_sphere(model_name, part_name="half-sphere", angle=360.)
+    wedge_sphere(model_name, part_name="sphere", angle=360.)
+    upper_sphere(model_name, part_name="eigth-sphere", angle=90.)
+    wedge_sphere(model_name, part_name="quarter-sphere", angle=90.)
+    upper_sphere(model_name, part_name="half-sphere", angle=360.)
     seveneigths_sphere(model_name)
     offset_sphere(model_name)
     swiss_cheese(model_name)
@@ -25,11 +25,12 @@ def main(model_name, output_file):
     return
 
 
-def sphere(model_name, part_name='sphere'):
-    """Create a hollow, spherical geometry
+def wedge_sphere(model_name, part_name='wedge-sphere', angle=360.):
+    """Create a hollow, spherical geometry with both upper (+Y) and lower (-Y) quadrants
 
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
+    :param float angle: angle of rotation 0.-360.0 degrees.
     """
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
@@ -49,15 +50,14 @@ def sphere(model_name, part_name='sphere'):
     p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
         type=abaqusConstants.DEFORMABLE_BODY)
     p = abaqus.mdb.models[model_name].parts[part_name]
-    p.BaseSolidRevolve(sketch=s, angle=360.0, flipRevolveDirection=abaqusConstants.OFF)
+    p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
     s.unsetPrimaryObject()
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
-    return
 
 
-def partial_sphere(model_name, part_name='partial-sphere', angle=90.):
-    """Create a hollow, partial sphere geometry
+def upper_sphere(model_name, part_name='upper-sphere', angle=90.):
+    """Create a hollow, partial sphere geometry using the upper (+Y) quadrant
 
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
@@ -84,36 +84,6 @@ def partial_sphere(model_name, part_name='partial-sphere', angle=90.):
     s.unsetPrimaryObject()
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
-
-
-def quarter_sphere(model_name, part_name='quarter-sphere'):
-    """Create a hollow, quarter-sphere geometry
-
-    :param str model_name: name of the Abaqus model
-    :param str part_name: name of the part to be created in the Abaqus model
-    """
-    s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
-        sheetSize=200.0)
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
-    s.setPrimaryObject(option=abaqusConstants.STANDALONE)
-    s.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
-    s.FixedConstraint(entity=g[2])
-    s.ArcByCenterEnds(center=(0.0, 0.0), point1=(0.0, 1.0), point2=(0.0, -1.0),
-        direction=abaqusConstants.CLOCKWISE)
-    s.ArcByCenterEnds(center=(0.0, 0.0), point1=(0.0, 2.0), point2=(0.0, -2.0),
-        direction=abaqusConstants.CLOCKWISE)
-    s.Line(point1=(0.0, 2.0), point2=(0.0, 1.0))
-    s.VerticalConstraint(entity=g[5], addUndoState=False)
-    s.Line(point1=(0.0, -2.0), point2=(0.0, -1.0))
-    s.VerticalConstraint(entity=g[6], addUndoState=False)
-    p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
-        type=abaqusConstants.DEFORMABLE_BODY)
-    p = abaqus.mdb.models[model_name].parts[part_name]
-    p.BaseSolidRevolve(sketch=s, angle=90.0, flipRevolveDirection=abaqusConstants.OFF)
-    s.unsetPrimaryObject()
-    p = abaqus.mdb.models[model_name].parts[part_name]
-    del abaqus.mdb.models[model_name].sketches['__profile__']
-    return
 
 
 def seveneigths_sphere(model_name, part_name='seveneigths-sphere'):
