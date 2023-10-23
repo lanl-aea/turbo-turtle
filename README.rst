@@ -74,6 +74,7 @@ the package matures.
    .. code-block::
 
       $ turbo-turtle -h
+      $ turbo-turtle sphere -h
       $ turbo-turtle partition -h
 
 .. user-end-do-not-remove
