@@ -5,7 +5,7 @@ import shutil
 
 def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="both", angle=360., center=(0., 0.),
            model_name="Model-1", part_name='sphere'):
-    """Create a hollow, spherical geometry in the X-Y plane with upper (+Y), lower (-Y), or both quadrants.
+    """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
 
     .. warning::
 
@@ -97,3 +97,51 @@ def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="b
     del abaqus.mdb.models[model_name].sketches['__profile__']
 
     abaqus.mdb.saveAs(pathName=output_file)
+
+
+def get_parser():
+    # The global '__file__' variable doesn't appear to be set when executing from Abaqus CAE
+    filename = inspect.getfile(lambda: None)
+    basename = os.path.basename(filename)
+
+    prog = "abaqus cae -noGui {} --".format(basename)
+    cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower " \
+                      "(+X-Y), or both quadrants."
+
+    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    requiredNamed = parser.add_argument_group('Required Named Arguments')
+    requiredNamed.add_argument('--inner-radius', type=float, required=True,
+                               help="Inner radius (hollow size)")
+    requiredNamed.add_argument('--outer-radius', type=float, required=True,
+                               help="Outer radius (sphere size)")
+    requiredNamed.add_argument('--output-file', type=str, required=True,
+                               help="Abaqus model database to create")
+
+    parser.add_argument('--input-file', type=str, default=None,
+                        help="Abaqus model database to open (default: %(default)s)")
+    parser.add_argument("--quadrant", type=str, choices=("both", "upper", "lower"), default="both",
+                        help="XY plane quadrant: both, upper (I), lower (IV) (default: %(default)s)")
+    parser.add_argument('--angle', type=float, default=360.,
+                        help="Angle of revolution about the +Y axis (default: %(default)s)")
+    parser.add_argument('--center', nargs=2, type=float, default=(0., 0.),
+                        help="Center of the sphere (default: %(default)s)")
+    parser.add_argument('--model-name', type=str, default="Model-1",
+                        help="Abaqus model name (default: %(default)s)")
+    parser.add_argument('--part-name', type=str, default="sphere",
+                        help="Abaqus part name (default: %(default)s)")
+
+
+if __name__ == "__main__":
+    parser = get_parser()
+    args, unknown = parser.parse_known_args()
+    sys.exit(sphere(
+        args.inner_radius,
+        args.outer_radius,
+        args.output_file,
+        input_file=args.input_file,
+        quadrant=args.quadrant,
+        angle=args.angle,
+        center=args.center,
+        model_name=args.model_name,
+        part_name=args.part_name
+    ))
