@@ -13,9 +13,9 @@ def main(model_name, output_file):
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
 
     sphere(model_name)
-    eigth_sphere(model_name)
+    partial_sphere(model_name, angle=90.)
     quarter_sphere(model_name)
-    half_sphere(model_name)
+    partial_sphere(model_name, angle=360.)
     seveneigths_sphere(model_name)
     offset_sphere(model_name)
     swiss_cheese(model_name)
@@ -56,11 +56,12 @@ def sphere(model_name, part_name='sphere'):
     return
 
 
-def eigth_sphere(model_name, part_name='eigth-sphere'):
-    """Create a hollow, eigth-sphere geometry
+def partial_sphere(model_name, part_name='eigth-sphere', angle=90.):
+    """Create a hollow, partial sphere geometry
 
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
+    :param float angle: angle of rotation 0.-360.0 degrees.
     """
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
@@ -79,40 +80,10 @@ def eigth_sphere(model_name, part_name='eigth-sphere'):
     p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
         type=abaqusConstants.DEFORMABLE_BODY)
     p = abaqus.mdb.models[model_name].parts[part_name]
-    p.BaseSolidRevolve(sketch=s, angle=90.0, flipRevolveDirection=abaqusConstants.OFF)
+    p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
     s.unsetPrimaryObject()
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
-
-
-def half_sphere(model_name, part_name='half-sphere'):
-    """Create a hollow, half-sphere geometry
-
-    :param str model_name: name of the Abaqus model
-    :param str part_name: name of the part to be created in the Abaqus model
-    """
-    s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
-        sheetSize=200.0)
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
-    s.setPrimaryObject(option=abaqusConstants.STANDALONE)
-    s.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
-    s.FixedConstraint(entity=g[2])
-    s.ArcByCenterEnds(center=(0.0, 0.0), point1=(0.0, 1.0), point2=(1.0, 0.0),
-        direction=abaqusConstants.CLOCKWISE)
-    s.ArcByCenterEnds(center=(0.0, 0.0), point1=(0.0, 2.0), point2=(2.0, 0.0),
-        direction=abaqusConstants.CLOCKWISE)
-    s.Line(point1=(0.0, 2.0), point2=(0.0, 1.0))
-    s.VerticalConstraint(entity=g[5], addUndoState=False)
-    s.Line(point1=(2.0, 0.0), point2=(1.0, 0.0))
-    s.HorizontalConstraint(entity=g[6], addUndoState=False)
-    p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
-        type=abaqusConstants.DEFORMABLE_BODY)
-    p = abaqus.mdb.models[model_name].parts[part_name]
-    p.BaseSolidRevolve(sketch=s, angle=360.0, flipRevolveDirection=abaqusConstants.OFF)
-    s.unsetPrimaryObject()
-    p = abaqus.mdb.models[model_name].parts[part_name]
-    del abaqus.mdb.models[model_name].sketches['__profile__']
-    return
 
 
 def quarter_sphere(model_name, part_name='quarter-sphere'):
