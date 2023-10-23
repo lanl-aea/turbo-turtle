@@ -2,6 +2,9 @@ import os
 import sys
 import numpy
 import shutil
+import inspect
+import argparse
+
 
 def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="both", angle=360., center=(0., 0.),
            model_name="Model-1", part_name='sphere'):
@@ -136,6 +139,10 @@ def get_parser():
 if __name__ == "__main__":
     parser = get_parser()
     args, unknown = parser.parse_known_args()
+
+    if args.input_file is None:
+        args.input_file = args.output_file
+
     sys.exit(sphere(
         args.inner_radius,
         args.outer_radius,

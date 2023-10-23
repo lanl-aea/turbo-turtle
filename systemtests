@@ -1,30 +1,55 @@
 #! /usr/bin/env python
+import numpy
 
 Import(["env"])
 
 target = env.Command(
     target=["help.txt"],
-    source=["turbo_turtle/main.py"],
+    source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py", "turbo_turtle/_partition.py"],
     action=[
         "python -m turbo_turtle.main -h > ${TARGET.abspath}",
         "python -m turbo_turtle.main docs -h >> ${TARGET.abspath}",
+        "python -m turbo_turtle.main sphere -h >> ${TARGET.abspath}"
         "python -m turbo_turtle.main partition -h >> ${TARGET.abspath}"
     ]
 )
 env.Alias("systemtests", target)
 env.Alias("regression", target)
 
+system_tests = (
+    ("sphere",         360., (0., 0.), "both"),
+    ("quarter-sphere",  90., (0., 0.), "both"),
+    ("offset-sphere",  360., (1., 1.), "both"),
+    ("eigth-sphere",    90., (0., 0.), "upper"),
+    ("half-sphere",    360., (0., 0.), "upper")
+)
+for model, angle, center, quadrant in system_tests:
+    center_three_dimensions = center + (0,)
+    target = env.Command(
+        target=[f"{model}.cae"],
+        source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py"],
+        action=[
+            "${sphere_prefix} --part-name ${TARGET.filebase} --center ${center} --quadrant ${quadrant} ",
+            "${partition_prefix} --part-name ${TARGET.filebase} --center ${center} 0 --xpoint ${xpoint} --zpoint {zpoint} --plane-angle 45",
+        ],
+        sphere_prefix="python -m turbo_turtle.main sphere --inner-radius 1 --outer-radius 2 " \
+                      "--output-file ${TARGET.abspath} --model-name ${TARGET.filebase}",
+        partition_prefix="python -m turbo_turtle.main partition --input-file ${TARGET.abspath} " \
+                         "--output-file ${TARGET.abspath} --model-name ${TARGET.filebase}",
+        center=' '.join(map(str, center)),
+        quadrant=quadrant,
+        xpoint=' '.join(map(str, numpy.array(center_three_dimensions) + numpy.array([1, 0, 0]))),
+        zpoint=' '.join(map(str, numpy.array(center_three_dimensions) + numpy.array([0, 0, 1])))
+    )
+    env.Alias("systemtests", target)
+    env.Alias("regression", target)
+
 target = env.Command(
     target=["Turbo-Turtle-Tests.cae"],
     source=["test_geometry.py"],
     action=[
         "cd ${TARGET.dir.abspath} && abq2023 cae -noGui ${SOURCE.abspath}",
-        "${common_prefix} --part-name sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
-        "${common_prefix} --part-name eigth-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
-        "${common_prefix} --part-name quarter-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
-        "${common_prefix} --part-name half-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
         "${common_prefix} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
-        "${common_prefix} --part-name offset-sphere --center 1 1 0 --xpoint 2 1 0 --zpoint 1 1 1 --plane-angle 45",
         "${common_prefix} --part-name swiss-cheese --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
     ],
     common_prefix="python -m turbo_turtle.main partition --input-file ${TARGET.abspath} " \

@@ -20,11 +20,6 @@ def main(model_name, output_file):
 
     :returns: ``{output_file}.cae`` Abaqus database
     """
-    _sphere.sphere(1, 2, output_file, model_name=model_name, part_name="sphere", angle=360.)
-    _sphere.sphere(1, 2, output_file, model_name=model_name, part_name="quarter-sphere", angle=90.)
-    _sphere.sphere(1, 2, output_file, model_name=model_name, part_name="offset-sphere", angle=360., center=(1., 1.))
-    _sphere.sphere(1, 2, output_file, quadrant="upper", model_name=model_name, part_name="eigth-sphere", angle=90.)
-    _sphere.sphere(1, 2, output_file, quadrant="upper", model_name=model_name, part_name="half-sphere", angle=360.)
     seveneigths_sphere(model_name)
     swiss_cheese(model_name)
 

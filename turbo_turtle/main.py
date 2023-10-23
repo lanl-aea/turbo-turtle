@@ -43,7 +43,11 @@ def _sphere(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._package_root_abspath / "_sphere.py"
+    script = _settings._project_root_abspath / "_sphere.py"
+
+    # TODO: write a Python 2/3 compatible parser and argument handler
+    if args.input_file is None:
+        args.input_file = args.output_file
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--inner-radius {args.inner_radius} --outer-radius {args.outer_radius} "
@@ -108,7 +112,7 @@ def _partition(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    main = _settings._package_root_abspath / "_partition.py"
+    script = _settings._project_root_abspath / "_partition.py"
 
     # TODO: write a Python 2/3 compatible parser and argument handler
     if args.output_file is None:
@@ -189,7 +193,7 @@ def get_parser():
         "sphere",
         help="Create a hollow, spherical geometry from a sketch in the X-Y plane",
         description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower " \
-                      "(+X-Y), or both quadrants."
+                      "(+X-Y), or both quadrants.",
         parents=[sphere_parser]
     )
 
