@@ -5,12 +5,6 @@ import inspect
 import abaqus
 import abaqusConstants
 
-filename = inspect.getfile(lambda: None)
-parent_directory = os.path.dirname(os.path.abspath(filename))
-package_directory = os.path.join(parent_directory, "turbo_turtle")
-sys.path.append(package_directory)
-import _sphere
-
 
 def main(model_name, output_file):
     """Wrapper for test geometry creation
