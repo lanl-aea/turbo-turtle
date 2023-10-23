@@ -130,6 +130,8 @@ def get_parser():
     parser.add_argument('--part-name', type=str, default="sphere",
                         help="Abaqus part name (default: %(default)s)")
 
+    return parser
+
 
 if __name__ == "__main__":
     parser = get_parser()
