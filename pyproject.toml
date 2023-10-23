@@ -40,4 +40,4 @@ changelog = "https://aea.re-pages.lanl.gov/python-projects/turbo-turtle/changelo
 write_to = "turbo_turtle/_version.py"
 
 [tool.pytest.ini_options]
-addopts = "--tb=long --showlocals --failed-first --strict-markers -n 4"
+addopts = "--tb=long --showlocals --failed-first --strict-markers"
