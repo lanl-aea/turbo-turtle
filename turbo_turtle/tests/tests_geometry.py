@@ -26,7 +26,11 @@ def main(model_name, output_file):
 
 def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="both", angle=360., center=(0., 0.),
            model_name="Model-1", part_name='sphere'):
-    """Create a hollow, spherical geometry with both upper (+Y) and lower (-Y) quadrants
+    """Create a hollow, spherical geometry in the X-Y plane with upper (+Y), lower (-Y), or both quadrants.
+
+    .. warning::
+
+       The lower quadrant creation is currently broken
 
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
