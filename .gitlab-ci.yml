@@ -33,16 +33,6 @@ test:
     - if: $CI_COMMIT_BRANCH == "main"
   script:
     - scons regression
-    - cd ${project_root}/turbo_turtle/tests && abq2023 cae -noGui tests_geometry.py && cd ${project_root}
-    - test_dir=${project_root}/turbo_turtle/tests
-    - name='Turbo-Turtle-Tests'
-    - python -m turbo_turtle.main partition --input-file ${test_dir}/${name}.cae --output-file ${test_dir}/${name}.cae --model-name ${name} --part-name sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
-    - python -m turbo_turtle.main partition --input-file ${test_dir}/${name}.cae --output-file ${test_dir}/${name}.cae --model-name ${name} --part-name eigth-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
-    - python -m turbo_turtle.main partition --input-file ${test_dir}/${name}.cae --output-file ${test_dir}/${name}.cae --model-name ${name} --part-name quarter-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
-    - python -m turbo_turtle.main partition --input-file ${test_dir}/${name}.cae --output-file ${test_dir}/${name}.cae --model-name ${name} --part-name half-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
-    - python -m turbo_turtle.main partition --input-file ${test_dir}/${name}.cae --output-file ${test_dir}/${name}.cae --model-name ${name} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
-    - python -m turbo_turtle.main partition --input-file ${test_dir}/${name}.cae --output-file ${test_dir}/${name}.cae --model-name ${name} --part-name offset-sphere --center 1 1 0 --xpoint 2 1 0 --zpoint 1 1 1 --plane-angle 45
-    - python -m turbo_turtle.main partition --input-file ${test_dir}/${name}.cae --output-file ${test_dir}/${name}.cae --model-name ${name} --part-name swiss-cheese --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
   tags:
     - shell-aea
 

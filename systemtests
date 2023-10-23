@@ -12,3 +12,21 @@ target = env.Command(
     ]
 )
 env.Alias("regression", target)
+
+target = env.Command(
+    target=["turbo_turtle/tests/Turbo-Turtle-Tests.cae"],
+    source=["turbo_turtle/tests/tests_geometry.py"],
+    action=[
+        "cd ${TARGET.dir.abspath} && abq2023 cae -noGui ${SOURCE.abspath}",
+        "${common_prefix} --part-name sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
+        "${common_prefix} --part-name eigth-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
+        "${common_prefix} --part-name quarter-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
+        "${common_prefix} --part-name half-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
+        "${common_prefix} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
+        "${common_prefix} --part-name offset-sphere --center 1 1 0 --xpoint 2 1 0 --zpoint 1 1 1 --plane-angle 45",
+        "${common_prefix} --part-name swiss-cheese --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
+    ],
+    common_prefix="python -m turbo_turtle.main partition --input-file ${TARGET.abspath} " \
+                  "--output-file ${TARGET.abspath} --model-name ${TARGET.filebase}"
+)
+env.Alias("regression", target)
