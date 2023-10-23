@@ -1,7 +1,15 @@
+import os
+import sys
+import inspect
+
 import abaqus
 import abaqusConstants
 
-import turbo_turtle._sphere
+filename = inspect.getfile(lambda: None)
+parent_directory = os.path.dirname(os.path.abspath(filename))
+package_directory = os.path.join(parent_directory, "turbo_turtle")
+sys.path.append(package_directory)
+import _sphere
 
 
 def main(model_name, output_file):
@@ -12,11 +20,11 @@ def main(model_name, output_file):
 
     :returns: ``{output_file}.cae`` Abaqus database
     """
-    turbo_turtle._sphere(1, 2, output_file, model_name=model_name, part_name="sphere", angle=360.)
-    turbo_turtle._sphere(1, 2, output_file, model_name=model_name, part_name="quarter-sphere", angle=90.)
-    turbo_turtle._sphere(1, 2, output_file, model_name=model_name, part_name="offset-sphere", angle=360., center=(1., 1.))
-    turbo_turtle._sphere(1, 2, output_file, quadrant="upper", model_name=model_name, part_name="eigth-sphere", angle=90.)
-    turbo_turtle._sphere(1, 2, output_file, quadrant="upper", model_name=model_name, part_name="half-sphere", angle=360.)
+    _sphere.sphere(1, 2, output_file, model_name=model_name, part_name="sphere", angle=360.)
+    _sphere.sphere(1, 2, output_file, model_name=model_name, part_name="quarter-sphere", angle=90.)
+    _sphere.sphere(1, 2, output_file, model_name=model_name, part_name="offset-sphere", angle=360., center=(1., 1.))
+    _sphere.sphere(1, 2, output_file, quadrant="upper", model_name=model_name, part_name="eigth-sphere", angle=90.)
+    _sphere.sphere(1, 2, output_file, quadrant="upper", model_name=model_name, part_name="half-sphere", angle=360.)
     seveneigths_sphere(model_name)
     swiss_cheese(model_name)
 
