@@ -66,4 +66,5 @@ env.Clean(man, targets)
 env.AlwaysBuild(man)
 env.Alias("man", man)
 
-env.Alias('documentation', html + man)
+env.Alias("documentation", html + man)
+env.Alias("regression", html + man)

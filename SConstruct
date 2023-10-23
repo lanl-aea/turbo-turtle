@@ -23,8 +23,11 @@ env = Environment(
 )
 project_dir = Dir(".").abspath
 
-variant_dir_base = pathlib.Path(env['variant_dir_base'])
-build_dir = variant_dir_base / "docs" 
+variant_dir_base = pathlib.Path(env["variant_dir_base"])
+build_dir = variant_dir_base / "docs"
 SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_dir"])
+
+build_dir = variant_dir_base / "systemtests"
+SConscript(build_dir.name, variant_dir=build_dir, exports="env", duplicate=False)
 
 waves.builders.project_help_message()

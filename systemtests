@@ -1,0 +1,14 @@
+#! /usr/bin/env python
+
+Import(["env"])
+
+target = env.Command(
+    target=["help.txt"],
+    source=["turbo_turtle/main.py"],
+    action=[
+        "python -m turbo_turtle.main -h > ${TARGET.abspath}",
+        "python -m turbo_turtle.main docs -h >> ${TARGET.abspath}",
+        "python -m turbo_turtle.main partition -h >> ${TARGET.abspath}"
+    ]
+)
+env.Alias("regression", target)
