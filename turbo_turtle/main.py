@@ -56,6 +56,10 @@ def _partition_parser():
 
 
 def _partition(args):
+    """Python 3 wrapper around the Abaqus Python CLI
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    """
     package_root = pathlib.Path(__file__).resolve().parent
     partition_main = package_root / "_partition.py"
 
@@ -78,13 +82,18 @@ def _partition(args):
 
 
 def _docs_parser():
+    """Get parser object for docs subcommand command line options
 
+    :return: parser
+    :rtype: ArgumentParser
+    """
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("-p", "--print-local-path",
                         action="store_true",
                         help="Print the path to the locally installed documentation index file. " \
                              "As an alternative to the docs sub-command, open index.html in a web browser " \
                              "(default: %(default)s)")
+    return parser
 
 
 def _docs(print_local_path=False):
