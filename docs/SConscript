@@ -8,11 +8,13 @@ Import(["env", "project_variables"])
 
 
 # VVV Sphinx Builder prototype
-def sphinx_build(program="sphinx-build", options=""):
+def sphinx_build(program="sphinx-build", options="", builder="html", tags=""):
     sphinx_builder = Builder(
         action=["${program} ${sphinx_options} -b ${builder} ${TARGET.dir.dir.abspath} ${TARGET.dir.abspath} ${tags}"],
         program=program,
-        sphinx_options=options
+        sphinx_options=options,
+        builder=builder,
+        tags=tags
     )
     return sphinx_builder
 # ^^^ Sphinx Builder prototype
