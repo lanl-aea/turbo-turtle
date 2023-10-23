@@ -14,12 +14,12 @@ def main(model_name, output_file):
     """
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
 
-    wedge_sphere(model_name, part_name="sphere", angle=360.)
+    wedge_sphere(1, 2, model_name=model_name, part_name="sphere", angle=360.)
+    wedge_sphere(1, 2, model_name=model_name, part_name="quarter-sphere", angle=90.)
+    wedge_sphere(1, 2, model_name=model_name, part_name="offset-sphere", angle=360., center=(1., 1.))
     upper_sphere(model_name, part_name="eigth-sphere", angle=90.)
-    wedge_sphere(model_name, part_name="quarter-sphere", angle=90.)
     upper_sphere(model_name, part_name="half-sphere", angle=360.)
     seveneigths_sphere(model_name)
-    wedge_sphere(model_name, part_name="offset-sphere", angle=360., center=(1., 1.))
     swiss_cheese(model_name)
 
     abaqus.mdb.saveAs(pathName=output_file)
@@ -27,18 +27,21 @@ def main(model_name, output_file):
     return
 
 
-def wedge_sphere(model_name, part_name='wedge-sphere', angle=360., center=(0., 0.)):
+def wedge_sphere(inner_radius, outer_radius, model_name="Model-1", part_name='wedge-sphere', angle=360., center=(0., 0.)):
     """Create a hollow, spherical geometry with both upper (+Y) and lower (-Y) quadrants
 
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     :param float angle: angle of rotation 0.-360.0 degrees.
     """
-    inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  1.)))
-    inner_point2 = tuple(numpy.array(center) + numpy.array((0., -1.)))
+    inner_radius = abs(inner_radius)
+    outer_radius = abs(outer_radius)
 
-    outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  2.)))
-    outer_point2 = tuple(numpy.array(center) + numpy.array((0., -2.)))
+    inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  inner_radius)))
+    inner_point2 = tuple(numpy.array(center) + numpy.array((0., -inner_radius)))
+
+    outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  outer_radius)))
+    outer_point2 = tuple(numpy.array(center) + numpy.array((0., -outer_radius)))
 
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
