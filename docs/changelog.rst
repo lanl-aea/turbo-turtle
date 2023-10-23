@@ -11,6 +11,7 @@ v0.4.2 (unreleased)
 New Features
 ============
 - Add a subcommand to open the package's installed documentation (:issue:`15`, :merge:`11`). By `Kyle Brindley`_.
+- Add a subcommand to create hollow sphere geometry (:issue:`8`, :merge:`13`). By `Kyle Brindley`_.
 
 Documentation
 =============
