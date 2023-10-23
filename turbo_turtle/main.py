@@ -162,7 +162,7 @@ def main():
     args, unknown = parser.parse_known_args()
     if args.subcommand == "partition":
         _partition(args)
-    if args.subcommand == "docs":
+    elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     else:
         parser.print_help()
