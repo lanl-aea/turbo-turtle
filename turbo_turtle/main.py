@@ -87,6 +87,22 @@ def _docs_parser():
                              "(default: %(default)s)")
 
 
+def _docs(print_local_path=False):
+
+    if print_local_path:
+        if _settings._installed_docs_index.exists():
+            print(_settings._installed_docs_index, file=sys.stdout)
+        else:
+            # This should only be reached if the package installation structure doesn't match the assumptions in
+            # _settings.py. It is used by the Conda build tests as a sign-of-life that the assumptions are correct.
+            print('Could not find package documentation HTML index file', file=sys.stderr)
+            return 1
+    else:
+        import webbrowser
+        webbrowser.open(str(_settings._installed_docs_index))
+    return 0
+
+
 def get_parser():
     """Get parser object for command line options
 
