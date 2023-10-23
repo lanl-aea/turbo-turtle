@@ -16,7 +16,7 @@ env.Alias("regression", target)
 
 target = env.Command(
     target=["Turbo-Turtle-Tests.cae"],
-    source=["tests_geometry.py"],
+    source=["test_geometry.py"],
     action=[
         "cd ${TARGET.dir.abspath} && abq2023 cae -noGui ${SOURCE.abspath}",
         "${common_prefix} --part-name sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",

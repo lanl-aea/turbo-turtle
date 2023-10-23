@@ -53,7 +53,7 @@ test:
   imports:
     - turbo_turtle
   source_files:
-    - turbo_turtle/tests/tests_geometry.py
+    - test_geometry.py
   commands:
     - test_root=${PWD}
     - name='Turbo-Turtle-Tests'
@@ -61,7 +61,7 @@ test:
     - turbo-turtle docs -h
     - turbo-turtle docs --print-local-path
     - turbo-turtle partition -h
-    - cd ${test_root}/turbo_turtle/tests && abq2023 cae -noGui tests_geometry.py
+    - abq2023 cae -noGui test_geometry.py
     - turbo-turtle partition --input-file ${name}.cae --output-file ${name}.cae --model-name ${name} --part-name sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
     - turbo-turtle partition --input-file ${name}.cae --output-file ${name}.cae --model-name ${name} --part-name eigth-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
     - turbo-turtle partition --input-file ${name}.cae --output-file ${name}.cae --model-name ${name} --part-name quarter-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
