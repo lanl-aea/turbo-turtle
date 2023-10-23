@@ -13,9 +13,9 @@ def main(model_name, output_file):
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
 
     sphere(model_name)
-    partial_sphere(model_name, angle=90.)
+    partial_sphere(model_name, part_name="eigth-sphere", angle=90.)
     quarter_sphere(model_name)
-    partial_sphere(model_name, angle=360.)
+    partial_sphere(model_name, part_name="half-sphere", angle=360.)
     seveneigths_sphere(model_name)
     offset_sphere(model_name)
     swiss_cheese(model_name)
@@ -56,7 +56,7 @@ def sphere(model_name, part_name='sphere'):
     return
 
 
-def partial_sphere(model_name, part_name='eigth-sphere', angle=90.):
+def partial_sphere(model_name, part_name='partial-sphere', angle=90.):
     """Create a hollow, partial sphere geometry
 
     :param str model_name: name of the Abaqus model
