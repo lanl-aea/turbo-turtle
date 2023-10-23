@@ -27,11 +27,11 @@ def _partition_parser():
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--model-name', type=str, required=True,
-                        help="Abaqus model name")
+                               help="Abaqus model name")
     requiredNamed.add_argument('--part-name', type=str, required=True,
-                        help="Abaqus part name")
+                               help="Abaqus part name")
     requiredNamed.add_argument('--input-file', type=str, required=True,
-                        help="Abaqus model database to open")
+                               help="Abaqus model database to open")
 
     parser.add_argument('--output-file', type=str, default=None,
                         help="Abaqus model database to save to. Defaults to the specified --input-file")
@@ -77,6 +77,16 @@ def _partition(args):
     stdout = subprocess.check_output(command)
 
 
+def _docs_parser():
+
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("-p", "--print-local-path",
+                        action="store_true",
+                        help="Print the path to the locally installed documentation index file. " \
+                             "As an alternative to the docs sub-command, open index.html in a web browser " \
+                             "(default: %(default)s)")
+
+
 def get_parser():
     """Get parser object for command line options
 
@@ -104,6 +114,14 @@ def get_parser():
         description="Partition a spherical shape into a turtle shell given a small number of locating parameters",
         parents=[partition_parser]
     )
+
+    docs_parser = _docs_parser()
+    docs_parser = subparsers.add_parser(
+        "docs",
+        help=f"Open the {_settings._project_name_short} HTML documentation",
+        description=f"Open the packaged {_settings._project_name_short} HTML documentation in the  " \
+                     "system default web browser",
+        parents=[docs_parser])
 
     return main_parser
 
