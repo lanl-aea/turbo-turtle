@@ -8,6 +8,10 @@ Changelog
 v0.4.2 (unreleased)
 *******************
 
+New Features
+============
+- Add a subcommand to open the package's installed documentation (:issue:`15`, :merge:`11`). By `Kyle Brindley`_.
+
 Documentation
 =============
 - Package HTML documentation and man page (:issue:`11`, :merge:`8`). By `Kyle Brindley`_.
