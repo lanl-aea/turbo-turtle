@@ -30,7 +30,7 @@ for model, angle, center, quadrant in system_tests:
         source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py"],
         action=[
             "${sphere_prefix} --part-name ${TARGET.filebase} --center ${center} --quadrant ${quadrant} ",
-            "${partition_prefix} --part-name ${TARGET.filebase} --center ${center} 0 --xpoint ${xpoint} --zpoint {zpoint} --plane-angle 45",
+            "${partition_prefix} --part-name ${TARGET.filebase} --center ${center} 0 --xpoint ${xpoint} --zpoint ${zpoint} --plane-angle 45",
         ],
         sphere_prefix="python -m turbo_turtle.main sphere --inner-radius 1 --outer-radius 2 " \
                       "--output-file ${TARGET.abspath} --model-name ${TARGET.filebase}",
