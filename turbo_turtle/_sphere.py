@@ -4,10 +4,19 @@ import numpy
 import shutil
 import inspect
 import argparse
+import tempfile
 
 
-def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="both", angle=360., center=(0., 0.),
-           model_name="Model-1", part_name='sphere'):
+default_input_file = None
+default_quadrant = "both"
+default_angle = 360.
+default_center = (0., 0.)
+default_model_name = "Model-1"
+default_part_name = "sphere"
+
+def file_handling(inner_radius, outer_radius, output_file, input_file=default_input_file, quadrant=default_quadrant,
+                  angle=default_angle, center=default_center, model_name=default_model_name,
+                  part_name=default_part_name):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
 
     .. warning::
@@ -27,21 +36,46 @@ def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="b
     import abaqus
     import abaqusConstants
 
+    output_file = os.path.splitext(output_file)[0] + ".cae"
+    if input_file is not None:
+        input_file = os.path.splitext(input_file)[0] + ".cae"
+    else:
+        input_file = output_file
+
+    # Avoid modifying the contents or timestamp on the input file.
+    # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
+    with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
+        shutil.copyfile(input_file, copy_file.name)
+        abaqus.openMdb(pathName=copy_file)
+        sphere(inner_radius, outer_radius, quadrant=quadrant, angle=angle, center=center,
+               model_name=model_name, part_name=part_name)
+        abaqus.mdb.saveAs(pathName=output_file)
+
+
+def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
+           angle=default_angle, center=default_center, model_name=default_model_name,
+           part_name=default_part_name):
+    """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
+
+    .. warning::
+
+       The lower quadrant creation is currently broken
+
+    :param float inner_radius: inner radius (size of hollow)
+    :param float outer_radius: outer radius (size of sphere)
+    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
+    :param float angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param str model_name: name of the Abaqus model
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
+    import abaqus
+    import abaqusConstants
+
     quadrant_options = ("both", "upper", "lower")
     if not quadrant in quadrant_options:
         sys.stderr.write("Quadrant option must be one of: {}".format(quadrant_options))
         sys.exit(1)
-
-    # Avoid modifying the contents or timestamp on the input file.
-    # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-    output_file = os.path.splitext(output_file)[0]
-    if input_file is not None:
-        input_file = os.path.splitext(input_file)[0]
-        input_with_extension = '{}.cae'.format(input_file)
-        output_with_extension = '{}.cae'.format(output_file)
-        if input_with_extension != output_with_extension:
-            shutil.copyfile(input_with_extension, output_with_extension)
-        abaqus.openMdb(pathName=output_with_extension)
 
     if not model_name in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
@@ -103,8 +137,6 @@ def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="b
                                                type=abaqusConstants.DEFORMABLE_BODY)
         p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
     del abaqus.mdb.models[model_name].sketches['__profile__']
-
-    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def get_parser():
