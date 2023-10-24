@@ -18,6 +18,7 @@ env.Alias("regression", target)
 
 system_tests = (
     ("sphere",         360., (0., 0.), "both"),
+    ("axisymmetric",     0., (0., 0.), "both"),
     ("quarter-sphere",  90., (0., 0.), "both"),
     ("offset-sphere",  360., (1., 1.), "both"),
     ("eigth-sphere",    90., (0., 0.), "upper"),

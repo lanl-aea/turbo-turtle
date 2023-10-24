@@ -19,7 +19,7 @@ def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="b
     :param str output_file: output file name. Will be stripped of the extension and ``.cae`` will be used.
     :param str input_file: input file name. Will be stripped of the extension and ``.cae`` will be used.
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
-    :param float angle: angle of rotation 0.-360.0 degrees.
+    :param float angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
     :param tuple center: tuple of floats (X, Y) location for the center of the sphere
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
@@ -94,9 +94,14 @@ def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="b
     s.VerticalConstraint(entity=g[7], addUndoState=False)
     s.sketchOptions.setValues(constructionGeometry=abaqusConstants.ON)
     s.assignCenterline(line=g[7])
-    p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
-        type=abaqusConstants.DEFORMABLE_BODY)
-    p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
+    if numpy.isclose(angle, 0.):
+        p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
+                                               type=ac.DEFORMABLE_BODY)
+        p.BaseShell(sketch=s)
+    else:
+        p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
+                                               type=abaqusConstants.DEFORMABLE_BODY)
+        p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
     del abaqus.mdb.models[model_name].sketches['__profile__']
 
     abaqus.mdb.saveAs(pathName=output_file)
