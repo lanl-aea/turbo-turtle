@@ -14,9 +14,8 @@ default_center = (0., 0.)
 default_model_name = "Model-1"
 default_part_name = "sphere"
 
-def file_handling(inner_radius, outer_radius, output_file, input_file=default_input_file, quadrant=default_quadrant,
-                  angle=default_angle, center=default_center, model_name=default_model_name,
-                  part_name=default_part_name):
+def main(inner_radius, outer_radius, output_file, input_file=default_input_file, quadrant=default_quadrant,
+         angle=default_angle, center=default_center, model_name=default_model_name, part_name=default_part_name):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
 
     .. warning::
@@ -53,8 +52,7 @@ def file_handling(inner_radius, outer_radius, output_file, input_file=default_in
 
 
 def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
-           angle=default_angle, center=default_center, model_name=default_model_name,
-           part_name=default_part_name):
+           angle=default_angle, center=default_center, model_name=default_model_name, part_name=default_part_name):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
 
     .. warning::
@@ -177,7 +175,7 @@ if __name__ == "__main__":
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    sys.exit(sphere(
+    sys.exit(main(
         args.inner_radius,
         args.outer_radius,
         args.output_file,
