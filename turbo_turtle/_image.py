@@ -6,8 +6,16 @@ import argparse
 import tempfile
 
 
-def main(input_file, output_file, x_angle=0, y_angle=0, z_angle=0,
-         image_size=(1920, 1080), model_name="Model-1", part_name="Part-1"):
+default_x_angle = 0.
+default_y_angle = 0.
+default_z_angle = 0.
+default_image_size = (1920, 1080)
+default_model_name = "Model-1"
+default_part_name = "Part-1"
+
+
+def main(input_file, output_file, x_angle=default_x_angle, y_angle=default_y_angle, z_angle=default_z_angle,
+         image_size=default_image_size, model_name=default_model_name, part_name=default_part_name):
     """Wrap image with file input handling
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
@@ -36,7 +44,8 @@ def main(input_file, output_file, x_angle=0, y_angle=0, z_angle=0,
         sys.exit(1)
 
 
-def image(output_file, x_angle=0, y_angle=0, z_angle=0, image_size=(1920, 1080), model_name="Model-1", part_name="Part-1"):
+def image(output_file, x_angle=default_x_angle, y_angle=default_y_angle, z_angle=default_z_angle,
+          image_size=default_image_size, model_name=default_model_name, part_name=default_part_name):
     """Script for saving an assembly view image (colored by material) for a given Abaqus input file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
@@ -104,13 +113,13 @@ def get_parser():
                          help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
     parser.add_argument('--output-file', type=str, required=True,
                         help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
-    parser.add_argument('--x-angle', type=float, default=0.,
+    parser.add_argument('--x-angle', type=float, default=default_x_angle,
                         help='Viewer rotation about X-axis in degrees (default: %(default)s)')
-    parser.add_argument('--y-angle', type=float, default=0.,
+    parser.add_argument('--y-angle', type=float, default=default_y_angle,
                         help='Viewer rotation about Y-axis in degrees (default: %(default)s)')
-    parser.add_argument('--z-angle', type=float, default=0.,
+    parser.add_argument('--z-angle', type=float, default=default_z_angle,
                         help='Viewer rotation about Z-axis in degrees (default: %(default)s)')
-    parser.add_argument('--image-size', nargs=2, type=float, default=(1920, 1080),
+    parser.add_argument('--image-size', nargs=2, type=float, default=default_image_size,
                         help="Image size in pixels (X, Y) (default: %(default)s)")
     parser.add_argument('--model-name', type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")

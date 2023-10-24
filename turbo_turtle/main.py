@@ -135,6 +135,14 @@ def _partition(args):
     stdout = subprocess.check_output(command)
 
 
+def _image_parser():
+    pass
+
+
+def _image():
+    pass
+
+
 def _docs_parser():
     """Get parser object for docs subcommand command line options
 
