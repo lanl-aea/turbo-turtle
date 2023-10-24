@@ -33,7 +33,6 @@ def main(inner_radius, outer_radius, output_file, input_file=default_input_file,
     :param str part_name: name of the part to be created in the Abaqus model
     """
     import abaqus
-    import abaqusConstants
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
     if input_file is not None:
