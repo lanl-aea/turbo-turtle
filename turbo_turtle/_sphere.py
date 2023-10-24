@@ -1,10 +1,11 @@
 import os
 import sys
-import numpy
 import shutil
 import inspect
 import argparse
 import tempfile
+
+import numpy
 
 
 default_input_file = None
