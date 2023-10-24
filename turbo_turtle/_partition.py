@@ -36,7 +36,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     output_file = os.path.splitext(output_file)[0] + ".cae"
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
-        abaqus.openMdb(pathName=copy_file)
+        abaqus.openMdb(pathName=copy_file.name)
         partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partitions)
         abaqus.mdb.saveAs(pathName=output_file)
 
