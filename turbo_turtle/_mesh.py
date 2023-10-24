@@ -25,8 +25,8 @@ def main(input_file, element_type, output_file=default_output_file, model_name=d
     """
     import abaqus
 
-    if args.output_file is None:
-        args.output_file = args.input_file
+    if output_file is None:
+        output_file = input_file
     input_file = os.path.splitext(input_file)[0] + ".cae"
     output_file = os.path.splitext(output_file)[0] + ".cae"
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
@@ -56,7 +56,7 @@ def mesh(element_type, model_name=default_model_name, part_name=default_part_nam
     # TODO: make the deviation and size factor options
     part.seedPart(size=global_seed, deviationFactor=0.1, minSizeFactor=0.1)
 
-    element_type_object = return_abaqus_constant(string)
+    element_type_object = return_abaqus_constant(element_type)
     if element_type_object is None:
         sys.stderr.write("Element type '{}' not found in abaqusConstants".format(element_type))
         sys.exit(1)
@@ -72,17 +72,18 @@ def mesh(element_type, model_name=default_model_name, part_name=default_part_nam
     part.setElementType(regions=(cells,), elementTypes=(mesh_element_type,))
 
 
-def return_abaqus_constant(string):
-    """If string is found in the abaqusConstants module, return the abaqusConstants object. Else None
+def return_abaqus_constant(search_string):
+    """If search_string is found in the abaqusConstants module, return the abaqusConstants object. Else None
 
-    :param str string: String to search in the abaqusConstants module attributes
+    :param str search_string: string to search in the abaqusConstants module attributes
 
     :return value: abaqusConstants attribute, if it exists. Else None
     :rtype: abaqusConstants attribute type, if it exists. Else None
     """
+    search_string = search_string.upper()
     attribute = None
-    if hasattr(abaqusConstants, string):
-        attribute = getattr(abaqusConstants, string)
+    if hasattr(abaqusConstants, search_string):
+        attribute = getattr(abaqusConstants, search_string)
     return attribute
 
 
@@ -91,7 +92,9 @@ def get_parser():
     base_name = os.path.basename(file_name)
 
     prog = "abaqus cae -noGui {} --".format(base_name)
-    cli_description = "Mesh an Abaqus part"
+    cli_description = "Mesh an Abaqus part from a global seed"
+
+    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")

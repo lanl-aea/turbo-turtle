@@ -30,8 +30,8 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     """
     import abaqus
 
-    if args.output_file is None:
-        args.output_file = args.input_file
+    if output_file is None:
+        output_file = input_file
     input_file = os.path.splitext(input_file)[0] + ".cae"
     output_file = os.path.splitext(output_file)[0] + ".cae"
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
