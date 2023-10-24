@@ -22,6 +22,10 @@ Internal Changes
 - Consolidate in-repository system tests with the ``regression`` alias (:issue:`15`, :merge:`11`). By `Kyle Brindley`_.
 - Reduce duplication in system test geometry creation (:issue:`17`, :merge:`12`). By `Kyle Brindley`_.
 
+Enhancements
+============
+- Create 2D axisymmetric part when provided a revolution angle of zero (:issue:`21`, :merge:`14`). By `Kyle Brindley`_.
+
 *******************
 v0.4.1 (2023-10-20)
 *******************
