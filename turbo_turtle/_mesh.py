@@ -50,12 +50,11 @@ def mesh(element_type, model_name=default_model_name, part_name=default_part_nam
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
-    assembly = model.rootAssembly
-    assembly.Instance(name=part_name, part=part, dependent=abaqusConstants.ON)
 
     # TODO: make the deviation and size factor options
     part.seedPart(size=global_seed, deviationFactor=0.1, minSizeFactor=0.1)
 
+    # TODO: figure out how to use element type for both 2D/3D meshes
     element_type_object = return_abaqus_constant(element_type)
     if element_type_object is None:
         sys.stderr.write("Element type '{}' not found in abaqusConstants".format(element_type))
@@ -63,13 +62,19 @@ def mesh(element_type, model_name=default_model_name, part_name=default_part_nam
     # TODO: enable STANDARD/EXPLICIT switch?
     mesh_element_type = mesh.ElemType(elemCode=element_type_object, elemLibrary=abaqusConstants.STANDARD)
 
-    # TODO: do 2D models needs special handling? faces/edges instead of cells? What attribute holds the dimensionality?
-    cells = part.cells[:]
+    # TODO: make the set names optional arguments
+    if part.dimensionality == abaqusConstants.THREE_D:
+        cells = part.cells[:]
+        part.Set(cells=cells, name="ELEMENTS")
+        part.Set(cells=cells, name="NODES")
+        part.setElementType(regions=(cells,), elementTypes=(mesh_element_type,))
+    else:
+        faces = part.faces
+        part.Set(faces=faces, name="ELEMENTS")
+        part.Set(faces=faces, name="NODES")
+        p.setElementType(regions=(faces,), elemTypes=(mesh_element_type,))
 
-    # TODO: make the set names an argument
-    part.Set(cells=cells, name="ELEMENTS")
-    part.Set(cells=cells, name="NODES")
-    part.setElementType(regions=(cells,), elementTypes=(mesh_element_type,))
+    part.generateMesh()
 
 
 def return_abaqus_constant(search_string):
@@ -80,6 +85,8 @@ def return_abaqus_constant(search_string):
     :return value: abaqusConstants attribute, if it exists. Else None
     :rtype: abaqusConstants attribute type, if it exists. Else None
     """
+    import abaqusConstants
+
     search_string = search_string.upper()
     attribute = None
     if hasattr(abaqusConstants, search_string):
