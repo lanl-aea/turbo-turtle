@@ -8,6 +8,10 @@ Changelog
 v0.4.3 (unreleased)
 *******************
 
+Documentation
+=============
+- Add two of the system tests to the user manual as examples (:issue:`24`, :merge:`17`). By `Kyle Brindley`_.
+
 *******************
 v0.4.2 (2023-10-24)
 *******************
