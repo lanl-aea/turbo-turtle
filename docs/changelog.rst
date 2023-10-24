@@ -5,16 +5,8 @@ Changelog
 #########
 
 *******************
-v0.4.4 (unreleased)
+v0.4.3 (unreleased)
 *******************
-
-*******************
-v0.4.3 (2023-10-24)
-*******************
-
-New Features
-============
-- Add a subcommand to create assembly image (:issue:`18`, :merge:`16`). By `Kyle Brindley`_.
 
 *******************
 v0.4.2 (2023-10-24)
@@ -24,6 +16,7 @@ New Features
 ============
 - Add a subcommand to open the package's installed documentation (:issue:`15`, :merge:`11`). By `Kyle Brindley`_.
 - Add a subcommand to create hollow sphere geometry (:issue:`8`, :merge:`13`). By `Kyle Brindley`_.
+- Add a subcommand to create assembly image (:issue:`18`, :merge:`16`). By `Kyle Brindley`_.
 
 Documentation
 =============
