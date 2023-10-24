@@ -36,12 +36,11 @@ def main(inner_radius, outer_radius, output_file, input_file=default_input_file,
         input_file = os.path.splitext(input_file)[0] + ".cae"
         # Avoid modifying the contents or timestamp on the input file.
         # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-        with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
-            shutil.copyfile(input_file, copy_file.name)
-            abaqus.openMdb(pathName=copy_file.name)
-            sphere(inner_radius, outer_radius, quadrant=quadrant, angle=angle, center=center,
-                   model_name=model_name, part_name=part_name)
-            abaqus.mdb.saveAs(pathName=output_file)
+        shutil.copyfile(input_file, output_file)
+        abaqus.openMdb(pathName=output_file)
+        sphere(inner_radius, outer_radius, quadrant=quadrant, angle=angle, center=center,
+               model_name=model_name, part_name=part_name)
+        abaqus.mdb.saveAs(pathName=output_file)
 
     else:
         sphere(inner_radius, outer_radius, quadrant=quadrant, angle=angle, center=center,
@@ -75,64 +74,44 @@ def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
 
     if not model_name in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+    model = abaqus.mdb.models[model_name]
 
     inner_radius = abs(inner_radius)
     outer_radius = abs(outer_radius)
 
-    inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  inner_radius)))
-    outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  outer_radius)))
-
     if quadrant == "both":
-        inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  inner_radius)))
-        outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  outer_radius)))
-
-        inner_point2 = tuple(numpy.array(center) + numpy.array((0., -inner_radius)))
-        outer_point2 = tuple(numpy.array(center) + numpy.array((0., -outer_radius)))
-
+        start_angle = -numpy.pi / 2.
+        end_angle = numpy.pi / 2.
     elif quadrant == "upper":
-        inner_point1 = tuple(numpy.array(center) + numpy.array((0.,  inner_radius)))
-        outer_point1 = tuple(numpy.array(center) + numpy.array((0.,  outer_radius)))
-
-        inner_point2 = tuple(numpy.array(center) + numpy.array((inner_radius, 0.)))
-        outer_point2 = tuple(numpy.array(center) + numpy.array((outer_radius, 0.)))
-
+        start_angle = 0.
+        end_angle = numpy.pi / 2.
     elif quadrant == "lower":
-        inner_point2 = tuple(numpy.array(center) + numpy.array((0.,  -inner_radius)))
-        outer_point2 = tuple(numpy.array(center) + numpy.array((0.,  -outer_radius)))
+        start_angle = -numpy.pi / 2.
+        end_angle = 0.
 
-        inner_point1 = tuple(numpy.array(center) + numpy.array((inner_radius, 0.)))
-        outer_point1 = tuple(numpy.array(center) + numpy.array((outer_radius, 0.)))
+    inner_point1 = tuple(numpy.array(center) + numpy.array((numpy.cos(end_angle), numpy.sin(end_angle))) * inner_radius)
+    inner_point2 = tuple(numpy.array(center) + numpy.array((numpy.cos(start_angle), numpy.sin(start_angle))) * inner_radius)
+    outer_point1 = tuple(numpy.array(center) + numpy.array((numpy.cos(end_angle), numpy.sin(end_angle))) * outer_radius)
+    outer_point2 = tuple(numpy.array(center) + numpy.array((numpy.cos(start_angle), numpy.sin(start_angle))) * outer_radius)
 
-    s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
-        sheetSize=200.0)
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
-    s.setPrimaryObject(option=abaqusConstants.STANDALONE)
-    s.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
-    s.FixedConstraint(entity=g[2])
+    s = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
     s.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
         direction=abaqusConstants.CLOCKWISE)
     s.ArcByCenterEnds(center=center, point1=outer_point1, point2=outer_point2,
         direction=abaqusConstants.CLOCKWISE)
     s.Line(point1=outer_point1, point2=inner_point1)
-    s.VerticalConstraint(entity=g[5], addUndoState=False)
     s.Line(point1=outer_point2, point2=inner_point2)
-    if quadrant in ("upper", "lower"):
-        s.HorizontalConstraint(entity=g[6], addUndoState=False)
-    else:
-        s.VerticalConstraint(entity=g[6], addUndoState=False)
-    s.ConstructionLine(point1=center, angle=90.0)
-    s.VerticalConstraint(entity=g[7], addUndoState=False)
-    s.sketchOptions.setValues(constructionGeometry=abaqusConstants.ON)
-    s.assignCenterline(line=g[7])
+    centerline = s.ConstructionLine(point1=center, angle=90.0)
+    s.assignCenterline(line=centerline)
     if numpy.isclose(angle, 0.):
-        p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
+        p = model.Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
                                                type=abaqusConstants.DEFORMABLE_BODY)
         p.BaseShell(sketch=s)
     else:
-        p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
+        p = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
                                                type=abaqusConstants.DEFORMABLE_BODY)
         p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
-    del abaqus.mdb.models[model_name].sketches['__profile__']
+    del s
 
 
 def get_parser():
