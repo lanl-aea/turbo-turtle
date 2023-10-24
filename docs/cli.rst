@@ -1,8 +1,8 @@
+.. _turbo_turtle_cli:
+
 ######################
 Command Line Utilities
 ######################
-
-.. _waves_cli:
 
 .. argparse::
    :ref: turbo_turtle.main.get_parser
@@ -42,4 +42,4 @@ image
 .. argparse::
    :ref: turbo_turtle.main.get_parser
    :nodefault:
-   :path: image 
+   :path: image

@@ -44,15 +44,12 @@ Author Info
 
 .. user-start-do-not-remove
 
-***************
-Getting Started
-***************
+***********
+Quick Start
+***********
 
 This project is now packaged with a thin Python 3 wrapper. It is no longer necessary to clone the project when working
 on AEA RHEL (linux) servers.
-
-At present, this package is only available on the AEA conda channel. It will be added to the AEA compute environments as
-the package matures.
 
 1. Load the AEA compute environment
 
@@ -61,15 +58,7 @@ the package matures.
       $ module use /projects/aea_compute/aea-conda
       $ module load aea-beta
 
-2. Create a new Conda environment with the turbo turtle (this part will not be necessary after the package is added to
-   the AEA Compute environment(s).
-
-   .. code-block::
-
-      $ conda create --name turbo-turtle-env --channel /projects/aea_compute/aea-conda --channel conda-forge turbo_turtle
-      $ conda activate turbo-turtle-env
-
-3. View the CLI usage
+2. View the CLI usage
 
    .. code-block::
 
