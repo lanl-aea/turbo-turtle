@@ -156,17 +156,17 @@ def get_parser():
     requiredNamed.add_argument('--output-file', type=str, required=True,
                                help="Abaqus model database to create")
 
-    parser.add_argument('--input-file', type=str, default=None,
+    parser.add_argument('--input-file', type=str, default=default_input_file,
                         help="Abaqus model database to open (default: %(default)s)")
-    parser.add_argument("--quadrant", type=str, choices=("both", "upper", "lower"), default="both",
+    parser.add_argument("--quadrant", type=str, choices=("both", "upper", "lower"), default=default_quadrant,
                         help="XY plane quadrant: both, upper (I), lower (IV) (default: %(default)s)")
-    parser.add_argument('--angle', type=float, default=360.,
+    parser.add_argument('--angle', type=float, default=default_angle,
                         help="Angle of revolution about the +Y axis (default: %(default)s)")
-    parser.add_argument('--center', nargs=2, type=float, default=(0., 0.),
+    parser.add_argument('--center', nargs=2, type=float, default=default_center,
                         help="Center of the sphere (default: %(default)s)")
-    parser.add_argument('--model-name', type=str, default="Model-1",
+    parser.add_argument('--model-name', type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")
-    parser.add_argument('--part-name', type=str, default="sphere",
+    parser.add_argument('--part-name', type=str, default=default_part_name,
                         help="Abaqus part name (default: %(default)s)")
 
     return parser
