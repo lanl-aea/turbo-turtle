@@ -8,6 +8,10 @@ Changelog
 v0.4.3 (unreleased)
 *******************
 
+New Features
+============
+- Add a subcommand to create assembly image (:issue:`18`, :merge:`16`). By `Kyle Brindley`_.
+
 *******************
 v0.4.2 (2023-10-24)
 *******************
