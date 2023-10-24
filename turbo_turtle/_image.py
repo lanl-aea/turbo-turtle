@@ -67,6 +67,7 @@ def image(output_file, x_angle=default_x_angle, y_angle=default_y_angle, z_angle
     import abaqus
     import abaqusConstants
 
+    output_file_stem, output_file_extension = os.path.splitext(output_file)
     assembly = mdb.models[model_name].rootAssembly
     if len(assembly.instances.keys()) == 0:
         part = abaqus.mdb.models[model_name].parts[part_name]
@@ -82,8 +83,8 @@ def image(output_file, x_angle=default_x_angle, y_angle=default_y_angle, z_angle
     session.viewports['Viewport: 1'].setColor(colorMapping=cmap)
     session.viewports['Viewport: 1'].disableMultipleColors()
     session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
-    session.pngOptions.setValues(imageSize=image_size)  # This is the aspect ration I found works best for my model
-    session.printToFile(fileName=output_file_name, format=get_abaqus_image_constant(output_file_ext),
+    session.pngOptions.setValues(imageSize=image_size)
+    session.printToFile(fileName=output_file_stem, format=get_abaqus_image_constant(output_file_extension),
         canvasObjects=(session.viewports['Viewport: 1'], ))
 
 
@@ -120,7 +121,7 @@ def get_parser():
                         help='Viewer rotation about Y-axis in degrees (default: %(default)s)')
     parser.add_argument('--z-angle', type=float, default=default_z_angle,
                         help='Viewer rotation about Z-axis in degrees (default: %(default)s)')
-    parser.add_argument('--image-size', nargs=2, type=float, default=default_image_size,
+    parser.add_argument('--image-size', nargs=2, type=int, default=default_image_size,
                         help="Image size in pixels (X, Y) (default: %(default)s)")
     parser.add_argument('--model-name', type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")
