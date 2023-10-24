@@ -21,13 +21,13 @@ Three-dimensional sphere
 
    .. code-block::
 
-      turbo-turtle sphere --inner-radius 1 --outer-radius --output-file sphere.cae --model-name sphere --part-name sphere
+      turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cae --model-name sphere --part-name sphere
 
 2. Partition the geometry
 
    .. code-block::
 
-      turbo-turtle partition --input-file sphere.cae --model-name sphere --part-name sphere
+      turbo-turtle partition --input-file sphere.cae --output-file sphere.cae --model-name sphere --part-name sphere
 
 3. Create an assembly image
 
@@ -44,13 +44,13 @@ Two-dimensional, axisymmetric sphere
 
    .. code-block::
 
-      turbo-turtle axisymmetric --inner-radius 1 --outer-radius --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --angle 0
+      turbo-turtle axisymmetric --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --angle 0
 
 2. Partition the geometry
 
    .. code-block::
 
-      turbo-turtle partition --input-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric
+      turbo-turtle partition --input-file axisymmetric.cae --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric
 
 3. Create an assembly image
 
