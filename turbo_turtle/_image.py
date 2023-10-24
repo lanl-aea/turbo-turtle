@@ -28,6 +28,8 @@ def main(input_file, output_file, x_angle=default_x_angle, y_angle=default_y_ang
 
     :returns: writes image to ``{output_file}``
     """
+    import abaqus
+
     input_file_extension = os.path.splitext(input_file)[1]
     if input_file_extension.lower() == ".cae":
         with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
@@ -36,11 +38,11 @@ def main(input_file, output_file, x_angle=default_x_angle, y_angle=default_y_ang
             image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
                   model_name=model_name, part_name=part_name)
     elif input_file_extension.lower() == ".inp":
-        mdb.ModelFromInputFile(name=model_name, inputFileName=input_file)
+        abaqus.mdb.ModelFromInputFile(name=model_name, inputFileName=input_file)
         image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
               model_name=model_name, part_name=part_name)
     else:
-        sys.stderr.write("Uknown file extension {}".format(input_file_extension)
+        sys.stderr.write("Uknown file extension {}".format(input_file_extension))
         sys.exit(1)
 
 
@@ -63,16 +65,15 @@ def image(output_file, x_angle=default_x_angle, y_angle=default_y_angle, z_angle
     :returns: writes image to ``{output_file}``
     """
     import abaqus
-    import session
     import abaqusConstants
 
     assembly = mdb.models[model_name].rootAssembly
-    if len(assembly.instances.keys() == 0:
+    if len(assembly.instances.keys()) == 0:
         part = abaqus.mdb.models[model_name].parts[part_name]
         assembly.Instance(name=part_name, part=part, dependent=abaqusConstants.ON)
     session.viewports['Viewport: 1'].assemblyDisplay.setValues(
         optimizationTasks=abaqusConstants.OFF, geometricRestrictions=abaqusConstants.OFF, stopConditions=abaqusConstants.OFF)
-    session.viewports['Viewport: 1'].setValues(displayedObject=a)
+    session.viewports['Viewport: 1'].setValues(displayedObject=assembly)
     session.viewports['Viewport: 1'].view.rotate(xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL)
     session.viewports['Viewport: 1'].view.fitView()
     session.viewports['Viewport: 1'].enableMultipleColors()
