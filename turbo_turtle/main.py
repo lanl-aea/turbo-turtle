@@ -167,7 +167,22 @@ def _image_parser():
 
 
 def _image():
-    pass
+    """Python 3 wrapper around the Abaqus Python image CLI
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    """
+    script = _settings._project_root_abspath / "_image.py"
+
+    command = f"{args.abaqus_command} cae -noGui {script} -- "
+    command += f"--input-file {args.input_file} "
+    command += f"--output-file {args.output_file} "
+    command += f"--x-angle {args.x_angle} "
+    command += f"--y-angle {args.y_angle} "
+    command += f"--z-angle {args.z_angle} "
+    command += f"--image-size {' '.join(map(str, args.image_size))} "
+    command += f"--model-name {args.model_name} --part-name {args.part_name}"
+    command = command.split()
+    stdout = subprocess.check_output(command)
 
 
 def _docs_parser():
@@ -270,6 +285,8 @@ def main():
         _sphere(args)
     elif args.subcommand == "partition":
         _partition(args)
+    elif args.subcommand == "image":
+        _image(args)
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     else:
