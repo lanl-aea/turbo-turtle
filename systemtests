@@ -34,16 +34,18 @@ system_tests = (
 for model, angle, center, quadrant in system_tests:
     center_three_dimensions = center + (0,)
     target = env.Command(
-        target=[f"{model}.cae"],
+        target=[f"{model}.cae", f"{model}.png"],
         source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py"],
         action=[
-            "${sphere_prefix} --part-name ${TARGET.filebase} --quadrant ${quadrant} --angle ${angle} --center ${center}",
-            "${partition_prefix} --part-name ${TARGET.filebase} --center ${center} 0 --xpoint ${xpoint} --zpoint ${zpoint} --plane-angle 45",
+            "python -m turbo_turtle.main sphere --inner-radius 1 --outer-radius 2 --output-file ${TARGET.abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --quadrant ${quadrant} " \
+                "--angle ${angle} --center ${center}",
+            "python -m turbo_turtle.main partition --input-file ${TARGET.abspath} --output-file ${TARGET.abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --center ${center} 0 " \
+                "--xpoint ${xpoint} --zpoint ${zpoint} --plane-angle 45",
+            "python -m turbo_turtle.main image --input-file ${TARGET.abspath} --output-file ${TARGETS[1].abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}"
         ],
-        sphere_prefix="python -m turbo_turtle.main sphere --inner-radius 1 --outer-radius 2 " \
-                      "--output-file ${TARGET.abspath} --model-name ${TARGET.filebase}",
-        partition_prefix="python -m turbo_turtle.main partition --input-file ${TARGET.abspath} " \
-                         "--output-file ${TARGET.abspath} --model-name ${TARGET.filebase}",
         quadrant=quadrant,
         angle=angle,
         center=' '.join(map(str, center)),

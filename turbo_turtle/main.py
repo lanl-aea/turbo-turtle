@@ -150,6 +150,8 @@ def _image_parser():
                          help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
     parser.add_argument('--output-file', type=str, required=True,
                         help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
     parser.add_argument('--x-angle', type=float, default=default_x_angle,
                         help='Viewer rotation about X-axis in degrees (default: %(default)s)')
     parser.add_argument('--y-angle', type=float, default=default_y_angle,
@@ -166,7 +168,7 @@ def _image_parser():
     return parser
 
 
-def _image():
+def _image(args):
     """Python 3 wrapper around the Abaqus Python image CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
