@@ -63,8 +63,10 @@ on AEA RHEL (linux) servers.
    .. code-block::
 
       $ turbo-turtle -h
+      $ turbo-turtle docs -h
       $ turbo-turtle sphere -h
       $ turbo-turtle partition -h
+      $ turbo-turtle image -h
 
 .. user-end-do-not-remove
 
