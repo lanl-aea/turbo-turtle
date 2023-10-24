@@ -1,9 +1,11 @@
-import numpy as np
 import ast
 import os
 import sys
 import argparse
 import inspect
+import tempfile
+
+import numpy
 
 
 def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
@@ -208,18 +210,18 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partit
         pass
 
     p = abaqus.mdb.models[model_name].parts[part_name]
-    center = np.array(center)
-    xpoint = np.array(xpoint)
-    zpoint = np.array(zpoint)
+    center = numpy.array(center)
+    xpoint = numpy.array(xpoint)
+    zpoint = numpy.array(zpoint)
 
     # Step 17 - define unit vectors from xpoint and zpoint
     xpoint_vector = xpoint-center
-    xpoint_vector = xpoint_vector / np.linalg.norm(xpoint_vector)
+    xpoint_vector = xpoint_vector / numpy.linalg.norm(xpoint_vector)
     zpoint_vector = zpoint-center
-    zpoint_vector = zpoint_vector / np.linalg.norm(zpoint_vector)
+    zpoint_vector = zpoint_vector / numpy.linalg.norm(zpoint_vector)
 
     # Step 18 - define a ypoint unit vector
-    ypoint_vector = np.cross(zpoint_vector, xpoint_vector)
+    ypoint_vector = numpy.cross(zpoint_vector, xpoint_vector)
 
     # Step 19 - Find the vertices intersecting faces to remove for the x-axis
     found_face = True
@@ -229,12 +231,12 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partit
         vertices = p.vertices
         x_vectors = ()
         for v in vertices:
-            pointOn = np.asarray(v.pointOn[0])
+            pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
-            this_vector = this_vector / np.linalg.norm(this_vector)
-            if np.abs(np.abs(np.dot(this_vector, xpoint_vector)) - 1.0) < 0.01:
+            this_vector = this_vector / numpy.linalg.norm(this_vector)
+            if numpy.abs(numpy.abs(numpy.dot(this_vector, xpoint_vector)) - 1.0) < 0.01:
                 x_vectors += ((v), )
-        x_points = np.asarray([v.pointOn[0][0] for v in x_vectors])
+        x_points = numpy.asarray([v.pointOn[0][0] for v in x_vectors])
         x_points.sort()
         x_vectors_grabbed = ()
         for xp in x_points:
@@ -251,9 +253,9 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partit
             this_vert_idxs = face.getVertices()
             try:
                 if x_vectors_grabbed_idxs[1] in this_vert_idxs or x_vectors_grabbed_idxs[2] in this_vert_idxs:
-                    this_normal = np.array(face.getNormal())
-                    this_normal = this_normal / np.linalg.norm(this_normal)
-                    if np.abs(np.abs(np.dot(this_normal, zpoint_vector))-np.abs(np.cos(plane_angle*np.pi/180.0))) < 0.001:
+                    this_normal = numpy.array(face.getNormal())
+                    this_normal = this_normal / numpy.linalg.norm(this_normal)
+                    if numpy.abs(numpy.abs(numpy.dot(this_normal, zpoint_vector))-numpy.abs(numpy.cos(plane_angle*numpy.pi/180.0))) < 0.001:
                         # p.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         p.RemoveFaces(faceList=p.faces[face.index:(face.index+1)], deleteCells=False)
                         p = abaqus.mdb.models[model_name].parts[part_name]
@@ -274,12 +276,12 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partit
         vertices = p.vertices
         y_vectors = ()
         for v in vertices:
-            pointOn = np.asarray(v.pointOn[0])
+            pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
-            this_vector = this_vector / np.linalg.norm(this_vector)
-            if np.abs(np.abs(np.dot(this_vector, ypoint_vector)) - 1.0) < 0.01:
+            this_vector = this_vector / numpy.linalg.norm(this_vector)
+            if numpy.abs(numpy.abs(numpy.dot(this_vector, ypoint_vector)) - 1.0) < 0.01:
                 y_vectors += ((v), )
-        y_points = np.asarray([v.pointOn[0][1] for v in y_vectors])
+        y_points = numpy.asarray([v.pointOn[0][1] for v in y_vectors])
         y_points.sort()
         y_vectors_grabbed = ()
         for yp in y_points:
@@ -296,9 +298,9 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partit
             this_vert_idxs = face.getVertices()
             try:
                 if y_vectors_grabbed_idxs[1] in this_vert_idxs or y_vectors_grabbed_idxs[2] in this_vert_idxs:
-                    this_normal = np.array(face.getNormal())
-                    this_normal = this_normal / np.linalg.norm(this_normal)
-                    if np.abs(np.abs(np.dot(this_normal, xpoint_vector))-np.cos(plane_angle*np.pi/180.0)) < 0.001:
+                    this_normal = numpy.array(face.getNormal())
+                    this_normal = this_normal / numpy.linalg.norm(this_normal)
+                    if numpy.abs(numpy.abs(numpy.dot(this_normal, xpoint_vector))-numpy.cos(plane_angle*numpy.pi/180.0)) < 0.001:
                         # p.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         p.RemoveFaces(faceList=p.faces[face.index:(face.index+1)], deleteCells=False)
                         p = abaqus.mdb.models[model_name].parts[part_name]
@@ -319,12 +321,12 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partit
         vertices = p.vertices
         z_vectors = ()
         for v in vertices:
-            pointOn = np.asarray(v.pointOn[0])
+            pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
-            this_vector = this_vector / np.linalg.norm(this_vector)
-            if np.abs(np.abs(np.dot(this_vector, zpoint_vector)) - 1.0) < 0.01:
+            this_vector = this_vector / numpy.linalg.norm(this_vector)
+            if numpy.abs(numpy.abs(numpy.dot(this_vector, zpoint_vector)) - 1.0) < 0.01:
                 z_vectors += ((v), )
-        z_points = np.asarray([v.pointOn[0][2] for v in z_vectors])
+        z_points = numpy.asarray([v.pointOn[0][2] for v in z_vectors])
         z_points.sort()
         z_vectors_grabbed = ()
         for zp in z_points:
@@ -341,9 +343,9 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partit
             this_vert_idxs = face.getVertices()
             try:
                 if z_vectors_grabbed_idxs[1] in this_vert_idxs or z_vectors_grabbed_idxs[2] in this_vert_idxs:
-                    this_normal = np.array(face.getNormal())
-                    this_normal = this_normal / np.linalg.norm(this_normal)
-                    if np.abs(np.abs(np.dot(this_normal, ypoint_vector))-np.cos(plane_angle*np.pi/180.0)) < 0.001:
+                    this_normal = numpy.array(face.getNormal())
+                    this_normal = this_normal / numpy.linalg.norm(this_normal)
+                    if numpy.abs(numpy.abs(numpy.dot(this_normal, ypoint_vector))-numpy.cos(plane_angle*numpy.pi/180.0)) < 0.001:
                         # p.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         p.RemoveFaces(faceList=p.faces[face.index:(face.index+1)], deleteCells=False)
                         p = abaqus.mdb.models[model_name].parts[part_name]
