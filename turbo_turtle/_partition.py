@@ -95,9 +95,11 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         print('\nTurboTurtle was canceled\n')
         return
 
+    if output_file is not None:
+        output_file = os.path.splitext(output_file)[0]
+
     # Avoid modifying the contents or timestamp on the input file.
     # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-    output_file = os.path.splitext(output_file)[0]
     if input_file is None:
         model_name = session.viewports[session.currentViewportName].displayedObject.modelName
         part_name = session.viewports[session.currentViewportName].displayedObject.name
