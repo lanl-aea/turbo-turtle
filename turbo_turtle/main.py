@@ -119,12 +119,10 @@ def _partition(args):
     """
     script = _settings._project_root_abspath / "_partition.py"
 
-    # TODO: write a Python 2/3 compatible parser and argument handler
-    if args.output_file is None:
-        args.output_file = args.input_file
-
     command = f"{args.abaqus_command} cae -noGui {script} -- "
-    command += f"--input-file {args.input_file} --output-file {args.output_file} "
+    command += f"--input-file {args.input_file} "
+    if args.output_file is not None:
+        command += f"--output-file {args.output_file} "
     command += f"--model-name {args.model_name} --part-name {args.part_name} "
     command += f"--xpoint {' '.join(map(str, args.xpoint))} "
     command += f"--center {' '.join(map(str, args.center))} "

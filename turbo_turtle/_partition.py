@@ -7,6 +7,36 @@ import inspect
 
 
 def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
+    """Wrap  partition function with file open and file write operations
+
+    :param list center: center location of the geometry
+    :param list xpoint: location on the x-axis local to the geometry
+    :param list zpoint: location on the z-axis local to the geometry
+    :param float plane_angle: angle at which partition planes will be created
+    :param dict partitions: partitions to be created by offsetting the principal planes. This is only available when
+        using the Abaqus CAE GUI.
+    :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
+    :param str part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
+    :param str input_file: Abaqus CAE file to open that already contains a model with a part to be partitioned (only applies
+        when used with ``abaqus cae -nogui``)
+    :param str output_file: Abaqus CAE file to save with the newly partitioned part (only applies when used with ``abaqus
+        cae -nogui``)
+    :param dict partitions: locations of partitions to be created by offsetting the principal planes
+
+    :returns: Abaqus CAE database named ``{output_file}.cae`` if executed from the command line
+    """
+    import abaqus
+
+    if args.output_file is None:
+        args.output_file = args.input_file
+    with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
+        shutil.copyfile(input_file, copy_file.name)
+        abaqus.openMdb(pathName=copy_file)
+        partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partitions)
+        abaqus.mdb.saveAs(pathName=output_file)
+
+
+def partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partitions):
     """Turbo Turtle
 
     Main work-horse function
@@ -52,40 +82,15 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     28. Partition an offset principal planes defined by ``partitions``
     29. Validate the resulting geometry and topology
 
-    :param center: center location of the geometry
-    :type center: list
-
-    :param xpoint: location on the x-axis local to the geometry
-    :type xpoint: list
-
-    :param zpoint: location on the z-axis local to the geometry
-    :type zpoint: list
-
-    :param plane_angle: angle at which partition planes will be created
-    :type plane_angle: float
-
-    :param partitions: partitions to be created by offsetting the principal planes. This is only available when using
-        the Abaqus CAE GUI.
-    :type partitions: dict
-
-    :param model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
-    :type model_name: str
-
-    :param part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
-    :type part_name: str
-
-    :param input_file: Abaqus CAE file to open that already contains a model with a part to be partitioned (only applies
-        when used with ``abaqus cae -nogui``)
-    :type input_file: str
-
-    :param output_file: Abaqus CAE file to save with the newly partitioned part (only applies when used with ``abaqus
-        cae -nogui``)
-    :type output_file: str
-
-    :param partitions: locations of partitions to be created by offsetting the principal planes
-    :type partitions: dict
-
-    :returns: Abaqus CAE database named ``{output_file}.cae`` if executed from the command line
+    :param list center: center location of the geometry
+    :param list xpoint: location on the x-axis local to the geometry
+    :param list zpoint: location on the z-axis local to the geometry
+    :param float plane_angle: angle at which partition planes will be created
+    :param dict partitions: partitions to be created by offsetting the principal planes. This is only available when
+        using the Abaqus CAE GUI.
+    :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
+    :param str part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
+    :param dict partitions: locations of partitions to be created by offsetting the principal planes
     """
     import abaqus
     import caeModules
@@ -94,22 +99,6 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     if center is None:
         print('\nTurboTurtle was canceled\n')
         return
-
-    if output_file is not None:
-        output_file = os.path.splitext(output_file)[0]
-
-    # Avoid modifying the contents or timestamp on the input file.
-    # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-    if input_file is None:
-        model_name = session.viewports[session.currentViewportName].displayedObject.modelName
-        part_name = session.viewports[session.currentViewportName].displayedObject.name
-    else:
-        input_file = os.path.splitext(input_file)[0]
-        input_with_extension = '{}.cae'.format(input_file)
-        output_with_extension = '{}.cae'.format(output_file)
-        if input_with_extension != output_with_extension:
-            shutil.copyfile(input_with_extension, output_with_extension)
-        abaqus.openMdb(pathName=output_with_extension)
 
     # Step 1 - define center
     p = abaqus.mdb.models[model_name].parts[part_name]
@@ -388,13 +377,8 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     p = abaqus.mdb.models[model_name].parts[part_name]
     abaqus.mdb.models[model_name].parts[part_name].checkGeometry()
 
-    # Finally, save the model or set the viewport to remove nasty datum planes and axes
-    if output_file is None:
-        session.viewports[session.currentViewportName].partDisplay.geometryOptions.setValues(datumPoints=OFF, datumAxes=OFF, datumPlanes=OFF)
-    else:
-        abaqus.mdb.saveAs(pathName=output_file)
-
-    return
+    # Set the viewport to remove visual clutter of datum planes and axes
+    session.viewports[session.currentViewportName].partDisplay.geometryOptions.setValues(datumPoints=OFF, datumAxes=OFF, datumPlanes=OFF)
 
 
 def get_inputs():
@@ -520,15 +504,16 @@ if __name__ == "__main__":
         center, xpoint, zpoint, plane_angle, partitions = get_inputs()
         model_name=None
         part_name=None
-        input_file=None
-        output_file=None
+        partitions = {
+            'x': x_partitions,
+            'y': y_partitions,
+            'z': z_partitions
+        }
+        partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partitions)
+
     except:
-        pass
         parser = get_parser()
         args, unknown = parser.parse_known_args()
-
-        if args.output_file is None:
-            args.output_file = args.input_file
 
         center=args.center
         xpoint=args.xpoint
@@ -538,8 +523,10 @@ if __name__ == "__main__":
         part_name=args.part_name
         input_file=args.input_file
         output_file=args.output_file
-        partitions = {'x': args.x_partitions,
-                      'y': args.y_partitions,
-                      'z': args.z_partitions}
+        partitions = {
+            'x': args.x_partitions,
+            'y': args.y_partitions,
+            'z': args.z_partitions
+        }
 
-    sys.exit(main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions))
+        sys.exit(main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions))

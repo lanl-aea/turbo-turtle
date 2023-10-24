@@ -16,11 +16,7 @@ default_part_name = "sphere"
 
 def main(inner_radius, outer_radius, output_file, input_file=default_input_file, quadrant=default_quadrant,
          angle=default_angle, center=default_center, model_name=default_model_name, part_name=default_part_name):
-    """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
-
-    .. warning::
-
-       The lower quadrant creation is currently broken
+    """Wrap sphere function with file open and file write operations
 
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
