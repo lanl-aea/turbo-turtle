@@ -5,12 +5,18 @@ Import(["env"])
 
 target = env.Command(
     target=["help.txt"],
-    source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py", "turbo_turtle/_partition.py"],
+    source=[
+        "turbo_turtle/main.py",
+        "turbo_turtle/_sphere.py",
+        "turbo_turtle/_partition.py",
+        "turbo_turtle/_image.py"
+    ],
     action=[
         "python -m turbo_turtle.main -h > ${TARGET.abspath}",
         "python -m turbo_turtle.main docs -h >> ${TARGET.abspath}",
-        "python -m turbo_turtle.main sphere -h >> ${TARGET.abspath}"
-        "python -m turbo_turtle.main partition -h >> ${TARGET.abspath}"
+        "python -m turbo_turtle.main sphere -h >> ${TARGET.abspath}",
+        "python -m turbo_turtle.main partition -h >> ${TARGET.abspath}",
+        "python -m turbo_turtle.main image -h >> ${TARGET.abspath}"
     ]
 )
 env.Alias("systemtests", target)

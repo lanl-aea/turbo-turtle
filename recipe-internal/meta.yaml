@@ -62,6 +62,7 @@ test:
     - turbo-turtle docs --print-local-path
     - turbo-turtle sphere -h
     - turbo-turtle partition -h
+    - turbo-turtle image -h
     - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cae --model-name sphere --part-name sphere --quadrant both --angle 360.0 --center 0.0 0.0
     - turbo-turtle partition --input-file sphere.cae --output-file sphere.cae --model-name sphere --part-name sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
     - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --quadrant both --angle 0.0 --center 0.0 0.0
