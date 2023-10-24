@@ -35,13 +35,13 @@ def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="b
     # Avoid modifying the contents or timestamp on the input file.
     # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
     output_file = os.path.splitext(output_file)[0]
-    if input_file is None:
-        input_file = output_file
-    input_file = os.path.splitext(input_file)[0]
-    input_with_extension = '{}.cae'.format(input_file)
-    output_with_extension = '{}.cae'.format(output_file)
-    if input_file != output_file:
-        shutil.copyfile(input_with_extension, output_with_extension)
+    if input_file is not None:
+        input_file = os.path.splitext(input_file)[0]
+        input_with_extension = '{}.cae'.format(input_file)
+        output_with_extension = '{}.cae'.format(output_file)
+        if input_with_extension != output_with_extension:
+            shutil.copyfile(input_with_extension, output_with_extension)
+        abaqus.openMdb(pathName=output_with_extension)
 
     if not model_name in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
@@ -144,9 +144,6 @@ def get_parser():
 if __name__ == "__main__":
     parser = get_parser()
     args, unknown = parser.parse_known_args()
-
-    if args.input_file is None:
-        args.input_file = args.output_file
 
     sys.exit(sphere(
         args.inner_radius,

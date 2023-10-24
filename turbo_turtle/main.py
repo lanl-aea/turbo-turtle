@@ -45,13 +45,11 @@ def _sphere(args):
     """
     script = _settings._project_root_abspath / "_sphere.py"
 
-    # TODO: write a Python 2/3 compatible parser and argument handler
-    if args.input_file is None:
-        args.input_file = args.output_file
-
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--inner-radius {args.inner_radius} --outer-radius {args.outer_radius} "
-    command += f"--output-file {args.output_file} --input-file {args.input_file} "
+    command += f"--output-file {args.output_file} "
+    if args.input_file is not None:
+        command += f"--input-file {args.input_file} "
     command += f"--quadrant {args.quadrant} --angle {args.angle} "
     command += f"--center {' '.join(map(str, args.center))} "
     command += f"--model-name {args.model_name} --part-name {args.part_name}"

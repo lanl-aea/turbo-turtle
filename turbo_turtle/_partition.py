@@ -95,11 +95,19 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
         print('\nTurboTurtle was canceled\n')
         return
 
+    # Avoid modifying the contents or timestamp on the input file.
+    # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
+    output_file = os.path.splitext(output_file)[0]
     if input_file is None:
         model_name = session.viewports[session.currentViewportName].displayedObject.modelName
         part_name = session.viewports[session.currentViewportName].displayedObject.name
     else:
-        abaqus.openMdb(pathName=input_file)
+        input_file = os.path.splitext(input_file)[0]
+        input_with_extension = '{}.cae'.format(input_file)
+        output_with_extension = '{}.cae'.format(output_file)
+        if input_with_extension != output_with_extension:
+            shutil.copyfile(input_with_extension, output_with_extension)
+        abaqus.openMdb(pathName=output_with_extension)
 
     # Step 1 - define center
     p = abaqus.mdb.models[model_name].parts[part_name]
