@@ -96,7 +96,7 @@ def sphere(inner_radius, outer_radius, output_file, input_file=None, quadrant="b
     s.assignCenterline(line=g[7])
     if numpy.isclose(angle, 0.):
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
-                                               type=ac.DEFORMABLE_BODY)
+                                               type=abaqusConstants.DEFORMABLE_BODY)
         p.BaseShell(sketch=s)
     else:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,

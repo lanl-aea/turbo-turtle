@@ -17,6 +17,7 @@ env.Alias("systemtests", target)
 env.Alias("regression", target)
 
 system_tests = (
+    # model/part,     angle,   center, quadrant
     ("sphere",         360., (0., 0.), "both"),
     ("axisymmetric",     0., (0., 0.), "both"),
     ("quarter-sphere",  90., (0., 0.), "both"),
