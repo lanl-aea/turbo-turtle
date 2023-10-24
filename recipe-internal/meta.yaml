@@ -62,18 +62,18 @@ test:
     - turbo-turtle docs --print-local-path
     - turbo-turtle sphere -h
     - turbo-turtle partition -h
-    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file /sphere.cae --model-name sphere --part-name sphere --quadrant both --angle 360.0 --center 0.0 0.0
-    - turbo-turtle partition --input-file /sphere.cae --output-file /sphere.cae --model-name sphere --part-name sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
-    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file /axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --quadrant both --angle 0.0 --center 0.0 0.0
-    - turbo-turtle partition --input-file /axisymmetric.cae --output-file /axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
-    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file /quarter-sphere.cae --model-name quarter-sphere --part-name quarter-sphere --quadrant both --angle 90.0 --center 0.0 0.0
-    - turbo-turtle partition --input-file /quarter-sphere.cae --output-file /quarter-sphere.cae --model-name quarter-sphere --part-name quarter-sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
-    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file /offset-sphere.cae --model-name offset-sphere --part-name offset-sphere --quadrant both --angle 360.0 --center 1.0 1.0
-    - turbo-turtle partition --input-file /offset-sphere.cae --output-file /offset-sphere.cae --model-name offset-sphere --part-name offset-sphere --center 1.0 1.0 0 --xpoint 2.0 1.0 0.0 --zpoint 1.0 1.0 1.0 --plane-angle 45
-    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file /eigth-sphere.cae --model-name eigth-sphere --part-name eigth-sphere --quadrant upper --angle 90.0 --center 0.0 0.0
-    - turbo-turtle partition --input-file /eigth-sphere.cae --output-file /eigth-sphere.cae --model-name eigth-sphere --part-name eigth-sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
-    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file /half-sphere.cae --model-name half-sphere --part-name half-sphere --quadrant upper --angle 360.0 --center 0.0 0.0
-    - turbo-turtle partition --input-file /half-sphere.cae --output-file /half-sphere.cae --model-name half-sphere --part-name half-sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
+    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cae --model-name sphere --part-name sphere --quadrant both --angle 360.0 --center 0.0 0.0
+    - turbo-turtle partition --input-file sphere.cae --output-file sphere.cae --model-name sphere --part-name sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
+    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --quadrant both --angle 0.0 --center 0.0 0.0
+    - turbo-turtle partition --input-file axisymmetric.cae --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
+    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file quarter-sphere.cae --model-name quarter-sphere --part-name quarter-sphere --quadrant both --angle 90.0 --center 0.0 0.0
+    - turbo-turtle partition --input-file quarter-sphere.cae --output-file quarter-sphere.cae --model-name quarter-sphere --part-name quarter-sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
+    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file offset-sphere.cae --model-name offset-sphere --part-name offset-sphere --quadrant both --angle 360.0 --center 1.0 1.0
+    - turbo-turtle partition --input-file offset-sphere.cae --output-file offset-sphere.cae --model-name offset-sphere --part-name offset-sphere --center 1.0 1.0 0 --xpoint 2.0 1.0 0.0 --zpoint 1.0 1.0 1.0 --plane-angle 45
+    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file eigth-sphere.cae --model-name eigth-sphere --part-name eigth-sphere --quadrant upper --angle 90.0 --center 0.0 0.0
+    - turbo-turtle partition --input-file eigth-sphere.cae --output-file eigth-sphere.cae --model-name eigth-sphere --part-name eigth-sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
+    - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file half-sphere.cae --model-name half-sphere --part-name half-sphere --quadrant upper --angle 360.0 --center 0.0 0.0
+    - turbo-turtle partition --input-file half-sphere.cae --output-file half-sphere.cae --model-name half-sphere --part-name half-sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
     - abq2023 cae -noGui test_geometry.py
     - turbo-turtle partition --input-file ${name}.cae --output-file ${name}.cae --model-name ${name} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
     - turbo-turtle partition --input-file ${name}.cae --output-file ${name}.cae --model-name ${name} --part-name swiss-cheese --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
