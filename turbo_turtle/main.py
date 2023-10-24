@@ -136,7 +136,34 @@ def _partition(args):
 
 
 def _image_parser():
-    pass
+
+    default_x_angle = 0.
+    default_y_angle = 0.
+    default_z_angle = 0.
+    default_image_size = (1920, 1080)
+    default_model_name = "Model-1"
+    default_part_name = "Part-1"
+
+    parser = argparse.ArgumentParser(add_help=False)
+
+    parser.add_argument('--input-file', type=str, required=True,
+                         help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
+    parser.add_argument('--output-file', type=str, required=True,
+                        help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
+    parser.add_argument('--x-angle', type=float, default=default_x_angle,
+                        help='Viewer rotation about X-axis in degrees (default: %(default)s)')
+    parser.add_argument('--y-angle', type=float, default=default_y_angle,
+                        help='Viewer rotation about Y-axis in degrees (default: %(default)s)')
+    parser.add_argument('--z-angle', type=float, default=default_z_angle,
+                        help='Viewer rotation about Z-axis in degrees (default: %(default)s)')
+    parser.add_argument('--image-size', nargs=2, type=float, default=default_image_size,
+                        help="Image size in pixels (X, Y) (default: %(default)s)")
+    parser.add_argument('--model-name', type=str, default=default_model_name,
+                        help="Abaqus model name (default: %(default)s)")
+    parser.add_argument('--part-name', type=str, default=default_part_name,
+                        help="Abaqus part name (default: %(default)s)")
+
+    return parser
 
 
 def _image():
@@ -214,6 +241,14 @@ def get_parser():
         help="Partition a spherical shape into a turtle shell",
         description="Partition a spherical shape into a turtle shell given a small number of locating parameters",
         parents=[partition_parser]
+    )
+
+    image_parser = _image_parser()
+    image_parser = subparsers.add_parser(
+        "image",
+        help="Save an image of an Abaqus model",
+        description="Save an assembly view image (colored by material) for a given Abaqus input file",
+        parents=[image_parser]
     )
 
     docs_parser = _docs_parser()
