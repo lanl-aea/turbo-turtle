@@ -4,6 +4,7 @@ conda-bld/
 *.egg-info*/
 *.eggs/
 _version.py
+test_results.xml
 
 .sconsign.dblite
 config.log
