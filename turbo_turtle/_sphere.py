@@ -125,7 +125,7 @@ def rectalinear_coordinates(radius, angle):
     :returns coords: tuple of (X, Y) rectalinear coordinates
     :rtype: tuple
     """
-    coords = cmath(radius, angle)
+    coords = cmath.rect(radius, angle)
     return (coords.real, coords.imag)
 
 
