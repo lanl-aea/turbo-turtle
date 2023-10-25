@@ -91,10 +91,10 @@ def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
         start_angle = -numpy.pi / 2.
         end_angle = 0.
 
-    inner_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(inner_radius, end_angle))
-    inner_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(inner_radius, start_angle))
-    outer_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, end_angle))
-    outer_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, start_angle))
+    inner_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(inner_radius, end_angle)))
+    inner_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(inner_radius, start_angle)))
+    outer_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, end_angle)))
+    outer_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, start_angle)))
 
     sketch = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
     sketch.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
