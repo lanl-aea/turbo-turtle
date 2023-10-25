@@ -8,6 +8,10 @@ Changelog
 v0.4.4 (unreleased)
 *******************
 
+Documentation
+=============
+- Add a PDF build of the documentation (:issue:`31`, :merge:`20`). By `Kyle Brindley`_.
+
 *******************
 v0.4.3 (2023-10-24)
 *******************
