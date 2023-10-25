@@ -180,6 +180,44 @@ def _mesh(args):
     stdout = subprocess.check_output(command)
 
 
+def _export_parser():
+
+    default_output_file = None
+    default_model_name = "Model-1"
+    default_part_name = "Part-1"
+
+    parser = argparse.ArgumentParser(add_help=False)
+
+    parser.add_argument("--input-file", type=str, required=True,
+                        help="Abaqus CAE input file")
+    parser.add_argument("--output-file", type=str, default=default_output_file,
+                        help="Abaqus INP output file (default: %(default)s)")
+    parser.add_argument("--model-name", type=str, default=default_model_name,
+                        help="Abaqus model name (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, default=default_part_name,
+                        help="Abaqus part name (default: %(default)s)")
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
+
+    return parser
+
+
+def _export(args):
+    """Python 3 wrapper around the Abaqus Python export CLI
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    """
+    script = _settings._project_root_abspath / "_mesh.py"
+
+    command = f"{args.abaqus_command} cae -noGui {script} -- "
+    command += f"--input-file {args.input_file} "
+    if args.output_file is not None:
+        command += f"--output-file {args.output_file} "
+    command += f"--model-name {args.model_name} --part-name {args.part_name}"
+    command = command.split()
+    stdout = subprocess.check_output(command)
+
+
 def _image_parser():
 
     default_x_angle = 0.
