@@ -107,7 +107,7 @@ def get_parser():
                         help="Abaqus CAE input file")
     parser.add_argument("--element-type", type=str, required=True,
                         help="Abaqus element type")
-    parser.add_argument("--output-file", type=str, default=None,
+    parser.add_argument("--output-file", type=str, default=default_output_file,
                         help="Abaqus CAE output file (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")

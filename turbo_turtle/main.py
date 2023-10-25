@@ -150,7 +150,7 @@ def _mesh_parser():
                         help="Abaqus element type")
     parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
                         help='Abaqus executable absolute or relative path (default: %(default)s)')
-    parser.add_argument("--output-file", type=str, default=None,
+    parser.add_argument("--output-file", type=str, default=default_output_file,
                         help="Abaqus CAE output file (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")
@@ -160,6 +160,24 @@ def _mesh_parser():
                         help="The global mesh seed size. Positive float.")
 
     return parser
+
+
+def _mesh():
+    """Python 3 wrapper around the Abaqus Python mesh CLI
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    """
+    script = _settings._project_root_abspath / "_mesh.py"
+
+    command = f"{args.abaqus_command} cae -noGui {script} -- "
+    command += f"--input-file {args.input_file} "
+    command += f"--element-type {args.element_type} "
+    if output_file is not None:
+        command += f"--output-file {args.output_file} "
+    command += f"--model-name {args.model_name} --part-name {args.part_name}"
+    command += f"--global-seed {args.global_seed}"
+    command = command.split()
+    stdout = subprocess.check_output(command)
 
 
 def _image_parser():
