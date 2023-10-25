@@ -36,10 +36,11 @@ system_tests = (
     ("half-sphere",    360., (0., 0.), "upper",  "C3D8")
 )
 for model, angle, center, quadrant, element_type in system_tests:
+    targets = []
     center_three_dimensions = center + (0,)
-    target = env.Command(
-        target=[f"{model}.cae", f"{model}.png", f"{model}.inp"],
-        source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py"],
+    cae_target = env.Command(
+        target=[f"{model}.cae"],
+        source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py", "turbo_turtle/_partition.py", "turbo_turtle/_mesh.py"],
         action=[
             "python -m turbo_turtle.main sphere --inner-radius 1 --outer-radius 2 --output-file ${TARGET.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --quadrant ${quadrant} " \
@@ -50,10 +51,6 @@ for model, angle, center, quadrant, element_type in system_tests:
             "python -m turbo_turtle.main mesh --input-file ${TARGET.abspath} --output-file ${TARGET.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --global-seed 0.15 " \
                 "--element-type ${element_type}",
-            "python -m turbo_turtle.main image --input-file ${TARGET.abspath} --output-file ${TARGETS[1].abspath} " \
-                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}",
-            "python -m turbo_turtle.main export --input-file ${TARGET.abspath} --output-file ${TARGETS[2].abspath} " \
-                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}"
         ],
         element_type=element_type,
         quadrant=quadrant,
@@ -62,8 +59,31 @@ for model, angle, center, quadrant, element_type in system_tests:
         xpoint=' '.join(map(str, numpy.array(center_three_dimensions) + numpy.array([1, 0, 0]))),
         zpoint=' '.join(map(str, numpy.array(center_three_dimensions) + numpy.array([0, 0, 1])))
     )
-    env.Alias("systemtests", target)
-    env.Alias("regression", target)
+    targets.extend(cae_target)
+
+    png_target = env.Command(
+        target=[f"{model}.png"],
+        source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_image.py"],
+        action=[
+            "python -m turbo_turtle.main image --input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}",
+        ]
+    )
+    targets.extend(png_target)
+
+    inp_target = env.Command(
+        target=[f"{model}.inp"],
+        source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_export.py"],
+        action=[
+            "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}"
+        ]
+    )
+    targets.extend(png_target)
+
+    env.Alias("systemtests", targets)
+    env.Alias("regression", targets)
+
 
 target = env.Command(
     target=["Turbo-Turtle-Tests.cae", "seveneigths-sphere.png", "swiss-cheese.png"],
