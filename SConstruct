@@ -11,8 +11,8 @@ import setuptools_scm
 warnings.filterwarnings(action="ignore", message="tag", category=UserWarning, module="setuptools_scm")
 
 project_variables = {
-    'project_dir': Dir('.').abspath,
-    'version': setuptools_scm.get_version(),
+    "project_dir": Dir(".").abspath,
+    "version": setuptools_scm.get_version(),
 }
 project_variables = waves.scons_extensions.substitution_syntax(project_variables)
 
@@ -38,5 +38,8 @@ SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "pr
 
 build_dir = variant_dir_base / "systemtests"
 SConscript(build_dir.name, variant_dir=build_dir, exports="env", duplicate=False)
+
+build_dir = variant_dir_base / "unittests"
+SConscript(build_dir.name, exports="env", duplicate=False)
 
 waves.scons_extensions.project_help_message()
