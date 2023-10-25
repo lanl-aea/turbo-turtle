@@ -68,7 +68,7 @@ def image(output_file, x_angle=default_x_angle, y_angle=default_y_angle, z_angle
     import abaqusConstants
 
     output_file_stem, output_file_extension = os.path.splitext(output_file)
-    assembly = mdb.models[model_name].rootAssembly
+    assembly = abaqus.mdb.models[model_name].rootAssembly
     if len(assembly.instances.keys()) == 0:
         part = abaqus.mdb.models[model_name].parts[part_name]
         assembly.Instance(name=part_name, part=part, dependent=abaqusConstants.ON)
