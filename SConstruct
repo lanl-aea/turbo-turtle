@@ -39,4 +39,4 @@ SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "pr
 build_dir = variant_dir_base / "systemtests"
 SConscript(build_dir.name, variant_dir=build_dir, exports="env", duplicate=False)
 
-waves.builders.project_help_message()
+waves.scons_extensions.project_help_message()
