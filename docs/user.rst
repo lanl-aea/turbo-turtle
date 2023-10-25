@@ -41,6 +41,12 @@ Three-dimensional sphere
 
       turbo-turtle image --input-file sphere.cae --output-file sphere.png --model-name sphere --part-name sphere
 
+5. Export an orphan mesh
+
+   .. code-block::
+
+      turbo-turtle export --input-file sphere.cae --output-file sphere.inp --model-name sphere --part-name sphere
+
 Two-dimensional, axisymmetric sphere
 ====================================
 
@@ -69,3 +75,9 @@ Two-dimensional, axisymmetric sphere
    .. code-block::
 
       turbo-turtle image --input-file axisymmetric.cae --output-file axisymmetric.png --model-name axisymmetric --part-name axisymmetric
+
+5. Export an orphan mesh
+
+   .. code-block::
+
+      turbo-turtle export --input-file axisymmetric.cae --output-file axisymmetric.inp --model-name axisymmetric --part-name axisymmetric
