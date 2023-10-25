@@ -518,7 +518,10 @@ if __name__ == "__main__":
 
     except:
         parser = get_parser()
-        args, unknown = parser.parse_known_args()
+        try:
+            args, unknown = parser.parse_known_args()
+        except SystemExit as err:
+            sys.exit(err.code)
 
         center=args.center
         xpoint=args.xpoint

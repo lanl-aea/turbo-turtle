@@ -83,7 +83,10 @@ def get_parser():
 
 if __name__ == "__main__":
     parser = get_parser()
-    args, unknown = parser.parse_known_args()
+    try:
+        args, unknown = parser.parse_known_args()
+    except SystemExit as err:
+        sys.exit(err.code)
 
     sys.exit(main(
         args.input_file,
