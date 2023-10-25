@@ -51,7 +51,7 @@ def export(output_file, model_name=default_model_name, part_name=default_part_na
         assembly.Instance(name=part_name, part=part, dependent=abaqusConstants.ON)
 
     model.keywordBlock.synchVersions()
-    block = model_object.keywordBlock.sieBlocks
+    block = model.keywordBlock.sieBlocks
     block_string = '\n'.join(block)
     orphan_mesh = re.findall(".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name),
                              block_string, re.DOTALL | re.I | re.M)
