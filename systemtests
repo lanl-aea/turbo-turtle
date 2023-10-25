@@ -10,7 +10,8 @@ target = env.Command(
         "turbo_turtle/_sphere.py",
         "turbo_turtle/_partition.py",
         "turbo_turtle/_mesh.py",
-        "turbo_turtle/_image.py"
+        "turbo_turtle/_image.py",
+        "turbo_turtle/_export.py"
     ],
     action=[
         "python -m turbo_turtle.main -h > ${TARGET.abspath}",
@@ -18,7 +19,8 @@ target = env.Command(
         "python -m turbo_turtle.main sphere -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main partition -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main mesh -h >> ${TARGET.abspath}",
-        "python -m turbo_turtle.main image -h >> ${TARGET.abspath}"
+        "python -m turbo_turtle.main image -h >> ${TARGET.abspath}",
+        "python -m turbo_turtle.main export -h >> ${TARGET.abspath}"
     ]
 )
 env.Alias("systemtests", target)
@@ -36,7 +38,7 @@ system_tests = (
 for model, angle, center, quadrant, element_type in system_tests:
     center_three_dimensions = center + (0,)
     target = env.Command(
-        target=[f"{model}.cae", f"{model}.png"],
+        target=[f"{model}.cae", f"{model}.png", f"{model}.inp"],
         source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py"],
         action=[
             "python -m turbo_turtle.main sphere --inner-radius 1 --outer-radius 2 --output-file ${TARGET.abspath} " \
@@ -49,6 +51,8 @@ for model, angle, center, quadrant, element_type in system_tests:
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --global-seed 0.15 " \
                 "--element-type ${element_type}",
             "python -m turbo_turtle.main image --input-file ${TARGET.abspath} --output-file ${TARGETS[1].abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}",
+            "python -m turbo_turtle.main export --input-file ${TARGET.abspath} --output-file ${TARGETS[2].abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}"
         ],
         element_type=element_type,

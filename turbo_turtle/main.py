@@ -390,6 +390,8 @@ def main():
         _mesh(args)
     elif args.subcommand == "image":
         _image(args)
+    elif args.subcommand == "export":
+        _export(args)
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     else:
