@@ -96,24 +96,24 @@ def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
     outer_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, end_angle))
     outer_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, start_angle))
 
-    s = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
-    s.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
+    sketch = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
+    sketch.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
         direction=abaqusConstants.CLOCKWISE)
-    s.ArcByCenterEnds(center=center, point1=outer_point1, point2=outer_point2,
+    sketch.ArcByCenterEnds(center=center, point1=outer_point1, point2=outer_point2,
         direction=abaqusConstants.CLOCKWISE)
-    s.Line(point1=outer_point1, point2=inner_point1)
-    s.Line(point1=outer_point2, point2=inner_point2)
-    centerline = s.ConstructionLine(point1=center, angle=90.0)
-    s.assignCenterline(line=centerline)
+    sketch.Line(point1=outer_point1, point2=inner_point1)
+    sketch.Line(point1=outer_point2, point2=inner_point2)
+    centerline = sketch.ConstructionLine(point1=center, angle=90.0)
+    sketch.assignCenterline(line=centerline)
     if numpy.isclose(angle, 0.):
         p = model.Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
                                                type=abaqusConstants.DEFORMABLE_BODY)
-        p.BaseShell(sketch=s)
+        p.BaseShell(sketch=sketch)
     else:
         p = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
                                                type=abaqusConstants.DEFORMABLE_BODY)
-        p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
-    del s
+        p.BaseSolidRevolve(sketch=sketch, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
+    del sketch
 
 
 def rectalinear_coordinates(radius, angle):
