@@ -8,6 +8,10 @@ Changelog
 v0.4.3 (unreleased)
 *******************
 
+New Features
+============
+- Add a subcommand to mesh parts with a global seed (:issue:`29`, :merge:`18`). By `Kyle Brindley`_.
+
 Documentation
 =============
 - Add two of the system tests to the user manual as examples (:issue:`24`, :merge:`17`). By `Kyle Brindley`_.
