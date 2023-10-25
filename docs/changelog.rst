@@ -10,7 +10,8 @@ v0.4.3 (unreleased)
 
 New Features
 ============
-- Add a subcommand to mesh parts with a global seed (:issue:`29`, :merge:`18`). By `Kyle Brindley`_.
+- Add a subcommand to mesh parts with a global seed (:issue:`30`, :merge:`19`). By `Kyle Brindley`_.
+- Add a subcommand to export a part as an orphan mesh (:issue:`29`, :merge:`18`). By `Kyle Brindley`_.
 
 Documentation
 =============
