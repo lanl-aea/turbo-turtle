@@ -16,6 +16,7 @@ Internal Changes
 ================
 - Reduce hardcoded duplication and use Python built-ins for coordinate handling in sphere subcommand implementation
   (:merge:`21`). By `Kyle Brindley`_ and `Matthew Fister`_.
+- Run the pytests with the regression suite (:issue:`25`, :merge:`22`). By `Kyle Brindley`_.
 
 *******************
 v0.4.3 (2023-10-24)

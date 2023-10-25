@@ -50,13 +50,17 @@ requirements:
 
 test:
   requires:
+    - pytest
   imports:
     - turbo_turtle
   source_files:
     - legacy_geometry.py
   commands:
     - test_root=${PWD}
-    - name='Turbo-Turtle-Tests'
+    # Test as-installed project unit tests
+    - cd $SP_DIR/$PKG_NAME
+    - pytest -vvv
+    - cd ${test_root}
     # Help/usage tests
     - turbo-turtle -h
     - turbo-turtle docs -h
@@ -98,6 +102,7 @@ test:
     - turbo-turtle image --input-file half-sphere.cae --output-file half-sphere.png --model-name half-sphere --part-name half-sphere
     - turbo-turtle export --input-file half-sphere.cae --output-file half-sphere.inp --model-name half-sphere --part-name half-sphere
     # Separately handled geometry
+    - name='Turbo-Turtle-Tests'
     - abq2023 cae -noGui legacy_geometry.py
     - turbo-turtle partition --input-file ${name}.cae --output-file ${name}.cae --model-name ${name} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45
     - turbo-turtle image --input-file ${name}.cae --model-name ${name} --output-file seveneigths-sphere.png --part-name seveneigths-sphere
