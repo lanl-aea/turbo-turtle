@@ -1,5 +1,6 @@
 import os
 import sys
+import cmath
 import shutil
 import inspect
 import argparse
@@ -90,10 +91,10 @@ def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
         start_angle = -numpy.pi / 2.
         end_angle = 0.
 
-    inner_point1 = tuple(numpy.array(center) + numpy.array((numpy.cos(end_angle), numpy.sin(end_angle))) * inner_radius)
-    inner_point2 = tuple(numpy.array(center) + numpy.array((numpy.cos(start_angle), numpy.sin(start_angle))) * inner_radius)
-    outer_point1 = tuple(numpy.array(center) + numpy.array((numpy.cos(end_angle), numpy.sin(end_angle))) * outer_radius)
-    outer_point2 = tuple(numpy.array(center) + numpy.array((numpy.cos(start_angle), numpy.sin(start_angle))) * outer_radius)
+    inner_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(inner_radius, end_angle))
+    inner_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(inner_radius, start_angle))
+    outer_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, end_angle))
+    outer_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, start_angle))
 
     s = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
     s.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
@@ -113,6 +114,19 @@ def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
                                                type=abaqusConstants.DEFORMABLE_BODY)
         p.BaseSolidRevolve(sketch=s, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
     del s
+
+
+def rectalinear_coordinates(radius, angle):
+    """Calculate 2D rectalinear coordinates from 2D polar coordinates
+
+    :param float radius: polar coordinate radius
+    :param float angle: polar coordinate angle measured from the positive X-axis in radians
+
+    :returns coords: tuple of (X, Y) rectalinear coordinates
+    :rtype: tuple
+    """
+    coords = cmath(radius, angle)
+    return (coords.real, coords.imag)
 
 
 def get_parser():
