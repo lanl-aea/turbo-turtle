@@ -67,7 +67,7 @@ for model, angle, center, quadrant, element_type in system_tests:
 
 target = env.Command(
     target=["Turbo-Turtle-Tests.cae", "seveneigths-sphere.png", "swiss-cheese.png"],
-    source=["test_geometry.py"],
+    source=["legacy_geometry.py"],
     action=[
         "cd ${TARGET.dir.abspath} && abq2023 cae -noGui ${SOURCE.abspath}",
         "${partition_prefix} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
