@@ -8,6 +8,10 @@ Changelog
 v0.4.4 (unreleased)
 *******************
 
+Bug fixes
+=========
+- Call the correct Abaqus Python script with the ``export`` subcommand (:issue:`25`, :merge:`22`). By `Kyle Brindley`_.
+
 Documentation
 =============
 - Add a PDF build of the documentation (:issue:`31`, :merge:`20`). By `Kyle Brindley`_.
