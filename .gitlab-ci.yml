@@ -19,6 +19,7 @@ before_script:
   - for env in ${environment_choices}; do if [[ -d "${aea_compute_path}/${env}" ]]; then environment=${env}; break; fi; done
   - echo ${environment}
   - module load ${environment}
+  - module load texlive
   - conda info
   - conda_artifacts_directory='conda-bld'
   - project_root=$PWD
