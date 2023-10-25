@@ -39,9 +39,9 @@ for target, source in copy_files:
 sphinx_configuration_files = [
     "conf.py",
     "targets.txt",  # Found in conf.py, which is not currently scanned
+    "turboTurtleLogo.png",
     "_static/custom.css",
-    "_static/favicon.ico",
-    "_static/turboTurtleLogo.png"
+    "_static/favicon.ico"
 ]
 
 sphinx_source_files = [
