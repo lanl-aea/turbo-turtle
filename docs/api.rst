@@ -22,6 +22,12 @@ _partition
 .. automodule:: turbo_turtle._partition
     :members:
 
+_mesh
+=====
+
+.. automodule:: turbo_turtle._mesh
+    :members:
+
 _image
 ======
 

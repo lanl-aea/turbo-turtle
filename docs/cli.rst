@@ -36,6 +36,14 @@ partition
    :nodefault:
    :path: partition
 
+mesh
+----
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: mesh
+
 image
 -----
 

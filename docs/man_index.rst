@@ -56,6 +56,18 @@ partition
 *********************
 |PROJECT| Subcommands
 *********************
+****
+mesh
+****
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: mesh
+
+*********************
+|PROJECT| Subcommands
+*********************
 *****
 image
 *****
