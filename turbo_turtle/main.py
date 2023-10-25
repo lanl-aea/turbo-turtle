@@ -135,6 +135,33 @@ def _partition(args):
     stdout = subprocess.check_output(command)
 
 
+def _mesh_parser():
+
+    default_output_file = None
+    default_model_name = "Model-1"
+    default_part_name = "Part-1"
+    default_global_seed = 1.0
+
+    parser = argparse.ArgumentParser(add_help=False)
+
+    parser.add_argument("--input-file", type=str, required=True,
+                        help="Abaqus CAE input file")
+    parser.add_argument("--element-type", type=str, required=True,
+                        help="Abaqus element type")
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
+    parser.add_argument("--output-file", type=str, default=None,
+                        help="Abaqus CAE output file (default: %(default)s)")
+    parser.add_argument("--model-name", type=str, default=default_model_name,
+                        help="Abaqus model name (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, default=default_part_name,
+                        help="Abaqus part name (default: %(default)s)")
+    parser.add_argument("--global-seed", type=float, default=default_global_seed,
+                        help="The global mesh seed size. Positive float.")
+
+    return parser
+
+
 def _image_parser():
 
     default_x_angle = 0.
@@ -260,6 +287,14 @@ def get_parser():
         parents=[partition_parser]
     )
 
+    mesh_parser = _mesh_parser()
+    mesh_parser = subparsers.add_parser(
+        "mesh",
+        help="Mesh an Abaqus part from a global seed",
+        description="Mesh an Abaqus part from a global seed",
+        parents=[mesh_parser]
+    )
+
     image_parser = _image_parser()
     image_parser = subparsers.add_parser(
         "image",
@@ -287,6 +322,8 @@ def main():
         _sphere(args)
     elif args.subcommand == "partition":
         _partition(args)
+    elif args.subcommand == "mesh":
+        _mesh(args)
     elif args.subcommand == "image":
         _image(args)
     elif args.subcommand == "docs":
