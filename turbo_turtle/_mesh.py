@@ -63,8 +63,8 @@ def mesh(element_type, model_name=default_model_name, part_name=default_part_nam
     mesh_element_type = mesh.ElemType(elemCode=element_type_object, elemLibrary=abaqusConstants.STANDARD)
 
     # TODO: make the set names optional arguments
-    if part.dimensionality == abaqusConstants.THREE_D:
-        cells = part.cells[:]
+    cells = part.cells[:]
+    if len(cells) > 0:
         part.Set(cells=cells, name="ELEMENTS")
         part.Set(cells=cells, name="NODES")
         part.setElementType(regions=(cells,), elementTypes=(mesh_element_type,))
@@ -72,7 +72,7 @@ def mesh(element_type, model_name=default_model_name, part_name=default_part_nam
         faces = part.faces
         part.Set(faces=faces, name="ELEMENTS")
         part.Set(faces=faces, name="NODES")
-        p.setElementType(regions=(faces,), elemTypes=(mesh_element_type,))
+        part.setElementType(regions=(faces,), elemTypes=(mesh_element_type,))
 
     part.generateMesh()
 
@@ -125,7 +125,8 @@ if __name__ == "__main__":
 
     sys.exit(main(
         args.input_file,
-        args.output_file,
+        args.element_type,
+        output_file=args.output_file,
         model_name=args.model_name,
         part_name=args.part_name,
         global_seed=args.global_seed
