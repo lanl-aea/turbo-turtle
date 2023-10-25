@@ -12,6 +12,11 @@ Documentation
 =============
 - Add a PDF build of the documentation (:issue:`31`, :merge:`20`). By `Kyle Brindley`_.
 
+Internal Changes
+================
+- Reduce hardcoded duplication and use Python built-ins for coordinate handling in sphere subcommand implementation
+  (:merge:`21`). By `Kyle Brindley`_ and `Matthew Fister`_.
+
 *******************
 v0.4.3 (2023-10-24)
 *******************
