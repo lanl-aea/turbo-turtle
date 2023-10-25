@@ -66,6 +66,7 @@ on AEA RHEL (linux) servers.
       $ turbo-turtle docs -h
       $ turbo-turtle sphere -h
       $ turbo-turtle partition -h
+      $ turbo-turtle mesh -h
       $ turbo-turtle image -h
 
 .. user-end-do-not-remove

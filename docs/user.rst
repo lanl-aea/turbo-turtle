@@ -29,7 +29,13 @@ Three-dimensional sphere
 
       turbo-turtle partition --input-file sphere.cae --output-file sphere.cae --model-name sphere --part-name sphere
 
-3. Create an assembly image
+3. Mesh the geometry
+
+   .. code-block::
+
+      turbo-turtle mesh --input-file sphere.cae --output-file sphere.cae --model-name sphere --part-name sphere --element-type C3D8 --global-seed 0.15
+
+4. Create an assembly image
 
    .. code-block::
 
@@ -52,7 +58,13 @@ Two-dimensional, axisymmetric sphere
 
       turbo-turtle partition --input-file axisymmetric.cae --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric
 
-3. Create an assembly image
+3. Mesh the geometry
+
+   .. code-block::
+
+      turbo-turtle mesh --input-file axisymmetric.cae --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --element-type CAX4 --global-seed 0.15
+
+4. Create an assembly image
 
    .. code-block::
 
