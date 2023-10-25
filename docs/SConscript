@@ -62,7 +62,7 @@ html = env.SphinxBuild(
     source=sources,
     builder="html"
 )
-env.Clean(html, [Dir("html")] + sphinx_source_files)
+env.Clean(html, [Dir("html")] + sources)
 env.Alias("html", html)
 
 targets = ["man/turbo-turtle.1"]
@@ -73,8 +73,20 @@ man = env.SphinxBuild(
     builder="man",
     tags="-t man"
 )
-env.Clean(man, targets)
+env.Clean(man, [Dir("man")] + sources)
 env.Alias("man", man)
 
-env.Alias("documentation", html + man)
-env.Alias("regression", html + man)
+targets = f"latex/turbo-turtle-{project_variables['@version@']}.pdf"
+sources = sphinx_configuration_files + sphinx_source_files
+latexpdf = env.Command(
+    target=targets,
+    source=sources,
+    action="${program} -M latexpdf ${TARGET.dir.dir.abspath} ${TARGET.dir.dir.abspath} ${tags} ${sphinx_options}",
+    program="sphinx-build",
+    sphinx_options="-W"
+)
+env.Clean(latexpdf, [Dir("latex")] + sources)
+env.Alias("latexpdf", latexpdf)
+
+env.Alias("documentation", html + man + latexpdf)
+env.Alias("regression", html + man + latexpdf)
