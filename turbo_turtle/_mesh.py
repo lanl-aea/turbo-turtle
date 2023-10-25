@@ -67,7 +67,7 @@ def mesh(element_type, model_name=default_model_name, part_name=default_part_nam
     if len(cells) > 0:
         part.Set(cells=cells, name="ELEMENTS")
         part.Set(cells=cells, name="NODES")
-        part.setElementType(regions=(cells,), elementTypes=(mesh_element_type,))
+        part.setElementType(regions=(cells,), elemTypes=(mesh_element_type,))
     else:
         faces = part.faces
         part.Set(faces=faces, name="ELEMENTS")
