@@ -105,14 +105,14 @@ def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
     sketch.Line(point1=outer_point2, point2=inner_point2)
     centerline = sketch.ConstructionLine(point1=center, angle=90.0)
     sketch.assignCenterline(line=centerline)
+
     if numpy.isclose(angle, 0.):
-        p = model.Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
-                                               type=abaqusConstants.DEFORMABLE_BODY)
-        p.BaseShell(sketch=sketch)
+        part = model.Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
+                          type=abaqusConstants.DEFORMABLE_BODY)
+        part.BaseShell(sketch=sketch)
     else:
-        p = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
-                                               type=abaqusConstants.DEFORMABLE_BODY)
-        p.BaseSolidRevolve(sketch=sketch, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
+        part = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D, type=abaqusConstants.DEFORMABLE_BODY)
+        part.BaseSolidRevolve(sketch=sketch, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
     del sketch
 
 
