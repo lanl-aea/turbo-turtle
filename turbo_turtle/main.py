@@ -162,7 +162,7 @@ def _mesh_parser():
     return parser
 
 
-def _mesh():
+def _mesh(args):
     """Python 3 wrapper around the Abaqus Python mesh CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
@@ -172,9 +172,9 @@ def _mesh():
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
     command += f"--element-type {args.element_type} "
-    if output_file is not None:
+    if args.output_file is not None:
         command += f"--output-file {args.output_file} "
-    command += f"--model-name {args.model_name} --part-name {args.part_name}"
+    command += f"--model-name {args.model_name} --part-name {args.part_name} "
     command += f"--global-seed {args.global_seed}"
     command = command.split()
     stdout = subprocess.check_output(command)

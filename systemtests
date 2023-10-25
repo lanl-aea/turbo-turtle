@@ -9,6 +9,7 @@ target = env.Command(
         "turbo_turtle/main.py",
         "turbo_turtle/_sphere.py",
         "turbo_turtle/_partition.py",
+        "turbo_turtle/_mesh.py",
         "turbo_turtle/_image.py"
     ],
     action=[
@@ -16,6 +17,7 @@ target = env.Command(
         "python -m turbo_turtle.main docs -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main sphere -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main partition -h >> ${TARGET.abspath}",
+        "python -m turbo_turtle.main mesh -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main image -h >> ${TARGET.abspath}"
     ]
 )
@@ -23,15 +25,15 @@ env.Alias("systemtests", target)
 env.Alias("regression", target)
 
 system_tests = (
-    # model/part,     angle,   center, quadrant
-    ("sphere",         360., (0., 0.), "both"),
-    ("axisymmetric",     0., (0., 0.), "both"),
-    ("quarter-sphere",  90., (0., 0.), "both"),
-    ("offset-sphere",  360., (1., 1.), "both"),
-    ("eigth-sphere",    90., (0., 0.), "upper"),
-    ("half-sphere",    360., (0., 0.), "upper")
+    # model/part,     angle,   center, quadrant, element_type
+    ("sphere",         360., (0., 0.),  "both",  "C3D8"),
+    ("axisymmetric",     0., (0., 0.),  "both",  "CAX4"),
+    ("quarter-sphere",  90., (0., 0.),  "both",  "C3D8"),
+    ("offset-sphere",  360., (1., 1.),  "both",  "C3D8"),
+    ("eigth-sphere",    90., (0., 0.), "upper",  "C3D8"),
+    ("half-sphere",    360., (0., 0.), "upper",  "C3D8")
 )
-for model, angle, center, quadrant in system_tests:
+for model, angle, center, quadrant, element_type in system_tests:
     center_three_dimensions = center + (0,)
     target = env.Command(
         target=[f"{model}.cae", f"{model}.png"],
@@ -43,9 +45,13 @@ for model, angle, center, quadrant in system_tests:
             "python -m turbo_turtle.main partition --input-file ${TARGET.abspath} --output-file ${TARGET.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --center ${center} 0 " \
                 "--xpoint ${xpoint} --zpoint ${zpoint} --plane-angle 45",
+            "python -m turbo_turtle.main mesh --input-file ${TARGET.abspath} --output-file ${TARGET.abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --global-seed 0.15 " \
+                "--element-type ${element_type}",
             "python -m turbo_turtle.main image --input-file ${TARGET.abspath} --output-file ${TARGETS[1].abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}"
         ],
+        element_type=element_type,
         quadrant=quadrant,
         angle=angle,
         center=' '.join(map(str, center)),
