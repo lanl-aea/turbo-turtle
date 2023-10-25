@@ -210,7 +210,7 @@ def _export(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._project_root_abspath / "_mesh.py"
+    script = _settings._project_root_abspath / "_export.py"
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "

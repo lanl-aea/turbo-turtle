@@ -79,7 +79,7 @@ for model, angle, center, quadrant, element_type in system_tests:
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}"
         ]
     )
-    targets.extend(png_target)
+    targets.extend(inp_target)
 
     env.Alias("systemtests", targets)
     env.Alias("regression", targets)
