@@ -351,6 +351,14 @@ def get_parser():
         parents=[mesh_parser]
     )
 
+    export_parser = _export_parser()
+    export_parser = subparsers.add_parser(
+        "export",
+        help="Export an Abaqus part mesh as an orphan mesh",
+        description="Export an Abaqus part mesh as an orphan mesh",
+        parents=[export_parser]
+    )
+
     image_parser = _image_parser()
     image_parser = subparsers.add_parser(
         "image",
