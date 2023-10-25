@@ -22,6 +22,10 @@ Internal Changes
   (:merge:`21`). By `Kyle Brindley`_ and `Matthew Fister`_.
 - Run the pytests with the regression suite (:issue:`25`, :merge:`22`). By `Kyle Brindley`_.
 
+Enhancements
+============
+- Fail with a non-zero exit code on Abaqus Python CLI errors (:issue:`25`, :merge:`22`). By `Kyle Brindley`_.
+
 *******************
 v0.4.3 (2023-10-24)
 *******************
