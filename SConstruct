@@ -40,6 +40,6 @@ build_dir = variant_dir_base / "systemtests"
 SConscript(build_dir.name, variant_dir=build_dir, exports="env", duplicate=False)
 
 build_dir = variant_dir_base / "unittests"
-SConscript(build_dir.name, exports="env", duplicate=False)
+SConscript(build_dir.name, variant_dir=build_dir, exports="env", duplicate=False)
 
 waves.scons_extensions.project_help_message()
