@@ -27,8 +27,6 @@ def _sphere_parser():
     requiredNamed.add_argument('--output-file', type=str, required=True,
                                help="Abaqus model database to create")
 
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
     parser.add_argument('--input-file', type=str, default=default_input_file,
                         help="Abaqus model database to open (default: %(default)s)")
     parser.add_argument("--quadrant", type=str, choices=("both", "upper", "lower"), default=default_quadrant,
@@ -41,6 +39,9 @@ def _sphere_parser():
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=default_part_name,
                         help="Abaqus part name (default: %(default)s)")
+
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
 
     return parser
 
@@ -92,9 +93,6 @@ def _partition_parser():
 
     parser.add_argument('--output-file', type=str, default=None,
                         help="Abaqus model database to save to. Defaults to the specified --input-file")
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
-
     parser.add_argument('--xpoint', nargs=3, type=float, default=default_xpoint,
                         help="Point on the x-axis (default: %(default)s)")
     parser.add_argument('--center', nargs=3, type=float, default=default_center,
@@ -109,6 +107,9 @@ def _partition_parser():
                         help="Create a partition offset from the y-principal-plane (default: %(default)s)")
     parser.add_argument('--z-partitions', type=float, nargs='+', default=default_partitions_z,
                         help="Create a partition offset from the z-principal-plane (default: %(default)s)")
+
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
     return parser
 
 
@@ -148,8 +149,6 @@ def _mesh_parser():
                         help="Abaqus CAE input file")
     parser.add_argument("--element-type", type=str, required=True,
                         help="Abaqus element type")
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
     parser.add_argument("--output-file", type=str, default=default_output_file,
                         help="Abaqus CAE output file (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=default_model_name,
@@ -158,6 +157,9 @@ def _mesh_parser():
                         help="Abaqus part name (default: %(default)s)")
     parser.add_argument("--global-seed", type=float, default=default_global_seed,
                         help="The global mesh seed size. Positive float.")
+
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
 
     return parser
 
@@ -196,6 +198,7 @@ def _export_parser():
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument("--part-name", type=str, default=default_part_name,
                         help="Abaqus part name (default: %(default)s)")
+
     parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
                         help='Abaqus executable absolute or relative path (default: %(default)s)')
 
@@ -233,8 +236,6 @@ def _image_parser():
                          help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
     parser.add_argument('--output-file', type=str, required=True,
                         help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
     parser.add_argument('--x-angle', type=float, default=default_x_angle,
                         help='Viewer rotation about X-axis in degrees (default: %(default)s)')
     parser.add_argument('--y-angle', type=float, default=default_y_angle,
@@ -247,6 +248,9 @@ def _image_parser():
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=default_part_name,
                         help="Abaqus part name (default: %(default)s)")
+
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
 
     return parser
 
