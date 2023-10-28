@@ -75,7 +75,7 @@ def setup(app):
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
-html_logo = 'turboTurtleLogo.png'
+html_logo = 'turboTurtleLogo.svg'
 html_favicon = "_static/favicon.ico"
 
 # -- Options for manual page output ---------------------------------------

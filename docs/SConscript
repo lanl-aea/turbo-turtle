@@ -39,7 +39,7 @@ for target, source in copy_files:
 sphinx_configuration_files = [
     "conf.py",
     "targets.txt",  # Found in conf.py, which is not currently scanned
-    "turboTurtleLogo.png",
+    "turboTurtleLogo.svg",
     "_static/custom.css",
     "_static/favicon.ico"
 ]
