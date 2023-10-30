@@ -15,7 +15,7 @@ Bug fixes
 Documentation
 =============
 - Add a PDF build of the documentation (:issue:`31`, :merge:`20`). By `Kyle Brindley`_.
-- Add a higher resolution ``.svg`` image for the Turbo Turtle logo (:issue:`32`, :merge:`23`). By `Thomas Roberts`_.
+- Add a higher resolution PNG image for the Turbo Turtle logo (:issue:`32`, :merge:`23`). By `Thomas Roberts`_.
 
 Internal Changes
 ================
