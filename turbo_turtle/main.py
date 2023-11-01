@@ -214,8 +214,6 @@ def _export(args):
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
-    if args.output_file is not None:
-        command += f"--output-file {args.output_file} "
     command += f"--model-name {args.model_name} --part-name {args.part_name}"
     command = command.split()
     stdout = subprocess.check_output(command)
