@@ -75,8 +75,8 @@ def get_parser():
                         help="Abaqus INP output file (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, default=default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
+    parser.add_argument("--part-names", type=str, nargs='+', default=default_part_name,
+                        help="List of Abaqus part names (default: %(default)s)")
 
     return parser
 
@@ -92,5 +92,5 @@ if __name__ == "__main__":
         args.input_file,
         output_file=args.output_file,
         model_name=args.model_name,
-        part_name=args.part_name
+        part_names=args.part_names
     ))
