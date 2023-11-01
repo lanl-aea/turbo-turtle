@@ -7,7 +7,7 @@ import argparse
 import tempfile
 
 default_model_name = "Model-1"
-default_part_names = ["Part-1"]
+default_part_names = "Part-1"
 default_element_types = []
 
 def main(input_file, model_name=default_model_name, part_names=default_part_names,

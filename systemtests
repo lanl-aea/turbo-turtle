@@ -75,8 +75,8 @@ for model, angle, center, quadrant, element_type in system_tests:
         target=[f"{model}.inp"],
         source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_export.py"],
         action=[
-            "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} " \
-                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}"
+            "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} "
         ]
     )
     targets.extend(inp_target)
