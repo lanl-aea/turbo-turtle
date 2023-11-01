@@ -47,11 +47,13 @@ def export_multiple_parts(model_name, part_names, element_types):
     tmp_name = "tmp"
     
     for part_name, element_type in zip(part_names, element_types):
-        mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)  # Create a temporary model to house a single part
-        mdb.models[tmp_name].Part(part_name, mdb.models[model_name].parts[part_name])  # Copy current part to tmp model
+        # Create a temporary model to house a single part
+        mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+        # Copy current part to tmp model
+        mdb.models[tmp_name].Part(part_name, mdb.models[model_name].parts[part_name])
         mesh_output_file = part_name + ".inp"
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=part_name)
-        del mdb.models[tmp_name]  # Delete temprary model
+        del mdb.models[tmp_name]
         
         if element_type is not None:
             with open(mesh_output_file, 'r') as output:
