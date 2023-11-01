@@ -185,8 +185,8 @@ def _mesh(args):
 def _export_parser():
 
     default_model_name = "Model-1"
-    default_part_names = "Part-1"
-    default_element_types = []
+    default_part_names = ["Part-1"]
+    default_element_types = [None]
 
     parser = argparse.ArgumentParser(add_help=False)
 
@@ -196,7 +196,7 @@ def _export_parser():
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument("--part-names", type=str, nargs="+", default=default_part_names,
                         help="List of Abaqus part names (default: %(default)s)")
-    parser.add_argument("--element-types", type=str, nargs='+', default=default_element_types,
+    parser.add_argument("--element-types", type=str, nargs="+", default=default_element_types,
                         help="List of element types, one for each part specified in part_names (default: %(default)s means no element type substitution)")
 
     parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
@@ -214,8 +214,8 @@ def _export(args):
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
-    command += f"--model-name {args.model_name} --part-names {args.part_names} "
-    command += f"--element-types {args.element_types}"
+    command += f"--model-name {args.model_name} --part-names {' '.join(map(str, args.part_names))} "
+    command += f"--element-types {' '.join(map(str, args.element_types))}"
     command = command.split()
     stdout = subprocess.check_output(command)
 
