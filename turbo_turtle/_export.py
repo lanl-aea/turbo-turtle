@@ -7,8 +7,8 @@ import argparse
 import tempfile
 
 default_model_name = "Model-1"
-default_part_names = "Part-1"
-default_element_types = []
+default_part_names = ["Part-1"]
+default_element_types = [None]
 
 def main(input_file, model_name=default_model_name, part_names=default_part_names,
     element_types=default_element_types):
@@ -76,9 +76,9 @@ def _validate_element_types_length(part_names, element_types):
     :return: element types
     :rtype: list
     """
-    if element_types and len(part_names) != len(element_types):
+    if element_types[0] is not None and len(part_names) != len(element_types):
         sys.exit("Number of element types must match the number of part names\n")
-    elif not element_types:  # Empty list of element types indicates to skip element type change operations
+    elif element_types[0] is None:  # None element_types indicates to skip element type change operations
         element_types = [None] * len(part_names)  # None values will be skipped in the exporter function
     return element_types
 
