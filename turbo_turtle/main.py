@@ -184,20 +184,20 @@ def _mesh(args):
 
 def _export_parser():
 
-    default_output_file = None
     default_model_name = "Model-1"
-    default_part_name = "Part-1"
+    default_part_names = "Part-1"
+    default_element_types = []
 
     parser = argparse.ArgumentParser(add_help=False)
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")
-    parser.add_argument("--output-file", type=str, default=default_output_file,
-                        help="Abaqus INP output file (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, default=default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, nargs="+", default=default_part_names,
+                        help="List of Abaqus part names (default: %(default)s)")
+    parser.add_argument("--element-types", type=str, nargs='+', default=default_element_types,
+                        help="List of element types, one for each part specified in part_names (default: %(default)s means no element type substitution)")
 
     parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
                         help='Abaqus executable absolute or relative path (default: %(default)s)')
