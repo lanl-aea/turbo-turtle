@@ -67,14 +67,15 @@ def export_multiple_parts(model_name, part_name, element_type):
     :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element 
               types with :turbo_tutrls._export.substitute_element_type`
     """
+    import abaqus
     import abaqusConstants
     
     for part_name, element_type in zip(part_name, element_type):
         tmp_name = "tmp"+part_name
         # Create a temporary model to house a single part
-        mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+        abaqus.mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
         # Copy current part to tmp model
-        mdb.models[tmp_name].Part(part_name, mdb.models[model_name].parts[part_name])
+        abaqus.mdb.models[tmp_name].Part(part_name, abaqus.mdb.models[model_name].parts[part_name])
         mesh_output_file = part_name + ".inp"
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=part_name)
         substitute_element_type(mesh_output_file, element_type)
