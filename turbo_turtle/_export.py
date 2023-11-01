@@ -60,7 +60,6 @@ def export_multiple_parts(model_name, part_names, element_types):
                     orphan_mesh_lines[II] = "*Element, type={}\n".format(element_type)
             with open(mesh_output_file, 'w') as output:
                 output.writelines(orphan_mesh_lines)
-    return
 
 
 def _validate_element_types_length(part_names, element_types):
