@@ -23,6 +23,8 @@ def main(input_file, model_name=default_model_name, part_names=default_part_name
 
     input_file = os.path.splitext(input_file)[0] + ".cae"
     element_types = _validate_element_types_length(part_names, element_types)
+    if element_types[0] is None:
+        element_types = [None] * len(part_names)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
@@ -63,25 +65,6 @@ def export_multiple_parts(model_name, part_names, element_types):
                     orphan_mesh_lines[II] = "*Element, type={}\n".format(element_type)
             with open(mesh_output_file, 'w') as output:
                 output.writelines(orphan_mesh_lines)
-
-
-def _validate_element_types_length(part_names, element_types):
-    """Validate the number of element types provided
-    
-    Element types must either be an empty list to indicate that no element type change should be performed or a list of 
-    the same length as part_names.
-    
-    :param list part_names: list of parts for exporting orphan meshes
-    :param list element_types: list of element types, one for each part in ``part_names`` or empty
-    
-    :return: element types
-    :rtype: list
-    """
-    if element_types[0] is not None and len(part_names) != len(element_types):
-        sys.exit("Number of element types must match the number of part names\n")
-    elif element_types[0] is None:  # None element_types indicates to skip element type change operations
-        element_types = [None] * len(part_names)  # None values will be skipped in the exporter function
-    return element_types
 
 
 def export(output_file, model_name=default_model_name, part_name=default_part_names[0]):
