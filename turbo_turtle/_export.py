@@ -6,53 +6,59 @@ import inspect
 import argparse
 import tempfile
 
-default_output_file = None
 default_model_name = "Model-1"
 default_part_names = ["Part-1"]
 default_element_types = []
 
-def main(input_file, output_file=default_output_file, model_name=default_model_name,
-         part_names=default_part_names, element_types=default_element_types):
+def main(input_file, model_name=default_model_name, part_names=default_part_names,
+    element_types=default_element_types):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
-    :param str output_file: Abaqus CAE file to save with the newly meshed part
     :param str model_name: model to query in the Abaqus model database
     :param list part_names: list of parts to query in the specified Abaqus model
     :param list element_types: list of element types, one for each part specified in ``part_names`` or empty
     """
     import abaqus
 
-    if output_file is None:
-        output_file = input_file
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    output_file = os.path.splitext(output_file)[0] + ".inp"
     element_types = _validate_element_types_length(part_names, element_types)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
-        export_multiple_parts(output_file, model_name=model_name, part_names=part_names, element_types=element_types)
+        export_multiple_parts(model_name=model_name, part_names=part_names, element_types=element_types)
 
 
-def export_multiple_parts(output_file, model_name, part_names, element_types):
-    """Export orphan mesh files for multiple parts, and allow element type changes    
+def export_multiple_parts(model_name, part_names, element_types):
+    """Export orphan mesh files for multiple parts, and allow element type changes
+    
+    Specify a model name and one or multiple part names for exporting orphan mesh files. This function will write one 
+    orphan mesh file per part name specified, and the orphan mesh file name will be the part name.
+    
+    :param str model_name: model to query in the Abaqus model database
+    :param list part_names: list of parts to query in the specified Abaqus model
+    :param list element_types: list of element types, one for each part specified in ``part_names`` or empty
+    
+    :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element 
+              types
     """
     import abaqusConstants
 
     for part_name, element_type in zip(part_names, element_types):
         mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)  # Create a temporary model to house a single part
         mdb.models[tmp_name].Part(part_name, mdb.models[model_name].parts[part_name])  # Copy current part to tmp model
-        export(output_file, model_name=tmp_name, part_name=part_name)
+        mesh_output_file = part_name + ".inp"
+        export(output_file=mesh_output_file, model_name=tmp_name, part_name=part_name)
         del mdb.models[tmp_name]  # Delete temprary model
         
         if element_type is not None:
-            with open(output_file, 'r') as output:
+            with open(mesh_output_file, 'r') as output:
                 orphan_mesh_lines = output.readlines()
             # TODO: Simplify this by using regex
             for II, l in enumerate(orphan_mesh_lines):
                 if l.upper().find("*ELEMENT") == 0:
                     orphan_mesh_lines[II] = "*Element, type={}\n".format(element_type)
-            with open(output_file, 'w') as output:
+            with open(mesh_output_file, 'w') as output:
                 output.writelines(orphan_mesh_lines)
     return
 
@@ -115,8 +121,6 @@ def get_parser():
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")
-    parser.add_argument("--output-file", type=str, default=default_output_file,
-                        help="Abaqus INP output file (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument("--part-names", type=str, nargs='+', default=default_part_name,
@@ -136,7 +140,6 @@ if __name__ == "__main__":
 
     sys.exit(main(
         args.input_file,
-        output_file=args.output_file,
         model_name=args.model_name,
         part_names=args.part_names,
         element_types=args.element_types
