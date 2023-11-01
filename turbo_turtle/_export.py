@@ -17,17 +17,40 @@ def main(input_file, model_name=default_model_name, part_names=default_part_name
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str model_name: model to query in the Abaqus model database
     :param list part_names: list of parts to query in the specified Abaqus model
-    :param list element_types: list of element types, one for each part specified in ``part_names`` or empty
+    :param list element_types: list of element types, one for each part specified in ``part_names``, a single element 
+                               type to apply to all parts, or empty
     """
     import abaqus
 
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    if element_types[0] is None:
-        element_types = [None] * len(part_names)
+    element_types = _validate_element_types(part_names, element_types)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
         export_multiple_parts(model_name=model_name, part_names=part_names, element_types=element_types)
+
+
+def _validate_element_types(part_names, element_types):
+    """Validate the structure of the ``element_types`` list to the following rules:
+    
+    * If ``element_types`` is ``[None]``, skip element type substitution
+    * Else If ``element_types`` is of length 1 and not ``[None]``, substitute that element type for all parts
+    * Else if the length of ``element_types`` is not equal to the length of ``part_names``, exit with an error
+    
+    :param list part_names: list of part names
+    :param list element_types: list of element types
+    
+    :return: element types
+    :rtype: list
+    """
+    if element_types[0] is None:
+        element_types = [None] * len(part_names)
+    elif element_types[0] is not None and len(element_types) == 1:
+        element_types = element_types * len(part_names)
+    elif len(element_types) != len(part_names):
+        print("Error: improperly formatted element_types list. See Internal API for guidance")
+        exit(1)
+    return element_types
 
 
 def export_multiple_parts(model_name, part_names, element_types):
@@ -38,7 +61,8 @@ def export_multiple_parts(model_name, part_names, element_types):
     
     :param str model_name: model to query in the Abaqus model database
     :param list part_names: list of parts to query in the specified Abaqus model
-    :param list element_types: list of element types, one for each part specified in ``part_names`` or empty
+    :param list element_types: list of element types, one for each part specified in ``part_names``, a single element 
+                               type to apply to all parts, or empty
     
     :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element 
               types with :turbo_tutrls._export.substitute_element_type`
