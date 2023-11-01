@@ -31,7 +31,30 @@ def main(input_file, output_file=default_output_file, model_name=default_model_n
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
-        export(output_file, model_name=model_name, part_name=part_name)
+        export_multiple_parts(output_file, model_name=model_name, part_names=part_names, element_types=element_types)
+
+
+def export_multiple_parts(output_file, model_name, part_names, element_types):
+    """Export orphan mesh files for multiple parts, and allow element type changes    
+    """
+    import abaqusConstants
+
+    for part_name, element_type in zip(part_names, element_types):
+        mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)  # Create a temporary model to house a single part
+        mdb.models[tmp_name].Part(part_name, mdb.models[model_name].parts[part_name])  # Copy current part to tmp model
+        export(output_file, model_name=tmp_name, part_name=part_name)
+        del mdb.models[tmp_name]  # Delete temprary model
+        
+        if element_type is not None:
+            with open(output_file, 'r') as output:
+                orphan_mesh_lines = output.readlines()
+            # TODO: Simplify this by using regex
+            for II, l in enumerate(orphan_mesh_lines):
+                if l.upper().find("*ELEMENT") == 0:
+                    orphan_mesh_lines[II] = "*Element, type={}\n".format(element_type)
+            with open(output_file, 'w') as output:
+                output.writelines(orphan_mesh_lines)
+    return
 
 
 def _validate_element_types_length(part_names, element_types):
