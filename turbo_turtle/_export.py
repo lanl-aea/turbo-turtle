@@ -22,7 +22,6 @@ def main(input_file, model_name=default_model_name, part_names=default_part_name
     import abaqus
 
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    element_types = _validate_element_types_length(part_names, element_types)
     if element_types[0] is None:
         element_types = [None] * len(part_names)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
@@ -42,30 +41,40 @@ def export_multiple_parts(model_name, part_names, element_types):
     :param list element_types: list of element types, one for each part specified in ``part_names`` or empty
     
     :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element 
-              types
+              types with :turbo_tutrls._export.substitute_element_type`
     """
     import abaqusConstants
-
-    tmp_name = "tmp"+part_name
     
     for part_name, element_type in zip(part_names, element_types):
+        tmp_name = "tmp"+part_name
         # Create a temporary model to house a single part
         mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
         # Copy current part to tmp model
         mdb.models[tmp_name].Part(part_name, mdb.models[model_name].parts[part_name])
         mesh_output_file = part_name + ".inp"
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=part_name)
-        
-        if element_type is not None:
-            with open(mesh_output_file, 'r') as output:
-                orphan_mesh_lines = output.readlines()
-            # TODO: Simplify this by using regex
-            for II, l in enumerate(orphan_mesh_lines):
-                if l.upper().find("*ELEMENT") == 0:
-                    orphan_mesh_lines[II] = "*Element, type={}\n".format(element_type)
-            with open(mesh_output_file, 'w') as output:
-                output.writelines(orphan_mesh_lines)
+        substitute_element_type(mesh_output_file, element_type)
 
+
+def substitute_element_type(mesh_output_file, element_type):
+    """Use regular expressions to substitute element types in an existing orphan mesh file via the
+    ``*Element`` keyword.
+
+    :param str mesh_output_file: existing orphan mesh file
+    :param str element_type: element type to substitute into the ``*Element`` keyword phrase
+    """
+    regex = r"(\*element,\s+type=)([a-zA-Z0-9]*)"
+    subst = "\\1{}".format(element_type)
+    if element_type is not None:
+        with open(mesh_output_file, 'r') as output:
+            orphan_mesh_lines = output.readlines()
+        for II, l in enumerate(orphan_mesh_lines):
+            result = re.sub(regex, subst, l, 0, re.MULTILINE | re.IGNORECASE)
+            if result:
+                orphan_mesh_lines[II] = result
+        with open(mesh_output_file, 'w') as output:
+            output.writelines(orphan_mesh_lines)
+    
 
 def export(output_file, model_name=default_model_name, part_name=default_part_names[0]):
     """Export an orphan mesh from a single part
