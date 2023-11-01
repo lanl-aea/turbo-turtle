@@ -81,7 +81,7 @@ def _validate_element_types_length(part_names, element_types):
     return element_types
 
 
-def export(output_file, model_name=default_model_name, part_name=default_part_name):
+def export(output_file, model_name=default_model_name, part_name=default_part_names[0]):
     """Export an orphan mesh from a single part
 
     :param str output_file: Abaqus CAE file to save with the newly meshed part
