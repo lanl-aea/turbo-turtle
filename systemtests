@@ -76,8 +76,8 @@ for model, angle, center, quadrant, element_type in system_tests:
         source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_export.py"],
         action=[
             "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} " \
-                "--model-name ${TARGET.filebase} --part-names ${TARGET.filebase} " \
-                "--element-types ${element_type}"
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
+                "--element-type ${element_type}"
         ],
     element_type='C3D8R',
     )
