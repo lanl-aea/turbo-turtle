@@ -11,7 +11,7 @@ default_part_names = ["Part-1"]
 default_element_types = [None]
 
 def main(input_file, model_name=default_model_name, part_names=default_part_names,
-    element_types=default_element_types):
+         element_types=default_element_types):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
