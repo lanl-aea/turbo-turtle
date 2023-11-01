@@ -8,17 +8,17 @@ import tempfile
 
 default_output_file = None
 default_model_name = "Model-1"
-default_part_name = "Part-1"
+default_part_names = ["Part-1"]
 
 
 def main(input_file, output_file=default_output_file, model_name=default_model_name,
-         part_name=default_part_name):
+         part_names=default_part_names):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str output_file: Abaqus CAE file to save with the newly meshed part
     :param str model_name: model to query in the Abaqus model database
-    :param str part_name: part to query in the specified Abaqus model
+    :param list part_names: list of parts to query in the specified Abaqus model
     """
     import abaqus
 
