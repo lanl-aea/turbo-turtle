@@ -194,7 +194,7 @@ def _export_parser():
                         help="Abaqus CAE input file")
     parser.add_argument("--model-name", type=str, default=default_model_name,
                         help="Abaqus model name (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, nargs="+", default=default_part_names,
+    parser.add_argument("--part-names", type=str, nargs="+", default=default_part_names,
                         help="List of Abaqus part names (default: %(default)s)")
     parser.add_argument("--element-types", type=str, nargs='+', default=default_element_types,
                         help="List of element types, one for each part specified in part_names (default: %(default)s means no element type substitution)")
