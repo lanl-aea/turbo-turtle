@@ -8,6 +8,12 @@ Changelog
 v0.4.4 (unreleased)
 *******************
 
+Breaking changes
+================
+- Update the ``export`` subcommand to allow for multiple orphan mesh files to be exported from the same Abaqus model and 
+  also allow for element type changes. This change removed the ``output_file`` command line argument in favor of naming 
+  orphan mesh files after the part names (:issue:`23`, :merge:`24`). By `Thomas Roberts`_.
+
 Bug fixes
 =========
 - Call the correct Abaqus Python script with the ``export`` subcommand (:issue:`25`, :merge:`22`). By `Kyle Brindley`_.
