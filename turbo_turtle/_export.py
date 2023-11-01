@@ -44,6 +44,8 @@ def export_multiple_parts(model_name, part_names, element_types):
     """
     import abaqusConstants
 
+    tmp_name = "tmp"
+    
     for part_name, element_type in zip(part_names, element_types):
         mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)  # Create a temporary model to house a single part
         mdb.models[tmp_name].Part(part_name, mdb.models[model_name].parts[part_name])  # Copy current part to tmp model
