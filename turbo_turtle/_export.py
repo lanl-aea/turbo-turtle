@@ -9,16 +9,17 @@ import tempfile
 default_output_file = None
 default_model_name = "Model-1"
 default_part_names = ["Part-1"]
-
+default_element_types = []
 
 def main(input_file, output_file=default_output_file, model_name=default_model_name,
-         part_names=default_part_names):
+         part_names=default_part_names, element_types=default_element_types):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str output_file: Abaqus CAE file to save with the newly meshed part
     :param str model_name: model to query in the Abaqus model database
     :param list part_names: list of parts to query in the specified Abaqus model
+    :param list element_types: list of element types, one for each part specified in ``part_names``
     """
     import abaqus
 
@@ -77,6 +78,8 @@ def get_parser():
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument("--part-names", type=str, nargs='+', default=default_part_name,
                         help="List of Abaqus part names (default: %(default)s)")
+    parser.add_argument("--element-types", type=str, nargs='+', default=default_element_types,
+                        help="List of element types, one for each part specified in part_names (default: %(default)s means no element type substitution)"
 
     return parser
 
@@ -92,5 +95,6 @@ if __name__ == "__main__":
         args.input_file,
         output_file=args.output_file,
         model_name=args.model_name,
-        part_names=args.part_names
+        part_names=args.part_names,
+        element_types=args.element_types
     ))
