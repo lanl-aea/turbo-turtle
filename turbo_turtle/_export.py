@@ -144,7 +144,7 @@ def get_parser():
     parser.add_argument("--part-names", type=str, nargs='+', default=default_part_names,
                         help="List of Abaqus part names (default: %(default)s)")
     parser.add_argument("--element-types", type=str, nargs='+', default=default_element_types,
-                        help="List of element types, one for each part specified in part_names (default: %(default)s means no element type substitution)")
+                        help="List of element types, one for each part specified in part_names (default: %(default)s)")
 
     return parser
 
