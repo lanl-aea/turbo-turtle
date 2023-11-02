@@ -66,7 +66,7 @@ def export_multiple_parts(model_name, part_name, element_type):
     :param list element_type: list of element types, one per part name or one global replacement for every part name
     
     :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element 
-              types with :turbo_tutrls._export.substitute_element_type`
+              types with :turbo_turtle._export.substitute_element_type`
     """
     import abaqus
     import abaqusConstants
