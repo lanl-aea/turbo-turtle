@@ -23,7 +23,7 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
     about the global Y-axis must lie entirely on the positive-X side of the global Y-axis. In general, a 2D sketch can 
     lie in all four quadrants; this is referred to as a "planar" sketch. This script can accept multiple input files to 
     create multiple parts in the same Abaqus model. The ``part_name`` parameter allows explicit naming of part(s) in the 
-    model. If ommited from the command line arguments, the default is to use the input file basename(s) as the part
+    model. If omitted from the command line arguments, the default is to use the input file basename(s) as the part
     name(s).
 
     :param str input_file: input text file(s) with points to draw
