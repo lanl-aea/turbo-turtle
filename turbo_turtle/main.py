@@ -36,7 +36,7 @@ def _geometry_parser():
                         help="Abaqus part name(s) (default: %(default)s)")
     parser.add_argument("--output-file", type=str, required=True,
                         help="Name of the output Abaqus CAE file to save (default: %(default)s)")
-    parser.add_argunent("--delimiter", type=str, default=default_delimiter,
+    parser.add_argument("--delimiter", type=str, default=default_delimiter,
                         help="Delimiter character between columns in the points file(s) (default: %(default)s)")
     parser.add_argument("--header-lines", type=int, default=default_header_lines,
                         help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
@@ -392,6 +392,16 @@ def get_parser():
     )
 
     subparsers = main_parser.add_subparsers(dest="subcommand")
+
+    geometry_parser = _geometry_parser()
+    geometry_parser = subparsers.add_parser(
+        "geometry",
+        help="Create a 2D planar, 2D axisymmetric, or 3D body of revolution geometry from a sketch in the X-Y plane",
+        description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
+                      "sketching lines and splines in the X-Y plane. Line and spline definitions are formed by " \
+                      "parsing an input text file of points in X-Y space.",
+        parents=[geometry_parser]
+    )
 
     sphere_parser = _sphere_parser()
     sphere_parser = subparsers.add_parser(

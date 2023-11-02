@@ -7,7 +7,7 @@ target = env.Command(
     target=["help.txt"],
     source=[
         "turbo_turtle/main.py",
-        "turbo_tutrle/_geometry.py",
+        "turbo_turtle/_geometry.py",
         "turbo_turtle/_sphere.py",
         "turbo_turtle/_partition.py",
         "turbo_turtle/_mesh.py",

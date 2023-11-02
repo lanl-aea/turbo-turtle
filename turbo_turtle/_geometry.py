@@ -246,7 +246,7 @@ def get_parser():
                         help="Abaqus part name(s) (default: %(default)s)")
     parser.add_argument("--output-file", type=str, required=True,
                         help="Name of the output Abaqus CAE file to save (default: %(default)s)")
-    parser.add_argunent("--delimiter", type=str, default=default_delimiter,
+    parser.add_argument("--delimiter", type=str, default=default_delimiter,
                         help="Delimiter character between columns in the points file(s) (default: %(default)s)")
     parser.add_argument("--header-lines", type=int, default=default_header_lines,
                         help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
