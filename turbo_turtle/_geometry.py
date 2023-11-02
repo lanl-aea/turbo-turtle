@@ -5,9 +5,8 @@ import sys
 import numpy
 
 default_unit_conversion = 1.0
+default_axisymmetric = False
 default_euclidian_distance = 4.0
-model_dimension_choices = ["2D", "3D"]
-default_model_dimension = model_dimension_choices[0]
 default_model_name = "Model-1"
 default_part_name = "Part-1"
 default_output_file = None
@@ -16,17 +15,18 @@ default_header_lines = 0
 default_revolution_angle = 360.0
 
 
-def main(input_file, model_dimension=default_model_dimension, model_name=default_model_name, 
+def main(input_file, axisymmetric=default_axisymmetric, model_name=default_model_name, 
          part_name=default_part_name, unit_conversion=default_unit_conversion,
          euclidian_distance=default_euclidian_distance, output_file=default_output_file, delimiter=default_delimiter, 
          header_lines=default_header_lines, revolution_angle=default_revolution_angle):
     """
     This script takes a series of points in r-z coordinates from a text file and creates a 2D sketch or 3D body of 
-    revolution about the global Y-axis. This script can accept multiple input files to create multiple parts in the same 
-    Abaqus model.
+    revolution about the global Y-axis. Note that 2D-Axisymmetric sketches must lie entirely on the positive-X side 
+    of the global Y-axis, but in general a 2D sketch can lie in all four quadrants. This script can accept multiple 
+    input files to create multiple parts in the same Abaqus model.
 
     :param str file_name: input text file with points to draw
-    :param str model_dimension: dimensionality of the part being created. Choose from ``2D`` or ``3D``.
+    :param bool axisymmetric: switch to indicate that 2D model dimensionality is axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
     :param float unit_conversion: multiplication factor applies to all points
@@ -42,11 +42,11 @@ def main(input_file, model_dimension=default_model_dimension, model_name=default
     import abaqusConstants
     
     model_description = "Model Name: {}\n" \
-                        "Model Dimension: {}\n" \
+                        "Axisymmetry: {}\n" \
                         "Output CAE Database: {}\n" \
                         "Source Input Files: {}\n" \
                         "Unit Conversion Factor: {}\n" \
-                        "Euclidian Distance Constraint: {}\n".format(model_name, model_dimension, output_file,
+                        "Euclidian Distance Constraint: {}\n".format(model_name, axisymmetric, output_file,
                                                                      ', '.join(map(str, input_file)),
                                                                      unit_conversion, euclidian_distance)
     
@@ -54,7 +54,7 @@ def main(input_file, model_dimension=default_model_dimension, model_name=default
     for file_name in input_file:
         try:
             all_splines = points_to_splines(file_name, unit_conversion, euclidian_distance, delimiter, header_lines)
-            draw_part_from_splines(all_splines, model_dimension, model_name, part_name, revolution_angle)
+            draw_part_from_splines(all_splines, axisymmetric, model_name, part_name, revolution_angle)
         except:
             print('Failed to create part {} from {}'.format(part_name, file_name)
     if output_file is not None:
@@ -127,16 +127,20 @@ def points_to_splines(file_name, unit_conversion=default_unit_conversion, euclid
     return all_splines
 
 
-def draw_part_from_splines(all_splines, model_dimension=default_model_dimension, model_name=default_model_name, 
+def draw_part_from_splines(all_splines, axisymmetric=default_axisymmetric, model_name=default_model_name, 
                            part_name=default_part_name, revolution_angle=default_revolution_angle):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part 
-    or a 3D body of revolution using the sketch.
+    or a 3D body of revolution using the sketch. A 2D part can be either axisymmetric or planar depending on the 
+    ``axisymmetric`` and ``revolution_angle`` parameters. If ``axisymmetric`` is ``True``, this script will attempt to 
+    create an axisymmetric model regardless of the value of ``revolution_angle``. If ``axisymmetric`` is ``False``, this 
+    script will attempt to create a 2D model if ``revolution_angle`` is equal (or ``numpy.isclose()``) to zero, 
+    otherwise a 3D body of revolution about the global Y-axis.
     
     This function will connect the start and end points defined in ``all_splines``, which is a list of lists defining 
     straight lines and splines. This is noted in the parser function :meth:`turbo_turtle._geometry.points_to_splines`.
     
     :param list all_splines: list of lists containing straight line and spline definitions
-    :param str model_dimension: dimensionality of the part being created. Choose from ``2D`` or ``3D``.
+    :param bool axisymmetric: switch to indicate that 2D model dimensionality is axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
@@ -162,12 +166,17 @@ def draw_part_from_splines(all_splines, model_dimension=default_model_dimension,
         if II != 0
             s1.Line(point1=all_splines[II-1][-1], point2=this_spline[0])
     s1.Line(point1=all_splines[0][0], point2=all_splines[-1][-1])
-    if model_dimension.upper() == '2D':
+    if axisymmetric:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC, 
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
         p.BaseShell(sketch=s1)
-    elif model_dimension.upper() == '3D':
+    elif numpy.isclose(revolution_angle, 0.0):
+        p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
+            type=abaqusConstants.DEFORMABLE_BODY)
+        p = abaqus.mdb.models[model_name].parts[part_name]
+        p.BaseShell(sketch=s1)
+    else:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
@@ -191,8 +200,8 @@ def get_parser():
                         help="Unit conversion multiplication factor (default: %(default)s)")
     parser.add_argument("--euclidian_distance", type=float, default=default_euclidian_distance,
                         help="Connect points with a straight line is the distance between is larger than this (default: %(default)s)")
-    parser.add_argument("--model-dimension", type=str, default=default_model_dimension, choices=model_dimension_choices,
-                        help="Model dimension (default: %(default)s)")
+    parser.add_argument("--axisymmetric", action='store_true',
+                        help="Switch to indicate that 2D model dimensionality is axisymmetric (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=default_model_name,
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, default=default_part_name,
@@ -213,7 +222,7 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
     sys.exit(main(
         input_file=args.input_file,
-        model_dimension=args.model_dimension,
+        axisymmetric=args.axisymmetric,
         model_name=args.model_name,
         part_name=args.part_name,
         unit_conversion=args.unit_conversion,
