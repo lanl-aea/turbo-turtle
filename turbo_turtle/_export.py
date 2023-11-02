@@ -9,24 +9,26 @@ import tempfile
 default_model_name = "Model-1"
 default_part_name = ["Part-1"]
 default_element_type = [None]
+default_destination = None
 
 def main(input_file, model_name=default_model_name, part_name=default_part_name,
-         element_type=default_element_type):
+         element_type=default_element_type, destination=default_destination):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str model_name: model to query in the Abaqus model database
     :param list part_name: list of parts to query in the specified Abaqus model
     :param list element_type: list of element types, one per part name or one global replacement for every part name
+    :param str destination: write output orphan mesh files to this output directory
     """
     import abaqus
-
     input_file = os.path.splitext(input_file)[0] + ".cae"
     element_type = _validate_element_type(length_part_name=len(part_name), element_type=element_type)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
-        export_multiple_parts(model_name=model_name, part_name=part_name, element_type=element_type)
+        export_multiple_parts(model_name=model_name, part_name=part_name, element_type=element_type, 
+                              destination=destination)
 
 
 def _validate_element_type(length_part_name, element_type):
@@ -55,7 +57,7 @@ def _validate_element_type(length_part_name, element_type):
     return element_type
 
 
-def export_multiple_parts(model_name, part_name, element_type):
+def export_multiple_parts(model_name, part_name, element_type, destination):
     """Export orphan mesh files for multiple parts, and allow element type changes
     
     Specify a model name and one or multiple part names for exporting orphan mesh files. This function will write one 
@@ -64,6 +66,7 @@ def export_multiple_parts(model_name, part_name, element_type):
     :param str model_name: model to query in the Abaqus model database
     :param list part_name: list of parts to query in the specified Abaqus model
     :param list element_type: list of element types, one per part name or one global replacement for every part name
+    :param str destination: write output orphan mesh files to this output directory
     
     :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element 
               types with :turbo_turtle._export.substitute_element_type`
@@ -77,7 +80,10 @@ def export_multiple_parts(model_name, part_name, element_type):
         abaqus.mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
         # Copy current part to tmp model
         abaqus.mdb.models[tmp_name].Part(new_part, abaqus.mdb.models[model_name].parts[new_part])
-        mesh_output_file = new_part + ".inp"
+        if destination is None:
+            mesh_output_file = new_part + ".inp"
+        else:
+            mesh_output_file = "{}/{}.inp".format(destination, new_part)
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=new_part)
         if new_element is not None:
             substitute_element_type(mesh_output_file, new_element)
@@ -147,6 +153,8 @@ def get_parser():
                         help="List of Abaqus part names (default: %(default)s)")
     parser.add_argument("--element-type", type=str, nargs='+', default=default_element_type,
                         help="List of element types, one per part name or one global replacement for every part name (default: %(default)s)")
+    parser.add_argument("--destination", type=str, default=default_destination,
+                        help="Write orphan mesh files to this output directory (default: %(default)s)")
 
     return parser
 
@@ -157,10 +165,11 @@ if __name__ == "__main__":
         args, unknown = parser.parse_known_args()
     except SystemExit as err:
         sys.exit(err.code)
-
+    
     sys.exit(main(
         args.input_file,
         model_name=args.model_name,
         part_name=args.part_name,
-        element_type=args.element_type
+        element_type=args.element_type,
+        destination=args.destination
     ))

@@ -75,9 +75,9 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
         target=[f"{model}.inp"],
         source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_export.py"],
         action=[
-            "cd ${TARGET.dir.abspath} && python -m turbo_turtle.main export --input-file ${SOURCE.abspath} " \
+            "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
-                "--element-type ${element_replacement}",
+                "--element-type ${element_replacement} --destination ${TARGET.dir.abspath}",
             "grep ${element_replacement} ${TARGET.abspath}"
         ],
     element_replacement=element_replacement,
