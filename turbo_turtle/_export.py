@@ -80,7 +80,7 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
         abaqus.mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
         # Copy current part to tmp model
         abaqus.mdb.models[tmp_name].Part(new_part, abaqus.mdb.models[model_name].parts[new_part])
-        mesh_output_file = os.path.join(destination, new_part)
+        mesh_output_file = os.path.join(destination, new_part) + ".inp"
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=new_part)
         if new_element is not None:
             substitute_element_type(mesh_output_file, new_element)
