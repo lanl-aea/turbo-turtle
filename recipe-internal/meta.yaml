@@ -100,7 +100,7 @@ test:
     - turbo-turtle mesh --input-file eigth-sphere.cae --output-file eigth-sphere.cae --model-name eigth-sphere --part-name eigth-sphere --global-seed 0.15 --element-type C3D8
     - turbo-turtle image --input-file eigth-sphere.cae --output-file eigth-sphere.png --model-name eigth-sphere --part-name eigth-sphere
     - turbo-turtle export --input-file eigth-sphere.cae --model-name eigth-sphere --part-name eigth-sphere --element-type C3D8R
-    - grep C3D8R eight-sphere.inp
+    - grep C3D8R eigth-sphere.inp
     - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file half-sphere.cae --model-name half-sphere --part-name half-sphere --quadrant upper --angle 360.0 --center 0.0 0.0
     - turbo-turtle partition --input-file half-sphere.cae --output-file half-sphere.cae --model-name half-sphere --part-name half-sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
     - turbo-turtle mesh --input-file half-sphere.cae --output-file half-sphere.cae --model-name half-sphere --part-name half-sphere --global-seed 0.15 --element-type C3D8
