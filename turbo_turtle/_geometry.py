@@ -32,7 +32,8 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
     :param str model_name: name of the Abaqus model in which to create the part
     :param list part_name: name(s) of the part(s) being created
     :param float unit_conversion: multiplication factor applies to all points
-    :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line
+    :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line. 
+        Distance should be provided in units *after* the unit conversion
     :param str delimiter: character to use as a delimiter when reading the input file
     :param int header_lines: number of lines in the header to skip when reading the input file
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
@@ -112,7 +113,8 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     #. It is assumed that the downstream function used to generate the geometry will connect start and end points
     
     :param numpy.array numpy_points_array: array of points    
-    :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line
+    :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line.
+        Distance should be provided in units *after* the unit conversion
     
     :return: Series of line and spline definitions
     :rtype: list
