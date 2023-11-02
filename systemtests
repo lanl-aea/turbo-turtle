@@ -100,7 +100,7 @@ target = env.Command(
             "turbo_turtle/_mesh.py", "turbo_turtle/_export.py"],
     action=[
         "python -m turbo_turtle.main geometry --input-file ${SOURCE.abspath} --model-name ${TARGET.filebase} " \
-            "--output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}",
+            "--part-name ${TARGET.filebase} --output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}",
         "python -m turbo_turtle.main mesh --input-file ${TARGET.abspath} --output-file ${TARGET.abspath} " \
             "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --global-seed ${global_seed} " \
             "--element-type ${element_type}"
