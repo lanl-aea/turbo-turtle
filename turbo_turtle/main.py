@@ -42,6 +42,10 @@ def _geometry_parser():
                         help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
     parser.add_argument("--revolution-angle", type=float, default=default_revolution_angle,
                         help="Revolution angle for a 3D part in degrees (default: %(default)s)")
+
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
+
     return parser
 
 
@@ -63,7 +67,7 @@ def _geometry(args):
     command += f"--part-name {' '.join(map(str, args.part_name))} "
     command += f"--delimiter {args.delimiter} "
     command += f"--header-lines {args.header_lines} "
-    command += f"--revolution-angle {args.revolution_angle} "
+    command += f"--revolution-angle {args.revolution_angle}"
     command = command.split()
     stdout = subprocess.check_output(command)
 
@@ -459,7 +463,9 @@ def main():
 
     parser = get_parser()
     args, unknown = parser.parse_known_args()
-    if args.subcommand == "sphere":
+    if args.subcommand == "geometry":
+        _geometry(args)
+    elif args.subcommand == "sphere":
         _sphere(args)
     elif args.subcommand == "partition":
         _partition(args)
