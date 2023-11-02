@@ -47,7 +47,8 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
     for file_name, new_part in zip(input_file, part_name):
         try:
             numpy_points_array = read_file(file_name, delimiter, header_lines)
-            all_splines = points_to_splines(numpy_points_array, unit_conversion, euclidian_distance)
+            numpy_points_array = numpy_points_array * unit_conversion
+            all_splines = points_to_splines(numpy_points_array, euclidian_distance)
             draw_part_from_splines(all_splines, planar, model_name, new_part, revolution_angle)
         except:
             sys.stderr.write("Error: failed to create part {} from {}".format(new_part, file_name))
@@ -94,8 +95,7 @@ def read_file(file_name, delimiter=default_delimiter, header_lines=default_heade
     return numpy_points_array
 
 
-def points_to_splines(numpy_points_array, unit_conversion=default_unit_conversion, 
-                      euclidian_distance=default_euclidian_distance):
+def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_distance):
     """Read a text file of points in x-y coordinates and generate a list of lines and splines to draw.
     
     This function follows this methodology to turn a large list of points into a list of lists denoting individual lines 
@@ -112,15 +112,14 @@ def points_to_splines(numpy_points_array, unit_conversion=default_unit_conversio
     #. It is assumed that the downstream function used to generate the geometry will connect start and end points
     
     :param numpy.array numpy_points_array: array of points    
-    :param float unit_conversion: multiplication factor applies to all points
     :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line
     
     :return: Series of line and spline definitions
     :rtype: list
     """
     # Extract the x-y points from teh points input file
-    x_points = numpy_points_array[:, 0] * unit_conversion
-    y_points = numpy_points_array[:, 1] * unit_conversion
+    x_points = numpy_points_array[:, 0]
+    y_points = numpy_points_array[:, 1]
 
     # Need to find where the inner and outer splines start and end
     # Looking for two points that have the same r-value or z-value
