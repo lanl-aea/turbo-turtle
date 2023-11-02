@@ -8,7 +8,7 @@ default_unit_conversion = 1.0
 default_axisymmetric = False
 default_euclidian_distance = 4.0
 default_model_name = "Model-1"
-default_part_name = "Part-1"
+default_part_name = [None]
 default_delimiter = ","
 default_header_lines = 0
 default_revolution_angle = 360.0
@@ -22,13 +22,15 @@ def main(input_file, output_file, axisymmetric=default_axisymmetric, model_name=
     This script takes a series of points in x-y coordinates from a text file and creates a 2D sketch or 3D body of 
     revolution about the global Y-axis. Note that 2D-Axisymmetric sketches must lie entirely on the positive-X side 
     of the global Y-axis, but in general a 2D sketch can lie in all four quadrants. This script can accept multiple 
-    input files to create multiple parts in the same Abaqus model.
+    input files to create multiple parts in the same Abaqus model. The ``part_name`` parameter allows explicit naming of 
+    part(s) in the model. If ommited from the command line arguments, the default is to use the input file basename as 
+    the part name.
 
-    :param str file_name: input text file with points to draw
+    :param str file_name: input text file(s) with points to draw
     :param str output_file: Abaqus CAE database to save the part(s)
     :param bool axisymmetric: switch to indicate that 2D model dimensionality is axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
-    :param str part_name: name of the part being created
+    :param list part_name: name(s) of the part(s) being created
     :param float unit_conversion: multiplication factor applies to all points
     :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line
     :param str delimiter: character to use as a delimiter when reading the input file
@@ -50,16 +52,39 @@ def main(input_file, output_file, axisymmetric=default_axisymmetric, model_name=
                                                                      unit_conversion, euclidian_distance)
     
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT, description=model_description)
-    for file_name in input_file:
+    part_name = _validate_part_name(input_file, part_name)
+    for file_name, new_part in zip(input_file, part_name):
         try:
             all_splines = points_to_splines(file_name, unit_conversion, euclidian_distance, delimiter, header_lines)
-            draw_part_from_splines(all_splines, axisymmetric, model_name, part_name, revolution_angle)
+            draw_part_from_splines(all_splines, axisymmetric, model_name, new_part, revolution_angle)
         except:
-            sys.stderr.write("Error: failed to create part {} from {}".format(part_name, file_name))
+            sys.stderr.write("Error: failed to create part {} from {}".format(new_part, file_name))
             exit(1)
 
     abaqus.mdb.saveAs(pathName='{}.cae'.format(output_file.replace('.cae', '')))
-            
+
+
+def _validate_part_name(input_file, part_name):
+    """Validate the structure of the ``part_name`` list to the following rules:
+    
+    * If ``part_name`` is ``[None]``, assign the base names of ``input_file`` to ``part_name``
+    * Else if the length of ``part_name`` is not equal to the length of ``input_file``, exit with an error
+    
+    :param list input_file: input text file(s) with points to draw
+    :param list part_name: name(s) of part(s) being created
+    
+    :return: part name(s)
+    :rtype: list
+    """
+    if part_name[0] is None:
+        part_name = [os.path.splitext(part_file)[0] for part_file in input_file]
+    elif len(input_file) == len(part_name):
+        error_message = "The part name length '{}' must match the input file length '{}'\n".format(
+            len(part_name), len(input_file)
+        sys.stderr.write(error_message)
+        sys.exit(1)
+    return part_name
+
 
 def points_to_splines(file_name, unit_conversion=default_unit_conversion, euclidian_distance=default_euclidian_distance, 
                       delimiter=default_delimiter, header_lines=default_header_lines):
@@ -204,8 +229,8 @@ def get_parser():
                         help="Switch to indicate that 2D model dimensionality is axisymmetric (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=default_model_name,
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, default=default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, nargs="+", default=default_part_name,
+                        help="Abaqus part name(s) (default: %(default)s)")
     parser.add_argument("--output-file", type=str, required=True,
                         help="Name of the output Abaqus CAE file to save (default: %(default)s)")
     parser.add_argunent("--delimiter", type=str, default=default_delimiter,
