@@ -72,7 +72,7 @@ def export_multiple_parts(model_name, part_name, element_type):
     import abaqusConstants
     
     for part_name, element_type in zip(part_name, element_type):
-        tmp_name = "tmp"+part_name
+        tmp_name = "tmp" + part_name
         # Create a temporary model to house a single part
         abaqus.mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
         # Copy current part to tmp model
