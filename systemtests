@@ -27,15 +27,15 @@ env.Alias("systemtests", target)
 env.Alias("regression", target)
 
 system_tests = (
-    # model/part,     angle,   center, quadrant, element_type
-    ("sphere",         360., (0., 0.),  "both",  "C3D8"),
-    ("axisymmetric",     0., (0., 0.),  "both",  "CAX4"),
-    ("quarter-sphere",  90., (0., 0.),  "both",  "C3D8"),
-    ("offset-sphere",  360., (1., 1.),  "both",  "C3D8"),
-    ("eigth-sphere",    90., (0., 0.), "upper",  "C3D8"),
-    ("half-sphere",    360., (0., 0.), "upper",  "C3D8")
+    # model/part,     angle,   center, quadrant, element_type, element_replacement
+    ("sphere",         360., (0., 0.),  "both",  "C3D8",       "C3D8R"),
+    ("axisymmetric",     0., (0., 0.),  "both",  "CAX4",       "CAX4R"),
+    ("quarter-sphere",  90., (0., 0.),  "both",  "C3D8",       "C3D8R"),
+    ("offset-sphere",  360., (1., 1.),  "both",  "C3D8",       "C3D8R"),
+    ("eigth-sphere",    90., (0., 0.), "upper",  "C3D8",       "C3D8R"),
+    ("half-sphere",    360., (0., 0.), "upper",  "C3D8",       "C3D8R")
 )
-for model, angle, center, quadrant, element_type in system_tests:
+for model, angle, center, quadrant, element_type, element_replacement in system_tests:
     targets = []
     center_three_dimensions = center + (0,)
     cae_target = env.Command(
@@ -79,7 +79,7 @@ for model, angle, center, quadrant, element_type in system_tests:
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
                 "--element-type ${element_type}"
         ],
-    element_type='C3D8R',
+    element_type=element_replacement,
     )
     targets.extend(inp_target)
 
