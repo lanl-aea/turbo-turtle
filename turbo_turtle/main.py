@@ -60,7 +60,7 @@ def _geometry(args):
     if args.planar:
         command += f"--planar "
     command += f"--model-name {args.model_name} "
-    command += f"--part-name {' '.join(map(str(args.part_name))} "
+    command += f"--part-name {' '.join(map(str, args.part_name))} "
     command += f"--delimiter {args.delimiter} "
     command += f"--header-lines {args.header_lines} "
     command += f"--revolution-angle {args.revolution_angle} "

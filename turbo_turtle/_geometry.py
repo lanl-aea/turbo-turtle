@@ -75,7 +75,7 @@ def _validate_part_name(input_file, part_name):
         part_name = [os.path.splitext(os.path.basename(part_file))[0] for part_file in input_file]
     elif len(input_file) != len(part_name):
         error_message = "The part name length '{}' must match the input file length '{}'\n".format(
-            len(part_name), len(input_file)
+            len(part_name), len(input_file))
         sys.stderr.write(error_message)
         sys.exit(1)
     return part_name
@@ -201,7 +201,7 @@ def draw_part_from_splines(all_splines, planar=default_planar, model_name=defaul
     for II, this_spline in enumerate(all_splines):
         if len(this_spline) != 1:
             sketch1.Spline(points=this_spline)
-        if II != 0
+        if II != 0:
             sketch1.Line(point1=all_splines[II-1][-1], point2=this_spline[0])
     sketch1.Line(point1=all_splines[0][0], point2=all_splines[-1][-1])
     if planar:
