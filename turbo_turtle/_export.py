@@ -17,8 +17,7 @@ def main(input_file, model_name=default_model_name, part_name=default_part_name,
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str model_name: model to query in the Abaqus model database
     :param list part_name: list of parts to query in the specified Abaqus model
-    :param list element_type: list of element types, one for each part specified in ``part_name``, a single element 
-                               type to apply to all parts, or empty
+    :param list element_type: list of element types, one per part name or one global replacement for every part name
     """
     import abaqus
 
@@ -64,8 +63,7 @@ def export_multiple_parts(model_name, part_name, element_type):
     
     :param str model_name: model to query in the Abaqus model database
     :param list part_name: list of parts to query in the specified Abaqus model
-    :param list element_type: list of element types, one for each part specified in ``part_name``, a single element 
-                               type to apply to all parts, or empty
+    :param list element_type: list of element types, one per part name or one global replacement for every part name
     
     :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element 
               types with :turbo_tutrls._export.substitute_element_type`
@@ -148,7 +146,7 @@ def get_parser():
     parser.add_argument("--part-name", type=str, nargs='+', default=default_part_name,
                         help="List of Abaqus part names (default: %(default)s)")
     parser.add_argument("--element-type", type=str, nargs='+', default=default_element_type,
-                        help="List of element types, one for each part specified in part_name (default: %(default)s)")
+                        help="List of element types, one per part name or one global replacement for every part name (default: %(default)s)")
 
     return parser
 
