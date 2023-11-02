@@ -7,6 +7,7 @@ target = env.Command(
     target=["help.txt"],
     source=[
         "turbo_turtle/main.py",
+        "turbo_tutrle/_geometry.py",
         "turbo_turtle/_sphere.py",
         "turbo_turtle/_partition.py",
         "turbo_turtle/_mesh.py",
@@ -16,6 +17,7 @@ target = env.Command(
     action=[
         "python -m turbo_turtle.main -h > ${TARGET.abspath}",
         "python -m turbo_turtle.main docs -h >> ${TARGET.abspath}",
+        "python -m turbo_turtle.main geometry -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main sphere -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main partition -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main mesh -h >> ${TARGET.abspath}",
@@ -86,6 +88,32 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
 
     env.Alias("systemtests", targets)
     env.Alias("regression", targets)
+
+
+model="washer"
+revolution_angle = 360.0
+element_type = 'C3D8'
+element_
+target = env.Command(
+    target=[f"{model}.cae"],
+    source=["turbo_turtle/tests/test_geometry.csv", "turbo_turtle/main.py", "turbo_turtle/_geometry.py",
+            "turbo_turtle/_mesh.py", "turbo_turtle/_export.py"],
+        action=[
+            "python -m turbo_turtle.main geometry --input-file ${SOURCE.abspath} --model-name ${TARGET.filebase} " \
+                "--part-name ${TARGET.filebase} --output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}",
+            "python -m turbo_turtle.main mesh --input-file ${TARGET.abspath} --output-file ${TARGET.abspath} " \
+                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --global-seed 0.10 " \
+                "--element-type ${element_type}",
+        ],
+        element_type=element_type,
+        quadrant=quadrant,
+        angle=angle,
+        center=' '.join(map(str, center)),
+        xpoint=' '.join(map(str, numpy.array(center_three_dimensions) + numpy.array([1, 0, 0]))),
+        zpoint=' '.join(map(str, numpy.array(center_three_dimensions) + numpy.array([0, 0, 1])))
+    )
+
+
 
 
 target = env.Command(
