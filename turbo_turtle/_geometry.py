@@ -119,7 +119,7 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     :return: Series of line and spline definitions
     :rtype: list
     """
-    # Extract the x-y points from teh points input file
+    # Extract the x-y points from the points input file
     x_points = numpy_points_array[:, 0]
     y_points = numpy_points_array[:, 1]
 
@@ -134,7 +134,7 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
             new_spline_counter += 1
             this_spline += ((xval, yval), )  # Need to append the first point no matter what
         else:
-            euc_dist = ((xval - x_points[II-1]) ** 2 + (yval - y_points[II-1]) ** 2) ** 0.5
+            calculated_euclidian_distance = ((xval - x_points[II-1]) ** 2 + (yval - y_points[II-1]) ** 2) ** 0.5
             # Start the next spline if adjacent points have same xval or yval (i.e. 90-degrees)
             if xval == this_spline[-1][0] or yval == this_spline[-1][-1]:
                 all_splines.append(this_spline)
@@ -143,7 +143,7 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
                 this_spline += ((xval, yval), )
             # If the euclidian distance between two points is too large, then that must be a straight line
             # Straight line means start a new spline tuple
-            elif euc_dist > euclidian_distance:
+            elif calculated_euclidian_distance > euclidian_distance:
                 all_splines.append(this_spline)
                 this_spline = ()
                 new_spline_counter += 1
