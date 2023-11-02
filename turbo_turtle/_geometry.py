@@ -15,13 +15,14 @@ default_delimiter = ","
 default_header_lines = 0
 default_revolution_angle = 360.0
 
+
 def main(input_file, model_dimension=default_model_dimension, model_name=default_model_name, 
          part_name=default_part_name, unit_conversion=default_unit_conversion,
          euclidian_distance=default_euclidian_distance, output_file=default_output_file, delimiter=default_delimiter, 
          header_lines=default_header_lines, revolution_angle=default_revolution_angle):
     """
-    This script takes a series of points in r-z coordinates from a text file and creates a 2D axisymmetric or 3D body of 
-    revolution part in an Abaqus model. This script can accept multiple input files to create multiple parts in the same 
+    This script takes a series of points in r-z coordinates from a text file and creates a 2D sketch or 3D body of 
+    revolution about the global Y-axis. This script can accept multiple input files to create multiple parts in the same 
     Abaqus model.
 
     :param str file_name: input text file with points to draw
