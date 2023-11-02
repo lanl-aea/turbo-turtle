@@ -124,7 +124,7 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     y_points = numpy_points_array[:, 1]
 
     # Need to find where the inner and outer splines start and end
-    # Looking for two points that have the same r-value or z-value
+    # Looking for two points that have the same x-value or y-value
     # TODO: remove this 90-degree assumption and add a parameter for an arbitrary angle between lines
     all_splines = []
     new_spline_counter = 0
