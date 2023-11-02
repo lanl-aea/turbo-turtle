@@ -9,15 +9,14 @@ default_axisymmetric = False
 default_euclidian_distance = 4.0
 default_model_name = "Model-1"
 default_part_name = "Part-1"
-default_output_file = None
 default_delimiter = ","
 default_header_lines = 0
 default_revolution_angle = 360.0
 
 
-def main(input_file, axisymmetric=default_axisymmetric, model_name=default_model_name, 
+def main(input_file, output_file, axisymmetric=default_axisymmetric, model_name=default_model_name, 
          part_name=default_part_name, unit_conversion=default_unit_conversion,
-         euclidian_distance=default_euclidian_distance, output_file=default_output_file, delimiter=default_delimiter, 
+         euclidian_distance=default_euclidian_distance, delimiter=default_delimiter, 
          header_lines=default_header_lines, revolution_angle=default_revolution_angle):
     """
     This script takes a series of points in x-y coordinates from a text file and creates a 2D sketch or 3D body of 
@@ -26,17 +25,17 @@ def main(input_file, axisymmetric=default_axisymmetric, model_name=default_model
     input files to create multiple parts in the same Abaqus model.
 
     :param str file_name: input text file with points to draw
+    :param str output_file: Abaqus CAE database to save the part(s)
     :param bool axisymmetric: switch to indicate that 2D model dimensionality is axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
     :param float unit_conversion: multiplication factor applies to all points
     :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line
-    :param str output_file: Abaqus CAE database to save the part(s)
     :param str delimiter: character to use as a delimiter when reading the input file
     :param int header_lines: number of lines in the header to skip when reading the input file
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
 
-    :returns: writes ``{output_file}.cae`` if the ``output_file`` argument is specified    
+    :returns: writes ``{output_file}.cae``
     """
     import abaqus
     import abaqusConstants
@@ -57,8 +56,8 @@ def main(input_file, axisymmetric=default_axisymmetric, model_name=default_model
             draw_part_from_splines(all_splines, axisymmetric, model_name, part_name, revolution_angle)
         except:
             print('Failed to create part {} from {}'.format(part_name, file_name)
-    if output_file is not None:
-        abaqus.mdb.saveAs(pathName='{}.cae'.format(output_file.replace('.cae', '')))
+
+    abaqus.mdb.saveAs(pathName='{}.cae'.format(output_file.replace('.cae', '')))
             
 
 def points_to_splines(file_name, unit_conversion=default_unit_conversion, euclidian_distance=default_euclidian_distance, 
@@ -206,7 +205,7 @@ def get_parser():
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, default=default_part_name,
                         help="Abaqus part name (default: %(default)s)")
-    parser.add_argument("--output-file", type=str, default=default_output_file,
+    parser.add_argument("--output-file", type=str, required=True,
                         help="Name of the output Abaqus CAE file to save (default: %(default)s)")
     parser.add_argunent("--delimiter", type=str, default=default_delimiter,
                         help="Delimiter character between columns in the points file(s) (default: %(default)s)")
@@ -222,12 +221,12 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
     sys.exit(main(
         input_file=args.input_file,
+        output_file=args.output_file,
         axisymmetric=args.axisymmetric,
         model_name=args.model_name,
         part_name=args.part_name,
         unit_conversion=args.unit_conversion,
         euclidian_distance=args.euclidian_distance,
-        output_file=args.output_file,
         delimiter=args.delimiter,
         header_lines=args.header_lines,
         revolution_angle=args.revolution_angle
