@@ -151,7 +151,7 @@ def get_parser():
     parser.add_argument("--element-type", type=str, nargs='+', default=default_element_type,
                         help="List of element types, one per part name or one global replacement for every part name (default: %(default)s)")
     parser.add_argument("--destination", type=str, default=default_destination,
-                        help="Write orphan mesh files to this output directory (default: %(default)s)")
+                        help="Write orphan mesh files to this output directory (default: PWD)")
 
     return parser
 
