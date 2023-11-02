@@ -70,7 +70,7 @@ def _validate_part_name(input_file, part_name):
     :rtype: list
     """
     if part_name[0] is None:
-        part_name = [os.path.splitext(part_file)[0] for part_file in input_file]
+        part_name = [os.path.splitext(os.path.basename(part_file))[0] for part_file in input_file]
     elif len(input_file) == len(part_name):
         error_message = "The part name length '{}' must match the input file length '{}'\n".format(
             len(part_name), len(input_file)
