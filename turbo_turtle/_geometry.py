@@ -52,8 +52,9 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
         except:
             sys.stderr.write("Error: failed to create part {} from {}".format(new_part, file_name))
             exit(1)
-
-    abaqus.mdb.saveAs(pathName='{}.cae'.format(output_file.replace('.cae', '')))
+    
+    output_file = os.path.splitext(output_file)[0] + ".cae"
+    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def _validate_part_name(input_file, part_name):
