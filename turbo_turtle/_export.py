@@ -53,7 +53,7 @@ def _validate_element_type(length_part_name, element_type):
         error_message = "The element type length '{}' must match the part name length '{}'\n".format(
             length_element_type, length_part_name)
         sys.stderr.write(error_message)
-        exit(1)
+        sys.exit(1)
     return element_type
 
 
