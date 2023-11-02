@@ -81,7 +81,8 @@ def export_multiple_parts(model_name, part_name, element_type):
         abaqus.mdb.models[tmp_name].Part(part_name, abaqus.mdb.models[model_name].parts[part_name])
         mesh_output_file = part_name + ".inp"
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=part_name)
-        substitute_element_type(mesh_output_file, element_type)
+        if element_type is not None:
+            substitute_element_type(mesh_output_file, element_type)
 
 
 def substitute_element_type(mesh_output_file, element_type):
@@ -90,18 +91,17 @@ def substitute_element_type(mesh_output_file, element_type):
 
     :param str mesh_output_file: existing orphan mesh file
     :param str element_type: element type to substitute into the ``*Element`` keyword phrase
+    
+    :returns: re-writes ``mesh_output_file`` if element type changes have been made
     """
     regex = r"(\*element,\s+type=)([a-zA-Z0-9]*)"
     subst = "\\1{}".format(element_type)
-    if element_type is not None:
-        with open(mesh_output_file, 'r') as output:
-            orphan_mesh_lines = output.readlines()
-        for II, l in enumerate(orphan_mesh_lines):
-            result = re.sub(regex, subst, l, 0, re.MULTILINE | re.IGNORECASE)
-            if result:
-                orphan_mesh_lines[II] = result
-        with open(mesh_output_file, 'w') as output:
-            output.writelines(orphan_mesh_lines)
+    with open(mesh_output_file, 'r') as orphan_mesh:
+        old_content = orphan_mesh.read()
+    new_content = re.sub(regex, subst, old_content, 0, re.MULTILINE | re.IGNORECASE)
+    if new_content != old_content:
+        with open(mesh_output_file, 'w') as orphan_mesh:
+            orphan_mesh.write(new_content)
     
 
 def export(output_file, model_name=default_model_name, part_name=default_part_name[0]):
