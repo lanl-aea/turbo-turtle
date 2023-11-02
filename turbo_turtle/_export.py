@@ -23,32 +23,35 @@ def main(input_file, model_name=default_model_name, part_name=default_part_name,
     import abaqus
 
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    element_type = _validate_element_type(part_name, element_type)
+    element_type = _validate_element_type(length_part_name=len(part_name), element_type)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
         export_multiple_parts(model_name=model_name, part_name=part_name, element_type=element_type)
 
 
-def _validate_element_type(part_name, element_type):
+def _validate_element_type(length_part_name, element_type):
     """Validate the structure of the ``element_type`` list to the following rules:
     
     * If ``element_type`` is ``[None]``, skip element type substitution
     * Else If ``element_type`` is of length 1 and not ``[None]``, substitute that element type for all parts
     * Else if the length of ``element_type`` is not equal to the length of ``part_name``, exit with an error
     
-    :param list part_name: list of part names
+    :param int length_part_name: length of the ``part_name`` list
     :param list element_type: list of element types
     
     :return: element types
     :rtype: list
     """
+    length_element_type = len(element_type)
     if element_type[0] is None:
-        element_type = [None] * len(part_name)
-    elif element_type[0] is not None and len(element_type) == 1:
-        element_type = element_type * len(part_name)
-    elif len(element_type) != len(part_name):
-        print("Error: improperly formatted element_type list. See Internal API for guidance")
+        element_type = [None] * length_part_name
+    elif element_type[0] is not None and length_element_type == 1:
+        element_type = element_type * length_part_name
+    elif length_element_type != length_part_name:
+        error_message = "The element type length '{}' must match the part name lenght '{}'\n".format(
+            length_element_type,length_part_name)
+        sys.stderr.write(error_message)
         exit(1)
     return element_type
 
