@@ -46,7 +46,8 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
     part_name = _validate_part_name(input_file, part_name)
     for file_name, new_part in zip(input_file, part_name):
         try:
-            all_splines = points_to_splines(file_name, unit_conversion, euclidian_distance, delimiter, header_lines)
+            numpy_points_array = read_file(file_name, delimiter, header_lines)
+            all_splines = points_to_splines(numpy_points_array, unit_conversion, euclidian_distance)
             draw_part_from_splines(all_splines, planar, model_name, new_part, revolution_angle)
         except:
             sys.stderr.write("Error: failed to create part {} from {}".format(new_part, file_name))
@@ -77,15 +78,29 @@ def _validate_part_name(input_file, part_name):
     return part_name
 
 
-def points_to_splines(file_name, unit_conversion=default_unit_conversion, euclidian_distance=default_euclidian_distance, 
-                      delimiter=default_delimiter, header_lines=default_header_lines):
+def read_file(file_name, delimiter=default_delimiter, header_lines=default_header_lines):
+    """Parse a text file of points into a numpy array
+
+    :param str file_name: input text file with points to draw
+    :param str delimiter: character to use as a delimiter when reading the input file
+    :param int header_lines: number of lines in the header to skip when reading the input file
+
+    :return: array of points
+    :rtype: numpy.array
+    """
+    with open(file_name, 'r') as points_file:
+        numpy_points_array = numpy.genfromtxt(points_file, delimiter=delimiter, skip_header=header_lines)
+    return numpy_points_array
+
+
+def points_to_splines(numpy_points_array, unit_conversion=default_unit_conversion, 
+                      euclidian_distance=default_euclidian_distance):
     """Read a text file of points in x-y coordinates and generate a list of lines and splines to draw.
     
     This function follows this methodology to turn a large list of points into a list of lists denoting individual lines 
     or splines:
 
-    #. Read the input file, assume it has two columns for ``x`` and ``y`` data points
-    #. Start looping through points, and append points to a list
+    #. Start looping through points in the ``numpy_points_array``, and append points to a list
     #. When two neighboring points have the same ``x`` or ``y`` value (i.e. a vertical or horizonal line), assume that a 
        spline cannot be drawn and start populating a new spline list after storing these points
     #. If two points are closer together than the ``euclidian_distance`` parameter, draw a straight line between them
@@ -95,21 +110,16 @@ def points_to_splines(file_name, unit_conversion=default_unit_conversion, euclid
     #. Neighboring splines that are not connected will be connected with a straight line
     #. It is assumed that the downstream function used to generate the geometry will connect start and end points
     
-    :param str file_name: input text file with points to draw
+    :param numpy.array numpy_points_array: array of points    
     :param float unit_conversion: multiplication factor applies to all points
     :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line
-    :param str delimiter: character to use as a delimiter when reading the input file
-    :param int header_lines: number of lines in the header to skip when reading the input file
     
     :return: Series of line and spline definitions
     :rtype: list
     """
-    with open(file_name, 'r') as points_file:
-        coords = numpy.genfromtxt(points_file, delimiter=delimiter, skip_header=header_lines)
-    
     # Extract the x-y points from teh points input file
-    x_points = [:, 0] * unit_conversion
-    y_points = [:, 1] * unit_conversion
+    x_points = numpy_points_array[:, 0] * unit_conversion
+    y_points = numpy_points_array[:, 1] * unit_conversion
 
     # Need to find where the inner and outer splines start and end
     # Looking for two points that have the same r-value or z-value
