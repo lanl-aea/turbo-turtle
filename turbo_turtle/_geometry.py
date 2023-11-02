@@ -127,7 +127,6 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     # Looking for two points that have the same x-value or y-value
     # TODO: remove this 90-degree assumption and add a parameter for an arbitrary angle between lines
     all_splines = []
-    new_spline_counter = 1
     this_spline = ((x_points[0], y_points[0]), )  # Need to append the first point no matter what
     for II, (xval, yval) in enumerate(zip(x_points[1:], y_points[1:])):
         calculated_euclidian_distance = ((xval - x_points[II-1]) ** 2 + (yval - y_points[II-1]) ** 2) ** 0.5
@@ -135,14 +134,12 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
         if xval == this_spline[-1][0] or yval == this_spline[-1][-1]:
             all_splines.append(this_spline)
             this_spline = ()
-            new_spline_counter += 1
             this_spline += ((xval, yval), )
         # If the euclidian distance between two points is too large, then that must be a straight line
         # Straight line means start a new spline tuple
         elif calculated_euclidian_distance > euclidian_distance:
             all_splines.append(this_spline)
             this_spline = ()
-            new_spline_counter += 1
             this_spline += ((xval, yval), )
         else:
             this_spline += ((xval, yval), )  # All else, append 1st spline
