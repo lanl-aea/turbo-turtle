@@ -45,6 +45,7 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
     
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     part_name = _validate_part_name(input_file, part_name)
+    output_file = os.path.splitext(output_file)[0] + ".cae"
     for file_name, new_part in zip(input_file, part_name):
         try:
             numpy_points_array = read_file(file_name, delimiter, header_lines)
@@ -52,10 +53,10 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
             all_splines = points_to_splines(numpy_points_array, euclidian_distance)
             draw_part_from_splines(all_splines, planar, model_name, new_part, revolution_angle)
         except:
-            sys.stderr.write("Error: failed to create part {} from {}".format(new_part, file_name))
-            exit(1)
+            error_message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
+            sys.stderr.write(error_message)
+            sys.exit(1)
     
-    output_file = os.path.splitext(output_file)[0] + ".cae"
     abaqus.mdb.saveAs(pathName=output_file)
 
 
@@ -74,7 +75,7 @@ def _validate_part_name(input_file, part_name):
     if part_name[0] is None:
         part_name = [os.path.splitext(os.path.basename(part_file))[0] for part_file in input_file]
     elif len(input_file) != len(part_name):
-        error_message = "The part name length '{}' must match the input file length '{}'\n".format(
+        error_message = "Error: The part name length '{}' must match the input file length '{}'\n".format(
             len(part_name), len(input_file))
         sys.stderr.write(error_message)
         sys.exit(1)
@@ -122,15 +123,14 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     # Extract the x-y points from the points input file
     x_points = numpy_points_array[:, 0]
     y_points = numpy_points_array[:, 1]
-    calculated_euclidean_array = numpy.linal.norm(numpy_points_array, axis=0)
+    calculated_euclidian_array = numpy.linalg.norm(numpy_points_array, axis=1)
 
     # Need to find where the inner and outer splines start and end
     # Looking for two points that have the same x-value or y-value
     # TODO: remove this 90-degree assumption and add a parameter for an arbitrary angle between lines
     all_splines = []
     this_spline = ((x_points[0], y_points[0]), )  # Need to append the first point no matter what
-    for II, (xval, yval, calculated_euclidian_distance) in enumerate(zip(
-        x_points[1:], y_points[1:], calculated_euclidian_array)):
+    for xval, yval, calculated_euclidian_distance in zip(x_points[1:], y_points[1:], calculated_euclidian_array):
         # Start the next spline if adjacent points have same xval or yval (i.e. 90-degrees)
         if xval == this_spline[-1][0] or yval == this_spline[-1][-1]:
             all_splines.append(this_spline)
@@ -144,8 +144,8 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
             this_spline += ((xval, yval), )
         else:
             this_spline += ((xval, yval), )  # All else, append 1st spline
-        if II == len(x_points)-2:  # Length minus two, because we indexed [1:] in the for loop
-            all_splines.append(this_spline)
+    # Always append the final spline
+    all_splines.append(this_spline)
     return all_splines
 
 
@@ -217,7 +217,6 @@ def draw_part_from_splines(all_splines, planar=default_planar, model_name=defaul
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
     session.viewports['Viewport: 1'].setValues(displayedObject=p)
-
 
 def get_parser():
     file_name = inspect.getfile(lambda:None)
