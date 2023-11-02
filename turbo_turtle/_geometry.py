@@ -176,38 +176,38 @@ def draw_part_from_splines(all_splines, planar=default_planar, model_name=defaul
     import abaqus
     import abaqusConstants
 
-    s1 = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__', sheetSize=200.0)
-    g, v, d, c = s1.geometry, s1.vertices, s1.dimensions, s1.constraints
-    s1.sketchOptions.setValues(viewStyle=abaqusConstants.AXISYM)
-    s1.setPrimaryObject(option=abaqusConstants.STANDALONE)
-    s1.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
-    s1.FixedConstraint(entity=g[2])
-    s1.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
-    s1.FixedConstraint(entity=g[3])
+    sketch1 = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__', sheetSize=200.0)
+    geometry, vertices, dimensions, constraints = sketch1.geometry, sketch1.vertices, sketch1.dimensions, sketch1.constraints
+    sketch1.sketchOptions.setValues(viewStyle=abaqusConstants.AXISYM)
+    sketch1.setPrimaryObject(option=abaqusConstants.STANDALONE)
+    sketch1.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
+    sketch1.FixedConstraint(entity=geometry[2])
+    sketch1.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
+    sketch1.FixedConstraint(entity=geometry[3])
     
     # Draw splines through any spline list that has more than two poits
     for II, this_spline in enumerate(all_splines):
         if len(this_spline) != 1:
-            s1.Spline(points=this_spline)
+            sketch1.Spline(points=this_spline)
         if II != 0
-            s1.Line(point1=all_splines[II-1][-1], point2=this_spline[0])
-    s1.Line(point1=all_splines[0][0], point2=all_splines[-1][-1])
+            sketch1.Line(point1=all_splines[II-1][-1], point2=this_spline[0])
+    sketch1.Line(point1=all_splines[0][0], point2=all_splines[-1][-1])
     if planar:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseShell(sketch=s1)
+        p.BaseShell(sketch=sketch1)
     elif numpy.isclose(revolution_angle, 0.0):
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC, 
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseShell(sketch=s1)
+        p.BaseShell(sketch=sketch1)
     else:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseSolidRevolve(sketch=s1, angle=revolution_angle, flipRevolveDirection=abaqus.OFF)
-    s1.unsetPrimaryObject()
+        p.BaseSolidRevolve(sketch=sketch1, angle=revolution_angle, flipRevolveDirection=abaqus.OFF)
+    sketch1.unsetPrimaryObject()
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
     session.viewports['Viewport: 1'].setValues(displayedObject=p)
