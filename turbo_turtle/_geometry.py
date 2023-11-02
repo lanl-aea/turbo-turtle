@@ -134,7 +134,7 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
             new_spline_counter += 1
             this_spline += ((xval, yval), )  # Need to append the first point no matter what
         else:
-            euc_dist = ((xval - x_points[II-1])**2 + (yval - y_points[II-1])**2)**0.5
+            euc_dist = ((xval - x_points[II-1]) ** 2 + (yval - y_points[II-1]) ** 2) ** 0.5
             # Start the next spline if adjacent points have same xval or yval (i.e. 90-degrees)
             if xval == this_spline[-1][0] or yval == this_spline[-1][-1]:
                 all_splines.append(this_spline)
