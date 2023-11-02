@@ -68,9 +68,9 @@ def points_to_splines(file_name, unit_conversion=default_unit_conversion, euclid
     This function follows this methodology to turn a large list of points into a list of lists denoting individual lines 
     or splines:
 
-    #. Read the input file, assume it has two columns for ``r`` and ``z`` data points
+    #. Read the input file, assume it has two columns for ``x`` and ``y`` data points
     #. Start looping through points, and append points to a list
-    #. When two neighboring points have the same ``r`` or ``z`` value (i.e. a vertical or horizonal line), assume that a 
+    #. When two neighboring points have the same ``x`` or ``y`` value (i.e. a vertical or horizonal line), assume that a 
        spline cannot be drawn and start populating a new spline list after storing these points
     #. If two points are closer together than the ``euclidian_distance`` parameter, draw a straight line between them
     #. If only a single point exists between splines/lines, do not draw a spline, and connect to the previous and next 
