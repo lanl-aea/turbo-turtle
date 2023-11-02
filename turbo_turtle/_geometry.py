@@ -26,7 +26,7 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
     model. If ommited from the command line arguments, the default is to use the input file basename(s) as the part
     name(s).
 
-    :param str file_name: input text file(s) with points to draw
+    :param str input_file: input text file(s) with points to draw
     :param str output_file: Abaqus CAE database to save the part(s)
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
