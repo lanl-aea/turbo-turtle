@@ -9,6 +9,65 @@ from turbo_turtle import __version__
 
 
 # TODO: write a Python 2/3 compatible parser and argument handler
+def _geometry_parser():
+
+    default_unit_conversion = 1.0
+    default_planar = False
+    default_euclidian_distance = 4.0
+    default_model_name = "Model-1"
+    default_part_name = [None]
+    default_delimiter = ","
+    default_header_lines = 0
+    default_revolution_angle = 360.0
+    
+    parser = argparse.ArgumentParser(add_help=False)
+
+    parser.add_argument("--input-file", type=str, nargs="+", required=True,
+                        help="Name of an input file(s) with points in x-y coordinate system")
+    parser.add_argument("--unit-conversion", type=float, default=default_unit_conversion,
+                        help="Unit conversion multiplication factor (default: %(default)s)")
+    parser.add_argument("--euclidian_distance", type=float, default=default_euclidian_distance,
+                        help="Connect points with a straight line is the distance between is larger than this (default: %(default)s)")
+    parser.add_argument("--planar", action='store_true',
+                        help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric (default: %(default)s)")
+    parser.add_argument("--model-name", type=str, default=default_model_name,
+                        help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, nargs="+", default=default_part_name,
+                        help="Abaqus part name(s) (default: %(default)s)")
+    parser.add_argument("--output-file", type=str, required=True,
+                        help="Name of the output Abaqus CAE file to save (default: %(default)s)")
+    parser.add_argunent("--delimiter", type=str, default=default_delimiter,
+                        help="Delimiter character between columns in the points file(s) (default: %(default)s)")
+    parser.add_argument("--header-lines", type=int, default=default_header_lines,
+                        help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
+    parser.add_argument("--revolution-angle", type=float, default=default_revolution_angle,
+                        help="Revolution angle for a 3D part in degrees (default: %(default)s)")
+    return parser
+
+
+def _geometry(args):
+    """Python 3 wrapper around the Abaqus Python geometry CLI
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    """
+    script = _settings._project_root_abspath / "_geometry.py"
+
+    command = f"{args.abaqus_command} cae -noGui {script} -- "
+    command += f"--input-file {' '.join(map(str, args.input_file))} "
+    command += f"--output-file {args.output_file} "
+    command += f"--unit-conversion {args.unit_conversion} "
+    command += f"--euclidian-distance {args.euclidian_distance} "
+    if args.planar:
+        command += f"--planar "
+    command += f"--model-name {args.model_name} "
+    command += f"--part-name {' '.join(map(str(args.part_name))} "
+    command += f"--delimiter {args.delimiter} "
+    command += f"--header-lines {args.header_lines} "
+    command += f"--revolution-angle {args.revolution_angle} "
+    command = command.split()
+    stdout = subprocess.check_output(command)
+
+
 def _sphere_parser():
 
     default_input_file = None
