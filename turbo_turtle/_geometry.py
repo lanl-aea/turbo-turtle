@@ -122,14 +122,15 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     # Extract the x-y points from the points input file
     x_points = numpy_points_array[:, 0]
     y_points = numpy_points_array[:, 1]
+    calculated_euclidean_array = numpy.linal.norm(numpy_points_array, axis=0)
 
     # Need to find where the inner and outer splines start and end
     # Looking for two points that have the same x-value or y-value
     # TODO: remove this 90-degree assumption and add a parameter for an arbitrary angle between lines
     all_splines = []
     this_spline = ((x_points[0], y_points[0]), )  # Need to append the first point no matter what
-    for II, (xval, yval) in enumerate(zip(x_points[1:], y_points[1:])):
-        calculated_euclidian_distance = ((xval - x_points[II-1]) ** 2 + (yval - y_points[II-1]) ** 2) ** 0.5
+    for II, (xval, yval, calculated_euclidian_distance) in enumerate(zip(
+        x_points[1:], y_points[1:], calculated_euclidian_array)):
         # Start the next spline if adjacent points have same xval or yval (i.e. 90-degrees)
         if xval == this_spline[-1][0] or yval == this_spline[-1][-1]:
             all_splines.append(this_spline)
@@ -143,7 +144,7 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
             this_spline += ((xval, yval), )
         else:
             this_spline += ((xval, yval), )  # All else, append 1st spline
-        if II == len(x_points)-1:
+        if II == len(x_points)-2:  # Length minus two, because we indexed [1:] in the for loop
             all_splines.append(this_spline)
     return all_splines
 
