@@ -77,9 +77,10 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
         action=[
             "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
-                "--element-type ${element_type}"
+                "--element-type ${element_replacement}",
+            "grep ${element_replacement} ${TARGET.abspath}"
         ],
-    element_type=element_replacement,
+    element_replacement=element_replacement,
     )
     targets.extend(inp_target)
 
