@@ -42,16 +42,7 @@ def main(input_file, output_file, axisymmetric=default_axisymmetric, model_name=
     import abaqus
     import abaqusConstants
     
-    model_description = "Model Name: {}\n" \
-                        "Axisymmetry: {}\n" \
-                        "Output CAE Database: {}\n" \
-                        "Source Input Files: {}\n" \
-                        "Unit Conversion Factor: {}\n" \
-                        "Euclidian Distance Constraint: {}\n".format(model_name, axisymmetric, output_file,
-                                                                     ', '.join(map(str, input_file)),
-                                                                     unit_conversion, euclidian_distance)
-    
-    abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT, description=model_description)
+    abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     part_name = _validate_part_name(input_file, part_name)
     for file_name, new_part in zip(input_file, part_name):
         try:
