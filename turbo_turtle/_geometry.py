@@ -47,10 +47,10 @@ def main(input_file, output_file, planar=default_planar, model_name=default_mode
     part_name = _validate_part_name(input_file, part_name)
     output_file = os.path.splitext(output_file)[0] + ".cae"
     for file_name, new_part in zip(input_file, part_name):
+        numpy_points_array = read_file(file_name, delimiter, header_lines)
+        numpy_points_array = numpy_points_array * unit_conversion
+        all_splines = points_to_splines(numpy_points_array, euclidian_distance)
         try:
-            numpy_points_array = read_file(file_name, delimiter, header_lines)
-            numpy_points_array = numpy_points_array * unit_conversion
-            all_splines = points_to_splines(numpy_points_array, euclidian_distance)
             draw_part_from_splines(all_splines, planar, model_name, new_part, revolution_angle)
         except:
             error_message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
@@ -125,27 +125,14 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     y_points = numpy_points_array[:, 1]
     calculated_euclidian_array = numpy.linalg.norm(numpy_points_array[1:, :] - numpy_points_array[0:-1, :], axis=1)
 
-    # Need to find where the inner and outer splines start and end
-    # Looking for two points that have the same x-value or y-value
-    # TODO: remove this 90-degree assumption and add a parameter for an arbitrary angle between lines
-    all_splines = []
-    this_spline = ((x_points[0], y_points[0]), )  # Need to append the first point no matter what
-    for xval, yval, calculated_euclidian_distance in zip(x_points[1:], y_points[1:], calculated_euclidian_array):
-        # Start the next spline if adjacent points have same xval or yval (i.e. 90-degrees)
-        if xval == this_spline[-1][0] or yval == this_spline[-1][-1]:
-            all_splines.append(this_spline)
-            this_spline = ()
-            this_spline += ((xval, yval), )
-        # If the euclidian distance between two points is too large, then that must be a straight line
-        # Straight line means start a new spline tuple
-        elif calculated_euclidian_distance > euclidian_distance:
-            all_splines.append(this_spline)
-            this_spline = ()
-            this_spline += ((xval, yval), )
-        else:
-            this_spline += ((xval, yval), )  # All else, append 1st spline
-    # Always append the final spline
-    all_splines.append(this_spline)
+    greater_than_euclidian_distance = [False] + [this_calc > euclidian_distance for this_calc in calculated_euclidian_array]
+
+    v_or_h_line = [False] + [numpy.isclose(coords1[0], coords2[0]) or numpy.isclose(coords1[1], coords2[1]) for coords1, coords2 in
+                             zip(numpy_points_array[1:, :], numpy_points_array[0:-1, :])]
+
+    break_at_index = [a or b for a, b in zip(greater_than_euclidian_distance, v_or_h_line)]
+    break_indices = numpy.where(break_at_index)[0]
+    all_splines = numpy.split(numpy_points_array, break_indices, axis=0)
     return all_splines
 
 
@@ -193,6 +180,7 @@ def draw_part_from_splines(all_splines, planar=default_planar, model_name=defaul
     
     # Draw splines through any spline list that has more than two poits
     for II, this_spline in enumerate(all_splines):
+        this_spline = tuple(map(tuple, this_spline))
         if len(this_spline) != 1:
             sketch1.Spline(points=this_spline)
         if II != 0:
