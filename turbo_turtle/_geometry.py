@@ -55,7 +55,8 @@ def main(input_file, output_file, axisymmetric=default_axisymmetric, model_name=
             all_splines = points_to_splines(file_name, unit_conversion, euclidian_distance, delimiter, header_lines)
             draw_part_from_splines(all_splines, axisymmetric, model_name, part_name, revolution_angle)
         except:
-            print('Failed to create part {} from {}'.format(part_name, file_name)
+            sys.stderr.write("Error: failed to create part {} from {}".format(part_name, file_name))
+            exit(1)
 
     abaqus.mdb.saveAs(pathName='{}.cae'.format(output_file.replace('.cae', '')))
             
