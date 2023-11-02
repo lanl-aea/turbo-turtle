@@ -20,7 +20,7 @@ def main(input_file, axisymmetric=default_axisymmetric, model_name=default_model
          euclidian_distance=default_euclidian_distance, output_file=default_output_file, delimiter=default_delimiter, 
          header_lines=default_header_lines, revolution_angle=default_revolution_angle):
     """
-    This script takes a series of points in r-z coordinates from a text file and creates a 2D sketch or 3D body of 
+    This script takes a series of points in x-y coordinates from a text file and creates a 2D sketch or 3D body of 
     revolution about the global Y-axis. Note that 2D-Axisymmetric sketches must lie entirely on the positive-X side 
     of the global Y-axis, but in general a 2D sketch can lie in all four quadrants. This script can accept multiple 
     input files to create multiple parts in the same Abaqus model.
@@ -63,7 +63,7 @@ def main(input_file, axisymmetric=default_axisymmetric, model_name=default_model
 
 def points_to_splines(file_name, unit_conversion=default_unit_conversion, euclidian_distance=default_euclidian_distance, 
                       delimiter=default_delimiter, header_lines=default_header_lines):
-    """Read a text file of points in r-z coordinates and generate a list of lines and splines to draw.
+    """Read a text file of points in x-y coordinates and generate a list of lines and splines to draw.
     
     This function follows this methodology to turn a large list of points into a list of lists denoting individual lines 
     or splines:
@@ -91,38 +91,38 @@ def points_to_splines(file_name, unit_conversion=default_unit_conversion, euclid
     with open(file_name, 'r') as points_file:
         coords = numpy.genfromtxt(points_file, delimiter=delimiter, skip_header=header_lines)
     
-    # Extract the r-z points from teh points input file
-    r_points = [:, 0] * unit_conversion
-    z_points = [:, 1] * unit_conversion
+    # Extract the x-y points from teh points input file
+    x_points = [:, 0] * unit_conversion
+    y_points = [:, 1] * unit_conversion
 
     # Need to find where the inner and outer splines start and end
     # Looking for two points that have the same r-value or z-value
     # TODO: remove this 90-degree assumption and add a parameter for an arbitrary angle between lines
     all_splines = []
     new_spline_counter = 0
-    for II, (rval, zval) in enumerate(zip(r_points, z_points)):
+    for II, (xval, yval) in enumerate(zip(x_points, y_points)):
         if II == 0:
             this_spline = ()
             new_spline_counter += 1
-            this_spline += ((rval, zval), )  # Need to append the first point no matter what
+            this_spline += ((xval, yval), )  # Need to append the first point no matter what
         else:
-            euc_dist = ((rval - r_points[II-1])**2 + (zval - z_points[II-1])**2)**0.5
-            # Start the next spline if adjacent points have same rval or zval (i.e. 90-degrees)
-            if rval == this_spline[-1][0] or zval == this_spline[-1][-1]:
+            euc_dist = ((xval - x_points[II-1])**2 + (yval - y_points[II-1])**2)**0.5
+            # Start the next spline if adjacent points have same xval or yval (i.e. 90-degrees)
+            if xval == this_spline[-1][0] or yval == this_spline[-1][-1]:
                 all_splines.append(this_spline)
                 this_spline = ()
                 new_spline_counter += 1
-                this_spline += ((rval, zval), )
+                this_spline += ((xval, yval), )
             # If the euclidian distance between two points is too large, then that must be a straight line
             # Straight line means start a new spline tuple
             elif euc_dist > euclidian_distance:
                 all_splines.append(this_spline)
                 this_spline = ()
                 new_spline_counter += 1
-                this_spline += ((rval, zval), )
+                this_spline += ((xval, yval), )
             else:
-                this_spline += ((rval, zval), )  # All else, append 1st spline
-            if II == len(r_points)-1:
+                this_spline += ((xval, yval), )  # All else, append 1st spline
+            if II == len(x_points)-1:
                 all_splines.append(this_spline)
     return all_splines
 
@@ -191,11 +191,11 @@ def get_parser():
     file_name = inspect.getfile(lambda:None)
     basename = os.path.basename(file_name)
     prog = "abaqus cae -noGui {} --".format(basename)
-    cli_description = "Abaqus Python script for creating 2D or 3D part(s) from an r-z coordinate system input file(s)"
+    cli_description = "Abaqus Python script for creating 2D or 3D part(s) from an x-y coordinate system input file(s)"
     parser = argparse.ArgumentParser(description=cli_description, prog=prog)
         
     parser.add_argument("--input-file", type=str, nargs="+", required=True,
-                        help="Name of an input file(s) with points in r-z coordinate system")
+                        help="Name of an input file(s) with points in x-y coordinate system")
     parser.add_argument("--unit-conversion", type=float, default=default_unit_conversion,
                         help="Unit conversion multiplication factor (default: %(default)s)")
     parser.add_argument("--euclidian_distance", type=float, default=default_euclidian_distance,
