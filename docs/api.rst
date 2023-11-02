@@ -10,6 +10,12 @@ main
 .. automodule:: turbo_turtle.main
     :members:
 
+_geometry
+=========
+
+.. automodule:: turbo_turtle._geometry
+    :members:
+
 _sphere
 =======
 
