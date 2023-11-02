@@ -197,7 +197,7 @@ def _export_parser():
     parser.add_argument("--part-name", type=str, nargs="+", default=default_part_name,
                         help="List of Abaqus part names (default: %(default)s)")
     parser.add_argument("--element-type", type=str, nargs="+", default=default_element_type,
-                        help="List of element types, one for each part specified in part_name (default: %(default)s)")
+                        help="List of element types, one per part name or one global replacement for every part name (default: %(default)s)")
 
     parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
                         help='Abaqus executable absolute or relative path (default: %(default)s)')
