@@ -48,8 +48,8 @@ def _validate_element_type(length_part_name, element_type):
     elif element_type[0] is not None and length_element_type == 1:
         element_type = element_type * length_part_name
     elif length_element_type != length_part_name:
-        error_message = "The element type length '{}' must match the part name lenght '{}'\n".format(
-            length_element_type,length_part_name)
+        error_message = "The element type length '{}' must match the part name length '{}'\n".format(
+            length_element_type, length_part_name)
         sys.stderr.write(error_message)
         exit(1)
     return element_type
