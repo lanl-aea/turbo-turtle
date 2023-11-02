@@ -9,7 +9,7 @@ import tempfile
 default_model_name = "Model-1"
 default_part_name = ["Part-1"]
 default_element_type = [None]
-default_destination = None
+default_destination = os.getcwd()
 
 def main(input_file, model_name=default_model_name, part_name=default_part_name,
          element_type=default_element_type, destination=default_destination):
@@ -80,10 +80,7 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
         abaqus.mdb.Model(name=tmp_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
         # Copy current part to tmp model
         abaqus.mdb.models[tmp_name].Part(new_part, abaqus.mdb.models[model_name].parts[new_part])
-        if destination is None:
-            mesh_output_file = new_part + ".inp"
-        else:
-            mesh_output_file = "{}/{}.inp".format(destination, new_part)
+        mesh_output_file = os.path.join(destination, new_part)
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=new_part)
         if new_element is not None:
             substitute_element_type(mesh_output_file, new_element)

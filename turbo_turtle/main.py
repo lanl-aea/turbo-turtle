@@ -1,3 +1,4 @@
+import os
 import sys
 import pathlib
 import argparse
@@ -187,7 +188,7 @@ def _export_parser():
     default_model_name = "Model-1"
     default_part_name = ["Part-1"]
     default_element_type = [None]
-    default_destination = None
+    default_destination = os.getcwd()
 
     parser = argparse.ArgumentParser(add_help=False)
 
