@@ -25,19 +25,17 @@ def main(input_file, model_dimension=default_model_dimension, model_name=default
     Abaqus model.
 
     :param str file_name: input text file with points to draw
-    :param float unit_conversion: multiplication factor applies to all points
-    :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line
-    :param str delimiter: character to use as a delimiter when reading the input file
-    :param int header_lines: number of lines in the header to skip when reading the input file
-
-
-    :param list all_splines: list of lists containing straight line and spline definitions
     :param str model_dimension: dimensionality of the part being created. Choose from ``2D`` or ``3D``.
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
+    :param float unit_conversion: multiplication factor applies to all points
+    :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line
+    :param str output_file: Abaqus CAE database to save the part(s)
+    :param str delimiter: character to use as a delimiter when reading the input file
+    :param int header_lines: number of lines in the header to skip when reading the input file
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
 
-    :returns: writes an ``{output_file}.cae`` file if the ``output_file`` argument is specified    
+    :returns: writes ``{output_file}.cae`` if the ``output_file`` argument is specified    
     """
     import abaqus
     import abaqusConstants
