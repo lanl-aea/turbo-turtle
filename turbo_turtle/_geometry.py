@@ -123,7 +123,7 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     # Extract the x-y points from the points input file
     x_points = numpy_points_array[:, 0]
     y_points = numpy_points_array[:, 1]
-    calculated_euclidian_array = numpy.linalg.norm(numpy_points_array, axis=1)
+    calculated_euclidian_array = numpy.linalg.norm(numpy_points_array[1:, :] - numpy_points_array[0:-1, :], axis=1)
 
     # Need to find where the inner and outer splines start and end
     # Looking for two points that have the same x-value or y-value
