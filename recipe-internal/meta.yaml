@@ -109,10 +109,9 @@ test:
     - turbo-turtle export --input-file half-sphere.cae --model-name half-sphere --part-name half-sphere --element-type C3D8R
     - grep C3D8R half-sphere.inp
     # Separately handled _geometry.py tests
-    - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry.csv --model-name washer --part-name washer --output-file washer.cae --revolution-angle 360.0
-    - turbo-turtle mesh --input-file washer.cae --output-file washer.cae --model-name washer --part-name washer --global-seed 0.10 --element-type C3D8
-    - turbo-turtle export --input-file washer.inp --model-name washer --part-name washer --element-type C3D8R
-    - grep C3D8R washer.inp
+    - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry_washer.csv --model-name washer --part-name washer --output-file washer.cae --revolution-angle 360.0
+    - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry_vase.csv --model-name vase --part-name vase --output-file vase.cae --revolution-angle 360.0
+    - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry_vase.csv --model-name vase-axisymmetric --part-name vase-axisymmetric --output-file vase-axisymmetric.cae --revolution-angle 0.0
     # Separately handled geometry
     - name='Turbo-Turtle-Tests'
     - abq2023 cae -noGui legacy_geometry.py
