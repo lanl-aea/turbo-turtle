@@ -136,6 +136,22 @@ for model, revolution_angle in system_tests:
     env.Alias("systemtests", target)
     env.Alias("regression", target)
 
+model="multi-part-geometry"
+revolution_angle = 360.0
+target = env.Command(
+    target=[f"{model}.cae"],
+    source=["turbo_turtle/tests/test_geometry_washer.csv", "turbo_turtle/tests/test_geometry_vase.csv",
+             "turbo_turtle/main.py", "turbo_turtle/_geometry.py"],
+    action=[
+        "python -m turbo_turtle.main geometry --input-file turbo_turtle/tests/test_geometry_washer.csv " \
+            "turbo_turtle/tests/test_geometry_vase.csv --model-name ${TARGET.filebase} " \
+            "--output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}"
+    ],
+    revolution_angle=revolution_angle
+    )
+env.Alias("systemtests", target)
+env.Alias("regression", target)
+
 target = env.Command(
     target=["Turbo-Turtle-Tests.cae", "seveneigths-sphere.png", "swiss-cheese.png"],
     source=["legacy_geometry.py"],
