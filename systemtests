@@ -70,6 +70,10 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
     )
     targets.extend(cae_target)
 
+    # Used for merge system tests
+    if model == "sphere":
+        sphere_target = cae_target[0]
+
     png_target = env.Command(
         target=[f"{model}.png"],
         source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/image.py"],
@@ -136,7 +140,7 @@ for model, revolution_angle in system_tests:
     env.Alias("systemtests", target)
     env.Alias("regression", target)
 
-model="multi-part-geometry"
+model = "multi-part-geometry"
 revolution_angle = 360.0
 target = env.Command(
     target=[f"{model}.cae"],
@@ -148,7 +152,30 @@ target = env.Command(
             "--output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}"
     ],
     revolution_angle=revolution_angle
-    )
+)
+env.Alias("systemtests", target)
+env.Alias("regression", target)
+# Used for merge system tests
+multi_part_target = target[0]
+
+# merge system tests (requires geometry and sphere targets)
+model = "merged-model"
+target = env.Command(
+    target=[f"{model}.cae"],
+    source=[multi_part_target, sphere_target,
+            "turbo_turtle/main.py", "turbo_turtle/_merge.py"],
+    action=[
+        "python -m turbo_turtle.main merge --input-file ${multi_part_cae_file} ${sphere_cae_file} " \
+            "--output-file ${TARGET.abspath} --merged-model-name ${TARGET.filebase} " \
+            "--model-name multi-part-geometry sphere " \
+            "--part-name test_geometry_washer test_geometry_vase sphere",
+        """grep -iIre "SUCCESS" abaqus.rpy | grep "part 'test_geometry_washer'" """,
+        """grep -iIre "SUCCESS" abaqus.rpy | grep "part 'test_geometry_vase'" """,
+        """grep -iIre "SUCCESS" abaqus.rpy | grep "part 'sphere'" """,
+    ],
+    multi_part_cae_file=multi_part_target.abspath,
+    sphere_cae_file=sphere_target.abspath,
+)
 env.Alias("systemtests", target)
 env.Alias("regression", target)
 
