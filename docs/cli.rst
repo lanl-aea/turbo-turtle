@@ -20,7 +20,6 @@ docs
    :nodefault:
    :path: docs
 
-
 geometry
 --------
 
@@ -28,7 +27,6 @@ geometry
    :ref: turbo_turtle.main.get_parser
    :nodefault:
    :path: geometry
-
 
 sphere
 ------
