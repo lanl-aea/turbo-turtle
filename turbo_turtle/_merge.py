@@ -98,6 +98,9 @@ def get_parser():
                         help="Abaqus CAE file to save the merged model")
     parser.add_argument("--merged-model-name", type=str, required=True,
                         help="Model to create and merge parts into")
+    # TODO: find a way to make default behavior to take all parts from all models from all cae files and merge them
+    #       this would make model_name and part_name no longer required
+    #       https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/43
     parser.add_argument("--model-name", type=str, nargs="+", required=True,
                         help="Abaqus model name(s) to attempt to query in the input CAE file(s)")
     parser.add_argument("--part-name", type=str, nargs="+", required=True,
