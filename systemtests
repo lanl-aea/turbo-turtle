@@ -12,6 +12,7 @@ target = env.Command(
         "turbo_turtle/_abaqus_python/sphere.py",
         "turbo_turtle/_abaqus_python/partition.py",
         "turbo_turtle/_abaqus_python/mesh.py",
+        "turbo_turtle/_abaqus_python/merge.py",
         "turbo_turtle/_abaqus_python/image.py",
         "turbo_turtle/_abaqus_python/export.py"
     ],
@@ -24,6 +25,7 @@ target = env.Command(
         "python -m turbo_turtle.main partition -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main mesh -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main image -h >> ${TARGET.abspath}",
+        "python -m turbo_turtle.main merge -h >> ${TARGET.abspath}",
         "python -m turbo_turtle.main export -h >> ${TARGET.abspath}"
     ]
 )
