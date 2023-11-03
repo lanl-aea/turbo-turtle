@@ -51,9 +51,9 @@ def _validate_element_type(length_part_name, element_type):
     :rtype: list
     """
     length_element_type = len(element_type)
-    if element_type[0] is None:
+    if element_type[0] is None or element_type[0] == 'None':
         element_type = [None] * length_part_name
-    elif element_type[0] is not None and length_element_type == 1:
+    elif (element_type[0] is not None or element_type[0] != 'None') and length_element_type == 1:
         element_type = element_type * length_part_name
     elif length_element_type != length_part_name:
         error_message = "The element type length '{}' must match the part name length '{}'\n".format(
@@ -88,7 +88,7 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
         abaqus.mdb.models[tmp_name].Part(new_part, abaqus.mdb.models[model_name].parts[new_part])
         mesh_output_file = os.path.join(destination, new_part) + ".inp"
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=new_part)
-        if new_element is not None:
+        if new_element is not None or new_element != 'None':
             substitute_element_type(mesh_output_file, new_element)
 
 
