@@ -90,41 +90,24 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
     env.Alias("regression", targets)
 
 
-model="washer"
-revolution_angle = 360.0
-global_seed = 0.10
-element_type = 'C3D8'
-target = env.Command(
-    target=[f"{model}.cae"],
-    source=["turbo_turtle/tests/test_geometry.csv", "turbo_turtle/main.py", "turbo_turtle/_geometry.py",
-            "turbo_turtle/_mesh.py", "turbo_turtle/_export.py"],
-    action=[
-        "python -m turbo_turtle.main geometry --input-file ${SOURCE.abspath} --model-name ${TARGET.filebase} " \
-            "--part-name ${TARGET.filebase} --output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}",
-        "python -m turbo_turtle.main mesh --input-file ${TARGET.abspath} --output-file ${TARGET.abspath} " \
-            "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --global-seed ${global_seed} " \
-            "--element-type ${element_type}"
-    ],
-    revolution_angle=revolution_angle,
-    global_seed=global_seed,
-    element_type=element_type,
+# _geometry system tests
+system_tests = (
+    # model/part,         input_file,                 angle
+    ("washer",            'test_geometry_washer.csv', 360.),
+    ("vase",              'test_geometry_vase.csv',   360.),
+    ("vase-axisymmetric", 'test_geometry_vase.csv',   0.0)
 )
-env.Alias("systemtests", target)
-env.Alias("regression", target)
 
-
-element_replacement = 'C3D8R'
-target = env.Command(
-    target=[f"{model}.inp"],
-    source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_export.py"],
-    action=[
-        "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} " \
-            "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
-            "--element-type ${element_replacement} --destination ${TARGET.dir.abspath}",
-        "grep ${element_replacement} ${TARGET.abspath}"
-    ],
-    element_replacement=element_replacement
-)
+for model, input_file, revolution_angle in system_tests:
+    target = env.Command(
+        target=[f"{model}.cae"],
+        source=[f"turbo_turtle/tests/{input_file}", "turbo_turtle/main.py", "turbo_turtle/_geometry.py"],
+        action=[
+            "python -m turbo_turtle.main geometry --input-file ${SOURCE.abspath} --model-name ${TARGET.filebase} " \
+                "--part-name ${TARGET.filebase} --output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}",
+        ],
+        revolution_angle=revolution_angle,
+    )
 env.Alias("systemtests", target)
 env.Alias("regression", target)
 
