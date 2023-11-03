@@ -55,6 +55,8 @@ test:
     - turbo_turtle
   source_files:
     - legacy_geometry.py
+    - turbo_turtle/tests/test_geometry_washer.csv
+    - turbo_turtle/tests/test_geometry_vase.csv
   commands:
     - test_root=${PWD}
     # Test as-installed project unit tests
