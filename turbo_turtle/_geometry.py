@@ -170,7 +170,7 @@ def _compare_xy_values(numpy_points_array):
     return vertical_horizontal_bools
 
 
-def _bools_via_or(bools_list_1, bools_list_2):
+def _bool_via_or(bools_list_1, bools_list_2):
     """Compare two lists of bools using an ``or`` statement
 
     :param list bools_list_1: first set of bools
