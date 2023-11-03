@@ -53,6 +53,9 @@ def main(input_file, output_file, merged_model_name, model_name, part_name):
                     try:
                         abaqus.mdb.models[merged_model_name].Part(this_part,
                             abaqus.mdb.models[tmp_model].parts[this_part])
+                        success_message = "SUCCESS: merged part '{}' from model '{}' from '{}' into merged model '{}'\n".format(
+                            this_part, this_model, cae_file, merged_model_name)
+                        sys.stdout.write(success_message)
                     except:
                         warning_message = "WARNING: could not find part '{}' in model '{}' in database '{}'\n".format(
                             this_part, this_model, cae_file)
@@ -94,7 +97,7 @@ def get_parser():
 
     parser.add_argument("--input-file", type=str, nargs="+", required=True,
                         help="Abaqus CAE input file(s)")
-    parser.add_argument("--ouptut-file", type=str, required=True,
+    parser.add_argument("--output-file", type=str, required=True,
                         help="Abaqus CAE file to save the merged model")
     parser.add_argument("--merged-model-name", type=str, required=True,
                         help="Model to create and merge parts into")
