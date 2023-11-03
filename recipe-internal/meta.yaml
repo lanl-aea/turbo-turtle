@@ -116,6 +116,11 @@ test:
     - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry_washer.csv turbo_turtle/tests/test_geometry_vase.csv --model-name multi-part-geometry --output-file multi-part-geometry.cae --revolution-angle 360.0
     - turbo-turtle cylinder --inner-radius 1 --outer-radius 2 --height 1 --model-name cylinder_3d --part-name cylinder_3d --output-file cylinder_3d.cae --revolution-angle 360.0
     - turbo-turtle cylinder --inner-radius 1 --outer-radius 2 --height 1 --model-name cylinder_2d --part-name cylinder_2d --output-file cylinder_2d.cae --revolution-angle 0.0
+    # Separately handled _merge.py tests
+    - turbo-turtle merge --input-file multi-part-geometry.cae sphere.cae --output-file merged-model.cae --merged-model-name merged-model --model-name multi-part-geometry sphere --part-name test_geometry_washer test_geometry_vase sphere
+    - grep -iIre "SUCCESS" abaqus.rpy | grep "part 'test_geometry_washer'"
+    - grep -iIre "SUCCESS" abaqus.rpy | grep "part 'test_geometry_vase'"
+    - grep -iIre "SUCCESS" abaqus.rpy | grep "part 'sphere'"
     # Separately handled geometry
     - name='Turbo-Turtle-Tests'
     - abq2023 cae -noGui legacy_geometry.py
