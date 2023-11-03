@@ -125,8 +125,8 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
 
     euclidian_distance_bools = _compare_euclidian_distance(euclidian_distance, numpy_points_array)
     vertical_horizontal_bools = _compare_xy_values(numpy_points_array)
-    break_indices = _indices_by_bool_or(euclidian_distance_bools, vertical_horizontal_bools)
-
+    bools_from_or = _bool_via_or(euclidian_distance_bools, vertical_horizontal_bools)
+    break_indices = numpy.where(bools_from_or)[0]
     all_splines = numpy.split(numpy_points_array, break_indices, axis=0)
     return all_splines
 
@@ -170,18 +170,17 @@ def _compare_xy_values(numpy_points_array):
     return vertical_horizontal_bools
 
 
-def _indices_by_bool_or(bools_list_1, bools_list_2):
-    """Compare two lists of bools using an ``or`` statement, and return the indices where ``True``
+def _bools_via_or(bools_list_1, bools_list_2):
+    """Compare two lists of bools using an ``or`` statement
 
     :param list bools_list_1: first set of bools
     :param list bools_list_2: second set of bools
 
-    :return: indices where the ``or`` statement is ``True``
+    :return: bools resulting from ``or`` statment
     :rtype: list
     """
-    break_at_index = [a or b for a, b in zip(bools_list_1, bools_list_2)]
-    break_indices = numpy.where(break_at_index)[0]
-    return break_indices
+    bools_from_or = [a or b for a, b in zip(bools_list_1, bools_list_2)]
+    return bools_from_or
 
 
 def draw_part_from_splines(all_splines, planar=default_planar, model_name=default_model_name, 
