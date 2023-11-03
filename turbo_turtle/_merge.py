@@ -4,7 +4,6 @@ import sys
 import shutil
 import inspect
 import argparse
-import tempfile
 
 def main(input_file, output_file, merged_model_name, model_name, part_name):
     """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model
