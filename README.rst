@@ -67,10 +67,13 @@ on AEA RHEL (linux) servers.
 
       $ turbo-turtle -h
       $ turbo-turtle docs -h
+      $ turbo-turtle geometry -h
       $ turbo-turtle sphere -h
       $ turbo-turtle partition -h
       $ turbo-turtle mesh -h
       $ turbo-turtle image -h
+      $ turbo-turtle merge -h
+      $ turbo-turtle export -h
 
 .. user-end-do-not-remove
 
