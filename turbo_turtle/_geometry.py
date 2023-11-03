@@ -120,20 +120,68 @@ def points_to_splines(numpy_points_array, euclidian_distance=default_euclidian_d
     :return: Series of line and spline definitions
     :rtype: list
     """
-    # Extract the x-y points from the points input file
     x_points = numpy_points_array[:, 0]
     y_points = numpy_points_array[:, 1]
-    calculated_euclidian_array = numpy.linalg.norm(numpy_points_array[1:, :] - numpy_points_array[0:-1, :], axis=1)
 
-    greater_than_euclidian_distance = [False] + [this_calc > euclidian_distance for this_calc in calculated_euclidian_array]
+    euclidian_distance_bools = _compare_euclidian_distance(euclidian_distance, numpy_points_array)
+    vertical_horizontal_bools = _compare_xy_values(numpy_points_array)
+    break_indices = _indices_by_bool_or(euclidian_distance_bools, vertical_horizontal_bools)
 
-    v_or_h_line = [False] + [numpy.isclose(coords1[0], coords2[0]) or numpy.isclose(coords1[1], coords2[1]) for coords1, coords2 in
-                             zip(numpy_points_array[1:, :], numpy_points_array[0:-1, :])]
-
-    break_at_index = [a or b for a, b in zip(greater_than_euclidian_distance, v_or_h_line)]
-    break_indices = numpy.where(break_at_index)[0]
     all_splines = numpy.split(numpy_points_array, break_indices, axis=0)
     return all_splines
+
+
+def _compare_euclidian_distance(euclidian_distance, numpy_points_array):
+    """Compare the distance between points in a numpy array of x-y data to a provided euclidian distance
+
+    The distance comparison is performed as ``numpy_array_distance > euclidian_distance``. The distance between points
+    in the numpy array is computed such that the "current point" is compared to the previous point in the list. As such,
+    a single ``False`` is always prepended to the beginning of the output ``euclidian_distance_bools`` list, because
+    there is no such distance between the first point and one that comes before it.
+
+    :param float euclidian_distance: distance value to compare against
+    :param numpy.array numpy_points_array: array of points
+
+    :return: bools for the distance comparison
+    :rtype: list
+    """
+    calculated_euclidian_array = numpy.linalg.norm(numpy_points_array[1:, :] - numpy_points_array[0:-1, :], axis=1)
+    euclidian_distance_bools = [False] + [this_euclidian_distance > euclidian_distance for this_euclidian_distance in
+                                          calculated_euclidian_array]
+    return euclidian_distance_bools
+
+
+def _compare_xy_values(numpy_points_array):
+    """Check neighboring x and y values in a numpy array of points for vertical or horizontal relationships
+
+    This function loops through lists of points checking to see if a "current point" and the previous point in the numpy
+    array are vertical or hozitonal from one another. As such, a single ``False`` is always prepended to the beginning
+    of the output ``vertical_horizontal_bools`` list, because there is no such vertical/horizontal relationship between
+    the first point and one that comes before it.
+
+    :param numpy.array numpy_points_array: array of points
+
+    :return: bools for vertical/horizontal relationship comparison
+    :rtype: list
+    """
+    vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0]) or
+                                           numpy.isclose(coords1[1], coords2[1]) for coords1, coords2 in
+                                           zip(numpy_points_array[1:, :], numpy_points_array[0:-1, :])]
+    return vertical_horizontal_bools
+
+
+def _indices_by_bool_or(bools_list_1, bools_list_2):
+    """Compare two lists of bools using an ``or`` statement, and return the indices where ``True``
+
+    :param list bools_list_1: first set of bools
+    :param list bools_list_2: second set of bools
+
+    :return: indices where the ``or`` statement is ``True``
+    :rtype: list
+    """
+    break_at_index = [a or b for a, b in zip(bools_list_1, bools_list_2)]
+    break_indices = numpy.where(break_at_index)[0]
+    return break_indices
 
 
 def draw_part_from_splines(all_splines, planar=default_planar, model_name=default_model_name, 
