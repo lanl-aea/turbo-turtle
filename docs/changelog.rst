@@ -8,6 +8,11 @@ Changelog
 v0.5.1 (unreleased)
 *******************
 
+Internal Changes
+================
+- Replace duplicate Python 2/3 parsers with shared parsers compatible with both Abaqus Python and Python 3 (:issue:`4`,
+  :merge:`28`). By `Kyle Brindley`_.
+
 *******************
 v0.5.0 (11-07-2023)
 *******************
