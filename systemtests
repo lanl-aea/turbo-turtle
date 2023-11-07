@@ -7,12 +7,12 @@ target = env.Command(
     target=["help.txt"],
     source=[
         "turbo_turtle/main.py",
-        "turbo_turtle/_geometry.py",
-        "turbo_turtle/_sphere.py",
-        "turbo_turtle/_partition.py",
-        "turbo_turtle/_mesh.py",
-        "turbo_turtle/_image.py",
-        "turbo_turtle/_export.py"
+        "turbo_turtle/_abaqus_python/_geometry.py",
+        "turbo_turtle/_abaqus_python/_sphere.py",
+        "turbo_turtle/_abaqus_python/_partition.py",
+        "turbo_turtle/_abaqus_python/_mesh.py",
+        "turbo_turtle/_abaqus_python/_image.py",
+        "turbo_turtle/_abaqus_python/_export.py"
     ],
     action=[
         "python -m turbo_turtle.main -h > ${TARGET.abspath}",
@@ -42,7 +42,12 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
     center_three_dimensions = center + (0,)
     cae_target = env.Command(
         target=[f"{model}.cae"],
-        source=["turbo_turtle/main.py", "turbo_turtle/_sphere.py", "turbo_turtle/_partition.py", "turbo_turtle/_mesh.py"],
+        source=[
+            "turbo_turtle/main.py",
+            "turbo_turtle/_abaqus_python/_sphere.py",
+            "turbo_turtle/_abaqus_python/_partition.py",
+            "turbo_turtle/_abaqus_python/_mesh.py"
+        ],
         action=[
             "python -m turbo_turtle.main sphere --inner-radius 1 --outer-radius 2 --output-file ${TARGET.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --quadrant ${quadrant} " \
@@ -65,7 +70,7 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
 
     png_target = env.Command(
         target=[f"{model}.png"],
-        source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_image.py"],
+        source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/_image.py"],
         action=[
             "python -m turbo_turtle.main image --input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}",
@@ -75,7 +80,7 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
 
     inp_target = env.Command(
         target=[f"{model}.inp"],
-        source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_export.py"],
+        source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/_export.py"],
         action=[
             "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
@@ -101,7 +106,7 @@ system_tests = (
 for model, input_file, revolution_angle in system_tests:
     target = env.Command(
         target=[f"{model}.cae"],
-        source=[f"turbo_turtle/tests/{input_file}", "turbo_turtle/main.py", "turbo_turtle/_geometry.py"],
+        source=[f"turbo_turtle/tests/{input_file}", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/_geometry.py"],
         action=[
             "python -m turbo_turtle.main geometry --input-file ${SOURCE.abspath} --model-name ${TARGET.filebase} " \
                 "--part-name ${TARGET.filebase} --output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}",
