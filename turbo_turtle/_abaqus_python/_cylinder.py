@@ -11,13 +11,8 @@ import _geometry
 
 
 def main(inner_radius, outer_radius, height, output_file,
-         planar=_parsers.geometry_default_planar,
          model_name=_parsers.geometry_default_model_name,
          part_name=_parsers.geometry_default_part_name,
-         unit_conversion=_parsers.geometry_default_unit_conversion,
-         euclidian_distance=_parsers.geometry_default_euclidian_distance,
-         delimiter=_parsers.geometry_default_delimiter,
-         header_lines=_parsers.geometry_default_header_lines,
          revolution_angle=_parsers.geometry_default_revolution_angle):
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 
