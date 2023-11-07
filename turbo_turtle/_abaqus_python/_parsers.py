@@ -149,7 +149,7 @@ mesh_default_part_name = "Part-1"
 mesh_default_global_seed = 1.0
 
 
-def mesh_parser():
+def mesh_parser(basename="_mesh.py", add_help=True):
 
     prog = "abaqus cae -noGui {} --".format(basename)
     cli_description = "Mesh an Abaqus part from a global seed"
