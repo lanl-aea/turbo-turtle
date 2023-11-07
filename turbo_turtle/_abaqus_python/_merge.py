@@ -3,7 +3,13 @@ import os
 import sys
 import shutil
 import inspect
-import argparse
+
+filename = inspect.getfile(lambda: None)
+basename = os.path.basename(filename)
+parent = os.path.dirname(filename)
+sys.path.insert(0, parent)
+import _parsers
+
 
 def main(input_file, output_file, merged_model_name, model_name, part_name):
     """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model
@@ -85,33 +91,8 @@ def _check_for_duplicate_part_names(part_name):
         sys.exit(1)
 
 
-def get_parser():
-    file_name = inspect.getfile(lambda: None)
-    base_name = os.path.basename(file_name)
-
-    prog = "abaqus cae -noGui {} --".format(base_name)
-    cli_description = "Merge parts from multiple Abaqus CAE files into a single model"
-
-    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
-
-    parser.add_argument("--input-file", type=str, nargs="+", required=True,
-                        help="Abaqus CAE input file(s)")
-    parser.add_argument("--output-file", type=str, required=True,
-                        help="Abaqus CAE file to save the merged model")
-    parser.add_argument("--merged-model-name", type=str, required=True,
-                        help="Model to create and merge parts into")
-    # TODO: find a way to make default behavior to take all parts from all models from all cae files and merge them
-    #       this would make model_name and part_name no longer required
-    #       https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/43
-    parser.add_argument("--model-name", type=str, nargs="+", required=True,
-                        help="Abaqus model name(s) to attempt to query in the input CAE file(s)")
-    parser.add_argument("--part-name", type=str, nargs="+", required=True,
-                        help="Part name(s) to search for within model(s)")
-    return parser
-
-
 if __name__ == "__main__":
-    parser = get_parser()
+    parser = _parsers.merge_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:

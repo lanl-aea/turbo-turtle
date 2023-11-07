@@ -10,76 +10,6 @@ from turbo_turtle import _wrappers
 from turbo_turtle._abaqus_python import parsers
 
 
-def _mesh_parser():
-
-    default_output_file = None
-    default_model_name = "Model-1"
-    default_part_name = "Part-1"
-    default_global_seed = 1.0
-
-    parser = argparse.ArgumentParser(add_help=False)
-
-    parser.add_argument("--input-file", type=str, required=True,
-                        help="Abaqus CAE input file")
-    parser.add_argument("--element-type", type=str, required=True,
-                        help="Abaqus element type")
-    parser.add_argument("--output-file", type=str, default=default_output_file,
-                        help="Abaqus CAE output file (default: %(default)s)")
-    parser.add_argument("--model-name", type=str, default=default_model_name,
-                        help="Abaqus model name (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, default=default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
-    parser.add_argument("--global-seed", type=float, default=default_global_seed,
-                        help="The global mesh seed size. Positive float.")
-
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
-
-    return parser
-
-
-def _mesh(args):
-    """Python 3 wrapper around the Abaqus Python mesh CLI
-
-    :param argparse.Namespace args: namespace of parsed arguments
-    """
-    script = _settings._project_root_abspath / "_mesh.py"
-
-    command = f"{args.abaqus_command} cae -noGui {script} -- "
-    command += f"--input-file {args.input_file} "
-    command += f"--element-type {args.element_type} "
-    if args.output_file is not None:
-        command += f"--output-file {args.output_file} "
-    command += f"--model-name {args.model_name} --part-name {args.part_name} "
-    command += f"--global-seed {args.global_seed}"
-    command = command.split()
-    stdout = subprocess.check_output(command)
-
-
-def _merge_parser():
-
-    parser = argparse.ArgumentParser(add_help=False)
-
-    parser.add_argument("--input-file", type=str, nargs="+", required=True,
-                        help="Abaqus CAE input file(s)")
-    parser.add_argument("--output-file", type=str, required=True,
-                        help="Abaqus CAE file to save the merged model")
-    parser.add_argument("--merged-model-name", type=str, required=True,
-                        help="Model to create and merge parts into")
-    # TODO: find a way to make default behavior to take all parts from all models from all cae files and merge them
-    #       this would make model_name and part_name no longer required
-    #       https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/43
-    parser.add_argument("--model-name", type=str, nargs="+", required=True,
-                        help="Abaqus model name(s) to attempt to query in the input CAE file(s)")
-    parser.add_argument("--part-name", type=str, nargs="+", required=True,
-                        help="Part name(s) to search for within model(s)")
-
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
-
-    return parser
-
-
 def _docs_parser():
     """Get parser object for docs subcommand command line options
 
@@ -151,9 +81,20 @@ def get_parser():
     sphere_parser = parsers.sphere_parser(add_help=False)
     partition_parser = parsers.partition_parser(add_help=False)
     mesh_parser = parsers.mesh_parser(add_help=False)
+    merge_parser = parsers.merge_parser(add_help=False)
     export_parser = parsers.export_parser(add_help=False)
     image_parser = parsers.image_parser(add_help=False)
-    add_abaqus_argument([geometry_parser, cylinder_parser, sphere_parser, partition_parser, mesh_parser, export_parser, image_parser])
+
+    add_abaqus_argument([
+        geometry_parser,
+        cylinder_parser,
+        sphere_parser,
+        partition_parser,
+        mesh_parser,
+        merge_parser,
+        export_parser,
+        image_parser
+    ])
 
     subparsers.add_parser(
         "geometry",
@@ -190,12 +131,10 @@ def get_parser():
         parents=[mesh_parser]
     )
 
-    merge_parser = _merge_parser()
     merge_parser = subparsers.add_parser(
         "merge",
-        help="Merge parts from multiple Abaqus models into a new model",
-        description="Supply multiple Abaqus CAE files along with model and part names and attempt " \
-                    "to merge the parts into a new model",
+        help=_parsers.merge_cli_help,
+        description=_parsers.merge_cli_description,
         parents=[merge_parser]
     )
 

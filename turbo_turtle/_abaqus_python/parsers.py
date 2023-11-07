@@ -216,6 +216,31 @@ def mesh_parser(basename="_mesh.py", add_help=True, description=mesh_cli_descrip
     return parser
 
 
+merge_cli_help = "Merge parts from multiple Abaqus CAE files into a single model"
+merge_cli_description = "Supply multiple Abaqus CAE files along with model and part names and attempt " \
+                        "to merge the parts into a new model"
+
+
+def merge_parser(basename="_export.py", add_help=True, description=merge_cli_description):
+
+    parser = create_parser(add_help=add_help, description=description, basename=basename)
+
+    parser.add_argument("--input-file", type=str, nargs="+", required=True,
+                        help="Abaqus CAE input file(s)")
+    parser.add_argument("--output-file", type=str, required=True,
+                        help="Abaqus CAE file to save the merged model")
+    parser.add_argument("--merged-model-name", type=str, required=True,
+                        help="Model to create and merge parts into")
+    # TODO: find a way to make default behavior to take all parts from all models from all cae files and merge them
+    #       this would make model_name and part_name no longer required
+    #       https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/43
+    parser.add_argument("--model-name", type=str, nargs="+", required=True,
+                        help="Abaqus model name(s) to attempt to query in the input CAE file(s)")
+    parser.add_argument("--part-name", type=str, nargs="+", required=True,
+                        help="Part name(s) to search for within model(s)")
+    return parser
+
+
 export_default_model_name = "Model-1"
 export_default_part_name = ["Part-1"]
 export_default_element_type = [None]
