@@ -120,8 +120,8 @@ env.Alias("regression", target)
 # _cylinder system tests
 system_tests = (
     # model/part, angle
-    ("washer_3d",    360.),
-    ("washer_2d",      0.)
+    ("cylinder_3d",    360.),
+    ("cylinder_2d",      0.)
 )
 
 for model, revolution_angle in system_tests:
