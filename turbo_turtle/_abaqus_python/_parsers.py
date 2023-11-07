@@ -13,9 +13,29 @@ def construct_prog(basename):
     """Construct the Abaqus Python usage string
 
     :param str basename: Abaqus Python script basename
+
+    :returns: program usage string
+    :rtype: str
     """
     prog = "abaqus cae -noGui {} --".format(basename)
     return prog
+
+
+def create_parser(add_help, description, basename):
+    """Handle the parser instantiation with or without the help message
+
+    :param bool add_help: Use a parser with a help message when True
+    :param str description: Description to add to a parser with a help message
+    :param str basename: File basename to use in the usage string of a parser with a help message
+
+    :returns: parser
+    :rtype: argparse.ArgumentParser
+    """
+    if add_help:
+        parser = argparse.ArgumentParser(description=description, prog=construct_prog(basename))
+    else:
+        parser = argparse.ArgumentParser(add_help=add_help)
+    return parser
 
 
 geometry_default_unit_conversion = 1.0
@@ -31,12 +51,9 @@ geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of r
                            "sketching lines and splines in the X-Y plane. Line and spline definitions are formed by " \
                            "parsing an input text file of points in X-Y space."
 
-def geometry_parser(basename="_geometry.py", add_help=True):
+def geometry_parser(basename="_geometry.py", add_help=True, description=geometry_cli_description):
 
-    if add_help:
-        parser = argparse.ArgumentParser(description=geometry_cli_description, prog=construct_prog(basename))
-    else:
-        parser = argparse.ArgumentParser(add_help=add_help)
+    parser = create_parser(add_help=add_help, description=description, basename=basename)
 
     parser.add_argument("--input-file", type=str, nargs="+", required=True,
                         help="Name of an input file(s) with points in x-y coordinate system")
@@ -72,12 +89,9 @@ sphere_cli_description = "Create a hollow, spherical geometry from a sketch in t
                          "lower (+X-Y), or both quadrants."
 
 
-def sphere_parser(basename="_sphere.py", add_help=True):
+def sphere_parser(basename="_sphere.py", add_help=True, description=sphere_cli_description):
 
-    if add_help:
-        parser = argparse.ArgumentParser(description=sphere_cli_description, prog=construct_prog(basename))
-    else:
-        parser = argparse.ArgumentParser(add_help=add_help)
+    parser = create_parser(add_help=add_help, description=description, basename=basename)
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--inner-radius', type=float, required=True,
@@ -115,12 +129,9 @@ partition_cli_help = "Partition a spherical shape into a turtle shell"
 partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
 
 
-def partition_parser(basename="_partition.py", add_help=True):
+def partition_parser(basename="_partition.py", add_help=True, description=partition_cli_description):
 
-    if add_help:
-        parser = argparse.ArgumentParser(description=partition_cli_description, prog=construct_prog(basename))
-    else:
-        parser = argparse.ArgumentParser(add_help=add_help)
+    parser = create_parser(add_help=add_help, description=description, basename=basename)
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--model-name', type=str, required=True,
@@ -159,12 +170,9 @@ mesh_cli_help = "Mesh an Abaqus part from a global seed"
 mesh_cli_description = "Mesh an Abaqus part from a global seed"
 
 
-def mesh_parser(basename="_mesh.py", add_help=True):
+def mesh_parser(basename="_mesh.py", add_help=True, description=mesh_cli_description):
 
-    if add_help:
-        parser = argparse.ArgumentParser(description=mesh_cli_description, prog=construct_prog(basename))
-    else:
-        parser = argparse.ArgumentParser(add_help=add_help)
+    parser = create_parser(add_help=add_help, description=description, basename=basename)
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")
@@ -191,12 +199,9 @@ export_cli_help = "Export an Abaqus part mesh as an orphan mesh"
 export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
 
-def export_parser(basename="_export.py", add_help=True):
+def export_parser(basename="_export.py", add_help=True, description=export_cli_description):
 
-    if add_help:
-        parser = argparse.ArgumentParser(description=export_cli_description, prog=construct_prog(basename))
-    else:
-        parser = argparse.ArgumentParser(add_help=add_help)
+    parser = create_parser(add_help=add_help, description=description, basename=basename)
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")
@@ -223,12 +228,9 @@ image_cli_help = "Save an image of an Abaqus model"
 image_cli_description = "Save an assembly view image (colored by material) for a given Abaqus input file"
 
 
-def image_parser(basename="_image.py", add_help=True):
+def image_parser(basename="_image.py", add_help=True, description=image_cli_description):
 
-    if add_help:
-        parser = argparse.ArgumentParser(description=image_cli_description, prog=construct_prog(basename))
-    else:
-        parser = argparse.ArgumentParser(add_help=add_help)
+    parser = create_parser(add_help=add_help, description=description, basename=basename)
 
     parser.add_argument('--input-file', type=str, required=True,
                          help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
