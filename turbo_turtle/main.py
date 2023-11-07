@@ -115,7 +115,7 @@ def _sphere(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._project_root_abspath / "_sphere.py"
+    script = _settings._abaqus_python_abspath / "_sphere.py"
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--inner-radius {args.inner_radius} --outer-radius {args.outer_radius} "

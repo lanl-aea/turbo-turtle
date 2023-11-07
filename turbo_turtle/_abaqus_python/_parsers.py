@@ -1,4 +1,14 @@
+import argparse
+
+
 def sphere_parser(basename="sphere.py"):
+
+    default_input_file = None
+    default_quadrant = "both"
+    default_angle = 360.
+    default_center = (0., 0.)
+    default_model_name = "Model-1"
+    default_part_name = "sphere"
 
     prog = "abaqus cae -noGui {} --".format(basename)
     cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower " \
