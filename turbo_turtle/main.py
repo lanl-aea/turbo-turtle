@@ -76,14 +76,22 @@ def get_parser():
 
     subparsers = main_parser.add_subparsers(dest="subcommand")
 
-    geometry_parser = parsers.geometry_parser(add_help=False)
-    cylinder_parser = parsers.cylinder_parser(add_help=False)
-    sphere_parser = parsers.sphere_parser(add_help=False)
-    partition_parser = parsers.partition_parser(add_help=False)
-    mesh_parser = parsers.mesh_parser(add_help=False)
-    merge_parser = parsers.merge_parser(add_help=False)
-    export_parser = parsers.export_parser(add_help=False)
-    image_parser = parsers.image_parser(add_help=False)
+    docs_parser = _docs_parser()
+    subparsers.add_parser(
+        "docs",
+        help=f"Open the {_settings._project_name_short} HTML documentation",
+        description=f"Open the packaged {_settings._project_name_short} HTML documentation in the  " \
+                     "system default web browser",
+        parents=[docs_parser])
+
+    geometry_parser = _parsers.geometry_parser(add_help=False)
+    cylinder_parser = _parsers.cylinder_parser(add_help=False)
+    sphere_parser = _parsers.sphere_parser(add_help=False)
+    partition_parser = _parsers.partition_parser(add_help=False)
+    mesh_parser = _parsers.mesh_parser(add_help=False)
+    merge_parser = _parsers.merge_parser(add_help=False)
+    export_parser = _parsers.export_parser(add_help=False)
+    image_parser = _parsers.image_parser(add_help=False)
 
     add_abaqus_argument([
         geometry_parser,
@@ -151,14 +159,6 @@ def get_parser():
         description=parsers.image_cli_description,
         parents=[image_parser]
     )
-
-    docs_parser = _docs_parser()
-    subparsers.add_parser(
-        "docs",
-        help=f"Open the {_settings._project_name_short} HTML documentation",
-        description=f"Open the packaged {_settings._project_name_short} HTML documentation in the  " \
-                     "system default web browser",
-        parents=[docs_parser])
 
     return main_parser
 
