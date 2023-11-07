@@ -143,6 +143,38 @@ def partition_parser(basename="_partition.py", add_help=True):
     return parser
 
 
+mesh_default_output_file = None
+mesh_default_model_name = "Model-1"
+mesh_default_part_name = "Part-1"
+mesh_default_global_seed = 1.0
+
+
+def mesh_parser():
+
+    prog = "abaqus cae -noGui {} --".format(basename)
+    cli_description = "Mesh an Abaqus part from a global seed"
+
+    if add_help:
+        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    else:
+        parser = argparse.ArgumentParser(add_help=add_help)
+
+    parser.add_argument("--input-file", type=str, required=True,
+                        help="Abaqus CAE input file")
+    parser.add_argument("--element-type", type=str, required=True,
+                        help="Abaqus element type")
+    parser.add_argument("--output-file", type=str, default=mesh_default_output_file,
+                        help="Abaqus CAE output file (default: %(default)s)")
+    parser.add_argument("--model-name", type=str, default=mesh_default_model_name,
+                        help="Abaqus model name (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, default=mesh_default_part_name,
+                        help="Abaqus part name (default: %(default)s)")
+    parser.add_argument("--global-seed", type=float, default=mesh_default_global_seed,
+                        help="The global mesh seed size. Positive float.")
+
+    return parser
+
+
 export_default_model_name = "Model-1"
 export_default_part_name = ["Part-1"]
 export_default_element_type = [None]

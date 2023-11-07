@@ -74,34 +74,6 @@ def _partition(args):
     stdout = subprocess.check_output(command)
 
 
-def _mesh_parser():
-
-    default_output_file = None
-    default_model_name = "Model-1"
-    default_part_name = "Part-1"
-    default_global_seed = 1.0
-
-    parser = argparse.ArgumentParser(add_help=False)
-
-    parser.add_argument("--input-file", type=str, required=True,
-                        help="Abaqus CAE input file")
-    parser.add_argument("--element-type", type=str, required=True,
-                        help="Abaqus element type")
-    parser.add_argument("--output-file", type=str, default=default_output_file,
-                        help="Abaqus CAE output file (default: %(default)s)")
-    parser.add_argument("--model-name", type=str, default=default_model_name,
-                        help="Abaqus model name (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, default=default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
-    parser.add_argument("--global-seed", type=float, default=default_global_seed,
-                        help="The global mesh seed size. Positive float.")
-
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
-
-    return parser
-
-
 def _mesh(args):
     """Python 3 wrapper around the Abaqus Python mesh CLI
 
@@ -220,9 +192,10 @@ def get_parser():
     geometry_parser = _parsers.geometry_parser(add_help=False)
     sphere_parser = _parsers.sphere_parser(add_help=False)
     partition_parser = _parsers.partition_parser(add_help=False)
+    mesh_parser = _parsers.mesh_parser(add_help=False)
     export_parser = _parsers.export_parser(add_help=False)
     image_parser = _parsers.image_parser(add_help=False)
-    add_abaqus_argument([geometry_parser, sphere_parser, partition_parser, export_parser, image_parser])
+    add_abaqus_argument([geometry_parser, sphere_parser, partition_parser, mesh_parser, export_parser, image_parser])
 
     subparsers.add_parser(
         "geometry",
@@ -248,7 +221,6 @@ def get_parser():
         parents=[partition_parser]
     )
 
-    mesh_parser = _mesh_parser()
     subparsers.add_parser(
         "mesh",
         help="Mesh an Abaqus part from a global seed",

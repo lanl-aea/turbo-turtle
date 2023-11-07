@@ -6,14 +6,18 @@ import argparse
 import tempfile
 
 
-default_output_file = None
-default_model_name = "Model-1"
-default_part_name = "Part-1"
-default_global_seed = 1.0
+filename = inspect.getfile(lambda: None)
+basename = os.path.basename(filename)
+parent = os.path.dirname(filename)
+sys.path.insert(0, parent)
+import _parsers
 
 
-def main(input_file, element_type, output_file=default_output_file, model_name=default_model_name,
-         part_name=default_part_name, global_seed=default_global_seed):
+def main(input_file, element_type,
+         output_file=mesh_default_output_file,
+         model_name=mesh_default_model_name,
+         part_name=mesh_default_part_name,
+         global_seed=mesh_default_global_seed):
     """Wrap mesh function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
@@ -36,7 +40,10 @@ def main(input_file, element_type, output_file=default_output_file, model_name=d
         abaqus.mdb.saveAs(pathName=output_file)
 
 
-def mesh(element_type, model_name=default_model_name, part_name=default_part_name, global_seed=default_global_seed):
+def mesh(element_type,
+         model_name=mesh_default_model_name,
+         part_name=mesh_default_part_name,
+         global_seed=mesh_default_global_seed):
     """Apply a global seed and mesh the specified part
 
     :param str element_type: Abaqus element type
@@ -94,33 +101,11 @@ def return_abaqus_constant(search_string):
     return attribute
 
 
-def get_parser():
-    file_name = inspect.getfile(lambda: None)
-    base_name = os.path.basename(file_name)
-
-    prog = "abaqus cae -noGui {} --".format(base_name)
-    cli_description = "Mesh an Abaqus part from a global seed"
-
-    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
-
-    parser.add_argument("--input-file", type=str, required=True,
-                        help="Abaqus CAE input file")
-    parser.add_argument("--element-type", type=str, required=True,
-                        help="Abaqus element type")
-    parser.add_argument("--output-file", type=str, default=default_output_file,
-                        help="Abaqus CAE output file (default: %(default)s)")
-    parser.add_argument("--model-name", type=str, default=default_model_name,
-                        help="Abaqus model name (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, default=default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
-    parser.add_argument("--global-seed", type=float, default=default_global_seed,
-                        help="The global mesh seed size. Positive float.")
-
-    return parser
 
 
 if __name__ == "__main__":
-    parser = get_parser()
+
+    parser = _parsers.mesh_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:
