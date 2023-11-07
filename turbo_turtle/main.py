@@ -164,6 +164,10 @@ def _docs(print_local_path=False):
 
 
 def add_abaqus_argument(parsers):
+    """Add the abaqus command argument to each parser in the parsers list
+
+    :param list parsers: List of parser to run ``add_argument`` for the abaqus command
+    """
     for parser in parsers:
         parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
                             help='Abaqus executable absolute or relative path (default: %(default)s)')
