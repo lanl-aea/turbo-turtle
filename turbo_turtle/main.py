@@ -161,32 +161,6 @@ def _mesh(args):
     stdout = subprocess.check_output(command)
 
 
-def _export_parser():
-
-    default_model_name = "Model-1"
-    default_part_name = ["Part-1"]
-    default_element_type = [None]
-    default_destination = os.getcwd()
-
-    parser = argparse.ArgumentParser(add_help=False)
-
-    parser.add_argument("--input-file", type=str, required=True,
-                        help="Abaqus CAE input file")
-    parser.add_argument("--model-name", type=str, default=default_model_name,
-                        help="Abaqus model name (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, nargs="+", default=default_part_name,
-                        help="List of Abaqus part names (default: %(default)s)")
-    parser.add_argument("--element-type", type=str, nargs="+", default=default_element_type,
-                        help="List of element types, one per part name or one global replacement for every part name (default: %(default)s)")
-    parser.add_argument("--destination", type=str, default=default_destination,
-                        help="Write orphan mesh files to this output directory (default: PWD)")
-
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
-
-    return parser
-
-
 def _export(args):
     """Python 3 wrapper around the Abaqus Python export CLI
 
@@ -351,8 +325,10 @@ def get_parser():
         parents=[mesh_parser]
     )
 
-    export_parser = _export_parser()
-    export_parser = subparsers.add_parser(
+    export_parser = _parsers.export_parser(add_help=False)
+    export_parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                               help='Abaqus executable absolute or relative path (default: %(default)s)')
+    subparsers.add_parser(
         "export",
         help="Export an Abaqus part mesh as an orphan mesh",
         description="Export an Abaqus part mesh as an orphan mesh",

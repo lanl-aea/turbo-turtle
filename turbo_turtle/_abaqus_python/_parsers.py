@@ -97,3 +97,31 @@ def partition_parser(basename="_partition.py", add_help=True):
                         help="Create a partition offset from the z-principal-plane (default: %(default)s)")
 
     return parser
+
+
+export_default_model_name = "Model-1"
+export_default_part_name = ["Part-1"]
+export_default_element_type = [None]
+export_default_destination = os.getcwd()
+
+
+def export_parser(basename="_export.py", add_help=True):
+
+    prog = "abaqus cae -noGui {} --".format(base_name)
+    cli_description = "Export an Abaqus part mesh as an orphan mesh"
+
+    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+
+    parser.add_argument("--input-file", type=str, required=True,
+                        help="Abaqus CAE input file")
+    parser.add_argument("--model-name", type=str, default=export_default_model_name,
+                        help="Abaqus model name (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, nargs='+', default=export_default_part_name,
+                        help="List of Abaqus part names (default: %(default)s)")
+    parser.add_argument("--element-type", type=str, nargs='+', default=export_default_element_type,
+                        help="List of element types, one per part name or one global replacement for every part name " \
+                             "(default: %(default)s)")
+    parser.add_argument("--destination", type=str, default=export_default_destination,
+                        help="Write orphan mesh files to this output directory (default: PWD)")
+
+    return parser
