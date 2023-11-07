@@ -9,6 +9,15 @@ import os
 import argparse
 
 
+def construct_prog(basename):
+    """Construct the Abaqus Python usage string
+
+    :param str basename: Abaqus Python script basename
+    """
+    prog = "abaqus cae -noGui {} --".format(basename)
+    return prog
+
+
 geometry_default_unit_conversion = 1.0
 geometry_default_planar = False
 geometry_default_euclidian_distance = 4.0
@@ -24,10 +33,8 @@ geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of r
 
 def geometry_parser(basename="_geometry.py", add_help=True):
 
-    prog = "abaqus cae -noGui {} --".format(basename)
-
     if add_help:
-        parser = argparse.ArgumentParser(description=geometry_cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=geometry_cli_description, prog=construct_prog(basename))
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -67,10 +74,8 @@ sphere_cli_description = "Create a hollow, spherical geometry from a sketch in t
 
 def sphere_parser(basename="_sphere.py", add_help=True):
 
-    prog = "abaqus cae -noGui {} --".format(basename)
-
     if add_help:
-        parser = argparse.ArgumentParser(description=sphere_cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=sphere_cli_description, prog=construct_prog(basename))
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -112,10 +117,8 @@ partition_cli_description = "Partition a spherical shape into a turtle shell giv
 
 def partition_parser(basename="_partition.py", add_help=True):
 
-    prog = "abaqus cae -noGui {} --".format(basename)
-
     if add_help:
-        parser = argparse.ArgumentParser(description=partition_cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=partition_cli_description, prog=construct_prog(basename))
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -158,10 +161,8 @@ mesh_cli_description = "Mesh an Abaqus part from a global seed"
 
 def mesh_parser(basename="_mesh.py", add_help=True):
 
-    prog = "abaqus cae -noGui {} --".format(basename)
-
     if add_help:
-        parser = argparse.ArgumentParser(description=mesh_cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=mesh_cli_description, prog=construct_prog(basename))
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -192,10 +193,8 @@ export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
 def export_parser(basename="_export.py", add_help=True):
 
-    prog = "abaqus cae -noGui {} --".format(basename)
-
     if add_help:
-        parser = argparse.ArgumentParser(description=export_cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=export_cli_description, prog=construct_prog(basename))
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -226,10 +225,8 @@ image_cli_description = "Save an assembly view image (colored by material) for a
 
 def image_parser(basename="_image.py", add_help=True):
 
-    prog = "abaqus cae -noGui {} --".format(basename)
-
     if add_help:
-        parser = argparse.ArgumentParser(description=image_cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=image_cli_description, prog=construct_prog(basename))
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
