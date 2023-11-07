@@ -39,7 +39,7 @@ def cylinder(args):
     command += f"--height {args.height} "
     command += f"--output-file {args.output_file} "
     command += f"--model-name {args.model_name} "
-    command += f"--part-name {' '.join(map(str, args.part_name))} "
+    command += f"--part-name {args.part_name} "
     command += f"--revolution-angle {args.revolution_angle}"
     command = command.split()
     stdout = subprocess.check_output(command)

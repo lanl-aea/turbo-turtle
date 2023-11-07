@@ -38,7 +38,7 @@ def main(inner_radius, outer_radius, height, output_file,
     vertices = numpy.array(vertices)
     all_splines = [vertices]
 
-    _geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, part_name,
+    _geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, [part_name],
                                      revolution_angle=revolution_angle)
 
     abaqus.mdb.saveAs(pathName=output_file)
