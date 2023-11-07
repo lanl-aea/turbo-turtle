@@ -14,7 +14,7 @@ def _geometry(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._project_root_abspath / "_geometry.py"
+    script = _settings._abaqus_python_abspath / "_geometry.py"
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {' '.join(map(str, args.input_file))} "
@@ -56,7 +56,7 @@ def _partition(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._project_root_abspath / "_partition.py"
+    script = _settings._abaqus_python_abspath / "_partition.py"
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
@@ -79,7 +79,7 @@ def _mesh(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._project_root_abspath / "_mesh.py"
+    script = _settings._abaqus_python_abspath / "_mesh.py"
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
@@ -97,7 +97,7 @@ def _export(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._project_root_abspath / "_export.py"
+    script = _settings._abaqus_python_abspath / "_export.py"
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
@@ -113,7 +113,7 @@ def _image(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._project_root_abspath / "_image.py"
+    script = _settings._abaqus_python_abspath / "_image.py"
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
