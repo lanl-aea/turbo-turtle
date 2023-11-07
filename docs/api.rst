@@ -10,6 +10,12 @@ main
 .. automodule:: turbo_turtle.main
     :members:
 
+_wrappers
+=========
+
+.. automodule:: turbo_turtle._wrappers
+    :members:
+
 _geometry
 =========
 
