@@ -12,6 +12,8 @@ Internal Changes
 ================
 - Replace duplicate Python 2/3 parsers with shared parsers compatible with both Abaqus Python and Python 3 (:issue:`4`,
   :merge:`28`). By `Kyle Brindley`_.
+- Move the Python 3 wrapper functions to a dedicated module for re-use in SCons builders (:issue:`35`, :merge:`30`). By
+  `Kyle Brindley`_.
 
 *******************
 v0.5.0 (11-07-2023)
