@@ -105,6 +105,23 @@ def mesh(args):
     stdout = subprocess.check_output(command)
 
 
+def merge(args):
+    """Python 3 wrapper around the Abaqus Python merge CLI
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    """
+    script = _settings._project_root_abspath / "_merge.py"
+
+    command = f"{args.abaqus_command} cae -noGui {script} -- "
+    command += f"--input-file {' '.join(map(str, args.input_file))} "
+    command += f"--output-file {args.output_file} "
+    command += f"--merged-model-name {args.merged_model_name} "
+    command += f"--model-name {' '.join(map(str, args.model_name))} "
+    command += f"--part-name {' '.join(map(str, args.part_name))}"
+    command = command.split()
+    stdout = subprocess.check_output(command)
+
+
 def export(args):
     """Python 3 wrapper around the Abaqus Python export CLI
 
