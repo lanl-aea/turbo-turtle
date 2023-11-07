@@ -266,6 +266,11 @@ def _docs(print_local_path=False):
         webbrowser.open(str(_settings._installed_docs_index))
 
 
+def add_abaqus_argument(parser):
+    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                        help='Abaqus executable absolute or relative path (default: %(default)s)')
+
+
 def get_parser():
     """Get parser object for command line options
 
@@ -297,8 +302,7 @@ def get_parser():
     )
 
     sphere_parser = _parsers.sphere_parser(add_help=False)
-    sphere_parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                               help='Abaqus executable absolute or relative path (default: %(default)s)')
+    add_abaqus_argument(sphere_parser)
     subparsers.add_parser(
         "sphere",
         help="Create a hollow, spherical geometry from a sketch in the X-Y plane",
@@ -308,8 +312,7 @@ def get_parser():
     )
 
     partition_parser = _parsers.partition_parser(add_help=False)
-    partition_parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                                  help='Abaqus executable absolute or relative path (default: %(default)s)')
+    add_abaqus_argument(partition_parser)
     subparsers.add_parser(
         "partition",
         help="Partition a spherical shape into a turtle shell",
@@ -326,8 +329,7 @@ def get_parser():
     )
 
     export_parser = _parsers.export_parser(add_help=False)
-    export_parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                               help='Abaqus executable absolute or relative path (default: %(default)s)')
+    add_abaqus_argument(export_parser)
     subparsers.add_parser(
         "export",
         help="Export an Abaqus part mesh as an orphan mesh",
