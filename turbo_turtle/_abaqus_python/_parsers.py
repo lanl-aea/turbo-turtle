@@ -1,7 +1,7 @@
 import argparse
 
 
-def sphere_parser(basename="sphere.py"):
+def sphere_parser(basename="sphere.py", add_help=True):
 
     default_input_file = None
     default_quadrant = "both"
@@ -14,7 +14,11 @@ def sphere_parser(basename="sphere.py"):
     cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower " \
                       "(+X-Y), or both quadrants."
 
-    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    if add_help:
+        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    else:
+        parser = argparse.ArgumentParser(add_help=add_help)
+
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--inner-radius', type=float, required=True,
                                help="Inner radius (hollow size)")
