@@ -11,6 +11,8 @@ v0.5.1 (unreleased)
 New Features
 ============
 - Add a cylinder subcommand (:issue:`40`, :merge:`31`). By `Kyle Brindley`_.
+- Add a ``merge`` subcommand to combine multiple separate Abaqus models together (:issue:`37`, :merge:`26`). By `Thomas 
+  Roberts`_.
 
 Documentation
 =============
@@ -42,8 +44,6 @@ New Features
 ============
 - Add a ``geometry`` subcommand to draw 2D planar, 2D axisymmetric, or 3D bodies of revolution from a text file of x-y
   points (:issue:`16`, :merge:`25`). By `Thomas Roberts`_.
-- Add a ``merge`` subcommand to combine multiple separate Abaqus models together (:issue:`37`, :merge:`26`). By `Thomas 
-  Roberts`_.
 
 Bug fixes
 =========
