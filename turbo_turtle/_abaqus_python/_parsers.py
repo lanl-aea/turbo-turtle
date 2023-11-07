@@ -78,6 +78,7 @@ def geometry_parser(basename="_geometry.py", add_help=True, description=geometry
     return parser
 
 
+cylinder_default_part_name = None
 cylinder_cli_help = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 cylinder_cli_description = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 
@@ -96,7 +97,7 @@ def cylinder_parser(basename="_cylinder.py", add_help=True, description=cylinder
                         help="Name of the output Abaqus CAE file to save (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=geometry_default_model_name,
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
-    parser.add_argument("--part-name", type=str, default=geometry_default_part_name,
+    parser.add_argument("--part-name", type=str, default=cylinder_default_part_name,
                         help="Abaqus part name(s) (default: %(default)s)")
     parser.add_argument("--revolution-angle", type=float, default=geometry_default_revolution_angle,
                         help="Revolution angle for a 3D part in degrees (default: %(default)s)")
