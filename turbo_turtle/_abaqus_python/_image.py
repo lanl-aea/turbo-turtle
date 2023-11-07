@@ -6,16 +6,20 @@ import argparse
 import tempfile
 
 
-default_x_angle = 0.
-default_y_angle = 0.
-default_z_angle = 0.
-default_image_size = (1920, 1080)
-default_model_name = "Model-1"
-default_part_name = "Part-1"
+filename = inspect.getfile(lambda: None)
+basename = os.path.basename(filename)
+parent = os.path.dirname(filename)
+sys.path.insert(0, parent)
+import _parsers
 
 
-def main(input_file, output_file, x_angle=default_x_angle, y_angle=default_y_angle, z_angle=default_z_angle,
-         image_size=default_image_size, model_name=default_model_name, part_name=default_part_name):
+def main(input_file, output_file,
+         x_angle=image_default_x_angle,
+         y_angle=image_default_y_angle,
+         z_angle=image_default_z_angle,
+         image_size=image_default_image_size,
+         model_name=image_default_model_name,
+         part_name=image_default_part_name):
     """Wrap image with file input handling
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
@@ -46,8 +50,13 @@ def main(input_file, output_file, x_angle=default_x_angle, y_angle=default_y_ang
         sys.exit(1)
 
 
-def image(output_file, x_angle=default_x_angle, y_angle=default_y_angle, z_angle=default_z_angle,
-          image_size=default_image_size, model_name=default_model_name, part_name=default_part_name):
+def image(output_file,
+          x_angle=image_default_x_angle,
+          y_angle=image_default_y_angle,
+          z_angle=image_default_z_angle,
+          image_size=image_default_image_size,
+          model_name=image_default_model_name,
+          part_name=image_default_part_name):
     """Script for saving an assembly view image (colored by material) for a given Abaqus input file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
@@ -103,36 +112,9 @@ def get_abaqus_image_constant(file_extension):
     return switcher.get(file_extension.upper(), "")
 
 
-def get_parser():
-    file_name = inspect.getfile(lambda: None)
-    base_name = os.path.basename(file_name)
-
-    prog = "abaqus cae -noGui {} --".format(base_name)
-    cli_description = "Save an image of an Abaqus model"
-
-    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
-    parser.add_argument('--input-file', type=str, required=True,
-                         help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
-    parser.add_argument('--output-file', type=str, required=True,
-                        help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
-    parser.add_argument('--x-angle', type=float, default=default_x_angle,
-                        help='Viewer rotation about X-axis in degrees (default: %(default)s)')
-    parser.add_argument('--y-angle', type=float, default=default_y_angle,
-                        help='Viewer rotation about Y-axis in degrees (default: %(default)s)')
-    parser.add_argument('--z-angle', type=float, default=default_z_angle,
-                        help='Viewer rotation about Z-axis in degrees (default: %(default)s)')
-    parser.add_argument('--image-size', nargs=2, type=int, default=default_image_size,
-                        help="Image size in pixels (X, Y) (default: %(default)s)")
-    parser.add_argument('--model-name', type=str, default=default_model_name,
-                        help="Abaqus model name (default: %(default)s)")
-    parser.add_argument('--part-name', type=str, default=default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
-
-    return parser
-
-
 if __name__ == "__main__":
-    parser = get_parser()
+
+    parser = _parsers.image_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:

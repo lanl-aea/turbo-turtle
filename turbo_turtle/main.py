@@ -136,40 +136,6 @@ def _export(args):
     stdout = subprocess.check_output(command)
 
 
-def _image_parser():
-
-    default_x_angle = 0.
-    default_y_angle = 0.
-    default_z_angle = 0.
-    default_image_size = (1920, 1080)
-    default_model_name = "Model-1"
-    default_part_name = "Part-1"
-
-    parser = argparse.ArgumentParser(add_help=False)
-
-    parser.add_argument('--input-file', type=str, required=True,
-                         help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
-    parser.add_argument('--output-file', type=str, required=True,
-                        help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
-    parser.add_argument('--x-angle', type=float, default=default_x_angle,
-                        help='Viewer rotation about X-axis in degrees (default: %(default)s)')
-    parser.add_argument('--y-angle', type=float, default=default_y_angle,
-                        help='Viewer rotation about Y-axis in degrees (default: %(default)s)')
-    parser.add_argument('--z-angle', type=float, default=default_z_angle,
-                        help='Viewer rotation about Z-axis in degrees (default: %(default)s)')
-    parser.add_argument('--image-size', nargs=2, type=int, default=default_image_size,
-                        help="Image size in pixels (X, Y) (default: %(default)s)")
-    parser.add_argument('--model-name', type=str, default=default_model_name,
-                        help="Abaqus model name (default: %(default)s)")
-    parser.add_argument('--part-name', type=str, default=default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
-
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
-
-    return parser
-
-
 def _image(args):
     """Python 3 wrapper around the Abaqus Python image CLI
 
@@ -225,9 +191,10 @@ def _docs(print_local_path=False):
         webbrowser.open(str(_settings._installed_docs_index))
 
 
-def add_abaqus_argument(parser):
-    parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                        help='Abaqus executable absolute or relative path (default: %(default)s)')
+def add_abaqus_argument(parsers):
+    for parser in parsers:
+        parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                            help='Abaqus executable absolute or relative path (default: %(default)s)')
 
 
 def get_parser():
@@ -251,8 +218,13 @@ def get_parser():
     subparsers = main_parser.add_subparsers(dest="subcommand")
 
     geometry_parser = _parsers.geometry_parser(add_help=False)
-    add_abaqus_argument(geometry_parser)
-    geometry_parser = subparsers.add_parser(
+    sphere_parser = _parsers.sphere_parser(add_help=False)
+    partition_parser = _parsers.partition_parser(add_help=False)
+    export_parser = _parsers.export_parser(add_help=False)
+    image_parser = _parsers.image_parser()
+    add_abaqus_argument([geometry_parser, sphere_parser, partition_parser, export_parser, image_parser])
+
+    subparsers.add_parser(
         "geometry",
         help="Create a 2D planar, 2D axisymmetric, or 3D body of revolution geometry from a sketch in the X-Y plane",
         description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
@@ -261,8 +233,6 @@ def get_parser():
         parents=[geometry_parser]
     )
 
-    sphere_parser = _parsers.sphere_parser(add_help=False)
-    add_abaqus_argument(sphere_parser)
     subparsers.add_parser(
         "sphere",
         help="Create a hollow, spherical geometry from a sketch in the X-Y plane",
@@ -271,8 +241,6 @@ def get_parser():
         parents=[sphere_parser]
     )
 
-    partition_parser = _parsers.partition_parser(add_help=False)
-    add_abaqus_argument(partition_parser)
     subparsers.add_parser(
         "partition",
         help="Partition a spherical shape into a turtle shell",
@@ -281,15 +249,13 @@ def get_parser():
     )
 
     mesh_parser = _mesh_parser()
-    mesh_parser = subparsers.add_parser(
+    subparsers.add_parser(
         "mesh",
         help="Mesh an Abaqus part from a global seed",
         description="Mesh an Abaqus part from a global seed",
         parents=[mesh_parser]
     )
 
-    export_parser = _parsers.export_parser(add_help=False)
-    add_abaqus_argument(export_parser)
     subparsers.add_parser(
         "export",
         help="Export an Abaqus part mesh as an orphan mesh",
@@ -297,8 +263,7 @@ def get_parser():
         parents=[export_parser]
     )
 
-    image_parser = _image_parser()
-    image_parser = subparsers.add_parser(
+    subparsers.add_parser(
         "image",
         help="Save an image of an Abaqus model",
         description="Save an assembly view image (colored by material) for a given Abaqus input file",
@@ -306,7 +271,7 @@ def get_parser():
     )
 
     docs_parser = _docs_parser()
-    docs_parser = subparsers.add_parser(
+    subparsers.add_parser(
         "docs",
         help=f"Open the {_settings._project_name_short} HTML documentation",
         description=f"Open the packaged {_settings._project_name_short} HTML documentation in the  " \

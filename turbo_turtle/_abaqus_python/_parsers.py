@@ -172,3 +172,41 @@ def export_parser(basename="_export.py", add_help=True):
                         help="Write orphan mesh files to this output directory (default: PWD)")
 
     return parser
+
+
+image_default_x_angle = 0.
+image_default_y_angle = 0.
+image_default_z_angle = 0.
+image_default_image_size = (1920, 1080)
+image_default_model_name = "Model-1"
+image_default_part_name = "Part-1"
+
+
+def image_parser(basename="_image.py", add_help=True):
+
+    prog = "abaqus cae -noGui {} --".format(basename)
+    cli_description = "Save an image of an Abaqus model"
+
+    if add_help:
+        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    else:
+        parser = argparse.ArgumentParser(add_help=add_help)
+
+    parser.add_argument('--input-file', type=str, required=True,
+                         help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
+    parser.add_argument('--output-file', type=str, required=True,
+                        help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
+    parser.add_argument('--x-angle', type=float, default=image_default_x_angle,
+                        help='Viewer rotation about X-axis in degrees (default: %(default)s)')
+    parser.add_argument('--y-angle', type=float, default=image_default_y_angle,
+                        help='Viewer rotation about Y-axis in degrees (default: %(default)s)')
+    parser.add_argument('--z-angle', type=float, default=image_default_z_angle,
+                        help='Viewer rotation about Z-axis in degrees (default: %(default)s)')
+    parser.add_argument('--image-size', nargs=2, type=int, default=image_default_image_size,
+                        help="Image size in pixels (X, Y) (default: %(default)s)")
+    parser.add_argument('--model-name', type=str, default=image_default_model_name,
+                        help="Abaqus model name (default: %(default)s)")
+    parser.add_argument('--part-name', type=str, default=image_default_part_name,
+                        help="Abaqus part name (default: %(default)s)")
+
+    return parser

@@ -259,7 +259,8 @@ def draw_part_from_splines(all_splines, planar=geometry_default_planar, model_na
 
 
 if __name__ == "__main__":
-    parser = get_parser()
+
+    parser = _parsers.geometry_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:
