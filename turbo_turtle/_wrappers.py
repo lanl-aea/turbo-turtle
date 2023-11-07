@@ -1,5 +1,7 @@
 import subprocess
 
+from turbo_turtle import _settings
+
 
 def geometry(args):
     """Python 3 wrapper around the Abaqus Python geometry CLI
