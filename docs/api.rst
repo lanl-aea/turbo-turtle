@@ -13,7 +13,7 @@ main
 _geometry
 =========
 
-.. automodule:: turbo_turtle._geometry
+.. automodule:: turbo_turtle._abaqus_python._geometry
     :members:
 
 _sphere
@@ -25,23 +25,23 @@ _sphere
 _partition
 ==========
 
-.. automodule:: turbo_turtle._partition
+.. automodule:: turbo_turtle._abaqus_python._partition
     :members:
 
 _mesh
 =====
 
-.. automodule:: turbo_turtle._mesh
+.. automodule:: turbo_turtle._abaqus_python._mesh
     :members:
 
 _image
 ======
 
-.. automodule:: turbo_turtle._image
+.. automodule:: turbo_turtle._abaqus_python._image
     :members:
 
 _export
 =======
 
-.. automodule:: turbo_turtle._export
+.. automodule:: turbo_turtle._abaqus_python._export
     :members:

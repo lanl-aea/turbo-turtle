@@ -381,8 +381,10 @@ def get_parser():
         parents=[sphere_parser]
     )
 
-    partition_parser = _partition_parser()
-    partition_parser = subparsers.add_parser(
+    partition_parser = _parsers.partition_parser(add_help=False)
+    partition_parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
+                                  help='Abaqus executable absolute or relative path (default: %(default)s)')
+    subparsers.add_parser(
         "partition",
         help="Partition a spherical shape into a turtle shell",
         description="Partition a spherical shape into a turtle shell given a small number of locating parameters",

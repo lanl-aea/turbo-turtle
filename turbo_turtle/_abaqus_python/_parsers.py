@@ -16,7 +16,7 @@ sphere_default_model_name = "Model-1"
 sphere_default_part_name = "sphere"
 
 
-def sphere_parser(basename="sphere.py", add_help=True):
+def sphere_parser(basename="_sphere.py", add_help=True):
 
     prog = "abaqus cae -noGui {} --".format(basename)
     cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower " \
@@ -47,5 +47,53 @@ def sphere_parser(basename="sphere.py", add_help=True):
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=sphere_default_part_name,
                         help="Abaqus part name (default: %(default)s)")
+
+    return parser
+
+
+# TODO: These CLI lists will fail if a user tries to provide a negative number
+partition_default_center = [0.0, 0.0, 0.0]
+partition_default_xpoint = [1.0, 0.0, 0.0]
+partition_default_zpoint = [0.0, 0.0, 1.0]
+partition_default_plane_angle = 45.0
+partition_default_partitions_x = [0.0, 0.0]
+partition_default_partitions_y = [0.0, 0.0]
+partition_default_partitions_z = [0.0, 0.0]
+
+
+def partition_parser(basename="_partition.py", add_help=True):
+
+    prog = "abaqus cae -noGui {} --".format(basename)
+    cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
+
+    if add_help:
+        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    else:
+        parser = argparse.ArgumentParser(add_help=add_help)
+
+    requiredNamed = parser.add_argument_group('Required Named Arguments')
+    requiredNamed.add_argument('--model-name', type=str, required=True,
+                        help="Abaqus model name")
+    requiredNamed.add_argument('--part-name', type=str, required=True,
+                        help="Abaqus part name")
+    requiredNamed.add_argument('--input-file', type=str, required=True,
+                        help="Abaqus model database to open")
+
+    parser.add_argument('--output-file', type=str, default=None,
+                        help="Abaqus model database to save to. Defaults to the specified --input-file")
+    parser.add_argument('--xpoint', nargs=3, type=float, default=partition_default_xpoint,
+                        help="Point on the x-axis (default: %(default)s)")
+    parser.add_argument('--center', nargs=3, type=float, default=partition_default_center,
+                        help="Center of the sphere (default: %(default)s)")
+    parser.add_argument('--zpoint', nargs=3, type=float, default=partition_default_zpoint,
+                        help="Point on the z-axis (default: %(default)s)")
+    parser.add_argument('--plane-angle', type=float, default=partition_default_plane_angle,
+                        help="Angle for non-principal partitions (default: %(default)s)")
+    parser.add_argument('--x-partitions', type=float, nargs='+', default=partition_default_partitions_x,
+                        help="Create a partition offset from the x-principal-plane (default: %(default)s)")
+    parser.add_argument('--y-partitions', type=float, nargs='+', default=partition_default_partitions_y,
+                        help="Create a partition offset from the y-principal-plane (default: %(default)s)")
+    parser.add_argument('--z-partitions', type=float, nargs='+', default=partition_default_partitions_z,
+                        help="Create a partition offset from the z-principal-plane (default: %(default)s)")
 
     return parser

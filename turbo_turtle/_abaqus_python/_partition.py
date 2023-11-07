@@ -9,6 +9,13 @@ import tempfile
 import numpy
 
 
+filename = inspect.getfile(lambda: None)
+basename = os.path.basename(filename)
+parent = os.path.dirname(filename)
+sys.path.insert(0, parent)
+import _parsers
+
+
 def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
     """Wrap  partition function with file open and file write operations
 
@@ -456,54 +463,6 @@ def get_inputs():
     return center, xpoint, zpoint, plane_angle, partitions
 
 
-def get_parser():
-    # The global '__file__' variable doesn't appear to be set when executing from Abaqus CAE
-    filename = inspect.getfile(lambda: None)
-    basename = os.path.basename(filename)
-
-    # Set Defaults
-    # TODO: These CLI lists will fail if a user tries to provide a negative number
-    default_center = [0.0, 0.0, 0.0]
-    default_xpoint = [1.0, 0.0, 0.0]
-    default_zpoint = [0.0, 0.0, 1.0]
-    default_plane_angle = 45.0
-    default_partitions_x = [0.0, 0.0]
-    default_partitions_y = [0.0, 0.0]
-    default_partitions_z = [0.0, 0.0]
-
-    prog = "abaqus cae -noGui {} --".format(basename)
-    cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
-
-    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
-
-    requiredNamed = parser.add_argument_group('Required Named Arguments')
-    requiredNamed.add_argument('--model-name', type=str, required=True,
-                        help="Abaqus model name")
-    requiredNamed.add_argument('--part-name', type=str, required=True,
-                        help="Abaqus part name")
-    requiredNamed.add_argument('--input-file', type=str, required=True,
-                        help="Abaqus model database to open")
-
-    parser.add_argument('--output-file', type=str, default=None,
-                        help="Abaqus model database to save to. Defaults to the specified --input-file")
-    parser.add_argument('--xpoint', nargs=3, type=float, default=default_xpoint,
-                        help="Point on the x-axis (default: %(default)s)")
-    parser.add_argument('--center', nargs=3, type=float, default=default_center,
-                        help="Center of the sphere (default: %(default)s)")
-    parser.add_argument('--zpoint', nargs=3, type=float, default=default_zpoint,
-                        help="Point on the z-axis (default: %(default)s)")
-    parser.add_argument('--plane-angle', type=float, default=default_plane_angle,
-                        help="Angle for non-principal partitions (default: %(default)s)")
-    parser.add_argument('--x-partitions', type=float, nargs='+', default=default_partitions_x,
-                        help="Create a partition offset from the x-principal-plane (default: %(default)s)")
-    parser.add_argument('--y-partitions', type=float, nargs='+', default=default_partitions_y,
-                        help="Create a partition offset from the y-principal-plane (default: %(default)s)")
-    parser.add_argument('--z-partitions', type=float, nargs='+', default=default_partitions_z,
-                        help="Create a partition offset from the z-principal-plane (default: %(default)s)")
-
-    return parser
-
-
 if __name__ == "__main__":
     try:
         center, xpoint, zpoint, plane_angle, partitions = get_inputs()
@@ -517,7 +476,7 @@ if __name__ == "__main__":
         partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partitions)
 
     except:
-        parser = get_parser()
+        parser = _parsers.partition_parser(basename=basename)
         try:
             args, unknown = parser.parse_known_args()
         except SystemExit as err:
