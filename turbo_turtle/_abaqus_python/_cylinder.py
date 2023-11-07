@@ -2,6 +2,8 @@ import os
 import sys
 import inspect
 
+import numpy
+
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
@@ -35,10 +37,9 @@ def main(inner_radius, outer_radius, height, output_file,
     vertices.append((0., outer_radius))
     vertices.append((0., inner_radius))
 
-    vertices = numpy.array(vertices)
     all_splines = [vertices]
 
-    _geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, [part_name],
+    _geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, part_name=part_name,
                                      revolution_angle=revolution_angle)
 
     abaqus.mdb.saveAs(pathName=output_file)
