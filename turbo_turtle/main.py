@@ -203,45 +203,43 @@ def get_parser():
 
     subparsers.add_parser(
         "geometry",
-        help=_parsers.geometry_cli_description,
-        description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
-                      "sketching lines and splines in the X-Y plane. Line and spline definitions are formed by " \
-                      "parsing an input text file of points in X-Y space.",
+        help=_parsers.geometry_cli_help,
+        description=_parsers.geometry_cli_description,
         parents=[geometry_parser]
     )
 
     subparsers.add_parser(
         "sphere",
-        help="Create a hollow, spherical geometry from a sketch in the X-Y plane",
+        help=_parsers.sphere_cli_help,
         description=_parsers.sphere_cli_description,
         parents=[sphere_parser]
     )
 
     subparsers.add_parser(
         "partition",
-        help="Partition a spherical shape into a turtle shell",
+        help=_parsers.partition_cli_help,
         description=_parsers.partition_cli_description,
         parents=[partition_parser]
     )
 
     subparsers.add_parser(
         "mesh",
-        help=_parsers.mesh_cli_description,
+        help=_parsers.mesh_cli_help,
         description=_parsers.mesh_cli_description,
         parents=[mesh_parser]
     )
 
     subparsers.add_parser(
         "export",
-        help=_parsers.export_cli_description,
+        help=_parsers.export_cli_help,
         description=_parsers.export_cli_description,
         parents=[export_parser]
     )
 
     subparsers.add_parser(
         "image",
-        help=_parsers.image_cli_description,
-        description="Save an assembly view image (colored by material) for a given Abaqus input file",
+        help=_parsers.image_cli_help,
+        description=_parsers.image_cli_description,
         parents=[image_parser]
     )
 

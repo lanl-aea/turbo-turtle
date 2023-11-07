@@ -17,7 +17,10 @@ geometry_default_part_name = [None]
 geometry_default_delimiter = ","
 geometry_default_header_lines = 0
 geometry_default_revolution_angle = 360.0
-geometry_cli_description = "Abaqus Python script for creating 2D or 3D part(s) from an x-y coordinate system input file(s)"
+geometry_cli_help = "Abaqus Python script for creating 2D or 3D part(s) from an x-y coordinate system input file(s)"
+geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
+                           "sketching lines and splines in the X-Y plane. Line and spline definitions are formed by " \
+                           "parsing an input text file of points in X-Y space."
 
 def geometry_parser(basename="_geometry.py", add_help=True):
 
@@ -57,6 +60,7 @@ sphere_default_angle = 360.
 sphere_default_center = (0., 0.)
 sphere_default_model_name = "Model-1"
 sphere_default_part_name = "sphere"
+sphere_cli_help = "Create a hollow, spherical geometry from a sketch in the X-Y plane"
 sphere_cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), " \
                          "lower (+X-Y), or both quadrants."
 
@@ -102,6 +106,7 @@ partition_default_plane_angle = 45.0
 partition_default_partitions_x = [0.0, 0.0]
 partition_default_partitions_y = [0.0, 0.0]
 partition_default_partitions_z = [0.0, 0.0]
+partition_cli_help = "Partition a spherical shape into a turtle shell"
 partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
 
 
@@ -146,6 +151,8 @@ mesh_default_output_file = None
 mesh_default_model_name = "Model-1"
 mesh_default_part_name = "Part-1"
 mesh_default_global_seed = 1.0
+mesh_cli_help = "Mesh an Abaqus part from a global seed"
+# TODO: Write a more descriptive behavior message
 mesh_cli_description = "Mesh an Abaqus part from a global seed"
 
 
@@ -178,6 +185,8 @@ export_default_model_name = "Model-1"
 export_default_part_name = ["Part-1"]
 export_default_element_type = [None]
 export_default_destination = os.getcwd()
+export_cli_help = "Export an Abaqus part mesh as an orphan mesh"
+# TODO: Write a more descriptive behavior message
 export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
 
@@ -211,7 +220,8 @@ image_default_z_angle = 0.
 image_default_image_size = (1920, 1080)
 image_default_model_name = "Model-1"
 image_default_part_name = "Part-1"
-image_cli_description = "Save an image of an Abaqus model"
+image_cli_help = "Save an image of an Abaqus model"
+image_cli_description = "Save an assembly view image (colored by material) for a given Abaqus input file"
 
 
 def image_parser(basename="_image.py", add_help=True):
