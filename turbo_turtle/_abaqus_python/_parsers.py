@@ -17,15 +17,14 @@ geometry_default_part_name = [None]
 geometry_default_delimiter = ","
 geometry_default_header_lines = 0
 geometry_default_revolution_angle = 360.0
-
+geometry_cli_description = "Abaqus Python script for creating 2D or 3D part(s) from an x-y coordinate system input file(s)"
 
 def geometry_parser(basename="_geometry.py", add_help=True):
 
     prog = "abaqus cae -noGui {} --".format(basename)
-    cli_description = "Abaqus Python script for creating 2D or 3D part(s) from an x-y coordinate system input file(s)"
 
     if add_help:
-        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=geometry_cli_description, prog=prog)
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -58,16 +57,16 @@ sphere_default_angle = 360.
 sphere_default_center = (0., 0.)
 sphere_default_model_name = "Model-1"
 sphere_default_part_name = "sphere"
+sphere_cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), " \
+                         "lower (+X-Y), or both quadrants."
 
 
 def sphere_parser(basename="_sphere.py", add_help=True):
 
     prog = "abaqus cae -noGui {} --".format(basename)
-    cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower " \
-                      "(+X-Y), or both quadrants."
 
     if add_help:
-        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=sphere_cli_description, prog=prog)
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -103,15 +102,15 @@ partition_default_plane_angle = 45.0
 partition_default_partitions_x = [0.0, 0.0]
 partition_default_partitions_y = [0.0, 0.0]
 partition_default_partitions_z = [0.0, 0.0]
+partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
 
 
 def partition_parser(basename="_partition.py", add_help=True):
 
     prog = "abaqus cae -noGui {} --".format(basename)
-    cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
 
     if add_help:
-        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=partition_cli_description, prog=prog)
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -147,15 +146,15 @@ mesh_default_output_file = None
 mesh_default_model_name = "Model-1"
 mesh_default_part_name = "Part-1"
 mesh_default_global_seed = 1.0
+mesh_cli_description = "Mesh an Abaqus part from a global seed"
 
 
 def mesh_parser(basename="_mesh.py", add_help=True):
 
     prog = "abaqus cae -noGui {} --".format(basename)
-    cli_description = "Mesh an Abaqus part from a global seed"
 
     if add_help:
-        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=mesh_cli_description, prog=prog)
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -179,15 +178,15 @@ export_default_model_name = "Model-1"
 export_default_part_name = ["Part-1"]
 export_default_element_type = [None]
 export_default_destination = os.getcwd()
+export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
 
 def export_parser(basename="_export.py", add_help=True):
 
     prog = "abaqus cae -noGui {} --".format(basename)
-    cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
     if add_help:
-        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=export_cli_description, prog=prog)
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 
@@ -212,15 +211,15 @@ image_default_z_angle = 0.
 image_default_image_size = (1920, 1080)
 image_default_model_name = "Model-1"
 image_default_part_name = "Part-1"
+image_cli_description = "Save an image of an Abaqus model"
 
 
 def image_parser(basename="_image.py", add_help=True):
 
     prog = "abaqus cae -noGui {} --".format(basename)
-    cli_description = "Save an image of an Abaqus model"
 
     if add_help:
-        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+        parser = argparse.ArgumentParser(description=image_cli_description, prog=prog)
     else:
         parser = argparse.ArgumentParser(add_help=add_help)
 

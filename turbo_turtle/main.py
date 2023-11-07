@@ -203,7 +203,7 @@ def get_parser():
 
     subparsers.add_parser(
         "geometry",
-        help="Create a 2D planar, 2D axisymmetric, or 3D body of revolution geometry from a sketch in the X-Y plane",
+        help=_parsers.geometry_cli_description,
         description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
                       "sketching lines and splines in the X-Y plane. Line and spline definitions are formed by " \
                       "parsing an input text file of points in X-Y space.",
@@ -213,35 +213,34 @@ def get_parser():
     subparsers.add_parser(
         "sphere",
         help="Create a hollow, spherical geometry from a sketch in the X-Y plane",
-        description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower " \
-                      "(+X-Y), or both quadrants.",
+        description=_parsers.sphere_cli_description,
         parents=[sphere_parser]
     )
 
     subparsers.add_parser(
         "partition",
         help="Partition a spherical shape into a turtle shell",
-        description="Partition a spherical shape into a turtle shell given a small number of locating parameters",
+        description=_parsers.partition_cli_description,
         parents=[partition_parser]
     )
 
     subparsers.add_parser(
         "mesh",
-        help="Mesh an Abaqus part from a global seed",
-        description="Mesh an Abaqus part from a global seed",
+        help=_parsers.mesh_cli_description,
+        description=_parsers.mesh_cli_description,
         parents=[mesh_parser]
     )
 
     subparsers.add_parser(
         "export",
-        help="Export an Abaqus part mesh as an orphan mesh",
-        description="Export an Abaqus part mesh as an orphan mesh",
+        help=_parsers.export_cli_description,
+        description=_parsers.export_cli_description,
         parents=[export_parser]
     )
 
     subparsers.add_parser(
         "image",
-        help="Save an image of an Abaqus model",
+        help=_parsers.image_cli_description,
         description="Save an assembly view image (colored by material) for a given Abaqus input file",
         parents=[image_parser]
     )
