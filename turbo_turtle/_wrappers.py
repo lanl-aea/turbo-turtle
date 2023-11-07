@@ -26,6 +26,25 @@ def geometry(args):
     stdout = subprocess.check_output(command)
 
 
+def cylinder(args):
+    """Python 3 wrapper around the Abaqus Python cylinder CLI
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    """
+    script = _settings._abaqus_python_abspath / "_cylinder.py"
+
+    command = f"{args.abaqus_command} cae -noGui {script} -- "
+    command += f"--inner-radius {args.inner_radius} "
+    command += f"--outer-radius {args.outer_radius} "
+    command += f"--height {args.height} "
+    command += f"--output-file {args.output_file} "
+    command += f"--model-name {args.model_name} "
+    command += f"--part-name {' '.join(map(str, args.part_name))} "
+    command += f"--revolution-angle {args.revolution_angle}"
+    command = command.split()
+    stdout = subprocess.check_output(command)
+
+
 def sphere(args):
     """Python 3 wrapper around the Abaqus Python sphere CLI
 

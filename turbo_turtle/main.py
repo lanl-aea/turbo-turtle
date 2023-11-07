@@ -77,18 +77,26 @@ def get_parser():
     subparsers = main_parser.add_subparsers(dest="subcommand")
 
     geometry_parser = _parsers.geometry_parser(add_help=False)
+    cylinder_parser = _parsers.cylinder_parser(add_help=False)
     sphere_parser = _parsers.sphere_parser(add_help=False)
     partition_parser = _parsers.partition_parser(add_help=False)
     mesh_parser = _parsers.mesh_parser(add_help=False)
     export_parser = _parsers.export_parser(add_help=False)
     image_parser = _parsers.image_parser(add_help=False)
-    add_abaqus_argument([geometry_parser, sphere_parser, partition_parser, mesh_parser, export_parser, image_parser])
+    add_abaqus_argument([geometry_parser, cylinder_parser, sphere_parser, partition_parser, mesh_parser, export_parser, image_parser])
 
     subparsers.add_parser(
         "geometry",
         help=_parsers.geometry_cli_help,
         description=_parsers.geometry_cli_description,
         parents=[geometry_parser]
+    )
+
+    subparsers.add_parser(
+        "cylinder",
+        help=_parsers.cylinder_cli_help,
+        description=_parsers.cylinder_cli_description,
+        parents=[cylinder_parser]
     )
 
     subparsers.add_parser(
@@ -142,6 +150,8 @@ def main():
     args, unknown = parser.parse_known_args()
     if args.subcommand == "geometry":
         _wrappers.geometry(args)
+    elif args.subcommand == "cylinder":
+        _wrappers.cylinder(args)
     elif args.subcommand == "sphere":
         _wrappers.sphere(args)
     elif args.subcommand == "partition":
