@@ -5,6 +5,7 @@ CLI parser(s). Other content, such as project/package settings type variables, c
 ``sys.path`` modifications required in the Abaqus Python package/scripts. For now, that means this file does double duty
 as the Abaqus Python package settings file and the parsers file.
 """
+import os
 import argparse
 
 
@@ -107,10 +108,13 @@ export_default_destination = os.getcwd()
 
 def export_parser(basename="_export.py", add_help=True):
 
-    prog = "abaqus cae -noGui {} --".format(base_name)
+    prog = "abaqus cae -noGui {} --".format(basename)
     cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
-    parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    if add_help:
+        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    else:
+        parser = argparse.ArgumentParser(add_help=add_help)
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")
