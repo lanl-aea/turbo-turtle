@@ -19,7 +19,7 @@ _geometry
 _sphere
 =======
 
-.. automodule:: turbo_turtle._sphere
+.. automodule:: turbo_turtle._abaqus_python._sphere
     :members:
 
 _partition
