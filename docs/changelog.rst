@@ -5,18 +5,22 @@ Changelog
 #########
 
 *******************
-v0.4.4 (unreleased)
+v0.5.1 (unreleased)
+*******************
+
+*******************
+v0.5.0 (11-07-2023)
 *******************
 
 Breaking changes
 ================
-- Update the ``export`` subcommand to allow for multiple orphan mesh files to be exported from the same Abaqus model and 
-  also allow for element type changes. This change removed the ``output_file`` command line argument in favor of naming 
+- Update the ``export`` subcommand to allow for multiple orphan mesh files to be exported from the same Abaqus model and
+  also allow for element type changes. This change removed the ``output_file`` command line argument in favor of naming
   orphan mesh files after the part names (:issue:`23`, :merge:`24`). By `Thomas Roberts`_.
 
 New Features
 ============
-- Add a ``geometry`` subcommand to draw 2D planar, 2D axisymmetric, or 3D bodies of revolution from a text file of x-y 
+- Add a ``geometry`` subcommand to draw 2D planar, 2D axisymmetric, or 3D bodies of revolution from a text file of x-y
   points (:issue:`16`, :merge:`25`). By `Thomas Roberts`_.
 
 Bug fixes
