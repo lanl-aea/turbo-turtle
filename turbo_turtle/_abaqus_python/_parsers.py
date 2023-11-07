@@ -9,6 +9,49 @@ import os
 import argparse
 
 
+geometry_default_unit_conversion = 1.0
+geometry_default_planar = False
+geometry_default_euclidian_distance = 4.0
+geometry_default_model_name = "Model-1"
+geometry_default_part_name = [None]
+geometry_default_delimiter = ","
+geometry_default_header_lines = 0
+geometry_default_revolution_angle = 360.0
+
+
+def geometry_parser(basename="_geometry.py", add_help=True):
+
+    prog = "abaqus cae -noGui {} --".format(basename)
+    cli_description = "Abaqus Python script for creating 2D or 3D part(s) from an x-y coordinate system input file(s)"
+
+    if add_help:
+        parser = argparse.ArgumentParser(description=cli_description, prog=prog)
+    else:
+        parser = argparse.ArgumentParser(add_help=add_help)
+
+    parser.add_argument("--input-file", type=str, nargs="+", required=True,
+                        help="Name of an input file(s) with points in x-y coordinate system")
+    parser.add_argument("--unit-conversion", type=float, default=geometry_default_unit_conversion,
+                        help="Unit conversion multiplication factor (default: %(default)s)")
+    parser.add_argument("--euclidian_distance", type=float, default=geometry_default_euclidian_distance,
+                        help="Connect points with a straight line is the distance between is larger than this (default: %(default)s)")
+    parser.add_argument("--planar", action='store_true',
+                        help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric (default: %(default)s)")
+    parser.add_argument("--model-name", type=str, default=geometry_default_model_name,
+                        help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, nargs="+", default=geometry_default_part_name,
+                        help="Abaqus part name(s) (default: %(default)s)")
+    parser.add_argument("--output-file", type=str, required=True,
+                        help="Name of the output Abaqus CAE file to save (default: %(default)s)")
+    parser.add_argument("--delimiter", type=str, default=geometry_default_delimiter,
+                        help="Delimiter character between columns in the points file(s) (default: %(default)s)")
+    parser.add_argument("--header-lines", type=int, default=geometry_default_header_lines,
+                        help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
+    parser.add_argument("--revolution-angle", type=float, default=geometry_default_revolution_angle,
+                        help="Revolution angle for a 3D part in degrees (default: %(default)s)")
+    return parser
+
+
 sphere_default_input_file = None
 sphere_default_quadrant = "both"
 sphere_default_angle = 360.
