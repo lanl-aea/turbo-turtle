@@ -14,16 +14,14 @@ parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import _parsers
 
-default_input_file = None
-default_quadrant = "both"
-default_angle = 360.
-default_center = (0., 0.)
-default_model_name = "Model-1"
-default_part_name = "sphere"
 
-
-def main(inner_radius, outer_radius, output_file, input_file=default_input_file, quadrant=default_quadrant,
-         angle=default_angle, center=default_center, model_name=default_model_name, part_name=default_part_name):
+def main(inner_radius, outer_radius, output_file,
+         input_file=_parsers.sphere_default_input_file,
+         quadrant=_parsers.sphere_default_quadrant,
+         angle=_parsers.sphere_default_angle,
+         center=_parsers.sphere_default_center,
+         model_name=_parsers.sphere_default_model_name,
+         part_name=_parsers.sphere_default_part_name):
     """Wrap sphere function with file open and file write operations
 
     :param float inner_radius: inner radius (size of hollow)
@@ -56,8 +54,12 @@ def main(inner_radius, outer_radius, output_file, input_file=default_input_file,
         abaqus.mdb.saveAs(pathName=output_file)
 
 
-def sphere(inner_radius, outer_radius, quadrant=default_quadrant,
-           angle=default_angle, center=default_center, model_name=default_model_name, part_name=default_part_name):
+def sphere(inner_radius, outer_radius,
+           quadrant=_parsers.sphere_default_quadrant,
+           angle=_parsers.sphere_default_angle,
+           center=_parsers.sphere_default_center,
+           model_name=_parsers.sphere_default_model_name,
+           part_name=_parsers.sphere_default_part_name):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
 
     .. warning::
@@ -133,8 +135,6 @@ def rectalinear_coordinates(radius, angle):
     """
     coords = cmath.rect(radius, angle)
     return (coords.real, coords.imag)
-
-
 
 
 if __name__ == "__main__":
