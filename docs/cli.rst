@@ -28,6 +28,14 @@ geometry
    :nodefault:
    :path: geometry
 
+cylinder
+--------
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: cylinder 
+
 sphere
 ------
 

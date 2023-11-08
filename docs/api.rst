@@ -22,6 +22,12 @@ _geometry
 .. automodule:: turbo_turtle._abaqus_python._geometry
     :members:
 
+_cylinder
+=========
+
+.. automodule:: turbo_turtle._abaqus_python._cylinder
+    :members:
+
 _sphere
 =======
 
