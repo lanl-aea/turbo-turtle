@@ -12,7 +12,6 @@ New Features
 ============
 - Add a cylinder subcommand (:issue:`40`, :merge:`31`). By `Kyle Brindley`_.
 - Add a ``merge`` subcommand to combine multiple separate Abaqus models together (:issue:`37`, :merge:`26`). By `Thomas
-- Add a ``merge`` subcommand to combine multiple separate Abaqus models together (:issue:`37`, :merge:`26`). By `Thomas
   Roberts`_.
 
 Documentation
