@@ -32,17 +32,27 @@ def main(inner_radius, outer_radius, height, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
+    all_splines = cylinder_vertices(inner_radius, outer_radius, height)
+    _geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, part_name=part_name,
+                                     revolution_angle=revolution_angle)
+
+    abaqus.mdb.saveAs(pathName=output_file)
+
+
+def cylinder_vertices(inner_radius, outer_radius, height):
+    """Return a :meth:`turbo_turtle._abaqus_python._geometry.draw_part_from_splines` compatible vertex list
+
+    :param float inner_radius: Radius of the hollow center
+    :param float outer_radius: Outer radius of the cylinder
+    :param float height: Height of the cylinder
+    """
     all_splines = [
         numpy.array([[inner_radius, height]]),
         numpy.array([[outer_radius, height]]),
         numpy.array([[outer_radius, 0.]]),
         numpy.array([[inner_radius, 0.]])
     ]
-
-    _geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, part_name=part_name,
-                                     revolution_angle=revolution_angle)
-
-    abaqus.mdb.saveAs(pathName=output_file)
+    return all_splines
 
 
 if __name__ == "__main__":
