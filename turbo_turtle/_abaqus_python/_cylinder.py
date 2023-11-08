@@ -33,10 +33,10 @@ def main(inner_radius, outer_radius, height, output_file,
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
     all_splines = [
-        numpy.array([[height, inner_radius]]),
-        numpy.array([[height, outer_radius]]),
-        numpy.array([[0., outer_radius]]),
-        numpy.array([[0., inner_radius]])
+        numpy.array([[inner_radius, height]]),
+        numpy.array([[outer_radius, height]]),
+        numpy.array([[outer_radius, 0.]]),
+        numpy.array([[inner_radius, 0.]])
     ]
 
     _geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, part_name=part_name,

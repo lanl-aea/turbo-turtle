@@ -103,7 +103,6 @@ system_tests = (
     ("vase",              'test_geometry_vase.csv',   360.),
     ("vase-axisymmetric", 'test_geometry_vase.csv',   0.0)
 )
-
 for model, input_file, revolution_angle in system_tests:
     target = env.Command(
         target=[f"{model}.cae"],
@@ -114,8 +113,8 @@ for model, input_file, revolution_angle in system_tests:
         ],
         revolution_angle=revolution_angle,
     )
-env.Alias("systemtests", target)
-env.Alias("regression", target)
+    env.Alias("systemtests", target)
+    env.Alias("regression", target)
 
 # _cylinder system tests
 system_tests = (
@@ -123,7 +122,6 @@ system_tests = (
     ("cylinder_3d",    360.),
     ("cylinder_2d",      0.)
 )
-
 for model, revolution_angle in system_tests:
     target = env.Command(
         target=[f"{model}.cae"],
@@ -135,8 +133,8 @@ for model, revolution_angle in system_tests:
         ],
         revolution_angle=revolution_angle,
     )
-env.Alias("systemtests", target)
-env.Alias("regression", target)
+    env.Alias("systemtests", target)
+    env.Alias("regression", target)
 
 target = env.Command(
     target=["Turbo-Turtle-Tests.cae", "seveneigths-sphere.png", "swiss-cheese.png"],
