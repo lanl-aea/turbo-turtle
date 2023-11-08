@@ -8,6 +8,10 @@ Changelog
 v0.5.1 (unreleased)
 *******************
 
+New Features
+============
+- Add a cylinder subcommand (:issue:`40`, :merge:`31`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Replace duplicate Python 2/3 parsers with shared parsers compatible with both Abaqus Python and Python 3 (:issue:`4`,
