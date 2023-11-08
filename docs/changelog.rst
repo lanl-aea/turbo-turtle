@@ -12,6 +12,10 @@ New Features
 ============
 - Add a cylinder subcommand (:issue:`40`, :merge:`31`). By `Kyle Brindley`_.
 
+Documentation
+=============
+- Update project description and scope (:issue:`36`, :merge:`32`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Replace duplicate Python 2/3 parsers with shared parsers compatible with both Abaqus Python and Python 3 (:issue:`4`,
