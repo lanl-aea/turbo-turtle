@@ -24,7 +24,7 @@ Internal Changes
   `Kyle Brindley`_.
 
 *******************
-v0.5.0 (11-07-2023)
+v0.5.0 (2023-11-07)
 *******************
 
 Breaking changes
