@@ -24,11 +24,13 @@ Description
 
 .. description-start-do-not-remove
 
-This repository houses a script for partitioning hollow, spherical bodies using a turtle shell (otherwise known as
-soccer ball) partitioning scheme. Turbo Turtle can be used as a command line utility to partition entire spheres or any
-fraction of the sphere.
+A collection of solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models. It also contains
+general purpose meshing and image generation utilities appropriate for any model, not just those created with this
+package. At present the implementation focuses and relies on Abaqus for all subcommands. It could be expanded to drive
+other meshing utilities in the future, as needed by the user community.
 
-Legacy interactive and package import use in Abaqus CAE will be supported as the Python 3 wrapper package matures.
+This project derives its name from the origins as a sphere partitioning utility following the turtle shell (or soccer
+ball) pattern.
 
 .. description-end-do-not-remove
 
