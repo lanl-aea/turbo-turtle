@@ -32,12 +32,12 @@ def main(inner_radius, outer_radius, height, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
-    vertices = [(height, inner_radius)]
-    vertices.append((height, outer_radius))
-    vertices.append((0., outer_radius))
-    vertices.append((0., inner_radius))
-
-    all_splines = [vertices]
+    all_splines = [
+        numpy.array([[height, inner_radius]]),
+        numpy.array([[height, outer_radius]]),
+        numpy.array([[0., outer_radius]]),
+        numpy.array([[0., inner_radius]])
+    ]
 
     _geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, part_name=part_name,
                                      revolution_angle=revolution_angle)

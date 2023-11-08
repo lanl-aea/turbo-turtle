@@ -254,7 +254,6 @@ def draw_part_from_splines(all_splines, planar=_parsers.geometry_default_planar,
     sketch1.unsetPrimaryObject()
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
-    session.viewports['Viewport: 1'].setValues(displayedObject=p)
 
 
 if __name__ == "__main__":
