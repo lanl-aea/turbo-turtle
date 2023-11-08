@@ -78,7 +78,7 @@ def geometry_parser(basename="_geometry.py", add_help=True, description=geometry
     return parser
 
 
-cylinder_default_part_name = None
+cylinder_default_part_name = "Part-1" 
 cylinder_cli_help = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 cylinder_cli_description = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 
