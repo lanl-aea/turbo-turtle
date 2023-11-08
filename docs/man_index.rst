@@ -32,6 +32,30 @@ docs
 *********************
 |PROJECT| Subcommands
 *********************
+********
+geometry
+********
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: geometry 
+
+*********************
+|PROJECT| Subcommands
+*********************
+********
+cylinder
+********
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: cylinder 
+
+*********************
+|PROJECT| Subcommands
+*********************
 ******
 sphere
 ******
