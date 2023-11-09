@@ -24,6 +24,10 @@ Internal Changes
 - Move the Python 3 wrapper functions to a dedicated module for re-use in SCons builders (:issue:`35`, :merge:`30`). By
   `Kyle Brindley`_.
 
+Enhancements
+============
+- Add color map argument to the image subcommand (:issue:`45`, :merge:`35`). By `Kyle Brindley`_.
+
 *******************
 v0.5.0 (2023-11-07)
 *******************
