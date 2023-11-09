@@ -110,7 +110,7 @@ def merge(args):
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
-    script = _settings._abaqus_python_abspath / "_merge.py"
+    script = _settings._abaqus_python_abspath / "merge.py"
 
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {' '.join(map(str, args.input_file))} "
