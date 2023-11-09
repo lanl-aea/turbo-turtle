@@ -99,7 +99,7 @@ def get_parser():
         sphere_parser,
         partition_parser,
         mesh_parser,
-        image_parser
+        image_parser,
         merge_parser,
         export_parser,
     ])
