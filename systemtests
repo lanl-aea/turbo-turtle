@@ -94,7 +94,9 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
                 "--element-type ${element_replacement} --destination ${TARGET.dir.abspath} " \
                 "--assembly ${TARGETS[1].abspath}",
-            "grep ${element_replacement} ${TARGET.abspath}"
+            "grep ${element_replacement} ${TARGET.abspath}",
+            "grep -iE '\*assembly' ${TARGETS[1].abspath} && grep -iE '\*end assembly' ${TARGETS[1].abspath}",
+            "grep -iE '\*instance' ${TARGETS[1].abspath} && grep -iE '\*end instance' ${TARGETS[1].abspath}"
         ],
     element_replacement=element_replacement,
     )
