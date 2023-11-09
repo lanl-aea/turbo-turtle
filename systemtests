@@ -102,7 +102,7 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
     env.Alias("systemtests", targets)
     env.Alias("regression", targets)
 
-# _geometry system tests
+# geometry system tests
 system_tests = (
     # model/part,         input_file,                 angle
     ("washer",            'test_geometry_washer.csv', 360.),
@@ -147,7 +147,7 @@ revolution_angle = 360.0
 target = env.Command(
     target=[f"{model}.cae"],
     source=["turbo_turtle/tests/test_geometry_washer.csv", "turbo_turtle/tests/test_geometry_vase.csv",
-             "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/_geometry.py"],
+             "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/geometry.py"],
     action=[
         "python -m turbo_turtle.main geometry --input-file turbo_turtle/tests/test_geometry_washer.csv " \
             "turbo_turtle/tests/test_geometry_vase.csv --model-name ${TARGET.filebase} " \
