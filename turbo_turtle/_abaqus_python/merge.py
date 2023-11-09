@@ -42,13 +42,13 @@ def main(input_file, output_file,
     merged_model = abaqus.mdb.Model(name=merged_model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     for cae_file in input_file:
         abaqus.mdb.openAuxMdb(pathName=cae_file)
-        available_models = abaqus.mdb.models.keys()
+        available_models = abaqus.mdb.getAuxMdbModelNames()
         current_models = _intersection_of_lists(model_name, available_models)
         # Loop through current model_name
         for this_model in current_models:
             tmp_model = 'temporary_model_' + this_model
             abaqus.mdb.copyAuxMdbModel(fromName=this_model, toName=tmp_model)
-            available_parts = abaqus.mdb.models[this_model].parts.keys()
+            available_parts = abaqus.mdb.models[tmp_model].parts.keys()
             current_parts = _intersection_of_lists(part_name, available_parts)
             # Loop through part_name and send a warning when a part name is not found in the current model
             for this_part in current_parts:
