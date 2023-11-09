@@ -7,7 +7,7 @@ import subprocess
 from turbo_turtle import __version__
 from turbo_turtle import _settings
 from turbo_turtle import _wrappers
-from turbo_turtle._abaqus_python import _parsers
+from turbo_turtle._abaqus_python import parsers
 
 
 def _docs_parser():
@@ -76,61 +76,61 @@ def get_parser():
 
     subparsers = main_parser.add_subparsers(dest="subcommand")
 
-    geometry_parser = _parsers.geometry_parser(add_help=False)
-    cylinder_parser = _parsers.cylinder_parser(add_help=False)
-    sphere_parser = _parsers.sphere_parser(add_help=False)
-    partition_parser = _parsers.partition_parser(add_help=False)
-    mesh_parser = _parsers.mesh_parser(add_help=False)
-    export_parser = _parsers.export_parser(add_help=False)
-    image_parser = _parsers.image_parser(add_help=False)
+    geometry_parser = parsers.geometry_parser(add_help=False)
+    cylinder_parser = parsers.cylinder_parser(add_help=False)
+    sphere_parser = parsers.sphere_parser(add_help=False)
+    partition_parser = parsers.partition_parser(add_help=False)
+    mesh_parser = parsers.mesh_parser(add_help=False)
+    export_parser = parsers.export_parser(add_help=False)
+    image_parser = parsers.image_parser(add_help=False)
     add_abaqus_argument([geometry_parser, cylinder_parser, sphere_parser, partition_parser, mesh_parser, export_parser, image_parser])
 
     subparsers.add_parser(
         "geometry",
-        help=_parsers.geometry_cli_help,
-        description=_parsers.geometry_cli_description,
+        help=parsers.geometry_cli_help,
+        description=parsers.geometry_cli_description,
         parents=[geometry_parser]
     )
 
     subparsers.add_parser(
         "cylinder",
-        help=_parsers.cylinder_cli_help,
-        description=_parsers.cylinder_cli_description,
+        help=parsers.cylinder_cli_help,
+        description=parsers.cylinder_cli_description,
         parents=[cylinder_parser]
     )
 
     subparsers.add_parser(
         "sphere",
-        help=_parsers.sphere_cli_help,
-        description=_parsers.sphere_cli_description,
+        help=parsers.sphere_cli_help,
+        description=parsers.sphere_cli_description,
         parents=[sphere_parser]
     )
 
     subparsers.add_parser(
         "partition",
-        help=_parsers.partition_cli_help,
-        description=_parsers.partition_cli_description,
+        help=parsers.partition_cli_help,
+        description=parsers.partition_cli_description,
         parents=[partition_parser]
     )
 
     subparsers.add_parser(
         "mesh",
-        help=_parsers.mesh_cli_help,
-        description=_parsers.mesh_cli_description,
+        help=parsers.mesh_cli_help,
+        description=parsers.mesh_cli_description,
         parents=[mesh_parser]
     )
 
     subparsers.add_parser(
         "export",
-        help=_parsers.export_cli_help,
-        description=_parsers.export_cli_description,
+        help=parsers.export_cli_help,
+        description=parsers.export_cli_description,
         parents=[export_parser]
     )
 
     subparsers.add_parser(
         "image",
-        help=_parsers.image_cli_help,
-        description=_parsers.image_cli_description,
+        help=parsers.image_cli_help,
+        description=parsers.image_cli_description,
         parents=[image_parser]
     )
 

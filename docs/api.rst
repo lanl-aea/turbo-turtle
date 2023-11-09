@@ -16,50 +16,50 @@ _wrappers
 .. automodule:: turbo_turtle._wrappers
     :members:
 
-_parsers
+parsers
+=======
+
+.. automodule:: turbo_turtle._abaqus_python.parsers
+    :members:
+
+geometry
 ========
 
-.. automodule:: turbo_turtle._abaqus_python._parsers
+.. automodule:: turbo_turtle._abaqus_python.geometry
     :members:
 
-_geometry
-=========
+cylinder
+========
 
-.. automodule:: turbo_turtle._abaqus_python._geometry
+.. automodule:: turbo_turtle._abaqus_python.cylinder
     :members:
 
-_cylinder
-=========
-
-.. automodule:: turbo_turtle._abaqus_python._cylinder
-    :members:
-
-_sphere
-=======
-
-.. automodule:: turbo_turtle._abaqus_python._sphere
-    :members:
-
-_partition
-==========
-
-.. automodule:: turbo_turtle._abaqus_python._partition
-    :members:
-
-_mesh
-=====
-
-.. automodule:: turbo_turtle._abaqus_python._mesh
-    :members:
-
-_image
+sphere
 ======
 
-.. automodule:: turbo_turtle._abaqus_python._image
+.. automodule:: turbo_turtle._abaqus_python.sphere
     :members:
 
-_export
-=======
+partition
+=========
 
-.. automodule:: turbo_turtle._abaqus_python._export
+.. automodule:: turbo_turtle._abaqus_python.partition
+    :members:
+
+mesh
+====
+
+.. automodule:: turbo_turtle._abaqus_python.mesh
+    :members:
+
+image
+=====
+
+.. automodule:: turbo_turtle._abaqus_python.image
+    :members:
+
+export
+======
+
+.. automodule:: turbo_turtle._abaqus_python.export
     :members:

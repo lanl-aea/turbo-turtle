@@ -12,16 +12,16 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import _parsers
+import parsers
 
 
 def main(inner_radius, outer_radius, output_file,
-         input_file=_parsers.sphere_default_input_file,
-         quadrant=_parsers.sphere_default_quadrant,
-         angle=_parsers.sphere_default_angle,
-         center=_parsers.sphere_default_center,
-         model_name=_parsers.sphere_default_model_name,
-         part_name=_parsers.sphere_default_part_name):
+         input_file=parsers.sphere_default_input_file,
+         quadrant=parsers.sphere_default_quadrant,
+         angle=parsers.sphere_default_angle,
+         center=parsers.sphere_default_center,
+         model_name=parsers.sphere_default_model_name,
+         part_name=parsers.sphere_default_part_name):
     """Wrap sphere function with file open and file write operations
 
     :param float inner_radius: inner radius (size of hollow)
@@ -55,11 +55,11 @@ def main(inner_radius, outer_radius, output_file,
 
 
 def sphere(inner_radius, outer_radius,
-           quadrant=_parsers.sphere_default_quadrant,
-           angle=_parsers.sphere_default_angle,
-           center=_parsers.sphere_default_center,
-           model_name=_parsers.sphere_default_model_name,
-           part_name=_parsers.sphere_default_part_name):
+           quadrant=parsers.sphere_default_quadrant,
+           angle=parsers.sphere_default_angle,
+           center=parsers.sphere_default_center,
+           model_name=parsers.sphere_default_model_name,
+           part_name=parsers.sphere_default_part_name):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
 
     .. warning::
@@ -139,7 +139,7 @@ def rectalinear_coordinates(radius, angle):
 
 if __name__ == "__main__":
 
-    parser = _parsers.sphere_parser(basename=basename)
+    parser = parsers.sphere_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:

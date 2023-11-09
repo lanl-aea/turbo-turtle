@@ -10,14 +10,14 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import _parsers
+import parsers
 
 
 def main(input_file, element_type,
-         output_file=_parsers.mesh_default_output_file,
-         model_name=_parsers.mesh_default_model_name,
-         part_name=_parsers.mesh_default_part_name,
-         global_seed=_parsers.mesh_default_global_seed):
+         output_file=parsers.mesh_default_output_file,
+         model_name=parsers.mesh_default_model_name,
+         part_name=parsers.mesh_default_part_name,
+         global_seed=parsers.mesh_default_global_seed):
     """Wrap mesh function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
@@ -41,9 +41,9 @@ def main(input_file, element_type,
 
 
 def mesh(element_type,
-         model_name=_parsers.mesh_default_model_name,
-         part_name=_parsers.mesh_default_part_name,
-         global_seed=_parsers.mesh_default_global_seed):
+         model_name=parsers.mesh_default_model_name,
+         part_name=parsers.mesh_default_part_name,
+         global_seed=parsers.mesh_default_global_seed):
     """Apply a global seed and mesh the specified part
 
     :param str element_type: Abaqus element type
@@ -105,7 +105,7 @@ def return_abaqus_constant(search_string):
 
 if __name__ == "__main__":
 
-    parser = _parsers.mesh_parser(basename=basename)
+    parser = parsers.mesh_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:

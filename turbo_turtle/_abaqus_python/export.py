@@ -11,14 +11,14 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import _parsers
+import parsers
 
 
 def main(input_file,
-         model_name=_parsers.export_default_model_name,
-         part_name=_parsers.export_default_part_name,
-         element_type=_parsers.export_default_element_type,
-         destination=_parsers.export_default_destination):
+         model_name=parsers.export_default_model_name,
+         part_name=parsers.export_default_part_name,
+         element_type=parsers.export_default_element_type,
+         destination=parsers.export_default_destination):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
@@ -112,8 +112,8 @@ def substitute_element_type(mesh_output_file, element_type):
 
 
 def export(output_file,
-           model_name=_parsers.export_default_model_name,
-           part_name=_parsers.export_default_part_name[0]):
+           model_name=parsers.export_default_model_name,
+           part_name=parsers.export_default_part_name[0]):
     """Export an orphan mesh from a single part
 
     :param str output_file: Abaqus CAE file to save with the newly meshed part
@@ -142,7 +142,7 @@ def export(output_file,
 
 
 if __name__ == "__main__":
-    parser = _parsers.export_parser()
+    parser = parsers.export_parser()
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:

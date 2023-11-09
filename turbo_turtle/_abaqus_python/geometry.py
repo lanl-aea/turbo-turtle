@@ -9,18 +9,18 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import _parsers
+import parsers
 
 
 def main(input_file, output_file,
-         planar=_parsers.geometry_default_planar,
-         model_name=_parsers.geometry_default_model_name,
-         part_name=_parsers.geometry_default_part_name,
-         unit_conversion=_parsers.geometry_default_unit_conversion,
-         euclidian_distance=_parsers.geometry_default_euclidian_distance,
-         delimiter=_parsers.geometry_default_delimiter,
-         header_lines=_parsers.geometry_default_header_lines,
-         revolution_angle=_parsers.geometry_default_revolution_angle):
+         planar=parsers.geometry_default_planar,
+         model_name=parsers.geometry_default_model_name,
+         part_name=parsers.geometry_default_part_name,
+         unit_conversion=parsers.geometry_default_unit_conversion,
+         euclidian_distance=parsers.geometry_default_euclidian_distance,
+         delimiter=parsers.geometry_default_delimiter,
+         header_lines=parsers.geometry_default_header_lines,
+         revolution_angle=parsers.geometry_default_revolution_angle):
     """This script takes a series of points in x-y coordinates from a text file and creates a 2D sketch or 3D body of
     revolution about the global Y-axis. Note that 2D axisymmetric sketches and sketches for 3D bodies of revolution
     about the global Y-axis must lie entirely on the positive-X side of the global Y-axis. In general, a 2D sketch can
@@ -85,7 +85,7 @@ def _validate_part_name(input_file, part_name):
     return part_name
 
 
-def read_file(file_name, delimiter=_parsers.geometry_default_delimiter, header_lines=_parsers.geometry_default_header_lines):
+def read_file(file_name, delimiter=parsers.geometry_default_delimiter, header_lines=parsers.geometry_default_header_lines):
     """Parse a text file of points into a numpy array
 
     :param str file_name: input text file with points to draw
@@ -100,7 +100,7 @@ def read_file(file_name, delimiter=_parsers.geometry_default_delimiter, header_l
     return numpy_points_array
 
 
-def points_to_splines(numpy_points_array, euclidian_distance=_parsers.geometry_default_euclidian_distance):
+def points_to_splines(numpy_points_array, euclidian_distance=parsers.geometry_default_euclidian_distance):
     """Read a text file of points in x-y coordinates and generate a list of lines and splines to draw.
 
     This function follows this methodology to turn a large list of points into a list of lists denoting individual lines
@@ -186,8 +186,8 @@ def _bool_via_or(bools_list_1, bools_list_2):
     return bools_from_or
 
 
-def draw_part_from_splines(all_splines, planar=_parsers.geometry_default_planar, model_name=_parsers.geometry_default_model_name,
-                           part_name=_parsers.geometry_default_part_name, revolution_angle=_parsers.geometry_default_revolution_angle):
+def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, model_name=parsers.geometry_default_model_name,
+                           part_name=parsers.geometry_default_part_name, revolution_angle=parsers.geometry_default_revolution_angle):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
     depending on the ``planar`` and ``revolution_angle`` parameters.
@@ -258,7 +258,7 @@ def draw_part_from_splines(all_splines, planar=_parsers.geometry_default_planar,
 
 if __name__ == "__main__":
 
-    parser = _parsers.geometry_parser(basename=basename)
+    parser = parsers.geometry_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:

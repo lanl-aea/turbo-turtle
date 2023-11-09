@@ -13,7 +13,7 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import _parsers
+import parsers
 
 
 def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
@@ -476,7 +476,7 @@ if __name__ == "__main__":
         partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partitions)
 
     except:
-        parser = _parsers.partition_parser(basename=basename)
+        parser = parsers.partition_parser(basename=basename)
         try:
             args, unknown = parser.parse_known_args()
         except SystemExit as err:

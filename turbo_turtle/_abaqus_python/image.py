@@ -10,16 +10,16 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import _parsers
+import parsers
 
 
 def main(input_file, output_file,
-         x_angle=_parsers.image_default_x_angle,
-         y_angle=_parsers.image_default_y_angle,
-         z_angle=_parsers.image_default_z_angle,
-         image_size=_parsers.image_default_image_size,
-         model_name=_parsers.image_default_model_name,
-         part_name=_parsers.image_default_part_name):
+         x_angle=parsers.image_default_x_angle,
+         y_angle=parsers.image_default_y_angle,
+         z_angle=parsers.image_default_z_angle,
+         image_size=parsers.image_default_image_size,
+         model_name=parsers.image_default_model_name,
+         part_name=parsers.image_default_part_name):
     """Wrap image with file input handling
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
@@ -51,12 +51,12 @@ def main(input_file, output_file,
 
 
 def image(output_file,
-          x_angle=_parsers.image_default_x_angle,
-          y_angle=_parsers.image_default_y_angle,
-          z_angle=_parsers.image_default_z_angle,
-          image_size=_parsers.image_default_image_size,
-          model_name=_parsers.image_default_model_name,
-          part_name=_parsers.image_default_part_name):
+          x_angle=parsers.image_default_x_angle,
+          y_angle=parsers.image_default_y_angle,
+          z_angle=parsers.image_default_z_angle,
+          image_size=parsers.image_default_image_size,
+          model_name=parsers.image_default_model_name,
+          part_name=parsers.image_default_part_name):
     """Script for saving an assembly view image (colored by material) for a given Abaqus input file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
@@ -114,7 +114,7 @@ def get_abaqus_image_constant(file_extension):
 
 if __name__ == "__main__":
 
-    parser = _parsers.image_parser(basename=basename)
+    parser = parsers.image_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:
