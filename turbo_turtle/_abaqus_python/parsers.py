@@ -51,7 +51,7 @@ geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of r
                            "sketching lines and splines in the X-Y plane. Line and spline definitions are formed by " \
                            "parsing an input text file of points in X-Y space."
 
-def geometry_parser(basename="_geometry.py", add_help=True, description=geometry_cli_description):
+def geometry_parser(basename="geometry.py", add_help=True, description=geometry_cli_description):
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -83,7 +83,7 @@ cylinder_cli_help = "Accept dimensions of a right circular cylinder and generate
 cylinder_cli_description = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 
 
-def cylinder_parser(basename="_cylinder.py", add_help=True, description=cylinder_cli_description):
+def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_cli_description):
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -115,7 +115,7 @@ sphere_cli_description = "Create a hollow, spherical geometry from a sketch in t
                          "lower (+X-Y), or both quadrants."
 
 
-def sphere_parser(basename="_sphere.py", add_help=True, description=sphere_cli_description):
+def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_description):
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -155,7 +155,7 @@ partition_cli_help = "Partition a spherical shape into a turtle shell"
 partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
 
 
-def partition_parser(basename="_partition.py", add_help=True, description=partition_cli_description):
+def partition_parser(basename="partition.py", add_help=True, description=partition_cli_description):
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -196,7 +196,7 @@ mesh_cli_help = "Mesh an Abaqus part from a global seed"
 mesh_cli_description = "Mesh an Abaqus part from a global seed"
 
 
-def mesh_parser(basename="_mesh.py", add_help=True, description=mesh_cli_description):
+def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_description):
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -217,11 +217,14 @@ def mesh_parser(basename="_mesh.py", add_help=True, description=mesh_cli_descrip
 
 
 merge_cli_help = "Merge parts from multiple Abaqus CAE files into a single model"
-merge_cli_description = "Supply multiple Abaqus CAE files along with model and part names and attempt " \
-                        "to merge the parts into a new model"
+merge_cli_description = "Supply multiple Abaqus CAE files, model names, and part names to merge the parts into a " \
+                        "new model. Every CAE file is searched for every model/part name combination. If a part name " \
+                        "is found in more than one model, return an error."
+merge_default_model_name = [None]
+merge_default_part_name = [None]
 
 
-def merge_parser(basename="_export.py", add_help=True, description=merge_cli_description):
+def merge_parser(basename="merge.py", add_help=True, description=merge_cli_description):
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -231,13 +234,10 @@ def merge_parser(basename="_export.py", add_help=True, description=merge_cli_des
                         help="Abaqus CAE file to save the merged model")
     parser.add_argument("--merged-model-name", type=str, required=True,
                         help="Model to create and merge parts into")
-    # TODO: find a way to make default behavior to take all parts from all models from all cae files and merge them
-    #       this would make model_name and part_name no longer required
-    #       https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/43
-    parser.add_argument("--model-name", type=str, nargs="+", required=True,
-                        help="Abaqus model name(s) to attempt to query in the input CAE file(s)")
-    parser.add_argument("--part-name", type=str, nargs="+", required=True,
-                        help="Part name(s) to search for within model(s)")
+    parser.add_argument("--model-name", type=str, nargs="+", default=merge_default_model_name,
+                        help="Abaqus model name(s) to query in the input CAE file(s) (default: %(default)s)")
+    parser.add_argument("--part-name", type=str, nargs="+", default=merge_default_part_name,
+                        help="Part name(s) to search for within model(s) (default: %(default)s)")
     return parser
 
 
@@ -250,7 +250,7 @@ export_cli_help = "Export an Abaqus part mesh as an orphan mesh"
 export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
 
-def export_parser(basename="_export.py", add_help=True, description=export_cli_description):
+def export_parser(basename="export.py", add_help=True, description=export_cli_description):
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -286,7 +286,7 @@ image_color_map_choices = [
 ]
 
 
-def image_parser(basename="_image.py", add_help=True, description=image_cli_description):
+def image_parser(basename="image.py", add_help=True, description=image_cli_description):
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
