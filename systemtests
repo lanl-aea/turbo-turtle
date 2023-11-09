@@ -171,9 +171,9 @@ target = env.Command(
             "--output-file ${TARGET.abspath} --merged-model-name ${TARGET.filebase} " \
             "--model-name multi-part-geometry sphere " \
             "--part-name test_geometry_washer test_geometry_vase sphere",
-        """grep -iIre "SUCCESS" abaqus.rpy | grep "part 'test_geometry_washer'" """,
-        """grep -iIre "SUCCESS" abaqus.rpy | grep "part 'test_geometry_vase'" """,
-        """grep -iIre "SUCCESS" abaqus.rpy | grep "part 'sphere'" """,
+        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'test_geometry_washer'\"",
+        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'test_geometry_vase'\"",
+        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'sphere'\"",
     ],
     multi_part_cae_file=multi_part_target.abspath,
     sphere_cae_file=sphere_target.abspath,

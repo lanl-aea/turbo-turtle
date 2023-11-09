@@ -59,7 +59,7 @@ def main(input_file, output_file, merged_model_name, model_name, part_name):
                         this_part, this_model, cae_file, merged_model_name)
                     sys.stdout.write(success_message)
                 except:
-                    warning_message = "WARNING: could not merge part '{}' in model '{}' in database '{}'\n".format(
+                    warning_message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n".format(
                         this_part, this_model, cae_file)
                     sys.stderr.write(warning_message)
                     sys.exit(2)
