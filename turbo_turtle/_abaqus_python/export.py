@@ -40,10 +40,10 @@ def main(input_file,
                               destination=destination)
         if assembly is not None:
             assembly = os.path.splitext(assembly)[0] + ".inp"
-            _export_assembly(assembly, model_name, part_name, destination)
+            _export_assembly(assembly, model_name, part_name)
 
 
-def _export_assembly(assembly_file, model_name, part_name, destination):
+def _export_assembly(assembly_file, model_name, part_name):
     import abaqus
     import abaqusConstants
 
