@@ -14,11 +14,11 @@ import parsers
 def main(input_file, output_file, merged_model_name, model_name, part_name):
     """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model
 
-    This script loops through all input file(s) specified and attempts to query each of the provided model name(s). 
-    Within each model, all part_name(s) are queried. If a part name match is found, the part is copied to new merged 
+    This script loops through all input file(s) specified and attempts to query each of the provided model name(s).
+    Within each model, all part_name(s) are queried. If a part name match is found, the part is copied to new merged
     model.
 
-    :meth:`turbo_turtle._merge._check_for_duplicate_part_names` is used to ensure that parts with identical names cannot 
+    :meth:`turbo_turtle._merge._check_for_duplicate_part_names` is used to ensure that parts with identical names cannot
     be querried and copied to the merged model.
 
     :param list input_file: Abaqus CAE file(s) to query for model(s)/part(s)
@@ -26,45 +26,43 @@ def main(input_file, output_file, merged_model_name, model_name, part_name):
     :param str merged_model_name: Abaqus model to merge into
     :param list model_name: model name(s) to query
     :param list part_name: part_names(s) to search for
-    
+
     :returns: writes ``{output_file}.cae`` with the merged model
-    """    
+    """
     import abaqus
     import abaqusConstants
-    
+
     _check_for_duplicate_part_names(part_name)
 
     input_file = [os.path.splitext(input_file_name)[0] + ".cae" for input_file_name in input_file]
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
-    # This loop creates temporary models and then cleans them at the end, because you cannot have multiple abaqus.mdb 
+    # This loop creates temporary models and then cleans them at the end, because you cannot have multiple abaqus.mdb
     # objects active under the same ``abaqus cae -noGui`` kernel
     abaqus.mdb.Model(name=merged_model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     for cae_file in input_file:
         abaqus.mdb.openAuxMdb(pathName=cae_file)
-        # Loop through model_name and send a warning when a model name is not found in the current cae_file
-        for this_model in model_name:
-            try:
-                tmp_model = 'temporary_model_' + this_model
-                abaqus.mdb.copyAuxMdbModel(fromName=this_model, toName=tmp_model)
-            except:
-                tmp_model = None
-                warning_message = "WARNING: could not find model '{}' in database '{}'\n".format(this_model, cae_file)
-                sys.stdout.write(warning_message)
-            # If the current model name was found in the current cae_file, continue
-            if tmp_model is not None:
-                # Loop through part_name and send a warning when a part name is not found in the current model
-                for this_part in part_name:
-                    try:
-                        abaqus.mdb.models[merged_model_name].Part(this_part,
-                            abaqus.mdb.models[tmp_model].parts[this_part])
-                        success_message = "SUCCESS: merged part '{}' from model '{}' from '{}' into merged model '{}'\n".format(
-                            this_part, this_model, cae_file, merged_model_name)
-                        sys.stdout.write(success_message)
-                    except:
-                        warning_message = "WARNING: could not find part '{}' in model '{}' in database '{}'\n".format(
-                            this_part, this_model, cae_file)
-                        sys.stdout.write(warning_message)
+        available_models = abaqus.mdb.models.keys()
+        current_models = list(set(model_name) & set(available_models))
+        # Loop through current model_name
+        for this_model in current_models:
+            tmp_model = 'temporary_model_' + this_model
+            abaqus.mdb.copyAuxMdbModel(fromName=this_model, toName=tmp_model)
+            available_parts = abaqus.mdb.models[this_model].parts.keys()
+            current_parts = list(set(part_name) & set(available_parts))
+            # Loop through part_name and send a warning when a part name is not found in the current model
+            for this_part in current_parts:
+                try:
+                    abaqus.mdb.models[merged_model_name].Part(this_part,
+                        abaqus.mdb.models[tmp_model].parts[this_part])
+                    success_message = "SUCCESS: merged part '{}' from model '{}' from '{}' into merged model '{}'\n".format(
+                        this_part, this_model, cae_file, merged_model_name)
+                    sys.stdout.write(success_message)
+                except:
+                    warning_message = "WARNING: could not merge part '{}' in model '{}' in database '{}'\n".format(
+                        this_part, this_model, cae_file)
+                    sys.stderr.write(warning_message)
+                    sys.exit(2)
             # If the current model was found in the current cae_file, clean it before ending the loop
             if tmp_model is not None:
                 del abaqus.mdb.models[tmp_model]
@@ -76,19 +74,18 @@ def _check_for_duplicate_part_names(part_name):
     """Function for checking the ``part_name`` list for duplicates
 
     Merge behavior in this script assumes unique part names in the final merged model.
-    
+
     :param list part_name: part_names(s) to search for
-    
+
     :returns: non-zero exit code through ``sys.exit`` if duplicate part names are found
     """
     unique_part_names = []
     duplicate_part_names = []
     [unique_part_names.append(x) if x not in unique_part_names else duplicate_part_names.append(x) for x in part_name]
     if duplicate_part_names:
-        error_message = "ERROR: part_name list has {} duplicated part names: {}".format(
+        error_message = "WARNING: removing '{}' duplicate part names: '{}'".format(
             len(duplicate_part_names), ', '.join(map(str, duplicate_part_names)))
         sys.stderr.write(error_message)
-        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -97,7 +94,7 @@ if __name__ == "__main__":
         args, unknown = parser.parse_known_args()
     except SystemExit as err:
         sys.exit(err.code)
-    
+
     sys.exit(main(
         input_file=args.input_file,
         output_file=args.output_file,
