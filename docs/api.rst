@@ -19,7 +19,7 @@ _wrappers
 _parsers
 ========
 
-.. automodule:: turbo_turtle._parsers
+.. automodule:: turbo_turtle._abaqus_python._parsers
     :members:
 
 _geometry
