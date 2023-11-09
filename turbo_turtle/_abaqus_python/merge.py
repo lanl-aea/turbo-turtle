@@ -101,7 +101,7 @@ def _check_for_duplicate_part_names(part_name):
     [unique_part_names.append(x) if x not in unique_part_names else duplicate_part_names.append(x) for x in part_name]
     if duplicate_part_names:
         error_message = "WARNING: removing '{}' duplicate part names: '{}'".format(
-            len(duplicate_part_names), ', '.join(map(str, duplicate_part_names)))
+            len(duplicate_part_names), ', '.join(duplicate_part_names))
         sys.stderr.write(error_message)
     return unique_part_names
 
