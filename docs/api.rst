@@ -52,17 +52,16 @@ mesh
 .. automodule:: turbo_turtle._abaqus_python.mesh
     :members:
 
-merge
-=====
-
-.. automodule:: turbo_turtle._abaqus_python.merge
-    :members:
-
-
 image
 =====
 
 .. automodule:: turbo_turtle._abaqus_python.image
+    :members:
+
+merge
+=====
+
+.. automodule:: turbo_turtle._abaqus_python.merge
     :members:
 
 export

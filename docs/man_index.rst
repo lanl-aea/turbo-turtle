@@ -39,7 +39,7 @@ geometry
 .. argparse::
    :ref: turbo_turtle.main.get_parser
    :nodefault:
-   :path: geometry 
+   :path: geometry
 
 *********************
 |PROJECT| Subcommands
@@ -51,7 +51,7 @@ cylinder
 .. argparse::
    :ref: turbo_turtle.main.get_parser
    :nodefault:
-   :path: cylinder 
+   :path: cylinder
 
 *********************
 |PROJECT| Subcommands
@@ -100,6 +100,18 @@ image
    :ref: turbo_turtle.main.get_parser
    :nodefault:
    :path: image
+
+*********************
+|PROJECT| Subcommands
+*********************
+*****
+merge
+*****
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: merge
 
 *********************
 |PROJECT| Subcommands

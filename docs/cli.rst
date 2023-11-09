@@ -34,7 +34,7 @@ cylinder
 .. argparse::
    :ref: turbo_turtle.main.get_parser
    :nodefault:
-   :path: cylinder 
+   :path: cylinder
 
 sphere
 ------
@@ -60,6 +60,14 @@ mesh
    :nodefault:
    :path: mesh
 
+image
+-----
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: image
+
 merge
 -----
 
@@ -75,11 +83,3 @@ export
    :ref: turbo_turtle.main.get_parser
    :nodefault:
    :path: export
-
-image
------
-
-.. argparse::
-   :ref: turbo_turtle.main.get_parser
-   :nodefault:
-   :path: image

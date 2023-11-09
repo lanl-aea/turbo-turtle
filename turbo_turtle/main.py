@@ -89,9 +89,9 @@ def get_parser():
     sphere_parser = _parsers.sphere_parser(add_help=False)
     partition_parser = _parsers.partition_parser(add_help=False)
     mesh_parser = _parsers.mesh_parser(add_help=False)
+    image_parser = _parsers.image_parser(add_help=False)
     merge_parser = _parsers.merge_parser(add_help=False)
     export_parser = _parsers.export_parser(add_help=False)
-    image_parser = _parsers.image_parser(add_help=False)
 
     add_abaqus_argument([
         geometry_parser,
@@ -99,9 +99,9 @@ def get_parser():
         sphere_parser,
         partition_parser,
         mesh_parser,
+        image_parser
         merge_parser,
         export_parser,
-        image_parser
     ])
 
     subparsers.add_parser(
