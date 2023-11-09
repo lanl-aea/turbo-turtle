@@ -18,7 +18,8 @@ def main(input_file,
          model_name=parsers.export_default_model_name,
          part_name=parsers.export_default_part_name,
          element_type=parsers.export_default_element_type,
-         destination=parsers.export_default_destination):
+         destination=parsers.export_default_destination,
+         assembly=parsers.export_default_assembly):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
@@ -26,6 +27,8 @@ def main(input_file,
     :param list part_name: list of parts to query in the specified Abaqus model
     :param list element_type: list of element types, one per part name or one global replacement for every part name
     :param str destination: write output orphan mesh files to this output directory
+    :param bool assembly: Write assembly keyword block if True. If True and no instances are found, instance all part
+        names before export.
     """
     import abaqus
     input_file = os.path.splitext(input_file)[0] + ".cae"
@@ -35,6 +38,29 @@ def main(input_file,
         abaqus.openMdb(pathName=copy_file.name)
         export_multiple_parts(model_name=model_name, part_name=part_name, element_type=element_type,
                               destination=destination)
+        if assembly:
+            _export_assembly(model_name, part_name, destination)
+
+
+def _export_assembly(model_name, part_name, destination):
+    import abaqus
+    import abaqusConstants
+
+    model = abaqus.mdb.models[model_name]
+    assembly = model.rootAssembly
+    if len(part_name) == 0:
+        part_name = model.parts.keys()
+    if len(assembly.instances.keys()) == 0:
+        for new_instance in part_name:
+            part = abaqus.mdb.models[model_name].parts[new_instance]
+            assembly.Instance(name=part_name, part=part, dependent=abaqusConstants.ON)
+    model.keywordBlock.synchVersions()
+    block = model.keywordBlock.sieBlocks
+    block_string = '\n'.join(block)
+    assembly = re.findall(".*?\*Assembly.*$\n(.*?)\*End Assembly",
+                          block_string, re.DOTALL | re.I | re.M)
+    with open(assembly_file, 'w') as output:
+        output.write(assembly[1].strip())
 
 
 def _validate_element_type(length_part_name, element_type):
@@ -153,5 +179,6 @@ if __name__ == "__main__":
         model_name=args.model_name,
         part_name=args.part_name,
         element_type=args.element_type,
-        destination=args.destination
+        destination=args.destination,
+        assembly=args.assembly
     ))

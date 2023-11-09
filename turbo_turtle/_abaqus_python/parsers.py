@@ -247,6 +247,7 @@ export_default_model_name = "Model-1"
 export_default_part_name = ["Part-1"]
 export_default_element_type = [None]
 export_default_destination = os.getcwd()
+export_default_assembly = False
 export_cli_help = "Export an Abaqus part mesh as an orphan mesh"
 # TODO: Write a more descriptive behavior message
 export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
@@ -267,6 +268,9 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
                              "(default: %(default)s)")
     parser.add_argument("--destination", type=str, default=export_default_destination,
                         help="Write orphan mesh files to this output directory (default: PWD)")
+    parser.add_argument("--assembly", action='store_true',
+                        help="Switch to export the assembly keyword block. If True and no assembly is found, " \
+                             "instance all parts in the model and export assembly block (default: %(default)s)")
 
     return parser
 
