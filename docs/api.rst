@@ -16,6 +16,12 @@ _wrappers
 .. automodule:: turbo_turtle._wrappers
     :members:
 
+_parsers
+========
+
+.. automodule:: turbo_turtle._parsers
+    :members:
+
 _geometry
 =========
 

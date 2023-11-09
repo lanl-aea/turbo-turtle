@@ -15,6 +15,7 @@ New Features
 Documentation
 =============
 - Update project description and scope (:issue:`36`, :merge:`32`). By `Kyle Brindley`_.
+- Add the Abaqus Python parsers to the internal API (:issue:`47`, :merge:`34`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
