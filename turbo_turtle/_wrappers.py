@@ -116,8 +116,10 @@ def merge(args):
     command += f"--input-file {' '.join(map(str, args.input_file))} "
     command += f"--output-file {args.output_file} "
     command += f"--merged-model-name {args.merged_model_name} "
-    command += f"--model-name {' '.join(map(str, args.model_name))} "
-    command += f"--part-name {' '.join(map(str, args.part_name))}"
+    if args.model_name[0] is not None:
+        command += f"--model-name {' '.join(map(str, args.model_name))} "
+    if args.part_name[0] is not None:
+        command += f"--part-name {' '.join(map(str, args.part_name))}"
     command = command.split()
     stdout = subprocess.check_output(command)
 
