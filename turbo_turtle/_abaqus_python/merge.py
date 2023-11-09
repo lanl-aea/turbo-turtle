@@ -39,7 +39,7 @@ def main(input_file, output_file,
 
     # This loop creates temporary models and then cleans them at the end, because you cannot have multiple abaqus.mdb
     # objects active under the same ``abaqus cae -noGui`` kernel
-    abaqus.mdb.Model(name=merged_model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+    merged_model = abaqus.mdb.Model(name=merged_model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     for cae_file in input_file:
         abaqus.mdb.openAuxMdb(pathName=cae_file)
         available_models = abaqus.mdb.models.keys()
@@ -53,8 +53,7 @@ def main(input_file, output_file,
             # Loop through part_name and send a warning when a part name is not found in the current model
             for this_part in current_parts:
                 try:
-                    abaqus.mdb.models[merged_model_name].Part(this_part,
-                        abaqus.mdb.models[tmp_model].parts[this_part])
+                    merged_model.Part(this_part, abaqus.mdb.models[tmp_model].parts[this_part])
                     success_message = "SUCCESS: merged part '{}' from model '{}' from '{}' into merged model '{}'\n".format(
                         this_part, this_model, cae_file, merged_model_name)
                     sys.stdout.write(success_message)
