@@ -8,6 +8,10 @@ Changelog
 v0.5.2 (unreleased)
 *******************
 
+New Features
+============
+- Draft assembly keyword block exporter in export subcommand (:issue:`38`, :merge:`36`). By `Kyle Brindley`_.
+
 *******************
 v0.5.1 (2023-11-09)
 *******************
