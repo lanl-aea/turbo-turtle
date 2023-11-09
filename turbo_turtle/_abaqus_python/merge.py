@@ -11,15 +11,15 @@ sys.path.insert(0, parent)
 import parsers
 
 
-def main(input_file, output_file, merged_model_name, model_name, part_name):
+def main(input_file, output_file,
+         merged_model_name=merge_default_merged_model_name,
+         model_name=merge_default_model_name,
+         part_name=merge_default_part_name):
     """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model
 
-    This script loops through all input file(s) specified and attempts to query each of the provided model name(s).
-    Within each model, all part_name(s) are queried. If a part name match is found, the part is copied to new merged
-    model.
-
-    :meth:`turbo_turtle._merge._check_for_duplicate_part_names` is used to ensure that parts with identical names cannot
-    be querried and copied to the merged model.
+    This script loops through all input file(s) specified and merges the intersection of provided model/part name(s) and
+    available model/part combinations. Duplicate part names are removed from the part name list. If a part name exists
+    in more than one model, return an error.
 
     :param list input_file: Abaqus CAE file(s) to query for model(s)/part(s)
     :param str output_file: Abaqus CAE file for saving the merged model

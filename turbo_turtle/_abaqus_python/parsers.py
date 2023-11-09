@@ -221,6 +221,7 @@ merge_cli_help = "Merge parts from multiple Abaqus CAE files into a single model
 merge_cli_description = "Supply multiple Abaqus CAE files, model names, and part names to merge the parts into a " \
                         "new model. Every CAE file is searched for every model/part name combination. If a part name " \
                         "is found in more than one model, return an error."
+merge_default_merged_model_name = "Model-1"
 merge_default_model_name = [None]
 merge_default_part_name = [None]
 
@@ -233,8 +234,8 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
                         help="Abaqus CAE input file(s)")
     parser.add_argument("--output-file", type=str, required=True,
                         help="Abaqus CAE file to save the merged model")
-    parser.add_argument("--merged-model-name", type=str, required=True,
-                        help="Model to create and merge parts into")
+    parser.add_argument("--merged-model-name", type=str, default=merge_default_merged_model_name,
+                        help="Model to create and merge parts into (default: %(default)s)")
     parser.add_argument("--model-name", type=str, nargs="+", default=merge_default_model_name,
                         help="Abaqus model name(s) to query in the input CAE file(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, nargs="+", default=merge_default_part_name,
