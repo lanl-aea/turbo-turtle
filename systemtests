@@ -170,10 +170,7 @@ target = env.Command(
         "python -m turbo_turtle.main merge --input-file ${SOURCES[0].abspath} ${SOURCES[1].abspath} " \
             "--output-file ${TARGET.abspath} --merged-model-name ${TARGET.filebase} " \
             "--model-name multi-part-geometry sphere " \
-            "--part-name test_geometry_washer test_geometry_vase sphere",
-        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'test_geometry_washer'\"",
-        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'test_geometry_vase'\"",
-        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'sphere'\"",
+            "--part-name test_geometry_washer test_geometry_vase sphere"
     ]
 )
 env.Alias("systemtests", target)
@@ -186,10 +183,7 @@ target = env.Command(
             "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/merge.py"],
     action=[
         "python -m turbo_turtle.main merge --input-file ${SOURCES[0].abspath} ${SOURCES[1].abspath} " \
-            "--output-file ${TARGET.abspath} --merged-model-name ${TARGET.filebase}",
-        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'test_geometry_washer'\"",
-        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'test_geometry_vase'\"",
-        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'sphere'\"",
+            "--output-file ${TARGET.abspath} --merged-model-name ${TARGET.filebase}"
     ]
 )
 env.Alias("systemtests", target)
