@@ -139,7 +139,7 @@ def export(args):
         command += f"--element-type {' '.join(map(str, args.element_type))} "
     command += f"--destination {args.destination} "
     if args.assembly is not None:
-        command += "--assembly {args.assembly}"
+        command += f"--assembly {args.assembly}"
     command = command.split()
     stdout = subprocess.check_output(command)
 
