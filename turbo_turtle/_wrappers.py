@@ -137,9 +137,9 @@ def export(args):
     command += f"--model-name {args.model_name} --part-name {' '.join(map(str, args.part_name))} "
     if args.element_type[0] is not None:
         command += f"--element-type {' '.join(map(str, args.element_type))} "
-    command += f"--destination {args.destination}"
-    if args.assembly:
-        command += "--assembly"
+    command += f"--destination {args.destination} "
+    if args.assembly is not None:
+        command += "--assembly {args.assembly}"
     command = command.split()
     stdout = subprocess.check_output(command)
 

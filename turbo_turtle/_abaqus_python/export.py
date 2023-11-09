@@ -27,8 +27,8 @@ def main(input_file,
     :param list part_name: list of parts to query in the specified Abaqus model
     :param list element_type: list of element types, one per part name or one global replacement for every part name
     :param str destination: write output orphan mesh files to this output directory
-    :param bool assembly: Write assembly keyword block if True. If True and no instances are found, instance all part
-        names before export.
+    :param bool assembly: Assembly file for exporting the assembly keyword block. If provided and no instances are
+        found, instance all part names before export.
     """
     import abaqus
     input_file = os.path.splitext(input_file)[0] + ".cae"
@@ -38,11 +38,12 @@ def main(input_file,
         abaqus.openMdb(pathName=copy_file.name)
         export_multiple_parts(model_name=model_name, part_name=part_name, element_type=element_type,
                               destination=destination)
-        if assembly:
-            _export_assembly(model_name, part_name, destination)
+        if assembly is not None:
+            assembly = os.path.splitext(assembly)[0] + ".inp"
+            _export_assembly(assembly, model_name, part_name, destination)
 
 
-def _export_assembly(model_name, part_name, destination):
+def _export_assembly(assembly_file, model_name, part_name, destination):
     import abaqus
     import abaqusConstants
 
@@ -57,10 +58,10 @@ def _export_assembly(model_name, part_name, destination):
     model.keywordBlock.synchVersions()
     block = model.keywordBlock.sieBlocks
     block_string = '\n'.join(block)
-    assembly = re.findall(".*?\*Assembly.*$\n(.*?)\*End Assembly",
-                          block_string, re.DOTALL | re.I | re.M)
+    regex = r"\*assembly.*?\*end assembly"
+    assembly = re.findall(regex, block_string, re.IGNORECASE | re.MULTILINE | re.DOTALL)
     with open(assembly_file, 'w') as output:
-        output.write(assembly[1].strip())
+        output.write(assembly[0].strip())
 
 
 def _validate_element_type(length_part_name, element_type):
