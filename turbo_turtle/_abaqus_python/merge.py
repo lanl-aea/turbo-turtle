@@ -61,11 +61,14 @@ def main(input_file, output_file,
                     warning_message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n".format(
                         this_part, this_model, cae_file)
                     sys.stderr.write(warning_message)
-                    sys.exit(2)
+                    sys.exit(1)
             # If the current model was found in the current cae_file, clean it before ending the loop
             if tmp_model is not None:
                 del abaqus.mdb.models[tmp_model]
         abaqus.mdb.closeAuxMdb()
+    if len(merged_model.parts.keys()) == 0:
+        sys.stderr.write("No models were merged. Check the input file, model and part name lists.")
+        sys.exit(2)
     abaqus.mdb.saveAs(pathName=output_file)
 
 
