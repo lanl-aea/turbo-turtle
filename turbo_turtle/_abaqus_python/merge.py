@@ -33,6 +33,7 @@ def main(input_file, output_file,
     import abaqusConstants
 
     part_name = _check_for_duplicate_part_names(part_name)
+    requested_part_count = len(part_name)
 
     input_file = [os.path.splitext(input_file_name)[0] + ".cae" for input_file_name in input_file]
     output_file = os.path.splitext(output_file)[0] + ".cae"
@@ -66,10 +67,16 @@ def main(input_file, output_file,
             if tmp_model is not None:
                 del abaqus.mdb.models[tmp_model]
         abaqus.mdb.closeAuxMdb()
-    if len(merged_model.parts.keys()) == 0:
-        sys.stderr.write("No models were merged. Check the input file, model and part name lists.")
-        sys.exit(2)
     abaqus.mdb.saveAs(pathName=output_file)
+
+    merged_part_count = len(merged_model.parts.keys())
+    if  merged_part_count == 0:
+        sys.stderr.write("No parts were merged. Check the input file, model and part name lists.")
+        sys.exit(2)
+    elif part_name[0] is not None and merged_part_count != requested_part_count:
+        sys.stderr.write("Merged part count '{}' doesn't match unique part name count '{}'.".format(
+                         merged_part_count, requested_part_count))
+        sys.exit(3)
 
 
 def _intersection_of_lists(requested, available):
