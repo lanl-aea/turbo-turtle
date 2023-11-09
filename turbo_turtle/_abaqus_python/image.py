@@ -58,7 +58,7 @@ def image(output_file,
           z_angle=parsers.image_default_z_angle,
           image_size=parsers.image_default_image_size,
           model_name=parsers.image_default_model_name,
-          part_name=parsers.image_default_part_name),
+          part_name=parsers.image_default_part_name,
           color_map=parsers.image_color_map_choices[0]):
     """Script for saving an assembly view image (colored by material) for a given Abaqus input file.
 
