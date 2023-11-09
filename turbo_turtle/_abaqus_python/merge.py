@@ -32,7 +32,7 @@ def main(input_file, output_file, merged_model_name, model_name, part_name):
     import abaqus
     import abaqusConstants
 
-    _check_for_duplicate_part_names(part_name)
+    part_name = _check_for_duplicate_part_names(part_name)
 
     input_file = [os.path.splitext(input_file_name)[0] + ".cae" for input_file_name in input_file]
     output_file = os.path.splitext(output_file)[0] + ".cae"
@@ -73,11 +73,13 @@ def main(input_file, output_file, merged_model_name, model_name, part_name):
 def _check_for_duplicate_part_names(part_name):
     """Function for checking the ``part_name`` list for duplicates
 
-    Merge behavior in this script assumes unique part names in the final merged model.
+    Merge behavior in this script assumes unique part names in the final merged model. STDERR warning when duplicates
+    are found and removed.
 
     :param list part_name: part_names(s) to search for
 
-    :returns: non-zero exit code through ``sys.exit`` if duplicate part names are found
+    :returns: unique part names
+    :rtype: list
     """
     unique_part_names = []
     duplicate_part_names = []
@@ -86,6 +88,7 @@ def _check_for_duplicate_part_names(part_name):
         error_message = "WARNING: removing '{}' duplicate part names: '{}'".format(
             len(duplicate_part_names), ', '.join(map(str, duplicate_part_names)))
         sys.stderr.write(error_message)
+    return unique_part_names
 
 
 if __name__ == "__main__":
