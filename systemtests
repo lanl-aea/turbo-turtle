@@ -165,7 +165,7 @@ model = "merged-model"
 target = env.Command(
     target=[f"{model}.cae"],
     source=[multi_part_target, sphere_target,
-            "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/_merge.py"],
+            "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/merge.py"],
     action=[
         "python -m turbo_turtle.main merge --input-file ${multi_part_cae_file} ${sphere_cae_file} " \
             "--output-file ${TARGET.abspath} --merged-model-name ${TARGET.filebase} " \
