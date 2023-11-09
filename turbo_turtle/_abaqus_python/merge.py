@@ -8,7 +8,7 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import _parsers
+import parsers
 
 
 def main(input_file, output_file, merged_model_name, model_name, part_name):
@@ -92,7 +92,7 @@ def _check_for_duplicate_part_names(part_name):
 
 
 if __name__ == "__main__":
-    parser = _parsers.merge_parser(basename=basename)
+    parser = parsers.merge_parser(basename=basename)
     try:
         args, unknown = parser.parse_known_args()
     except SystemExit as err:
