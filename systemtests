@@ -179,6 +179,22 @@ target = env.Command(
 env.Alias("systemtests", target)
 env.Alias("regression", target)
 
+model = "merged-model-2"
+target = env.Command(
+    target=[f"{model}.cae"],
+    source=[multi_part_target, sphere_target,
+            "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/merge.py"],
+    action=[
+        "python -m turbo_turtle.main merge --input-file ${SOURCES[0].abspath} ${SOURCES[1].abspath} " \
+            "--output-file ${TARGET.abspath} --merged-model-name ${TARGET.filebase}",
+        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'test_geometry_washer'\"",
+        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'test_geometry_vase'\"",
+        "grep -iIre \"SUCCESS\" abaqus.rpy | grep \"part 'sphere'\"",
+    ]
+)
+env.Alias("systemtests", target)
+env.Alias("regression", target)
+
 target = env.Command(
     target=["Turbo-Turtle-Tests.cae", "seveneigths-sphere.png", "swiss-cheese.png"],
     source=["legacy_geometry.py"],
