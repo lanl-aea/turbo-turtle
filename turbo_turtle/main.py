@@ -84,14 +84,14 @@ def get_parser():
                      "system default web browser",
         parents=[docs_parser])
 
-    geometry_parser = _parsers.geometry_parser(add_help=False)
-    cylinder_parser = _parsers.cylinder_parser(add_help=False)
-    sphere_parser = _parsers.sphere_parser(add_help=False)
-    partition_parser = _parsers.partition_parser(add_help=False)
-    mesh_parser = _parsers.mesh_parser(add_help=False)
-    image_parser = _parsers.image_parser(add_help=False)
-    merge_parser = _parsers.merge_parser(add_help=False)
-    export_parser = _parsers.export_parser(add_help=False)
+    geometry_parser = parsers.geometry_parser(add_help=False)
+    cylinder_parser = parsers.cylinder_parser(add_help=False)
+    sphere_parser = parsers.sphere_parser(add_help=False)
+    partition_parser = parsers.partition_parser(add_help=False)
+    mesh_parser = parsers.mesh_parser(add_help=False)
+    image_parser = parsers.image_parser(add_help=False)
+    merge_parser = parsers.merge_parser(add_help=False)
+    export_parser = parsers.export_parser(add_help=False)
 
     add_abaqus_argument([
         geometry_parser,
@@ -141,8 +141,8 @@ def get_parser():
 
     merge_parser = subparsers.add_parser(
         "merge",
-        help=_parsers.merge_cli_help,
-        description=_parsers.merge_cli_description,
+        help=parsers.merge_cli_help,
+        description=parsers.merge_cli_description,
         parents=[merge_parser]
     )
 
