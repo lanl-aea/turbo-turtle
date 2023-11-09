@@ -43,13 +43,13 @@ def main(input_file, output_file, merged_model_name, model_name, part_name):
     for cae_file in input_file:
         abaqus.mdb.openAuxMdb(pathName=cae_file)
         available_models = abaqus.mdb.models.keys()
-        current_models = list(set(model_name) & set(available_models))
+        current_models = _intersection_of_lists(model_name, available_models)
         # Loop through current model_name
         for this_model in current_models:
             tmp_model = 'temporary_model_' + this_model
             abaqus.mdb.copyAuxMdbModel(fromName=this_model, toName=tmp_model)
             available_parts = abaqus.mdb.models[this_model].parts.keys()
-            current_parts = list(set(part_name) & set(available_parts))
+            current_parts = _intersection_of_lists(part_name, available_parts)
             # Loop through part_name and send a warning when a part name is not found in the current model
             for this_part in current_parts:
                 try:
@@ -68,6 +68,22 @@ def main(input_file, output_file, merged_model_name, model_name, part_name):
                 del abaqus.mdb.models[tmp_model]
         abaqus.mdb.closeAuxMdb()
     abaqus.mdb.saveAs(pathName=output_file)
+
+
+def _intersection_of_lists(requested, available):
+    """Return intersection of available and requested items or all available items if none requested
+
+    :param list requested: requested items
+    :param list available: available items
+
+    :returns: intersection of requested and available items. All available items if None requested.
+    :ttype: list
+    """
+    if requested[0] is not None and len(requested) > 0:
+        intersection = list(set(requested) & set(available))
+    else:
+        intersection = available
+    return intersection
 
 
 def _check_for_duplicate_part_names(part_name):
