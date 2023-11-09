@@ -78,7 +78,7 @@ def geometry_parser(basename="_geometry.py", add_help=True, description=geometry
     return parser
 
 
-cylinder_default_part_name = "Part-1" 
+cylinder_default_part_name = "Part-1"
 cylinder_cli_help = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 cylinder_cli_description = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 
@@ -252,6 +252,13 @@ image_default_model_name = "Model-1"
 image_default_part_name = "Part-1"
 image_cli_help = "Save an image of an Abaqus model"
 image_cli_description = "Save an assembly view image (colored by material) for a given Abaqus input file"
+# One time dump from session.viewports['Viewport: 1'].colorMappings.keys()) to stay Python 3 compatible
+image_color_map_choices = [
+    'Material', 'Section', 'Composite layup', 'Composite ply', 'Part', 'Part instance',
+    'Element set', 'Averaging region', 'Element type', 'Default', 'Assembly', 'Part geometry', 'Load', 'Boundary condition',
+    'Interaction', 'Constraint', 'Property', 'Meshability', 'Instance type', 'Set', 'Surface', 'Internal set',
+    'Internal surface', 'Display group', 'Selection group', 'Skin', 'Stringer', 'Cell', 'Face'
+]
 
 
 def image_parser(basename="_image.py", add_help=True, description=image_cli_description):
@@ -274,5 +281,7 @@ def image_parser(basename="_image.py", add_help=True, description=image_cli_desc
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=image_default_part_name,
                         help="Abaqus part name (default: %(default)s)")
+    parser.add_argument('--color-map', type=str, choices=image_color_map_choices, default=image_color_map_choices[0],
+                        help="Color map (default: %(default)s)")
 
     return parser
