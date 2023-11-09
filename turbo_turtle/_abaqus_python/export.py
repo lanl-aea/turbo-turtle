@@ -54,7 +54,7 @@ def _export_assembly(assembly_file, model_name, part_name, destination):
     if len(assembly.instances.keys()) == 0:
         for new_instance in part_name:
             part = abaqus.mdb.models[model_name].parts[new_instance]
-            assembly.Instance(name=part_name, part=part, dependent=abaqusConstants.ON)
+            assembly.Instance(name=new_instance, part=part, dependent=abaqusConstants.ON)
     model.keywordBlock.synchVersions()
     block = model.keywordBlock.sieBlocks
     block_string = '\n'.join(block)
