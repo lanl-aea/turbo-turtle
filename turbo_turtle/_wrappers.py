@@ -18,7 +18,8 @@ def geometry(args):
     if args.planar:
         command += f"--planar "
     command += f"--model-name {args.model_name} "
-    command += f"--part-name {' '.join(map(str, args.part_name))} "
+    if args.part_name[0] is not None:
+        command += f"--part-name {' '.join(map(str, args.part_name))} "
     command += f"--delimiter {args.delimiter} "
     command += f"--header-lines {args.header_lines} "
     command += f"--revolution-angle {args.revolution_angle}"
@@ -134,7 +135,8 @@ def export(args):
     command = f"{args.abaqus_command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
     command += f"--model-name {args.model_name} --part-name {' '.join(map(str, args.part_name))} "
-    command += f"--element-type {' '.join(map(str, args.element_type))} "
+    if args.element_type[0] is not None:
+        command += f"--element-type {' '.join(map(str, args.element_type))} "
     command += f"--destination {args.destination}"
     command = command.split()
     stdout = subprocess.check_output(command)

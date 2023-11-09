@@ -144,6 +144,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
 
 
 # TODO: These CLI lists will fail if a user tries to provide a negative number
+partition_default_output_file = None
 partition_default_center = [0.0, 0.0, 0.0]
 partition_default_xpoint = [1.0, 0.0, 0.0]
 partition_default_zpoint = [0.0, 0.0, 1.0]
@@ -167,7 +168,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     requiredNamed.add_argument('--input-file', type=str, required=True,
                         help="Abaqus model database to open")
 
-    parser.add_argument('--output-file', type=str, default=None,
+    parser.add_argument('--output-file', type=str, default=partition_default_output_file,
                         help="Abaqus model database to save to. Defaults to the specified --input-file")
     parser.add_argument('--xpoint', nargs=3, type=float, default=partition_default_xpoint,
                         help="Point on the x-axis (default: %(default)s)")
