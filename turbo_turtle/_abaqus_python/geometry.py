@@ -157,7 +157,7 @@ def draw_part_from_splines(coordinates,
     sketch.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
     sketch.FixedConstraint(entity=geometry[3])
 
-    lines, splines = lines_and_splines.lines_and_splines(coordinates, euclidean_distance=euclidean_distance)
+    lines, splines = lines_and_splines.lines_and_splines(coordinates, euclidean_distance)
     for spline in splines:
         spline = tuple(map(tuple, spline))
         sketch.Spline(points=spline)

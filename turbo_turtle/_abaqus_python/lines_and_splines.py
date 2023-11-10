@@ -1,7 +1,7 @@
 """Python 2/3 compatible coordinate handling for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules
 """
 
-def lines_and_splines(coordinates, euclidean_distance=parsers.geometry_default_euclidean_distance):
+def lines_and_splines(coordinates, euclidean_distance):
     """Accept a [N, 2] numpy array of XY coordinates and return line point pairs and splines
 
     Array is broken into a list of [M, 2] arrays according to the following rules
@@ -23,14 +23,14 @@ def lines_and_splines(coordinates, euclidean_distance=parsers.geometry_default_e
     :returns: list of line pairs and list of spline arrays
     :rtype: tuple
     """
-    all_splines = break_coordinates(coordinates, euclidean_distance=euclidean_distance)
+    all_splines = break_coordinates(coordinates, euclidean_distance)
     lines = _line_pairs(all_splines)
     lines.extend([(array[0], array[1]) for array in all_splines if len(array) == 2])
     splines = [array for array in all_splines if len(array) > 2]
     return lines, splines
 
 
-def _break_coordinates(coordinates, euclidean_distance=parsers.geometry_default_euclidean_distance):
+def _break_coordinates(coordinates, euclidean_distance):
     """Accept a [N, 2] numpy array and break into a list of [M, 2] arrays
 
     This function follows this methodology to turn a [N, 2] numpy array into a list of [M, 2] arrays denoting
