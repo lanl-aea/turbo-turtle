@@ -111,9 +111,9 @@ def read_file(file_name, delimiter=parsers.geometry_default_delimiter, header_li
 
 
 def points_to_splines(coordinates, euclidian_distance=parsers.geometry_default_euclidian_distance):
-    """Accept a 2D numpy array of shape [N, 2] and generate a list of splines to draw.
+    """Accept a [N, 2] numpy array and generate a list of splines to draw.
 
-    This function follows this methodology to turn a 2D numpy array of shape [N, 2] into a list of 2D arrays denoting
+    This function follows this methodology to turn a [N, 2] numpy array into a list of [M, 2] arrays denoting
     individual lines or splines.
 
     #. If neighboring points are farther apart than the euclidean distance, break the original array between them.
@@ -135,14 +135,14 @@ def points_to_splines(coordinates, euclidian_distance=parsers.geometry_default_e
 
 
 def lines_and_splines(all_splines):
-    """Accept a list of 2D numpy arrays of shape [N, 2] and return line point pairs and splines
+    """Accept a list of [N, 2] numpy arrays and return line point pairs and splines
 
     #. Line point pairs are returned for the end and beginning of adjacent arrays, and for the end of the last array and
        the beginning of the first array.
-    #. Arrays of length 2 are converted to line pair points
+    #. Arrays of length 2 are converted to line pair coordinates
     #. Arrays greater than length 2 are kept intact as splines.
 
-    :param list all_splines: list of 2D numpy arrays of shape [N, 2]
+    :param list all_splines: list of [N, 2] numpy arrays
 
     :returns: list of line pairs and list of spline arrays
     :rtype: tuple
@@ -206,7 +206,7 @@ def _bool_via_or(bools_list_1, bools_list_2):
 
 
 def _line_pairs(all_splines):
-    """Accept a list of [N, 2] arrays and return a list of paired points to connect as lines
+    """Accept a list of [N, 2] arrays and return a list of paired coordinates to connect as lines
 
     Given a list of [N, 2] numpy arrays, create tuple pairs of coordinates between the end and beginning of subsequent
     arrays. Also return a pair from the last array's last coordinate to the first array's first coordinate.
@@ -214,7 +214,7 @@ def _line_pairs(all_splines):
     :param list all_splines: a list of 2D numpy arrays
 
     :returns: line pairs
-    :rtype: list of tuples of 1D arrays of shape [1, 2]
+    :rtype: list of tuples of [1, 2] arrays
     """
     line_pairs = [(spline1[-1], spline2[0]) for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:])]
     line_pairs.append(all_splines[-1][-1], all_splines[0][0])
