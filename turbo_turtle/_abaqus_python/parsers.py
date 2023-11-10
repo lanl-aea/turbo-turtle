@@ -1,4 +1,4 @@
-"""Python 2/3 compatible parsers for use in both the Abaqus Python scripts and the Turbo-Turtle Python 3 wrappers
+"""Python 2/3 compatible parsers for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules
 
 Content *must* be compatible with Python 2 and 3. Content should be limited to those things necessary to construct the
 CLI parser(s). Other content, such as project/package settings type variables, can be included to minimize the required

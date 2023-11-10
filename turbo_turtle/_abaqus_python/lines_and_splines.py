@@ -1,3 +1,6 @@
+"""Python 2/3 compatible coordinate handling for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules
+"""
+
 def lines_and_splines(coordinates, euclidean_distance=parsers.geometry_default_euclidean_distance):
     """Accept a [N, 2] numpy array of XY coordinates and return line point pairs and splines
 
