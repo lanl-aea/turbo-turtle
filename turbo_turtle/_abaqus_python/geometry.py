@@ -120,7 +120,7 @@ def points_to_splines(coordinates, euclidian_distance=parsers.geometry_default_e
     #. If neighboring points have the same X or Y coordinate (horizontally or vertically aligned), break the original
        array between them. Uses ``numpy.isclose`` with the default tolerance for float comparison.
 
-    :param numpy.array coordinates: 2D array of XY coordinates with shape [N, 2].
+    :param numpy.array coordinates: [N, 2] array of XY coordinates.
     :param float euclidian_distance: If the distance between two points is greater than this, draw a straight line.
 
     :return: Series of line and spline definitions
@@ -154,18 +154,18 @@ def lines_and_splines(all_splines):
 
 
 def _compare_euclidian_distance(euclidian_distance, coordinates):
-    """Compare the distance between points in a numpy array of x-y data to a provided euclidian distance
+    """Compare the distance between coordinates in a 2D numpy array of XY data to a provided euclidian distance
 
-    The distance comparison is performed as ``numpy_array_distance > euclidian_distance``. The distance between points
+    The distance comparison is performed as ``numpy_array_distance > euclidian_distance``. The distance between coordinates
     in the numpy array is computed such that the "current point" is compared to the previous point in the list. As such,
     a single ``False`` is always prepended to the beginning of the output ``euclidian_distance_bools`` list, because
     there is no such distance between the first point and one that comes before it.
 
     :param float euclidian_distance: distance value to compare against
-    :param numpy.array coordinates: array of points
+    :param numpy.array coordinates: [N, 2] array of XY coordinates.
 
     :return: bools for the distance comparison
-    :rtype: list
+    :rtype: list of length N
     """
     calculated_euclidian_array = numpy.linalg.norm(coordinates[1:, :] - coordinates[0:-1, :], axis=1)
     euclidian_distance_bools = [False] + [this_euclidian_distance > euclidian_distance for this_euclidian_distance in
@@ -174,17 +174,17 @@ def _compare_euclidian_distance(euclidian_distance, coordinates):
 
 
 def _compare_xy_values(coordinates):
-    """Check neighboring x and y values in a numpy array of points for vertical or horizontal relationships
+    """Check neighboring XY values in an [N, 2] array of coordinates for vertical or horizontal relationships
 
-    This function loops through lists of points checking to see if a "current point" and the previous point in the numpy
+    This function loops through lists of coordinates checking to see if a "current point" and the previous point in the numpy
     array are vertical or hozitonal from one another. As such, a single ``False`` is always prepended to the beginning
     of the output ``vertical_horizontal_bools`` list, because there is no such vertical/horizontal relationship between
     the first point and one that comes before it.
 
-    :param numpy.array coordinates: array of points
+    :param numpy.array coordinates: [N, 2] array of XY coordinates.
 
     :return: bools for vertical/horizontal relationship comparison
-    :rtype: list
+    :rtype: list of length N
     """
     vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0]) or
                                            numpy.isclose(coords1[1], coords2[1]) for coords1, coords2 in
@@ -206,10 +206,10 @@ def _bool_via_or(bools_list_1, bools_list_2):
 
 
 def _line_pairs(all_splines):
-    """Accept a list of splines and return a list of paired points to connect as lines
+    """Accept a list of [N, 2] arrays and return a list of paired points to connect as lines
 
-    Given a list of 2D numpy arrays of shape [N, 2], create tuple pairs of coordinates between the end and beginning of
-    subsequent arrays. Also return a pair from the last array's last coordinate to the first array's first coordinate.
+    Given a list of [N, 2] numpy arrays, create tuple pairs of coordinates between the end and beginning of subsequent
+    arrays. Also return a pair from the last array's last coordinate to the first array's first coordinate.
 
     :param list all_splines: a list of 2D numpy arrays
 
@@ -221,7 +221,7 @@ def _line_pairs(all_splines):
     return line_pairs
 
 
-def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, model_name=parsers.geometry_default_model_name,
+def draw_part_from_splines(coordinates, planar=parsers.geometry_default_planar, model_name=parsers.geometry_default_model_name,
                            part_name=parsers.geometry_default_part_name, revolution_angle=parsers.geometry_default_revolution_angle):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
@@ -239,11 +239,9 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
     If ``planar`` is ``True``, this script will attempt to create a 2D planar model, which can be sketched in any/all
     four quadrants.
 
-    **Note:** This function will connect the start and end points defined in ``all_splines``, which is a list of lists
-    defining straight lines and splines. This is noted in the parser function
-    :meth:`turbo_turtle._geometry.points_to_splines`.
+    **Note:** This function will always connect the first and last coordinates
 
-    :param numpy.array coordinates: 2D array of XY coordinates with shape [N, 2].
+    :param numpy.array coordinates: [N, 2] array of XY coordinates.
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
