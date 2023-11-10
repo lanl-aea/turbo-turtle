@@ -176,13 +176,29 @@ def _bool_via_or(bools_list_1, bools_list_2):
     return bools_from_or
 
 
+def _line_pairs(all_splines):
+    """Accept a list of splines and return a list of paired points to connect as lines
+
+    Given a list of 2D numpy arrays of shape [N, 2], create tuple pairs of coordinates between the end and beginning of
+    subsequent arrays. Also return a pair from the last array's last coordinate to the first array's first coordinate.
+
+    :param list all_splines: a list of 2D numpy arrays
+
+    :returns: line pairs
+    :rtype: list of tuples of 1D arrays of shape [1, 2]
+    """
+    line_pairs = [(spline1[-1], spline2[0]) for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:])]
+    line_pairs.append((all_splines[-1][-1], all_splines[0][0])
+    return line_pairs
+
+
 def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, model_name=parsers.geometry_default_model_name,
                            part_name=parsers.geometry_default_part_name, revolution_angle=parsers.geometry_default_revolution_angle):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
     depending on the ``planar`` and ``revolution_angle`` parameters.
 
-    If ``planar`` is ``False`` and ``revolution_angle`` is equal (or ``numpy.isclose()``) to zero, this script will
+    If ``planar`` is ``False`` and ``revolution_angle`` is equal (``numpy.isclose()``) to zero, this script will
     attempt to create a 2D axisymmetric model.
 
     If ``planar`` is ``False`` and ``revolution_angle`` is **not** zero, this script will attempt to create a 3D body of
@@ -223,12 +239,11 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
         if len(spline) > 1:
             spline = tuple(map(tuple, spline))
             sketch.Spline(points=spline)
-    # Connect the end and beginning points of each spline with a line
-    lines = [(spline1[-1], spline2[0]) for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:])]
-    for point1, point2 in lines:
+    # Connect the end and beginning points of each spline with a line. Connect the last point of the last spline with
+    # the first point of the first spline
+    line_pairs = _line_pairs(all_splines)
+    for point1, point2 in line_pairs:
         sketch.Line(point1=point1, point2=point2)
-    # Connect the final spline back to the first spline with a line
-    sketch.Line(point1=all_splines[0][0], point2=all_splines[-1][-1])
     if planar:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
             type=abaqusConstants.DEFORMABLE_BODY)
