@@ -228,13 +228,16 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
     sketch1.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
     sketch1.FixedConstraint(entity=geometry[3])
 
-    # Draw splines through any spline list that has more than two poits
-    for II, this_spline in enumerate(all_splines):
-        this_spline = tuple(map(tuple, this_spline))
-        if len(this_spline) != 1:
-            sketch1.Spline(points=this_spline)
-        if II != 0:
-            sketch1.Line(point1=all_splines[II-1][-1], point2=this_spline[0])
+    # Draw splines through any spline list that has more than two points
+    for spline in all_splines:
+        spline = tuple(map(tuple, spline))
+        if len(spline) != 1:
+            sketch1.Spline(points=spline)
+    # Connect the end and beginning points of each spline with a line
+    lines = [(spline1[-1], spline2[0]) for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:])]
+    for point1, point2 in lines:
+        sketch1.Line(point1=point1, point2=point2)
+    # Connect the final spline back to the first spline with a line
     sketch1.Line(point1=all_splines[0][0], point2=all_splines[-1][-1])
     if planar:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
