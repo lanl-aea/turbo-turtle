@@ -124,7 +124,7 @@ def points_to_splines(numpy_points_array, euclidian_distance=parsers.geometry_de
     return all_splines
 
 
-def lines_and_splines(all_splines)
+def lines_and_splines(all_splines):
     """Accept a list of 2D numpy arrays of shape [N, 2] and return line point pairs and splines
 
     #. Line point pairs are returned for the end and beginning of adjacent arrays, and for the end of the last array and
