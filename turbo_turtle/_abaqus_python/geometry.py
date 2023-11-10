@@ -21,7 +21,7 @@ def main(input_file, output_file,
          delimiter=parsers.geometry_default_delimiter,
          header_lines=parsers.geometry_default_header_lines,
          revolution_angle=parsers.geometry_default_revolution_angle):
-    """This script takes a series of points in x-y coordinates from a text file and creates a 2D sketch or 3D body of
+    """This script takes an array of XY coordinates from a text file and creates a 2D sketch or 3D body of
     revolution about the global Y-axis. Note that 2D axisymmetric sketches and sketches for 3D bodies of revolution
     about the global Y-axis must lie entirely on the positive-X side of the global Y-axis. In general, a 2D sketch can
     lie in all four quadrants; this is referred to as a "planar" sketch and requires that the ``planar`` boolean
@@ -29,13 +29,13 @@ def main(input_file, output_file,
     model. The ``part_name`` parameter allows explicit naming of part(s) in the model. If omitted from the command line
     arguments, the default is to use the input file basename(s) as the part name(s).
 
-    :param str input_file: input text file(s) with points to draw
+    :param str input_file: input text file(s) with coordinates to draw
     :param str output_file: Abaqus CAE database to save the part(s)
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param list part_name: name(s) of the part(s) being created
-    :param float unit_conversion: multiplication factor applies to all points
-    :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line.
+    :param float unit_conversion: multiplication factor applies to all coordinates
+    :param float euclidian_distance: if the distance between two coordinates is greater than this, draw a straight line.
         Distance should be provided in units *after* the unit conversion
     :param str delimiter: character to use as a delimiter when reading the input file
     :param int header_lines: number of lines in the header to skip when reading the input file
@@ -68,7 +68,7 @@ def _validate_part_name(input_file, part_name):
     * If ``part_name`` is ``[None]``, assign the base names of ``input_file`` to ``part_name``
     * Else if the length of ``part_name`` is not equal to the length of ``input_file``, exit with an error
 
-    :param list input_file: input text file(s) with points to draw
+    :param list input_file: input text file(s) with coordinates to draw
     :param list part_name: name(s) of part(s) being created
 
     :return: part name(s)
@@ -85,18 +85,29 @@ def _validate_part_name(input_file, part_name):
 
 
 def read_file(file_name, delimiter=parsers.geometry_default_delimiter, header_lines=parsers.geometry_default_header_lines):
-    """Parse a text file of points into a numpy array
+    """Parse a text file of XY coordinates into a numpy array
 
-    :param str file_name: input text file with points to draw
+    If the resulting numpy array doesn't have shape [N, 2], return an error exit code
+
+    :param str file_name: input text file with coordinates to draw
     :param str delimiter: character to use as a delimiter when reading the input file
     :param int header_lines: number of lines in the header to skip when reading the input file
 
-    :return: array of points
+    :return: 2D array of XY coordinates with shape [N, 2]
     :rtype: numpy.array
     """
     with open(file_name, 'r') as points_file:
         coordinates = numpy.genfromtxt(points_file, delimiter=delimiter, skip_header=header_lines)
-    return coordinates
+    shape = coordinates.shape
+    dimensions = len(shape)
+    if dimensions != 2:
+        sys.stderr.write("Expected two-dimensional coordinates. Found '{}' dimensions\n".format(dimensions))
+        sys.exit(3)
+    columns = shape[1]
+    if columns != 2:
+        sys.stderr.write("Expected coordinates with two columns: X,Y. Found '{}' columns\n".format(columns))
+        sys.exit(3)
+    return coordinate
 
 
 def points_to_splines(coordinates, euclidian_distance=parsers.geometry_default_euclidian_distance):
