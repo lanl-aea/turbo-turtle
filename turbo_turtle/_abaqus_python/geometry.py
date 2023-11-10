@@ -220,8 +220,8 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
 
     # Draw splines through any spline list that has two or more points
     for spline in all_splines:
-        spline = tuple(map(tuple, spline))
         if len(spline) > 1:
+            spline = tuple(map(tuple, spline))
             sketch.Spline(points=spline)
     # Connect the end and beginning points of each spline with a line
     lines = [(spline1[-1], spline2[0]) for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:])]
