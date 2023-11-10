@@ -218,7 +218,7 @@ def _line_pairs(all_splines):
     :rtype: list of tuples of [1, 2] arrays
     """
     line_pairs = [(spline1[-1], spline2[0]) for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:])]
-    line_pairs.append(all_splines[-1][-1], all_splines[0][0])
+    line_pairs.append((all_splines[-1][-1], all_splines[0][0]))
     return line_pairs
 
 
