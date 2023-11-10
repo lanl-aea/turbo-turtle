@@ -108,9 +108,9 @@ def points_to_splines(numpy_points_array, euclidian_distance=parsers.geometry_de
 
     #. If neighboring points are farther apart than the euclidean distance, break the original array between them.
     #. If neighboring points have the same X or Y coordinate (horizontally or vertically aligned), break the original
-       array between them.
+       array between them. Uses ``numpy.isclose`` with the default tolerance for float comparison.
 
-    :param numpy.array numpy_points_array: 2D array of XY coordinates with shape [N, 2]. X is column 1. Y is column 2.
+    :param numpy.array numpy_points_array: 2D array of XY coordinates with shape [N, 2].
     :param float euclidian_distance: If the distance between two points is greater than this, draw a straight line.
 
     :return: Series of line and spline definitions
