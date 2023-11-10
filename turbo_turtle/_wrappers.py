@@ -14,7 +14,7 @@ def geometry(args):
     command += f"--input-file {' '.join(map(str, args.input_file))} "
     command += f"--output-file {args.output_file} "
     command += f"--unit-conversion {args.unit_conversion} "
-    command += f"--euclidian-distance {args.euclidian_distance} "
+    command += f"--euclidean-distance {args.euclidean_distance} "
     if args.planar:
         command += f"--planar "
     command += f"--model-name {args.model_name} "

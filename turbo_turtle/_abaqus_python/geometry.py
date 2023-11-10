@@ -17,7 +17,7 @@ def main(input_file, output_file,
          model_name=parsers.geometry_default_model_name,
          part_name=parsers.geometry_default_part_name,
          unit_conversion=parsers.geometry_default_unit_conversion,
-         euclidian_distance=parsers.geometry_default_euclidian_distance,
+         euclidean_distance=parsers.geometry_default_euclidean_distance,
          delimiter=parsers.geometry_default_delimiter,
          header_lines=parsers.geometry_default_header_lines,
          revolution_angle=parsers.geometry_default_revolution_angle):
@@ -35,7 +35,7 @@ def main(input_file, output_file,
     :param str model_name: name of the Abaqus model in which to create the part
     :param list part_name: name(s) of the part(s) being created
     :param float unit_conversion: multiplication factor applies to all coordinates
-    :param float euclidian_distance: if the distance between two coordinates is greater than this, draw a straight line.
+    :param float euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
         Distance should be provided in units *after* the unit conversion
     :param str delimiter: character to use as a delimiter when reading the input file
     :param int header_lines: number of lines in the header to skip when reading the input file
@@ -54,7 +54,7 @@ def main(input_file, output_file,
         coordinates = coordinates * unit_conversion
         try:
             draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
-                                   euclidian_distance=euclidian_distance, revolution_angle=revolution_angle)
+                                   euclidean_distance=euclidean_distance, revolution_angle=revolution_angle)
         except:
             error_message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
             sys.stderr.write(error_message)
@@ -111,8 +111,8 @@ def read_file(file_name, delimiter=parsers.geometry_default_delimiter, header_li
     return coordinates
 
 
-def points_to_splines(coordinates, euclidian_distance=parsers.geometry_default_euclidian_distance):
-    """Accept a [N, 2] numpy array and generate a list of splines to draw.
+def break_coordinates(coordinates, euclidean_distance=parsers.geometry_default_euclidean_distance):
+    """Accept a [N, 2] numpy array and break into a list of [M, 2] arrays
 
     This function follows this methodology to turn a [N, 2] numpy array into a list of [M, 2] arrays denoting
     individual lines or splines.
@@ -122,20 +122,20 @@ def points_to_splines(coordinates, euclidian_distance=parsers.geometry_default_e
        array between them. Uses ``numpy.isclose`` with the default tolerance for float comparison.
 
     :param numpy.array coordinates: [N, 2] array of XY coordinates.
-    :param float euclidian_distance: If the distance between two points is greater than this, draw a straight line.
+    :param float euclidean_distance: If the distance between two points is greater than this, draw a straight line.
 
     :return: Series of line and spline definitions
     :rtype: list
     """
-    euclidian_distance_bools = _compare_euclidian_distance(euclidian_distance, coordinates)
+    euclidean_distance_bools = _compare_euclidean_distance(euclidean_distance, coordinates)
     vertical_horizontal_bools = _compare_xy_values(coordinates)
-    bools_from_or = _bool_via_or(euclidian_distance_bools, vertical_horizontal_bools)
+    bools_from_or = _bool_via_or(euclidean_distance_bools, vertical_horizontal_bools)
     break_indices = numpy.where(bools_from_or)[0]
     all_splines = numpy.split(coordinates, break_indices, axis=0)
     return all_splines
 
 
-def lines_and_splines(all_splines):
+def lines_and_splines(coordinates, euclidean_distance=parsers.geometry_default_euclidean_distance):
     """Accept a list of [N, 2] numpy arrays and return line point pairs and splines
 
     #. Line point pairs are returned for the end and beginning of adjacent arrays, and for the end of the last array and
@@ -148,30 +148,31 @@ def lines_and_splines(all_splines):
     :returns: list of line pairs and list of spline arrays
     :rtype: tuple
     """
+    all_splines = break_coordinates(coordinates, euclidean_distance=euclidean_distance)
     lines = _line_pairs(all_splines)
     lines.extend([(array[0], array[1]) for array in all_splines if len(array) == 2])
     splines = [array for array in all_splines if len(array) > 2]
     return lines, splines
 
 
-def _compare_euclidian_distance(euclidian_distance, coordinates):
-    """Compare the distance between coordinates in a 2D numpy array of XY data to a provided euclidian distance
+def _compare_euclidean_distance(euclidean_distance, coordinates):
+    """Compare the distance between coordinates in a 2D numpy array of XY data to a provided euclidean distance
 
-    The distance comparison is performed as ``numpy_array_distance > euclidian_distance``. The distance between coordinates
+    The distance comparison is performed as ``numpy_array_distance > euclidean_distance``. The distance between coordinates
     in the numpy array is computed such that the "current point" is compared to the previous point in the list. As such,
-    a single ``False`` is always prepended to the beginning of the output ``euclidian_distance_bools`` list, because
+    a single ``False`` is always prepended to the beginning of the output ``euclidean_distance_bools`` list, because
     there is no such distance between the first point and one that comes before it.
 
-    :param float euclidian_distance: distance value to compare against
+    :param float euclidean_distance: distance value to compare against
     :param numpy.array coordinates: [N, 2] array of XY coordinates.
 
     :return: bools for the distance comparison
     :rtype: list of length N
     """
-    calculated_euclidian_array = numpy.linalg.norm(coordinates[1:, :] - coordinates[0:-1, :], axis=1)
-    euclidian_distance_bools = [False] + [this_euclidian_distance > euclidian_distance for this_euclidian_distance in
-                                          calculated_euclidian_array]
-    return euclidian_distance_bools
+    calculated_euclidean_array = numpy.linalg.norm(coordinates[1:, :] - coordinates[0:-1, :], axis=1)
+    euclidean_distance_bools = [False] + [this_euclidean_distance > euclidean_distance for this_euclidean_distance in
+                                          calculated_euclidean_array]
+    return euclidean_distance_bools
 
 
 def _compare_xy_values(coordinates):
@@ -226,7 +227,7 @@ def draw_part_from_splines(coordinates,
                            planar=parsers.geometry_default_planar,
                            model_name=parsers.geometry_default_model_name,
                            part_name=parsers.geometry_default_part_name,
-                           euclidian_distance=parsers.geometry_default_euclidian_distance,
+                           euclidean_distance=parsers.geometry_default_euclidean_distance,
                            revolution_angle=parsers.geometry_default_revolution_angle):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
@@ -250,7 +251,7 @@ def draw_part_from_splines(coordinates,
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
-    :param float euclidian_distance: if the distance between two coordinates is greater than this, draw a straight line.
+    :param float euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
 
     :returns: creates ``{part_name}`` within an Abaqus CAE database, not yet saved to local memory
@@ -267,8 +268,7 @@ def draw_part_from_splines(coordinates,
     sketch.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
     sketch.FixedConstraint(entity=geometry[3])
 
-    all_splines = points_to_splines(coordinates, euclidian_distance)
-    lines, splines = lines_and_splines(all_splines)
+    lines, splines = lines_and_splines(coordinates, euclidean_distance=euclidean_distance)
     for spline in splines:
         spline = tuple(map(tuple, spline))
         sketch.Spline(points=spline)
@@ -311,7 +311,7 @@ if __name__ == "__main__":
         model_name=args.model_name,
         part_name=args.part_name,
         unit_conversion=args.unit_conversion,
-        euclidian_distance=args.euclidian_distance,
+        euclidean_distance=args.euclidean_distance,
         delimiter=args.delimiter,
         header_lines=args.header_lines,
         revolution_angle=args.revolution_angle

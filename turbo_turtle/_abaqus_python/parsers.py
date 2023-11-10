@@ -40,7 +40,7 @@ def create_parser(add_help, description, basename):
 
 geometry_default_unit_conversion = 1.0
 geometry_default_planar = False
-geometry_default_euclidian_distance = 4.0
+geometry_default_euclidean_distance = 4.0
 geometry_default_model_name = "Model-1"
 geometry_default_part_name = [None]
 geometry_default_delimiter = ","
@@ -59,7 +59,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                         help="Name of an input file(s) with points in x-y coordinate system")
     parser.add_argument("--unit-conversion", type=float, default=geometry_default_unit_conversion,
                         help="Unit conversion multiplication factor (default: %(default)s)")
-    parser.add_argument("--euclidian_distance", type=float, default=geometry_default_euclidian_distance,
+    parser.add_argument("--euclidean_distance", type=float, default=geometry_default_euclidean_distance,
                         help="Connect points with a straight line is the distance between is larger than this (default: %(default)s)")
     parser.add_argument("--planar", action='store_true',
                         help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric (default: %(default)s)")
