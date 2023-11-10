@@ -32,9 +32,9 @@ def main(inner_radius, outer_radius, height, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
-    all_splines = cylinder_vertices(inner_radius, outer_radius, height)
-    geometry.draw_part_from_splines(all_splines, planar=False, model_name=model_name, part_name=part_name,
-                                     revolution_angle=revolution_angle)
+    coordinates = cylinder_vertices(inner_radius, outer_radius, height)
+    geometry.draw_part_from_splines(coordinates, planar=False, model_name=model_name, part_name=part_name,
+                                    revolution_angle=revolution_angle)
 
     abaqus.mdb.saveAs(pathName=output_file)
 
@@ -46,13 +46,13 @@ def cylinder_vertices(inner_radius, outer_radius, height):
     :param float outer_radius: Outer radius of the cylinder
     :param float height: Height of the cylinder
     """
-    all_splines = [
-        numpy.array([[inner_radius, height]]),
-        numpy.array([[outer_radius, height]]),
-        numpy.array([[outer_radius, 0.]]),
-        numpy.array([[inner_radius, 0.]])
-    ]
-    return all_splines
+    coordinates = (
+        (inner_radius, height),
+        (outer_radius, height),
+        (outer_radius, 0.),
+        (inner_radius, 0.)
+    )
+    return numpy.array(coordinates)
 
 
 if __name__ == "__main__":
