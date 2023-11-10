@@ -101,7 +101,7 @@ def read_file(file_name, delimiter=parsers.geometry_default_delimiter, header_li
 
 
 def points_to_splines(numpy_points_array, euclidian_distance=parsers.geometry_default_euclidian_distance):
-    """Accept a 2D numpy array and generate a list of splines to draw.
+    """Accept a 2D numpy array of shape [N, 2] and generate a list of splines to draw.
 
     This function follows this methodology to turn a 2D numpy array of shape [N, 2] into a list of 2D arrays denoting
     individual lines or splines.
@@ -122,6 +122,25 @@ def points_to_splines(numpy_points_array, euclidian_distance=parsers.geometry_de
     break_indices = numpy.where(bools_from_or)[0]
     all_splines = numpy.split(numpy_points_array, break_indices, axis=0)
     return all_splines
+
+
+def lines_and_splines(all_splines)
+    """Accept a list of 2D numpy arrays of shape [N, 2] and return line point pairs and splines
+
+    #. Line point pairs are returned for the end and beginning of adjacent arrays, and for the end of the last array and
+       the beginning of the first array.
+    #. Arrays of length 2 are converted to line pair points
+    #. Arrays greater than length 2 are kept intact as splines.
+
+    :param list all_splines: list of 2D numpy arrays of shape [N, 2]
+
+    :returns: list of line pairs and list of spline arrays
+    :rtype: tuple
+    """
+    lines = _line_pairs(all_splines)
+    lines.append([(array[0], array[1]) for array in all_splines if len(array) <= 2]
+    splines = [array for array in all_splines if len(array) > 2]
+    return lines, splines
 
 
 def _compare_euclidian_distance(euclidian_distance, numpy_points_array):
@@ -234,15 +253,11 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
     sketch.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
     sketch.FixedConstraint(entity=geometry[3])
 
-    # Draw splines through any spline list that has two or more points
-    for spline in all_splines:
-        if len(spline) > 1:
-            spline = tuple(map(tuple, spline))
-            sketch.Spline(points=spline)
-    # Connect the end and beginning points of each spline with a line. Connect the last point of the last spline with
-    # the first point of the first spline
-    line_pairs = _line_pairs(all_splines)
-    for point1, point2 in line_pairs:
+    lines, splines = lines_and_splines(all_splines)
+    for spline in splines:
+        spline = tuple(map(tuple, spline))
+        sketch.Spline(points=spline)
+    for point1, point2 in lines:
         sketch.Line(point1=point1, point2=point2)
     if planar:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
