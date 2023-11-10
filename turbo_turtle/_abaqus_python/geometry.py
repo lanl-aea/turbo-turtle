@@ -53,7 +53,8 @@ def main(input_file, output_file,
         coordinates = read_file(file_name, delimiter, header_lines)
         coordinates = coordinates * unit_conversion
         try:
-            draw_part_from_splines(coordinates, planar, model_name, new_part, revolution_angle)
+            draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
+                                   euclidian_distance=euclidian_distance, revolution_angle=revolution_angle)
         except:
             error_message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
             sys.stderr.write(error_message)
@@ -221,8 +222,12 @@ def _line_pairs(all_splines):
     return line_pairs
 
 
-def draw_part_from_splines(coordinates, planar=parsers.geometry_default_planar, model_name=parsers.geometry_default_model_name,
-                           part_name=parsers.geometry_default_part_name, revolution_angle=parsers.geometry_default_revolution_angle):
+def draw_part_from_splines(coordinates,
+                           planar=parsers.geometry_default_planar,
+                           model_name=parsers.geometry_default_model_name,
+                           part_name=parsers.geometry_default_part_name,
+                           euclidian_distance=parsers.geometry_default_euclidian_distance,
+                           revolution_angle=parsers.geometry_default_revolution_angle):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
     depending on the ``planar`` and ``revolution_angle`` parameters.
@@ -245,6 +250,7 @@ def draw_part_from_splines(coordinates, planar=parsers.geometry_default_planar, 
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
+    :param float euclidian_distance: if the distance between two coordinates is greater than this, draw a straight line.
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
 
     :returns: creates ``{part_name}`` within an Abaqus CAE database, not yet saved to local memory
