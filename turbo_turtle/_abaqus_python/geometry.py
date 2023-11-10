@@ -101,31 +101,21 @@ def read_file(file_name, delimiter=parsers.geometry_default_delimiter, header_li
 
 
 def points_to_splines(numpy_points_array, euclidian_distance=parsers.geometry_default_euclidian_distance):
-    """Read a text file of points in x-y coordinates and generate a list of lines and splines to draw.
+    """Accept a 2D numpy array and generate a list of splines to draw.
 
-    This function follows this methodology to turn a large list of points into a list of lists denoting individual lines
-    or splines:
+    This function follows this methodology to turn a 2D numpy array of shape [N, 2] into a list of 2D arrays denoting
+    individual lines or splines.
 
-    #. Start looping through points in the ``numpy_points_array``, and append points to a list
-    #. When two neighboring points have the same ``x`` or ``y`` value (i.e. a vertical or horizonal line), assume that a
-       spline cannot be drawn and start populating a new spline list after storing these points
-    #. If two points are closer together than the ``euclidian_distance`` parameter, draw a straight line between them
-    #. If only a single point exists between splines/lines, do not draw a spline, and connect to the previous and next
-       line/spline with a straight line.
-    #. Store lists of points to be considered splines so long as exceptions in Step 3, 4, and 5 are not met.
-    #. Neighboring splines that are not connected will be connected with a straight line
-    #. It is assumed that the downstream function used to generate the geometry will connect start and end points
+    #. If neighboring points are farther apart than the euclidean distance, break the original array between them.
+    #. If neighboring points have the same X or Y coordinate (horizontally or vertically aligned), break the original
+       array between them.
 
-    :param numpy.array numpy_points_array: array of points
-    :param float euclidian_distance: if the distance between two points is greater than this, draw a straight line.
-        Distance should be provided in units *after* the unit conversion
+    :param numpy.array numpy_points_array: 2D array of XY coordinates with shape [N, 2]. X is column 1. Y is column 2.
+    :param float euclidian_distance: If the distance between two points is greater than this, draw a straight line.
 
     :return: Series of line and spline definitions
     :rtype: list
     """
-    x_points = numpy_points_array[:, 0]
-    y_points = numpy_points_array[:, 1]
-
     euclidian_distance_bools = _compare_euclidian_distance(euclidian_distance, numpy_points_array)
     vertical_horizontal_bools = _compare_xy_values(numpy_points_array)
     bools_from_or = _bool_via_or(euclidian_distance_bools, vertical_horizontal_bools)
