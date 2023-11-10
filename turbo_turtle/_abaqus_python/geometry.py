@@ -138,7 +138,7 @@ def lines_and_splines(all_splines)
     :rtype: tuple
     """
     lines = _line_pairs(all_splines)
-    lines.append([(array[0], array[1]) for array in all_splines if len(array) <= 2]
+    lines.append([(array[0], array[1]) for array in all_splines if len(array) == 2]
     splines = [array for array in all_splines if len(array) > 2]
     return lines, splines
 
