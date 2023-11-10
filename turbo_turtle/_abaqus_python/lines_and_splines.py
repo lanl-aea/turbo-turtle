@@ -23,7 +23,7 @@ def lines_and_splines(coordinates, euclidean_distance):
     :returns: list of line pairs and list of spline arrays
     :rtype: tuple
     """
-    all_splines = break_coordinates(coordinates, euclidean_distance)
+    all_splines = _break_coordinates(coordinates, euclidean_distance)
     lines = _line_pairs(all_splines)
     lines.extend([(array[0], array[1]) for array in all_splines if len(array) == 2])
     splines = [array for array in all_splines if len(array) > 2]
