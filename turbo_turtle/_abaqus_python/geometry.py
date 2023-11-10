@@ -273,6 +273,8 @@ def draw_part_from_splines(coordinates,
         spline = tuple(map(tuple, spline))
         sketch.Spline(points=spline)
     for point1, point2 in lines:
+        point1 = tuple(point1)
+        point2 = tuple(point2)
         sketch.Line(point1=point1, point2=point2)
     if planar:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
