@@ -50,10 +50,10 @@ def main(input_file, output_file,
     part_name = _validate_part_name(input_file, part_name)
     output_file = os.path.splitext(output_file)[0] + ".cae"
     for file_name, new_part in zip(input_file, part_name):
-        numpy_points_array = read_file(file_name, delimiter, header_lines)
-        numpy_points_array = numpy_points_array * unit_conversion
+        coordinates = read_file(file_name, delimiter, header_lines)
+        coordinates = coordinates * unit_conversion
         try:
-            draw_part_from_splines(numpy_points_array, planar, model_name, new_part, revolution_angle)
+            draw_part_from_splines(coordinates, planar, model_name, new_part, revolution_angle)
         except:
             error_message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
             sys.stderr.write(error_message)
@@ -95,11 +95,11 @@ def read_file(file_name, delimiter=parsers.geometry_default_delimiter, header_li
     :rtype: numpy.array
     """
     with open(file_name, 'r') as points_file:
-        numpy_points_array = numpy.genfromtxt(points_file, delimiter=delimiter, skip_header=header_lines)
-    return numpy_points_array
+        coordinates = numpy.genfromtxt(points_file, delimiter=delimiter, skip_header=header_lines)
+    return coordinates
 
 
-def points_to_splines(numpy_points_array, euclidian_distance=parsers.geometry_default_euclidian_distance):
+def points_to_splines(coordinates, euclidian_distance=parsers.geometry_default_euclidian_distance):
     """Accept a 2D numpy array of shape [N, 2] and generate a list of splines to draw.
 
     This function follows this methodology to turn a 2D numpy array of shape [N, 2] into a list of 2D arrays denoting
@@ -109,17 +109,17 @@ def points_to_splines(numpy_points_array, euclidian_distance=parsers.geometry_de
     #. If neighboring points have the same X or Y coordinate (horizontally or vertically aligned), break the original
        array between them. Uses ``numpy.isclose`` with the default tolerance for float comparison.
 
-    :param numpy.array numpy_points_array: 2D array of XY coordinates with shape [N, 2].
+    :param numpy.array coordinates: 2D array of XY coordinates with shape [N, 2].
     :param float euclidian_distance: If the distance between two points is greater than this, draw a straight line.
 
     :return: Series of line and spline definitions
     :rtype: list
     """
-    euclidian_distance_bools = _compare_euclidian_distance(euclidian_distance, numpy_points_array)
-    vertical_horizontal_bools = _compare_xy_values(numpy_points_array)
+    euclidian_distance_bools = _compare_euclidian_distance(euclidian_distance, coordinates)
+    vertical_horizontal_bools = _compare_xy_values(coordinates)
     bools_from_or = _bool_via_or(euclidian_distance_bools, vertical_horizontal_bools)
     break_indices = numpy.where(bools_from_or)[0]
-    all_splines = numpy.split(numpy_points_array, break_indices, axis=0)
+    all_splines = numpy.split(coordinates, break_indices, axis=0)
     return all_splines
 
 
@@ -142,7 +142,7 @@ def lines_and_splines(all_splines):
     return lines, splines
 
 
-def _compare_euclidian_distance(euclidian_distance, numpy_points_array):
+def _compare_euclidian_distance(euclidian_distance, coordinates):
     """Compare the distance between points in a numpy array of x-y data to a provided euclidian distance
 
     The distance comparison is performed as ``numpy_array_distance > euclidian_distance``. The distance between points
@@ -151,18 +151,18 @@ def _compare_euclidian_distance(euclidian_distance, numpy_points_array):
     there is no such distance between the first point and one that comes before it.
 
     :param float euclidian_distance: distance value to compare against
-    :param numpy.array numpy_points_array: array of points
+    :param numpy.array coordinates: array of points
 
     :return: bools for the distance comparison
     :rtype: list
     """
-    calculated_euclidian_array = numpy.linalg.norm(numpy_points_array[1:, :] - numpy_points_array[0:-1, :], axis=1)
+    calculated_euclidian_array = numpy.linalg.norm(coordinates[1:, :] - coordinates[0:-1, :], axis=1)
     euclidian_distance_bools = [False] + [this_euclidian_distance > euclidian_distance for this_euclidian_distance in
                                           calculated_euclidian_array]
     return euclidian_distance_bools
 
 
-def _compare_xy_values(numpy_points_array):
+def _compare_xy_values(coordinates):
     """Check neighboring x and y values in a numpy array of points for vertical or horizontal relationships
 
     This function loops through lists of points checking to see if a "current point" and the previous point in the numpy
@@ -170,14 +170,14 @@ def _compare_xy_values(numpy_points_array):
     of the output ``vertical_horizontal_bools`` list, because there is no such vertical/horizontal relationship between
     the first point and one that comes before it.
 
-    :param numpy.array numpy_points_array: array of points
+    :param numpy.array coordinates: array of points
 
     :return: bools for vertical/horizontal relationship comparison
     :rtype: list
     """
     vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0]) or
                                            numpy.isclose(coords1[1], coords2[1]) for coords1, coords2 in
-                                           zip(numpy_points_array[1:, :], numpy_points_array[0:-1, :])]
+                                           zip(coordinates[1:, :], coordinates[0:-1, :])]
     return vertical_horizontal_bools
 
 
@@ -232,7 +232,7 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
     defining straight lines and splines. This is noted in the parser function
     :meth:`turbo_turtle._geometry.points_to_splines`.
 
-    :param numpy.array numpy_points_array: 2D array of XY coordinates with shape [N, 2].
+    :param numpy.array coordinates: 2D array of XY coordinates with shape [N, 2].
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
@@ -252,7 +252,7 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
     sketch.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
     sketch.FixedConstraint(entity=geometry[3])
 
-    all_splines = points_to_splines(numpy_points_array, euclidian_distance)
+    all_splines = points_to_splines(coordinates, euclidian_distance)
     lines, splines = lines_and_splines(all_splines)
     for spline in splines:
         spline = tuple(map(tuple, spline))
