@@ -209,42 +209,42 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
     import abaqus
     import abaqusConstants
 
-    sketch1 = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__', sheetSize=200.0)
-    geometry, vertices, dimensions, constraints = sketch1.geometry, sketch1.vertices, sketch1.dimensions, sketch1.constraints
-    sketch1.sketchOptions.setValues(viewStyle=abaqusConstants.AXISYM)
-    sketch1.setPrimaryObject(option=abaqusConstants.STANDALONE)
-    sketch1.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
-    sketch1.FixedConstraint(entity=geometry[2])
-    sketch1.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
-    sketch1.FixedConstraint(entity=geometry[3])
+    sketch = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__', sheetSize=200.0)
+    geometry, vertices, dimensions, constraints = sketch.geometry, sketch.vertices, sketch.dimensions, sketch.constraints
+    sketch.sketchOptions.setValues(viewStyle=abaqusConstants.AXISYM)
+    sketch.setPrimaryObject(option=abaqusConstants.STANDALONE)
+    sketch.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
+    sketch.FixedConstraint(entity=geometry[2])
+    sketch.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
+    sketch.FixedConstraint(entity=geometry[3])
 
     # Draw splines through any spline list that has two or more points
     for spline in all_splines:
         spline = tuple(map(tuple, spline))
         if len(spline) > 1:
-            sketch1.Spline(points=spline)
+            sketch.Spline(points=spline)
     # Connect the end and beginning points of each spline with a line
     lines = [(spline1[-1], spline2[0]) for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:])]
     for point1, point2 in lines:
-        sketch1.Line(point1=point1, point2=point2)
+        sketch.Line(point1=point1, point2=point2)
     # Connect the final spline back to the first spline with a line
-    sketch1.Line(point1=all_splines[0][0], point2=all_splines[-1][-1])
+    sketch.Line(point1=all_splines[0][0], point2=all_splines[-1][-1])
     if planar:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseShell(sketch=sketch1)
+        p.BaseShell(sketch=sketch)
     elif numpy.isclose(revolution_angle, 0.0):
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseShell(sketch=sketch1)
+        p.BaseShell(sketch=sketch)
     else:
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseSolidRevolve(sketch=sketch1, angle=revolution_angle, flipRevolveDirection=abaqus.OFF)
-    sketch1.unsetPrimaryObject()
+        p.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqus.OFF)
+    sketch.unsetPrimaryObject()
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
 
