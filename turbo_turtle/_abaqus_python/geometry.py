@@ -106,7 +106,7 @@ def read_file(file_name, delimiter=parsers.geometry_default_delimiter, header_li
     columns = shape[1]
     if columns != 2:
         sys.stderr.write("Expected coordinates with two columns: X,Y. Found '{}' columns\n".format(columns))
-        sys.exit(3)
+        sys.exit(4)
     return coordinates
 
 
