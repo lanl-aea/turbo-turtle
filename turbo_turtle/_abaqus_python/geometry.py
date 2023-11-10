@@ -52,9 +52,8 @@ def main(input_file, output_file,
     for file_name, new_part in zip(input_file, part_name):
         numpy_points_array = read_file(file_name, delimiter, header_lines)
         numpy_points_array = numpy_points_array * unit_conversion
-        all_splines = points_to_splines(numpy_points_array, euclidian_distance)
         try:
-            draw_part_from_splines(all_splines, planar, model_name, new_part, revolution_angle)
+            draw_part_from_splines(numpy_points_array, planar, model_name, new_part, revolution_angle)
         except:
             error_message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
             sys.stderr.write(error_message)
@@ -233,7 +232,7 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
     defining straight lines and splines. This is noted in the parser function
     :meth:`turbo_turtle._geometry.points_to_splines`.
 
-    :param list all_splines: list of lists containing straight line and spline definitions
+    :param numpy.array numpy_points_array: 2D array of XY coordinates with shape [N, 2].
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
@@ -253,6 +252,7 @@ def draw_part_from_splines(all_splines, planar=parsers.geometry_default_planar, 
     sketch.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
     sketch.FixedConstraint(entity=geometry[3])
 
+    all_splines = points_to_splines(numpy_points_array, euclidian_distance)
     lines, splines = lines_and_splines(all_splines)
     for spline in splines:
         spline = tuple(map(tuple, spline))
