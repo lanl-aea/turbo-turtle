@@ -1,0 +1,20 @@
+channels:
+  - conda-forge
+
+dependencies:
+  - ipython
+  - numpy
+  - pandas
+  - pip
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  - python-build
+  - scons >=4
+  - setuptools >=62
+  - setuptools_scm[toml] >=6.2,<8
+  - sphinx >=5.1
+  - sphinx-argparse
+  - sphinx-copybutton >=0.5.1
+  - sphinx_rtd_theme >=1
+  - waves >=0.7.2
