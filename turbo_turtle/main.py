@@ -3,7 +3,7 @@ import argparse
 
 from turbo_turtle import __version__
 from turbo_turtle import _settings
-from turbo_turtle import _abaqus_wrappers 
+from turbo_turtle import _abaqus_wrappers
 from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import parsers
 
@@ -43,14 +43,18 @@ def _docs(print_local_path=False):
         webbrowser.open(str(_settings._installed_docs_index))
 
 
-def add_abaqus_argument(parsers):
-    """Add the abaqus command argument to each parser in the parsers list
+def add_abaqus_and_cubit(parsers):
+    """Add the Abaqus and Cubit command arguments to each parser in the parsers list
 
     :param list parsers: List of parser to run ``add_argument`` for the abaqus command
     """
     for parser in parsers:
         parser.add_argument('--abaqus-command', nargs="+", default=_settings._default_abaqus_options,
                             help='Abaqus executable options (default: %(default)s)')
+        parser.add_argument('--cubit-command', nargs="+", default=_settings._default_cubit_options,
+                            help='Cubit executable options (default: %(default)s)')
+        parser.add_argument('--cubit', action="store_true",
+                            help='Flag to use Cubit instead of Abaqus (default: %(default)s)')
 
 
 def get_parser():
@@ -90,7 +94,7 @@ def get_parser():
     merge_parser = parsers.merge_parser(add_help=False)
     export_parser = parsers.export_parser(add_help=False)
 
-    add_abaqus_argument([
+    add_abaqus_and_cubit([
         geometry_parser,
         cylinder_parser,
         sphere_parser,
