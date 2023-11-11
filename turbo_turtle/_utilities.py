@@ -43,8 +43,7 @@ def _print_exception_message(function):
         try:
             output = function(*args, **kwargs)
         except Exception as err:
-            print(str(err))
-            sys.exit(2)
+            sys.exit(str(err))
         return output
     return wrapper
 

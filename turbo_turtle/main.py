@@ -34,8 +34,7 @@ def _docs(print_local_path=False):
     if not _settings._installed_docs_index.exists():
         # This should only be reached if the package installation structure doesn't match the assumptions in
         # _settings.py. It is used by the Conda build tests as a sign-of-life that the assumptions are correct.
-        print("Could not find package documentation HTML index file", file=sys.stderr)
-        sys.exit(1)
+        sys.exit("Could not find package documentation HTML index file")
 
     if print_local_path:
         print(_settings._installed_docs_index, file=sys.stdout)
