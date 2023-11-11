@@ -50,6 +50,7 @@ requirements:
 
 test:
   requires:
+    - numpy
     - pytest
   imports:
     - turbo_turtle
