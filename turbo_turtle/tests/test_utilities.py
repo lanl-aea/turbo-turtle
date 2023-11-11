@@ -5,6 +5,7 @@ import pytest
 
 from turbo_turtle import _utilities
 
+
 def test_search_commands():
     with patch("shutil.which", return_value=None) as shutil_which:
         command_abspath = _utilities._search_commands(["notfound"])
