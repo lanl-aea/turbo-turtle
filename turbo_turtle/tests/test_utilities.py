@@ -1,0 +1,40 @@
+from unittest.mock import patch
+from contextlib import nullcontext as does_not_raise
+
+import pytest
+
+from turbo_turtle import _utilities
+
+def test_search_commands():
+    with patch("shutil.which", return_value=None) as shutil_which:
+        command_abspath = _utilities._search_commands(["notfound"])
+        assert command_abspath is None
+
+    with patch("shutil.which", return_value="found") as shutil_which:
+        command_abspath = _utilities._search_commands(["found"])
+        assert command_abspath == "found"
+
+
+find_command = {
+    "first": (
+        ["first", "second"], "first", does_not_raise()
+    ),
+    "second": (
+        ["first", "second"], "second", does_not_raise()
+    ),
+    "none": (
+        ["first", "second"], None, pytest.raises(FileNotFoundError)
+    ),
+}
+
+
+@pytest.mark.parametrize("options, found, outcome",
+                         find_command.values(),
+                         ids=find_command.keys())
+def test_find_command(options, found, outcome):
+    with patch("turbo_turtle._utilities._search_commands", return_value=found), outcome:
+        try:
+            command_abspath = _utilities._find_command(options)
+            assert command_abspath == found
+        finally:
+            pass
