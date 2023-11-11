@@ -53,8 +53,8 @@ def add_abaqus_argument(parsers):
     :param list parsers: List of parser to run ``add_argument`` for the abaqus command
     """
     for parser in parsers:
-        parser.add_argument('--abaqus-command', type=str, default=_settings._default_abaqus_command,
-                            help='Abaqus executable absolute or relative path (default: %(default)s)')
+        parser.add_argument('--abaqus-command', nargs="+", default=_settings._default_abaqus_options,
+                            help='Abaqus executable options (default: %(default)s)')
 
 
 def get_parser():
@@ -177,11 +177,10 @@ def _search_commands(options):
     return command_abspath
 
 
-def _find_command(requested, options):
+def _find_command(options):
     """Return first found command in list of options.
 
-    Print a warning message to STDERR if the requested command is not found, but an alternate is found. Throw an
-    error and exit if no command is found.
+    Raise a FileNotFoundError if none is found.
 
     :param str requested: requested command
     :param list options: alternate command options
@@ -189,14 +188,9 @@ def _find_command(requested, options):
     :returns: command absolute path
     :rtype: str
     """
-    searches = [requested] + options
-    command_abspath = _search_commands(searches)
+    command_abspath = _search_commands(options)
     if command_abspath is None:
-        print(f"Could not find any executable on PATH in: {', '.join(searches)}", file=sys.stderr)
-        sys.exit(2)
-    elif command_abspath != requested:
-        print("Could not find '{args.abaqus_command}' but did find '{abaqus_abspath}'. " \
-              "Using '{abaqus_abspath}'", file=sys.stderr)
+        raise FileNotFoundError(f"Could not find any executable on PATH in: {', '.join(options)}")
     return command_abspath
 
 
@@ -204,7 +198,11 @@ def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    args.abaqus_command = _find_command(args.abaqus_command, _settings._abaqus_command_options)
+    try:
+        args.abaqus_command = _find_command(args.abaqus_command)
+    except FileNotFoundError as err:
+        print(err.message)
+        sys.exit(2)
 
     if args.subcommand == "geometry":
         _wrappers.geometry(args)
