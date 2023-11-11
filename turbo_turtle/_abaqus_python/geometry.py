@@ -149,7 +149,7 @@ def draw_part_from_splines(coordinates,
     import abaqusConstants
 
     sketch = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__', sheetSize=200.0)
-    geometry, ~, dimensions, constraints = sketch.geometry, sketch.vertices, sketch.dimensions, sketch.constraints
+    geometry, *remainder = sketch.geometry, sketch.vertices, sketch.dimensions, sketch.constraints
     sketch.sketchOptions.setValues(viewStyle=abaqusConstants.AXISYM)
     sketch.setPrimaryObject(option=abaqusConstants.STANDALONE)
     sketch.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
