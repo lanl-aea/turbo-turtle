@@ -1,7 +1,7 @@
 import pytest
 import numpy
 
-from turbo_turtle._abaqus_python import vertices 
+from turbo_turtle._abaqus_python import vertices
 
 
 compare_xy_values = {
@@ -234,3 +234,9 @@ def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expe
     assert len(splines) == len(expected_splines)
     for spline, expectation in zip(splines, expected_splines):
         assert numpy.allclose(spline, expectation)
+
+
+def test_cylinder():
+    expected = numpy.array([[1., 1.], [2., 1.], [2., 0.], [1., 0.]])
+    coordinates = vertices.cylinder(1., 2., 1.)
+    assert numpy.allclose(coordinates, expected)
