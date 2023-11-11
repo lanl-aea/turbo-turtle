@@ -6,7 +6,7 @@ import pathlib
 Import("env")
 
 # Limit list of source files to allow Conda build-test to test off the installed package
-waves_source_list = [
+pytest_source_list = [
     "pyproject.toml",
 ]
 
@@ -15,7 +15,7 @@ target = ["test_results.xml"]
 
 targets = env.Command(
     target=target,
-    source=waves_source_list,
+    source=pytest_source_list,
     action=[
         "${pytest_command} -vvv",
     ],
