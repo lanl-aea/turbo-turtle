@@ -14,13 +14,15 @@ main
 ====
 
 .. automodule:: turbo_turtle.main
-    :members:
+   :members:
+   :private-members:
 
 _wrappers
 =========
 
 .. automodule:: turbo_turtle._wrappers
-    :members:
+   :members:
+   :private-members:
 
 **********
 Python 2/3
@@ -35,13 +37,15 @@ parsers
 =======
 
 .. automodule:: turbo_turtle._abaqus_python.parsers
-    :members:
+   :members:
+   :private-members:
 
 vertices
 ========
 
 .. automodule:: turbo_turtle._abaqus_python.vertices
-    :members:
+   :members:
+   :private-members:
 
 *************
 Abaqus Python
@@ -53,46 +57,54 @@ geometry
 ========
 
 .. automodule:: turbo_turtle._abaqus_python.geometry
-    :members:
+   :members:
+   :private-members:
 
 cylinder
 ========
 
 .. automodule:: turbo_turtle._abaqus_python.cylinder
-    :members:
+   :members:
+   :private-members:
 
 sphere
 ======
 
 .. automodule:: turbo_turtle._abaqus_python.sphere
-    :members:
+   :members:
+   :private-members:
 
 partition
 =========
 
 .. automodule:: turbo_turtle._abaqus_python.partition
-    :members:
+   :members:
+   :private-members:
 
 mesh
 ====
 
 .. automodule:: turbo_turtle._abaqus_python.mesh
-    :members:
+   :members:
+   :private-members:
 
 image
 =====
 
 .. automodule:: turbo_turtle._abaqus_python.image
-    :members:
+   :members:
+   :private-members:
 
 merge
 =====
 
 .. automodule:: turbo_turtle._abaqus_python.merge
-    :members:
+   :members:
+   :private-members:
 
 export
 ======
 
 .. automodule:: turbo_turtle._abaqus_python.export
-    :members:
+   :members:
+   :private-members:

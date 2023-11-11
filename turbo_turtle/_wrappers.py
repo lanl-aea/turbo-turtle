@@ -4,7 +4,7 @@ from turbo_turtle import _settings
 
 
 def geometry(args):
-    """Python 3 wrapper around the Abaqus Python geometry CLI
+    """Python 3 wrapper around the Abaqus Python :meth:`turbo_turtle._abaqus_python.parsers.geometry_parser` CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
@@ -28,7 +28,7 @@ def geometry(args):
 
 
 def cylinder(args):
-    """Python 3 wrapper around the Abaqus Python cylinder CLI
+    """Python 3 wrapper around the Abaqus Python :meth:`turbo_turtle._abaqus_python.parsers.cylinder_parser` CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
@@ -47,7 +47,7 @@ def cylinder(args):
 
 
 def sphere(args):
-    """Python 3 wrapper around the Abaqus Python sphere CLI
+    """Python 3 wrapper around the Abaqus Python :meth:`turbo_turtle._abaqus_python.parsers.sphere_parser` CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
@@ -66,7 +66,7 @@ def sphere(args):
 
 
 def partition(args):
-    """Python 3 wrapper around the Abaqus Python partition CLI
+    """Python 3 wrapper around the Abaqus Python :meth:`turbo_turtle._abaqus_python.parsers.partition_parser` CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
@@ -89,7 +89,7 @@ def partition(args):
 
 
 def mesh(args):
-    """Python 3 wrapper around the Abaqus Python mesh CLI
+    """Python 3 wrapper around the Abaqus Python :meth:`turbo_turtle._abaqus_python.parsers.mesh_parser` CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
@@ -107,7 +107,7 @@ def mesh(args):
 
 
 def merge(args):
-    """Python 3 wrapper around the Abaqus Python merge CLI
+    """Python 3 wrapper around the Abaqus Python :meth:`turbo_turtle._abaqus_python.parsers.merge_parser` CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
@@ -126,7 +126,7 @@ def merge(args):
 
 
 def export(args):
-    """Python 3 wrapper around the Abaqus Python export CLI
+    """Python 3 wrapper around the Abaqus Python :meth:`turbo_turtle._abaqus_python.parsers.export_parser` CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
@@ -145,7 +145,7 @@ def export(args):
 
 
 def image(args):
-    """Python 3 wrapper around the Abaqus Python image CLI
+    """Python 3 wrapper around the Abaqus Python :meth:`turbo_turtle._abaqus_python.parsers.image_parser` CLI
 
     :param argparse.Namespace args: namespace of parsed arguments
     """
