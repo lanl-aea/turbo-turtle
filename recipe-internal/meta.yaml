@@ -52,6 +52,7 @@ test:
   requires:
     - numpy
     - pytest
+    - pytest-xdist
   imports:
     - turbo_turtle
   source_files:
