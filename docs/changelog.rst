@@ -16,6 +16,8 @@ Internal Changes
 ================
 - Separate the splines logic from the geometry Abaqus Python script and unit test it (:issue:`41`, :merge:`37`). By
   `Kyle Brindley`_.
+- Unit test the coordinate generation for the axisymmetric cylinder subcommand (:issue:`50`, :merge:`39`). By `Kyle
+  Brindley`_.
 
 *******************
 v0.5.1 (2023-11-09)
