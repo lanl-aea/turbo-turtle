@@ -17,10 +17,10 @@ main
    :members:
    :private-members:
 
-_wrappers
-=========
+_abaqus_wrappers
+================
 
-.. automodule:: turbo_turtle._wrappers
+.. automodule:: turbo_turtle._abaqus_wrappers
    :members:
    :private-members:
 

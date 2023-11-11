@@ -3,7 +3,7 @@ import argparse
 
 from turbo_turtle import __version__
 from turbo_turtle import _settings
-from turbo_turtle import _wrappers
+from turbo_turtle import _abaqus_wrappers 
 from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import parsers
 
@@ -167,10 +167,10 @@ def main():
     keys = vars(args).keys()
     if "cubit" in keys and args.cubit:
         command = _utilities.find_command_or_exit(args.cubit_command)
-        executor_module = _cubit
+        executor_module = _cubit_wrappers
     elif "abaqus_command" in vars(args).keys():
         command = _utilities.find_command_or_exit(args.abaqus_command)
-        executor_module = _wrappers
+        executor_module = _abaqus_wrappers
 
     if args.subcommand == "geometry":
         executor_module.geometry(args, command)
