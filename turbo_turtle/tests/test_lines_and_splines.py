@@ -44,3 +44,40 @@ compare_euclidean_distance = {
 def test_compare_euclidean_distance(coordinates, euclidean_distance, expected):
     bools = lines_and_splines._compare_euclidean_distance(coordinates, euclidean_distance)
     assert bools == expected
+
+
+bool_via_or = {
+    "all true vs all false": (
+        [True, True],
+        [False, False],
+        [True, True]
+    ),
+    "all false": (
+        [False, False],
+        [False, False],
+        [False, False],
+    ),
+    "all true": (
+        [True, True],
+        [True, True],
+        [True, True],
+    ),
+    "true/false mirror": (
+        [True, False],
+        [False, True],
+        [True, True]
+    ),
+    "true/false mirror 2": (
+        [False, True],
+        [True, False],
+        [True, True]
+    ),
+}
+
+
+@pytest.mark.parametrize("bool_list_1, bool_list_2, expected",
+                         bool_via_or.values(),
+                         ids=bool_via_or.keys())
+def test_bool_via_or(bool_list_1, bool_list_2, expected):
+    bools = lines_and_splines._bool_via_or(bool_list_1, bool_list_2)
+    assert bools == expected
