@@ -165,24 +165,24 @@ def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    args.abaqus_command = _utilities._find_command_or_exit(args.abaqus_command)
+    abaqus_command = _utilities._find_command_or_exit(args.abaqus_command)
 
     if args.subcommand == "geometry":
-        _wrappers.geometry(args)
+        _wrappers.geometry(args, abaqus_command)
     elif args.subcommand == "cylinder":
-        _wrappers.cylinder(args)
+        _wrappers.cylinder(args, abaqus_command)
     elif args.subcommand == "sphere":
-        _wrappers.sphere(args)
+        _wrappers.sphere(args, abaqus_command)
     elif args.subcommand == "partition":
-        _wrappers.partition(args)
+        _wrappers.partition(args, abaqus_command)
     elif args.subcommand == "mesh":
-        _wrappers.mesh(args)
+        _wrappers.mesh(args, abaqus_command)
     elif args.subcommand == "image":
-        _wrappers.image(args)
+        _wrappers.image(args, abaqus_command)
     elif args.subcommand == "merge":
-        _wrappers.merge(args)
+        _wrappers.merge(args, abaqus_command)
     elif args.subcommand == "export":
-        _wrappers.export(args)
+        _wrappers.export(args, abaqus_command)
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     else:
