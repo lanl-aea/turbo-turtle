@@ -54,10 +54,12 @@ def find_command_or_exit(*args, **kwargs):
     return find_command(*args, **kwargs)
 
 
-def find_cubit_bin(options="cubit"):
-    """Look for the Cubit by executable search in options
+def find_cubit_bin(options):
+    """Provided a few options for the Cubit executable, search for the bin directory.
 
-    If the Cubit bin directory is not found, raise a FileNotFoundError.
+    Recommend first checking to see if cubit will import.
+
+    If the Cubit command or bin directory is not found, raise a FileNotFoundError.
 
     :param list options: Cubit command options
 
