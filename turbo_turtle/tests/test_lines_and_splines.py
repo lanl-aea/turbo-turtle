@@ -130,3 +130,47 @@ def test_break_coordinates(coordinates, euclidean_distance, expected):
     all_splines = lines_and_splines._break_coordinates(coordinates, euclidean_distance)
     for spline, expectation in zip(all_splines, expected):
         assert numpy.allclose(spline, expectation)
+
+
+line_pairs = {
+    "washer": (
+        [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])],
+        [(numpy.array([1.0, -0.5]), numpy.array([2.0, -0.5])),
+         (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),
+         (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),
+         (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5]))]
+    ),
+    "vase": (
+        [numpy.array([[ 5.1, -5. ],
+                      [ 5. , -4.8],
+                      [ 4.5, -4. ],
+                      [ 4.1, -3. ],
+                      [ 4. , -2.5]]),
+         numpy.array([[ 4. ,  2.5],
+                      [ 4.1,  3. ],
+                      [ 4.5,  4. ],
+                      [ 5. ,  4.8],
+                      [ 5.1,  5. ]]),
+         numpy.array([[ 3.0,  5.0]]),
+         numpy.array([[ 3.0, -4.0]]),
+         numpy.array([[ 0.0, -4.0]]),
+         numpy.array([[ 0.0, -5.0]])],
+        [(numpy.array([ 4. , -2.5]), numpy.array([ 4. ,  2.5])),
+         (numpy.array([ 5.1,  5. ]), numpy.array([ 3.0,  5.0])),
+         (numpy.array([ 3.0,  5.0]), numpy.array([ 3.0, -4.0])),
+         (numpy.array([ 3.0, -4.0]), numpy.array([ 0.0, -4.0])),
+         (numpy.array([ 0.0, -4.0]), numpy.array([ 0.0, -5.0])),
+         (numpy.array([ 0.0, -5.0]), numpy.array([ 5.1, -5. ]))]
+    ),
+}
+
+
+@pytest.mark.parametrize("all_splines, expected",
+                         line_pairs.values(),
+                         ids=line_pairs.keys())
+def test_line_pairs(all_splines, expected):
+    line_pairs = lines_and_splines._line_pairs(all_splines)
+    for pair, expectation in zip(line_pairs, expected):
+        assert len(pair) == len(expectation)
+        assert numpy.allclose(pair[0], expectation[0])
+        assert numpy.allclose(pair[1], expectation[1])
