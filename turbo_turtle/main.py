@@ -164,18 +164,39 @@ def get_parser():
     return main_parser
 
 
-def _check_for_command(command):
-    """Test to see if executable exists and raise an error if not
+def _search_commands(options):
+    """Return the first found command in the list of options. Return None if none are found.
 
-    :param str command: executable path to test
+    :param list options: executable path(s) to test
 
     :returns: command absolute path
     :rtype: str
     """
-    command_abspath = shutil.which(command)
+    command_search = (shutil.which(command) for command in options)
+    command_abspath = next((command for command in command_search if command is not None), None)
+    return command_abspath
+
+
+def _find_command(requested, options):
+    """Return first found command in list of options.
+
+    Print a warning message to STDERR if the requested command is not found, but an alternate is found. Throw an
+    error and exit if no command is found.
+
+    :param str requested: requested command
+    :param list options: alternate command options
+
+    :returns: command absolute path
+    :rtype: str
+    """
+    searches = [requested] + options
+    command_abspath = _search_commands(searches)
     if command_abspath is None:
-        print("Could not find executable '{command}' on PATH", file=sys.stderr)
+        print(f"Could not find any executable on PATH in: {', '.join(searches)}", file=sys.stderr)
         sys.exit(2)
+    elif command_abspath != requested:
+        print("Could not find '{args.abaqus_command}' but did find '{abaqus_abspath}'. " \
+              "Using '{abaqus_abspath}'", file=sys.stderr)
     return command_abspath
 
 
@@ -183,7 +204,7 @@ def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    _check_for_command(args.abaqus_command)
+    args.abaqus_command = _find_command(args.abaqus_command, _settings._abaqus_command_options)
 
     if args.subcommand == "geometry":
         _wrappers.geometry(args)
