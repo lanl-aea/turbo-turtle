@@ -56,8 +56,7 @@ conda-build:
     - umask 0022
     - mkdir ${conda_artifacts_directory}
     - croot="/scratch/$USER/$(basename $PWD)/${conda_artifacts_directory}"
-    # TODO: Remove the AEA conda channel when WAVESv0.7.2 or higher is released on conda-forge
-    - VERSION=$(python -m setuptools_scm) conda build recipe-internal --channel /projects/aea_compute/aea-conda --channel conda-forge --no-anaconda-upload --croot ${croot} --output-folder ${conda_artifacts_directory}
+    - VERSION=$(python -m setuptools_scm) conda build recipe-internal --channel conda-forge --no-anaconda-upload --croot ${croot} --output-folder ${conda_artifacts_directory}
     - conda build purge --croot ${croot}
   artifacts:
     expire_in: '2 hrs'
