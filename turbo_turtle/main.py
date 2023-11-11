@@ -163,9 +163,23 @@ def get_parser():
     return main_parser
 
 
+def check_for_command(command):
+    """Test to see if executable exists and raise an error if not
+
+    :param str command: executable path to test
+    """
+    command_abspath = shutil.which(command)
+    if command_abspath is None:
+        print("Could not find executable '{command}' on PATH", file=sys.stderr)
+        sys.exit(2)
+
+
 def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
+
+    check_for_command(args.abaqus_command)
+
     if args.subcommand == "geometry":
         _wrappers.geometry(args)
     elif args.subcommand == "cylinder":
