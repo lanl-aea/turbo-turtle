@@ -2,6 +2,22 @@
 import numpy
 
 
+def cylinder_vertices(inner_radius, outer_radius, height):
+    """Return a :meth:`turbo_turtle._abaqus_python.geometry.draw_part_from_splines` compatible vertex array
+
+    :param float inner_radius: Radius of the hollow center
+    :param float outer_radius: Outer radius of the cylinder
+    :param float height: Height of the cylinder
+    """
+    coordinates = (
+        (inner_radius, height),
+        (outer_radius, height),
+        (outer_radius, 0.),
+        (inner_radius, 0.)
+    )
+    return numpy.array(coordinates)
+
+
 def lines_and_splines(coordinates, euclidean_distance):
     """Accept a [N, 2] numpy array of XY coordinates and return line point pairs and splines
 

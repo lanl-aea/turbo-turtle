@@ -8,6 +8,7 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
+import shapes
 import parsers
 import geometry
 
@@ -37,22 +38,6 @@ def main(inner_radius, outer_radius, height, output_file,
                                     revolution_angle=revolution_angle)
 
     abaqus.mdb.saveAs(pathName=output_file)
-
-
-def cylinder_vertices(inner_radius, outer_radius, height):
-    """Return a :meth:`turbo_turtle._abaqus_python.geometry.draw_part_from_splines` compatible vertex list
-
-    :param float inner_radius: Radius of the hollow center
-    :param float outer_radius: Outer radius of the cylinder
-    :param float height: Height of the cylinder
-    """
-    coordinates = (
-        (inner_radius, height),
-        (outer_radius, height),
-        (outer_radius, 0.),
-        (inner_radius, 0.)
-    )
-    return numpy.array(coordinates)
 
 
 if __name__ == "__main__":
