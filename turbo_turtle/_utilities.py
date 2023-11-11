@@ -57,6 +57,7 @@ def find_command_or_exit(*args, **kwargs):
 def find_cubit_bin(options="cubit"):
     try:
         import cubit
+        pathlib.Path(inspect.getfile(cubit)).parent
     except ModuleNotFoundError:
         cubit_command = find_command(options)
         cubit_bin = pathlib.Path(cubit_command)
