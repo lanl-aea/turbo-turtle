@@ -23,7 +23,6 @@ def find_command(options):
 
     Raise a FileNotFoundError if none is found.
 
-    :param str requested: requested command
     :param list options: alternate command options
 
     :returns: command absolute path
@@ -56,18 +55,35 @@ def find_command_or_exit(*args, **kwargs):
 
 
 def find_cubit_bin(options="cubit"):
+    """Look for the Cubit bin via direct import and by executable search in options
+
+    If the Cubit bin directory is not found, raise a FileNotFoundError.
+
+    :param list options: Cubit command options
+
+    :returns: Cubit bin directory absolute path
+    :rtype: pathlib.Path
+    """
     try:
         import cubit
         pathlib.Path(inspect.getfile(cubit)).parent
     except ModuleNotFoundError:
+        pass
+
+    try:
         cubit_command = find_command(options)
-        cubit_bin = pathlib.Path(cubit_command)
-        if "bin" in cubit_bin.parts:
-            while cubit_bin.name != "bin":
-                cubit_bin = cubit_bin.parent
-        else:
-            search = cubit_bin.glob("bin")
-            cubit_bin = next((path for path in search if path.name == "bin"), None)
+    except FileNotFoundError as err:
+        raise FileNotFoundError(f"Could not import Cubit. {err}")
+
+    cubit_bin = pathlib.Path(cubit_command)
+    if "bin" in cubit_bin.parts:
+        while cubit_bin.name != "bin":
+            cubit_bin = cubit_bin.parent
+    else:
+        search = cubit_bin.glob("bin")
+        cubit_bin = next((path for path in search if path.name == "bin"), None)
     if cubit_bin is None:
-        raise FileNotFoundError("Could not find a cubit bin. Please ensure the cubit executable is on PATH or the cubit bin directory is on PYTHONPATH")
+        message = "Could not import Cubit. Cound not find a Cubit bin directory. Please ensure the cubit executable " \
+                  "is on PATH or the cubit bin directory is on PYTHONPATH."
+        raise FileNotFoundError(message)
     return cubit_bin
