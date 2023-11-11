@@ -18,6 +18,7 @@ Internal Changes
   `Kyle Brindley`_.
 - Unit test the coordinate generation for the axisymmetric cylinder subcommand (:issue:`50`, :merge:`39`). By `Kyle
   Brindley`_.
+- Add a version controlled CI and development environment (:issue:`13`, :merge:`38`). By `Kyle Brindley`_.
 
 *******************
 v0.5.1 (2023-11-09)
