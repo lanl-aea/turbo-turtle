@@ -37,10 +37,10 @@ parsers
 .. automodule:: turbo_turtle._abaqus_python.parsers
     :members:
 
-lines_and_splines
-=================
+vertices
+========
 
-.. automodule:: turbo_turtle._abaqus_python.lines_and_splines
+.. automodule:: turbo_turtle._abaqus_python.vertices
     :members:
 
 *************

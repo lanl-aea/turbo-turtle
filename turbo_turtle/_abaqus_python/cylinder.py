@@ -8,8 +8,8 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import shapes
 import parsers
+import vertices
 import geometry
 
 
@@ -33,7 +33,7 @@ def main(inner_radius, outer_radius, height, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
-    coordinates = cylinder_vertices(inner_radius, outer_radius, height)
+    coordinates = vertices.cylinder(inner_radius, outer_radius, height)
     geometry.draw_part_from_splines(coordinates, planar=False, model_name=model_name, part_name=part_name,
                                     revolution_angle=revolution_angle)
 

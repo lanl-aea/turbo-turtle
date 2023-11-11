@@ -2,7 +2,7 @@
 import numpy
 
 
-def cylinder_vertices(inner_radius, outer_radius, height):
+def cylinder(inner_radius, outer_radius, height):
     """Return a :meth:`turbo_turtle._abaqus_python.geometry.draw_part_from_splines` compatible vertex array
 
     :param float inner_radius: Radius of the hollow center
