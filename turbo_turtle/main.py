@@ -164,25 +164,30 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
 
-    if "abaqus_command" in vars(args).keys():
-        abaqus_command = _utilities.find_command_or_exit(args.abaqus_command)
+    keys = vars(args).keys()
+    if "cubit" in keys and args.cubit:
+        command = _utilities.find_command_or_exit(args.cubit_command)
+        executor_module = _cubit
+    elif "abaqus_command" in vars(args).keys():
+        command = _utilities.find_command_or_exit(args.abaqus_command)
+        executor_module = _wrappers
 
     if args.subcommand == "geometry":
-        _wrappers.geometry(args, abaqus_command)
+        executor_module.geometry(args, command)
     elif args.subcommand == "cylinder":
-        _wrappers.cylinder(args, abaqus_command)
+        executor_module.cylinder(args, command)
     elif args.subcommand == "sphere":
-        _wrappers.sphere(args, abaqus_command)
+        executor_module.sphere(args, command)
     elif args.subcommand == "partition":
-        _wrappers.partition(args, abaqus_command)
+        executor_module.partition(args, command)
     elif args.subcommand == "mesh":
-        _wrappers.mesh(args, abaqus_command)
+        executor_module.mesh(args, command)
     elif args.subcommand == "image":
-        _wrappers.image(args, abaqus_command)
+        executor_module.image(args, command)
     elif args.subcommand == "merge":
-        _wrappers.merge(args, abaqus_command)
+        executor_module.merge(args, command)
     elif args.subcommand == "export":
-        _wrappers.export(args, abaqus_command)
+        executor_module.export(args, command)
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     else:
