@@ -24,6 +24,13 @@ _abaqus_wrappers
    :members:
    :private-members:
 
+_cubit_wrappers
+===============
+
+.. automodule:: turbo_turtle._cubit_wrappers
+   :members:
+   :private-members:
+
 _utilities
 ==========
 
