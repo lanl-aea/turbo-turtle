@@ -8,11 +8,11 @@ from turbo_turtle import _utilities
 
 def test_search_commands():
     with patch("shutil.which", return_value=None) as shutil_which:
-        command_abspath = _utilities._search_commands(["notfound"])
+        command_abspath = _utilities.search_commands(["notfound"])
         assert command_abspath is None
 
     with patch("shutil.which", return_value="found") as shutil_which:
-        command_abspath = _utilities._search_commands(["found"])
+        command_abspath = _utilities.search_commands(["found"])
         assert command_abspath == "found"
 
 
@@ -33,9 +33,9 @@ find_command = {
                          find_command.values(),
                          ids=find_command.keys())
 def test_find_command(options, found, outcome):
-    with patch("turbo_turtle._utilities._search_commands", return_value=found), outcome:
+    with patch("turbo_turtle._utilities.search_commands", return_value=found), outcome:
         try:
-            command_abspath = _utilities._find_command(options)
+            command_abspath = _utilities.find_command(options)
             assert command_abspath == found
         finally:
             pass
