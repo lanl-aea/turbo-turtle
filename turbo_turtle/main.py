@@ -162,9 +162,10 @@ def get_parser():
 
 def main():
     parser = get_parser()
-    args, unknown = parser.parse_known_args()
+    args = parser.parse_args()
 
-    abaqus_command = _utilities.find_command_or_exit(args.abaqus_command)
+    if "abaqus_command" in vars(args).keys():
+        abaqus_command = _utilities.find_command_or_exit(args.abaqus_command)
 
     if args.subcommand == "geometry":
         _wrappers.geometry(args, abaqus_command)
