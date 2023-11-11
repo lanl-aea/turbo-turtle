@@ -47,7 +47,7 @@ def _break_coordinates(coordinates, euclidean_distance):
     :return: Series of line and spline definitions
     :rtype: list
     """
-    euclidean_distance_bools = _compare_euclidean_distance(euclidean_distance, coordinates)
+    euclidean_distance_bools = _compare_euclidean_distance(coordinates, euclidean_distance)
     vertical_horizontal_bools = _compare_xy_values(coordinates)
     bools_from_or = _bool_via_or(euclidean_distance_bools, vertical_horizontal_bools)
     break_indices = numpy.where(bools_from_or)[0]
@@ -55,7 +55,7 @@ def _break_coordinates(coordinates, euclidean_distance):
     return all_splines
 
 
-def _compare_euclidean_distance(euclidean_distance, coordinates):
+def _compare_euclidean_distance(coordinates, euclidean_distance):
     """Compare the distance between coordinates in a 2D numpy array of XY data to a provided euclidean distance
 
     The distance comparison is performed as ``numpy_array_distance > euclidean_distance``. The distance between coordinates
@@ -63,8 +63,8 @@ def _compare_euclidean_distance(euclidean_distance, coordinates):
     a single ``False`` is always prepended to the beginning of the output ``euclidean_distance_bools`` list, because
     there is no such distance between the first point and one that comes before it.
 
-    :param float euclidean_distance: distance value to compare against
     :param numpy.array coordinates: [N, 2] array of XY coordinates.
+    :param float euclidean_distance: distance value to compare against
 
     :return: bools for the distance comparison
     :rtype: list of length N

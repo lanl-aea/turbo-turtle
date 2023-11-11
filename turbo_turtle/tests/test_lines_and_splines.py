@@ -23,3 +23,24 @@ compare_xy_values = {
 def test_compare_xy_values(coordinates, expected):
     bools = lines_and_splines._compare_xy_values(coordinates)
     assert bools == expected
+
+
+compare_euclidean_distance = {
+    "longer": (
+        numpy.array([[0, 0], [1, 0]]), 0.1, [False, True]
+    ),
+    "shorter": (
+        numpy.array([[0, 0], [1, 0]]), 10., [False, False]
+    ),
+    "equal": (
+        numpy.array([[0, 0], [1, 0]]), 1.0, [False, False]
+    ),
+}
+
+
+@pytest.mark.parametrize("coordinates, euclidean_distance, expected",
+                         compare_euclidean_distance.values(),
+                         ids=compare_euclidean_distance.keys())
+def test_compare_euclidean_distance(coordinates, euclidean_distance, expected):
+    bools = lines_and_splines._compare_euclidean_distance(coordinates, euclidean_distance)
+    assert bools == expected
