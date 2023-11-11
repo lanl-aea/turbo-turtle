@@ -20,6 +20,10 @@ Internal Changes
   Brindley`_.
 - Add a version controlled CI and development environment (:issue:`13`, :merge:`38`). By `Kyle Brindley`_.
 
+Enhancements
+============
+- Raise an error if the provided Abaqus command is not found (:issue:`48`, :merge:`40`). By `Kyle Brindley`_.
+
 *******************
 v0.5.1 (2023-11-09)
 *******************
