@@ -3,7 +3,6 @@ import argparse
 
 from turbo_turtle import __version__
 from turbo_turtle import _settings
-from turbo_turtle import _abaqus_wrappers
 from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import parsers
 
@@ -171,27 +170,27 @@ def main():
     keys = vars(args).keys()
     if "cubit" in keys and args.cubit:
         command = _utilities.find_command_or_exit(args.cubit_command)
-        executor_module = _cubit_wrappers
+        import _cubit_wrappers as _wrappers
     elif "abaqus_command" in vars(args).keys():
         command = _utilities.find_command_or_exit(args.abaqus_command)
-        executor_module = _abaqus_wrappers
+        import _abaqus_wrappers as _wrappers
 
     if args.subcommand == "geometry":
-        executor_module.geometry(args, command)
+        _wrappers.geometry(args, command)
     elif args.subcommand == "cylinder":
-        executor_module.cylinder(args, command)
+        _wrappers.cylinder(args, command)
     elif args.subcommand == "sphere":
-        executor_module.sphere(args, command)
+        _wrappers.sphere(args, command)
     elif args.subcommand == "partition":
-        executor_module.partition(args, command)
+        _wrappers.partition(args, command)
     elif args.subcommand == "mesh":
-        executor_module.mesh(args, command)
+        _wrappers.mesh(args, command)
     elif args.subcommand == "image":
-        executor_module.image(args, command)
+        _wrappers.image(args, command)
     elif args.subcommand == "merge":
-        executor_module.merge(args, command)
+        _wrappers.merge(args, command)
     elif args.subcommand == "export":
-        executor_module.export(args, command)
+        _wrappers.export(args, command)
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     else:
