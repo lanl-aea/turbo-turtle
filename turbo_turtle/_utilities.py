@@ -1,5 +1,6 @@
 import sys
 import shutil
+import pathlib
 import functools
 
 
@@ -51,3 +52,20 @@ def print_exception_message(function):
 @print_exception_message
 def find_command_or_exit(*args, **kwargs):
     return find_command(*args, **kwargs)
+
+
+def find_cubit_bin(options="cubit"):
+    try:
+        import cubit
+    except ModuleNotFoundError:
+        cubit_command = find_command(options)
+        cubit_bin = pathlib.Path(cubit_command)
+        if "bin" in cubit_bin.parts:
+            while cubit_bin.name != "bin":
+                cubit_bin = cubit_bin.parent
+        else:
+            search = cubit_bin.glob("bin")
+            cubit_bin = next((path for path in search if path.name == "bin"), None)
+    if cubit_bin is None:
+        raise FileNotFoundError("Could not find a cubit bin. Please ensure the cubit executable is on PATH or the cubit bin directory is on PYTHONPATH")
+    return cubit_bin
