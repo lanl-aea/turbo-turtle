@@ -27,7 +27,7 @@ def find_command(options):
     :returns: command absolute path
     :rtype: str
     """
-    command_abspath = _search_commands(options)
+    command_abspath = search_commands(options)
     if command_abspath is None:
         raise FileNotFoundError(f"Could not find any executable on PATH in: {', '.join(options)}")
     return command_abspath
@@ -50,4 +50,4 @@ def print_exception_message(function):
 
 @print_exception_message
 def find_command_or_exit(*args, **kwargs):
-    return _find_command(*args, **kwargs)
+    return find_command(*args, **kwargs)
