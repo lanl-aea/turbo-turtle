@@ -30,14 +30,11 @@ def test_docs():
         mock_exit.assert_called()
 
 
-def test_check_for_command():
-    with patch("shutil.which", return_value=None) as shutil_which, \
-         patch("sys.exit") as sys_exit:
-        command_abspath = main._check_for_command("notfound")
-        sys_exit.assert_called_once_with(2)
+def test_search_commands():
+    with patch("shutil.which", return_value=None) as shutil_which:
+        command_abspath = main._search_commands(["notfound"])
+        assert command_abspath is None
 
-    with patch("shutil.which", return_value="found") as shutil_which, \
-         patch("sys.exit") as sys_exit:
-        command_abspath = main._check_for_command("found")
+    with patch("shutil.which", return_value="found") as shutil_which:
+        command_abspath = main._search_commands(["found"])
         assert command_abspath == "found"
-        sys_exit.assert_not_called()
