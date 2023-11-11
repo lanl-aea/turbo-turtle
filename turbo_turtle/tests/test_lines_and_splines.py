@@ -81,3 +81,21 @@ bool_via_or = {
 def test_bool_via_or(bool_list_1, bool_list_2, expected):
     bools = lines_and_splines._bool_via_or(bool_list_1, bool_list_2)
     assert bools == expected
+
+
+break_coordinates = {
+    "washer": (
+        numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
+        4,
+        [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])]
+    ),
+}
+
+
+@pytest.mark.parametrize("coordinates, euclidean_distance, expected",
+                         break_coordinates.values(),
+                         ids=break_coordinates.keys())
+def test_break_coordinates(coordinates, euclidean_distance, expected):
+    all_splines = lines_and_splines._break_coordinates(coordinates, euclidean_distance)
+    for spline, expectation in zip(all_splines, expected):
+        assert numpy.allclose(spline, expectation)
