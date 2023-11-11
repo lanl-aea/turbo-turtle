@@ -1,7 +1,7 @@
 import pytest
 import numpy
 
-from turbo_turtle._abaqus_python import lines_and_splines
+from turbo_turtle._abaqus_python import vertices 
 
 
 compare_xy_values = {
@@ -21,7 +21,7 @@ compare_xy_values = {
                          compare_xy_values.values(),
                          ids=compare_xy_values.keys())
 def test_compare_xy_values(coordinates, expected):
-    bools = lines_and_splines._compare_xy_values(coordinates)
+    bools = vertices._compare_xy_values(coordinates)
     assert bools == expected
 
 
@@ -42,7 +42,7 @@ compare_euclidean_distance = {
                          compare_euclidean_distance.values(),
                          ids=compare_euclidean_distance.keys())
 def test_compare_euclidean_distance(coordinates, euclidean_distance, expected):
-    bools = lines_and_splines._compare_euclidean_distance(coordinates, euclidean_distance)
+    bools = vertices._compare_euclidean_distance(coordinates, euclidean_distance)
     assert bools == expected
 
 
@@ -79,7 +79,7 @@ bool_via_or = {
                          bool_via_or.values(),
                          ids=bool_via_or.keys())
 def test_bool_via_or(bool_list_1, bool_list_2, expected):
-    bools = lines_and_splines._bool_via_or(bool_list_1, bool_list_2)
+    bools = vertices._bool_via_or(bool_list_1, bool_list_2)
     assert bools == expected
 
 
@@ -127,7 +127,7 @@ break_coordinates = {
                          break_coordinates.values(),
                          ids=break_coordinates.keys())
 def test_break_coordinates(coordinates, euclidean_distance, expected):
-    all_splines = lines_and_splines._break_coordinates(coordinates, euclidean_distance)
+    all_splines = vertices._break_coordinates(coordinates, euclidean_distance)
     for spline, expectation in zip(all_splines, expected):
         assert numpy.allclose(spline, expectation)
 
@@ -169,7 +169,7 @@ line_pairs = {
                          line_pairs.values(),
                          ids=line_pairs.keys())
 def test_line_pairs(all_splines, expected):
-    line_pairs = lines_and_splines._line_pairs(all_splines)
+    line_pairs = vertices._line_pairs(all_splines)
     for pair, expectation in zip(line_pairs, expected):
         assert len(pair) == len(expectation)
         assert numpy.allclose(pair[0], expectation[0])
@@ -226,7 +226,7 @@ the_real_mccoy = {
                          the_real_mccoy.values(),
                          ids=the_real_mccoy.keys())
 def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expected_splines):
-    lines, splines = lines_and_splines.lines_and_splines(coordinates, euclidean_distance)
+    lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     for pair, expectation in zip(lines, expected_lines):
         assert len(pair) == len(expectation)
         assert numpy.allclose(pair[0], expectation[0])
