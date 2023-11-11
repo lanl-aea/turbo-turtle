@@ -194,7 +194,7 @@ def _find_command(options):
     return command_abspath
 
 
-def print_exception_message(function):
+def _print_exception_message(function):
     """Decorate a function to catch any exception, print the message and call sys.exit
 
     :param function: function to decorate
@@ -204,18 +204,22 @@ def print_exception_message(function):
         try:
             output = function(*args, **kwargs)
         except Exception as err:
-            print(err.message)
+            print(str(err))
             sys.exit(2)
         return output
     return wrapper
+
+
+@_print_exception_message
+def _find_or_exit(*args, **kwargs):
+    return _find_command(*args, **kwargs)
 
 
 def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    @print_exception_message
-    args.abaqus_command = _find_command(args.abaqus_command)
+    args.abaqus_command = _find_or_exit(args.abaqus_command)
 
     if args.subcommand == "geometry":
         _wrappers.geometry(args)
