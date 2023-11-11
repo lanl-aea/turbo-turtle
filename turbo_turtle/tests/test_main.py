@@ -28,3 +28,15 @@ def test_docs():
         main._docs(print_local_path=True)
         mock_webbrowser_open.assert_not_called()
         mock_exit.assert_called()
+
+
+def test_check_for_command():
+    with patch("shutil.which", return_value=None) as shutil_which, \
+         patch("sys.exit") as sys_exit:
+        main.check_for_command("notfound")
+        sys_exit.assert_called_once_with(2)
+
+    with patch("shutil.which", return_value="found") as shutil_which, \
+         patch("sys.exit") as sys_exit:
+        main.check_for_command("found")
+        sys_exit.assert_not_called()
