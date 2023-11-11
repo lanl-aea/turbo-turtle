@@ -174,3 +174,63 @@ def test_line_pairs(all_splines, expected):
         assert len(pair) == len(expectation)
         assert numpy.allclose(pair[0], expectation[0])
         assert numpy.allclose(pair[1], expectation[1])
+
+
+the_real_mccoy = {
+    "washer": (
+        numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
+        4,
+        [(numpy.array([1.0, -0.5]), numpy.array([2.0, -0.5])),
+         (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),
+         (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),
+         (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5]))],
+        []
+    ),
+    "vase": (
+        numpy.array([[ 5.1, -5. ],
+                     [ 5. , -4.8],
+                     [ 4.5, -4. ],
+                     [ 4.1, -3. ],
+                     [ 4. , -2.5],
+                     [ 4. ,  2.5],
+                     [ 4.1,  3. ],
+                     [ 4.5,  4. ],
+                     [ 5. ,  4.8],
+                     [ 5.1,  5. ],
+                     [ 3. ,  5. ],
+                     [ 3. , -4. ],
+                     [ 0. , -4. ],
+                     [ 0. , -5. ]]),
+        4,
+        [(numpy.array([ 4. , -2.5]), numpy.array([ 4. ,  2.5])),
+         (numpy.array([ 5.1,  5. ]), numpy.array([ 3.0,  5.0])),
+         (numpy.array([ 3.0,  5.0]), numpy.array([ 3.0, -4.0])),
+         (numpy.array([ 3.0, -4.0]), numpy.array([ 0.0, -4.0])),
+         (numpy.array([ 0.0, -4.0]), numpy.array([ 0.0, -5.0])),
+         (numpy.array([ 0.0, -5.0]), numpy.array([ 5.1, -5. ]))],
+        [numpy.array([[ 5.1, -5. ],
+                      [ 5. , -4.8],
+                      [ 4.5, -4. ],
+                      [ 4.1, -3. ],
+                      [ 4. , -2.5]]),
+         numpy.array([[ 4. ,  2.5],
+                      [ 4.1,  3. ],
+                      [ 4.5,  4. ],
+                      [ 5. ,  4.8],
+                      [ 5.1,  5. ]])]
+    )
+}
+
+
+@pytest.mark.parametrize("coordinates, euclidean_distance, expected_lines, expected_splines",
+                         the_real_mccoy.values(),
+                         ids=the_real_mccoy.keys())
+def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expected_splines):
+    lines, splines = lines_and_splines.lines_and_splines(coordinates, euclidean_distance)
+    for pair, expectation in zip(lines, expected_lines):
+        assert len(pair) == len(expectation)
+        assert numpy.allclose(pair[0], expectation[0])
+        assert numpy.allclose(pair[1], expectation[1])
+    assert len(splines) == len(expected_splines)
+    for spline, expectation in zip(splines, expected_splines):
+        assert numpy.allclose(spline, expectation)
