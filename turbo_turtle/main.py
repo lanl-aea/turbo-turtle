@@ -170,10 +170,10 @@ def main():
     keys = vars(args).keys()
     if "cubit" in keys and args.cubit:
         command = _utilities.find_command_or_exit(args.cubit_command)
-        import _cubit_wrappers as _wrappers
+        from turbo_turtle import _cubit_wrappers as _wrappers
     elif "abaqus_command" in vars(args).keys():
         command = _utilities.find_command_or_exit(args.abaqus_command)
-        import _abaqus_wrappers as _wrappers
+        from turbo_turtle import _abaqus_wrappers as _wrappers
 
     if args.subcommand == "geometry":
         _wrappers.geometry(args, command)

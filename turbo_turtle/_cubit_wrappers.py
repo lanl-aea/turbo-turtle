@@ -1,4 +1,4 @@
-import subprocess
+import sys
 
 from turbo_turtle import _settings
 
