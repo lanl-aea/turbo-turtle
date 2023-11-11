@@ -170,6 +170,9 @@ def main():
     keys = vars(args).keys()
     if "cubit" in keys and args.cubit:
         command = _utilities.find_command_or_exit(args.cubit_command)
+        import importlib.util
+        if importlib.util.find_spec("cubit") is None:
+            sys.path.append(_utilities.find_cubit_bin)
         from turbo_turtle import _cubit_wrappers as _wrappers
     elif "abaqus_command" in vars(args).keys():
         command = _utilities.find_command_or_exit(args.abaqus_command)
