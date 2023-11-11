@@ -1,5 +1,4 @@
 import pathlib
-import datetime
 
 
 _project_name = "Turbo Turtle"
