@@ -12,6 +12,11 @@ New Features
 ============
 - Draft assembly keyword block exporter in export subcommand (:issue:`38`, :merge:`36`). By `Kyle Brindley`_.
 
+Internal Changes
+================
+- Separate the splines logic from the geometry Abaqus Python script and unit test it (:issue:`41`, :merge:`37`). By
+  `Kyle Brindley`_.
+
 *******************
 v0.5.1 (2023-11-09)
 *******************
