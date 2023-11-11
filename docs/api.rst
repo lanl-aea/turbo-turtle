@@ -24,6 +24,13 @@ _wrappers
    :members:
    :private-members:
 
+_utilities
+==========
+
+.. automodule:: turbo_turtle._utilities
+   :members:
+   :private-members:
+
 **********
 Python 2/3
 **********

@@ -164,7 +164,7 @@ def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    abaqus_command = _utilities._find_command_or_exit(args.abaqus_command)
+    abaqus_command = _utilities.find_command_or_exit(args.abaqus_command)
 
     if args.subcommand == "geometry":
         _wrappers.geometry(args, abaqus_command)

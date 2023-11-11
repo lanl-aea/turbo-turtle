@@ -3,7 +3,7 @@ import shutil
 import functools
 
 
-def _search_commands(options):
+def search_commands(options):
     """Return the first found command in the list of options. Return None if none are found.
 
     :param list options: executable path(s) to test
@@ -16,7 +16,7 @@ def _search_commands(options):
     return command_abspath
 
 
-def _find_command(options):
+def find_command(options):
     """Return first found command in list of options.
 
     Raise a FileNotFoundError if none is found.
@@ -33,7 +33,7 @@ def _find_command(options):
     return command_abspath
 
 
-def _print_exception_message(function):
+def print_exception_message(function):
     """Decorate a function to catch any exception, print the message and call sys.exit
 
     :param function: function to decorate
@@ -48,6 +48,6 @@ def _print_exception_message(function):
     return wrapper
 
 
-@_print_exception_message
-def _find_command_or_exit(*args, **kwargs):
+@print_exception_message
+def find_command_or_exit(*args, **kwargs):
     return _find_command(*args, **kwargs)
