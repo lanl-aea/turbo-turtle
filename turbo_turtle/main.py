@@ -1,8 +1,8 @@
 import os
 import sys
 import shutil
-import pathlib
 import argparse
+import functools
 import subprocess
 
 from turbo_turtle import __version__
@@ -194,15 +194,28 @@ def _find_command(options):
     return command_abspath
 
 
+def print_exception_message(function):
+    """Decorate a function to catch any exception, print the message and call sys.exit
+
+    :param function: function to decorate
+    """
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
+        try:
+            output = function(*args, **kwargs)
+        except Exception as err:
+            print(err.message)
+            sys.exit(2)
+        return output
+    return wrapper
+
+
 def main():
     parser = get_parser()
     args, unknown = parser.parse_known_args()
 
-    try:
-        args.abaqus_command = _find_command(args.abaqus_command)
-    except FileNotFoundError as err:
-        print(err.message)
-        sys.exit(2)
+    @print_exception_message
+    args.abaqus_command = _find_command(args.abaqus_command)
 
     if args.subcommand == "geometry":
         _wrappers.geometry(args)
