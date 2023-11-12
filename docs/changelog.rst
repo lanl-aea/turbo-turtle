@@ -19,6 +19,7 @@ Internal Changes
 - Unit test the coordinate generation for the axisymmetric cylinder subcommand (:issue:`50`, :merge:`39`). By `Kyle
   Brindley`_.
 - Add a version controlled CI and development environment (:issue:`13`, :merge:`38`). By `Kyle Brindley`_.
+- Python 2/3 compatible 2D polar coordinate to 2D XY coordinate converter. By `Kyle Brindley`_.
 
 Enhancements
 ============
