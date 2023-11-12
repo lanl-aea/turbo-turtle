@@ -1,5 +1,6 @@
 import pytest
 import numpy
+import math
 
 from turbo_turtle._abaqus_python import vertices
 
@@ -239,4 +240,24 @@ def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expe
 def test_cylinder():
     expected = numpy.array([[1., 1.], [2., 1.], [2., 0.], [1., 0.]])
     coordinates = vertices.cylinder(1., 2., 1.)
+    assert numpy.allclose(coordinates, expected)
+
+
+number = math.sqrt(2.**2 / 2.)
+rectalinear_coordinates = {
+    "unit circle": (
+        (1, 1, 1, 1), (0, math.pi / 2, math.pi, 2 * math.pi), ((1, 0), (0, 1), (-1, 0), (1, 0))
+    ),
+    "forty-fives": (
+        (2, 2, 2, 2), (math.pi / 4, math.pi * 3 / 4, math.pi * 5 / 4, math.pi * 7 / 4),
+        ((number, number), (-number, number), (-number, -number), (number, -number))
+    )
+}
+
+
+@pytest.mark.parametrize("radius_list, angle_list, expected",
+                         rectalinear_coordinates.values(),
+                         ids=rectalinear_coordinates.keys())
+def test_rectalinear_coordinates(radius_list, angle_list, expected):
+    coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
     assert numpy.allclose(coordinates, expected)

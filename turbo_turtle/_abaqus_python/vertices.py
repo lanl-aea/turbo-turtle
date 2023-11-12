@@ -3,7 +3,7 @@ import numpy
 import cmath
 
 
-def rectalinear_coordinates(radius_list=None, angle_list):
+def rectalinear_coordinates(radius_list, angle_list):
     """Calculate 2D rectalinear XY coordinates from 2D polar coordinates
 
     :param list radius: length N list of polar coordinate radius
@@ -13,7 +13,7 @@ def rectalinear_coordinates(radius_list=None, angle_list):
     :rtype: list
     """
     numbers = (cmath.rect(radius, angle) for radius, angle in zip(radius_list, angle_list))
-    coordinates = tuple((number.real, number.imag) for number in numbers])
+    coordinates = tuple((number.real, number.imag) for number in numbers)
     return coordinates
 
 
