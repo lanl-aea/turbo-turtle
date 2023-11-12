@@ -1,5 +1,20 @@
 """Python 2/3 compatible coordinate handling for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
 import numpy
+import cmath
+
+
+def rectalinear_coordinates(radius_list=None, angle_list):
+    """Calculate 2D rectalinear XY coordinates from 2D polar coordinates
+
+    :param list radius: length N list of polar coordinate radius
+    :param list angle: length N list of polar coordinate angle measured from the positive X-axis in radians
+
+    :returns coords: length N tuple of tuple(X, Y) rectalinear coordinates
+    :rtype: list
+    """
+    numbers = (cmath.rect(radius, angle) for radius, angle in zip(radius_list, angle_list))
+    coordinates = tuple((number.real, number.imag) for number in numbers])
+    return coordinates
 
 
 def cylinder(inner_radius, outer_radius, height):

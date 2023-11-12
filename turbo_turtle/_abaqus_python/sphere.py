@@ -1,6 +1,5 @@
 import os
 import sys
-import cmath
 import shutil
 import inspect
 import tempfile
@@ -13,6 +12,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
+import vertices
 
 
 def main(inner_radius, outer_radius, output_file,
@@ -99,10 +99,10 @@ def sphere(inner_radius, outer_radius,
         start_angle = -numpy.pi / 2.
         end_angle = 0.
 
-    inner_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(inner_radius, end_angle)))
-    inner_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(inner_radius, start_angle)))
-    outer_point1 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, end_angle)))
-    outer_point2 = tuple(numpy.array(center) + numpy.array(rectalinear_coordinates(outer_radius, start_angle)))
+    radius_list = (inner_radius, inner_radius, outer_radius, outer_radius)
+    angle_list = (end_angle, start_angle, end_angle, start_angle)
+    points = numpy.array(center) + numpy.array(vertices.rectalinear_coordinates(radius_list, angle_list))
+    inner_point1, inner_point2, outer_point1, outer_point2 = points
 
     sketch = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
     sketch.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
@@ -122,19 +122,6 @@ def sphere(inner_radius, outer_radius,
         part = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D, type=abaqusConstants.DEFORMABLE_BODY)
         part.BaseSolidRevolve(sketch=sketch, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
     del sketch
-
-
-def rectalinear_coordinates(radius, angle):
-    """Calculate 2D rectalinear coordinates from 2D polar coordinates
-
-    :param float radius: polar coordinate radius
-    :param float angle: polar coordinate angle measured from the positive X-axis in radians
-
-    :returns coords: tuple of (X, Y) rectalinear coordinates
-    :rtype: tuple
-    """
-    coords = cmath.rect(radius, angle)
-    return (coords.real, coords.imag)
 
 
 if __name__ == "__main__":
