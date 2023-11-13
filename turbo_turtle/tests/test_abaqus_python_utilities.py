@@ -52,6 +52,16 @@ def test_validate_part_name(input_file, original_part_name, expected, outcome):
         finally:
             pass
 
+    # TODO: Figure out how to check against pytest.raises() instead.
+    if not isinstance(outcome, does_not_raise):
+        outcome = pytest.raises(SystemExit)
+    with outcome:
+        try:
+            part_name = _utilities.validate_part_name_or_exit(input_file, original_part_name)
+            assert part_name == expected
+        finally:
+            pass
+
 
 validate_element_type = {
     "default": (
@@ -116,6 +126,18 @@ def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensio
             coordinates = _utilities.return_genfromtxt(file_name, delimiter=delimiter, header_lines=header_lines,
                                                        expected_dimensions=expected_dimensions,
                                                        expected_columns=expected_columns)
+            assert numpy.allclose(coordinates, expected)
+        finally:
+            pass
+
+    # TODO: Figure out how to check against pytest.raises() instead.
+    if not isinstance(outcome, does_not_raise):
+        outcome = pytest.raises(SystemExit)
+    with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected) as mock_genfromtxt, outcome:
+        try:
+            coordinates = _utilities.return_genfromtxt_or_exit(file_name, delimiter=delimiter, header_lines=header_lines,
+                                                               expected_dimensions=expected_dimensions,
+                                                               expected_columns=expected_columns)
             assert numpy.allclose(coordinates, expected)
         finally:
             pass
