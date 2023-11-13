@@ -8,6 +8,7 @@ from turbo_turtle import _utilities
 
 
 def test_search_commands():
+    """Test :meth:`turbo_turtle._utilities.search_command`"""
     with patch("shutil.which", return_value=None) as shutil_which:
         command_abspath = _utilities.search_commands(["notfound"])
         assert command_abspath is None
@@ -34,6 +35,7 @@ find_command = {
                          find_command.values(),
                          ids=find_command.keys())
 def test_find_command(options, found, outcome):
+    """Test :meth:`turbo_turtle._utilities.find_command`"""
     with patch("turbo_turtle._utilities.search_commands", return_value=found), outcome:
         try:
             command_abspath = _utilities.find_command(options)
@@ -43,6 +45,7 @@ def test_find_command(options, found, outcome):
 
 
 def test_run_command():
+    """Test :meth:`turbo_turtle._utilities.run_command`"""
     with patch("subprocess.check_output", side_effect=subprocess.CalledProcessError(1, "dummy", b"output")), \
          pytest.raises(SystemExit):
         _utilities.run_command("dummy")
