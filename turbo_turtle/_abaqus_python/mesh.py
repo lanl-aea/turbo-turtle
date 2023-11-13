@@ -102,8 +102,6 @@ def return_abaqus_constant(search_string):
     return attribute
 
 
-
-
 if __name__ == "__main__":
 
     parser = parsers.mesh_parser(basename=basename)

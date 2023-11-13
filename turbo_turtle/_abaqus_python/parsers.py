@@ -9,6 +9,27 @@ import os
 import argparse
 
 
+def positive_float(argument):
+    """Type function for argparse - positive floats
+
+    Abaqus Python 2 and Python 3 compatible argparse type method:
+    https://docs.python.org/3.8/library/argparse.html#type.
+
+    :param str argument: string argument from argparse
+
+    :returns: argument
+    :rtype: float
+    """
+    MINIMUM_VALUE = 0.0
+    try:
+        argument = float(argument)
+    except ValueError:
+        raise argparse.ArgumentTypeError("invalid float value: '{}'".format(argument))
+    if not argument > MINIMUM_VALUE:
+        raise argparse.ArgumentTypeError("invalid positive float: '{}'".format(argument))
+    return argument
+
+
 def construct_prog(basename):
     """Construct the Abaqus Python usage string
 
@@ -57,12 +78,14 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
 
     parser.add_argument("--input-file", type=str, nargs="+", required=True,
                         help="Name of an input file(s) with points in x-y coordinate system")
-    parser.add_argument("--unit-conversion", type=float, default=geometry_default_unit_conversion,
+    parser.add_argument("--unit-conversion", type=positive_float, default=geometry_default_unit_conversion,
                         help="Unit conversion multiplication factor (default: %(default)s)")
-    parser.add_argument("--euclidean_distance", type=float, default=geometry_default_euclidean_distance,
-                        help="Connect points with a straight line is the distance between is larger than this (default: %(default)s)")
+    parser.add_argument("--euclidean_distance", type=positive_float, default=geometry_default_euclidean_distance,
+                        help="Connect points with a straight line if the distance between them is larger than this " \
+                             "(default: %(default)s)")
     parser.add_argument("--planar", action='store_true',
-                        help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric (default: %(default)s)")
+                        help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric " \
+                             "(default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=geometry_default_model_name,
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, nargs="+", default=geometry_default_part_name,
@@ -87,11 +110,11 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
-    parser.add_argument("--inner-radius", type=float, required=True,
+    parser.add_argument("--inner-radius", type=positive_float, required=True,
                         help="Inner radius of hollow cylinder")
-    parser.add_argument("--outer-radius", type=float, required=True,
+    parser.add_argument("--outer-radius", type=positive_float, required=True,
                         help="Outer radius of cylinder")
-    parser.add_argument("--height", type=float, required=True,
+    parser.add_argument("--height", type=positive_float, required=True,
                         help="Height of the right circular cylinder")
     parser.add_argument("--output-file", type=str, required=True,
                         help="Name of the output Abaqus CAE file to save (default: %(default)s)")
@@ -120,9 +143,9 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
-    requiredNamed.add_argument('--inner-radius', type=float, required=True,
+    requiredNamed.add_argument('--inner-radius', type=positive_float, required=True,
                                help="Inner radius (hollow size)")
-    requiredNamed.add_argument('--outer-radius', type=float, required=True,
+    requiredNamed.add_argument('--outer-radius', type=positive_float, required=True,
                                help="Outer radius (sphere size)")
     requiredNamed.add_argument('--output-file', type=str, required=True,
                                help="Abaqus model database to create")
@@ -211,7 +234,7 @@ def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_descript
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument("--part-name", type=str, default=mesh_default_part_name,
                         help="Abaqus part name (default: %(default)s)")
-    parser.add_argument("--global-seed", type=float, default=mesh_default_global_seed,
+    parser.add_argument("--global-seed", type=positive_float, default=mesh_default_global_seed,
                         help="The global mesh seed size. Positive float.")
 
     return parser
