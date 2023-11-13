@@ -61,22 +61,12 @@ test_utilities
 test_vertices
 =============
 
-.. warning::
-
-   These are tests of a mixed Python 2/3 compatible module. When updating, be sure to update the Abaqus Python tests to
-   match.
-
 .. automodule:: turbo_turtle.tests.test_vertices
    :members:
    :private-members:
 
 test_mixed_utilities
 ====================
-
-.. warning::
-
-   These are tests of a mixed Python 2/3 compatible module. When updating, be sure to update the Abaqus Python tests to
-   match.
 
 .. automodule:: turbo_turtle.tests.test_mixed_python_utilities
    :members:
@@ -203,20 +193,12 @@ The test execution is also available as an SCons alias: ``test_abaqus_python``, 
 test_utilities
 ==============
 
-.. warning::
-
-   These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_mixed_python_utilities`
-
 .. automodule:: turbo_turtle._abaqus_python.test_utilities
    :members:
    :private-members:
 
 test_abaqus_utilities
 =====================
-
-.. note::
-
-   These are tests of the pure Abaqus Python utilities. The test file may make Abaqus Python specific imports.
 
 .. automodule:: turbo_turtle._abaqus_python.test_abaqus_utilities
    :members:

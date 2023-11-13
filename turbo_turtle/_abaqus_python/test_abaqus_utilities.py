@@ -1,3 +1,9 @@
+"""
+.. note::
+
+   These are tests of the pure Abaqus Python utilities. The test file may make Abaqus Python specific imports.
+"""
+
 import os
 import sys
 import inspect

@@ -1,3 +1,8 @@
+"""
+.. warning::
+
+   These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_mixed_python_utilities`
+"""
 import os
 import sys
 import inspect
