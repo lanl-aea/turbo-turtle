@@ -53,19 +53,6 @@ def test_validate_part_name(input_file, original_part_name, expected, outcome):
             pass
 
 
-return_genfromtxt = {
-    "good shape": (
-        "dummy", ",", 0, None, None, numpy.array([[0, 0], [1, 1]]), does_not_raise()
-    ),
-    "unexpected column": (
-        "dummy", ",", 0, None, 3, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
-    ),
-    "unexpected dimensions": (
-        "dummy", ",", 0, 1, None, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
-    ),
-}
-
-
 validate_element_type = {
     "default": (
         1, [None], [None], does_not_raise()
@@ -96,19 +83,28 @@ def test_validate_element_type(length_part_name, original_element_type, expected
         finally:
             pass
 
-
-@pytest.mark.parametrize("length_part_name, original_element_type, expected, outcome",
-                         validate_element_type.values(),
-                         ids=validate_element_type.keys())
-def test_validate_element_type_or_exit(length_part_name, original_element_type, expected, outcome):
-    if outcome == pytest.raises(RuntimeError):
+    # TODO: Figure out how to check against pytest.raises() instead.
+    if not isinstance(outcome, does_not_raise):
         outcome = pytest.raises(SystemExit)
     with outcome:
         try:
-            element_type = _utilities.validate_element_type(length_part_name, original_element_type)
+            element_type = _utilities.validate_element_type_or_exit(length_part_name, original_element_type)
             assert element_type == expected
         finally:
             pass
+
+
+return_genfromtxt = {
+    "good shape": (
+        "dummy", ",", 0, None, None, numpy.array([[0, 0], [1, 1]]), does_not_raise()
+    ),
+    "unexpected column": (
+        "dummy", ",", 0, None, 3, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
+    ),
+    "unexpected dimensions": (
+        "dummy", ",", 0, 1, None, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
+    ),
+}
 
 
 @pytest.mark.parametrize("file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome",
