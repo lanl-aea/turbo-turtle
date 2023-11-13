@@ -75,7 +75,7 @@ def main(input_file, output_file,
         _utilities.sys_exit(message)
     elif part_name[0] is not None and merged_part_count != requested_part_count:
         message = "Merged part count '{}' doesn't match unique part name count '{}'.".format(
-                  merged_part_count, requested_part_count))
+                  merged_part_count, requested_part_count)
         _utilities.sys_exit(message)
 
 
