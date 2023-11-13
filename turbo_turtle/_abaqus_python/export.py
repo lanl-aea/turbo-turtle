@@ -33,7 +33,7 @@ def main(input_file,
     """
     import abaqus
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    element_type = _validate_element_type(length_part_name=len(part_name), element_type=element_type)
+    element_type = _utilities.validate_element_type(length_part_name=len(part_name), element_type=element_type)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
@@ -63,31 +63,6 @@ def _export_assembly(assembly_file, model_name, part_name):
     assembly = re.findall(regex, block_string, re.IGNORECASE | re.MULTILINE | re.DOTALL)
     with open(assembly_file, 'w') as output:
         output.write(assembly[0].strip())
-
-
-def _validate_element_type(length_part_name, element_type):
-    """Validate the structure of the ``element_type`` list to the following rules:
-
-    * If ``element_type`` is ``[None]``, skip element type substitution
-    * Else If ``element_type`` is of length 1 and not ``[None]``, substitute that element type for all parts
-    * Else if the length of ``element_type`` is not equal to the length of ``part_name``, exit with an error
-
-    :param int length_part_name: length of the ``part_name`` list
-    :param list element_type: list of element types
-
-    :return: element types
-    :rtype: list
-    """
-    length_element_type = len(element_type)
-    if element_type[0] is None:
-        element_type = [None] * length_part_name
-    elif element_type[0] is not None and length_element_type == 1:
-        element_type = element_type * length_part_name
-    elif length_element_type != length_part_name:
-        message = "The element type length '{}' must match the part name length '{}'\n".format(
-                  length_element_type, length_part_name)
-        _utilities.sys_exit(message)
-    return element_type
 
 
 def export_multiple_parts(model_name, part_name, element_type, destination):

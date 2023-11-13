@@ -60,6 +60,28 @@ def validate_part_name_or_exit(*args, **kwargs):
     return validate_part_name(*args, **kwargs)
 
 
+def validate_element_type(length_part_name, element_type):
+    """Validate the structure of the ``element_type`` list to the following rules:
+
+    * If the length of ``element_type`` is 1, propagate to match ``length_part_name``
+    * Raise a RuntimeError if ``element_type`` is greater than 1, but not equal to the length of ``part_name``
+
+    :param int length_part_name: length of the ``part_name`` list
+    :param list element_type: list of element types
+
+    :return: element types
+    :rtype: list
+    """
+    length_element_type = len(element_type)
+    if length_element_type == 1:
+        element_type = element_type * length_part_name
+    elif length_element_type != length_part_name:
+        message = "The element type length '{}' must match the part name length '{}'\n".format(
+                  length_element_type, length_part_name)
+        _utilities.sys_exit(message)
+    return element_type
+
+
 def return_genfromtxt(file_name,
                       delimiter=',',
                       header_lines=0,
