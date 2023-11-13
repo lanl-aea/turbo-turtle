@@ -13,7 +13,7 @@ def sys_exit(err):
 
     :param Exception err: The exception object to print and pass to ``sys.exit``
     """
-    if sys.version_info.major == 2:  # pragma: no cover
+    if sys.version_info.major == 2:
         print >> sys.__stderr__, "{}".format(err)  # pragma: no cover
     sys.exit(str(err))
 
