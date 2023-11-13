@@ -4,7 +4,7 @@ import sys
 import numpy
 
 
-def _validate_part_name(input_file, part_name):
+def validate_part_name(input_file, part_name):
     """Validate the structure of the ``part_name`` list to the following rules:
 
     * If ``part_name`` is ``[None]``, assign the base names of ``input_file`` to ``part_name``

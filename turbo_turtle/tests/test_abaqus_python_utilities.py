@@ -47,7 +47,7 @@ validate_part_name = {
 def test_validate_part_name(input_file, original_part_name, expected, outcome):
     with outcome:
         try:
-            part_name = _utilities._validate_part_name(input_file, original_part_name)
+            part_name = _utilities.validate_part_name(input_file, original_part_name)
             assert part_name == expected
         finally:
             pass
