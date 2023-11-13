@@ -70,6 +70,18 @@ validate_element_type = {
     "default": (
         1, [None], [None], does_not_raise()
     ),
+    "two parts": (
+        2, [None], [None, None], does_not_raise()
+    ),
+    "two element types": (
+        2, ["C3D8"], ["C3D8", "C3D8"], does_not_raise()
+    ),
+    "one parts, two element types": (
+        1, ["C3D8", "C3D8"], [], pytest.raises(RuntimeError)
+    ),
+    "three parts, two element types": (
+        3, ["C3D8", "C3D8"], [], pytest.raises(RuntimeError)
+    ),
 }
 
 
