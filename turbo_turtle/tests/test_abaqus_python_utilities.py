@@ -1,5 +1,7 @@
+from unittest.mock import patch
 from contextlib import nullcontext as does_not_raise
 
+import numpy
 import pytest
 
 from turbo_turtle._abaqus_python import _utilities
@@ -47,5 +49,26 @@ def test_validate_part_name(input_file, original_part_name, expected, outcome):
         try:
             part_name = _utilities._validate_part_name(input_file, original_part_name)
             assert part_name == expected
+        finally:
+            pass
+
+
+return_genfromtxt = {
+    "good shape": (
+        "dummy", ",", 0, None, None, numpy.array([[0, 0], [1, 1]]), does_not_raise()
+    ),
+}
+
+
+@pytest.mark.parametrize("file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome",
+                         return_genfromtxt.values(),
+                         ids=return_genfromtxt.keys())
+def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome):
+    with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected) as mock_genfromtxt, outcome:
+        try:
+            coordinates = _utilities.return_genfromtxt(file_name, delimiter=delimiter, header_lines=header_lines,
+                                                       expected_dimensions=expected_dimensions,
+                                                       expected_columns=expected_columns)
+            assert numpy.allclose(coordinates, expected)
         finally:
             pass
