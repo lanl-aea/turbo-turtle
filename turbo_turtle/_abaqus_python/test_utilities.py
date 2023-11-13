@@ -27,9 +27,17 @@ class TestUtilities(unittest.TestCase):
     def test_validate_element_type_exception1(self):
         element_type = _utilities.validate_element_type(1, ["C3D8", "C3D8"])
 
+    def test_validate_element_type_exception1(self):
+        with self.assertRaises(SystemExit):
+            element_type = _utilities.validate_element_type_or_exit(1, ["C3D8", "C3D8"])
+
     @unittest.expectedFailure
     def test_validate_element_type_exception2(self):
         element_type = _utilities.validate_element_type(3, ["C3D8", "C3D8"])
+
+    def test_validate_element_type_exception2(self):
+        with self.assertRaises(SystemExit):
+            element_type = _utilities.validate_element_type_or_exit(3, ["C3D8", "C3D8"])
 
 
 if __name__ == '__main__':
