@@ -48,6 +48,8 @@ def main(input_file, output_file,
     import abaqus
     import abaqusConstants
 
+    raise RuntimeError("forced error")
+
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     part_name = _utilities._validate_part_name(input_file, part_name)
     output_file = os.path.splitext(output_file)[0] + ".cae"

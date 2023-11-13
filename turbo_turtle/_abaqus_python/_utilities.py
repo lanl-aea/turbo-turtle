@@ -8,7 +8,7 @@ def _validate_part_name(input_file, part_name):
     """Validate the structure of the ``part_name`` list to the following rules:
 
     * If ``part_name`` is ``[None]``, assign the base names of ``input_file`` to ``part_name``
-    * Else if the length of ``part_name`` is not equal to the length of ``input_file``, exit with an error
+    * Else if the length of ``part_name`` is not equal to the length of ``input_file``, raise an exception
 
     :param list input_file: input text file(s) with coordinates to draw
     :param list part_name: name(s) of part(s) being created
@@ -20,9 +20,8 @@ def _validate_part_name(input_file, part_name):
         part_name = [os.path.splitext(os.path.basename(part_file))[0] for part_file in input_file]
     elif len(input_file) != len(part_name):
         error_message = "Error: The part name length '{}' must match the input file length '{}'\n".format(
-            len(part_name), len(input_file))
-        sys.stderr.write(error_message)
-        sys.exit(1)
+                        len(part_name), len(input_file))
+        raise RuntimeError(error_message)
     return part_name
 
 
