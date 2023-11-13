@@ -1,6 +1,5 @@
-import subprocess
-
 from turbo_turtle import _settings
+from turbo_turtle import _utilities
 
 
 def geometry(args, command):
@@ -24,8 +23,7 @@ def geometry(args, command):
     command += f"--delimiter {args.delimiter} "
     command += f"--header-lines {args.header_lines} "
     command += f"--revolution-angle {args.revolution_angle}"
-    command = command.split()
-    stdout = subprocess.check_output(command)
+    _utilities.run_command(command)
 
 
 def cylinder(args, command):
@@ -44,8 +42,7 @@ def cylinder(args, command):
     command += f"--model-name {args.model_name} "
     command += f"--part-name {args.part_name} "
     command += f"--revolution-angle {args.revolution_angle}"
-    command = command.split()
-    stdout = subprocess.check_output(command)
+    _utilities.run_command(command)
 
 
 def sphere(args, command):
@@ -64,8 +61,7 @@ def sphere(args, command):
     command += f"--quadrant {args.quadrant} --angle {args.angle} "
     command += f"--center {' '.join(map(str, args.center))} "
     command += f"--model-name {args.model_name} --part-name {args.part_name}"
-    command = command.split()
-    stdout = subprocess.check_output(command)
+    _utilities.run_command(command)
 
 
 def partition(args, command):
@@ -88,8 +84,7 @@ def partition(args, command):
     command += f"--x-partitions {' '.join(map(str, args.x_partitions))} "
     command += f"--y-partitions {' '.join(map(str, args.y_partitions))} "
     command += f"--z-partitions {' '.join(map(str, args.z_partitions))} "
-    command = command.split()
-    stdout = subprocess.check_output(command)
+    _utilities.run_command(command)
 
 
 def mesh(args, command):
@@ -107,8 +102,7 @@ def mesh(args, command):
         command += f"--output-file {args.output_file} "
     command += f"--model-name {args.model_name} --part-name {args.part_name} "
     command += f"--global-seed {args.global_seed}"
-    command = command.split()
-    stdout = subprocess.check_output(command)
+    _utilities.run_command(command)
 
 
 def merge(args, command):
@@ -127,8 +121,7 @@ def merge(args, command):
         command += f"--model-name {' '.join(map(str, args.model_name))} "
     if args.part_name[0] is not None:
         command += f"--part-name {' '.join(map(str, args.part_name))}"
-    command = command.split()
-    stdout = subprocess.check_output(command)
+    _utilities.run_command(command)
 
 
 def export(args, command):
@@ -147,8 +140,7 @@ def export(args, command):
     command += f"--destination {args.destination} "
     if args.assembly is not None:
         command += f"--assembly {args.assembly}"
-    command = command.split()
-    stdout = subprocess.check_output(command)
+    _utilities.run_command(command)
 
 
 def image(args, command):
@@ -167,5 +159,4 @@ def image(args, command):
     command += f"--z-angle {args.z_angle} "
     command += f"--image-size {' '.join(map(str, args.image_size))} "
     command += f"--model-name {args.model_name} --part-name {args.part_name}"
-    command = command.split()
-    stdout = subprocess.check_output(command)
+    _utilities.run_command(command)

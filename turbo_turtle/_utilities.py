@@ -3,6 +3,7 @@ import shutil
 import pathlib
 import inspect
 import functools
+import subprocess
 
 from turbo_turtle._abaqus_python._utilities import print_exception_message
 
@@ -67,3 +68,15 @@ def find_cubit_bin(options):
     if cubit_bin is None:
         raise FileNotFoundError(message)
     return cubit_bin
+
+
+def run_command(command):
+    """Split command on whitespace, execute shell command, call sys.exit with any error message
+
+    :param str command: String to run on the shell
+    """
+    command = command.split()
+    try:
+        stdout = subprocess.check_output(command)
+    except subprocess.CalledProcessError as err:
+        sys.exit(err.output.decode())
