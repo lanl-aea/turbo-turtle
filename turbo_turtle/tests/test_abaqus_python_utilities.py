@@ -57,6 +57,9 @@ return_genfromtxt = {
     "good shape": (
         "dummy", ",", 0, None, None, numpy.array([[0, 0], [1, 1]]), does_not_raise()
     ),
+    "unexpected column": (
+        "dummy", ",", 0, None, 3, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
+    ),
 }
 
 

@@ -46,12 +46,12 @@ def return_genfromtxt(file_name,
     shape = coordinates.shape
     dimensions = len(shape)
     if expected_dimensions is not None and dimensions != expected_dimensions:
-        sys.stderr.write("Expected coordinates with '{}' dimensions. Found '{}' dimensions\n".format(
-                         expected_dimensions, dimensions))
-        sys.exit(1)
+        message = "Expected coordinates with '{}' dimensions. Found '{}' dimensions\n".format(
+                  expected_dimensions, dimensions)
+        raise RuntimeError(message)
     columns = shape[1]
     if expected_columns is not None and columns != expected_columns:
-        sys.stderr.write("Expected coordinates with '{}' columns. Found '{}' columns\n".format(
-                         expected_columns, columns))
-        sys.exit(2)
+        message = "Expected coordinates with '{}' columns. Found '{}' columns\n".format(
+                  expected_columns, columns)
+        raise RuntimeError(message)
     return coordinates
