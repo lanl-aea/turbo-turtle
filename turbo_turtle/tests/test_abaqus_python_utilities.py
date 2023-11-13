@@ -66,6 +66,25 @@ return_genfromtxt = {
 }
 
 
+validate_element_type = {
+    "default": (
+        1, [None], [None], does_not_raise()
+    ),
+}
+
+
+@pytest.mark.parametrize("length_part_name, original_element_type, expected, outcome",
+                         validate_element_type.values(),
+                         ids=validate_element_type.keys())
+def test_validate_element_type(length_part_name, original_element_type, expected, outcome):
+    with outcome:
+        try:
+            element_type = _utilities.validate_element_type(length_part_name, original_element_type)
+            assert element_type == expected
+        finally:
+            pass
+
+
 @pytest.mark.parametrize("file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome",
                          return_genfromtxt.values(),
                          ids=return_genfromtxt.keys())
