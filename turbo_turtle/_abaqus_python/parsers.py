@@ -154,7 +154,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
                         help="Abaqus model database to open (default: %(default)s)")
     parser.add_argument("--quadrant", type=str, choices=("both", "upper", "lower"), default=sphere_default_quadrant,
                         help="XY plane quadrant: both, upper (I), lower (IV) (default: %(default)s)")
-    parser.add_argument('--angle', type=float, default=sphere_default_angle,
+    parser.add_argument('--revolution-angle', type=float, default=sphere_default_angle,
                         help="Angle of revolution about the +Y axis (default: %(default)s)")
     parser.add_argument('--center', nargs=2, type=float, default=sphere_default_center,
                         help="Center of the sphere (default: %(default)s)")
