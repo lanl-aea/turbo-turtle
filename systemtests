@@ -55,7 +55,7 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
         action=[
             "python -m turbo_turtle.main sphere --inner-radius 1 --outer-radius 2 --output-file ${TARGET.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --quadrant ${quadrant} " \
-                "--angle ${angle} --center ${center}",
+                "--revolution-angle ${angle} --center ${center}",
             "python -m turbo_turtle.main partition --input-file ${TARGET.abspath} --output-file ${TARGET.abspath} " \
                 "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} --center ${center} 0 " \
                 "--xpoint ${xpoint} --zpoint ${zpoint} --plane-angle 45",

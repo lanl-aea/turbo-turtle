@@ -56,7 +56,7 @@ Two-dimensional, axisymmetric sphere
 
    .. code-block::
 
-      turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --angle 0
+      turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric --revolution-angle 0
 
 2. Partition the geometry
 
