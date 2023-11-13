@@ -38,8 +38,43 @@ _utilities
    :members:
    :private-members:
 
+.. _python3_tests:
+
+**************
+Python 3 tests
+**************
+
+test_main
+=========
+
+.. automodule:: turbo_turtle.tests.test_main
+   :members:
+   :private-members:
+
+test_utilities
+==============
+
+.. automodule:: turbo_turtle.tests.test_utilities
+   :members:
+   :private-members:
+
+test_vertices
+=============
+
+.. warning::
+
+   These are tests of a mixed Python 2/3 compatible module
+
+.. automodule:: turbo_turtle.tests.test_vertices
+   :members:
+   :private-members:
+
 test_mixed_utilities
 ====================
+
+.. warning::
+
+   These are tests of a mixed Python 2/3 compatible module
 
 .. automodule:: turbo_turtle.tests.test_mixed_python_utilities
    :members:
@@ -54,7 +89,7 @@ compatibility with the Python 2.7 site-packages provided by Abaqus. For re-use i
 be co-located in the Abaqus Python module. Each module should be self-contained to minimize the risk of polluting the
 Abaqus Python namespace with Python 3 modules, and vice versa.
 
-These modules may have duplicate tests in Python 3 ``turbo_turtle/tests/test*.py`` and Abaqus Python
+These modules may have duplicate :ref:`python3_tests` ``turbo_turtle/tests/test*.py`` and :ref:`abaqus_python_tests`
 ``turbo_turtle/_abaqus_python/test*.py``
 
 parsers
@@ -146,6 +181,8 @@ export
 .. automodule:: turbo_turtle._abaqus_python.export
    :members:
    :private-members:
+
+.. _abaqus_python_tests:
 
 *******************
 Abaqus Python tests
