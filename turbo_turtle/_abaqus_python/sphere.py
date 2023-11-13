@@ -19,7 +19,7 @@ import _utilities
 def main(inner_radius, outer_radius, output_file,
          input_file=parsers.sphere_default_input_file,
          quadrant=parsers.sphere_default_quadrant,
-         angle=parsers.sphere_default_angle,
+         revolution_angle=parsers.sphere_default_angle,
          center=parsers.sphere_default_center,
          model_name=parsers.sphere_default_model_name,
          part_name=parsers.sphere_default_part_name):
@@ -30,7 +30,7 @@ def main(inner_radius, outer_radius, output_file,
     :param str output_file: output file name. Will be stripped of the extension and ``.cae`` will be used.
     :param str input_file: input file name. Will be stripped of the extension and ``.cae`` will be used.
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
-    :param float angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
     :param tuple center: tuple of floats (X, Y) location for the center of the sphere
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
@@ -45,19 +45,19 @@ def main(inner_radius, outer_radius, output_file,
         with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
             shutil.copyfile(input_file, copy_file.name)
             abaqus.openMdb(pathName=copy_file.name)
-            sphere(inner_radius, outer_radius, quadrant=quadrant, angle=angle, center=center,
+            sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                    model_name=model_name, part_name=part_name)
             abaqus.mdb.saveAs(pathName=output_file)
 
     else:
-        sphere(inner_radius, outer_radius, quadrant=quadrant, angle=angle, center=center,
+        sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                model_name=model_name, part_name=part_name)
         abaqus.mdb.saveAs(pathName=output_file)
 
 
 def sphere(inner_radius, outer_radius,
            quadrant=parsers.sphere_default_quadrant,
-           angle=parsers.sphere_default_angle,
+           revolution_angle=parsers.sphere_default_angle,
            center=parsers.sphere_default_center,
            model_name=parsers.sphere_default_model_name,
            part_name=parsers.sphere_default_part_name):
@@ -70,7 +70,7 @@ def sphere(inner_radius, outer_radius,
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
-    :param float angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
     :param tuple center: tuple of floats (X, Y) location for the center of the sphere
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
@@ -115,13 +115,13 @@ def sphere(inner_radius, outer_radius,
     centerline = sketch.ConstructionLine(point1=center, angle=90.0)
     sketch.assignCenterline(line=centerline)
 
-    if numpy.isclose(angle, 0.):
+    if numpy.isclose(revolution_angle, 0.):
         part = model.Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
                           type=abaqusConstants.DEFORMABLE_BODY)
         part.BaseShell(sketch=sketch)
     else:
         part = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D, type=abaqusConstants.DEFORMABLE_BODY)
-        part.BaseSolidRevolve(sketch=sketch, angle=angle, flipRevolveDirection=abaqusConstants.OFF)
+        part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqusConstants.OFF)
     del sketch
 
 
@@ -139,7 +139,7 @@ if __name__ == "__main__":
         args.output_file,
         input_file=args.input_file,
         quadrant=args.quadrant,
-        angle=args.angle,
+        revolution_angle=args.revolution_angle,
         center=args.center,
         model_name=args.model_name,
         part_name=args.part_name
