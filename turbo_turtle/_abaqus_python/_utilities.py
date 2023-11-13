@@ -5,6 +5,19 @@ import functools
 import numpy
 
 
+def sys_exit(err):
+    """Thin wrapper on ``sys.exit`` to force print to STDERR from Abaqus Python
+
+    Preserves Python 3 compatibility by performing a Python major version check prior to the Python 2 syntax call to
+    ``print``.
+
+    :param Exception err: The exception object to print and pass to ``sys.exit``
+    """
+    if sys.version_info.major == 2:
+        print >> sys.__stderr__, "{}".format(err)
+    sys.exit(str(err))
+
+
 def print_exception_message(function):
     """Decorate a function to catch bare exception and instead call sys.exit with the message
 
@@ -15,9 +28,7 @@ def print_exception_message(function):
         try:
             output = function(*args, **kwargs)
         except Exception as err:
-            if sys.version_info.major == 2:
-                print >> sys.__stderr__, "{}".format(err)
-            sys.exit(str(err))
+            sys_exit(err)
         return output
     return wrapper
 
