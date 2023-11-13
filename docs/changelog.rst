@@ -20,10 +20,13 @@ Internal Changes
   Brindley`_.
 - Add a version controlled CI and development environment (:issue:`13`, :merge:`38`). By `Kyle Brindley`_.
 - Python 2/3 compatible 2D polar coordinate to 2D XY coordinate converter. By `Kyle Brindley`_.
+- Move Abaqus Python geometry functions that are Python 3 compatible to a dedicated Python 2/3 compatible utilities
+  module (:issue:`52`, :merge:`43`). By `Kyle Brindley`_.
 
 Enhancements
 ============
 - Raise an error if the provided Abaqus command is not found (:issue:`48`, :merge:`40`). By `Kyle Brindley`_.
+- Better error reporting on STDERR when running Abaqus Python scripts (:issue:`52`, :merge:`43`). By `Kyle Brindley`_.
 
 *******************
 v0.5.1 (2023-11-09)
