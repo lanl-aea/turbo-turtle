@@ -136,3 +136,25 @@ export
 .. automodule:: turbo_turtle._abaqus_python.export
    :members:
    :private-members:
+
+*******************
+Abaqus Python tests
+*******************
+
+Abaqus python unit test files may be executed as ``abaqus python filename``, for example from the project root directory
+
+.. code-block::
+
+   $ abq2023 python turbo_turtle/_abaqus_python/test_abaqus_utilities.py
+   .
+   ----------------------------------------------------------------------
+   Ran 1 test in 0.000s
+
+   OK
+
+test_abaqus_utilities
+=====================
+
+.. automodule:: turbo_turtle._abaqus_python.test_abaqus_utilities
+   :members:
+   :private-members:
