@@ -74,6 +74,13 @@ Abaqus Python
 
 The modules are intended purely for Abaqus Python use, but may freely use the mixed Python 2/3 compatible modules.
 
+_abaqus_utilities
+=================
+
+.. automodule:: turbo_turtle._abaqus_python._abaqus_utilities
+   :members:
+   :private-members:
+
 geometry
 ========
 
