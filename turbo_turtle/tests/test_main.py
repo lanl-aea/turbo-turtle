@@ -7,6 +7,7 @@ from turbo_turtle import _settings
 
 
 def test_docs():
+    """Test the docs subcommand behavior"""
     with patch("webbrowser.open") as mock_webbrowser_open, \
          patch("pathlib.Path.exists", return_value=True):
         main._docs()
