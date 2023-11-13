@@ -27,6 +27,7 @@ Enhancements
 ============
 - Raise an error if the provided Abaqus command is not found (:issue:`48`, :merge:`40`). By `Kyle Brindley`_.
 - Better error reporting on STDERR when running Abaqus Python scripts (:issue:`52`, :merge:`43`). By `Kyle Brindley`_.
+- Enforce positive floats in the CLI when they are expected (:merge:`44`). By `Kyle Brindley`_.
 
 *******************
 v0.5.1 (2023-11-09)
