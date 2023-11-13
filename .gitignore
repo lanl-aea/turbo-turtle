@@ -5,6 +5,7 @@ conda-bld/
 *.eggs/
 _version.py
 test_results.xml
+test_abaqus_python.txt
 
 .sconsign.dblite
 config.log
