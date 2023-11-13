@@ -11,6 +11,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
+import _utilities
 
 
 def main(input_file, element_type,
@@ -64,8 +65,8 @@ def mesh(element_type,
     # TODO: figure out how to use element type for both 2D/3D meshes
     element_type_object = return_abaqus_constant(element_type)
     if element_type_object is None:
-        sys.stderr.write("Element type '{}' not found in abaqusConstants".format(element_type))
-        sys.exit(1)
+        message = "Element type '{}' not found in abaqusConstants".format(element_type)
+        _utilities.sys_exit(message)
     # TODO: enable STANDARD/EXPLICIT switch?
     mesh_element_type = mesh.ElemType(elemCode=element_type_object, elemLibrary=abaqusConstants.STANDARD)
 

@@ -9,6 +9,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
+import _utilities
 
 
 def main(input_file, output_file,
@@ -59,10 +60,9 @@ def main(input_file, output_file,
                         this_part, this_model, cae_file, merged_model_name)
                     sys.stdout.write(success_message)
                 except:
-                    warning_message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n".format(
-                        this_part, this_model, cae_file)
-                    sys.stderr.write(warning_message)
-                    sys.exit(1)
+                    message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n".format(
+                              this_part, this_model, cae_file)
+                    _utilities.sys_exit(message)
             # If the current model was found in the current cae_file, clean it before ending the loop
             if tmp_model is not None:
                 del abaqus.mdb.models[tmp_model]
@@ -71,12 +71,12 @@ def main(input_file, output_file,
 
     merged_part_count = len(merged_model.parts.keys())
     if  merged_part_count == 0:
-        sys.stderr.write("No parts were merged. Check the input file, model and part name lists.")
-        sys.exit(2)
+        message = "No parts were merged. Check the input file, model and part name lists."
+        _utilities.sys_exit(message)
     elif part_name[0] is not None and merged_part_count != requested_part_count:
-        sys.stderr.write("Merged part count '{}' doesn't match unique part name count '{}'.".format(
-                         merged_part_count, requested_part_count))
-        sys.exit(3)
+        message = "Merged part count '{}' doesn't match unique part name count '{}'.".format(
+                  merged_part_count, requested_part_count))
+        _utilities.sys_exit(message)
 
 
 def _intersection_of_lists(requested, available):

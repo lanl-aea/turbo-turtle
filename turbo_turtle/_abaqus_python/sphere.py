@@ -13,6 +13,7 @@ parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
 import vertices
+import _utilities
 
 
 def main(inner_radius, outer_radius, output_file,
@@ -79,8 +80,8 @@ def sphere(inner_radius, outer_radius,
 
     quadrant_options = ("both", "upper", "lower")
     if not quadrant in quadrant_options:
-        sys.stderr.write("Quadrant option must be one of: {}".format(quadrant_options))
-        sys.exit(1)
+        message = "Quadrant option must be one of: {}".format(quadrant_options)
+        _utilities.sys_exit(message)
 
     if not model_name in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)

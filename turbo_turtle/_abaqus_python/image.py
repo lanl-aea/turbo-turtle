@@ -11,6 +11,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
+import _utilities
 
 
 def main(input_file, output_file,
@@ -48,8 +49,8 @@ def main(input_file, output_file,
         image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
               model_name=model_name, part_name=lart_name, color_map=color_map)
     else:
-        sys.stderr.write("Uknown file extension {}".format(input_file_extension))
-        sys.exit(1)
+        message = "Uknown file extension {}".format(input_file_extension)
+        _utilities.sys_exit(message)
 
 
 def image(output_file,
