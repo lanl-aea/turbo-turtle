@@ -141,16 +141,15 @@ export
 Abaqus Python tests
 *******************
 
-Abaqus python unit test files may be executed as ``abaqus python filename``, for example from the project root directory
+Abaqus python unit test files may be executed as ``abaqus python -m unittest discover <directory>``, for example from
+the project root directory
 
 .. code-block::
 
-   $ abq2023 python turbo_turtle/_abaqus_python/test_abaqus_utilities.py
-   .
-   ----------------------------------------------------------------------
-   Ran 1 test in 0.000s
+   $ abq2023 python -m unittest discover turbo_turtle/_abaqus_python
 
-   OK
+The test execution is also available as an SCons alias: ``test_abaqus_python``, which is collected under the aliases:
+``unittest`` and ``regression``.
 
 test_abaqus_utilities
 =====================

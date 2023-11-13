@@ -37,7 +37,7 @@ targets = env.Command(
     ],
     program=env["abaqus"]
 )
-env.Alias("test_abaqus", targets)
+env.Alias("test_abaqus_python", targets)
 env.Alias("unittests", targets)
 env.Alias("regression", targets)
 # Always run pytests in place of a complete source list
