@@ -61,6 +61,13 @@ vertices
    :members:
    :private-members:
 
+_utilities
+==========
+
+.. automodule:: turbo_turtle._abaqus_python._utilities
+   :members:
+   :private-members:
+
 *************
 Abaqus Python
 *************
