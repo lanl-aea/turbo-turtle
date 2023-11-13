@@ -60,6 +60,9 @@ return_genfromtxt = {
     "unexpected column": (
         "dummy", ",", 0, None, 3, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
     ),
+    "unexpected dimensions": (
+        "dummy", ",", 0, 1, None, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
+    ),
 }
 
 
