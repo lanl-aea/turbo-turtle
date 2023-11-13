@@ -33,7 +33,7 @@ targets = env.Command(
     target=target,
     source=source,
     action=[
-        "${program} python ${SOURCES} --verbose 2>&1 | tee test_abaqus_python.txt"
+        "${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose 2>&1 | tee test_abaqus_python.txt"
     ],
     program=env["abaqus"]
 )

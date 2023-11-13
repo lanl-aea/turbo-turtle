@@ -26,7 +26,6 @@ class TestAbaqusUtilities(unittest.TestCase):
         attribute = _abaqus_utilities.return_abaqus_constant_or_exit("C3D8")
         assert attribute == abaqusConstants.C3D8
 
-    @unittest.expectedFailure
     def test_return_abaqus_constant_or_exit_error(self):
         with self.assertRaises(SystemExit):
             attribute = _abaqus_utilities.return_abaqus_constant_or_exit("NotFound")
