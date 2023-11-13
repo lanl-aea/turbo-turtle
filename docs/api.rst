@@ -38,6 +38,13 @@ _utilities
    :members:
    :private-members:
 
+test_mixed_utilities
+====================
+
+.. automodule:: turbo_turtle.tests.test_mixed_python_utilities
+   :members:
+   :private-members:
+
 **********
 Python 2/3
 **********
@@ -46,6 +53,9 @@ These modules are intended for re-use in both Python 3 and Abaqus Python. Care s
 compatibility with the Python 2.7 site-packages provided by Abaqus. For re-use in the Abaqus Python scripts, they must
 be co-located in the Abaqus Python module. Each module should be self-contained to minimize the risk of polluting the
 Abaqus Python namespace with Python 3 modules, and vice versa.
+
+These modules may have duplicate tests in Python 3 ``turbo_turtle/tests/test*.py`` and Abaqus Python
+``turbo_turtle/_abaqus_python/test*.py``
 
 parsers
 =======
@@ -151,8 +161,23 @@ the project root directory
 The test execution is also available as an SCons alias: ``test_abaqus_python``, which is collected under the aliases:
 ``unittest`` and ``regression``.
 
+test_utilities
+==============
+
+.. warning::
+
+   These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_mixed_python_utilities`
+
+.. automodule:: turbo_turtle._abaqus_python.test_utilities
+   :members:
+   :private-members:
+
 test_abaqus_utilities
 =====================
+
+.. note::
+
+   These are tests of the pure Abaqus Python utilities. The test file may make Abaqus Python specific imports.
 
 .. automodule:: turbo_turtle._abaqus_python.test_abaqus_utilities
    :members:
