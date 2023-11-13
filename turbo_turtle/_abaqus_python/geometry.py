@@ -59,9 +59,8 @@ def main(input_file, output_file,
             draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle)
         except:
-            error_message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
-            sys.stderr.write(error_message)
-            sys.exit(1)
+            message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
+            _utilities.sys_exit(message)
 
     abaqus.mdb.saveAs(pathName=output_file)
 
