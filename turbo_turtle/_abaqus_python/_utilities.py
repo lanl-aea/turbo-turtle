@@ -15,6 +15,8 @@ def print_exception_message(function):
         try:
             output = function(*args, **kwargs)
         except Exception as err:
+            if sys.version_info.major == 2:
+                print >> sys.__stderr__, "{}".format(err)
             sys.exit(str(err))
         return output
     return wrapper
