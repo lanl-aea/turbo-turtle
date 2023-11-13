@@ -1,7 +1,23 @@
 import os
 import sys
+import functools
 
 import numpy
+
+
+def print_exception_message(function):
+    """Decorate a function to catch bare exception and instead call sys.exit with the message
+
+    :param function: function to decorate
+    """
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
+        try:
+            output = function(*args, **kwargs)
+        except Exception as err:
+            sys.exit(str(err))
+        return output
+    return wrapper
 
 
 def validate_part_name(input_file, part_name):
@@ -23,6 +39,11 @@ def validate_part_name(input_file, part_name):
                         len(part_name), len(input_file))
         raise RuntimeError(error_message)
     return part_name
+
+
+@print_exception_message
+def validate_part_name_or_exit(*args, **kwargs):
+    return validate_part_name(*args, **kwargs)
 
 
 def return_genfromtxt(file_name,

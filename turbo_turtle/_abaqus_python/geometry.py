@@ -49,10 +49,7 @@ def main(input_file, output_file,
     import abaqusConstants
 
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
-    try:
-        part_name = _utilities.validate_part_name(input_file, part_name)
-    except RuntimeError as err:
-        sys.exit(str(err))
+    part_name = _utilities.validate_part_name_or_exit(input_file, part_name)
     output_file = os.path.splitext(output_file)[0] + ".cae"
     for file_name, new_part in zip(input_file, part_name):
         try:
