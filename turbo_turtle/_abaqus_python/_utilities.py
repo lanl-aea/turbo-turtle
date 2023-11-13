@@ -49,9 +49,9 @@ def validate_part_name(input_file, part_name):
     if part_name[0] is None:
         part_name = [os.path.splitext(os.path.basename(part_file))[0] for part_file in input_file]
     elif len(input_file) != len(part_name):
-        error_message = "Error: The part name length '{}' must match the input file length '{}'\n".format(
-                        len(part_name), len(input_file))
-        raise RuntimeError(error_message)
+        message = "Error: The part name length '{}' must match the input file length '{}'\n".format(
+                  len(part_name), len(input_file))
+        raise RuntimeError(message)
     return part_name
 
 
@@ -78,8 +78,13 @@ def validate_element_type(length_part_name, element_type):
     elif length_element_type != length_part_name:
         message = "The element type length '{}' must match the part name length '{}'\n".format(
                   length_element_type, length_part_name)
-        _utilities.sys_exit(message)
+        raise RuntimeError(message)
     return element_type
+
+
+@print_exception_message
+def validate_element_type_or_exit(*args, **kwargs):
+    return validate_element_type(*args, **kwargs)
 
 
 def return_genfromtxt(file_name,
