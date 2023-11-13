@@ -26,7 +26,7 @@ class TestUtilities(unittest.TestCase):
         ]
         for length_part_name, original_element_type, expected in tests:
             element_type = _utilities.validate_element_type(length_part_name, original_element_type)
-            assert element_type == expected
+            self.assertEqual(element_type, expected)
 
     @unittest.expectedFailure
     def test_validate_element_type_exception1(self):
@@ -43,6 +43,16 @@ class TestUtilities(unittest.TestCase):
     def test_validate_element_type_exception2(self):
         with self.assertRaises(SystemExit):
             element_type = _utilities.validate_element_type_or_exit(3, ["C3D8", "C3D8"])
+
+    def test_remote_duplicate_items(self):
+        tests = [
+            (["thing1", "thing2"], ["thing1", "thing2"]),
+            (["thing1", "thing2", "thing1"], ["thing1", "thing2"]),
+        ]
+        for string_list, expected in tests:
+            unique = _utilities.remove_duplicate_items(string_list)
+            self.assertEqual(unique, expected)
+            # TODO: Figure out how to verify sys.stderr.write and print without mock module in Abaqus Python
 
 
 if __name__ == '__main__':
