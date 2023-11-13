@@ -63,7 +63,8 @@ test_vertices
 
 .. warning::
 
-   These are tests of a mixed Python 2/3 compatible module
+   These are tests of a mixed Python 2/3 compatible module. When updating, be sure to update the Abaqus Python tests to
+   match.
 
 .. automodule:: turbo_turtle.tests.test_vertices
    :members:
@@ -74,7 +75,8 @@ test_mixed_utilities
 
 .. warning::
 
-   These are tests of a mixed Python 2/3 compatible module
+   These are tests of a mixed Python 2/3 compatible module. When updating, be sure to update the Abaqus Python tests to
+   match.
 
 .. automodule:: turbo_turtle.tests.test_mixed_python_utilities
    :members:
