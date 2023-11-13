@@ -46,4 +46,3 @@ def test_run_command():
     with patch("subprocess.check_output", side_effect=subprocess.CalledProcessError(1, "dummy", b"output")), \
          pytest.raises(SystemExit):
         _utilities.run_command("dummy")
-        mock_exit.assert_called_once()
