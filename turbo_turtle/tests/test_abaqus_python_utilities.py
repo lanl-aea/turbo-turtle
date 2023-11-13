@@ -78,3 +78,9 @@ def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensio
             assert numpy.allclose(coordinates, expected)
         finally:
             pass
+
+
+def test_sys_exit():
+    with patch("sys.exit") as mock_exit:
+        _utilities.sys_exit("message")
+        mock_exit.assert_called_once_with("message")
