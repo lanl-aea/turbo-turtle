@@ -1,15 +1,31 @@
-def return_abaqus_constant(search_string):
-    """If search_string is found in the abaqusConstants module, return the abaqusConstants object. Else None
+filename = inspect.getfile(lambda: None)
+basename = os.path.basename(filename)
+parent = os.path.dirname(filename)
+sys.path.insert(0, parent)
+import _utilities
 
-    :param str search_string: string to search in the abaqusConstants module attributes
 
-    :return value: abaqusConstants attribute, if it exists. Else None
-    :rtype: abaqusConstants attribute type, if it exists. Else None
+def return_abaqus_constant(search):
+    """If search is found in the abaqusConstants module, return the abaqusConstants object.
+
+    Raise a ValueError if the search string is not found.
+
+    :param str search: string to search in the abaqusConstants module attributes
+
+    :return value: abaqusConstants attribute
+    :rtype: abaqusConstants.<search>
     """
     import abaqusConstants
 
-    search_string = search_string.upper()
+    search = search.upper()
     attribute = None
-    if hasattr(abaqusConstants, search_string):
-        attribute = getattr(abaqusConstants, search_string)
+    if hasattr(abaqusConstants, search):
+        attribute = getattr(abaqusConstants, search)
+    else:
+        raise ValueError("The abaqusConstants module does not have a matching '{}' object".format(search))
     return attribute
+
+
+@print_exception_message
+def return_abaqus_constant_or_exit(*args, **kwargs):
+    return return_abaqus_constant(*args, **kwargs)

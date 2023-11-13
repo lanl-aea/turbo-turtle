@@ -63,11 +63,7 @@ def mesh(element_type,
     # TODO: make the deviation and size factor options
     part.seedPart(size=global_seed, deviationFactor=0.1, minSizeFactor=0.1)
 
-    # TODO: figure out how to use element type for both 2D/3D meshes
-    element_type_object = _abaqus_utilities.return_abaqus_constant(element_type)
-    if element_type_object is None:
-        message = "Element type '{}' not found in abaqusConstants".format(element_type)
-        _utilities.sys_exit(message)
+    element_type_object = _abaqus_utilities.return_abaqus_constant_or_exit(element_type)
     # TODO: enable STANDARD/EXPLICIT switch?
     mesh_element_type = mesh.ElemType(elemCode=element_type_object, elemLibrary=abaqusConstants.STANDARD)
 

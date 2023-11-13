@@ -12,6 +12,7 @@ parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
 import _utilities
+import _abaqus_utilities
 
 
 def main(input_file, output_file,
@@ -82,6 +83,7 @@ def image(output_file,
     import abaqusConstants
 
     output_file_stem, output_file_extension = os.path.splitext(output_file)
+    output_file_extension = output_file_extension.lstrip(".")
     assembly = abaqus.mdb.models[model_name].rootAssembly
     if len(assembly.instances.keys()) == 0:
         part = abaqus.mdb.models[model_name].parts[part_name]
@@ -98,23 +100,13 @@ def image(output_file,
     session.viewports['Viewport: 1'].disableMultipleColors()
     session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
     session.pngOptions.setValues(imageSize=image_size)
-    session.printToFile(fileName=output_file_stem, format=get_abaqus_image_constant(output_file_extension),
+
+    output_format = _abaqus_utilities.return_abaqus_constant_or_exit(output_file_extension)
+    if output_format is None:
+        _utilities.sys_exit("Abaqus does not recognize the output extension '{}'".format(output_file_extension))
+
+    session.printToFile(fileName=output_file_stem, format=output_format,
         canvasObjects=(session.viewports['Viewport: 1'], ))
-
-
-def get_abaqus_image_constant(file_extension):
-    """
-    Function for converting a string for an image file extension (e.g. ``.png``) to the corresponding
-    ``abaqusConstants`` value.
-    """
-    import abaqusConstants
-
-    switcher = {
-        '.PNG': abaqusConstants.PNG,
-        '.SVG': abaqusConstants.SVG
-    }
-
-    return switcher.get(file_extension.upper(), "")
 
 
 if __name__ == "__main__":
