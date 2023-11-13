@@ -44,6 +44,6 @@ def test_find_command(options, found, outcome):
 
 def test_run_command():
     with patch("subprocess.check_output", side_effect=subprocess.CalledProcessError(1, "dummy", b"output")), \
-         patch("sys.exit") as mock_exit:
+         pytest.raises(SystemExit):
         _utilities.run_command("dummy")
         mock_exit.assert_called_once()
