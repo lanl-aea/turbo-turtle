@@ -18,6 +18,11 @@ class TestAbaqusUtilities(unittest.TestCase):
         attribute = _abaqus_utilities.return_abaqus_constant("C3D8")
         assert attribute == abaqusConstants.C3D8
 
+    @unittest.expectedFailure
+    def test_return_abaqus_constant_exception(self):
+        attribute = _abaqus_utilities.return_abaqus_constant("NotFound")
+        assert attribute == abaqusConstants.C3D8
+
 
 if __name__ == '__main__':
     unittest.main()
