@@ -76,3 +76,8 @@ def return_genfromtxt(file_name,
                   expected_columns, columns)
         raise RuntimeError(message)
     return coordinates
+
+
+@print_exception_message
+def return_genfromtxt_or_exit(*args, **kwargs):
+    return return_genfromtxt(*args, **kwargs)
