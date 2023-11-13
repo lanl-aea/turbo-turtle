@@ -5,13 +5,17 @@ Changelog
 #########
 
 *******************
-v0.6.0 (unreleased)
+v0.6.1 (unreleased)
+*******************
+
+*******************
+v0.6.0 (2023-11-13)
 *******************
 
 Breaking changes
 ================
 - Consistent angle of revolution command line argument between subcommands: ``sphere`` now accepts
-  ``--revolution-angle`` instead of ``--revolution-angle``. (:issue:`57`, :merge:`47`). By `Kyle Brindley`_.
+  ``--revolution-angle`` instead of ``--angle``. (:issue:`57`, :merge:`47`). By `Kyle Brindley`_.
 
 *******************
 v0.5.2 (2023-11-13)
