@@ -12,6 +12,7 @@ parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
 import _utilities
+import _abaqus_utilities
 
 
 def main(input_file, element_type,
@@ -63,7 +64,7 @@ def mesh(element_type,
     part.seedPart(size=global_seed, deviationFactor=0.1, minSizeFactor=0.1)
 
     # TODO: figure out how to use element type for both 2D/3D meshes
-    element_type_object = return_abaqus_constant(element_type)
+    element_type_object = _abaqus_utilities.return_abaqus_constant(element_type)
     if element_type_object is None:
         message = "Element type '{}' not found in abaqusConstants".format(element_type)
         _utilities.sys_exit(message)
@@ -83,23 +84,6 @@ def mesh(element_type,
         part.setElementType(regions=(faces,), elemTypes=(mesh_element_type,))
 
     part.generateMesh()
-
-
-def return_abaqus_constant(search_string):
-    """If search_string is found in the abaqusConstants module, return the abaqusConstants object. Else None
-
-    :param str search_string: string to search in the abaqusConstants module attributes
-
-    :return value: abaqusConstants attribute, if it exists. Else None
-    :rtype: abaqusConstants attribute type, if it exists. Else None
-    """
-    import abaqusConstants
-
-    search_string = search_string.upper()
-    attribute = None
-    if hasattr(abaqusConstants, search_string):
-        attribute = getattr(abaqusConstants, search_string)
-    return attribute
 
 
 if __name__ == "__main__":
