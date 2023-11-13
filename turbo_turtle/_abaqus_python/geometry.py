@@ -52,7 +52,7 @@ def main(input_file, output_file,
     try:
         part_name = _utilities._validate_part_name(input_file, part_name)
     except RuntimeError as err:
-        sys.exit(err)
+        sys.exit(str(err))
     output_file = os.path.splitext(output_file)[0] + ".cae"
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _utilities.return_genfromtxt(file_name, delimiter, header_lines,
