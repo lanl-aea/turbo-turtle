@@ -31,6 +31,7 @@ env = Environment(
     ENV=os.environ.copy(),
     variant_dir_base=GetOption("variant_dir_base")
 )
+env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
 
 variant_dir_base = pathlib.Path(env["variant_dir_base"])
 build_dir = variant_dir_base / "docs"

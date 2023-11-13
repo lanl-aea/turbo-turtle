@@ -23,8 +23,22 @@ targets = env.Command(
 )
 env.Alias("pytest", targets)
 env.Alias("unittests", targets)
+env.Alias("regression", targets)
 # Always run pytests in place of a complete source list
 env.AlwaysBuild(targets)
 
-# Collector alias to build all regression tasks
+target = ["test_abaqus_python.txt"]
+source = ["turbo_turtle/_abaqus_python/test_abaqus_utilities.py"]
+targets = env.Command(
+    target=target,
+    source=source,
+    action=[
+        "${program} python ${SOURCES} 2>&1 | tee test_abaqus_python.txt"
+    ],
+    program=env["abaqus"]
+)
+env.Alias("test_abaqus", targets)
+env.Alias("unittests", targets)
 env.Alias("regression", targets)
+# Always run pytests in place of a complete source list
+env.AlwaysBuild(targets)
