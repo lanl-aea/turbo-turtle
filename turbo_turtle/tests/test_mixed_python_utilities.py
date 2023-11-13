@@ -14,6 +14,17 @@ import pytest
 from turbo_turtle._abaqus_python import _utilities
 
 
+def test_sys_exit():
+    """Test :meth:`turbo_turtle._abaqus_python._utilities.sys_exit` sys.exit wrapper.
+
+    We can't test the Abaqus Python override print to ``sys.__stderr__`` because the print statement is not valid Python
+    3 code.
+    """
+    with patch("sys.exit") as mock_exit:
+        _utilities.sys_exit("message")
+        mock_exit.assert_called_once_with("message")
+
+
 validate_part_name = {
     "None one": (
         ["dummy.ext"], [None], ["dummy"], does_not_raise()
@@ -188,12 +199,24 @@ def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensio
             pass
 
 
-def test_sys_exit():
-    """Test :meth:`turbo_turtle._abaqus_python._utilities.sys_exit` sys.exit wrapper.
+remove_duplicate_items = {
+    "no duplicates": (
+        ["thing1", "thing2"], ["thing1", "thing2"]
+    ),
+    "one duplicate": (
+        ["thing1", "thing2", "thing1"], ["thing1", "thing2"]
+    ),
+}
 
-    We can't test the Abaqus Python override print to ``sys.__stderr__`` because the print statement is not valid Python
-    3 code.
-    """
-    with patch("sys.exit") as mock_exit:
-        _utilities.sys_exit("message")
-        mock_exit.assert_called_once_with("message")
+
+@pytest.mark.parametrize("string_list, expected",
+                         remove_duplicate_items.values(),
+                         ids=remove_duplicate_items.keys())
+def test_remove_duplicate_items(string_list, expected):
+    with patch("sys.stderr.write") as mock_stderr_write:
+        unique = _utilities.remove_duplicate_items(string_list)
+        assert unique == expected
+        if unique != string_list:
+            mock_stderr_write.assert_called_once()
+        else:
+            mock_stderr_write.assert_not_called()
