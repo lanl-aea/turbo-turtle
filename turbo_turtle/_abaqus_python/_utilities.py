@@ -60,6 +60,25 @@ def validate_part_name_or_exit(*args, **kwargs):
     return validate_part_name(*args, **kwargs)
 
 
+def remove_duplicate_items(string_list):
+    """Remove duplicates from  ``string_list`` and print a warning to STDERR of all duplicates removed
+
+    :param list string_list: list of strings to remove duplicates
+
+    :returns: unique strings
+    :rtype: list
+    """
+    unique = []
+    duplicate = []
+    [unique.append(x) if x not in unique else duplicate.append(x) for x in string_list]
+    if duplicate:
+        message = "WARNING: removing '{}' duplicates: '{}'".format(len(duplicate), ', '.join(duplicate))
+        if sys.version_info.major == 2:
+            print >> sys.__stderr__, "{}".format(message)  # pragma: no cover
+        sys.stderr.write(message)
+    return unique
+
+
 def validate_element_type(length_part_name, element_type):
     """Validate the structure of the ``element_type`` list to the following rules:
 

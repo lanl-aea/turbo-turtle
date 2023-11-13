@@ -33,7 +33,7 @@ def main(input_file, output_file,
     import abaqus
     import abaqusConstants
 
-    part_name = _check_for_duplicate_part_names(part_name)
+    part_name = _utilities.remove_duplicate_items(part_name)
     requested_part_count = len(part_name)
 
     input_file = [os.path.splitext(input_file_name)[0] + ".cae" for input_file_name in input_file]
@@ -93,27 +93,6 @@ def _intersection_of_lists(requested, available):
     else:
         intersection = available
     return intersection
-
-
-def _check_for_duplicate_part_names(part_name):
-    """Function for checking the ``part_name`` list for duplicates
-
-    Merge behavior in this script assumes unique part names in the final merged model. STDERR warning when duplicates
-    are found and removed.
-
-    :param list part_name: part_names(s) to search for
-
-    :returns: unique part names
-    :rtype: list
-    """
-    unique_part_names = []
-    duplicate_part_names = []
-    [unique_part_names.append(x) if x not in unique_part_names else duplicate_part_names.append(x) for x in part_name]
-    if duplicate_part_names:
-        error_message = "WARNING: removing '{}' duplicate part names: '{}'".format(
-            len(duplicate_part_names), ', '.join(duplicate_part_names))
-        sys.stderr.write(error_message)
-    return unique_part_names
 
 
 if __name__ == "__main__":
