@@ -227,6 +227,7 @@ the_real_mccoy = {
                          the_real_mccoy.values(),
                          ids=the_real_mccoy.keys())
 def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expected_splines):
+    """Test :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines`"""
     lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     for pair, expectation in zip(lines, expected_lines):
         assert len(pair) == len(expectation)
@@ -238,6 +239,7 @@ def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expe
 
 
 def test_cylinder():
+    """Test :meth:`turbo_turtle._abaqus_python.vertices.cylinder`"""
     expected = numpy.array([[1., 1.], [2., 1.], [2., 0.], [1., 0.]])
     coordinates = vertices.cylinder(1., 2., 1.)
     assert numpy.allclose(coordinates, expected)
@@ -259,5 +261,6 @@ rectalinear_coordinates = {
                          rectalinear_coordinates.values(),
                          ids=rectalinear_coordinates.keys())
 def test_rectalinear_coordinates(radius_list, angle_list, expected):
+    """Test :meth:`turbo_turtle._abaqus_python.vertices.rectalinear_coordinates`"""
     coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
     assert numpy.allclose(coordinates, expected)
