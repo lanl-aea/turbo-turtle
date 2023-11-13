@@ -55,8 +55,11 @@ def main(input_file, output_file,
         sys.exit(str(err))
     output_file = os.path.splitext(output_file)[0] + ".cae"
     for file_name, new_part in zip(input_file, part_name):
-        coordinates = _utilities.return_genfromtxt(file_name, delimiter, header_lines,
-                                                   expected_dimensions=2, expected_columns=2)
+        try:
+            coordinates = _utilities.return_genfromtxt(file_name, delimiter, header_lines,
+                                                       expected_dimensions=2, expected_columns=2)
+        except RuntimeError as err:
+            sys.exit(str(err))
         coordinates = coordinates * unit_conversion
         try:
             draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
