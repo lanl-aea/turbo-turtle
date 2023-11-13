@@ -48,12 +48,13 @@ def add_abaqus_and_cubit(parsers):
     :param list parsers: List of parser to run ``add_argument`` for the abaqus command
     """
     for parser in parsers:
-        parser.add_argument('--abaqus-command', nargs="+", default=_settings._default_abaqus_options,
-                            help='Abaqus executable options (default: %(default)s)')
-        parser.add_argument('--cubit-command', nargs="+", default=_settings._default_cubit_options,
-                            help='Cubit executable options (default: %(default)s)')
-        parser.add_argument('--cubit', action="store_true",
-                            help='Flag to use Cubit instead of Abaqus (default: %(default)s)')
+        parser.add_argument("--abaqus-command", nargs="+", default=_settings._default_abaqus_options,
+                            help="Abaqus executable options (default: %(default)s)")
+        parser.add_argument("--cubit-command", nargs="+", default=_settings._default_cubit_options,
+                            help="Cubit executable options (default: %(default)s)")
+        parser.add_argument("--cubit", action="store_true",
+                            help="Flag to use Cubit instead of Abaqus. May not be implemented in all subcommands " \
+                                 "(default: %(default)s)")
 
 
 def get_parser():
