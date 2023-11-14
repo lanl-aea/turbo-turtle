@@ -57,8 +57,8 @@ test:
     - turbo_turtle
   source_files:
     - legacy_geometry.py
-    - turbo_turtle/tests/test_geometry_washer.csv
-    - turbo_turtle/tests/test_geometry_vase.csv
+    - turbo_turtle/tests/washer.csv
+    - turbo_turtle/tests/vase.csv
   commands:
     - test_root=${PWD}
     # Test as-installed project unit tests
@@ -114,10 +114,10 @@ test:
     - turbo-turtle image --input-file half-sphere.cae --output-file half-sphere.png --model-name half-sphere --part-name half-sphere
     - turbo-turtle export --input-file half-sphere.cae --model-name half-sphere --part-name half-sphere --element-type C3D8R
     - grep C3D8R half-sphere.inp
-    - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry_washer.csv --model-name washer --part-name washer --output-file washer.cae --revolution-angle 360.0
-    - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry_vase.csv --model-name vase --part-name vase --output-file vase.cae --revolution-angle 360.0
-    - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry_vase.csv --model-name vase-axisymmetric --part-name vase-axisymmetric --output-file vase-axisymmetric.cae --revolution-angle 0.0
-    - turbo-turtle geometry --input-file turbo_turtle/tests/test_geometry_washer.csv turbo_turtle/tests/test_geometry_vase.csv --model-name multi-part-geometry --output-file multi-part-geometry.cae --revolution-angle 360.0
+    - turbo-turtle geometry --input-file turbo_turtle/tests/washer.csv --model-name washer --part-name washer --output-file washer.cae --revolution-angle 360.0
+    - turbo-turtle geometry --input-file turbo_turtle/tests/vase.csv --model-name vase --part-name vase --output-file vase.cae --revolution-angle 360.0
+    - turbo-turtle geometry --input-file turbo_turtle/tests/vase.csv --model-name vase-axisymmetric --part-name vase-axisymmetric --output-file vase-axisymmetric.cae --revolution-angle 0.0
+    - turbo-turtle geometry --input-file turbo_turtle/tests/washer.csv turbo_turtle/tests/test_geometry_vase.csv --model-name multi-part-geometry --output-file multi-part-geometry.cae --revolution-angle 360.0
     - turbo-turtle cylinder --inner-radius 1 --outer-radius 2 --height 1 --model-name cylinder_3d --part-name cylinder_3d --output-file cylinder_3d.cae --revolution-angle 360.0
     - turbo-turtle cylinder --inner-radius 1 --outer-radius 2 --height 1 --model-name cylinder_2d --part-name cylinder_2d --output-file cylinder_2d.cae --revolution-angle 0.0
     # Separately handled _merge.py tests

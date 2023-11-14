@@ -108,9 +108,9 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
 # geometry system tests
 system_tests = (
     # model/part,         input_file,                 angle
-    ("washer",            'test_geometry_washer.csv', 360.),
-    ("vase",              'test_geometry_vase.csv',   360.),
-    ("vase-axisymmetric", 'test_geometry_vase.csv',   0.0)
+    ("washer",            'washer.csv', 360.),
+    ("vase",              'vase.csv',   360.),
+    ("vase-axisymmetric", 'vase.csv',   0.0)
 )
 for model, input_file, revolution_angle in system_tests:
     target = env.Command(
@@ -149,11 +149,11 @@ model = "multi-part-geometry"
 revolution_angle = 360.0
 target = env.Command(
     target=[f"{model}.cae"],
-    source=["turbo_turtle/tests/test_geometry_washer.csv", "turbo_turtle/tests/test_geometry_vase.csv",
+    source=["turbo_turtle/tests/washer.csv", "turbo_turtle/tests/vase.csv",
              "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/geometry.py"],
     action=[
-        "python -m turbo_turtle.main geometry --input-file turbo_turtle/tests/test_geometry_washer.csv " \
-            "turbo_turtle/tests/test_geometry_vase.csv --model-name ${TARGET.filebase} " \
+        "python -m turbo_turtle.main geometry --input-file turbo_turtle/tests/washer.csv " \
+            "turbo_turtle/tests/vase.csv --model-name ${TARGET.filebase} " \
             "--output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}"
     ],
     revolution_angle=revolution_angle
@@ -173,7 +173,7 @@ target = env.Command(
         "python -m turbo_turtle.main merge --input-file ${SOURCES[0].abspath} ${SOURCES[1].abspath} " \
             "--output-file ${TARGET.abspath} --merged-model-name ${TARGET.filebase} " \
             "--model-name multi-part-geometry sphere " \
-            "--part-name test_geometry_washer test_geometry_vase sphere"
+            "--part-name washer vase sphere"
     ]
 )
 env.Alias("systemtests", target)
