@@ -1,3 +1,10 @@
+"""Python 3 module that imports cubit
+
+Which requires that Cubit's bin directory is found on PYTHONPATH, either directly by the end user or from a successful
+:meth:`turbo_turtle._utilities.find_cubit_bin` call and internal ``sys.path`` modification. This module does *not*
+perform ``sys.path`` manipulation, so the importing/calling module/script *must* verify that Cubit will import correctly
+first.
+"""
 import pathlib
 
 import numpy
