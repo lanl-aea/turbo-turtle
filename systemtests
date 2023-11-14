@@ -113,12 +113,27 @@ system_tests = (
     ("vase-axisymmetric", 'vase.csv',   0.0)
 )
 for model, input_file, revolution_angle in system_tests:
+    # Abaqus
     target = env.Command(
         target=[f"{model}.cae"],
         source=[f"turbo_turtle/tests/{input_file}", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/geometry.py"],
         action=[
             "python -m turbo_turtle.main geometry --input-file ${SOURCE.abspath} --model-name ${TARGET.filebase} " \
                 "--part-name ${TARGET.filebase} --output-file ${TARGET.abspath} --revolution-angle ${revolution_angle}",
+        ],
+        revolution_angle=revolution_angle,
+    )
+    env.Alias("systemtests", target)
+    env.Alias("regression", target)
+
+    # Cubit
+    target = env.Command(
+        target=[f"{model}.cub"],
+        source=[f"turbo_turtle/tests/{input_file}", "turbo_turtle/main.py", "turbo_turtle/_cubit_python.py"],
+        action=[
+            "python -m turbo_turtle.main geometry --input-file ${SOURCE.abspath} --model-name ${TARGET.filebase} " \
+                "--part-name ${TARGET.filebase} --output-file ${TARGET.abspath} --revolution-angle ${revolution_angle} " \
+                "--cubit"
         ],
         revolution_angle=revolution_angle,
     )
