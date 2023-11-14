@@ -63,9 +63,9 @@ def _geometry(input_file, output_file,
         coordinates = coordinates * unit_conversion
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
         for point1, point2 in lines:
-            point1_text = " ".join(map(str, point1)) + " 0"
-            point2_text = " ".join(map(str, point2)) + " 0"
-            cubit.cmd(f"create curve location {point1_text} location {point2_text}")
+            vertex1 = cubit.create_vertex(*tuple(point1), 0.)
+            vertex2 = cubit.create_vertex(*tuple(point2), 0.)
+            curve = cubit.create_curve(vertex1, vertex2)
     cubit.cmd(f"save as '{output_file}' overwrite")
 
 
