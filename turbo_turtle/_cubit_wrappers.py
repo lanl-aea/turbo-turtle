@@ -19,14 +19,14 @@ def geometry(args, command):
     :param str command: cubit executable path
     """
     _geometry(args.input_file, args.output_file,
-              planar=args.geometry_default_planar,
-              model_name=args.geometry_default_model_name,
-              part_name=args.geometry_default_part_name,
-              unit_conversion=args.geometry_default_unit_conversion,
-              euclidean_distance=args.geometry_default_euclidean_distance,
-              delimiter=args.geometry_default_delimiter,
-              header_lines=args.geometry_default_header_lines,
-              revolution_angle=args.geometry_default_revolution_angle)
+              planar=args.planar,
+              model_name=args.model_name,
+              part_name=args.part_name,
+              unit_conversion=args.unit_conversion,
+              euclidean_distance=args.euclidean_distance,
+              delimiter=args.delimiter,
+              header_lines=args.header_lines,
+              revolution_angle=args.revolution_angle)
 
 
 def _geometry(input_file, output_file,
