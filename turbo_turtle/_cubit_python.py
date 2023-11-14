@@ -74,7 +74,9 @@ def geometry(input_file, output_file,
 
     :returns: writes ``{output_file}.cae``
     """
-    cubit.init(["cubit", "-nojournal"])
+    # TODO: Figure out how to log the Cubit operations without printing to console
+    # TODO: Figure out how to get a better log of the non-APREPRO actions
+    cubit.init(["cubit"])
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     surfaces = []
