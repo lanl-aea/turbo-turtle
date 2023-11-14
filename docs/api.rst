@@ -68,7 +68,7 @@ test_vertices
 test_mixed_utilities
 ====================
 
-.. automodule:: turbo_turtle.tests.test_mixed_python_utilities
+.. automodule:: turbo_turtle.tests.test_mixed_utilities
    :members:
    :private-members:
 
@@ -98,10 +98,10 @@ vertices
    :members:
    :private-members:
 
-_utilities
-==========
+_mixed_utilities
+================
 
-.. automodule:: turbo_turtle._abaqus_python._utilities
+.. automodule:: turbo_turtle._abaqus_python._mixed_utilities
    :members:
    :private-members:
 
@@ -191,7 +191,7 @@ The test execution is also available as an SCons alias: ``test_abaqus_python``, 
 ``unittest`` and ``regression``.
 
 test_mixed_utilities
-==============
+====================
 
 .. automodule:: turbo_turtle._abaqus_python.test_mixed_utilities
    :members:
