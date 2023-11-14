@@ -82,7 +82,7 @@ def _geometry(input_file, output_file,
         # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
         surfaces.append(cubit.create_surface(curves))
 
-    # TODO: Find a better way to recover Body and Volume objects
+    # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct
     for number, (surface, new_part) in enumerate(zip(surfaces, part_name), 1):
         if planar:
             cubit.cmd(f"body {number} rename '{new_part}'")
@@ -92,7 +92,6 @@ def _geometry(input_file, output_file,
             cubit.cmd(f"sweep surface {surface.id()} yaxis angle {revolution_angle} merge")
             cubit.cmd(f"volume {number} rename '{new_part}'")
 
-        # TODO: Replace surface recovery with a ``surfaces = cubit.create_surface()`` command with spline creation
     cubit.cmd(f"save as '{output_file}' overwrite")
 
 
