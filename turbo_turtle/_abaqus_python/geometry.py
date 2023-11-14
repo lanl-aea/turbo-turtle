@@ -23,7 +23,9 @@ def main(input_file, output_file,
          delimiter=parsers.geometry_default_delimiter,
          header_lines=parsers.geometry_default_header_lines,
          revolution_angle=parsers.geometry_default_revolution_angle):
-    """This script takes an array of XY coordinates from a text file and creates a 2D sketch or 3D body of
+    """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
+
+    This script takes an array of XY coordinates from a text file and creates a 2D sketch or 3D body of
     revolution about the global Y-axis. Note that 2D axisymmetric sketches and sketches for 3D bodies of revolution
     about the global Y-axis must lie entirely on the positive-X side of the global Y-axis. In general, a 2D sketch can
     lie in all four quadrants; this is referred to as a "planar" sketch and requires that the ``planar`` boolean
