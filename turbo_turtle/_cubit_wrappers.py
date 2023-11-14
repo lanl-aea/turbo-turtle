@@ -26,6 +26,7 @@ def geometry(args, command):
             point1_text = " ".join(map(str, point1)) + " 0"
             point2_text = " ".join(map(str, point1)) + " 0"
             cubit.command("create curve location {point1_text} location {point2_text}")
+    cubit.command("save as '{output_file}' overwrite")
 
 
 def cylinder(args, command):
