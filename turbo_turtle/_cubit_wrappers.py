@@ -1,6 +1,7 @@
 import sys
 import pathlib
 
+import numpy
 import cubit
 
 from turbo_turtle._abaqus_python import _mixed_utilities
@@ -79,6 +80,12 @@ def _geometry(input_file, output_file,
         curves = [cubit.curve(identity) for identity in curve_ids]
         # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
         surface = cubit.create_surface(curves)
+        if planar:
+            pass
+        elif numpy.isclose(revolution_angle, 0.0):
+            pass
+        else:
+            cubit.cmd(f"sweep surface {surface.id()} yaxis angle {revolution_angle} merge")
 
         # TODO: Replace surface recovery with a ``surfaces = cubit.create_surface()`` command with spline creation
     cubit.cmd(f"save as '{output_file}' overwrite")
