@@ -18,7 +18,7 @@ Internal Changes
 - Move export subcommand Python 2/3 compatible functions to a Python 3 re-usable module and unit test in both Python 3
   and Abaqus Python (:issue:`51`, :merge:`48`). By `Kyle Brindley`_.
 - Move merge subcommand Python 2/3 compatible functions to a Python 3 re-usable module and unit test in both Python 3
-  and Abaqus Python (:issue:`51`, :merge:`48`). By `Kyle Brindley`_.
+  and Abaqus Python (:issue:`53`, :merge:`49`). By `Kyle Brindley`_.
 
 *******************
 v0.6.0 (2023-11-13)
