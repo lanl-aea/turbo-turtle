@@ -53,8 +53,33 @@ def add_abaqus_and_cubit(parsers):
         parser.add_argument("--cubit-command", nargs="+", default=_settings._default_cubit_options,
                             help="Cubit executable options (default: %(default)s)")
         parser.add_argument("--cubit", action="store_true",
-                            help="Flag to use Cubit instead of Abaqus. May not be implemented in all subcommands " \
+                            help="Flag to use Cubit instead of Abaqus. " \
+                                 "Check subcommand usage/help for implementation status " \
                                  "(default: %(default)s)")
+
+
+def append_cubit_help(text, append="with Abaqus or Cubit"):
+    """Append common short help with optional Cubit text
+
+    :param str text: original text
+    :param str append: new text
+
+    :returns: appended text
+    :rtype: str
+    """
+    return f"{text} {append}"
+
+
+def append_cubit_description(text, append="Defaults to Abaqus, but can optionally run Cubit."):
+    """Append common long description with optional Cubit text
+
+    :param str text: original text
+    :param str append: new text
+
+    :returns: appended text
+    :rtype: str
+    """
+    return f"{text} {append}"
 
 
 def get_parser():
@@ -107,8 +132,8 @@ def get_parser():
 
     subparsers.add_parser(
         "geometry",
-        help=parsers.geometry_cli_help,
-        description=parsers.geometry_cli_description,
+        help=append_cubit_help(parsers.geometry_cli_help),
+        description=append_cubit_description(parsers.geometry_cli_description),
         parents=[geometry_parser]
     )
 

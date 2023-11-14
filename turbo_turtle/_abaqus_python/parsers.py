@@ -67,10 +67,10 @@ geometry_default_part_name = [None]
 geometry_default_delimiter = ","
 geometry_default_header_lines = 0
 geometry_default_revolution_angle = 360.0
-geometry_cli_help = "Abaqus Python script for creating 2D or 3D part(s) from an x-y coordinate system input file(s)"
+geometry_cli_help = "Create 2D or 3D part(s) from XY coordinate list input file(s)"
 geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
-                           "sketching lines and splines in the X-Y plane. Line and spline definitions are formed by " \
-                           "parsing an input text file of points in X-Y space."
+                           "sketching lines and splines in the XY plane. Line and spline definitions are formed by " \
+                           "parsing an input file with [N, 2] array of XY coordinates."
 
 def geometry_parser(basename="geometry.py", add_help=True, description=geometry_cli_description):
 
