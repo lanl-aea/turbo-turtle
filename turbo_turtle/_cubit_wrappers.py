@@ -62,10 +62,12 @@ def _geometry(input_file, output_file,
                                                          expected_dimensions=2, expected_columns=2)
         coordinates = coordinates * unit_conversion
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
+        curves = []
         for point1, point2 in lines:
             vertex1 = cubit.create_vertex(*tuple(point1), 0.)
             vertex2 = cubit.create_vertex(*tuple(point2), 0.)
-            curve = cubit.create_curve(vertex1, vertex2)
+            curves.append(cubit.create_curve(vertex1, vertex2))
+        cubit.create_surface(curves)
     cubit.cmd(f"save as '{output_file}' overwrite")
 
 
