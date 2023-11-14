@@ -220,3 +220,24 @@ def test_remove_duplicate_items(string_list, expected):
             mock_stderr_write.assert_called_once()
         else:
             mock_stderr_write.assert_not_called()
+
+
+intersection_of_lists = {
+    "None requested": (
+        [None], ["thing1", "thing2"], ["thing1", "thing2"]
+    ),
+    "exact": (
+        ["thing1", "thing2"], ["thing1", "thing2"], ["thing1", "thing2"]
+    ),
+    "one": (
+        ["thing1"], ["thing1", "thing2"], ["thing1"]
+    ),
+}
+
+
+@pytest.mark.parametrize("requested, available, expected",
+                         intersection_of_lists.values(),
+                         ids=intersection_of_lists.keys())
+def test_intersection_of_lists(requested, available, expected):
+        intersection = _utilities.intersection_of_lists(requested, available)
+        assert intersection == expected

@@ -141,3 +141,19 @@ def remove_duplicate_items(string_list):
             print >> sys.__stderr__, "{}".format(message)  # pragma: no cover
         sys.stderr.write(message)
     return unique
+
+
+def intersection_of_lists(requested, available):
+    """Return intersection of available and requested items or all available items if none requested
+
+    :param list requested: requested items
+    :param list available: available items
+
+    :returns: intersection of requested and available items. All available items if None requested.
+    :ttype: list
+    """
+    if requested[0] is not None and len(requested) > 0:
+        intersection = list(set(requested) & set(available))
+    else:
+        intersection = available
+    return intersection
