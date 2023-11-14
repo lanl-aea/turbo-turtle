@@ -162,6 +162,7 @@ for model, revolution_angle in system_tests:
 
 model = "multi-part-geometry"
 revolution_angle = 360.0
+# Abaqus
 target = env.Command(
     target=[f"{model}.cae"],
     source=["turbo_turtle/tests/washer.csv", "turbo_turtle/tests/vase.csv",
@@ -177,6 +178,19 @@ env.Alias("systemtests", target)
 env.Alias("regression", target)
 # Used for merge system tests
 multi_part_target = target[0]
+# Cubit
+target = env.Command(
+    target=[f"{model}.cub"],
+    source=["turbo_turtle/tests/washer.csv", "turbo_turtle/tests/vase.csv",
+             "turbo_turtle/main.py", "turbo_turtle/_cubit_python.py"],
+    action=[
+        "python -m turbo_turtle.main geometry --input-file turbo_turtle/tests/washer.csv " \
+            "turbo_turtle/tests/vase.csv --model-name ${TARGET.filebase} " \
+            "--output-file ${TARGET.abspath} --revolution-angle ${revolution_angle} " \
+            "--cubit"
+    ],
+    revolution_angle=revolution_angle
+)
 
 # merge system tests (requires geometry and sphere targets)
 model = "merged-model"
