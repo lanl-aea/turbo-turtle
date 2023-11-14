@@ -67,7 +67,18 @@ def _geometry(input_file, output_file,
             vertex1 = cubit.create_vertex(*tuple(point1), 0.)
             vertex2 = cubit.create_vertex(*tuple(point2), 0.)
             curves.append(cubit.create_curve(vertex1, vertex2))
-        cubit.create_surface(curves)
+        for spline in splines:
+            points = []
+            for point in spline:
+                points.append(cubit.create_vertex(*tuple(point), 0.))
+            # TODO: Replace free vertex recovery with ``cubit.create_spline(points)`` and append to ``curves`` when that works
+            vertex_ids = sorted(cubit.get_list_of_free_ref_entities("vertex"))
+            vertex_ids_text = " ".join(map(str, vertex_ids))
+            cubit.cmd(f"create curve spline vertex {vertex_ids_text} delete")
+        # TODO: Replace free curve recovery with ``cubit.create_surface(curves)`` when ``curves.append(cubit.create_spline(points))`` works
+        curve_ids = cubit.get_list_of_free_ref_entities("curve")
+        curve_ids_text = " ".join(map(str, curve_ids))
+        cubit.cmd(f"create surface curve {curve_ids_text}")
     cubit.cmd(f"save as '{output_file}' overwrite")
 
 
