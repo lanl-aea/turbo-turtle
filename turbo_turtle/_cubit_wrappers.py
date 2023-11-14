@@ -58,6 +58,7 @@ def _geometry(input_file, output_file,
     cubit.init(["cubit", "-nojournal"])
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
+    surfaces = []
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
                                                          expected_dimensions=2, expected_columns=2)
@@ -79,7 +80,9 @@ def _geometry(input_file, output_file,
         curve_ids = cubit.get_list_of_free_ref_entities("curve")
         curves = [cubit.curve(identity) for identity in curve_ids]
         # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
-        surface = cubit.create_surface(curves)
+        surfaces.append(cubit.create_surface(curves))
+
+    for surface in surfaces:
         if planar:
             pass
         elif numpy.isclose(revolution_angle, 0.0):
