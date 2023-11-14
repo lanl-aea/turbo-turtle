@@ -144,7 +144,7 @@ def remove_duplicate_items(string_list):
 
 
 def intersection_of_lists(requested, available):
-    """Return intersection of available and requested items or all available items if none requested
+    """Return sorted intersection of available and requested items or all available items if none requested
 
     :param list requested: requested items
     :param list available: available items
@@ -156,4 +156,4 @@ def intersection_of_lists(requested, available):
         intersection = list(set(requested) & set(available))
     else:
         intersection = available
-    return intersection
+    return sorted(intersection)

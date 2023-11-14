@@ -54,6 +54,16 @@ class TestUtilities(unittest.TestCase):
             self.assertEqual(unique, expected)
             # TODO: Figure out how to verify sys.stderr.write and print without mock module in Abaqus Python
 
+    def test_intersection_of_lists(self):
+        tests = [
+            ([None], ["thing1", "thing2"], ["thing1", "thing2"]),
+            (["thing1", "thing2"], ["thing1", "thing2"], ["thing1", "thing2"]),
+            (["thing1"], ["thing1", "thing2"], ["thing1"]),
+        ]
+        for requested, available, expected in tests:
+            intersection = _utilities.intersection_of_lists(requested, available)
+            self.assertEqual(intersection, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
