@@ -15,6 +15,20 @@ from turbo_turtle._abaqus_python import vertices
 from turbo_turtle._abaqus_python import parsers
 
 
+def cubit_command_or_exception(command):
+    """Thin wrapper around ``cubit.cmd`` to raise an exception when returning False
+
+    Cubit returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
+    RuntimeError when the command returns False.
+
+    :param str command: Cubit APREPRO command to execute
+    """
+    success = cubit.cmd(command)
+    if not success:
+        raise RuntimeError("Command '{command}' returned an error")
+    return success
+
+
 def geometry(input_file, output_file,
              planar=parsers.geometry_default_planar,
              model_name=parsers.geometry_default_model_name,
@@ -66,7 +80,7 @@ def geometry(input_file, output_file,
         # TODO: VVV Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
             vertex_ids = sorted(cubit.get_list_of_free_ref_entities("vertex"))
             vertex_ids_text = " ".join(map(str, vertex_ids))
-            cubit.cmd(f"create curve spline vertex {vertex_ids_text} delete")
+            cubit_command_or_exception(f"create curve spline vertex {vertex_ids_text} delete")
         curve_ids = cubit.get_list_of_free_ref_entities("curve")
         curves = [cubit.curve(identity) for identity in curve_ids]
         # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
@@ -75,11 +89,11 @@ def geometry(input_file, output_file,
     # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct
     for number, (surface, new_part) in enumerate(zip(surfaces, part_name), 1):
         if planar:
-            cubit.cmd(f"body {number} rename '{new_part}'")
+            cubit_command_or_exception(f"body {number} rename '{new_part}'")
         elif numpy.isclose(revolution_angle, 0.0):
-            cubit.cmd(f"body {number} rename '{new_part}'")
+            cubit_command_or_exception(f"body {number} rename '{new_part}'")
         else:
-            cubit.cmd(f"sweep surface {surface.id()} yaxis angle {revolution_angle} merge")
-            cubit.cmd(f"volume {number} rename '{new_part}'")
+            cubit_command_or_exception(f"sweep surface {surface.id()} yaxis angle {revolution_angle} merge")
+            cubit_command_or_exception(f"volume {number} rename '{new_part}'")
 
-    cubit.cmd(f"save as '{output_file}' overwrite")
+    cubit_command_or_exception(f"save as '{output_file}' overwrite")
