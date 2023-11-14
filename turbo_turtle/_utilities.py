@@ -5,7 +5,7 @@ import inspect
 import functools
 import subprocess
 
-from turbo_turtle._abaqus_python._utilities import print_exception_message
+from turbo_turtle._abaqus_python._mixed_utilities import print_exception_message
 
 
 def search_commands(options):

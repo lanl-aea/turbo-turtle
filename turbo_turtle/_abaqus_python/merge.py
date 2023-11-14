@@ -9,7 +9,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
-import _utilities
+import _mixed_utilities
 
 
 def main(input_file, output_file,
@@ -33,7 +33,7 @@ def main(input_file, output_file,
     import abaqus
     import abaqusConstants
 
-    part_name = _utilities.remove_duplicate_items(part_name)
+    part_name = _mixed_utilities.remove_duplicate_items(part_name)
     requested_part_count = len(part_name)
 
     input_file = [os.path.splitext(input_file_name)[0] + ".cae" for input_file_name in input_file]
@@ -45,13 +45,13 @@ def main(input_file, output_file,
     for cae_file in input_file:
         abaqus.mdb.openAuxMdb(pathName=cae_file)
         available_models = abaqus.mdb.getAuxMdbModelNames()
-        current_models = _utilities.intersection_of_lists(model_name, available_models)
+        current_models = _mixed_utilities.intersection_of_lists(model_name, available_models)
         # Loop through current model_name
         for this_model in current_models:
             tmp_model = 'temporary_model_' + this_model
             abaqus.mdb.copyAuxMdbModel(fromName=this_model, toName=tmp_model)
             available_parts = abaqus.mdb.models[tmp_model].parts.keys()
-            current_parts = _utilities.intersection_of_lists(part_name, available_parts)
+            current_parts = _mixed_utilities.intersection_of_lists(part_name, available_parts)
             # Loop through part_name and send a warning when a part name is not found in the current model
             for this_part in current_parts:
                 try:
@@ -62,7 +62,7 @@ def main(input_file, output_file,
                 except:
                     message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n".format(
                               this_part, this_model, cae_file)
-                    _utilities.sys_exit(message)
+                    _mixed_utilities.sys_exit(message)
             # If the current model was found in the current cae_file, clean it before ending the loop
             if tmp_model is not None:
                 del abaqus.mdb.models[tmp_model]
@@ -72,11 +72,11 @@ def main(input_file, output_file,
     merged_part_count = len(merged_model.parts.keys())
     if  merged_part_count == 0:
         message = "No parts were merged. Check the input file, model and part name lists."
-        _utilities.sys_exit(message)
+        _mixed_utilities.sys_exit(message)
     elif part_name[0] is not None and merged_part_count != requested_part_count:
         message = "Merged part count '{}' doesn't match unique part name count '{}'.".format(
                   merged_part_count, requested_part_count)
-        _utilities.sys_exit(message)
+        _mixed_utilities.sys_exit(message)
 
 
 if __name__ == "__main__":

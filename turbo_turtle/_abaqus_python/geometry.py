@@ -11,7 +11,7 @@ parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
 import vertices
-import _utilities
+import _mixed_utilities
 
 
 def main(input_file, output_file,
@@ -49,10 +49,10 @@ def main(input_file, output_file,
     import abaqusConstants
 
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
-    part_name = _utilities.validate_part_name_or_exit(input_file, part_name)
+    part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     output_file = os.path.splitext(output_file)[0] + ".cae"
     for file_name, new_part in zip(input_file, part_name):
-        coordinates = _utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
+        coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                            expected_dimensions=2, expected_columns=2)
         coordinates = coordinates * unit_conversion
         try:
@@ -60,7 +60,7 @@ def main(input_file, output_file,
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle)
         except:
             message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
-            _utilities.sys_exit(message)
+            _mixed_utilities.sys_exit(message)
 
     abaqus.mdb.saveAs(pathName=output_file)
 

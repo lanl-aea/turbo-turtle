@@ -11,7 +11,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
-import _utilities
+import _mixed_utilities
 import _abaqus_utilities
 
 
@@ -51,7 +51,7 @@ def main(input_file, output_file,
               model_name=model_name, part_name=lart_name, color_map=color_map)
     else:
         message = "Uknown file extension {}".format(input_file_extension)
-        _utilities.sys_exit(message)
+        _mixed_utilities.sys_exit(message)
 
 
 def image(output_file,
@@ -103,7 +103,7 @@ def image(output_file,
 
     output_format = _abaqus_utilities.return_abaqus_constant_or_exit(output_file_extension)
     if output_format is None:
-        _utilities.sys_exit("Abaqus does not recognize the output extension '{}'".format(output_file_extension))
+        _mixed_utilities.sys_exit("Abaqus does not recognize the output extension '{}'".format(output_file_extension))
 
     session.printToFile(fileName=output_file_stem, format=output_format,
         canvasObjects=(session.viewports['Viewport: 1'], ))

@@ -11,17 +11,17 @@ from contextlib import nullcontext as does_not_raise
 import numpy
 import pytest
 
-from turbo_turtle._abaqus_python import _utilities
+from turbo_turtle._abaqus_python import _mixed_utilities
 
 
 def test_sys_exit():
-    """Test :meth:`turbo_turtle._abaqus_python._utilities.sys_exit` sys.exit wrapper.
+    """Test :meth:`turbo_turtle._abaqus_python._mixed_utilities.sys_exit` sys.exit wrapper.
 
     We can't test the Abaqus Python override print to ``sys.__stderr__`` because the print statement is not valid Python
     3 code.
     """
     with patch("sys.exit") as mock_exit:
-        _utilities.sys_exit("message")
+        _mixed_utilities.sys_exit("message")
         mock_exit.assert_called_once_with("message")
 
 
@@ -63,10 +63,10 @@ validate_part_name = {
                          validate_part_name.values(),
                          ids=validate_part_name.keys())
 def test_validate_part_name(input_file, original_part_name, expected, outcome):
-    """Test :meth:`turbo_turtle._abaqus_python._utilities.validate_part_name`
+    """Test :meth:`turbo_turtle._abaqus_python._mixed_utilities.validate_part_name`
 
     Tests both the expection raising version and the system exit version
-    :meth:`turbo_turtle._abaqus_python._utilities.validate_part_name_or_exit`
+    :meth:`turbo_turtle._abaqus_python._mixed_utilities.validate_part_name_or_exit`
 
     :param str input_file: dummy input file name
     :param list original_part_name: List of part names passed to function under test
@@ -76,7 +76,7 @@ def test_validate_part_name(input_file, original_part_name, expected, outcome):
     """
     with outcome:
         try:
-            part_name = _utilities.validate_part_name(input_file, original_part_name)
+            part_name = _mixed_utilities.validate_part_name(input_file, original_part_name)
             assert part_name == expected
         finally:
             pass
@@ -86,7 +86,7 @@ def test_validate_part_name(input_file, original_part_name, expected, outcome):
         outcome = pytest.raises(SystemExit)
     with outcome:
         try:
-            part_name = _utilities.validate_part_name_or_exit(input_file, original_part_name)
+            part_name = _mixed_utilities.validate_part_name_or_exit(input_file, original_part_name)
             assert part_name == expected
         finally:
             pass
@@ -115,10 +115,10 @@ validate_element_type = {
                          validate_element_type.values(),
                          ids=validate_element_type.keys())
 def test_validate_element_type(length_part_name, original_element_type, expected, outcome):
-    """Test :meth:`turbo_turtle._abaqus_python._utilities.validate_element_type`
+    """Test :meth:`turbo_turtle._abaqus_python._mixed_utilities.validate_element_type`
 
     Tests both the expection raising version and the system exit version
-    :meth:`turbo_turtle._abaqus_python._utilities.validate_element_type_or_exit`
+    :meth:`turbo_turtle._abaqus_python._mixed_utilities.validate_element_type_or_exit`
 
     :param int length_part_name: length of the ``part_name`` list
     :param list original_element_type: List of element types passed to function under test
@@ -128,7 +128,7 @@ def test_validate_element_type(length_part_name, original_element_type, expected
     """
     with outcome:
         try:
-            element_type = _utilities.validate_element_type(length_part_name, original_element_type)
+            element_type = _mixed_utilities.validate_element_type(length_part_name, original_element_type)
             assert element_type == expected
         finally:
             pass
@@ -138,7 +138,7 @@ def test_validate_element_type(length_part_name, original_element_type, expected
         outcome = pytest.raises(SystemExit)
     with outcome:
         try:
-            element_type = _utilities.validate_element_type_or_exit(length_part_name, original_element_type)
+            element_type = _mixed_utilities.validate_element_type_or_exit(length_part_name, original_element_type)
             assert element_type == expected
         finally:
             pass
@@ -161,10 +161,10 @@ return_genfromtxt = {
                          return_genfromtxt.values(),
                          ids=return_genfromtxt.keys())
 def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome):
-    """Test :meth:`turbo_turtle._abaqus_python._utilities.return_genfromtxt`
+    """Test :meth:`turbo_turtle._abaqus_python._mixed_utilities.return_genfromtxt`
 
     Tests both the expection raising version and the system exit version
-    :meth:`turbo_turtle._abaqus_python._utilities.return_genfromtxt_or_exit`
+    :meth:`turbo_turtle._abaqus_python._mixed_utilities.return_genfromtxt_or_exit`
 
     :param str file_name: dummy data file name
     :param str delimiter: String for file name delimiter character
@@ -179,7 +179,7 @@ def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensio
     """
     with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected) as mock_genfromtxt, outcome:
         try:
-            coordinates = _utilities.return_genfromtxt(file_name, delimiter=delimiter, header_lines=header_lines,
+            coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter=delimiter, header_lines=header_lines,
                                                        expected_dimensions=expected_dimensions,
                                                        expected_columns=expected_columns)
             assert numpy.allclose(coordinates, expected)
@@ -191,7 +191,7 @@ def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensio
         outcome = pytest.raises(SystemExit)
     with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected) as mock_genfromtxt, outcome:
         try:
-            coordinates = _utilities.return_genfromtxt_or_exit(file_name, delimiter=delimiter, header_lines=header_lines,
+            coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter=delimiter, header_lines=header_lines,
                                                                expected_dimensions=expected_dimensions,
                                                                expected_columns=expected_columns)
             assert numpy.allclose(coordinates, expected)
@@ -214,7 +214,7 @@ remove_duplicate_items = {
                          ids=remove_duplicate_items.keys())
 def test_remove_duplicate_items(string_list, expected):
     with patch("sys.stderr.write") as mock_stderr_write:
-        unique = _utilities.remove_duplicate_items(string_list)
+        unique = _mixed_utilities.remove_duplicate_items(string_list)
         assert unique == expected
         if unique != string_list:
             mock_stderr_write.assert_called_once()
@@ -239,5 +239,5 @@ intersection_of_lists = {
                          intersection_of_lists.values(),
                          ids=intersection_of_lists.keys())
 def test_intersection_of_lists(requested, available, expected):
-        intersection = _utilities.intersection_of_lists(requested, available)
+        intersection = _mixed_utilities.intersection_of_lists(requested, available)
         assert intersection == expected

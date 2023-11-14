@@ -12,7 +12,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
-import _utilities
+import _mixed_utilities
 
 
 def main(input_file,
@@ -33,7 +33,7 @@ def main(input_file,
     """
     import abaqus
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    element_type = _utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
+    element_type = _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)

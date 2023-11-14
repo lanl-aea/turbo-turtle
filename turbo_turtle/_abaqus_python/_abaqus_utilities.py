@@ -6,7 +6,7 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import _utilities
+import _mixed_utilities
 
 
 def return_abaqus_constant(search):
@@ -30,6 +30,6 @@ def return_abaqus_constant(search):
     return attribute
 
 
-@_utilities.print_exception_message
+@_mixed_utilities.print_exception_message
 def return_abaqus_constant_or_exit(*args, **kwargs):
     return return_abaqus_constant(*args, **kwargs)

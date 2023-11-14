@@ -11,7 +11,6 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
-import _utilities
 import _abaqus_utilities
 
 

@@ -190,10 +190,10 @@ the project root directory
 The test execution is also available as an SCons alias: ``test_abaqus_python``, which is collected under the aliases:
 ``unittest`` and ``regression``.
 
-test_utilities
+test_mixed_utilities
 ==============
 
-.. automodule:: turbo_turtle._abaqus_python.test_utilities
+.. automodule:: turbo_turtle._abaqus_python.test_mixed_utilities
    :members:
    :private-members:
 
