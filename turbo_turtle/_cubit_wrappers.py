@@ -26,9 +26,9 @@ def geometry(args, command):
         lines, splines = vertices.lines_and_splines(coordinates, args.euclidean_distance)
         for point1, point2 in lines:
             point1_text = " ".join(map(str, point1)) + " 0"
-            point2_text = " ".join(map(str, point1)) + " 0"
-            cubit.cmd("create curve location {point1_text} location {point2_text}")
-    cubit.cmd("save as '{output_file}' overwrite")
+            point2_text = " ".join(map(str, point2)) + " 0"
+            cubit.cmd(f"create curve location {point1_text} location {point2_text}")
+    cubit.cmd(f"save as '{output_file}' overwrite")
 
 
 def cylinder(args, command):
