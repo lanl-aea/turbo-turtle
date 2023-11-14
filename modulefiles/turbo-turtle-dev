@@ -53,7 +53,7 @@ prepend-path MANPATH "$environment_man"
 
 # Set the bash environment variables for commonly used AEA software
 append-path PATH "$abaqus_path"
-append-path PATH "$cubit_bin"
+append-path PATH "$cubit_path"
 append-path PYTHONPATH "$cubit_bin"
 
 # Activate the Conda environment
@@ -91,6 +91,7 @@ proc ModulesHelp {} {
     global environment_man
     global cubit_version
     global abaqus_path
+    global cubit_path
     global cubit_bin
 
     puts stderr "\nWAVES modulefiles debugging information"
@@ -107,7 +108,7 @@ proc ModulesHelp {} {
 
     puts stderr "\n\nModifies environment variables"
     puts stderr "PATH prepended with: $environment_bin:$anaconda_bin"
-    puts stderr "PATH appended with: $abaqus_path:$cubit_bin"
+    puts stderr "PATH appended with: $abaqus_path:$cubit_path"
     puts stderr "PYTHONPATH appended with: $cubit_bin"
     puts stderr "MANPATH prepended with: $environment_man"
 }
