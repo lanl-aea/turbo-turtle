@@ -31,6 +31,13 @@ _cubit_wrappers
    :members:
    :private-members:
 
+_cubit_python
+=============
+
+.. automodule:: turbo_turtle._cubit_python
+   :members:
+   :private-members:
+
 _utilities
 ==========
 

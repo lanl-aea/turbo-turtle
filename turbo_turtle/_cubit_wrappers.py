@@ -1,10 +1,11 @@
+"""Thin unpacking of the command line argparse namespace into full function interfaces"""
 import sys
 
 from turbo_turtle import _cubit_python
 
 
 def geometry(args, command):
-    """Python 3 wrapper around Cubit
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.geometry`
 
     Unpack the argument namespace into the full function interface
 
