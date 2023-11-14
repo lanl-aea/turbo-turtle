@@ -25,8 +25,23 @@ def cubit_command_or_exception(command):
     """
     success = cubit.cmd(command)
     if not success:
-        raise RuntimeError("Command '{command}' returned an error")
+        raise RuntimeError(f"Command '{command}' returned an error. Please see the Cubit log for details.")
     return success
+
+
+@_mixed_utilities.print_exception_message
+def cubit_command_or_exit(*args, **kwargs):
+    """Thin wrapper around ``cubit.cmd`` to call ``sys.exit`` when returning False
+
+    Wrapper of :meth:`turbo_turtle._cubit_python.cubit_command_or_exception` with
+    :meth:`turbo_turtle._abaqus_python._mixed_utilities._print_exception_message`.
+
+    Cubit returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
+    SystemExit with ``sys.exit`` when the command returns False.
+
+    :param str command: Cubit APREPRO command to execute
+    """
+    return cubit_command_or_exception(*args, **kwargs)
 
 
 def geometry(input_file, output_file,
@@ -80,7 +95,7 @@ def geometry(input_file, output_file,
         # TODO: VVV Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
             vertex_ids = sorted(cubit.get_list_of_free_ref_entities("vertex"))
             vertex_ids_text = " ".join(map(str, vertex_ids))
-            cubit_command_or_exception(f"create curve spline vertex {vertex_ids_text} delete")
+            cubit_command_or_exit(f"create curve spline vertex {vertex_ids_text} delete")
         curve_ids = cubit.get_list_of_free_ref_entities("curve")
         curves = [cubit.curve(identity) for identity in curve_ids]
         # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
@@ -89,11 +104,11 @@ def geometry(input_file, output_file,
     # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct
     for number, (surface, new_part) in enumerate(zip(surfaces, part_name), 1):
         if planar:
-            cubit_command_or_exception(f"body {number} rename '{new_part}'")
+            cubit_command_or_exit(f"body {number} rename '{new_part}'")
         elif numpy.isclose(revolution_angle, 0.0):
-            cubit_command_or_exception(f"body {number} rename '{new_part}'")
+            cubit_command_or_exit(f"body {number} rename '{new_part}'")
         else:
-            cubit_command_or_exception(f"sweep surface {surface.id()} yaxis angle {revolution_angle} merge")
-            cubit_command_or_exception(f"volume {number} rename '{new_part}'")
+            cubit_command_or_exit(f"sweep surface {surface.id()} yaxis angle {revolution_angle} merge")
+            cubit_command_or_exit(f"volume {number} rename '{new_part}'")
 
-    cubit_command_or_exception(f"save as '{output_file}' overwrite")
+    cubit_command_or_exit(f"save as '{output_file}' overwrite")
