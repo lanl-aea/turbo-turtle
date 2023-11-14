@@ -8,6 +8,10 @@ Changelog
 v0.6.1 (unreleased)
 *******************
 
+New Features
+============
+- Draft implementation of ``geometry`` subcommand with Cubit (:issue:`44`, :merge:`50`). By `Kyle Brindley`_.
+
 Documentation
 =============
 - Developer documentation for the mixed Python 2/3 modules and testing with both Python 3 and Abaqus Python
