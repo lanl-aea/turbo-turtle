@@ -8,6 +8,18 @@ Changelog
 v0.6.1 (unreleased)
 *******************
 
+Documentation
+=============
+- Developer documentation for the mixed Python 2/3 modules and testing with both Python 3 and Abaqus Python
+  (:issue:`51`, :merge:`48`). By `Kyle Brindley`_.
+
+Internal Changes
+================
+- Move export subcommand Python 2/3 compatible functions to a Python 3 re-usable module and unit test in both Python 3
+  and Abaqus Python (:issue:`51`, :merge:`48`). By `Kyle Brindley`_.
+- Move merge subcommand Python 2/3 compatible functions to a Python 3 re-usable module and unit test in both Python 3
+  and Abaqus Python (:issue:`51`, :merge:`48`). By `Kyle Brindley`_.
+
 *******************
 v0.6.0 (2023-11-13)
 *******************
