@@ -107,6 +107,25 @@ def setup_cylinder_commands(model, revolution_angle,
     return commands
 
 
+def setup_merge_commands(part_name, turbo_turtle_command=turbo_turtle_command):
+    sphere_options = ("sphere.cae", 360., (0., 0.), "both", "C3D8", "C3D8R")
+    commands = []
+    commands.append(setup_sphere_commands(*sphere_options)[0])
+    geometry_options = ("multi-part-3D",
+                        [_settings._project_root_abspath / "tests" / "washer.csv",
+                         _settings._project_root_abspath / "tests" / "vase.csv"],
+                        360.0, False)
+    commands.extend(setup_geometry_commands(*geometry_options))
+
+    merge_command =  f"{turbo_turtle_command} merge --input-file sphere.cae multi-part-3D.cae " \
+                     f"--output-file merge.cae --merged-model-name merge " \
+                     f"--model-name multi-part-3D sphere"
+    if part_name:
+        merge_command += f" --part-name {part_name}"
+
+    commands.append(merge_command)
+    return commands
+
 # Help/Usage sign-of-life
 commands_list = [f"{turbo_turtle_command} -h"]
 commands_list.extend([f"{turbo_turtle_command} {subcommand} -h" for subcommand in subcommand_list])
@@ -168,6 +187,11 @@ system_tests = (
 )
 for test in system_tests:
     commands_list.append(setup_cylinder_commands(*test))
+
+# Merge tests
+for part_name in ("washer vase sphere", ""):
+    commands_list.append(setup_merge_commands(part_name))
+
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", commands_list)
