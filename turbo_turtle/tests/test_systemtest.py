@@ -85,10 +85,11 @@ def setup_geometry_commands(model, input_file, revolution_angle, cubit,
     model = pathlib.Path(model).with_suffix(".cae")
     if cubit:
         model = model.with_suffix(".cub")
-    input_file = _settings._project_root_abspath / "tests" / input_file
+    part_name = " ".join(csv.stem for csv in input_file)
+    input_file = character_delimited_list(input_file)
     commands = [
         f"{turbo_turtle_command} geometry --input-file {input_file} --model-name {model.stem} " \
-            f"--part-name {model.stem} --output-file {model} --revolution-angle {revolution_angle}",
+            f"--part-name {part_name} --output-file {model} --revolution-angle {revolution_angle}",
     ]
     if cubit:
         commands = [f"{command} --cubit" for command in commands]
@@ -136,15 +137,25 @@ for test in system_tests:
 
 # Geometry tests
 system_tests = (
-    # model/part,           input_file,   angle, cubit
-    ("washer",              'washer.csv', 360.0, False),
-    ("washer-axisymmetric", 'washer.csv',   0.0, False),
-    ("vase",                'vase.csv',   360.0, False),
-    ("vase-axisymmetric",   'vase.csv',     0.0, False),
-    ("washer",              'washer.csv', 360.0, True),
-    ("washer-axisymmetric", 'washer.csv',   0.0, True),
-    ("vase",                'vase.csv',   360.0, True),
-    ("vase-axisymmetric",   'vase.csv',     0.0, True),
+    # model/part,                                                           input_file, angle, cubit
+    # Abaqus
+    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, False),
+    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, False),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, False),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, False),
+    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",
+                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, False),
+    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
+                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, False),
+    # Cubit
+    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, True),
+    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, True),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, True),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, True),
+    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",
+                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, True),
+    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
+                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, True),
 )
 for test in system_tests:
     commands_list.append(setup_geometry_commands(*test))
