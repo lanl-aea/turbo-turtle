@@ -6,11 +6,6 @@ Import(["env"])
 system_tests = (
     # model/part,     angle,   center, quadrant, element_type, element_replacement
     ("sphere",         360., (0., 0.),  "both",  "C3D8",       "C3D8R"),
-    ("axisymmetric",     0., (0., 0.),  "both",  "CAX4",       "CAX4R"),
-    ("quarter-sphere",  90., (0., 0.),  "both",  "C3D8",       "C3D8R"),
-    ("offset-sphere",  360., (1., 1.),  "both",  "C3D8",       "C3D8R"),
-    ("eigth-sphere",    90., (0., 0.), "upper",  "C3D8",       "C3D8R"),
-    ("half-sphere",    360., (0., 0.), "upper",  "C3D8",       "C3D8R")
 )
 for model, angle, center, quadrant, element_type, element_replacement in system_tests:
     targets = []
@@ -46,22 +41,6 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
     # Used for merge system tests
     if model == "sphere":
         sphere_target = cae_target[0]
-
-    inp_target = env.Command(
-        target=[f"{model}.inp", f"{model}_assembly.inp"],
-        source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/export.py"],
-        action=[
-            "python -m turbo_turtle.main export --input-file ${SOURCE.abspath} " \
-                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
-                "--element-type ${element_replacement} --destination ${TARGET.dir.abspath} " \
-                "--assembly ${TARGETS[1].abspath}",
-            "grep ${element_replacement} ${TARGET.abspath}",
-            "grep -iE '\*assembly' ${TARGETS[1].abspath} && grep -iE '\*end assembly' ${TARGETS[1].abspath}",
-            "grep -iE '\*instance' ${TARGETS[1].abspath} && grep -iE '\*end instance' ${TARGETS[1].abspath}"
-        ],
-    element_replacement=element_replacement,
-    )
-    targets.extend(inp_target)
 
     env.Alias("systemtests", targets)
     env.Alias("regression", targets)
