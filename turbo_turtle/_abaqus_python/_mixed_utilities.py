@@ -1,5 +1,6 @@
 """Python 2/3 compatible utilities for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
 import os
+import re
 import sys
 import functools
 
