@@ -24,6 +24,10 @@ Internal Changes
 - Move merge subcommand Python 2/3 compatible functions to a Python 3 re-usable module and unit test in both Python 3
   and Abaqus Python (:issue:`53`, :merge:`49`). By `Kyle Brindley`_.
 
+Enhancements
+============
+- Support MacOS Cubit execution (:issue:`64`, :merge:`53`). By `Kyle Brindley`_.
+
 *******************
 v0.6.0 (2023-11-13)
 *******************
