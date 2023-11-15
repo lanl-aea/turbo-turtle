@@ -72,11 +72,26 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
             f"--element-type {element_type}",
         f"{turbo_turtle_command} image --input-file {model} --output-file {image} " \
             f"--model-name {model.stem} --part-name {model.stem}",
-        f"python -m turbo_turtle.main export --input-file {model} " \
+        f"{turbo_turtle_command} export --input-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} " \
             f"--element-type {element_replacement} --destination . " \
             f"--assembly {assembly}",
     ]
+    return commands
+
+
+def setup_geometry_commands(model, input_file, revolution_angle, cubit,
+                            turbo_turtle_command=turbo_turtle_command):
+    model = pathlib.Path(model).with_suffix(".cae")
+    if cubit:
+        model = model.with_suffix(".cub")
+    input_file = _settings._project_root_abspath / "tests" / input_file
+    commands = [
+        f"{turbo_turtle_command} geometry --input-file {input_file} --model-name {model.stem} " \
+            f"--part-name {model.stem} --output-file {model} --revolution-angle {revolution_angle}",
+    ]
+    if cubit:
+        commands = [f"{command} --cubit" for command in commands]
     return commands
 
 
@@ -108,6 +123,20 @@ system_tests = (
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
 
+# Geometry tests
+system_tests = (
+    # model/part,           input_file,   angle, cubit
+    ("washer",              'washer.csv', 360.0, False),
+    ("washer-axisymmetric", 'washer.csv',   0.0, False),
+    ("vase",                'vase.csv',   360.0, False),
+    ("vase-axisymmetric",   'vase.csv',     0.0, False),
+    ("washer",              'washer.csv', 360.0, True),
+    ("washer-axisymmetric", 'washer.csv',   0.0, True),
+    ("vase",                'vase.csv',   360.0, True),
+    ("vase-axisymmetric",   'vase.csv',     0.0, True),
+)
+for test in system_tests:
+    commands_list.append(setup_geometry_commands(*test))
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", commands_list)
