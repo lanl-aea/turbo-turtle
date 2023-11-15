@@ -23,6 +23,8 @@ Internal Changes
   and Abaqus Python (:issue:`51`, :merge:`48`). By `Kyle Brindley`_.
 - Move merge subcommand Python 2/3 compatible functions to a Python 3 re-usable module and unit test in both Python 3
   and Abaqus Python (:issue:`53`, :merge:`49`). By `Kyle Brindley`_.
+- Drive the system tests with pytest to reduce hardcoded duplication in test definitions between repository and
+  conda-build recipe (:issue:`61`, :merge:`52`). By `Kyle Brindley`_.
 
 Enhancements
 ============
