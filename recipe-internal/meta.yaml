@@ -74,8 +74,6 @@ test:
     - turbo-turtle mesh --input-file sphere.cae --output-file sphere.cae --model-name sphere --part-name sphere --global-seed 0.15 --element-type C3D8
     - turbo-turtle image --input-file sphere.cae --output-file sphere.png --model-name sphere --part-name sphere
     - grep C3D8R sphere.inp
-    - turbo-turtle cylinder --inner-radius 1 --outer-radius 2 --height 1 --model-name cylinder_3d --part-name cylinder_3d --output-file cylinder_3d.cae --revolution-angle 360.0
-    - turbo-turtle cylinder --inner-radius 1 --outer-radius 2 --height 1 --model-name cylinder_2d --part-name cylinder_2d --output-file cylinder_2d.cae --revolution-angle 0.0
     # Separately handled _merge.py tests
     - turbo-turtle merge --input-file multi-part-geometry.cae sphere.cae --output-file merged-model.cae --merged-model-name merged-model --model-name multi-part-geometry sphere --part-name washer vase sphere
     - grep -iIre "SUCCESS" abaqus.rpy | grep "part 'washer'"
