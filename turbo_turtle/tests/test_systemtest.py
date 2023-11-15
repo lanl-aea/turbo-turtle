@@ -85,6 +85,7 @@ commands_list = [f"{turbo_turtle_command} -h"]
 commands_list.extend([f"{turbo_turtle_command} {subcommand} -h" for subcommand in subcommand_list])
 
 # Legacy geometry system tests requires a series of commands before the temp directory is removed
+# TODO: Decide if we should package or drop the legacy geometry tests
 name='Turbo-Turtle-Tests'
 commands_list.append([
     f"abq2023 cae -noGui {legacy_geometry_file}",

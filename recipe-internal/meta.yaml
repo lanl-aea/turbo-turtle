@@ -63,6 +63,8 @@ test:
     - test_root=${PWD}
     # Test as-installed project unit tests
     - cd $SP_DIR/$PKG_NAME
+    # TODO: Decide if we should package or drop the legacy geometry tests
+    - cp ${test_root}/legacy_geometry.py .
     - pytest -vvv --ignore=_abaqus_python
     - abq2023 python -m unittest discover _abaqus_python --verbose
     - cd ${test_root}
