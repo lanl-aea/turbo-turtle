@@ -29,7 +29,16 @@ if not installed:
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("command", [
+    f"{turbo_turtle_command} -h",
     f"{turbo_turtle_command} docs -h",
+    f"{turbo_turtle_command} geometry -h",
+    f"{turbo_turtle_command} cylinder -h",
+    f"{turbo_turtle_command} sphere -h",
+    f"{turbo_turtle_command} partition -h",
+    f"{turbo_turtle_command} mesh -h",
+    f"{turbo_turtle_command} image -h",
+    f"{turbo_turtle_command} merge -h",
+    f"{turbo_turtle_command} export -h",
 ])
 def test_run_tutorial(command):
     """Run the system tests.
