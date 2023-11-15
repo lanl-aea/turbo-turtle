@@ -95,6 +95,17 @@ def setup_geometry_commands(model, input_file, revolution_angle, cubit,
     return commands
 
 
+def setup_cylinder_commands(model, revolution_angle,
+                            turbo_turtle_command=turbo_turtle_command):
+    model = pathlib.Path(model).with_suffix(".cae")
+    commands = [
+        f"{turbo_turtle_command} cylinder --model-name {model.stem} --part-name {model.stem} " \
+            f"--output-file {model} --revolution-angle {revolution_angle} " \
+            f"--inner-radius 1 --outer-radius 2 --height 1"
+    ]
+    return commands
+
+
 # Help/Usage sign-of-life
 commands_list = [f"{turbo_turtle_command} -h"]
 commands_list.extend([f"{turbo_turtle_command} {subcommand} -h" for subcommand in subcommand_list])
@@ -137,6 +148,15 @@ system_tests = (
 )
 for test in system_tests:
     commands_list.append(setup_geometry_commands(*test))
+
+# Cylinder tests
+system_tests = (
+    # model/part,   angle
+    ("cylinder_3d", 360.),
+    ("cylinder_2d",   0.)
+)
+for test in system_tests:
+    commands_list.append(setup_cylinder_commands(*test))
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", commands_list)

@@ -45,26 +45,6 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
     env.Alias("systemtests", targets)
     env.Alias("regression", targets)
 
-# _cylinder system tests
-system_tests = (
-    # model/part, angle
-    ("cylinder_3d",    360.),
-    ("cylinder_2d",      0.)
-)
-for model, revolution_angle in system_tests:
-    target = env.Command(
-        target=[f"{model}.cae"],
-        source=[f"turbo_turtle/tests/{input_file}", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/cylinder.py"],
-        action=[
-            "python -m turbo_turtle.main cylinder --model-name ${TARGET.filebase} --part-name ${TARGET.filebase} " \
-                "--output-file ${TARGET.abspath} --revolution-angle ${revolution_angle} " \
-                "--inner-radius 1 --outer-radius 2 --height 1"
-        ],
-        revolution_angle=revolution_angle,
-    )
-    env.Alias("systemtests", target)
-    env.Alias("regression", target)
-
 model = "multi-part-geometry"
 revolution_angle = 360.0
 # Abaqus
