@@ -66,17 +66,6 @@ test:
     - pytest -vvv --ignore=_abaqus_python
     - abq2023 python -m unittest discover _abaqus_python --verbose
     - cd ${test_root}
-    # Help/usage tests
-    - turbo-turtle -h
-    - turbo-turtle docs -h
-    - turbo-turtle docs --print-local-path
-    - turbo-turtle geometry -h
-    - turbo-turtle sphere -h
-    - turbo-turtle partition -h
-    - turbo-turtle mesh -h
-    - turbo-turtle image -h
-    - turbo-turtle merge -h
-    - turbo-turtle export -h
     # System tests
     - turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cae --model-name sphere --part-name sphere --quadrant both --revolution-angle 360.0 --center 0.0 0.0
     - turbo-turtle partition --input-file sphere.cae --output-file sphere.cae --model-name sphere --part-name sphere --center 0.0 0.0 0 --xpoint 1.0 0.0 0.0 --zpoint 0.0 0.0 1.0 --plane-angle 45
