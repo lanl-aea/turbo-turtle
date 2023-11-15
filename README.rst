@@ -123,7 +123,8 @@ You can also create a local environment with the Conda package manager as
 
 .. code-block::
 
-   [roppenheimer@mymachine turbo-turtle]$ conda env create environment.yml
+   [roppenheimer@mymachine turbo-turtle]$ conda env create --file environment.yml --name turbo-turtle-dev
+   [roppenheimer@mymachine turbo-turtle]$ conda activate turbo-turtle-dev
 
 .. compute-env-end-do-not-remove
 

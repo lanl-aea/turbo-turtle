@@ -50,6 +50,7 @@ sphinx_source_files = [
     "api.rst",
     "changelog.rst",
     "cli.rst",
+    "devops.rst",
     "index.rst",
     "release_philosophy.rst",
     "user.rst"

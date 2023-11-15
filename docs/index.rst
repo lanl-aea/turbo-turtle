@@ -16,6 +16,7 @@
    :caption: Developer Manual
 
    api
+   devops
 
 .. toctree::
    :maxdepth: 1
