@@ -195,7 +195,7 @@ for part_name in ("washer vase sphere", ""):
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", commands_list)
-def test_run_tutorial(commands):
+def test_shell_commands(commands):
     """Run the system tests.
 
     Executes with a temporary directory that is cleaned up after each test execution.
