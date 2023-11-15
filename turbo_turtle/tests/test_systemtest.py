@@ -17,7 +17,6 @@ subcommand_list = parser._subparsers._group_actions[0].choices.keys()
 
 env = os.environ.copy()
 turbo_turtle_command = "turbo-turtle"
-legacy_geometry_file = "legacy_geometry.py"
 
 try:
     version("turbo_turtle")
@@ -28,7 +27,6 @@ except PackageNotFoundError:
 # If executing in repository, add package to PYTHONPATH and change the root command
 if not installed:
     turbo_turtle_command = "python -m turbo_turtle.main"
-    legacy_geometry_file = _settings._project_root_abspath.parent / legacy_geometry_file
     package_parent_path = _settings._project_root_abspath.parent
     key = "PYTHONPATH"
     if key in env:
@@ -133,6 +131,7 @@ commands_list.extend([f"{turbo_turtle_command} {subcommand} -h" for subcommand i
 # Legacy geometry system tests requires a series of commands before the temp directory is removed
 # TODO: Decide if we should package or drop the legacy geometry tests
 name='Turbo-Turtle-Tests'
+legacy_geometry_file = _settings._project_root_abspath / "tests" / "legacy_geometry.py"
 commands_list.append([
     f"abq2023 cae -noGui {legacy_geometry_file}",
     f"{turbo_turtle_command} partition --input-file {name}.cae --output-file {name}.cae --model-name {name} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
