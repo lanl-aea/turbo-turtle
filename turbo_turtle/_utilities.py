@@ -2,6 +2,7 @@ import sys
 import shutil
 import pathlib
 import inspect
+import platform
 import functools
 import subprocess
 
@@ -42,7 +43,25 @@ def find_command_or_exit(*args, **kwargs):
     return find_command(*args, **kwargs)
 
 
-def find_cubit_bin(options):
+def cubit_os_bin():
+    """Return the OS specific Cubit bin directory name
+
+    Making Cubit importable requires putting the Cubit bin directory on PYTHONPATH. On MacOS, the directory is "MacOS".
+    On other systems it is "bin".
+
+    :returns: bin directory name, e.g. "bin" or "MacOS"
+    :rtype:
+    """
+    system = platform.system().lower()
+    if system == "darwin":
+        bin_directory = "MacOS"
+    # TODO: Find the Windows bin directory name, update the function and the test.
+    else:
+        bin_directory = "bin"
+    return bin_directory
+
+
+def find_cubit_bin(options, bin_directory=None):
     """Provided a few options for the Cubit executable, search for the bin directory.
 
     Recommend first checking to see if cubit will import.
@@ -50,21 +69,27 @@ def find_cubit_bin(options):
     If the Cubit command or bin directory is not found, raise a FileNotFoundError.
 
     :param list options: Cubit command options
+    :param str bin_directory: Cubit's bin directory name. Override the bin directory returned by
+        :meth:`turbo_turtle._utilities.cubit_os_bin`.
 
     :returns: Cubit bin directory absolute path
     :rtype: pathlib.Path
     """
+    if bin_directory is None:
+        bin_directory = cubit_os_bin()
+
     message = "Could not find a Cubit bin directory. Please ensure the Cubit executable is on PATH or provide an " \
               "absolute path to the Cubit executable."
+
     cubit_command = find_command(options)
     cubit_command = os.path.realpath(cubit_command)
     cubit_bin = pathlib.Path(cubit_command)
-    if "bin" in cubit_bin.parts:
-        while cubit_bin.name != "bin":
+    if bin_directory in cubit_bin.parts:
+        while cubit_bin.name != bin_directory:
             cubit_bin = cubit_bin.parent
     else:
-        search = cubit_bin.glob("bin")
-        cubit_bin = next((path for path in search if path.name == "bin"), None)
+        search = cubit_bin.glob(bin_directory)
+        cubit_bin = next((path for path in search if path.name == bin_directory), None)
     if cubit_bin is None:
         raise FileNotFoundError(message)
     return cubit_bin

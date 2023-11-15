@@ -49,3 +49,18 @@ def test_run_command():
     with patch("subprocess.check_output", side_effect=subprocess.CalledProcessError(1, "dummy", b"output")), \
          pytest.raises(SystemExit):
         _utilities.run_command("dummy")
+
+
+def test_cubit_os_bin():
+    with patch("platform.system", return_value="Darwin"):
+        bin_directory = _utilities.cubit_os_bin()
+        assert bin_directory == "MacOS"
+
+    with patch("platform.system", return_value="Linux"):
+        bin_directory = _utilities.cubit_os_bin()
+        assert bin_directory == "bin"
+
+    # TODO: Find the Windows bin directory name, update the function and the test.
+    with patch("platform.system", return_value="Windows"):
+        bin_directory = _utilities.cubit_os_bin()
+        assert bin_directory == "bin"
