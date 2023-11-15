@@ -41,4 +41,5 @@ changelog = "https://aea.re-pages.lanl.gov/python-projects/turbo-turtle/changelo
 write_to = "turbo_turtle/_version.py"
 
 [tool.pytest.ini_options]
+markers = ["systemtest"]
 addopts = "--ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -n 4"
