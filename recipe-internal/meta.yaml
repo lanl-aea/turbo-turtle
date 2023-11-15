@@ -55,9 +55,6 @@ test:
     - pytest-xdist
   imports:
     - turbo_turtle
-  source_files:
-    - turbo_turtle/tests/washer.csv
-    - turbo_turtle/tests/vase.csv
   commands:
     - test_root=${PWD}
     # Test as-installed project unit tests
