@@ -1,9 +1,11 @@
 import os
+import pathlib
 import tempfile
 import subprocess
 from importlib.metadata import version, PackageNotFoundError
 
 import pytest
+import numpy
 
 from turbo_turtle import _settings
 from turbo_turtle.main import get_parser
@@ -34,8 +36,46 @@ if not installed:
     else:
         env[key] = f"{package_parent_path}"
 
+
+def character_delimited_list(non_string_list, character=" "):
+    """Map a list of non-strings to a character delimited string
+
+    :returns: string delimited by specified character
+    :rtype: str
+    """
+    return character.join(map(str, non_string_list))
+
+
+def setup_sphere_commands(model, angle, center, quadrant, element_type, element_replacement,
+                          turbo_turtle_command=turbo_turtle_command):
+    """Return the sphere/partition/mesh commands for system testing
+
+    :returns: list of string commands
+    :rtype: list
+    """
+    model = pathlib.Path(model)
+    center_three_dimensions = numpy.array(center + (0,))
+    center=character_delimited_list(center)
+    xpoint=character_delimited_list(center_three_dimensions + numpy.array([1, 0, 0]))
+    zpoint=character_delimited_list(center_three_dimensions + numpy.array([0, 0, 1]))
+    commands = [
+        f"{turbo_turtle_command} sphere --inner-radius 1 --outer-radius 2 --output-file {model.resolve()} " \
+            f"--model-name {model.stem} --part-name {model.stem} --quadrant {quadrant} " \
+            f"--revolution-angle {angle} --center {center}",
+        f"{turbo_turtle_command} partition --input-file {model.resolve()} --output-file {model.resolve()} " \
+            f"--model-name {model.stem} --part-name {model.stem} --center {center} 0 " \
+            f"--xpoint {xpoint} --zpoint {zpoint} --plane-angle 45",
+        f"{turbo_turtle_command} mesh --input-file {model.resolve()} --output-file {model.resolve()} " \
+            f"--model-name {model.stem} --part-name {model.stem} --global-seed 0.15 " \
+            f"--element-type {element_type}",
+    ]
+    return commands
+
+
+# Help/Usage sign-of-life
 commands_list = [f"{turbo_turtle_command} -h"]
 commands_list.extend([f"{turbo_turtle_command} {subcommand} -h" for subcommand in subcommand_list])
+
 # Legacy geometry system tests requires a series of commands before the temp directory is removed
 name='Turbo-Turtle-Tests'
 commands_list.append([
@@ -45,6 +85,20 @@ commands_list.append([
     f"{turbo_turtle_command} partition --input-file {name}.cae --output-file {name}.cae --model-name {name} --part-name swiss-cheese --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
     f"{turbo_turtle_command} image --input-file {name}.cae --model-name {name} --output-file swiss-cheese.png --part-name swiss-cheese",
 ])
+
+# Sphere/partition/mesh
+system_tests = (
+    # model/part,     angle,   center, quadrant, element_type, element_replacement
+    ("sphere",         360., (0., 0.),  "both",  "C3D8",       "C3D8R"),
+    ("axisymmetric",     0., (0., 0.),  "both",  "CAX4",       "CAX4R"),
+    ("quarter-sphere",  90., (0., 0.),  "both",  "C3D8",       "C3D8R"),
+    ("offset-sphere",  360., (1., 1.),  "both",  "C3D8",       "C3D8R"),
+    ("eigth-sphere",    90., (0., 0.), "upper",  "C3D8",       "C3D8R"),
+    ("half-sphere",    360., (0., 0.), "upper",  "C3D8",       "C3D8R")
+)
+for test in system_tests:
+    commands_list.append(setup_sphere_commands(*test))
+
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", commands_list)
