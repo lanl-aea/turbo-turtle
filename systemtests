@@ -47,16 +47,6 @@ for model, angle, center, quadrant, element_type, element_replacement in system_
     if model == "sphere":
         sphere_target = cae_target[0]
 
-    png_target = env.Command(
-        target=[f"{model}.png"],
-        source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/image.py"],
-        action=[
-            "python -m turbo_turtle.main image --input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} " \
-                "--model-name ${TARGET.filebase} --part-name ${TARGET.filebase}",
-        ]
-    )
-    targets.extend(png_target)
-
     inp_target = env.Command(
         target=[f"{model}.inp", f"{model}_assembly.inp"],
         source=[f"{model}.cae", "turbo_turtle/main.py", "turbo_turtle/_abaqus_python/export.py"],

@@ -55,6 +55,7 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
     """
     model = pathlib.Path(model)
     image = model.with_suffix(".png")
+    assembly = model.stem + "_assembly.inp"
     center_three_dimensions = numpy.array(center + (0,))
     center=character_delimited_list(center)
     xpoint=character_delimited_list(center_three_dimensions + numpy.array([1, 0, 0]))
@@ -71,6 +72,10 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
             f"--element-type {element_type}",
         f"{turbo_turtle_command} image --input-file {model} --output-file {image} " \
             f"--model-name {model.stem} --part-name {model.stem}",
+        f"python -m turbo_turtle.main export --input-file {model} " \
+            f"--model-name {model.stem} --part-name {model.stem} " \
+            f"--element-type {element_replacement} --destination . " \
+            f"--assembly {assembly}",
     ]
     return commands
 
