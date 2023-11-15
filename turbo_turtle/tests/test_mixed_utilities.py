@@ -5,7 +5,7 @@
    match.
 """
 
-from unittest.mock import patch
+from unittest.mock import patch, mock_open
 from contextlib import nullcontext as does_not_raise
 
 import numpy
@@ -261,3 +261,14 @@ element_type_regex = {
 def test_element_type_regex(content, element_type, expected):
     new_contents = _mixed_utilities._element_type_regex(content, element_type)
     assert new_contents == expected
+
+
+def test_substitute_element_type():
+    with patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
+         patch("turbo_turtle._abaqus_python._mixed_utilities._element_type_regex", return_value="old_content"):
+        _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
+        open_mock.assert_called_once()
+    with patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
+         patch("turbo_turtle._abaqus_python._mixed_utilities._element_type_regex", return_value="new_content"):
+        _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
+        assert open_mock.call_count == 2
