@@ -191,6 +191,7 @@ def get_parser():
 
 def main():
     parser = get_parser()
+    subcommand_list = parser._subparsers._group_actions[0].choices.keys()
     args = parser.parse_args()
 
     keys = vars(args).keys()
@@ -204,26 +205,14 @@ def main():
         command = _utilities.find_command_or_exit(args.abaqus_command)
         from turbo_turtle import _abaqus_wrappers as _wrappers
 
-    if args.subcommand == "geometry":
-        _wrappers.geometry(args, command)
-    elif args.subcommand == "cylinder":
-        _wrappers.cylinder(args, command)
-    elif args.subcommand == "sphere":
-        _wrappers.sphere(args, command)
-    elif args.subcommand == "partition":
-        _wrappers.partition(args, command)
-    elif args.subcommand == "mesh":
-        _wrappers.mesh(args, command)
-    elif args.subcommand == "image":
-        _wrappers.image(args, command)
-    elif args.subcommand == "merge":
-        _wrappers.merge(args, command)
-    elif args.subcommand == "export":
-        _wrappers.export(args, command)
+
+    if args.subcommand not in subcommand_list:
+        parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     else:
-        parser.print_help()
+        wrapper_command = getattr(_wrappers, args.subcommand)
+        wrapper_command(args, command)
 
 
 if __name__ == "__main__":
