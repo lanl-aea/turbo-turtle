@@ -30,6 +30,8 @@ Internal Changes
   and Abaqus Python (:issue:`53`, :merge:`49`). By `Kyle Brindley`_.
 - Drive the system tests with pytest to reduce hardcoded duplication in test definitions between repository and
   conda-build recipe (:issue:`61`, :merge:`52`). By `Kyle Brindley`_.
+- Move the element type substitution function to a common Python 2/3 compatible module (:issue:`59`, :merge:`55`). By
+  `Kyle Brindley`_.
 
 Enhancements
 ============
