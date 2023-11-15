@@ -12,6 +12,11 @@ New Features
 ============
 - Draft implementation of ``geometry`` subcommand with Cubit (:issue:`44`, :merge:`50`). By `Kyle Brindley`_.
 
+Bug fixes
+=========
+- Fix the ``--euclidean-distance`` option of the ``geometry`` subcommand (:issue:`67`, :merge:`56`). By `Kyle
+  Brindley`_.
+
 Documentation
 =============
 - Developer documentation for the mixed Python 2/3 modules and testing with both Python 3 and Abaqus Python

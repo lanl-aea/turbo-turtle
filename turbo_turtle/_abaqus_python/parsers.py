@@ -80,7 +80,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                         help="Name of an input file(s) with points in x-y coordinate system")
     parser.add_argument("--unit-conversion", type=positive_float, default=geometry_default_unit_conversion,
                         help="Unit conversion multiplication factor (default: %(default)s)")
-    parser.add_argument("--euclidean_distance", type=positive_float, default=geometry_default_euclidean_distance,
+    parser.add_argument("--euclidean-distance", type=positive_float, default=geometry_default_euclidean_distance,
                         help="Connect points with a straight line if the distance between them is larger than this " \
                              "(default: %(default)s)")
     parser.add_argument("--planar", action='store_true',
