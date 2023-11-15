@@ -160,6 +160,20 @@ def intersection_of_lists(requested, available):
     return sorted(intersection)
 
 
+def _element_type_regex(content, element_type):
+    """Place element type in Abaqus element keywords. RegEx uses MULTILINE and IGNORECASE
+
+    :param str content: String of Abaqus keyword text
+    :param str element_type: New element type to place in the ``*element, type=`` text
+
+    :returns: substituted element type keyword text
+    :rtype: str
+    """
+    regex = r"(\*element,\s+type=)([a-zA-Z0-9]*)"
+    subst = "\\1{}".format(element_type)
+    return re.sub(regex, subst, content, 0, re.MULTILINE | re.IGNORECASE)
+
+
 def substitute_element_type(mesh_file, element_type):
     """Use regular expressions to substitute element types in an existing orphan mesh file via the
     ``*Element`` keyword.
@@ -169,11 +183,9 @@ def substitute_element_type(mesh_file, element_type):
 
     :returns: re-writes ``mesh_file`` if element type changes have been made
     """
-    regex = r"(\*element,\s+type=)([a-zA-Z0-9]*)"
-    subst = "\\1{}".format(element_type)
     with open(mesh_file, 'r') as orphan_mesh:
         old_content = orphan_mesh.read()
-    new_content = re.sub(regex, subst, old_content, 0, re.MULTILINE | re.IGNORECASE)
+    new_content = _element_type_regex(old_content, element_type)
     if new_content != old_content:
         with open(mesh_file, 'w') as orphan_mesh:
             orphan_mesh.write(new_content)

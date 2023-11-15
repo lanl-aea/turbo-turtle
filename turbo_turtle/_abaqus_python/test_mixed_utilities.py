@@ -64,6 +64,9 @@ class TestUtilities(unittest.TestCase):
             intersection = _mixed_utilities.intersection_of_lists(requested, available)
             self.assertEqual(intersection, expected)
 
+    def test_substitute_element_type(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

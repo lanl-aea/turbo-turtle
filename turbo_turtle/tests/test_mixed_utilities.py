@@ -241,3 +241,23 @@ intersection_of_lists = {
 def test_intersection_of_lists(requested, available, expected):
         intersection = _mixed_utilities.intersection_of_lists(requested, available)
         assert intersection == expected
+
+
+element_type_regex = {
+    "C3D8-C3D8R": (
+        "*element, type=C3D8\n*ELEMENT, TYPE=C3D8\n*Element, Type=C3D8\n", "C3D8R",
+        "*element, type=C3D8R\n*ELEMENT, TYPE=C3D8R\n*Element, Type=C3D8R\n"
+    ),
+    "SQUARE4-CAX4": (
+        "*element, type=square4\n*ELEMENT, TYPE=SQUARE4\n*Element, Type=Square4\n", "CAX4",
+        "*element, type=CAX4\n*ELEMENT, TYPE=CAX4\n*Element, Type=CAX4\n"
+    ),
+}
+
+
+@pytest.mark.parametrize("content, element_type, expected",
+                         element_type_regex.values(),
+                         ids=element_type_regex.keys())
+def test_element_type_regex(content, element_type, expected):
+    new_contents = _mixed_utilities._element_type_regex(content, element_type)
+    assert new_contents == expected
