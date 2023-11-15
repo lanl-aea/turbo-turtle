@@ -54,20 +54,23 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
     :rtype: list
     """
     model = pathlib.Path(model)
+    image = model.with_suffix(".png")
     center_three_dimensions = numpy.array(center + (0,))
     center=character_delimited_list(center)
     xpoint=character_delimited_list(center_three_dimensions + numpy.array([1, 0, 0]))
     zpoint=character_delimited_list(center_three_dimensions + numpy.array([0, 0, 1]))
     commands = [
-        f"{turbo_turtle_command} sphere --inner-radius 1 --outer-radius 2 --output-file {model.resolve()} " \
+        f"{turbo_turtle_command} sphere --inner-radius 1 --outer-radius 2 --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --quadrant {quadrant} " \
             f"--revolution-angle {angle} --center {center}",
-        f"{turbo_turtle_command} partition --input-file {model.resolve()} --output-file {model.resolve()} " \
+        f"{turbo_turtle_command} partition --input-file {model} --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --center {center} 0 " \
             f"--xpoint {xpoint} --zpoint {zpoint} --plane-angle 45",
-        f"{turbo_turtle_command} mesh --input-file {model.resolve()} --output-file {model.resolve()} " \
+        f"{turbo_turtle_command} mesh --input-file {model} --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --global-seed 0.15 " \
             f"--element-type {element_type}",
+        f"{turbo_turtle_command} image --input-file {model} --output-file {image} " \
+            f"--model-name {model.stem} --part-name {model.stem}",
     ]
     return commands
 
@@ -88,13 +91,13 @@ commands_list.append([
 
 # Sphere/partition/mesh
 system_tests = (
-    # model/part,     angle,   center, quadrant, element_type, element_replacement
-    ("sphere",         360., (0., 0.),  "both",  "C3D8",       "C3D8R"),
-    ("axisymmetric",     0., (0., 0.),  "both",  "CAX4",       "CAX4R"),
-    ("quarter-sphere",  90., (0., 0.),  "both",  "C3D8",       "C3D8R"),
-    ("offset-sphere",  360., (1., 1.),  "both",  "C3D8",       "C3D8R"),
-    ("eigth-sphere",    90., (0., 0.), "upper",  "C3D8",       "C3D8R"),
-    ("half-sphere",    360., (0., 0.), "upper",  "C3D8",       "C3D8R")
+    # model/part,         angle,   center, quadrant, element_type, element_replacement
+    ("sphere.cae",         360., (0., 0.),  "both",  "C3D8",       "C3D8R"),
+    ("axisymmetric.cae",     0., (0., 0.),  "both",  "CAX4",       "CAX4R"),
+    ("quarter-sphere.cae",  90., (0., 0.),  "both",  "C3D8",       "C3D8R"),
+    ("offset-sphere.cae",  360., (1., 1.),  "both",  "C3D8",       "C3D8R"),
+    ("eigth-sphere.cae",    90., (0., 0.), "upper",  "C3D8",       "C3D8R"),
+    ("half-sphere.cae",    360., (0., 0.), "upper",  "C3D8",       "C3D8R")
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
