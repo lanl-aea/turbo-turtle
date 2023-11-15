@@ -191,20 +191,3 @@ target = env.Command(
 )
 env.Alias("systemtests", target)
 env.Alias("regression", target)
-
-target = env.Command(
-    target=["Turbo-Turtle-Tests.cae", "seveneigths-sphere.png", "swiss-cheese.png"],
-    source=["legacy_geometry.py"],
-    action=[
-        "cd ${TARGET.dir.abspath} && abq2023 cae -noGui ${SOURCE.abspath}",
-        "${partition_prefix} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
-        "${image_prefix} --output-file ${TARGET.dir.abspath}/seveneigths-sphere.png --part-name seveneigths-sphere",
-        "${partition_prefix} --part-name swiss-cheese --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
-        "${image_prefix} --output-file ${TARGET.dir.abspath}/swiss-cheese.png --part-name swiss-cheese",
-    ],
-    partition_prefix="python -m turbo_turtle.main partition --input-file ${TARGET.abspath} " \
-                     "--output-file ${TARGET.abspath} --model-name ${TARGET.filebase} ",
-    image_prefix="python -m turbo_turtle.main image --input-file ${TARGET.abspath} --model-name ${TARGET.filebase} "
-)
-env.Alias("systemtests", target)
-env.Alias("regression", target)
