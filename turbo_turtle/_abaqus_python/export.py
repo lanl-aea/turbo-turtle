@@ -91,26 +91,7 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
         mesh_output_file = os.path.join(destination, new_part) + ".inp"
         export(output_file=mesh_output_file, model_name=tmp_name, part_name=new_part)
         if new_element is not None:
-            substitute_element_type(mesh_output_file, new_element)
-
-
-def substitute_element_type(mesh_output_file, element_type):
-    """Use regular expressions to substitute element types in an existing orphan mesh file via the
-    ``*Element`` keyword.
-
-    :param str mesh_output_file: existing orphan mesh file
-    :param str element_type: element type to substitute into the ``*Element`` keyword phrase
-
-    :returns: re-writes ``mesh_output_file`` if element type changes have been made
-    """
-    regex = r"(\*element,\s+type=)([a-zA-Z0-9]*)"
-    subst = "\\1{}".format(element_type)
-    with open(mesh_output_file, 'r') as orphan_mesh:
-        old_content = orphan_mesh.read()
-    new_content = re.sub(regex, subst, old_content, 0, re.MULTILINE | re.IGNORECASE)
-    if new_content != old_content:
-        with open(mesh_output_file, 'w') as orphan_mesh:
-            orphan_mesh.write(new_content)
+            _mixed_utilities.substitute_element_type(mesh_output_file, new_element)
 
 
 def export(output_file,

@@ -157,3 +157,22 @@ def intersection_of_lists(requested, available):
     else:
         intersection = available
     return sorted(intersection)
+
+
+def substitute_element_type(mesh_file, element_type):
+    """Use regular expressions to substitute element types in an existing orphan mesh file via the
+    ``*Element`` keyword.
+
+    :param str mesh_file: existing orphan mesh file
+    :param str element_type: element type to substitute into the ``*Element`` keyword phrase
+
+    :returns: re-writes ``mesh_file`` if element type changes have been made
+    """
+    regex = r"(\*element,\s+type=)([a-zA-Z0-9]*)"
+    subst = "\\1{}".format(element_type)
+    with open(mesh_file, 'r') as orphan_mesh:
+        old_content = orphan_mesh.read()
+    new_content = re.sub(regex, subst, old_content, 0, re.MULTILINE | re.IGNORECASE)
+    if new_content != old_content:
+        with open(mesh_file, 'w') as orphan_mesh:
+            orphan_mesh.write(new_content)
