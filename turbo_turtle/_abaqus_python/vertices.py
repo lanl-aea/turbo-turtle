@@ -167,9 +167,7 @@ def _line_pairs(all_splines):
 
 
 def polar_vector(radius, polar_angle, azimuthal_angle):
-    """Calculate the rectalinear coordinates of a vector defined in polar coordinates, where the polar axis is the
-    Y-axis
-
+    """Calculate the rectalinear coordinates of a vector defined in +y axis polar coordinates
     .. math::
 
        x = radius * sin(polar_angle) * cos(azimuthal_angle)
@@ -196,29 +194,29 @@ def polar_vector(radius, polar_angle, azimuthal_angle):
     ])
 
 
-def calculate_datum_planes(center, xpoint, zpoint, polar_angle, azimuthal_angle):
-    """Calculate the parititioning datum plane normal vectors on the partitioning local coordinate system
+def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
+    """Calculate the sphere partitioning datum plane normal vectors on a local coordinate system with +y polar axis
 
     :param list center: List of three (3) floats defining the location of the datum coordinate system in global
         coordinate space
-    :param list xpoint: List of three (3) floats defining the local x-axis vector in global coordinate space
-    :param list zpoint: List of three (3) floats defining the local z-axis vector in global coordinate space
+    :param list xvector: List of three (3) floats defining the local x-axis vector in global coordinate space
+    :param list zvector: List of three (3) floats defining the local z-axis vector in global coordinate space
     :param float polar_angle: Polar angle measured from the local y-axix (polar axis) in degrees
     :param float azimuthal_angle: Azimuthal angle measure from the local x-axis in degrees
 
     :returns: list of local plane normal vectors [7, 3] - xz plane, (2) +/- azimuthal planes, (4) polar planes
     """
-    xpoint = numpy.array(xpoint)
-    zpoint = numpy.array(zpoint)
+    xvector = numpy.array(xvector)
+    zvector = numpy.array(zvector)
 
-    xz_plane = numpy.cross(xpoint, zpoint)
+    xz_plane = -1 * numpy.cross(xvector, zvector)
 
     azimuthal_radians = math.radians(azimuthal_angle)
     polar_radians = math.radians(polar_angle)
 
-    azimuthal_normal = math.pi - azimuthal_radians
-    positive_azimuthal = polar_vector(1., 0.,  azimuthal_normal)
-    negative_azimuthal = polar_vector(1., 0., -azimuthal_normal)
+    azimuthal_normal = math.pi / 2. - azimuthal_radians
+    positive_azimuthal = polar_vector(1., math.pi / 2., -azimuthal_normal)
+    negative_azimuthal = polar_vector(1., math.pi / 2.,  azimuthal_normal)
 
     first_vector  = polar_vector(1., polar_radians,  azimuthal_radians)
     second_vector = polar_vector(1., polar_radians, -azimuthal_radians)

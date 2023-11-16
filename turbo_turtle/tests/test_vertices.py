@@ -297,3 +297,29 @@ polar_vector = {
 def test_polar_vector(radius, polar_angle, azimuthal_angle, expected):
     vector = vertices.polar_vector(radius, polar_angle, azimuthal_angle)
     assert numpy.allclose(vector, expected)
+
+
+norm = math.sqrt(0.5)
+datum_planes = {
+    "globally aligned 45-degrees": (
+        (1., 0., 0.), (0., 0., 1.), 45., 45.,
+        [
+         numpy.array([0., 1., 0.]),  # xzplane
+         numpy.array([ norm, 0.,  norm]),  # positive azimuthal
+         numpy.array([ norm, 0., -norm]),  # negative azimuthal
+         numpy.array([ norm, -0.5,    0.]),  # polar planes
+         numpy.array([   0., -0.5,  norm]),
+         numpy.array([-norm, -0.5,    0.]),
+         numpy.array([   0., -0.5, -norm]),
+        ]
+    ),
+}
+
+
+@pytest.mark.parametrize("xvector, zvector, polar_angle, azimuthal_angle, expected",
+                         datum_planes.values(),
+                         ids=datum_planes.keys())
+def test_datum_planes(xvector, zvector, polar_angle, azimuthal_angle, expected):
+    planes = vertices.datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
+    for plane, expectation in zip(planes, expected):
+        assert numpy.allclose(plane, expectation)
