@@ -33,7 +33,7 @@ def cylinder(inner_radius, outer_radius, height):
     return numpy.array(coordinates)
 
 
-def lines_and_splines(coordinates, euclidean_distance):
+def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
     """Accept a [N, 2] numpy array of XY coordinates and return line point pairs and splines
 
     Array is broken into a list of [M, 2] arrays according to the following rules
@@ -51,6 +51,8 @@ def lines_and_splines(coordinates, euclidean_distance):
 
     :param numpy.array coordinates: [N, 2] array of XY coordinates.
     :param float euclidean_distance: If the distance between two points is greater than this, draw a straight line.
+    :param float rtol: relative tolerance used by ``numpy.isclose``. If None, use the numpy default.
+    :param float atol: absolute tolerance used by ``numpy.isclose``. If None, use the numpy default.
 
     :returns: list of line pairs and list of spline arrays
     :rtype: tuple
@@ -62,7 +64,7 @@ def lines_and_splines(coordinates, euclidean_distance):
     return lines, splines
 
 
-def _break_coordinates(coordinates, euclidean_distance):
+def _break_coordinates(coordinates, euclidean_distance, rtol=None, atol=None):
     """Accept a [N, 2] numpy array and break into a list of [M, 2] arrays
 
     This function follows this methodology to turn a [N, 2] numpy array into a list of [M, 2] arrays denoting
@@ -74,12 +76,14 @@ def _break_coordinates(coordinates, euclidean_distance):
 
     :param numpy.array coordinates: [N, 2] array of XY coordinates.
     :param float euclidean_distance: If the distance between two points is greater than this, draw a straight line.
+    :param float rtol: relative tolerance used by ``numpy.isclose``. If None, use the numpy default.
+    :param float atol: absolute tolerance used by ``numpy.isclose``. If None, use the numpy default.
 
     :return: Series of line and spline definitions
     :rtype: list
     """
     euclidean_distance_bools = _compare_euclidean_distance(coordinates, euclidean_distance)
-    vertical_horizontal_bools = _compare_xy_values(coordinates)
+    vertical_horizontal_bools = _compare_xy_values(coordinates, rtol=rtol, atol=atol)
     bools_from_or = _bool_via_or(euclidean_distance_bools, vertical_horizontal_bools)
     break_indices = numpy.where(bools_from_or)[0]
     all_splines = numpy.split(coordinates, break_indices, axis=0)
@@ -106,7 +110,7 @@ def _compare_euclidean_distance(coordinates, euclidean_distance):
     return euclidean_distance_bools
 
 
-def _compare_xy_values(coordinates):
+def _compare_xy_values(coordinates, rtol=None, atol=None):
     """Check neighboring XY values in an [N, 2] array of coordinates for vertical or horizontal relationships
 
     This function loops through lists of coordinates checking to see if a "current point" and the previous point in the numpy
@@ -115,13 +119,20 @@ def _compare_xy_values(coordinates):
     the first point and one that comes before it.
 
     :param numpy.array coordinates: [N, 2] array of XY coordinates.
+    :param float rtol: relative tolerance used by ``numpy.isclose``. If None, use the numpy default.
+    :param float atol: absolute tolerance used by ``numpy.isclose``. If None, use the numpy default.
 
     :return: bools for vertical/horizontal relationship comparison
     :rtype: list of length N
     """
-    vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0]) or
-                                           numpy.isclose(coords1[1], coords2[1]) for coords1, coords2 in
-                                           zip(coordinates[1:, :], coordinates[0:-1, :])]
+    isclose_kwargs = {}
+    if rtol is not None:
+        isclose_kwargs.update("rtol", rtol)
+    if atol is not None:
+        isclose_kwargs.update("atol", atol)
+    vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0], **isclose_kwargs) or
+                                           numpy.isclose(coords1[1], coords2[1], **isclose_kwargs) for
+                                           coords1, coords2 in zip(coordinates[1:, :], coordinates[0:-1, :])]
     return vertical_horizontal_bools
 
 

@@ -67,6 +67,8 @@ geometry_default_part_name = [None]
 geometry_default_delimiter = ","
 geometry_default_header_lines = 0
 geometry_default_revolution_angle = 360.0
+geometry_default_rtol = None
+geometry_default_atol = None
 geometry_cli_help = "Create 2D or 3D part(s) from XY coordinate list input file(s)"
 geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
                            "sketching lines and splines in the XY plane. Line and spline definitions are formed by " \
@@ -98,6 +100,12 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                         help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
     parser.add_argument("--revolution-angle", type=float, default=geometry_default_revolution_angle,
                         help="Revolution angle for a 3D part in degrees (default: %(default)s)")
+    parser.add_argument("--rtol", type=float, default=geometry_default_rtol,
+                        help="relative tolerance used by ``numpy.isclose``. If not provided, use numpy defaults " \
+                             "(default: %(default)s)")
+    parser.add_argument("--atol", type=float, default=geometry_default_atol,
+                        help="absolute tolerance used by ``numpy.isclose``. If not provided, use numpy defaults " \
+                             "(default: %(default)s)")
     return parser
 
 

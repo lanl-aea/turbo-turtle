@@ -22,7 +22,11 @@ def geometry(args, command):
         command += f"--part-name {' '.join(map(str, args.part_name))} "
     command += f"--delimiter {args.delimiter} "
     command += f"--header-lines {args.header_lines} "
-    command += f"--revolution-angle {args.revolution_angle}"
+    command += f"--revolution-angle {args.revolution_angle} "
+    if args.rtol is not None:
+        command += f"--rtol {args.rtol} "
+    if args.atol is not None:
+        command += f"--atol {args.atol} "
     _utilities.run_command(command)
 
 

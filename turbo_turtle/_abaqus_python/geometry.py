@@ -22,7 +22,9 @@ def main(input_file, output_file,
          euclidean_distance=parsers.geometry_default_euclidean_distance,
          delimiter=parsers.geometry_default_delimiter,
          header_lines=parsers.geometry_default_header_lines,
-         revolution_angle=parsers.geometry_default_revolution_angle):
+         revolution_angle=parsers.geometry_default_revolution_angle,
+         rtol=parsers.geometry_default_rtol,
+         atol=parsers.geometry_default_atol):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
     This script takes an array of XY coordinates from a text file and creates a 2D sketch or 3D body of
@@ -59,7 +61,8 @@ def main(input_file, output_file,
         coordinates = coordinates * unit_conversion
         try:
             draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
-                                   euclidean_distance=euclidean_distance, revolution_angle=revolution_angle)
+                                   euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,
+                                   rtol=rtol, atol=atol)
         except:
             message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
             _mixed_utilities.sys_exit(message)
@@ -73,7 +76,9 @@ def draw_part_from_splines(coordinates,
                            model_name=parsers.geometry_default_model_name,
                            part_name=parsers.geometry_default_part_name,
                            euclidean_distance=parsers.geometry_default_euclidean_distance,
-                           revolution_angle=parsers.geometry_default_revolution_angle):
+                           revolution_angle=parsers.geometry_default_revolution_angle,
+                           rtol=parsers.geometry_default_rtol,
+                           atol=parsers.geometry_default_atol):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
     depending on the ``planar`` and ``revolution_angle`` parameters.
@@ -112,7 +117,7 @@ def draw_part_from_splines(coordinates,
     sketch.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
     sketch.FixedConstraint(entity=sketch.geometry[3])
 
-    lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
+    lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     for spline in splines:
         spline = tuple(map(tuple, spline))
         sketch.Spline(points=spline)
@@ -158,5 +163,7 @@ if __name__ == "__main__":
         euclidean_distance=args.euclidean_distance,
         delimiter=args.delimiter,
         header_lines=args.header_lines,
-        revolution_angle=args.revolution_angle
+        revolution_angle=args.revolution_angle,
+        rtol=args.rtol,
+        atol=args.atol
     ))
