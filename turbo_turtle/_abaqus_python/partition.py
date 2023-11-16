@@ -231,78 +231,61 @@ def get_inputs():
     :return: ``center`` - center location of the geometry
     :rtype: list
 
-    :return: ``xpoint`` - location on the x-axis local to the geometry
+    :return: ``xvector`` - location on the x-axis local to the geometry
     :rtype: list
 
-    :return: ``zpoint`` - location on the z-axis local to the geometry
+    :return: ``zvector`` - location on the z-axis local to the geometry
     :rtype: list
 
-    :return: ``plane_angle`` - angle at which partition planes will be created
+    :return: ``polar_angle`` - angle at which partition planes will be created
     :rtype: float
 
-    :return: ``partitions`` - locations to create partitions by offsetting principal planes
-    :rtype: dict
+    :return: ``azimuthal_angle`` - angle at which partition planes will be created
+    :rtype: float
     """
     from abaqus import getInputs
 
 
     fields = (('Center:','0.0, 0.0, 0.0'),
-        ('X-Axis Point:', '1.0, 0.0, 0.0'),
-        ('Z-Axis Point:', '0.0, 0.0, 1.0'),
-        ('Partition Angle:', '45.0'),
-        ('Partitions Along X', '0.0, 0.0'),
-        ('Partitions Along Y', '0.0, 0.0'),
-        ('Partitions Along Z', '0.0, 0.0'),
-        ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
-    center, xpoint, zpoint, plane_angle, partition_x, partition_y, partition_z, cp_parameters = getInputs(fields=fields,
+              ('X-Vector:', '1.0, 0.0, 0.0'),
+              ('Z-Vector:', '0.0, 0.0, 1.0'),
+              ('Polar Angle:', '45.0'),
+              ('Azimuthal Angle:', '45.0'),
+              ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
+    center, xvector, zvector, polar_angle, azimuthal_angle, cp_parameters = getInputs(fields=fields,
         label='Specify Geometric Parameters:',
         dialogTitle='Turbo Turtle', )
-    partitions = {}
     if center is not None:
         if cp_parameters != fields[-1][-1]:
             cp_param = [x.replace('\n', '') for x in cp_parameters.split('\n')]
             center = ast.literal_eval(cp_param[0].replace('Center: ', ''))
-            xpoint = ast.literal_eval(cp_param[1].replace('X-Axis Point: ', ''))
-            zpoint = ast.literal_eval(cp_param[2].replace('Z-Axis Point: ', ''))
-            plane_angle = ast.literal_eval(cp_param[3].replace('Partition Angle: ', ''))
-            partition_x = ast.literal_eval(cp_param[4].replace('Partitions Along X: ', ''))
-            partition_y = ast.literal_eval(cp_param[5].replace('Partitions Along Y: ', ''))
-            partition_z = ast.literal_eval(cp_param[6].replace('Partitions Along Z: ', ''))
+            xpoint = ast.literal_eval(cp_param[1].replace('X-Vector: ', ''))
+            zpoint = ast.literal_eval(cp_param[2].replace('Z-Vector: ', ''))
+            polar_angle = ast.literal_eval(cp_param[3].replace('Polar Angle: ', ''))
+            azimuthal_angle = ast.literal_eval(cp_param[3].replace('Azimuthal Angle: ', ''))
         else:
             center = list(ast.literal_eval(center))
-            xpoint = list(ast.literal_eval(xpoint))
-            zpoint = list(ast.literal_eval(zpoint))
-            plane_angle = ast.literal_eval(plane_angle)
-            partition_x = [ast.literal_eval(x) for x in partition_x.replace(' ', '').split(',')]
-            partition_y = [ast.literal_eval(x) for x in partition_y.replace(' ', '').split(',')]
-            partition_z = [ast.literal_eval(x) for x in partition_z.replace(' ', '').split(',')]
-        partitions['x'] = partition_x
-        partitions['y'] = partition_y
-        partitions['z'] = partition_z
+            xvector = list(ast.literal_eval(xvector))
+            zvector = list(ast.literal_eval(zvector))
+            polar_angle = ast.literal_eval(polar_angle)
+            azimuthal_angle = ast.literal_eval(azimuthal_angle)
         print('\nPartitioning Parameters Entered By User:')
         print('----------------------------------------')
         print('Center: {}'.format(center))
-        print('X-Axis Point: {}'.format(xpoint))
-        print('Z-Axis Point: {}'.format(zpoint))
-        print('Partition Angle: {}'.format(plane_angle))
-        print('Partitions Along X: {}'.format(partition_x))
-        print('Partitions Along Y: {}'.format(partition_y))
-        print('Partitions Along Z: {}'.format(partition_z))
+        print('X-Vector: {}'.format(xvector))
+        print('Z-Vector: {}'.format(zvector))
+        print('Polar Angle: {}'.format(polar_angle))
+        print('Azimuthal Angle: {}'.format(azimuthal_angle))
         print('')
-    return center, xpoint, zpoint, plane_angle, partitions
+    return center, xpoint, zpoint, polar_angle, azimuthal_angle
 
 
 if __name__ == "__main__":
     try:
-        center, xpoint, zpoint, plane_angle, partitions = get_inputs()
+        center, xvector, zvector, polar_angle, azimuthal_angle = get_inputs()
         model_name=None
         part_name=None
-        partitions = {
-            'x': x_partitions,
-            'y': y_partitions,
-            'z': z_partitions
-        }
-        partition(center, xvector, zvector, plane_angle, model_name, part_name)
+        partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name, part_name)
 
     except:
         parser = parsers.partition_parser(basename=basename)
@@ -311,18 +294,14 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-        center=args.center
-        xpoint=args.xpoint
-        zpoint=args.zpoint
-        plane_angle=args.plane_angle
-        model_name=args.model_name
-        part_name=args.part_name
-        input_file=args.input_file
-        output_file=args.output_file
-        partitions = {
-            'x': args.x_partitions,
-            'y': args.y_partitions,
-            'z': args.z_partitions
-        }
-
-        sys.exit(main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions))
+        sys.exit(main(
+            input_file=args.input_file,
+            output_file=args.output_file,
+            center=args.center,
+            xvector=args.xvector,
+            zvector=args.zvector,
+            polar_angle=args.polar_angle,
+            azimuthal_angle=args.azimuthal_angle,
+            model_name=args.model_name,
+            part_name=args.part_name
+        ))
