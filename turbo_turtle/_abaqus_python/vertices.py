@@ -190,9 +190,9 @@ def polar_vector(radius, polar_angle, azimuthal_angle):
     :rtype: numpy.array
     """
     return numpy.array([
-        radius * math.sin(polar_angle) * cos(azimuthal_angle),
-        radius * math.cos(polas_angle),
-        radius * math.sin(polar_angle) * sin(azimuthal_angle)
+          radius * math.sin(polar_angle) * math.cos(azimuthal_angle),
+          radius * math.cos(polar_angle),
+        - radius * math.sin(polar_angle) * math.sin(azimuthal_angle)
     ])
 
 

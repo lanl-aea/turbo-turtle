@@ -276,3 +276,24 @@ def test_rectalinear_coordinates(radius_list, angle_list, expected):
     """Test :meth:`turbo_turtle._abaqus_python.vertices.rectalinear_coordinates`"""
     coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
     assert numpy.allclose(coordinates, expected)
+
+
+polar_vector = {
+    "x-axis": (
+        1., math.pi / 2., 0., numpy.array([1., 0., 0.])
+    ),
+    "y-axis": (
+        1., 0., 0., numpy.array([0., 1., 0.])
+    ),
+    "z-axis": (
+        1., math.pi / 2., -math.pi / 2., numpy.array([0., 0., 1.])
+    )
+}
+
+
+@pytest.mark.parametrize("radius, polar_angle, azimuthal_angle, expected",
+                         polar_vector.values(),
+                         ids=polar_vector.keys())
+def test_polar_vector(radius, polar_angle, azimuthal_angle, expected):
+    vector = vertices.polar_vector(radius, polar_angle, azimuthal_angle)
+    assert numpy.allclose(vector, expected)
