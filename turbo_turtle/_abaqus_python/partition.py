@@ -78,55 +78,11 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name):
         print('\nTurboTurtle was canceled\n')
         return
 
-    # Define some convenient values
-    center = numpy.array(center)
-
-    xvector = numpy.array(xvector)
-    xpoint = center + xvector
-
-    zvector = numpy.array(zvector)
-    zpoint = center + zvector
-
-    yvector = numpy.cross(zvector, xvector)
-    ypoint = center + yvector
-
-    # Step 1 - Define local coordinate system axes and primary planes
-    part = abaqus.mdb.models[model_name].parts[part_name]
-    part.DatumPointByCoordinate(coords=tuple(center))
-
-    part.DatumPointByCoordinate(coords=tuple(xpoint))
-    x_axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(xpoint)).id]
-    y_axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(ypoint)).id]
-    z_axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(zpoint)).id]
-
-    xy_plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=z_axis).id]
-    yz_plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=x_axis).id]
-    zx_plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=y_axis).id]
-
-    # Step 2 - partition all cells by local primary planes
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=xy_plane, cells=part.cells[:])
-    except:
-        pass
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=yz_plane, cells=part.cells[:])
-    except:
-        pass
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=zx_plane, cells=part.cells[:])
-    except:
-        pass
-
-    # Step 3 - Create azimuthal and polar planes and partition
-    # First value is xz_plane normal, but we already created the Abaqus xz datum plane from the y-axis datum
-    _, *plane_normals = datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
-
-    for normal_axis in plane_normals:
-        point = center + normal_axis
+    plane_normals = datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
+    for normal in plane_normals:
+        point = center + normal
         axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
         plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
-
-        # Step 4 - partition all cells by azimuthal and polar planes
         try:
             part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
         except:
