@@ -212,6 +212,9 @@ def normalize_vector(vector):
 def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
     """Calculate the sphere partitioning datum plane normal vectors on a local coordinate system with +y polar axis
 
+    The x- and z-vectors must be orthogonal. They will be normalized prior to calculating the normalized plane normal
+    vectors.
+
     :param list center: List of three (3) floats defining the location of the datum coordinate system in global
         coordinate space
     :param list xvector: List of three (3) floats defining the local x-axis vector in global coordinate space
@@ -221,8 +224,8 @@ def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
 
     :returns: list of local plane normal vectors [7, 3] - xy/yz/zx planes, (2) +/- azimuthal planes, (4) polar planes
     """
-    xvector = numpy.array(xvector)
-    zvector = numpy.array(zvector)
+    xvector = normalize_vector(xvector)
+    zvector = normalize_vector(zvector)
 
     dot = numpy.dot(xvector, zvector)
     if not numpy.isclose(dot, 0.):
