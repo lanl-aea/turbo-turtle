@@ -92,6 +92,9 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
             pass
 
     # Step 19 - Find the vertices intersecting faces to remove for the x-axis
+    # TODO: Clean this up. Maybe march along local primary axes? Maybe remove all the surface guessing and save surfaces
+    # from partition command?
+    plane_angle = 45.
     found_face = True
 
     while found_face:
