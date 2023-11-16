@@ -17,7 +17,7 @@ import parsers
 
 
 def main(input_file,
-         output_file=parsers.default_output_file,
+         output_file=parsers.partition_default_output_file,
          center=parsers.partition_default_center,
          xvector=parsers.partition_default_xvector,
          zvector=parsers.partition_default_zvector,
