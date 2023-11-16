@@ -80,14 +80,12 @@ def partition(args, command):
     command += f"--input-file {args.input_file} "
     if args.output_file is not None:
         command += f"--output-file {args.output_file} "
-    command += f"--model-name {args.model_name} --part-name {args.part_name} "
-    command += f"--xpoint {' '.join(map(str, args.xpoint))} "
     command += f"--center {' '.join(map(str, args.center))} "
-    command += f"--zpoint {' '.join(map(str, args.zpoint))} "
-    command += f"--plane-angle {args.plane_angle} "
-    command += f"--x-partitions {' '.join(map(str, args.x_partitions))} "
-    command += f"--y-partitions {' '.join(map(str, args.y_partitions))} "
-    command += f"--z-partitions {' '.join(map(str, args.z_partitions))} "
+    command += f"--xvector {' '.join(map(str, args.xvector))} "
+    command += f"--zvector {' '.join(map(str, args.zvector))} "
+    command += f"--polar-angle {args.plane_angle} "
+    command += f"--azimuthal-angle {args.plane_angle} "
+    command += f"--model-name {args.model_name} --part-name {args.part_name}"
     _utilities.run_command(command)
 
 
