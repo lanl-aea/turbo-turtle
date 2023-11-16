@@ -8,6 +8,11 @@ Changelog
 v0.6.2 (unreleased)
 *******************
 
+Enhancements
+============
+- Expose numpy tolerance to geometry subcommand interface to control the vertical/horizontal line check precision
+  (:issue:`68`, :merge:`58`). By `Kyle Brindley`_.
+
 *******************
 v0.6.1 (2023-11-15)
 *******************
@@ -40,8 +45,6 @@ Internal Changes
 Enhancements
 ============
 - Support MacOS Cubit execution (:issue:`64`, :merge:`53`). By `Kyle Brindley`_.
-- Expose numpy tolerance to geometry subcommand interface to control the vertical/horizontal line check precision
-  (:issue:`68`, :merge:`58`). By `Kyle Brindley`_.
 
 *******************
 v0.6.0 (2023-11-13)
