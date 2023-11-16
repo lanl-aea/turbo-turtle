@@ -13,22 +13,28 @@ from turbo_turtle._abaqus_python import vertices
 
 compare_xy_values = {
     "horizontal": (
-        numpy.array([[0, 0], [1, 0]]), [False, True]
+        numpy.array([[0, 0], [1, 0]]), [False, True], None, None
     ),
     "vertical": (
-        numpy.array([[0, 0], [0, 1]]), [False, True]
+        numpy.array([[0, 0], [0, 1]]), [False, True], None, None
     ),
     "x=y": (
-        numpy.array([[0, 0], [1, 1]]), [False, False]
+        numpy.array([[0, 0], [1, 1]]), [False, False], None, None
+    ),
+    "inside default rtol": (
+        numpy.array([[100, 0], [100 + 100*5e-6, 1]]), [False, True], None, None
+    ),
+    "adjust rtol": (
+        numpy.array([[100, 0], [100 + 100*5e-6, 1]]), [False, False], 1e-6, None
     ),
 }
 
 
-@pytest.mark.parametrize("coordinates, expected",
+@pytest.mark.parametrize("coordinates, expected, rtol, atol",
                          compare_xy_values.values(),
                          ids=compare_xy_values.keys())
-def test_compare_xy_values(coordinates, expected):
-    bools = vertices._compare_xy_values(coordinates)
+def test_compare_xy_values(coordinates, expected, rtol, atol):
+    bools = vertices._compare_xy_values(coordinates, rtol=rtol, atol=atol)
     assert bools == expected
 
 

@@ -127,9 +127,9 @@ def _compare_xy_values(coordinates, rtol=None, atol=None):
     """
     isclose_kwargs = {}
     if rtol is not None:
-        isclose_kwargs.update("rtol", rtol)
+        isclose_kwargs.update({"rtol": rtol})
     if atol is not None:
-        isclose_kwargs.update("atol", atol)
+        isclose_kwargs.update({"atol": atol})
     vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0], **isclose_kwargs) or
                                            numpy.isclose(coords1[1], coords2[1], **isclose_kwargs) for
                                            coords1, coords2 in zip(coordinates[1:, :], coordinates[0:-1, :])]
