@@ -304,7 +304,9 @@ datum_planes = {
     "globally aligned 45-degrees": (
         (1., 0., 0.), (0., 0., 1.), 45., 45.,
         [
-         numpy.array([0., 1., 0.]),  # xzplane
+         numpy.array([0., 0., 1.]),  # XY plane
+         numpy.array([1., 0., 0.]),  # YZ plane
+         numpy.array([0., 1., 0.]),  # ZX plane
          numpy.array([ norm, 0.,  norm]),  # positive azimuthal
          numpy.array([ norm, 0., -norm]),  # negative azimuthal
          numpy.array([ norm, -0.5,    0.]),  # polar planes

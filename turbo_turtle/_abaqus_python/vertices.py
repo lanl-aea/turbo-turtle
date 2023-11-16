@@ -204,11 +204,17 @@ def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
     :param float polar_angle: Polar angle measured from the local y-axix (polar axis) in degrees
     :param float azimuthal_angle: Azimuthal angle measure from the local x-axis in degrees
 
-    :returns: list of local plane normal vectors [7, 3] - zx plane, (2) +/- azimuthal planes, (4) polar planes
+    :returns: list of local plane normal vectors [7, 3] - xy/yz/zx planes, (2) +/- azimuthal planes, (4) polar planes
     """
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
 
+    dot = numpy.dot(xvector, zvector)
+    if not numpy.isclose(dot, 0.):
+        raise RuntimeError("Provided x-vector '{}' and z-vector '{}' are not orthogonal".format(xvector, zvector))
+
+    xy_plane = zvector
+    yz_plane = xvector
     zx_plane = numpy.cross(zvector, xvector)
 
     azimuthal_radians = math.radians(azimuthal_angle)
@@ -228,4 +234,4 @@ def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
     third_polar = numpy.cross(third_vector, fourth_vector)
     fourth_polar = numpy.cross(fourth_vector, first_vector)
 
-    return [zx_plane, positive_azimuthal, negative_azimuthal, first_polar, second_polar, third_polar, fourth_polar]
+    return [xy_plane, yz_plane, zx_plane, positive_azimuthal, negative_azimuthal, first_polar, second_polar, third_polar, fourth_polar]
