@@ -140,7 +140,7 @@ sphere_default_quadrant = "both"
 sphere_default_angle = 360.
 sphere_default_center = (0., 0.)
 sphere_default_model_name = "Model-1"
-sphere_default_part_name = "sphere"
+sphere_default_part_name = "Part-1"
 sphere_cli_help = "Create a hollow, spherical geometry from a sketch in the X-Y plane"
 sphere_cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), " \
                          "lower (+X-Y), or both quadrants."
@@ -177,14 +177,15 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
 # TODO: These CLI lists will fail if a user tries to provide a negative number
 partition_default_output_file = None
 partition_default_center = [0.0, 0.0, 0.0]
-partition_default_xpoint = [1.0, 0.0, 0.0]
-partition_default_zpoint = [0.0, 0.0, 1.0]
-partition_default_plane_angle = 45.0
-partition_default_partitions_x = [0.0, 0.0]
-partition_default_partitions_y = [0.0, 0.0]
-partition_default_partitions_z = [0.0, 0.0]
+partition_default_xvector = [1.0, 0.0, 0.0]
+partition_default_zvector = [0.0, 0.0, 1.0]
+partition_default_polar_angle = 45.0
+partition_default_azimuthal_angle = 45.0
+sphere_default_model_name = "Model-1"
+sphere_default_part_name = "Part-1"
 partition_cli_help = "Partition a spherical shape into a turtle shell"
-partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating parameters."
+partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating, " \
+                            "clocking, and partition plane angle parameters."
 
 
 def partition_parser(basename="partition.py", add_help=True, description=partition_cli_description):
@@ -192,29 +193,25 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
-    requiredNamed.add_argument('--model-name', type=str, required=True,
-                        help="Abaqus model name")
-    requiredNamed.add_argument('--part-name', type=str, required=True,
-                        help="Abaqus part name")
-    requiredNamed.add_argument('--input-file', type=str, required=True,
-                        help="Abaqus model database to open")
+    requiredNamed.add_argument('--input-file', type=str, default=sphere_default_input_file,
+                               help="Abaqus model database to open (default: %(default)s)")
 
     parser.add_argument('--output-file', type=str, default=partition_default_output_file,
                         help="Abaqus model database to save to. Defaults to the specified --input-file")
     parser.add_argument('--center', nargs=3, type=float, default=partition_default_center,
                         help="Center of the sphere (default: %(default)s)")
-    parser.add_argument('--xpoint', nargs=3, type=float, default=partition_default_xpoint,
-                        help="Point on the x-axis (default: %(default)s)")
-    parser.add_argument('--zpoint', nargs=3, type=float, default=partition_default_zpoint,
-                        help="Point on the z-axis (default: %(default)s)")
-    parser.add_argument('--plane-angle', type=float, default=partition_default_plane_angle,
-                        help="Angle for non-principal partitions (default: %(default)s)")
-    parser.add_argument('--x-partitions', type=float, nargs='+', default=partition_default_partitions_x,
-                        help="Create a partition offset from the x-principal-plane (default: %(default)s)")
-    parser.add_argument('--y-partitions', type=float, nargs='+', default=partition_default_partitions_y,
-                        help="Create a partition offset from the y-principal-plane (default: %(default)s)")
-    parser.add_argument('--z-partitions', type=float, nargs='+', default=partition_default_partitions_z,
-                        help="Create a partition offset from the z-principal-plane (default: %(default)s)")
+    parser.add_argument('--xvector', nargs=3, type=float, default=partition_default_xvector,
+                        help="Local x-axis vector defined in global coordinates (default: %(default)s)")
+    parser.add_argument('--zvector', nargs=3, type=float, default=partition_default_zvector,
+                        help="Local z-axis vector defined in global coordinates (default: %(default)s)")
+    parser.add_argument('--polar-angle', type=float, default=partition_default_plane_angle,
+                        help="Polar angle measured from the local +y-axis in degrees (default: %(default)s)")
+    parser.add_argument('--azimuthal-angle', type=float, default=partition_default_plane_angle,
+                        help="Azimuthal angle measured from the local +x-axis in degrees (default: %(default)s)")
+    parser.add_argument('--model-name', type=str, default=partition_default_model_name,
+                        help="Abaqus model name (default: %(default)s)")
+    parser.add_argument('--part-name', type=str, default=partition_default_part_name,
+                        help="Abaqus part name (default: %(default)s)")
 
     return parser
 

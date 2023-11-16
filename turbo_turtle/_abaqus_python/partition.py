@@ -16,24 +16,28 @@ sys.path.insert(0, parent)
 import parsers
 
 
-def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file, output_file, partitions):
+def main(input_file,
+         output_file=parsers.default_output_file,
+         center=parsers.partition_default_center,
+         xvector=parsers.partition_default_xvector,
+         zvector=parsers.partition_default_zvector,
+         polar_angle=parsers.partition_default_polar_angle,
+         azimuthal_angle=parsers.partition_default_azimuthal_angle,
+         model_name=parsers.partition_default_model_name,
+         part_name=parsers.partition_default_part_name):
     """Wrap  partition function with file open and file write operations
 
+    :param str input_file: Abaqus CAE model database to open
+    :param str output_file: Abaqus CAE model database to write. If none is provided, use the input file.
     :param list center: center location of the geometry
-    :param list xpoint: location on the x-axis local to the geometry
-    :param list zpoint: location on the z-axis local to the geometry
-    :param float plane_angle: angle at which partition planes will be created
-    :param dict partitions: partitions to be created by offsetting the principal planes. This is only available when
-        using the Abaqus CAE GUI.
+    :param list xvector: Local x-axis vector defined in global coordinates
+    :param list zvector: Local z-axis vector defined in global coordinates
+    :param float polar_angle: Polar angle measured from the local +y-axis in degrees
+    :param float azimuthal_angle: Azimuthal angle measured from the local +x-axis in degrees
     :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
     :param str part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
-    :param str input_file: Abaqus CAE file to open that already contains a model with a part to be partitioned (only applies
-        when used with ``abaqus cae -nogui``)
-    :param str output_file: Abaqus CAE file to save with the newly partitioned part (only applies when used with ``abaqus
-        cae -nogui``)
-    :param dict partitions: locations of partitions to be created by offsetting the principal planes
 
-    :returns: Abaqus CAE database named ``{output_file}.cae`` if executed from the command line
+    :returns: Abaqus CAE database named ``{output_file}.cae``
     """
     import abaqus
 
@@ -44,7 +48,7 @@ def main(center, xpoint, zpoint, plane_angle, model_name, part_name, input_file,
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
-        partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partitions)
+        partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name, part_name)
         abaqus.mdb.saveAs(pathName=output_file)
 
 
@@ -473,7 +477,7 @@ if __name__ == "__main__":
             'y': y_partitions,
             'z': z_partitions
         }
-        partition(center, xpoint, zpoint, plane_angle, model_name, part_name, partitions)
+        partition(center, xvector, zvector, plane_angle, model_name, part_name)
 
     except:
         parser = parsers.partition_parser(basename=basename)
