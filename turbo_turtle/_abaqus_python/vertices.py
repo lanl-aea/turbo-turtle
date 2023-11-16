@@ -194,6 +194,21 @@ def polar_vector(radius, polar_angle, azimuthal_angle):
     ])
 
 
+def normalize_vector(vector):
+    """Normalize a cartesian vector
+
+    :param list vector: List of three floats defining a cartesian vector
+
+    :returns: normalized
+    :rtype: numpy.array
+    """
+    numpy.array(vector)
+    norm = numpy.linalg.norm(vector)
+    if numpy.isclose(norm, 0.):
+        return vector
+    return vector / norm
+
+
 def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
     """Calculate the sphere partitioning datum plane normal vectors on a local coordinate system with +y polar axis
 

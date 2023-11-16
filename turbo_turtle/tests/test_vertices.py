@@ -299,6 +299,37 @@ def test_polar_vector(radius, polar_angle, azimuthal_angle, expected):
     assert numpy.allclose(vector, expected)
 
 
+one_over_root_three = 1. / math.sqrt(3.)
+normalize_vector = {
+    "zero": (
+        (0., 0., 0.), numpy.array([0., 0., 0.])
+    ),
+    "unit x-axis": (
+        (1., 0., 0.), numpy.array([1., 0., 0.])
+    ),
+    "unit y-axis": (
+        (0., 1., 0.), numpy.array([0., 1., 0.])
+    ),
+    "unit z-axis": (
+        (0., 0., 1.), numpy.array([0., 0., 1.])
+    ),
+    "unit equal": (
+        (1., 1., 1.), numpy.array([one_over_root_three, one_over_root_three, one_over_root_three])
+    ),
+    "twice unit equal": (
+        (2., 2., 2.), numpy.array([one_over_root_three, one_over_root_three, one_over_root_three])
+    ),
+}
+
+
+@pytest.mark.parametrize("vector, expected",
+                         normalize_vector.values(),
+                         ids=normalize_vector.keys())
+def test_normalize_vector(vector, expected):
+    normalized = vertices.normalize_vector(vector)
+    assert numpy.allclose(normalized, expected)
+
+
 norm = math.sqrt(0.5)
 datum_planes = {
     "globally aligned 45-degrees": (
