@@ -201,10 +201,10 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
 
     parser.add_argument('--output-file', type=str, default=partition_default_output_file,
                         help="Abaqus model database to save to. Defaults to the specified --input-file")
-    parser.add_argument('--xpoint', nargs=3, type=float, default=partition_default_xpoint,
-                        help="Point on the x-axis (default: %(default)s)")
     parser.add_argument('--center', nargs=3, type=float, default=partition_default_center,
                         help="Center of the sphere (default: %(default)s)")
+    parser.add_argument('--xpoint', nargs=3, type=float, default=partition_default_xpoint,
+                        help="Point on the x-axis (default: %(default)s)")
     parser.add_argument('--zpoint', nargs=3, type=float, default=partition_default_zpoint,
                         help="Point on the z-axis (default: %(default)s)")
     parser.add_argument('--plane-angle', type=float, default=partition_default_plane_angle,
