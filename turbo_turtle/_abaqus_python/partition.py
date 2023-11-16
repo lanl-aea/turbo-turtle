@@ -52,7 +52,7 @@ def main(input_file,
         abaqus.mdb.saveAs(pathName=output_file)
 
 
-def partition(center, xpoint, zpoint, plane_angle, model_name, part_name):
+def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name, part_name):
     """Partition the model/part with the turtle shell method, also know as the soccer ball method.
 
     If the body is modeled with fractional symmetry (e.g. quater or half symmetry), this code will attempt all
@@ -78,6 +78,9 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name):
         print('\nTurboTurtle was canceled\n')
         return
 
+    part = abaqus.mdb.models[model_name].parts[part_name]
+
+    center = numpy.array(center)
     plane_normals = datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
     for normal in plane_normals:
         point = center + normal
