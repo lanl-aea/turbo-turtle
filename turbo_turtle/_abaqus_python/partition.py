@@ -87,99 +87,50 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name):
     zvector = numpy.array(zvector)
     zpoint = center + zvector
 
-    # Step 1 - Define local coordinate system axes and planes
+    yvector = numpy.cross(zvector, xvector)
+    ypoint = center + yvector
+
+    # Step 1 - Define local coordinate system axes and primary planes
     part = abaqus.mdb.models[model_name].parts[part_name]
     part.DatumPointByCoordinate(coords=tuple(center))
 
     part.DatumPointByCoordinate(coords=tuple(xpoint))
     x_axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(xpoint)).id]
+    y_axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(ypoint)).id]
+    z_axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(zpoint)).id]
 
-    # Step 4 - create plane1
-    plane1 = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=x_axis).id]
+    xy_plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=z_axis).id]
+    yz_plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=x_axis).id]
+    zx_plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=y_axis).id]
 
-    # Step 5 - define zpoint
-    part.DatumPointByCoordinate(coords=tuple(zpoint))
-
-    # Step 6 - create plane2
-    plane2 = part.datums[part.DatumPlaneByThreePoints(point1=tuple(center), point2=tuple(xpoint), point3=tuple(zpoint)).id]
-
-    # Step 7 - create plane3
-    plane3 = part.datums[part.DatumPlaneByRotation(plane=plane2, axis=x_axis, angle=90.0).id]
-
-    # Step 8 - create axis21
-    axis21 = part.datums[part.DatumAxisByTwoPlane(plane1=plane2, plane2=plane1).id]
-
-    # Step 9 - create axis 31
-    axis31 = part.datums[part.DatumAxisByTwoPlane(plane1=plane3, plane2=plane1).id]
-
-    # Step 10 - partition all cells by plane1, plane2, and plane3
+    # Step 2 - partition all cells by local primary planes
     try:
-        part.PartitionCellByDatumPlane(datumPlane=plane1, cells=part.cells[:])
+        part.PartitionCellByDatumPlane(datumPlane=xy_plane, cells=part.cells[:])
     except:
         pass
     try:
-        part.PartitionCellByDatumPlane(datumPlane=plane2, cells=part.cells[:])
+        part.PartitionCellByDatumPlane(datumPlane=yz_plane, cells=part.cells[:])
     except:
         pass
     try:
-        part.PartitionCellByDatumPlane(datumPlane=plane3, cells=part.cells[:])
+        part.PartitionCellByDatumPlane(datumPlane=zx_plane, cells=part.cells[:])
     except:
         pass
 
-    # Step 11 - create plane1p and plane1n
-    plane1p = part.datums[part.DatumPlaneByRotation(plane=plane1, axis=axis21, angle=plane_angle).id]
-    plane1n = part.datums[part.DatumPlaneByRotation(plane=plane1, axis=axis21, angle=-plane_angle).id]
+    # Step 3 - Create azimuthal and polar planes and partition
+    # First value is xz_plane normal, but we already created the Abaqus xz datum plane from the y-axis datum
+    _, *plane_normals = datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
 
-    # Step 12 - create plane2p and plane2n
-    plane2p = part.datums[part.DatumPlaneByRotation(plane=plane2, axis=x_axis, angle=plane_angle).id]
-    plane2n = part.datums[part.DatumPlaneByRotation(plane=plane2, axis=x_axis, angle=-plane_angle).id]
+    for normal_axis in plane_normals:
+        point = center + normal_axis
+        axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
+        plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
 
-    # Step 13 - create plane3p and plane3n
-    plane3p = part.datums[part.DatumPlaneByRotation(plane=plane3, axis=axis31, angle=plane_angle).id]
-    plane3n = part.datums[part.DatumPlaneByRotation(plane=plane3, axis=axis31, angle=-plane_angle).id]
-
-    # Step 14 - partition all cells by plane1p and plane1n
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=plane1p, cells=part.cells[:])
-    except:
-        pass
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=plane1n, cells=part.cells[:])
-    except:
-        pass
-
-    # Step 15 - partition all cells by plane2p and plane2n
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=plane2p, cells=part.cells[:])
-    except:
-        pass
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=plane2n, cells=part.cells[:])
-    except:
-        pass
-
-    # Step 16 - partition all cells by plane3p and plane3n
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=plane3p, cells=part.cells[:])
-    except:
-        pass
-    try:
-        part.PartitionCellByDatumPlane(datumPlane=plane3n, cells=part.cells[:])
-    except:
-        pass
-
-    center = numpy.array(center)
-    xpoint = numpy.array(xpoint)
-    zpoint = numpy.array(zpoint)
-
-    # Step 17 - define unit vectors from xpoint and zpoint
-    xpoint_vector = xpoint-center
-    xpoint_vector = xpoint_vector / numpy.linalg.norm(xpoint_vector)
-    zpoint_vector = zpoint-center
-    zpoint_vector = zpoint_vector / numpy.linalg.norm(zpoint_vector)
-
-    # Step 18 - define a ypoint unit vector
-    ypoint_vector = numpy.cross(zpoint_vector, xpoint_vector)
+        # Step 4 - partition all cells by azimuthal and polar planes
+        try:
+            part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
+        except:
+            pass
 
     # Step 19 - Find the vertices intersecting faces to remove for the x-axis
     found_face = True
@@ -308,26 +259,8 @@ def partition(center, xpoint, zpoint, plane_angle, model_name, part_name):
         else:
             pass
 
-    # Step 28 - partition the offset planes
-    for coord in partitions:
-        if coord == 'x':
-            selected_plane = plane1
-        elif coord == 'y':
-            selected_plane = plane2
-        elif coord == 'z':
-            selected_plane = plane3
-        for val in [x for x in partitions[coord] if x != 0.0]:
-            this_plane = part.datums[part.DatumPlaneByOffset(plane=selected_plane, offset=val, flip=SIDE2).id]
-            try:
-                part.PartitionCellByDatumPlane(datumPlane=this_plane, cells=part.cells[:])
-            except:
-                pass
-
     # Step 29 - validate geometry
     abaqus.mdb.models[model_name].parts[part_name].checkGeometry()
-
-    # Set the viewport to remove visual clutter of datum planes and axes
-    session.viewports[session.currentViewportName].partDisplay.geometryOptions.setValues(datumPoints=OFF, datumAxes=OFF, datumPlanes=OFF)
 
 
 def get_inputs():

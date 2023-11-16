@@ -204,12 +204,12 @@ def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
     :param float polar_angle: Polar angle measured from the local y-axix (polar axis) in degrees
     :param float azimuthal_angle: Azimuthal angle measure from the local x-axis in degrees
 
-    :returns: list of local plane normal vectors [7, 3] - xz plane, (2) +/- azimuthal planes, (4) polar planes
+    :returns: list of local plane normal vectors [7, 3] - zx plane, (2) +/- azimuthal planes, (4) polar planes
     """
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
 
-    xz_plane = -1 * numpy.cross(xvector, zvector)
+    zx_plane = numpy.cross(zvector, xvector)
 
     azimuthal_radians = math.radians(azimuthal_angle)
     polar_radians = math.radians(polar_angle)
@@ -228,4 +228,4 @@ def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
     third_polar = numpy.cross(third_vector, fourth_vector)
     fourth_polar = numpy.cross(fourth_vector, first_vector)
 
-    return [xz_plane, positive_azimuthal, negative_azimuthal, first_polar, second_polar, third_polar, fourth_polar]
+    return [zx_plane, positive_azimuthal, negative_azimuthal, first_polar, second_polar, third_polar, fourth_polar]
