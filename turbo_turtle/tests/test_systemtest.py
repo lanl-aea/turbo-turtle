@@ -22,6 +22,9 @@ try:
     version("turbo_turtle")
     installed = True
 except PackageNotFoundError:
+    # TODO: Recover from the SCons task definition?
+    build_directory = _settings._project_root_abspath.parent / "build" / "systemtests"
+    build_directory.mkdir(parents=True, exist_ok=True)
     installed = False
 
 # If executing in repository, add package to PYTHONPATH and change the root command
@@ -202,7 +205,14 @@ def test_shell_commands(commands):
     """
     if isinstance(commands, str):
         commands = [commands]
-    with tempfile.TemporaryDirectory() as temp_directory:
-        for command in commands:
-            command = command.split(" ")
-            result = subprocess.check_output(command, env=env, cwd=temp_directory).decode('utf-8')
+    if installed:
+        with tempfile.TemporaryDirectory() as temp_directory:
+            run_commands(commands, temp_directory)
+    else:
+        run_commands(commands, build_directory)
+
+
+def run_commands(commands, build_directory):
+    for command in commands:
+        command = command.split(" ")
+        result = subprocess.check_output(command, env=env, cwd=build_directory).decode('utf-8')
