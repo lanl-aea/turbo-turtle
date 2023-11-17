@@ -14,7 +14,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
-import _mixed_utilities
+import vertices
 
 
 def main(input_file,
@@ -82,7 +82,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     part = abaqus.mdb.models[model_name].parts[part_name]
 
     center = numpy.array(center)
-    plane_normals = _mixed_utilities.datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
+    plane_normals = vertices.datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
     for normal in plane_normals:
         point = center + normal
         axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
