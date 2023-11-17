@@ -99,9 +99,8 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     found_face = True
 
     while found_face:
-        vertices = part.vertices
         x_vectors = ()
-        for v in vertices:
+        for v in part.vertices:
             pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
             this_vector = this_vector / numpy.linalg.norm(this_vector)
@@ -141,9 +140,8 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     #Step 22 - same as 19 but for y
     found_face = True
     while found_face:
-        vertices = part.vertices
         y_vectors = ()
-        for v in vertices:
+        for v in part.vertices:
             pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
             this_vector = this_vector / numpy.linalg.norm(this_vector)
@@ -183,9 +181,8 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     # Step 25 - same as 19 but for z
     found_face = True
     while found_face:
-        vertices = part.vertices
         z_vectors = ()
-        for v in vertices:
+        for v in part.vertices:
             pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
             this_vector = this_vector / numpy.linalg.norm(this_vector)
