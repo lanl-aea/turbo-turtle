@@ -53,6 +53,21 @@ def main(input_file,
         abaqus.mdb.saveAs(pathName=output_file)
 
 
+def datum_plane(center, normal, part):
+    """Return an Abaqus DataPlane object by center and normal axis
+
+    :param numpy.array center: center location of the geometry
+    :param numpy.array normal: plane normal vector
+    :param abaqus.mdb.models[].parts[] part: Abaqus part object
+
+    :returns: Abaqus Datum Plane object
+    :rtype: DatumPlane
+    """
+    point = center + normal
+    axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
+    return part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
+
+
 def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name, part_name):
     """Partition the model/part with the turtle shell method, also know as the soccer ball method.
 
@@ -83,10 +98,8 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
 
     center = numpy.array(center)
     plane_normals = vertices.datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
-    for normal in plane_normals:
-        point = center + normal
-        axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
-        plane = part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
+    partition_planes = [datum_plane(center, normal, part) for normal in plane_normals]
+    for plane in partition_planes:
         try:
             part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
         except:
