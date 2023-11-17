@@ -120,8 +120,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
             x_vectors = ()
             for v in part.vertices:
                 pointOn = numpy.asarray(v.pointOn[0])
-                this_vector = pointOn - center
-                this_vector = this_vector / numpy.linalg.norm(this_vector)
+                this_vector = vertices.normalize_vector(pointOn - center)
                 if numpy.abs(numpy.abs(numpy.dot(this_vector, first_vector)) - 1.0) < 0.01:
                     x_vectors += ((v), )
             x_points = numpy.asarray([v.pointOn[0][pointOnIDX] for v in x_vectors])
@@ -140,8 +139,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
                 this_vert_idxs = face.getVertices()
                 try:
                     if x_vectors_grabbed_idxs[1] in this_vert_idxs or x_vectors_grabbed_idxs[2] in this_vert_idxs:
-                        this_normal = numpy.array(face.getNormal())
-                        this_normal = this_normal / numpy.linalg.norm(this_normal)
+                        this_normal = normalize_vector(face.getNormal())
                         if numpy.abs(numpy.abs(numpy.dot(this_normal, second_vector))-numpy.abs(numpy.cos(plane_angle))) < 0.001:
                             part.RemoveFaces(faceList=part.faces[face.index:(face.index+1)], deleteCells=False)
                             part.RemoveRedundantEntities(vertexList = part.vertices[:], edgeList = part.edges[:])
