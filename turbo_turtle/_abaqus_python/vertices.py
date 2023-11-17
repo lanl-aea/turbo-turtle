@@ -222,7 +222,8 @@ def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
     :param float polar_angle: Polar angle measured from the local y-axix (polar axis) in degrees
     :param float azimuthal_angle: Azimuthal angle measure from the local x-axis in degrees
 
-    :returns: list of local plane normal vectors [7, 3] - xy/yz/zx planes, (2) +/- azimuthal planes, (4) polar planes
+    :returns: list of normalized local plane normal vectors [7, 3] - xy/yz/zx planes, (2) +/- azimuthal planes, (4) polar planes
+    :rtype: list
     """
     xvector = normalize_vector(xvector)
     zvector = normalize_vector(zvector)
