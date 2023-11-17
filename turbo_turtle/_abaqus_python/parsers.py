@@ -181,8 +181,8 @@ partition_default_xvector = [1.0, 0.0, 0.0]
 partition_default_zvector = [0.0, 0.0, 1.0]
 partition_default_polar_angle = 45.0
 partition_default_azimuthal_angle = 45.0
-sphere_default_model_name = "Model-1"
-sphere_default_part_name = "Part-1"
+partition_default_model_name = "Model-1"
+partition_default_part_name = "Part-1"
 partition_cli_help = "Partition a spherical shape into a turtle shell"
 partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating, " \
                             "clocking, and partition plane angle parameters."
@@ -204,9 +204,9 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
                         help="Local x-axis vector defined in global coordinates (default: %(default)s)")
     parser.add_argument('--zvector', nargs=3, type=float, default=partition_default_zvector,
                         help="Local z-axis vector defined in global coordinates (default: %(default)s)")
-    parser.add_argument('--polar-angle', type=float, default=partition_default_plane_angle,
+    parser.add_argument('--polar-angle', type=float, default=partition_default_polar_angle,
                         help="Polar angle measured from the local +y-axis in degrees (default: %(default)s)")
-    parser.add_argument('--azimuthal-angle', type=float, default=partition_default_plane_angle,
+    parser.add_argument('--azimuthal-angle', type=float, default=partition_default_azimuthal_angle,
                         help="Azimuthal angle measured from the local +x-axis in degrees (default: %(default)s)")
     parser.add_argument('--model-name', type=str, default=partition_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
