@@ -148,10 +148,10 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
                             break
                 except:
                     pass
-        if II == (len(part.faces)-1):
-            found_face = False
-        else:
-            pass
+            if II == (len(part.faces)-1):
+                found_face = False
+            else:
+                pass
 
     # Step 29 - validate geometry
     abaqus.mdb.models[model_name].parts[part_name].checkGeometry()
