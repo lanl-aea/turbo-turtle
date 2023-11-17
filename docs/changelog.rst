@@ -5,8 +5,16 @@ Changelog
 #########
 
 *******************
-v0.6.2 (unreleased)
+v0.7.0 (unreleased)
 *******************
+
+Breaking changes
+================
+- Accept independent polar and azimuthal angles in the partition subcommand. Replaces ``--plane-angle`` with
+  ``--polar-angle`` and ``--azimuthal-angle``. Replaces ``--[xz]point`` with ``--[xz]vector``. Removes the various
+  ``partition`` options in favor of user defined local xz plane from ``--center``, ``--[xz]vector``, and a paritioning
+  algorithm which can robustly handle vertical/polar (local y-axis) offsets of ``center``.  (:issue:`66`, :merge:`59`).
+  By `Kyle Brindley`_.
 
 Enhancements
 ============
