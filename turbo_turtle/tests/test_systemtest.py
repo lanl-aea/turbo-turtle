@@ -54,17 +54,16 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
     model = pathlib.Path(model)
     image = model.with_suffix(".png")
     assembly = model.stem + "_assembly.inp"
-    center_three_dimensions = numpy.array(center + (0,))
     center=character_delimited_list(center)
-    xpoint=character_delimited_list(center_three_dimensions + numpy.array([1, 0, 0]))
-    zpoint=character_delimited_list(center_three_dimensions + numpy.array([0, 0, 1]))
+    xvector=[1., 0., 0.]
+    zvector=[0., 0., 1.]
     commands = [
         f"{turbo_turtle_command} sphere --inner-radius 1 --outer-radius 2 --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --quadrant {quadrant} " \
             f"--revolution-angle {angle} --center {center}",
         f"{turbo_turtle_command} partition --input-file {model} --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --center {center} 0 " \
-            f"--xpoint {xpoint} --zpoint {zpoint} --plane-angle 45",
+            f"--xvector {xvector} --zvector {zvector} --polar-angle 45",
         f"{turbo_turtle_command} mesh --input-file {model} --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --global-seed 0.15 " \
             f"--element-type {element_type}",
@@ -134,9 +133,9 @@ name='Turbo-Turtle-Tests'
 legacy_geometry_file = _settings._project_root_abspath / "tests" / "legacy_geometry.py"
 commands_list.append([
     f"abq2023 cae -noGui {legacy_geometry_file}",
-    f"{turbo_turtle_command} partition --input-file {name}.cae --output-file {name}.cae --model-name {name} --part-name seveneigths-sphere --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
+    f"{turbo_turtle_command} partition --input-file {name}.cae --output-file {name}.cae --model-name {name} --part-name seveneigths-sphere --center 0 0 0 --xvector 1 0 0 --zvector 0 0 1 --polar-angle 45",
     f"{turbo_turtle_command} image --input-file {name}.cae --model-name {name} --output-file seveneigths-sphere.png --part-name seveneigths-sphere",
-    f"{turbo_turtle_command} partition --input-file {name}.cae --output-file {name}.cae --model-name {name} --part-name swiss-cheese --center 0 0 0 --xpoint 1 0 0 --zpoint 0 0 1 --plane-angle 45",
+    f"{turbo_turtle_command} partition --input-file {name}.cae --output-file {name}.cae --model-name {name} --part-name swiss-cheese --center 0 0 0 --xvector 1 0 0 --zvector 0 0 1 --polar-angle 45",
     f"{turbo_turtle_command} image --input-file {name}.cae --model-name {name} --output-file swiss-cheese.png --part-name swiss-cheese",
 ])
 
