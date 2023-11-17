@@ -83,8 +83,8 @@ def partition(args, command):
     command += f"--center {' '.join(map(str, args.center))} "
     command += f"--xvector {' '.join(map(str, args.xvector))} "
     command += f"--zvector {' '.join(map(str, args.zvector))} "
-    command += f"--polar-angle {args.plane_angle} "
-    command += f"--azimuthal-angle {args.plane_angle} "
+    command += f"--polar-angle {args.polar_angle} "
+    command += f"--azimuthal-angle {args.azimuthal_angle} "
     command += f"--model-name {args.model_name} --part-name {args.part_name}"
     _utilities.run_command(command)
 

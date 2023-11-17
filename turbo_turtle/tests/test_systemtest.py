@@ -55,8 +55,8 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
     image = model.with_suffix(".png")
     assembly = model.stem + "_assembly.inp"
     center=character_delimited_list(center)
-    xvector=[1., 0., 0.]
-    zvector=[0., 0., 1.]
+    xvector=character_delimited_list([1., 0., 0.])
+    zvector=character_delimited_list([0., 0., 1.])
     commands = [
         f"{turbo_turtle_command} sphere --inner-radius 1 --outer-radius 2 --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --quadrant {quadrant} " \
