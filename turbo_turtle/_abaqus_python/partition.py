@@ -95,6 +95,9 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     # Step 19 - Find the vertices intersecting faces to remove for the x-axis
     # TODO: Clean this up. Maybe march along local primary axes? Maybe remove all the surface guessing and save surfaces
     # from partition command?
+    zvector = plane_normals[0]
+    xvector = plane_normals[1]
+    yvector = plane_normals[2]
     plane_angle = 45.
     found_face = True
 
@@ -104,7 +107,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
             pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
             this_vector = this_vector / numpy.linalg.norm(this_vector)
-            if numpy.abs(numpy.abs(numpy.dot(this_vector, xpoint_vector)) - 1.0) < 0.01:
+            if numpy.abs(numpy.abs(numpy.dot(this_vector, xvector)) - 1.0) < 0.01:
                 x_vectors += ((v), )
         x_points = numpy.asarray([v.pointOn[0][0] for v in x_vectors])
         x_points.sort()
@@ -124,7 +127,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
                 if x_vectors_grabbed_idxs[1] in this_vert_idxs or x_vectors_grabbed_idxs[2] in this_vert_idxs:
                     this_normal = numpy.array(face.getNormal())
                     this_normal = this_normal / numpy.linalg.norm(this_normal)
-                    if numpy.abs(numpy.abs(numpy.dot(this_normal, zpoint_vector))-numpy.abs(numpy.cos(plane_angle*numpy.pi/180.0))) < 0.001:
+                    if numpy.abs(numpy.abs(numpy.dot(this_normal, zvector))-numpy.abs(numpy.cos(plane_angle*numpy.pi/180.0))) < 0.001:
                         # part.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         part.RemoveFaces(faceList=part.faces[face.index:(face.index+1)], deleteCells=False)
                         part.RemoveRedundantEntities(vertexList = part.vertices[:], edgeList = part.edges[:])
@@ -145,7 +148,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
             pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
             this_vector = this_vector / numpy.linalg.norm(this_vector)
-            if numpy.abs(numpy.abs(numpy.dot(this_vector, ypoint_vector)) - 1.0) < 0.01:
+            if numpy.abs(numpy.abs(numpy.dot(this_vector, yvector)) - 1.0) < 0.01:
                 y_vectors += ((v), )
         y_points = numpy.asarray([v.pointOn[0][1] for v in y_vectors])
         y_points.sort()
@@ -165,7 +168,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
                 if y_vectors_grabbed_idxs[1] in this_vert_idxs or y_vectors_grabbed_idxs[2] in this_vert_idxs:
                     this_normal = numpy.array(face.getNormal())
                     this_normal = this_normal / numpy.linalg.norm(this_normal)
-                    if numpy.abs(numpy.abs(numpy.dot(this_normal, xpoint_vector))-numpy.cos(plane_angle*numpy.pi/180.0)) < 0.001:
+                    if numpy.abs(numpy.abs(numpy.dot(this_normal, xvector))-numpy.cos(plane_angle*numpy.pi/180.0)) < 0.001:
                         # part.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         part.RemoveFaces(faceList=part.faces[face.index:(face.index+1)], deleteCells=False)
                         part.RemoveRedundantEntities(vertexList = part.vertices[:], edgeList = part.edges[:])
@@ -186,7 +189,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
             pointOn = numpy.asarray(v.pointOn[0])
             this_vector = pointOn - center
             this_vector = this_vector / numpy.linalg.norm(this_vector)
-            if numpy.abs(numpy.abs(numpy.dot(this_vector, zpoint_vector)) - 1.0) < 0.01:
+            if numpy.abs(numpy.abs(numpy.dot(this_vector, zvector)) - 1.0) < 0.01:
                 z_vectors += ((v), )
         z_points = numpy.asarray([v.pointOn[0][2] for v in z_vectors])
         z_points.sort()
@@ -206,7 +209,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
                 if z_vectors_grabbed_idxs[1] in this_vert_idxs or z_vectors_grabbed_idxs[2] in this_vert_idxs:
                     this_normal = numpy.array(face.getNormal())
                     this_normal = this_normal / numpy.linalg.norm(this_normal)
-                    if numpy.abs(numpy.abs(numpy.dot(this_normal, ypoint_vector))-numpy.cos(plane_angle*numpy.pi/180.0)) < 0.001:
+                    if numpy.abs(numpy.abs(numpy.dot(this_normal, yvector))-numpy.cos(plane_angle*numpy.pi/180.0)) < 0.001:
                         # part.DatumPointByCoordinate(coords=face.getCentroid()[0])
                         part.RemoveFaces(faceList=part.faces[face.index:(face.index+1)], deleteCells=False)
                         part.RemoveRedundantEntities(vertexList = part.vertices[:], edgeList = part.edges[:])
