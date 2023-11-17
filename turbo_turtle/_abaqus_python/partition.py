@@ -115,7 +115,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     found_face = True
 
     vector_rotation = [[xvector, zvector], [yvector, xvector], [zvector, yvector]]
-    for first_vector, second_vector in vector_rotation:
+    for pointOnIDX, (first_vector, second_vector) in enumerate(vector_rotation):
         while found_face:
             x_vectors = ()
             for v in part.vertices:
@@ -124,13 +124,13 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
                 this_vector = this_vector / numpy.linalg.norm(this_vector)
                 if numpy.abs(numpy.abs(numpy.dot(this_vector, first_vector)) - 1.0) < 0.01:
                     x_vectors += ((v), )
-            x_points = numpy.asarray([v.pointOn[0][0] for v in x_vectors])
+            x_points = numpy.asarray([v.pointOn[0][pointOnIDX] for v in x_vectors])
             x_points.sort()
             x_vectors_grabbed = ()
             for xp in x_points:
                 for v in x_vectors:
                     pointOn = v.pointOn[0]
-                    if pointOn[0]  == xp:
+                    if pointOn[pointOnIDX] == xp:
                         x_vectors_grabbed += ((v), )
             x_vectors_grabbed_idxs = [v.index for v in x_vectors_grabbed]
 
