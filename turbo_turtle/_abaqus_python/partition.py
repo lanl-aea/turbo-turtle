@@ -111,7 +111,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     zvector = plane_normals[0]
     xvector = plane_normals[1]
     yvector = plane_normals[2]
-    plane_angle = 45.
+    plane_angle = math.radians(45.)
     found_face = True
 
     vector_rotation = [[xvector, zvector], [yvector, xvector], [zvector, yvector]]
@@ -142,8 +142,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
                     if x_vectors_grabbed_idxs[1] in this_vert_idxs or x_vectors_grabbed_idxs[2] in this_vert_idxs:
                         this_normal = numpy.array(face.getNormal())
                         this_normal = this_normal / numpy.linalg.norm(this_normal)
-                        if numpy.abs(numpy.abs(numpy.dot(this_normal, second_vector))-numpy.abs(numpy.cos(plane_angle*numpy.pi/180.0))) < 0.001:
-                            # part.DatumPointByCoordinate(coords=face.getCentroid()[0])
+                        if numpy.abs(numpy.abs(numpy.dot(this_normal, second_vector))-numpy.abs(numpy.cos(plane_angle))) < 0.001:
                             part.RemoveFaces(faceList=part.faces[face.index:(face.index+1)], deleteCells=False)
                             part.RemoveRedundantEntities(vertexList = part.vertices[:], edgeList = part.edges[:])
                             found_face = True
