@@ -331,6 +331,8 @@ def test_normalize_vector(vector, expected):
 
 
 norm = math.sqrt(0.5)
+projected_large = 0.81649658
+projected_small = -0.57735027
 datum_planes = {
     "globally aligned 45-degrees": (
         (1., 0., 0.), (0., 0., 1.), 45., 45.,
@@ -340,10 +342,10 @@ datum_planes = {
          numpy.array([0., 1., 0.]),  # ZX plane
          numpy.array([ norm, 0.,  norm]),  # positive azimuthal
          numpy.array([ norm, 0., -norm]),  # negative azimuthal
-         numpy.array([ norm, -0.5,    0.]),  # polar planes
-         numpy.array([   0., -0.5,  norm]),
-         numpy.array([-norm, -0.5,    0.]),
-         numpy.array([   0., -0.5, -norm]),
+         numpy.array([ projected_large, projected_small,    0.]),  # polar planes
+         numpy.array([   0., projected_small,  projected_large]),
+         numpy.array([-projected_large, projected_small,    0.]),
+         numpy.array([   0., projected_small, -projected_large]),
         ]
     ),
 }

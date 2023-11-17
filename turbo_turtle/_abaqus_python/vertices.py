@@ -252,4 +252,7 @@ def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
     third_polar = numpy.cross(third_vector, fourth_vector)
     fourth_polar = numpy.cross(fourth_vector, first_vector)
 
-    return [xy_plane, yz_plane, zx_plane, positive_azimuthal, negative_azimuthal, first_polar, second_polar, third_polar, fourth_polar]
+    planes = [xy_plane, yz_plane, zx_plane, positive_azimuthal, negative_azimuthal, first_polar, second_polar, third_polar, fourth_polar]
+    planes = [normalize_vector(plane) for plane in planes]
+
+    return planes
