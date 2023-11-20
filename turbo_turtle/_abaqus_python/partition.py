@@ -103,34 +103,44 @@ def partition(center, xvector, zvector, model_name, part_name):
     zvector = plane_normals[0]
     xvector = plane_normals[1]
     yvector = plane_normals[2]
-    local_primary_vectors = (xvector, yvector, zvector)
-    local_fortyfive_vectors = (
+    primary_vectors = (xvector, yvector, zvector)
+    fortyfive_vectors = (
         numpy.array([ 1., 1.,  1.]),
         numpy.array([-1., 1.,  1.]),
         numpy.array([-1., 1., -1.]),
         numpy.array([ 1., 1., -1.])
     )
 
-    local_primary = []
-    local_fortyfive = []
+    primary_index = []
+    fortyfive_index = []
     for vertex in part.vertices:
         current_point = numpy.array(vertex.pointOn[0])
         current_vector = current_point - center
         # Find all vertices lying on the (local) coordinate system axes
-        for comparison_vector in local_primary_vectors:
+        for comparison_vector in primary_vectors:
             if vertices.is_parallel(comparison_vector, current_vector):
-                local_primary.append(vertex)
+                primary_index.append(vertex.index)
                 break
         # Find all vertices lying on the (local) coordinate system (1,1,1) vector variations
-        for comparison_vector in local_fortyfive_vectors:
+        for comparison_vector in fortyfive_vectors:
             if vertices.is_parallel(comparison_vector, current_vector):
-                local_fortyfive.append(vertex)
+                fortyfive_index.append(vertex.index)
                 break
+    primary_index = set(primary_index)
+    fortyfive_index = set(fortyfive_index)
 
-    # Append a list of faces with 2 vertices on each of the above
+    # Append a list of faces with 2 vertices on a primary axis and 2 vertices on a fortyfive axis
+    remove_face = []
+    for face in part.faces:
+        current_vertex_identities = set(face.getVertices())
+        primary_intersection_count = len(current_vertex_identities & primary_index)
+        fortyfive_intersection_count = len(current_vertex_identities & fortyfive_index)
+        if primary_intersection_count == 2 and fortyfive_intersection_count == 2:
+            remove_face.append(face)
 
-    part.RemoveFaces(faceList=part.faces[face.index:(face.index+1)], deleteCells=False)
-    part.RemoveRedundantEntities(vertexList = part.vertices[:], edgeList = part.edges[:])
+    if len(remove_face) > 0:
+        part.RemoveFaces(faceList=remove_face, deleteCells=False)
+        part.RemoveRedundantEntities(vertexList=part.vertices[:], edgeList=part.edges[:])
 
     # Step 29 - validate geometry
     abaqus.mdb.models[model_name].parts[part_name].checkGeometry()
