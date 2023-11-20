@@ -203,7 +203,7 @@ def is_parallel(first, second, rtol=None, atol=None):
     :param numpy.array first: First vector
     :param numpy.array second: Second vector
 
-    :returns: boolean answering "are these vectors parallel"
+    :returns: boolean answering "are these vectors parallel?"
     :rtype: bool
     """
     first = numpy.array(first)
@@ -214,6 +214,21 @@ def is_parallel(first, second, rtol=None, atol=None):
     if atol is not None:
         kwargs.update({"atol": atol})
     return numpy.allclose(numpy.cross(first, second), 0., **kwargs)
+
+
+def any_parallel(first, options, rtol=None, atol=None):
+    """If the first vector is parellel to any of the options, return True
+
+    :param numpy.array first: First vector
+    :param list options: List of vectors to compare against the first vector
+
+    :returns: boolean answering "is the first vector parallel to any of the option vectors?"
+    :rtype: bool
+    """
+    for second in options:
+        if is_parallel(first, second, rtol=rtol, atol=atol):
+            return True
+    return False
 
 
 def datum_planes(xvector, zvector):

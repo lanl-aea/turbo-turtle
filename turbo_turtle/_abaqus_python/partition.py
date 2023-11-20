@@ -117,15 +117,13 @@ def partition(center, xvector, zvector, model_name, part_name):
         current_point = numpy.array(vertex.pointOn[0])
         current_vector = current_point - center
         # Find all vertices lying on the (local) coordinate system axes
-        for comparison_vector in primary_vectors:
-            if vertices.is_parallel(comparison_vector, current_vector):
-                primary_index.append(vertex.index)
-                break
+        if vertices.any_parallel(current_vector, primary_vectors):
+            primary_index.append(vertex.index)
+            continue
         # Find all vertices lying on the (local) coordinate system (1,1,1) vector variations
-        for comparison_vector in fortyfive_vectors:
-            if vertices.is_parallel(comparison_vector, current_vector):
-                fortyfive_index.append(vertex.index)
-                break
+        if vertices.any_parallel(current_vector, fortyfive_vectors):
+            fortyfive_index.append(vertex.index)
+            continue
     primary_index = set(primary_index)
     fortyfive_index = set(fortyfive_index)
 
