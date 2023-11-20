@@ -278,27 +278,6 @@ def test_rectalinear_coordinates(radius_list, angle_list, expected):
     assert numpy.allclose(coordinates, expected)
 
 
-polar_vector = {
-    "x-axis": (
-        1., math.pi / 2., 0., numpy.array([1., 0., 0.])
-    ),
-    "y-axis": (
-        1., 0., 0., numpy.array([0., 1., 0.])
-    ),
-    "z-axis": (
-        1., math.pi / 2., -math.pi / 2., numpy.array([0., 0., 1.])
-    )
-}
-
-
-@pytest.mark.parametrize("radius, polar_angle, azimuthal_angle, expected",
-                         polar_vector.values(),
-                         ids=polar_vector.keys())
-def test_polar_vector(radius, polar_angle, azimuthal_angle, expected):
-    vector = vertices.polar_vector(radius, polar_angle, azimuthal_angle)
-    assert numpy.allclose(vector, expected)
-
-
 one_over_root_three = 1. / math.sqrt(3.)
 normalize_vector = {
     "zero": (
@@ -330,31 +309,37 @@ def test_normalize_vector(vector, expected):
     assert numpy.allclose(normalized, expected)
 
 
+def test_midpoint_vector():
+    first = [1., 0, 0]
+    second = [0, 1., 0]
+    expected = numpy.array([0.5, 0.5, 0.])
+    midpoint = vertices.midpoint_vector(first, second)
+    assert numpy.allclose(midpoint, expected)
+
+
 norm = math.sqrt(0.5)
-projected_large = 0.81649658
-projected_small = -0.57735027
 datum_planes = {
     "globally aligned 45-degrees": (
-        (1., 0., 0.), (0., 0., 1.), 45., 45.,
+        (1., 0., 0.), (0., 0., 1.),
         [
          numpy.array([0., 0., 1.]),  # XY plane
          numpy.array([1., 0., 0.]),  # YZ plane
          numpy.array([0., 1., 0.]),  # ZX plane
-         numpy.array([ norm, 0.,  norm]),  # positive azimuthal
-         numpy.array([ norm, 0., -norm]),  # negative azimuthal
-         numpy.array([ projected_large, projected_small,    0.]),  # polar planes
-         numpy.array([   0., projected_small,  projected_large]),
-         numpy.array([-projected_large, projected_small,    0.]),
-         numpy.array([   0., projected_small, -projected_large]),
+         numpy.array([ norm,  norm, 0.]),
+         numpy.array([ norm, -norm, 0.]),
+         numpy.array([ 0., norm,  norm]),
+         numpy.array([ 0., norm, -norm]),
+         numpy.array([  norm, 0., norm]),
+         numpy.array([ -norm, 0., norm])
         ]
     ),
 }
 
 
-@pytest.mark.parametrize("xvector, zvector, polar_angle, azimuthal_angle, expected",
+@pytest.mark.parametrize("xvector, zvector, expected",
                          datum_planes.values(),
                          ids=datum_planes.keys())
-def test_datum_planes(xvector, zvector, polar_angle, azimuthal_angle, expected):
-    planes = vertices.datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
+def test_datum_planes(xvector, zvector, expected):
+    planes = vertices.datum_planes(xvector, zvector)
     for plane, expectation in zip(planes, expected):
         assert numpy.allclose(plane, expectation)

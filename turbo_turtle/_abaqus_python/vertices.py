@@ -192,8 +192,8 @@ def midpoint_vector(first, second):
     """
     first = numpy.array(first)
     second = numpy.array(second)
-    between = first - second
-    midpoint = first + between / 2.
+    summation = first + second
+    midpoint = summation / 2.
     return midpoint
 
 
@@ -226,9 +226,9 @@ def datum_planes(xvector, zvector):
 
     midpoints = [
         midpoint_vector(xvector,  yvector),
-        midpoint_vector(xvector, -yvector)
+        midpoint_vector(xvector, -yvector),
         midpoint_vector(yvector,  zvector),
-        midpoint_vector(yvector, -zvector)
+        midpoint_vector(yvector, -zvector),
         midpoint_vector(zvector,  xvector),
         midpoint_vector(zvector, -xvector)
     ]

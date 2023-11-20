@@ -98,7 +98,7 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     part = abaqus.mdb.models[model_name].parts[part_name]
 
     center = numpy.array(center)
-    plane_normals = vertices.datum_planes(xvector, zvector, polar_angle, azimuthal_angle)
+    plane_normals = vertices.datum_planes(xvector, zvector)
     partition_planes = [datum_plane(center, normal, part) for normal in plane_normals]
     for plane in partition_planes:
         try:
