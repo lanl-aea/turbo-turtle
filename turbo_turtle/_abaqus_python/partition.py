@@ -23,8 +23,6 @@ def main(input_file,
          center=parsers.partition_default_center,
          xvector=parsers.partition_default_xvector,
          zvector=parsers.partition_default_zvector,
-         polar_angle=parsers.partition_default_polar_angle,
-         azimuthal_angle=parsers.partition_default_azimuthal_angle,
          model_name=parsers.partition_default_model_name,
          part_name=parsers.partition_default_part_name):
     """Wrap  partition function with file open and file write operations
@@ -34,8 +32,6 @@ def main(input_file,
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
     :param list zvector: Local z-axis vector defined in global coordinates
-    :param float polar_angle: Polar angle measured from the local +y-axis in degrees
-    :param float azimuthal_angle: Azimuthal angle measured from the local +x-axis in degrees
     :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
     :param str part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
 
@@ -50,7 +46,7 @@ def main(input_file,
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
-        partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name, part_name)
+        partition(center, xvector, zvector, model_name, part_name)
         abaqus.mdb.saveAs(pathName=output_file)
 
 
@@ -69,7 +65,7 @@ def datum_plane(center, normal, part):
     return part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
 
 
-def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name, part_name):
+def partition(center, xvector, zvector, model_name, part_name):
     """Partition the model/part with the turtle shell method, also know as the soccer ball method.
 
     If the body is modeled with fractional symmetry (e.g. quater or half symmetry), this code will attempt all
@@ -82,8 +78,6 @@ def partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
     :param list zvector: Local z-axis vector defined in global coordinates
-    :param float polar_angle: Polar angle measured from the local +y-axis in degrees
-    :param float azimuthal_angle: Azimuthal angle measured from the local +x-axis in degrees
     :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
     :param str part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
     """
@@ -171,12 +165,6 @@ def get_inputs():
 
     :return: ``zvector`` - location on the z-axis local to the geometry
     :rtype: list
-
-    :return: ``polar_angle`` - angle at which partition planes will be created
-    :rtype: float
-
-    :return: ``azimuthal_angle`` - angle at which partition planes will be created
-    :rtype: float
     """
     from abaqus import getInputs
 
@@ -184,10 +172,8 @@ def get_inputs():
     fields = (('Center:','0.0, 0.0, 0.0'),
               ('X-Vector:', '1.0, 0.0, 0.0'),
               ('Z-Vector:', '0.0, 0.0, 1.0'),
-              ('Polar Angle:', '45.0'),
-              ('Azimuthal Angle:', '45.0'),
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
-    center, xvector, zvector, polar_angle, azimuthal_angle, cp_parameters = getInputs(fields=fields,
+    center, xvector, zvector, cp_parameters = getInputs(fields=fields,
         label='Specify Geometric Parameters:',
         dialogTitle='Turbo Turtle', )
     if center is not None:
@@ -196,31 +182,25 @@ def get_inputs():
             center = ast.literal_eval(cp_param[0].replace('Center: ', ''))
             xpoint = ast.literal_eval(cp_param[1].replace('X-Vector: ', ''))
             zpoint = ast.literal_eval(cp_param[2].replace('Z-Vector: ', ''))
-            polar_angle = ast.literal_eval(cp_param[3].replace('Polar Angle: ', ''))
-            azimuthal_angle = ast.literal_eval(cp_param[3].replace('Azimuthal Angle: ', ''))
         else:
             center = list(ast.literal_eval(center))
             xvector = list(ast.literal_eval(xvector))
             zvector = list(ast.literal_eval(zvector))
-            polar_angle = ast.literal_eval(polar_angle)
-            azimuthal_angle = ast.literal_eval(azimuthal_angle)
         print('\nPartitioning Parameters Entered By User:')
         print('----------------------------------------')
         print('Center: {}'.format(center))
         print('X-Vector: {}'.format(xvector))
         print('Z-Vector: {}'.format(zvector))
-        print('Polar Angle: {}'.format(polar_angle))
-        print('Azimuthal Angle: {}'.format(azimuthal_angle))
         print('')
-    return center, xpoint, zpoint, polar_angle, azimuthal_angle
+    return center, xpoint, zpoint
 
 
 if __name__ == "__main__":
     try:
-        center, xvector, zvector, polar_angle, azimuthal_angle = get_inputs()
+        center, xvector, zvector = get_inputs()
         model_name=None
         part_name=None
-        partition(center, xvector, zvector, polar_angle, azimuthal_angle, model_name, part_name)
+        partition(center, xvector, zvector, model_name, part_name)
 
     except:
         parser = parsers.partition_parser(basename=basename)
@@ -235,8 +215,6 @@ if __name__ == "__main__":
             center=args.center,
             xvector=args.xvector,
             zvector=args.zvector,
-            polar_angle=args.polar_angle,
-            azimuthal_angle=args.azimuthal_angle,
             model_name=args.model_name,
             part_name=args.part_name
         ))
