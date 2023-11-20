@@ -182,7 +182,7 @@ def normalize_vector(vector):
 
 
 def midpoint_vector(first, second):
-    """Calculate the vector between two vectors
+    """Calculate the vector between two vectors (summation / 2)
 
     :param numpy.array first: First vector
     :param numpy.array second: Second vector

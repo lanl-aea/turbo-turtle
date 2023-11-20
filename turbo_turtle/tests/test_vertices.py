@@ -309,10 +309,29 @@ def test_normalize_vector(vector, expected):
     assert numpy.allclose(normalized, expected)
 
 
-def test_midpoint_vector():
-    first = [1., 0, 0]
-    second = [0, 1., 0]
-    expected = numpy.array([0.5, 0.5, 0.])
+midpoint_vector = {
+    "+x+y": (
+        [1., 0, 0], [0, 1., 0], numpy.array([0.5, 0.5, 0.])
+    ),
+    "+x-y": (
+        [1., 0, 0], [0, -1., 0], numpy.array([0.5, -0.5, 0.])
+    ),
+    "+y+z": (
+        [0, 1., 0], [0, 0, 1.], numpy.array([0, 0.5, 0.5])
+    ),
+    "+y-z": (
+        [0, 1., 0], [0, 0, -1.], numpy.array([0, 0.5, -0.5])
+    ),
+    "111,-111": (
+        [1., 1., 1.], [-1., 1., 1.], numpy.array([0, 1., 1.])
+    ),
+}
+
+
+@pytest.mark.parametrize("first, second, expected",
+                         midpoint_vector.values(),
+                         ids=midpoint_vector.keys())
+def test_midpoint_vector(first, second, expected):
     midpoint = vertices.midpoint_vector(first, second)
     assert numpy.allclose(midpoint, expected)
 
