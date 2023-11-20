@@ -166,34 +166,6 @@ def _line_pairs(all_splines):
     return line_pairs
 
 
-def polar_vector(radius, polar_angle, azimuthal_angle):
-    """Calculate the rectalinear coordinates of a vector defined in +y axis polar coordinates
-    .. math::
-
-       x = radius * sin(polar_angle) * cos(azimuthal_angle)
-
-    .. math::
-
-       y = radius * cos(polar_angle)
-
-    .. math::
-
-       z = - radius * sin(polar_angle) * sin(azimuthal_angle)
-
-    :param float radius: Radial distance
-    :param float polar_angle: Polar angle measured from the local y-axix (polar axis) in radians
-    :param float azimuthal_angle: Azimuthal angle measure from the local x-axis in radians
-
-    :returns: rectalinear vector [1, 3]
-    :rtype: numpy.array
-    """
-    return numpy.array([
-          radius * math.sin(polar_angle) * math.cos(azimuthal_angle),
-          radius * math.cos(polar_angle),
-        - radius * math.sin(polar_angle) * math.sin(azimuthal_angle)
-    ])
-
-
 def normalize_vector(vector):
     """Normalize a cartesian vector
 
@@ -209,51 +181,57 @@ def normalize_vector(vector):
     return vector / norm
 
 
-def datum_planes(xvector, zvector, polar_angle, azimuthal_angle):
-    """Calculate the sphere partitioning datum plane normal vectors on a local coordinate system with +y polar axis
+def midpoint_vector(first, second):
+    """Calculate the vector between two vectors
+
+    :param numpy.array first: First vector
+    :param numpy.array second: Second vector
+
+    :returns: Vector midway between first and second vector
+    :rtype: numpy.array
+    """
+    first = numpy.array(first)
+    second = numpy.array(second)
+    between = first - second
+    midpoint = first + between / 2.
+    return midpoint
+
+
+def datum_planes(xvector, zvector):
+    """Calculate the sphere partitioning datum plane normal vectors on a local coordinate system
 
     The x- and z-vectors must be orthogonal. They will be normalized prior to calculating the normalized plane normal
     vectors.
 
-    :param list center: List of three (3) floats defining the location of the datum coordinate system in global
-        coordinate space
     :param list xvector: List of three (3) floats defining the local x-axis vector in global coordinate space
     :param list zvector: List of three (3) floats defining the local z-axis vector in global coordinate space
-    :param float polar_angle: Polar angle measured from the local y-axix (polar axis) in degrees
-    :param float azimuthal_angle: Azimuthal angle measure from the local x-axis in degrees
 
-    :returns: list of normalized local plane normal vectors [7, 3] - xy/yz/zx planes, (2) +/- azimuthal planes, (4) polar planes
+    :returns: list of normalized local plane normal vectors [9, 3] - (3) xy/yz/zx planes, (6) +/- 45 degrees from
+        xy/yz/zx planes
     :rtype: list
     """
-    xvector = normalize_vector(xvector)
-    zvector = normalize_vector(zvector)
-
     dot = numpy.dot(xvector, zvector)
     if not numpy.isclose(dot, 0.):
         raise RuntimeError("Provided x-vector '{}' and z-vector '{}' are not orthogonal".format(xvector, zvector))
 
+    xvector = normalize_vector(xvector)
+    zvector = normalize_vector(zvector)
+
     xy_plane = zvector
     yz_plane = xvector
-    zx_plane = numpy.cross(zvector, xvector)
+    yvector = numpy.cross(zvector, xvector)
+    zx_plane = yvector
 
-    azimuthal_radians = math.radians(azimuthal_angle)
-    polar_radians = math.radians(polar_angle)
+    primary_planes = [xy_plane, yz_plane, zx_plane]
 
-    azimuthal_normal = math.pi / 2. - azimuthal_radians
-    positive_azimuthal = polar_vector(1., math.pi / 2., -azimuthal_normal)
-    negative_azimuthal = polar_vector(1., math.pi / 2.,  azimuthal_normal)
+    midpoints = [
+        midpoint_vector(xvector,  yvector),
+        midpoint_vector(xvector, -yvector)
+        midpoint_vector(yvector,  zvector),
+        midpoint_vector(yvector, -zvector)
+        midpoint_vector(zvector,  xvector),
+        midpoint_vector(zvector, -xvector)
+    ]
+    midpoints = [normalize_vector(midpoint) for midpoint in midpoints]
 
-    first_vector  = polar_vector(1., polar_radians,  azimuthal_radians)
-    second_vector = polar_vector(1., polar_radians, -azimuthal_radians)
-    third_vector  = polar_vector(1., polar_radians,  azimuthal_radians + math.pi)
-    fourth_vector = polar_vector(1., polar_radians, -azimuthal_radians + math.pi)
-
-    first_polar = numpy.cross(first_vector, second_vector)
-    second_polar = numpy.cross(second_vector, third_vector)
-    third_polar = numpy.cross(third_vector, fourth_vector)
-    fourth_polar = numpy.cross(fourth_vector, first_vector)
-
-    planes = [xy_plane, yz_plane, zx_plane, positive_azimuthal, negative_azimuthal, first_polar, second_polar, third_polar, fourth_polar]
-    planes = [normalize_vector(plane) for plane in planes]
-
-    return planes
+    return primary_planes + midpoints
