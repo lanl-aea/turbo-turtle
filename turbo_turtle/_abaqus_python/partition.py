@@ -100,52 +100,37 @@ def partition(center, xvector, zvector, model_name, part_name):
         except:
             pass
 
-    # Step 19 - Find the vertices intersecting faces to remove for the x-axis
-    # TODO: Clean this up. Maybe march along local primary axes? Maybe remove all the surface guessing and save surfaces
-    # from partition command?
     zvector = plane_normals[0]
     xvector = plane_normals[1]
     yvector = plane_normals[2]
-    plane_angle = math.radians(45.)
-    found_face = True
+    local_primary_vectors = (xvector, yvector, zvector)
+    local_fortyfive_vectors = (
+        numpy.array([ 1., 1.,  1.]),
+        numpy.array([-1., 1.,  1.]),
+        numpy.array([-1., 1., -1.]),
+        numpy.array([ 1., 1., -1.])
+    )
 
-    vector_rotation = [[xvector, zvector], [yvector, xvector], [zvector, yvector]]
-    for pointOnIDX, (first_vector, second_vector) in enumerate(vector_rotation):
-        while found_face:
-            x_vectors = ()
-            for v in part.vertices:
-                pointOn = numpy.asarray(v.pointOn[0])
-                this_vector = vertices.normalize_vector(pointOn - center)
-                if numpy.abs(numpy.abs(numpy.dot(this_vector, first_vector)) - 1.0) < 0.01:
-                    x_vectors += ((v), )
-            x_points = numpy.asarray([v.pointOn[0][pointOnIDX] for v in x_vectors])
-            x_points.sort()
-            x_vectors_grabbed = ()
-            for xp in x_points:
-                for v in x_vectors:
-                    pointOn = v.pointOn[0]
-                    if pointOn[pointOnIDX] == xp:
-                        x_vectors_grabbed += ((v), )
-            x_vectors_grabbed_idxs = [v.index for v in x_vectors_grabbed]
+    local_primary = []
+    local_fortyfive = []
+    for vertex in part.vertices:
+        current_point = numpy.array(vertex.pointOn[0])
+        current_vector = current_point - center
+        # Find all vertices lying on the (local) coordinate system axes
+        for comparison_vector in local_primary_vectors:
+            if vertices.is_parallel(comparison_vector, current_vector):
+                local_primary.append(vertex)
+                break
+        # Find all vertices lying on the (local) coordinate system (1,1,1) vector variations
+        for comparison_vector in local_fortyfive_vectors:
+            if vertices.is_parallel(comparison_vector, current_vector):
+                local_fortyfive.append(vertex)
+                break
 
-            # Step 20 - locate faces with a normal at the plane_angle to the local coordinate system
-            # Step 21 - recursively remove the faces and redundant enties as a result of removed faces
-            for II, face in enumerate(part.faces):
-                this_vert_idxs = face.getVertices()
-                try:
-                    if x_vectors_grabbed_idxs[1] in this_vert_idxs or x_vectors_grabbed_idxs[2] in this_vert_idxs:
-                        this_normal = normalize_vector(face.getNormal())
-                        if numpy.abs(numpy.abs(numpy.dot(this_normal, second_vector))-numpy.abs(numpy.cos(plane_angle))) < 0.001:
-                            part.RemoveFaces(faceList=part.faces[face.index:(face.index+1)], deleteCells=False)
-                            part.RemoveRedundantEntities(vertexList = part.vertices[:], edgeList = part.edges[:])
-                            found_face = True
-                            break
-                except:
-                    pass
-            if II == (len(part.faces)-1):
-                found_face = False
-            else:
-                pass
+    # Append a list of faces with 2 vertices on each of the above
+
+    part.RemoveFaces(faceList=part.faces[face.index:(face.index+1)], deleteCells=False)
+    part.RemoveRedundantEntities(vertexList = part.vertices[:], edgeList = part.edges[:])
 
     # Step 29 - validate geometry
     abaqus.mdb.models[model_name].parts[part_name].checkGeometry()

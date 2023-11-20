@@ -197,6 +197,25 @@ def midpoint_vector(first, second):
     return midpoint
 
 
+def is_parallel(first, second, rtol=None, atol=None):
+    """Compute cross product. If it is near zero, return True. Else False.
+
+    :param numpy.array first: First vector
+    :param numpy.array second: Second vector
+
+    :returns: boolean answering "are these vectors parallel"
+    :rtype: bool
+    """
+    first = numpy.array(first)
+    second = numpy.array(second)
+    kwargs = {}
+    if rtol is not None:
+        kwargs.update({"rtol": rtol})
+    if atol is not None:
+        kwargs.update({"atol": atol})
+    return numpy.allclose(numpy.cross(first, second), 0., **kwargs)
+
+
 def datum_planes(xvector, zvector):
     """Calculate the sphere partitioning datum plane normal vectors on a local coordinate system
 
