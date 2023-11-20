@@ -335,6 +335,26 @@ def test_midpoint_vector(first, second, expected):
     midpoint = vertices.midpoint_vector(first, second)
     assert numpy.allclose(midpoint, expected)
 
+is_parallel = {
+    "identical": (
+        (1., 1., 1.), (1., 1., 1.), True
+    ),
+    "orthogonal": (
+        (1., 0., 0.), (0., 0., 1.), False
+    ),
+    "multiple": (
+        (0., 1., 0.), (0., 2., 0.), True
+    ),
+}
+
+
+@pytest.mark.parametrize("first, second, expected",
+                         is_parallel.values(),
+                         ids=is_parallel.keys())
+def test_is_parallel(first, second, expected):
+    boolean = vertices.is_parallel(first, second)
+    assert boolean == expected
+
 
 norm = math.sqrt(0.5)
 datum_planes = {
