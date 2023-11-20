@@ -108,18 +108,18 @@ def setup_cylinder_commands(model, revolution_angle,
 
 
 def setup_merge_commands(part_name, turbo_turtle_command=turbo_turtle_command):
-    sphere_options = ("sphere.cae", 360., (0., 0.), "both", "C3D8", "C3D8R")
+    sphere_options = ("merge-sphere.cae", 360., (0., 0.), "both", "C3D8", "C3D8R")
     commands = []
     commands.append(setup_sphere_commands(*sphere_options)[0])
-    geometry_options = ("multi-part-3D",
+    geometry_options = ("merge-multi-part",
                         [_settings._project_root_abspath / "tests" / "washer.csv",
                          _settings._project_root_abspath / "tests" / "vase.csv"],
                         360.0, False)
     commands.extend(setup_geometry_commands(*geometry_options))
 
-    merge_command =  f"{turbo_turtle_command} merge --input-file sphere.cae multi-part-3D.cae " \
+    merge_command =  f"{turbo_turtle_command} merge --input-file merge-sphere.cae merge-multi-part.cae " \
                      f"--output-file merge.cae --merged-model-name merge " \
-                     f"--model-name multi-part-3D sphere"
+                     f"--model-name merge-multi-part merge-sphere"
     if part_name:
         merge_command += f" --part-name {part_name}"
 
@@ -190,7 +190,7 @@ for test in system_tests:
     commands_list.append(setup_cylinder_commands(*test))
 
 # Merge tests
-for part_name in ("washer vase sphere", ""):
+for part_name in ("washer vase merge-sphere", ""):
     commands_list.append(setup_merge_commands(part_name))
 
 
