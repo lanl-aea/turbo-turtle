@@ -83,7 +83,7 @@ def find_cubit_bin(options, bin_directory=None):
 
     cubit_command = find_command(options)
     cubit_command = os.path.realpath(cubit_command)
-    cubit_bin = pathlib.Path(cubit_command)
+    cubit_bin = pathlib.Path(cubit_command).parent
     if bin_directory in cubit_bin.parts:
         while cubit_bin.name != bin_directory:
             cubit_bin = cubit_bin.parent
