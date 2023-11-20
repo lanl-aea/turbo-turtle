@@ -356,6 +356,27 @@ def test_is_parallel(first, second, expected):
     assert boolean == expected
 
 
+any_parallel = {
+    "identical": (
+        (1., 1., 1.), [(1., 1., 1.), (1., 0., 0.)], True
+    ),
+    "orthogonal": (
+        (1., 0., 0.), [(0., 0., 1.), (0., 1., 0.)], False
+    ),
+    "multiple": (
+        (0., 1., 0.), [(2., 0., 0.), (0., 2., 0.)], True
+    ),
+}
+
+
+@pytest.mark.parametrize("first, options, expected",
+                         any_parallel.values(),
+                         ids=any_parallel.keys())
+def test_any_parallel(first, options, expected):
+    boolean = vertices.any_parallel(first, options)
+    assert boolean == expected
+
+
 norm = math.sqrt(0.5)
 datum_planes = {
     "globally aligned 45-degrees": (
