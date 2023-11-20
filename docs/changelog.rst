@@ -8,6 +8,10 @@ Changelog
 v0.7.1 (unreleased)
 *******************
 
+Bug fixes
+=========
+- Fix pass through of ``rtol`` and ``atol`` arguments in ``geometry`` subcommand (:merge:`60`). By `Kyle Brindley`_.
+
 *******************
 v0.7.0 (2023-11-20)
 *******************
