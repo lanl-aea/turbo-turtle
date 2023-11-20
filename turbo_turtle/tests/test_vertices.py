@@ -4,6 +4,7 @@
    These are tests of a mixed Python 2/3 compatible module. When updating, be sure to update the Abaqus Python tests to
    match.
 """
+from unittest.mock import patch
 import pytest
 import numpy
 import math
@@ -248,6 +249,23 @@ def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expe
     assert len(splines) == len(expected_splines)
     for spline, expectation in zip(splines, expected_splines):
         assert numpy.allclose(spline, expectation)
+
+
+def test_lines_and_splines_passthrough():
+    with patch("turbo_turtle._abaqus_python.vertices._break_coordinates", return_value=[]) as mock_break_coordinates, \
+         patch("turbo_turtle._abaqus_python.vertices._line_pairs", return_value=[]):
+        all_splines = vertices.lines_and_splines([], 4.0, rtol=1e-5, atol=1e-9)
+        mock_break_coordinates.assert_called_once_with([], 4.0, rtol=1e-5, atol=1e-9)
+
+
+def test_break_coordinates_passthrough():
+    with patch("turbo_turtle._abaqus_python.vertices._compare_xy_values") as mock_xy_values, \
+         patch("turbo_turtle._abaqus_python.vertices._compare_euclidean_distance"), \
+         patch("turbo_turtle._abaqus_python.vertices._bool_via_or"), \
+         patch("numpy.where"), \
+         patch("numpy.split"):
+        all_splines = vertices._break_coordinates([], 4.0, rtol=1e-5, atol=1e-9)
+        mock_xy_values.assert_called_once_with([], rtol=1e-5, atol=1e-9)
 
 
 def test_cylinder():
