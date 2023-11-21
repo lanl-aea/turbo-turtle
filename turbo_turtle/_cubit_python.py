@@ -87,9 +87,7 @@ def geometry(input_file, output_file,
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
         curves = []
         for point1, point2 in lines:
-            vertex1 = cubit.create_vertex(*tuple(point1), 0.)
-            vertex2 = cubit.create_vertex(*tuple(point2), 0.)
-            curves.append(cubit.create_curve(vertex1, vertex2))
+            curves.append(_create_curve_from_coordinates(tuple(point1) + (0.,), tuple(point2) + (0.,))
         for spline in splines:
             points = []
             for point in spline:
@@ -108,6 +106,12 @@ def geometry(input_file, output_file,
         _rename_and_sweep(number, surface, new_part, planar=planar, revolution_angle=revolution_angle)
 
     cubit_command_or_exit(f"save as '{output_file}' overwrite")
+
+
+def _create_curve_from_coordinates(point1, point2):
+    vertex1 = cubit.create_vertex(*tuple(point1))
+    vertex2 = cubit.create_vertex(*tuple(point2))
+    return cubit.create_curve(vertex1, vertex2))
 
 
 def _rename_and_sweep(number, surface, part_name,
