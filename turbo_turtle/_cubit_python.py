@@ -275,7 +275,7 @@ def _sphere(inner_radius, outer_radius,
     outer_point1 = arc_points[2]
     outer_point2 = arc_points[3]
 
-    center_3d = center + (0.,)
+    center_3d = numpy.append(center, [0.])
     _create_arc_from_coordinates(center_3d, inner_point1, inner_point2)
     _create_arc_from_coordinates(center_3d, outer_point1, outer_point2)
     _create_curve_from_coordinates(inner_point1, outer_point1)
