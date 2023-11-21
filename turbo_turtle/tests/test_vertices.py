@@ -421,3 +421,30 @@ def test_datum_planes(xvector, zvector, expected):
     planes = vertices.datum_planes(xvector, zvector)
     for plane, expectation in zip(planes, expected):
         assert numpy.allclose(plane, expectation)
+
+
+over_root_three = 1. / math.sqrt(3.)
+fortyfive_vectors = {
+    "cartesian aligned": (
+        numpy.array([1., 0., 0.]), numpy.array([0., 0., 1.]),
+        [
+            numpy.array([ over_root_three,  over_root_three,  over_root_three]),
+            numpy.array([-over_root_three,  over_root_three,  over_root_three]),
+            numpy.array([-over_root_three,  over_root_three, -over_root_three]),
+            numpy.array([ over_root_three,  over_root_three, -over_root_three]),
+            numpy.array([ over_root_three, -over_root_three,  over_root_three]),
+            numpy.array([-over_root_three, -over_root_three,  over_root_three]),
+            numpy.array([-over_root_three, -over_root_three, -over_root_three]),
+            numpy.array([ over_root_three, -over_root_three, -over_root_three]),
+        ]
+    ),
+}
+
+
+@pytest.mark.parametrize("xvector, zvector, expected",
+                         fortyfive_vectors.values(),
+                         ids=fortyfive_vectors.keys())
+def test_fortyfive_vectors(xvector, zvector, expected):
+    fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
+    for vector, expectation in zip(fortyfive_vectors, expected):
+        assert numpy.allclose(vector, expectation)

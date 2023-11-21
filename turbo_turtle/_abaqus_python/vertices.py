@@ -212,7 +212,7 @@ def normalize_vector(vector):
     return vector / norm
 
 
-def midpoint_vector(first, second):
+def midpoint_vector(first, second, third=None):
     """Calculate the vector between two vectors (summation / 2)
 
     :param numpy.array first: First vector
@@ -225,6 +225,10 @@ def midpoint_vector(first, second):
     second = numpy.array(second)
     summation = first + second
     midpoint = summation / 2.
+    if third is not None:
+        third = numpy.array(third)
+        summation = summation + third
+        midpoint = summation / 3.
     return midpoint
 
 
@@ -300,3 +304,29 @@ def datum_planes(xvector, zvector):
     midpoints = [normalize_vector(midpoint) for midpoint in midpoints]
 
     return primary_planes + midpoints
+
+
+def fortyfive_vectors(xvector, zvector):
+    """Return the normalized (1, 1, 1) vector variants of a local coordinate system defined by the x- and z-vector"""
+
+    dot = numpy.dot(xvector, zvector)
+    if not numpy.isclose(dot, 0.):
+        raise RuntimeError("Provided x-vector '{}' and z-vector '{}' are not orthogonal".format(xvector, zvector))
+
+    xvector = normalize_vector(xvector)
+    zvector = normalize_vector(zvector)
+    yvector = numpy.cross(zvector, xvector)
+
+    fortyfives = [
+        midpoint_vector( xvector,  yvector,  zvector),
+        midpoint_vector(-xvector,  yvector,  zvector),
+        midpoint_vector(-xvector,  yvector, -zvector),
+        midpoint_vector( xvector,  yvector, -zvector),
+        midpoint_vector( xvector, -yvector,  zvector),
+        midpoint_vector(-xvector, -yvector,  zvector),
+        midpoint_vector(-xvector, -yvector, -zvector),
+        midpoint_vector( xvector, -yvector, -zvector),
+    ]
+    fortyfives = [normalize_vector(vector) for vector in fortyfives]
+
+    return fortyfives

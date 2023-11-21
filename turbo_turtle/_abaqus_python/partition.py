@@ -134,12 +134,7 @@ def partition(center, xvector, zvector, model_name, part_name):
     xvector = plane_normals[1]
     yvector = plane_normals[2]
     primary_vectors = (xvector, yvector, zvector)
-    fortyfive_vectors = (
-        numpy.array([ 1., 1.,  1.]),
-        numpy.array([-1., 1.,  1.]),
-        numpy.array([-1., 1., -1.]),
-        numpy.array([ 1., 1., -1.])
-    )
+    fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
     primary_index, fortyfive_index = remove_faces_vertices(center, primary_vectors, fortyfive_vectors, part)
 
     # Append a list of faces with 2 vertices on a primary axis and 2 vertices on a fortyfive axis
