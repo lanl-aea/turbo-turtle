@@ -11,6 +11,7 @@ v0.7.1 (unreleased)
 New Features
 ============
 - Draft implementation of ``cylinder`` subcommand with Cubit (:issue:`63`, :merge:`61`). By `Kyle Brindley`_.
+- Draft implementation of ``sphere`` subcommand with Cubit (:issue:`71`, :merge:`62`). By `Kyle Brindley`_.
 
 Bug fixes
 =========
