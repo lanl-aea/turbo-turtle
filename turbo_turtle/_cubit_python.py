@@ -248,6 +248,7 @@ def sphere(inner_radius, outer_radius, output_file,
                 part_name=part_name)
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
+
 def _sphere(inner_radius, outer_radius,
             quadrant=parsers.sphere_default_quadrant,
             revolution_angle=parsers.sphere_default_angle,
