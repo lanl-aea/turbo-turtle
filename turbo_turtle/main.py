@@ -139,8 +139,8 @@ def get_parser():
 
     subparsers.add_parser(
         "cylinder",
-        help=parsers.cylinder_cli_help,
-        description=parsers.cylinder_cli_description,
+        help=append_cubit_help(parsers.cylinder_cli_help),
+        description=append_cubit_description(parsers.cylinder_cli_description),
         parents=[cylinder_parser]
     )
 
