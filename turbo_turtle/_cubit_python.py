@@ -85,20 +85,7 @@ def geometry(input_file, output_file,
                                                          expected_dimensions=2, expected_columns=2)
         coordinates = coordinates * unit_conversion
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
-        curves = []
-        for first, second in lines:
-            point1 = tuple(first) + (0.,)
-            point2 = tuple(second) + (0.,)
-            curves.append(_create_curve_from_coordinates(point1, point2))
-        for spline in splines:
-            zero_column = numpy.zeros([len(spline), 1])
-            spline_3d = numpy.append(spline, zero_column, axis=1)
-            _create_spline_from_coordinates(spline_3d)
-        # TODO: VVV Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
-        curve_ids = cubit.get_list_of_free_ref_entities("curve")
-        curves = [cubit.curve(identity) for identity in curve_ids]
-        # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
-        surfaces.append(cubit.create_surface(curves))
+        surfaces.append(_draw_surface(lines, splines))
 
     # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct
     for number, (surface, new_part) in enumerate(zip(surfaces, part_name), 1):
@@ -108,7 +95,28 @@ def geometry(input_file, output_file,
 
 
 def _draw_surface(lines, splines):
-    pass
+    """Given ordered lists of line/spline coordinates, create a Cubit surface object
+
+    :param list lines: list of [2, 2] shaped arrays of (x, y) coordinates defining a line segment
+    :param list splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a spline
+
+    :returns: Cubit surface defined by the lines and splines input
+    :rtype: cubit.Surface
+    """
+    curves = []
+    for first, second in lines:
+        point1 = tuple(first) + (0.,)
+        point2 = tuple(second) + (0.,)
+        curves.append(_create_curve_from_coordinates(point1, point2))
+    for spline in splines:
+        zero_column = numpy.zeros([len(spline), 1])
+        spline_3d = numpy.append(spline, zero_column, axis=1)
+        _create_spline_from_coordinates(spline_3d)
+    # TODO: VVV Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
+    curve_ids = cubit.get_list_of_free_ref_entities("curve")
+    curves = [cubit.curve(identity) for identity in curve_ids]
+    # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
+    return cubit.create_surface(curves)
 
 
 def _create_curve_from_coordinates(point1, point2):
