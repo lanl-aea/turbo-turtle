@@ -46,7 +46,6 @@ def cubit_command_or_exit(*args, **kwargs):
 
 def geometry(input_file, output_file,
              planar=parsers.geometry_default_planar,
-             model_name=parsers.geometry_default_model_name,
              part_name=parsers.geometry_default_part_name,
              unit_conversion=parsers.geometry_default_unit_conversion,
              euclidean_distance=parsers.geometry_default_euclidean_distance,
@@ -62,7 +61,7 @@ def geometry(input_file, output_file,
     names are provided, the body/volume will be named after the input file base name.
 
     :param str input_file: input text file(s) with coordinates to draw
-    :param str output_file: Abaqus CAE database to save the part(s)
+    :param str output_file: Cubit ``*.cub`` database to save the part(s)
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param list part_name: name(s) of the part(s) being created
     :param float unit_conversion: multiplication factor applies to all coordinates
@@ -168,3 +167,26 @@ def _rename_and_sweep(number, surface, part_name,
     else:
         cubit_command_or_exit(f"sweep surface {surface.id()} yaxis angle {revolution_angle} merge")
         cubit_command_or_exit(f"volume {number} rename '{part_name}'")
+
+
+def cylinder(inner_radius, outer_radius, height, output_file,
+             part_name=parsers.cylinder_default_part_name,
+             revolution_angle=parsers.geometry_default_revolution_angle):
+    """
+    :param float inner_radius: Radius of the hollow center
+    :param float outer_radius: Outer radius of the cylinder
+    :param float height: Height of the cylinder
+    :param str output_file: Cubit ``*.cub`` database to save the part(s)
+    :param list part_name: name(s) of the part(s) being created
+    :param float revolution_angle: angle of solid revolution for ``3D`` geometries
+    """
+    cubit.init(["cubit"])
+    output_file = pathlib.Path(output_file).with_suffix(".cub")
+
+    coordinates = vertices.cylinder(inner_radius, outer_radius, height)
+    euclidean_distance = min(inner_radius, height) / 2.
+    lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
+    surface = _draw_surface(lines, splines)
+    _rename_and_sweep(1, surface, part_name, revolution_angle=revolution_angle)
+
+    cubit_command_or_exit(f"save as '{output_file}' overwrite")
