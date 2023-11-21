@@ -142,6 +142,7 @@ sphere_default_angle = 360.
 sphere_default_center = (0., 0.)
 sphere_default_model_name = "Model-1"
 sphere_default_part_name = "Part-1"
+sphere_quadrant_options = ("both", "upper", "lower")
 sphere_cli_help = "Create a hollow, spherical geometry from a sketch in the X-Y plane"
 sphere_cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), " \
                          "lower (+X-Y), or both quadrants."
@@ -161,7 +162,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
 
     parser.add_argument('--input-file', type=str, default=sphere_default_input_file,
                         help="Abaqus model database to open (default: %(default)s)")
-    parser.add_argument("--quadrant", type=str, choices=("both", "upper", "lower"), default=sphere_default_quadrant,
+    parser.add_argument("--quadrant", type=str, choices=sphere_quadrant_options, default=sphere_default_quadrant,
                         help="XY plane quadrant: both, upper (I), lower (IV) (default: %(default)s)")
     parser.add_argument('--revolution-angle', type=float, default=sphere_default_angle,
                         help="Angle of revolution about the +Y axis (default: %(default)s)")

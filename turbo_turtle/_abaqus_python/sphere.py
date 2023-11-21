@@ -78,8 +78,7 @@ def sphere(inner_radius, outer_radius,
     import abaqus
     import abaqusConstants
 
-    quadrant_options = ("both", "upper", "lower")
-    if not quadrant in quadrant_options:
+    if not quadrant in parsers.sphere_quadrant_options:
         message = "Quadrant option must be one of: {}".format(quadrant_options)
         _mixed_utilities.sys_exit(message)
 
