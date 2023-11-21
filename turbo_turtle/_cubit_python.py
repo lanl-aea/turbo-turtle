@@ -25,6 +25,7 @@ def cubit_command_or_exception(command):
 
     :param str command: Cubit APREPRO command to execute
     """
+    print(command)
     success = cubit.cmd(command)
     if not success:
         raise RuntimeError(f"Command '{command}' returned an error. Please see the Cubit log for details.")
@@ -88,9 +89,8 @@ def geometry(input_file, output_file,
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
         surfaces.append(_draw_surface(lines, splines))
 
-    # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct
-    for number, (surface, new_part) in enumerate(zip(surfaces, part_name), 1):
-        _rename_and_sweep(number, surface, new_part, planar=planar, revolution_angle=revolution_angle)
+    for surface, new_part in zip(surfaces, part_name):
+        _rename_and_sweep(surface, new_part, planar=planar, revolution_angle=revolution_angle)
 
     cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
@@ -166,29 +166,28 @@ def _create_arc_from_coordinates(center, point1, point2):
     return None
 
 
-def _rename_and_sweep(number, surface, part_name,
+def _rename_and_sweep(surface, part_name,
                       planar=parsers.geometry_default_planar,
                       revolution_angle=parsers.geometry_default_revolution_angle):
-    """Recover body or volume by number, sweep part if required, and rename body/volume by part name
+    """Recover body or volume from body surface, sweep part if required, and rename body/volume by part name
 
     Hyphens are replaced by underscores to make the ACIS engine happy.
 
-    :param int number: The body or volume number
     :param cubit.Surface surface: Cubit surface object to rename and conditionally sweep
     :param list part_name: name(s) of the part(s) being created
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
     """
+    body_number = surface.id()
+    surface_number = surface.surfaces()[0].id()
     part_name = part_name.replace("-", "_")
-    # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct. Replace
-    # ``number`` with ``body/volume`` object variable.
     if planar:
-        cubit_command_or_exit(f"body {number} rename '{part_name}'")
+        cubit_command_or_exit(f"body {body_number} rename '{part_name}'")
     elif numpy.isclose(revolution_angle, 0.0):
-        cubit_command_or_exit(f"body {number} rename '{part_name}'")
+        cubit_command_or_exit(f"body {body_number} rename '{part_name}'")
     else:
-        cubit_command_or_exit(f"sweep surface {surface.id()} yaxis angle {revolution_angle} merge")
-        cubit_command_or_exit(f"volume {number} rename '{part_name}'")
+        cubit_command_or_exit(f"sweep surface {surface_number} yaxis angle {revolution_angle} merge")
+        cubit_command_or_exit(f"volume {body_number} rename '{part_name}'")
 
 
 def cylinder(inner_radius, outer_radius, height, output_file,
@@ -209,7 +208,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     euclidean_distance = min(inner_radius, height) / 2.
     lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     surface = _draw_surface(lines, splines)
-    _rename_and_sweep(1, surface, part_name, revolution_angle=revolution_angle)
+    _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle)
 
     cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
@@ -280,4 +279,4 @@ def _sphere(inner_radius, outer_radius,
     # TODO: ^^^ Replace free curve recovery when an arc by center and two points is available in Cubit Python API
     surface = cubit.create_surface(curves)
 
-    _rename_and_sweep(surface.volumes()[0].id(), surface, part_name, revolution_angle=revolution_angle)
+    _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle)
