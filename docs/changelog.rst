@@ -16,6 +16,7 @@ New Features
 Bug fixes
 =========
 - Fix pass through of ``rtol`` and ``atol`` arguments in ``geometry`` subcommand (:merge:`60`). By `Kyle Brindley`_.
+- Fix Cubit bin search and PYTHONPATH append behavior on MacOS (:merge:`63`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
