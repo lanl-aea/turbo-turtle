@@ -296,4 +296,20 @@ def partition(input_file):
               xvector=parsers.partition_default_xvector,
               zvector=parsers.partition_default_zvector,
               part_name=parsers.partition_default_part_name):
+
+    if output_file is None:
+        output_file = input_file
+    input_file = pathlib.Path(input_file).with_suffix(".cub")
+    output_file = pathlib.Path(output_file).with_suffix(".cub")
+    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+        shutil.copyfile(input_file, copy_file.name)
+        cubit_command_or_exit(f"open '{copy_file.name}'")
+        _partition(center, xvector, zvector, part_name)
+        cubit_command_or_exit(f"save as '{output_file}' overwrite")
+
+
+def _partition(center=parsers.partition_default_center,
+               xvector=parsers.partition_default_xvector,
+               zvector=parsers.partition_default_zvector,
+               part_name=parsers.partition_default_part_name):
     pass
