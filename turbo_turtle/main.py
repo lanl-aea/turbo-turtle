@@ -147,8 +147,8 @@ def get_parser():
 
     subparsers.add_parser(
         "sphere",
-        help=parsers.sphere_cli_help,
-        description=parsers.sphere_cli_description,
+        help=append_cubit_help(parsers.sphere_cli_help),
+        description=append_cubit_description(parsers.sphere_cli_description),
         parents=[sphere_parser]
     )
 
