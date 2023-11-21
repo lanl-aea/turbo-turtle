@@ -91,13 +91,10 @@ def geometry(input_file, output_file,
             point2 = tuple(second) + (0.,)
             curves.append(_create_curve_from_coordinates(point1, point2))
         for spline in splines:
-            points = []
-            for point in spline:
-                points.append(cubit.create_vertex(*tuple(point), 0.))
+            zero_column = numpy.zeros([len(spline), 1])
+            spline_3d = numpy.append(spline, zero_column, axis=1)
+            _create_spline_from_coordinates(spline_3d)
         # TODO: VVV Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
-            vertex_ids = sorted(cubit.get_list_of_free_ref_entities("vertex"))
-            vertex_ids_text = " ".join(map(str, vertex_ids))
-            cubit_command_or_exit(f"create curve spline vertex {vertex_ids_text} delete")
         curve_ids = cubit.get_list_of_free_ref_entities("curve")
         curves = [cubit.curve(identity) for identity in curve_ids]
         # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
@@ -122,6 +119,21 @@ def _create_curve_from_coordinates(point1, point2):
     vertex1 = cubit.create_vertex(*tuple(point1))
     vertex2 = cubit.create_vertex(*tuple(point2))
     return cubit.create_curve(vertex1, vertex2)
+
+
+def _create_spline_from_coordinates(coordinates):
+    """Create a spline from a list of coordinates
+
+    :param numpy.array coordinates: [N, 3] array of coordinates (x, y, z)
+    """
+    points = []
+    for point in coordinates:
+        points.append(cubit.create_vertex(*tuple(point)))
+    vertex_ids = sorted(cubit.get_list_of_free_ref_entities("vertex"))
+    vertex_ids_text = " ".join(map(str, vertex_ids))
+    cubit_command_or_exit(f"create curve spline vertex {vertex_ids_text} delete")
+    # TODO: Return a curve object when ``curves.append(cubit.create_spline(points))`` works
+    return None
 
 
 def _rename_and_sweep(number, surface, part_name,
