@@ -25,7 +25,6 @@ def cubit_command_or_exception(command):
 
     :param str command: Cubit APREPRO command to execute
     """
-    print(command)
     success = cubit.cmd(command)
     if not success:
         raise RuntimeError(f"Command '{command}' returned an error. Please see the Cubit log for details.")
