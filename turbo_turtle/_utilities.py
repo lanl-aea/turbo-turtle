@@ -84,12 +84,13 @@ def find_cubit_bin(options, bin_directory=None):
 
     cubit_command = find_command(options)
     cubit_command = os.path.realpath(cubit_command)
+    import pdb; pdb.set_trace()
     cubit_bin = pathlib.Path(cubit_command).parent
     if bin_directory in cubit_bin.parts:
         while cubit_bin.name != bin_directory:
             cubit_bin = cubit_bin.parent
     else:
-        search = cubit_bin.glob(bin_directory)
+        search = cubit_bin.glob(f"**/{bin_directory}")
         cubit_bin = next((path for path in search if path.name == bin_directory), None)
     if cubit_bin is None:
         raise FileNotFoundError(message)
