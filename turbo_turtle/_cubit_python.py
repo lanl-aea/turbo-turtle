@@ -180,8 +180,8 @@ def _rename_and_sweep(surface, part_name,
     """
     center = numpy.array(center)
     center_string = " ".join(map(str, center))
-    vertical_axis = center + numpy.array([0., 1., 0.])
-    vertical_string = " ".join(map(str, vertical_axis))
+    revolution_axis = numpy.array([0., 1., 0.])
+    revolution_string = " ".join(map(str, revolution_axis))
     body_number = surface.id()
     surface_number = surface.surfaces()[0].id()
     part_name = part_name.replace("-", "_")
@@ -190,7 +190,7 @@ def _rename_and_sweep(surface, part_name,
     elif numpy.isclose(revolution_angle, 0.0):
         cubit_command_or_exit(f"body {body_number} rename '{part_name}'")
     else:
-        cubit_command_or_exit(f"sweep surface {surface_number} axis {center_string} {vertical_string} "
+        cubit_command_or_exit(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
                               f"angle {revolution_angle} merge")
         cubit_command_or_exit(f"volume {body_number} rename '{part_name}'")
 
