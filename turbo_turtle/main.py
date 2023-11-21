@@ -154,8 +154,8 @@ def get_parser():
 
     subparsers.add_parser(
         "partition",
-        help=parsers.partition_cli_help,
-        description=parsers.partition_cli_description,
+        help=append_cubit_help(parsers.partition_cli_help),
+        description=append_cubit_description(parsers.partition_cli_description),
         parents=[partition_parser]
     )
 
