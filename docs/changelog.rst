@@ -16,6 +16,11 @@ Bug fixes
 =========
 - Fix pass through of ``rtol`` and ``atol`` arguments in ``geometry`` subcommand (:merge:`60`). By `Kyle Brindley`_.
 
+Internal Changes
+================
+- Separate the sphere arc point calculation from the abaqus python specific sphere module (:issue:`62`, :merge:`63`).
+  By `Kyle Brindley`_.
+
 *******************
 v0.7.0 (2023-11-20)
 *******************
