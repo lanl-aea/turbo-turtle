@@ -139,10 +139,10 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
 sphere_default_input_file = None
 sphere_default_quadrant = "both"
 sphere_default_angle = 360.
-sphere_default_center = (0., 0.)
+sphere_default_center = [0., 0.]
 sphere_default_model_name = "Model-1"
 sphere_default_part_name = "Part-1"
-sphere_quadrant_options = ("both", "upper", "lower")
+sphere_quadrant_options = ["both", "upper", "lower"]
 sphere_cli_help = "Create a hollow, spherical geometry from a sketch in the X-Y plane"
 sphere_cli_description = "Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), " \
                          "lower (+X-Y), or both quadrants."
@@ -303,7 +303,7 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
 image_default_x_angle = 0.
 image_default_y_angle = 0.
 image_default_z_angle = 0.
-image_default_image_size = (1920, 1080)
+image_default_image_size = [1920, 1080]
 image_default_model_name = "Model-1"
 image_default_part_name = "Part-1"
 image_cli_help = "Save an image of an Abaqus model"
