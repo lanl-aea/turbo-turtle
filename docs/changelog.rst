@@ -23,6 +23,11 @@ Internal Changes
 - Separate the sphere arc point calculation from the abaqus python specific sphere module (:issue:`62`, :merge:`63`).
   By `Kyle Brindley`_.
 
+Enhancements
+============
+- Regularize revolved solids in Cubit to remove the sketch seam in 360 degree revolutions (:merge:`63`). By `Kyle
+  Brindley`_.
+
 *******************
 v0.7.0 (2023-11-20)
 *******************

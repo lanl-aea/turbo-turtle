@@ -193,6 +193,7 @@ def _rename_and_sweep(surface, part_name,
         cubit_command_or_exit(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
                               f"angle {revolution_angle} merge")
         cubit_command_or_exit(f"volume {body_number} rename '{part_name}'")
+        cubit_command_or_exit(f"regularize volume {body_number}")
 
 
 def cylinder(inner_radius, outer_radius, height, output_file,
