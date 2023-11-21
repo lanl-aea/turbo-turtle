@@ -96,14 +96,18 @@ def setup_geometry_commands(model, input_file, revolution_angle, cubit,
     return commands
 
 
-def setup_cylinder_commands(model, revolution_angle,
+def setup_cylinder_commands(model, revolution_angle, cubit,
                             turbo_turtle_command=turbo_turtle_command):
     model = pathlib.Path(model).with_suffix(".cae")
+    if cubit:
+        model = model.with_suffix(".cub")
     commands = [
         f"{turbo_turtle_command} cylinder --model-name {model.stem} --part-name {model.stem} " \
             f"--output-file {model} --revolution-angle {revolution_angle} " \
             f"--inner-radius 1 --outer-radius 2 --height 1"
     ]
+    if cubit:
+        commands = [f"{command} --cubit" for command in commands]
     return commands
 
 
@@ -182,9 +186,11 @@ for test in system_tests:
 
 # Cylinder tests
 system_tests = (
-    # model/part,   angle
-    ("cylinder_3d", 360.),
-    ("cylinder_2d",   0.)
+    # model/part,   angle, cubit
+    ("cylinder_3d", 360., False),
+    ("cylinder_2d",   0., False),
+    ("cylinder_3d", 360., True),
+    ("cylinder_2d",   0., True)
 )
 for test in system_tests:
     commands_list.append(setup_cylinder_commands(*test))
