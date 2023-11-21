@@ -107,7 +107,6 @@ def geometry(input_file, output_file,
     for number, (surface, new_part) in enumerate(zip(surfaces, part_name), 1):
         _rename_and_sweep(number, surface, new_part, planar=planar, revolution_angle=revolution_angle)
 
-
     cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
@@ -122,7 +121,8 @@ def _rename_and_sweep(number, surface, part_name,
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
     """
-    # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct
+    # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct. Replace
+    # ``number`` with ``body/volume`` object variable.
     if planar:
         cubit_command_or_exit(f"body {number} rename '{part_name}'")
     elif numpy.isclose(revolution_angle, 0.0):
