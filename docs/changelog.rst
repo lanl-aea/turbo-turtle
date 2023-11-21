@@ -8,6 +8,10 @@ Changelog
 v0.7.1 (unreleased)
 *******************
 
+New Features
+============
+- Draft implementation of ``cylinder`` subcommand with Cubit (:issue:`63`, :merge:`61`). By `Kyle Brindley`_.
+
 Bug fixes
 =========
 - Fix pass through of ``rtol`` and ``atol`` arguments in ``geometry`` subcommand (:merge:`60`). By `Kyle Brindley`_.
