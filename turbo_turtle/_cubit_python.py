@@ -190,3 +190,42 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     _rename_and_sweep(1, surface, part_name, revolution_angle=revolution_angle)
 
     cubit_command_or_exit(f"save as '{output_file}' overwrite")
+
+
+def sphere(inner_radius, outer_radius, output_file,
+           input_file=parsers.sphere_default_input_file,
+           quadrant=parsers.sphere_default_quadrant,
+           revolution_angle=parsers.sphere_default_angle,
+           center=parsers.sphere_default_center,
+           part_name=parsers.sphere_default_part_name):
+    """
+    :param float inner_radius: inner radius (size of hollow)
+    :param float outer_radius: outer radius (size of sphere)
+    :param str output_file: output file name. Will be stripped of the extension and ``.cae`` will be used.
+    :param str input_file: input file name. Will be stripped of the extension and ``.cae`` will be used.
+    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
+    :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
+    cubit.init(["cubit"])
+    output_file = pathlib.Path(output_file).with_suffix(".cub")
+    if input_file is not None:
+        input_file = os.path.splitext(input_file)[0] + ".cub"
+        # Avoid modifying the contents or timestamp on the input file.
+        # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
+        with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+            shutil.copyfile(input_file, copy_file.name)
+            _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle, center=center, part_name=part_name)
+            cubit_command_or_exit(f"save as '{output_file}' overwrite")
+
+    else:
+        _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle, center=center, part_name=part_name)
+        cubit_command_or_exit(f"save as '{output_file}' overwrite")
+
+def _sphere(inner_radius, outer_radius
+            quadrant=parsers.sphere_default_quadrant,
+            revolution_angle=parsers.sphere_default_angle,
+            center=parsers.sphere_default_center,
+            part_name=parsers.sphere_default_part_name):
+    pass
