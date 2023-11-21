@@ -84,7 +84,6 @@ def find_cubit_bin(options, bin_directory=None):
 
     cubit_command = find_command(options)
     cubit_command = os.path.realpath(cubit_command)
-    import pdb; pdb.set_trace()
     cubit_bin = pathlib.Path(cubit_command).parent
     if bin_directory in cubit_bin.parts:
         while cubit_bin.name != bin_directory:
