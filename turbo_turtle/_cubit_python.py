@@ -171,12 +171,15 @@ def _rename_and_sweep(number, surface, part_name,
                       revolution_angle=parsers.geometry_default_revolution_angle):
     """Recover body or volume by number, sweep part if required, and rename body/volume by part name
 
+    Hyphens are replaced by underscores to make the ACIS engine happy.
+
     :param int number: The body or volume number
     :param cubit.Surface surface: Cubit surface object to rename and conditionally sweep
     :param list part_name: name(s) of the part(s) being created
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
     """
+    part_name = part_name.replace("-", "_")
     # TODO: Find a better way to recover Body and Volume objects than assuming the enumerated order is correct. Replace
     # ``number`` with ``body/volume`` object variable.
     if planar:
