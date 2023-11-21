@@ -107,6 +107,10 @@ def geometry(input_file, output_file,
     cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
+def _draw_surface(lines, splines):
+    pass
+
+
 def _create_curve_from_coordinates(point1, point2):
     """Create a curve from 2 three-dimensional coordinates
 
@@ -129,7 +133,7 @@ def _create_spline_from_coordinates(coordinates):
     points = []
     for point in coordinates:
         points.append(cubit.create_vertex(*tuple(point)))
-    vertex_ids = sorted(cubit.get_list_of_free_ref_entities("vertex"))
+    vertex_ids = [point.id() for point in points]
     vertex_ids_text = " ".join(map(str, vertex_ids))
     cubit_command_or_exit(f"create curve spline vertex {vertex_ids_text} delete")
     # TODO: Return a curve object when ``curves.append(cubit.create_spline(points))`` works
