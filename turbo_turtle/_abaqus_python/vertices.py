@@ -1,7 +1,8 @@
 """Python 2/3 compatible coordinate handling for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
 import math
-import numpy
 import cmath
+
+import numpy
 
 
 def rectalinear_coordinates(radius_list, angle_list):
@@ -32,6 +33,36 @@ def cylinder(inner_radius, outer_radius, height):
         (inner_radius, 0.)
     )
     return numpy.array(coordinates)
+
+
+def sphere(center, inner_radius, outer_radius, quadrant):
+    """Return the inner and outer radii vertices defining a 2D sketh of a sphere for revolution
+
+    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param float inner_radius: inner radius (size of hollow)
+    :param float outer_radius: outer radius (size of sphere)
+    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
+
+    :returns: [4, 2] inner/outer radii in (x, y) coordinates defining inner/outer circular arc segments
+    :rtype: numpy.array
+    """
+    inner_radius = abs(inner_radius)
+    outer_radius = abs(outer_radius)
+
+    if quadrant == "both":
+        start_angle = -numpy.pi / 2.
+        end_angle = numpy.pi / 2.
+    elif quadrant == "upper":
+        start_angle = 0.
+        end_angle = numpy.pi / 2.
+    elif quadrant == "lower":
+        start_angle = -numpy.pi / 2.
+        end_angle = 0.
+
+    radius_list = (inner_radius, inner_radius, outer_radius, outer_radius)
+    angle_list = (end_angle, start_angle, end_angle, start_angle)
+    points = numpy.array(center) + numpy.array(rectalinear_coordinates(radius_list, angle_list))
+    return points
 
 
 def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):

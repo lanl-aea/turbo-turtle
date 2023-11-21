@@ -86,23 +86,8 @@ def sphere(inner_radius, outer_radius,
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     model = abaqus.mdb.models[model_name]
 
-    inner_radius = abs(inner_radius)
-    outer_radius = abs(outer_radius)
-
-    if quadrant == "both":
-        start_angle = -numpy.pi / 2.
-        end_angle = numpy.pi / 2.
-    elif quadrant == "upper":
-        start_angle = 0.
-        end_angle = numpy.pi / 2.
-    elif quadrant == "lower":
-        start_angle = -numpy.pi / 2.
-        end_angle = 0.
-
-    radius_list = (inner_radius, inner_radius, outer_radius, outer_radius)
-    angle_list = (end_angle, start_angle, end_angle, start_angle)
-    points = numpy.array(center) + numpy.array(vertices.rectalinear_coordinates(radius_list, angle_list))
-    inner_point1, inner_point2, outer_point1, outer_point2 = points
+    arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
+    inner_point1, inner_point2, outer_point1, outer_point2 = arc_points
 
     sketch = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
     sketch.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
