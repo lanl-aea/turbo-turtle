@@ -86,8 +86,10 @@ def geometry(input_file, output_file,
         coordinates = coordinates * unit_conversion
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
         curves = []
-        for point1, point2 in lines:
-            curves.append(_create_curve_from_coordinates(tuple(point1) + (0.,), tuple(point2) + (0.,))
+        for first, second in lines:
+            point1 = tuple(first) + (0.,)
+            point2 = tuple(second) + (0.,)
+            curves.append(_create_curve_from_coordinates(point1, point2))
         for spline in splines:
             points = []
             for point in spline:
@@ -109,9 +111,17 @@ def geometry(input_file, output_file,
 
 
 def _create_curve_from_coordinates(point1, point2):
+    """Create a curve from 2 three-dimensional coordinates
+
+    :param tuple point1: First set of coordinates (x1, y1, z1)
+    :param tuple point2: Second set of coordinates (x2, y2, z2)
+
+    :returns: Cubit curve object defining a line segment
+    :rtype: cubit.Curve
+    """
     vertex1 = cubit.create_vertex(*tuple(point1))
     vertex2 = cubit.create_vertex(*tuple(point2))
-    return cubit.create_curve(vertex1, vertex2))
+    return cubit.create_curve(vertex1, vertex2)
 
 
 def _rename_and_sweep(number, surface, part_name,
