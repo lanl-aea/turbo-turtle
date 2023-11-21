@@ -5,7 +5,9 @@ Which requires that Cubit's bin directory is found on PYTHONPATH, either directl
 perform ``sys.path`` manipulation, so the importing/calling module/script *must* verify that Cubit will import correctly
 first.
 """
+import shutil
 import pathlib
+import tempfile
 
 import numpy
 import cubit
@@ -147,6 +149,23 @@ def _create_spline_from_coordinates(coordinates):
     return None
 
 
+def _create_arc_from_coordinates(center, point1, point2):
+    center_vertex = cubit.create_vertex(*tuple(center))
+
+    # Cubit creates arcs with anticlockwise rotation. Order vertices with most negative Y axis coordinate first.
+    if point1[1] < point2[1]:
+        vertex1 = cubit.create_vertex(*tuple(point1))
+        vertex2 = cubit.create_vertex(*tuple(point2))
+    else:
+        vertex1 = cubit.create_vertex(*tuple(point2))
+        vertex2 = cubit.create_vertex(*tuple(point1))
+
+    cubit_command_or_exit(f"create curve arc center vertex {center_vertex.id()} {vertex1.id()} {vertex2.id()} normal 0 0 1")
+    cubit_command_or_exit(f"delete vertex {center_vertex.id()}")
+    # TODO: Return the curve object when a Cubit Python API method exists to create an arc from center and vertices
+    return None
+
+
 def _rename_and_sweep(number, surface, part_name,
                       planar=parsers.geometry_default_planar,
                       revolution_angle=parsers.geometry_default_revolution_angle):
@@ -211,21 +230,51 @@ def sphere(inner_radius, outer_radius, output_file,
     cubit.init(["cubit"])
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     if input_file is not None:
-        input_file = os.path.splitext(input_file)[0] + ".cub"
+        input_file = pathlib.Path(input_file).with_suffix(".cub")
         # Avoid modifying the contents or timestamp on the input file.
         # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
         with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
             shutil.copyfile(input_file, copy_file.name)
-            _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle, center=center, part_name=part_name)
+            # TODO: look for a Cubit Python interface proper open/close/save command(s)
+            cubit_command_or_exit(f"open '{copy_file.name}'")
+            _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
+                    part_name=part_name)
             cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
     else:
-        _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle, center=center, part_name=part_name)
+        _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
+                part_name=part_name)
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
-def _sphere(inner_radius, outer_radius
+def _sphere(inner_radius, outer_radius,
             quadrant=parsers.sphere_default_quadrant,
             revolution_angle=parsers.sphere_default_angle,
             center=parsers.sphere_default_center,
             part_name=parsers.sphere_default_part_name):
-    pass
+    """
+    :param float inner_radius: inner radius (size of hollow)
+    :param float outer_radius: outer radius (size of sphere)
+    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
+    :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
+    arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
+    zero_column = numpy.zeros([len(arc_points), 1])
+    arc_points_3d = numpy.append(arc_points, zero_column, axis=1)
+    inner_point1 = arc_points[0]
+    inner_point2 = arc_points[1]
+    outer_point1 = arc_points[2]
+    outer_point2 = arc_points[3]
+
+    _create_arc_from_coordinates(center, inner_point1, inner_point2)
+    _create_arc_from_coordinates(center, outer_point1, outer_point2)
+    _create_curve_from_coordinates(inner_point1, outer_point1)
+    _create_curve_from_coordinates(inner_point2, outer_point2)
+    # TODO: VVV Replace free curve recovery when an arc by center and two points is available in Cubit Python API
+    curve_ids = cubit.get_list_of_free_ref_entities("curve")
+    curves = [cubit.curve(identity) for identity in curve_ids]
+    # TODO: ^^^ Replace free curve recovery when an arc by center and two points is available in Cubit Python API
+    surface = cubit.create_surface(curves)
+
+    _rename_and_sweep(surface.volumes()[0].id(), surface, part_name, revolution_angle=revolution_angle)

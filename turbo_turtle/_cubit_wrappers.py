@@ -43,16 +43,23 @@ def cylinder(args, command):
 
 
 def sphere(args, command):
-    """Python 3 wrapper around Cubit
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.sphere`
 
-    .. warning::
-
-       Not yet implemented. Will return a non-zero exit code.
+    Unpack the argument namespace into the full function interface
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit("Not yet implemented")
+    sys.exit(_cubit_python.sphere(
+        args.inner_radius,
+        args.outer_radius,
+        args.output_file,
+        input_file=args.input_file,
+        quadrant=args.quadrant,
+        revolution_angle=args.revolution_angle,
+        center=args.center,
+        part_name=args.part_name
+    ))
 
 
 def partition(args, command):
