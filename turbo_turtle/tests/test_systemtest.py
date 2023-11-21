@@ -47,14 +47,16 @@ def character_delimited_list(non_string_list, character=" "):
     return character.join(map(str, non_string_list))
 
 
-def setup_sphere_commands(model, angle, center, quadrant, element_type, element_replacement,
+def setup_sphere_commands(model, angle, center, quadrant, element_type, element_replacement, cubit,
                           turbo_turtle_command=turbo_turtle_command):
     """Return the sphere/partition/mesh commands for system testing
 
     :returns: list of string commands
     :rtype: list
     """
-    model = pathlib.Path(model)
+    model = pathlib.Path(model).with_suffix(".cae")
+    if cubit:
+        model = model.with_suffix(".cub")
     image = model.with_suffix(".png")
     assembly = model.stem + "_assembly.inp"
     center=character_delimited_list(center)
@@ -77,6 +79,11 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
             f"--element-type {element_replacement} --destination . " \
             f"--assembly {assembly}",
     ]
+    # TODO: Update as Cubit support is added for partition/mesh/image/export
+    if cubit:
+        commands = [commands[0]]
+    if cubit:
+        commands = [f"{command} --cubit" for command in commands]
     return commands
 
 
@@ -112,7 +119,7 @@ def setup_cylinder_commands(model, revolution_angle, cubit,
 
 
 def setup_merge_commands(part_name, turbo_turtle_command=turbo_turtle_command):
-    sphere_options = ("merge-sphere.cae", 360., (0., 0.), "both", "C3D8", "C3D8R")
+    sphere_options = ("merge-sphere.cae", 360., (0., 0.), "both", "C3D8", "C3D8R", False)
     commands = []
     commands.append(setup_sphere_commands(*sphere_options)[0])
     geometry_options = ("merge-multi-part",
@@ -148,13 +155,22 @@ commands_list.append([
 
 # Sphere/partition/mesh
 system_tests = (
-    # model/part,         angle,   center, quadrant, element_type, element_replacement
-    ("sphere.cae",         360., (0., 0.),  "both",  "C3D8",       "C3D8R"),
-    ("axisymmetric.cae",     0., (0., 0.),  "both",  "CAX4",       "CAX4R"),
-    ("quarter-sphere.cae",  90., (0., 0.),  "both",  "C3D8",       "C3D8R"),
-    ("offset-sphere.cae",  360., (1., 1.),  "both",  "C3D8",       "C3D8R"),
-    ("eigth-sphere.cae",    90., (0., 0.), "upper",  "C3D8",       "C3D8R"),
-    ("half-sphere.cae",    360., (0., 0.), "upper",  "C3D8",       "C3D8R")
+    # model/part,         angle,   center, quadrant, element_type, element_replacement, cubit
+    # Abaqus CAE
+    ("sphere.cae",         360., (0., 0.),  "both",  "C3D8",       "C3D8R", False),
+    ("axisymmetric.cae",     0., (0., 0.),  "both",  "CAX4",       "CAX4R", False),
+    ("quarter-sphere.cae",  90., (0., 0.),  "both",  "C3D8",       "C3D8R", False),
+    ("offset-sphere.cae",  360., (1., 1.),  "both",  "C3D8",       "C3D8R", False),
+    ("eigth-sphere.cae",    90., (0., 0.), "upper",  "C3D8",       "C3D8R", False),
+    ("half-sphere.cae",    360., (0., 0.), "upper",  "C3D8",       "C3D8R", False),
+    # Cubit
+    # TODO: Add element type and replacement when the mesh/export subcommands support Cubit
+    ("sphere.cae",         360., (0., 0.),  "both",    None,          None, True),
+    ("axisymmetric.cae",     0., (0., 0.),  "both",    None,          None, True),
+    ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,          None, True),
+    ("offset-sphere.cae",  360., (1., 1.),  "both",    None,          None, True),
+    ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,          None, True),
+    ("half-sphere.cae",    360., (0., 0.), "upper",    None,          None, True)
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
