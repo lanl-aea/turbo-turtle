@@ -288,3 +288,12 @@ def _sphere(inner_radius, outer_radius,
     surface = cubit.create_surface(curves)
 
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
+
+
+def partition(input_file):
+              output_file=parsers.partition_default_output_file,
+              center=parsers.partition_default_center,
+              xvector=parsers.partition_default_xvector,
+              zvector=parsers.partition_default_zvector,
+              part_name=parsers.partition_default_part_name):
+    pass
