@@ -166,6 +166,7 @@ def _create_arc_from_coordinates(center, point1, point2):
 
 
 def _rename_and_sweep(surface, part_name,
+                      center=numpy.array([0., 0., 0.]),
                       planar=parsers.geometry_default_planar,
                       revolution_angle=parsers.geometry_default_revolution_angle):
     """Recover body or volume from body surface, sweep part if required, and rename body/volume by part name
@@ -177,6 +178,10 @@ def _rename_and_sweep(surface, part_name,
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
     """
+    center = numpy.array(center)
+    center_string = " ".join(map(str, center))
+    vertical_axis = center + numpy.array([0., 1., 0.])
+    vertical_string = " ".join(map(str, vertical_axis))
     body_number = surface.id()
     surface_number = surface.surfaces()[0].id()
     part_name = part_name.replace("-", "_")
@@ -185,7 +190,8 @@ def _rename_and_sweep(surface, part_name,
     elif numpy.isclose(revolution_angle, 0.0):
         cubit_command_or_exit(f"body {body_number} rename '{part_name}'")
     else:
-        cubit_command_or_exit(f"sweep surface {surface_number} yaxis angle {revolution_angle} merge")
+        cubit_command_or_exit(f"sweep surface {surface_number} axis {center_string} {vertical_string} "
+                              f"angle {revolution_angle} merge")
         cubit_command_or_exit(f"volume {body_number} rename '{part_name}'")
 
 
@@ -269,8 +275,9 @@ def _sphere(inner_radius, outer_radius,
     outer_point1 = arc_points[2]
     outer_point2 = arc_points[3]
 
-    _create_arc_from_coordinates(center, inner_point1, inner_point2)
-    _create_arc_from_coordinates(center, outer_point1, outer_point2)
+    center_3d = center + (0.,)
+    _create_arc_from_coordinates(center_3d, inner_point1, inner_point2)
+    _create_arc_from_coordinates(center_3d, outer_point1, outer_point2)
     _create_curve_from_coordinates(inner_point1, outer_point1)
     _create_curve_from_coordinates(inner_point2, outer_point2)
     # TODO: VVV Replace free curve recovery when an arc by center and two points is available in Cubit Python API
@@ -279,4 +286,4 @@ def _sphere(inner_radius, outer_radius,
     # TODO: ^^^ Replace free curve recovery when an arc by center and two points is available in Cubit Python API
     surface = cubit.create_surface(curves)
 
-    _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle)
+    _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
