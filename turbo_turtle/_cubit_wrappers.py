@@ -76,7 +76,8 @@ def partition(args, command):
          center=args.center,
          xvector=args.xvector,
          zvector=args.zvector,
-         part_name=args.part_name
+         part_name=args.part_name,
+         big_number=args.big_number
     ))
 
 

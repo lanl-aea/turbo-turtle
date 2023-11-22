@@ -308,7 +308,8 @@ def partition(input_file,
               center=parsers.partition_default_center,
               xvector=parsers.partition_default_xvector,
               zvector=parsers.partition_default_zvector,
-              part_name=parsers.partition_default_part_name):
+              part_name=parsers.partition_default_part_name,
+              big_number=parsers.partition_default_big_number):
 
     if output_file is None:
         output_file = input_file
@@ -317,7 +318,7 @@ def partition(input_file,
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exit(f"open '{copy_file.name}'")
-        _partition(center, xvector, zvector, part_name)
+        _partition(center, xvector, zvector, part_name, big_number)
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
@@ -347,4 +348,7 @@ def _partition(center=parsers.partition_default_center,
         numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),
         numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),
     ]
-    surface = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+    surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+    surface_numbers = [surface.surfaces()[0].id() for surface in surfaces]
+    surface_string = " ".join(map(str, surface_numbers))
+    cubit_command_or_exit(f"webcut volume all with sheet extended from surface {surface_string}")
