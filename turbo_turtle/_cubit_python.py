@@ -328,4 +328,23 @@ def _partition(center=parsers.partition_default_center,
                big_number=parsers.partition_default_big_number):
     fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
     fortyfive_vertices = [center + vector * big_number for vector in fortyfive_vectors]
-    surface = _create_surface_from_coordinates([center, fortyfive_vertices[0], fortyfive_vertices[1]])
+    # TODO: Return these from a function more closely coupled to ``vertices.fortyfive_vectors``
+    surface_coordinates = [
+        # +Y surfaces
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),
+        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),
+        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),
+        # -Y surfaces
+        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),
+        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),
+        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),
+        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),
+        # +X surfaces
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),
+        # -X surfaces
+        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),
+        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),
+    ]
+    surface = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
