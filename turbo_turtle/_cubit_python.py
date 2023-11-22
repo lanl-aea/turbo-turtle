@@ -111,7 +111,7 @@ def _draw_surface(lines, splines):
     for spline in splines:
         zero_column = numpy.zeros([len(spline), 1])
         spline_3d = numpy.append(spline, zero_column, axis=1)
-        _create_spline_from_coordinates(spline_3d)
+        curves.append(_create_spline_from_coordinates(spline_3d))
     # TODO: VVV Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
     curve_ids = cubit.get_list_of_free_ref_entities("curve")
     curves = [cubit.curve(identity) for identity in curve_ids]
@@ -163,6 +163,18 @@ def _create_arc_from_coordinates(center, point1, point2):
     cubit_command_or_exit(f"delete vertex {center_vertex.id()}")
     # TODO: Return the curve object when a Cubit Python API method exists to create an arc from center and vertices
     return None
+
+
+def _create_surface_from_coordinates(coordinates):
+    coordinates = numpy.array(coordinates)
+    if coordinates.shape[0] < 3:
+        raise RuntimeError("Requires at least 3 coordinates to create a surface")
+    curves = []
+    last = numpy.array([coordinates[-1]])
+    coordinates_shift = numpy.append(last, coordinates[0:-1], axis=0)
+    for point1, point2 in zip(coordinates, coordinates_shift):
+        curves.append(_create_curve_from_coordinates(point1, point2))
+    return cubit.create_surface(curves)
 
 
 def _rename_and_sweep(surface, part_name,
@@ -277,10 +289,11 @@ def _sphere(inner_radius, outer_radius,
     outer_point2 = arc_points[3]
 
     center_3d = numpy.append(center, [0.])
-    _create_arc_from_coordinates(center_3d, inner_point1, inner_point2)
-    _create_arc_from_coordinates(center_3d, outer_point1, outer_point2)
-    _create_curve_from_coordinates(inner_point1, outer_point1)
-    _create_curve_from_coordinates(inner_point2, outer_point2)
+    curves = []
+    curves.append(_create_arc_from_coordinates(center_3d, inner_point1, inner_point2))
+    curves.append(_create_arc_from_coordinates(center_3d, outer_point1, outer_point2))
+    curves.append(_create_curve_from_coordinates(inner_point1, outer_point1))
+    curves.append(_create_curve_from_coordinates(inner_point2, outer_point2))
     # TODO: VVV Replace free curve recovery when an arc by center and two points is available in Cubit Python API
     curve_ids = cubit.get_list_of_free_ref_entities("curve")
     curves = [cubit.curve(identity) for identity in curve_ids]
@@ -290,7 +303,7 @@ def _sphere(inner_radius, outer_radius,
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
 
 
-def partition(input_file):
+def partition(input_file,
               output_file=parsers.partition_default_output_file,
               center=parsers.partition_default_center,
               xvector=parsers.partition_default_xvector,
@@ -311,5 +324,8 @@ def partition(input_file):
 def _partition(center=parsers.partition_default_center,
                xvector=parsers.partition_default_xvector,
                zvector=parsers.partition_default_zvector,
-               part_name=parsers.partition_default_part_name):
-    pass
+               part_name=parsers.partition_default_part_name,
+               big_number=parsers.partition_default_big_number):
+    fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
+    fortyfive_vertices = [center + vector * big_number for vector in fortyfive_vectors]
+    surface = _create_surface_from_coordinates([center, fortyfive_vertices[0], fortyfive_vertices[1]])

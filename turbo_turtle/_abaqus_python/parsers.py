@@ -183,6 +183,7 @@ partition_default_xvector = [1.0, 0.0, 0.0]
 partition_default_zvector = [0.0, 0.0, 1.0]
 partition_default_model_name = "Model-1"
 partition_default_part_name = "Part-1"
+partition_default_big_number = 1e6
 partition_cli_help = "Partition a spherical shape into a turtle shell"
 partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating, " \
                             "clocking, and partition plane angle parameters."

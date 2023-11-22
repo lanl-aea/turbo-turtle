@@ -70,8 +70,8 @@ def partition(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.sphere(
-         input_file,
+    sys.exit(_cubit_python.partition(
+         args.input_file,
          output_file=args.output_file,
          center=args.center,
          xvector=args.xvector,
