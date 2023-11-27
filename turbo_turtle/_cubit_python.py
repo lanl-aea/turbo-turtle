@@ -459,4 +459,5 @@ def mesh(input_file, element_type,
 
 
 def _mesh(element_type, part_name, global_seed):
-    pass
+    parts = _get_volumes_from_name(part_name)
+
