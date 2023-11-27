@@ -490,7 +490,8 @@ def _mesh(element_type, part_name, global_seed):
             surfaces = [surface.id() for surface in surface_objects]
             surface_string = " ".join(map(str, surfaces))
             cubit_command_or_exit(f"surface {surface_string} size {global_seed}")
-            cubit_command_or_exit(f"mesh surface {surface_string}")
+            for surface in surface_objects:
+                surface.mesh()
         else:
             cubit_command_or_exit(f"volume {part_id} size {global_seed}")
-            cubit_command_or_exit(f"mesh volume {part_id}")
+            part.mesh()
