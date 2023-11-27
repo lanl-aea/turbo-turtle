@@ -208,8 +208,6 @@ def _create_volume_from_surfaces(surfaces, keep=True):
     cubit_command_or_exit(command)
     volumes_after = cubit.get_entities("volume")
     volume_id = list(set(volumes_after) - set(volumes_before))
-    if len(volume_id) != 1:
-        raise("Unexpected error when recovering volume object")
     volume_id = volume_id[0]
     return cubit.volume(volume_id)
 
