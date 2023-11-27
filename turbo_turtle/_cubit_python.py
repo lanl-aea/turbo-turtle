@@ -271,7 +271,7 @@ def _get_volumes_from_name_or_exit(*args, **kwargs):
     Wrapper of :meth:`turbo_turtle._cubit_python._get_volumes_from_name` with
     :meth:`turbo_turtle._abaqus_python._mixed_utilities._print_exception_message`.
     """
-    return get_volumes_from_name(*args, **kwargs)
+    return _get_volumes_from_name(*args, **kwargs)
 
 
 def cylinder(inner_radius, outer_radius, height, output_file,
@@ -467,11 +467,11 @@ def mesh(input_file, element_type,
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exit(f"open '{copy_file.name}'")
-        _mesh(element_type, part_name, global_seed):
+        _mesh(element_type, part_name, global_seed)
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
 def _mesh(element_type, part_name, global_seed):
     parts = _get_volumes_from_name_or_exit(part_name)
-    cubit_command_or_exit(f"volume with '{part_name}*' size {global_seed}")
-    cubit_command_or_exit(f"mesh volume with '{part_name}*'")
+    cubit_command_or_exit(f"volume with name '{part_name}*' size {global_seed}")
+    cubit_command_or_exit(f"mesh volume with name '{part_name}*'")
