@@ -222,7 +222,7 @@ def _rename_and_sweep(surface, part_name,
     revolution_axis = numpy.array([0., 1., 0.])
     revolution_string = " ".join(map(str, revolution_axis))
     body_number = surface.id()
-    surface_number = _surface_numbers(surface)[0]
+    surface_number = _surface_numbers([surface])[0]
     part_name = part_name.replace("-", "_")
     if planar:
         cubit_command_or_exit(f"body {body_number} rename '{part_name}'")
@@ -355,6 +355,8 @@ def _partition(center=parsers.partition_default_center,
                part_name=parsers.partition_default_part_name,
                big_number=parsers.partition_default_big_number):
 
+    center = numpy.array(center)
+
     # Create 6 4-sided pyramidal bodies defining the partitioning intersections
     fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
     fortyfive_vertices = [center + vector * big_number for vector in fortyfive_vectors]
@@ -409,9 +411,9 @@ def _partition(center=parsers.partition_default_center,
     # Create local coordinate system primary planes and webcut
     yvector = numpy.cross(zvector, xvector)
     surface_coordinates = [
-        numpy.array([center, xvector, yvector]),
-        numpy.array([center, yvector, zvector]),
-        numpy.array([center, zvector, xvector]),
+        numpy.array([center, center + xvector, center + yvector]),
+        numpy.array([center, center + yvector, center + zvector]),
+        numpy.array([center, center + zvector, center + xvector]),
     ]
     surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
     surface_numbers = _surface_numbers(surfaces)
