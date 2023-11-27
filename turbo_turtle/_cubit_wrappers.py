@@ -82,16 +82,20 @@ def partition(args, command):
 
 
 def mesh(args, command):
-    """Python 3 wrapper around Cubit
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.mesh`
 
-    .. warning::
-
-       Not yet implemented. Will return a non-zero exit code.
+    Unpack the argument namespace into the full function interface
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit("Not yet implemented")
+    sys.exit(_cubit_python.mesh(
+         args.input_file,
+         args.element_type,
+         output_file=args.output_file,
+         part_name=args.part_name,
+         global_seed=args.global_seed
+    ))
 
 
 def merge(args, command):

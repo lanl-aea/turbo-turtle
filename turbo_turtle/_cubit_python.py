@@ -437,3 +437,26 @@ def _partition(center=parsers.partition_default_center,
     part_string = " ".join(map(str, part_ids))
     cubit_command_or_exit(f"imprint volume {part_string}")
     cubit_command_or_exit(f"merge volume {part_string}")
+
+
+def mesh(input_file, element_type,
+         output_file=parsers.mesh_default_output_file,
+         part_name=parsers.mesh_default_part_name,
+         global_seed=parsers.mesh_default_global_seed):
+
+    cubit.init(["cubit"])
+    part_name = _mixed_utilities.cubit_part_names(part_name)
+
+    if output_file is None:
+        output_file = input_file
+    input_file = pathlib.Path(input_file).with_suffix(".cub")
+    output_file = pathlib.Path(output_file).with_suffix(".cub")
+    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+        shutil.copyfile(input_file, copy_file.name)
+        cubit_command_or_exit(f"open '{copy_file.name}'")
+        _mesh(element_type, part_name, global_seed):
+        cubit_command_or_exit(f"save as '{output_file}' overwrite")
+
+
+def _mesh(element_type, part_name, global_seed):
+    pass
