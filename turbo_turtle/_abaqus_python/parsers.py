@@ -291,7 +291,7 @@ def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_descript
                                "ACIS compatibility. "
     part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
 
-    element_type_help = ""
+    element_type_help_cubit = ""
     if cubit:
         element_type_help_cubit = ". Applied as a Cubit meshing scheme if it matches 'tetmesh' or 'trimesh'. " \
                                   "Otherwise ignored by Cubit implementation."
