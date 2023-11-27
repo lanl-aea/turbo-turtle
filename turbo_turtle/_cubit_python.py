@@ -250,6 +250,17 @@ def _rename_and_sweep(surface, part_name,
     return return_object
 
 
+def _get_volumes_from_name(name):
+    """Return all volume objects with the prefix ``name``
+
+    :param str name: Name prefix to search for with ``cubit.get_all_ids_from_name``
+
+    :returns: list of cubit volumes with name prefix
+    :rtype: list of cubit.Volume objects
+    """
+    return [cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", name)]
+
+
 def cylinder(inner_radius, outer_radius, height, output_file,
              part_name=parsers.cylinder_default_part_name,
              revolution_angle=parsers.geometry_default_revolution_angle):
@@ -374,7 +385,7 @@ def _partition(center=parsers.partition_default_center,
     center = numpy.array(center)
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
-    parts = [cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", part_name)]
+    parts = _get_volumes_from_name(part_name)
 
     # Create 6 4-sided pyramidal bodies defining the partitioning intersections
     surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, big_number)
@@ -421,5 +432,8 @@ def _partition(center=parsers.partition_default_center,
     cubit_command_or_exit(f"delete surface {surface_string}")
 
     # Imprint and merge
-    cubit_command_or_exit("imprint volume all")
-    cubit_command_or_exit("merge volume all")
+    parts = _get_volumes_from_name(part_name)
+    part_ids = [part.id() for part in parts]
+    part_string = " ".join(map(str, part_ids))
+    cubit_command_or_exit(f"imprint volume {part_string}")
+    cubit_command_or_exit(f"merge volume {part_string}")
