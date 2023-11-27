@@ -78,7 +78,8 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
 
     part_name_help_cubit = ""
     if cubit:
-        part_name_help_cubit = "or Cubit volume name(s) "
+        part_name_help_cubit = "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " \
+                               "ACIS compatibility. "
     part_name_help = f"Abaqus part name(s) {part_name_help_cubit}(default: %(default)s)"
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
@@ -124,7 +125,8 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
 
     part_name_help_cubit = ""
     if cubit:
-        part_name_help_cubit = "or Cubit volume name "
+        part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
+                               "ACIS compatibility. "
     part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
@@ -162,7 +164,8 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
 
     part_name_help_cubit = ""
     if cubit:
-        part_name_help_cubit = "or Cubit volume name "
+        part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
+                               "ACIS compatibility. "
     part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
@@ -208,7 +211,8 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
 
     part_name_help_cubit = ""
     if cubit:
-        part_name_help_cubit = "or Cubit volume name "
+        part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
+                               "ACIS compatibility. "
     part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
@@ -233,7 +237,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     if cubit:
         parser.add_argument('--big-number', type=float, default=partition_default_big_number,
                             help="Number larger than the outer radius of the part to partition. Presently only used by " \
-                                 "Cubit (default: %(default)s)")
+                                 "Cubit implementation (default: %(default)s)")
 
     return parser
 
