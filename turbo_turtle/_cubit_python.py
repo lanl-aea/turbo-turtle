@@ -178,11 +178,26 @@ def _create_surface_from_coordinates(coordinates):
 
 
 def _surface_numbers(surfaces):
+    """Return a list of surface IDs from the provided list of surface objects
+
+    :param list surfaces: list of Cubit surface objects
+
+    :returns: list of surface IDs
+    :rtype: list of int
+    """
     return [surface.surfaces()[0].id() for surface in surfaces]
 
 
 def _create_volume_from_surfaces(surfaces):
-    pass
+    """Create a volume from the provided surfaces. Surfaces must create a closed volume.
+
+    :param list surfaces: list of Cubit surface objects
+    """
+    surface_numbers = _surface_numbers(surfaces)
+    surface_string = " ".join(map(str, surface_numbers))
+    cubit_command_or_exit(f"create volume surface {surface_string} heal")
+    # TODO: Return a volume object when creation is possible with Cubit Python API
+    return None
 
 
 def _rename_and_sweep(surface, part_name,
@@ -366,6 +381,3 @@ def _partition(center=parsers.partition_default_center,
         numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),
     ]
     surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
-    surface_numbers = _surface_numbers(surfaces)
-    surface_string = " ".join(map(str, surface_numbers))
-    cubit_command_or_exit(f"webcut volume all with sheet extended from surface {surface_string}")
