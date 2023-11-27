@@ -459,5 +459,5 @@ def mesh(input_file, element_type,
 
 
 def _mesh(element_type, part_name, global_seed):
-    parts = _get_volumes_from_name(part_name)
-
+    cubit_command_or_exit(f"volume with '{part_name}*' size {global_seed}")
+    cubit_command_or_exit(f"mesh volume with '{part_name}*'")
