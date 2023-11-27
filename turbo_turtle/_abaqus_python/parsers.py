@@ -130,7 +130,7 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -179,7 +179,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -236,7 +236,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -274,7 +274,7 @@ mesh_cli_help = "Mesh an Abaqus part from a global seed"
 mesh_cli_description = "Mesh an Abaqus part from a global seed"
 
 
-def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_description):
+def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_description, cubit=False):
     """Return the mesh subcommand parser
 
     :param str basename: Explicit script basename for the usage.
@@ -284,6 +284,12 @@ def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_descript
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
+
+    part_name_help_cubit = ""
+    if cubit:
+        part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
+                               "ACIS compatibility. "
+    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -296,7 +302,7 @@ def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_descript
     parser.add_argument("--model-name", type=str, default=mesh_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument("--part-name", type=str, default=mesh_default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
+                        help=part_name_help)
     parser.add_argument("--global-seed", type=positive_float, default=mesh_default_global_seed,
                         help="The global mesh seed size. Positive float.")
 
