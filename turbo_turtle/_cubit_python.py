@@ -188,14 +188,18 @@ def _surface_numbers(surfaces):
     return [surface.surfaces()[0].id() for surface in surfaces]
 
 
-def _create_volume_from_surfaces(surfaces):
+def _create_volume_from_surfaces(surfaces, keep=True):
     """Create a volume from the provided surfaces. Surfaces must create a closed volume.
 
-    :param list surfaces: list of Cubit surface objects
+    :param list surfaces: List of Cubit surface objects
+    :param bool keep: Keep the original surface objects/sheet bodies
     """
     surface_numbers = _surface_numbers(surfaces)
     surface_string = " ".join(map(str, surface_numbers))
-    cubit_command_or_exit(f"create volume surface {surface_string} heal")
+    command = f"create volume surface {surface_string} heal"
+    if keep:
+        command = f"{command} keep"
+    cubit_command_or_exit(command)
     # TODO: Return a volume object when creation is possible with Cubit Python API
     return None
 
@@ -350,34 +354,72 @@ def _partition(center=parsers.partition_default_center,
                zvector=parsers.partition_default_zvector,
                part_name=parsers.partition_default_part_name,
                big_number=parsers.partition_default_big_number):
+
+    # Create 6 4-sided pyramidal bodies defining the partitioning intersections
     fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
     fortyfive_vertices = [center + vector * big_number for vector in fortyfive_vectors]
     # TODO: Return these from a function more closely coupled to ``vertices.fortyfive_vectors``
     surface_coordinates = [
         # +Y surfaces
-        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),
-        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),
-        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),
-        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),  #  0:    +Y +Z
+        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),  #  1: -X +Y
+        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),  #  2:    +Y -Z
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),  #  3: +X +Y
         # -Y surfaces
-        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),
-        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),
-        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),
-        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),
+        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),  #  4:    -Y +Z
+        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),  #  5: -X -Y
+        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),  #  6:    -Y -Z
+        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),  #  7: +X -Y
         # +X surfaces
-        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),
-        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),  #  8: +X    +Z
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),  #  9: +X    -Z
         # -X surfaces
-        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),
-        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),
+        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),  # 10: -X    +Z
+        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),  # 11: -X    -Z
         # +/- normal to Y
-        numpy.array(fortyfive_vertices[0:4]),
-        numpy.array(fortyfive_vertices[4:]),
+        numpy.array(fortyfive_vertices[0:4]),  # 12: +Y
+        numpy.array(fortyfive_vertices[4:]),   # 13: -Y
         # +/- normal to X
-        numpy.array([fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]),
-        numpy.array([fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]),
+        numpy.array([fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]),  # 14: +X
+        numpy.array([fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]),  # 15: -X
         # +/- normal to Z
-        numpy.array([fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]),
-        numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),
+        numpy.array([fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]),  # 16: +Z
+        numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),  # 17: -Z
     ]
     surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+
+    volume_surfaces = [
+        surfaces[0:4] + [surfaces[12]],  # +Y
+        surfaces[4:8] + [surfaces[13]],  # -Y
+        [surfaces[3], surfaces[7], surfaces[8], surfaces[9], surfaces[14]],   # +X
+        [surfaces[1], surfaces[5], surfaces[10], surfaces[11], surfaces[15]], # -X
+        [surfaces[0], surfaces[4], surfaces[8], surfaces[10], surfaces[16]],  # +Z
+        [surfaces[2], surfaces[6], surfaces[9], surfaces[11], surfaces[17]],  # -Z
+    ]
+    volumes = [_create_volume_from_surfaces(surface_list) for surface_list in volume_surfaces]
+
+    # Remove pyramidal construction surfaces
+    surface_numbers = _surface_numbers(surfaces)
+    surface_string = " ".join(map(str, surface_numbers))
+    cubit_command_or_exit(f"delete surface {surface_string}")
+
+    # Create intersections/partitions
+    cubit_command_or_exit("intersect volume all")
+
+    # Create local coordinate system primary planes and webcut
+    yvector = numpy.cross(zvector, xvector)
+    surface_coordinates = [
+        numpy.array([center, xvector, yvector]),
+        numpy.array([center, yvector, zvector]),
+        numpy.array([center, zvector, xvector]),
+    ]
+    surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+    surface_numbers = _surface_numbers(surfaces)
+    for number in surface_numbers:
+        cubit_command_or_exit(f"webcut volume all with plane from surface {number}")
+    surface_string = " ".join(map(str, surface_numbers))
+    cubit_command_or_exit(f"delete surface {surface_string}")
+
+    # Imprint and merge
+    cubit_command_or_exit("imprint volume all")
+    cubit_command_or_exit("merge volume all")
