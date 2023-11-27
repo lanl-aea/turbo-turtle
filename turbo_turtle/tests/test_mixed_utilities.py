@@ -272,3 +272,24 @@ def test_substitute_element_type():
          patch("turbo_turtle._abaqus_python._mixed_utilities._element_type_regex", return_value="new_content"):
         _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
         assert open_mock.call_count == 2
+
+
+cubit_part_names = {
+    "string": (
+        "Part-1", "Part_1"
+    ),
+    "list 1": (
+        ["Part-1"], ["Part_1"]
+    ),
+    "list 2": (
+        ["Part-1", "Part-2"], ["Part_1", "Part_2"]
+    ),
+}
+
+
+@pytest.mark.parametrize("part_name, expected",
+                         cubit_part_names.values(),
+                         ids=cubit_part_names.keys())
+def test_cubit_part_names(part_name, expected):
+    result = _mixed_utilities.cubit_part_names(part_name)
+    assert result == expected
