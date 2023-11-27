@@ -112,10 +112,6 @@ def _draw_surface(lines, splines):
         zero_column = numpy.zeros([len(spline), 1])
         spline_3d = numpy.append(spline, zero_column, axis=1)
         curves.append(_create_spline_from_coordinates(spline_3d))
-    # TODO: VVV Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
-    curve_ids = cubit.get_list_of_free_ref_entities("curve")
-    curves = [cubit.curve(identity) for identity in curve_ids]
-    # TODO: ^^^ Replace free curve recovery ``curves.append(cubit.create_spline(points))`` works
     return cubit.create_surface(curves)
 
 
@@ -144,8 +140,8 @@ def _create_spline_from_coordinates(coordinates):
     vertex_ids = [point.id() for point in points]
     vertex_ids_text = " ".join(map(str, vertex_ids))
     cubit_command_or_exit(f"create curve spline vertex {vertex_ids_text} delete")
-    # TODO: Return a curve object when ``curves.append(cubit.create_spline(points))`` works
-    return None
+    curve = points[0].curves()[0]
+    return curve
 
 
 def _create_arc_from_coordinates(center, point1, point2):
