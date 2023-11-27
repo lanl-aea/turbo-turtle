@@ -111,10 +111,10 @@ def get_parser():
                      "system default web browser",
         parents=[docs_parser])
 
-    geometry_parser = parsers.geometry_parser(add_help=False)
-    cylinder_parser = parsers.cylinder_parser(add_help=False)
-    sphere_parser = parsers.sphere_parser(add_help=False)
-    partition_parser = parsers.partition_parser(add_help=False)
+    geometry_parser = parsers.geometry_parser(add_help=False, cubit=True)
+    cylinder_parser = parsers.cylinder_parser(add_help=False, cubit=True)
+    sphere_parser = parsers.sphere_parser(add_help=False, cubit=True)
+    partition_parser = parsers.partition_parser(add_help=False, cubit=True)
     mesh_parser = parsers.mesh_parser(add_help=False)
     image_parser = parsers.image_parser(add_help=False)
     merge_parser = parsers.merge_parser(add_help=False)

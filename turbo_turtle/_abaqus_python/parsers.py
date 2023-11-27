@@ -74,7 +74,12 @@ geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of r
                            "sketching lines and splines in the XY plane. Line and spline definitions are formed by " \
                            "parsing an input file with [N, 2] array of XY coordinates."
 
-def geometry_parser(basename="geometry.py", add_help=True, description=geometry_cli_description):
+def geometry_parser(basename="geometry.py", add_help=True, description=geometry_cli_description, cubit=False):
+
+    part_name_help_cubit = ""
+    if cubit:
+        part_name_help_cubit = "or Cubit volume name(s) "
+    part_name_help = f"Abaqus part name(s) {part_name_help_cubit}(default: %(default)s)"
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -91,7 +96,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     parser.add_argument("--model-name", type=str, default=geometry_default_model_name,
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, nargs="+", default=geometry_default_part_name,
-                        help="Abaqus part name(s) (default: %(default)s)")
+                        help=part_name_help)
     parser.add_argument("--output-file", type=str, required=True,
                         help="Name of the output Abaqus CAE file to save (default: %(default)s)")
     parser.add_argument("--delimiter", type=str, default=geometry_default_delimiter,
@@ -115,7 +120,12 @@ cylinder_cli_description = "Accept dimensions of a right circular cylinder and g
                            "geometry."
 
 
-def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_cli_description):
+def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_cli_description, cubit=False):
+
+    part_name_help_cubit = ""
+    if cubit:
+        part_name_help_cubit = "or Cubit volume name "
+    part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -130,7 +140,7 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
     parser.add_argument("--model-name", type=str, default=geometry_default_model_name,
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, default=cylinder_default_part_name,
-                        help="Abaqus part name(s) (default: %(default)s)")
+                        help=part_name_help)
     parser.add_argument("--revolution-angle", type=float, default=geometry_default_revolution_angle,
                         help="Revolution angle for a 3D part in degrees (default: %(default)s)")
     return parser
@@ -148,7 +158,12 @@ sphere_cli_description = "Create a hollow, spherical geometry from a sketch in t
                          "lower (+X-Y), or both quadrants."
 
 
-def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_description):
+def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_description, cubit=False):
+
+    part_name_help_cubit = ""
+    if cubit:
+        part_name_help_cubit = "or Cubit volume name "
+    part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -171,7 +186,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     parser.add_argument('--model-name', type=str, default=sphere_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=sphere_default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
+                        help=part_name_help)
 
     return parser
 
@@ -189,7 +204,12 @@ partition_cli_description = "Partition a spherical shape into a turtle shell giv
                             "clocking, and partition plane angle parameters."
 
 
-def partition_parser(basename="partition.py", add_help=True, description=partition_cli_description):
+def partition_parser(basename="partition.py", add_help=True, description=partition_cli_description, cubit=False):
+
+    part_name_help_cubit = ""
+    if cubit:
+        part_name_help_cubit = "or Cubit volume name "
+    part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -208,10 +228,12 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     parser.add_argument('--model-name', type=str, default=partition_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=partition_default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
-    parser.add_argument('--big-number', type=float, default=partition_default_big_number,
-                        help="Number larger than the outer radius of the part to partition. Presently only used by " \
-                             "Cubit (default: %(default)s)")
+                        help=part_name_help)
+    # TODO: Remove conditional if/when Abaqus partition algorithm uses big number (probably as a sketch based partition)
+    if cubit:
+        parser.add_argument('--big-number', type=float, default=partition_default_big_number,
+                            help="Number larger than the outer radius of the part to partition. Presently only used by " \
+                                 "Cubit (default: %(default)s)")
 
     return parser
 
