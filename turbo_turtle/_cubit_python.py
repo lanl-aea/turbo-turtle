@@ -383,6 +383,7 @@ def _partition(center=parsers.partition_default_center,
     center = numpy.array(center)
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
+    parts = [cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", part_name)]
 
     # Create 6 4-sided pyramidal bodies defining the partitioning intersections
     surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, big_number)
@@ -408,10 +409,11 @@ def _partition(center=parsers.partition_default_center,
     # Create intersections/partitions
     for number, volume in enumerate(volumes):
         volume_id = volume.id()
-        cubit_command_or_exit(f"intersect volume {volume_id} with volume {part_name} keep")
+        for part in parts:
+            cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
         cubit_command_or_exit(f"delete volume {volume_id}")
-
-    cubit_command_or_exit(f"delete volume {part_name}")
+    for part in parts:
+        cubit_command_or_exit(f"delete volume {part.id()}")
 
     # Create local coordinate system primary planes and webcut
     yvector = numpy.cross(zvector, xvector)
