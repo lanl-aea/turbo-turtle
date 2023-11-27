@@ -473,5 +473,10 @@ def mesh(input_file, element_type,
 
 def _mesh(element_type, part_name, global_seed):
     parts = _get_volumes_from_name_or_exit(part_name)
+    element_type = element_type.lower()
+    if element_type == "tetmesh":
+        cubit_command_or_exit(f"volume with name '{part_name}*' scheme {element_type}")
+    elif: element_type == "trimesh":
+        cubit_command_or_exit(f"")
     cubit_command_or_exit(f"volume with name '{part_name}*' size {global_seed}")
     cubit_command_or_exit(f"mesh volume with name '{part_name}*'")

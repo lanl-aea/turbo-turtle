@@ -291,12 +291,18 @@ def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_descript
                                "ACIS compatibility. "
     part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
 
+    element_type_help = ""
+    if cubit:
+        element_type_help_cubit = ". Applied as a Cubit meshing scheme if it matches 'tetmesh' or 'trimesh'. " \
+                                  "Otherwise ignored by Cubit implementation."
+    element_type_help = "Abaqus element type{}".format(element_type_help_cubit)
+
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")
     parser.add_argument("--element-type", type=str, required=True,
-                        help="Abaqus element type")
+                        help=element_type_help)
     parser.add_argument("--output-file", type=str, default=mesh_default_output_file,
                         help="Abaqus CAE output file (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=mesh_default_model_name,
