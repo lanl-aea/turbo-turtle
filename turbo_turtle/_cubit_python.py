@@ -139,6 +139,7 @@ def _create_spline_from_coordinates(coordinates):
         points.append(cubit.create_vertex(*tuple(point)))
     vertex_ids = [point.id() for point in points]
     vertex_ids_text = " ".join(map(str, vertex_ids))
+    # TODO: Find a suitable Cubit Python function for creating splines that returns the curve object
     cubit_command_or_exit(f"create curve spline vertex {vertex_ids_text} delete")
     curve = points[0].curves()[0]
     return curve
@@ -160,6 +161,7 @@ def _create_arc_from_coordinates(center, point1, point2):
         vertex1 = cubit.create_vertex(*tuple(point2))
         vertex2 = cubit.create_vertex(*tuple(point1))
 
+    # TODO: Find a suitable Cubit Python function for creating arcs that returns the curve object
     cubit_command_or_exit(f"create curve arc center vertex {center_vertex.id()} {vertex1.id()} {vertex2.id()} normal 0 0 1")
     curve = vertex1.curves()[0]
     cubit_command_or_exit(f"delete vertex {center_vertex.id()}")
