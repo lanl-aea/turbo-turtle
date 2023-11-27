@@ -216,6 +216,9 @@ def _rename_and_sweep(surface, part_name,
     :param list part_name: name(s) of the part(s) being created
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
+
+    :returns: body (planar/zero valued revolution angle) or volume (revolution angle != 0.) object
+    :rtype: cubit.Body or cubit.Volume
     """
     center = numpy.array(center)
     center_string = " ".join(map(str, center))
@@ -225,14 +228,16 @@ def _rename_and_sweep(surface, part_name,
     surface_number = _surface_numbers([surface])[0]
     part_name = part_name.replace("-", "_")
     if planar:
-        cubit_command_or_exit(f"body {body_number} rename '{part_name}'")
+        return_object = surface
     elif numpy.isclose(revolution_angle, 0.0):
-        cubit_command_or_exit(f"body {body_number} rename '{part_name}'")
+        return_object = surface
     else:
         cubit_command_or_exit(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
                               f"angle {revolution_angle} merge")
-        cubit_command_or_exit(f"volume {body_number} rename '{part_name}'")
-        cubit_command_or_exit(f"regularize volume {body_number}")
+        return_object = surface.volumes()[0]
+
+    return_object.set_entity_name(part_name)
+    return return_object
 
 
 def cylinder(inner_radius, outer_radius, height, output_file,
