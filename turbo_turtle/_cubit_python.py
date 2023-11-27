@@ -234,8 +234,8 @@ def _rename_and_sweep(surface, part_name,
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
 
-    :returns: body (planar/zero valued revolution angle) or volume (revolution angle != 0.) object
-    :rtype: cubit.Body or cubit.Volume
+    :returns: volume object
+    :rtype: cubit.Volume
     """
     center = numpy.array(center)
     center_string = " ".join(map(str, center))
@@ -245,9 +245,9 @@ def _rename_and_sweep(surface, part_name,
     surface_number = _surface_numbers([surface])[0]
     part_name = part_name.replace("-", "_")
     if planar:
-        return_object = surface
+        return_object = surface.volumes()[0]
     elif numpy.isclose(revolution_angle, 0.0):
-        return_object = surface
+        return_object = surface.volumes()[0]
     else:
         cubit_command_or_exit(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
                               f"angle {revolution_angle} merge")
