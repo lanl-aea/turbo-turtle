@@ -330,3 +330,45 @@ def fortyfive_vectors(xvector, zvector):
     fortyfives = [normalize_vector(vector) for vector in fortyfives]
 
     return fortyfives
+
+
+def pyramid_surfaces(center, xvector, zvector, big_number):
+    """Return the pyramid surfaces defined by the center and vertices of a cube
+
+    Returns arrays of [N, 2] coordinates defining 12 triangular surfaces and 6 square surfaces defining the 4 edge
+    pyramids from the center of a cube to the cube vertices.
+
+    :returns: list of numpy arrays, where each numpy array is an [N, 3] list of coordinates defining a surface
+    :rtype: list of numpy.array
+    """
+    vectors = fortyfive_vectors(xvector, zvector)
+    fortyfive_vertices = [center + vector * big_number for vector in vectors]
+    # TODO: Figure out how to cleanup these coordinate pairs such that they are independent from the fortyfives indices
+    surface_coordinates = [
+        # +Y surfaces
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),  #  0:    +Y +Z
+        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),  #  1: -X +Y
+        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),  #  2:    +Y -Z
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),  #  3: +X +Y
+        # -Y surfaces
+        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),  #  4:    -Y +Z
+        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),  #  5: -X -Y
+        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),  #  6:    -Y -Z
+        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),  #  7: +X -Y
+        # +X surfaces
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),  #  8: +X    +Z
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),  #  9: +X    -Z
+        # -X surfaces
+        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),  # 10: -X    +Z
+        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),  # 11: -X    -Z
+        # +/- normal to Y
+        numpy.array(fortyfive_vertices[0:4]),  # 12: +Y
+        numpy.array(fortyfive_vertices[4:]),   # 13: -Y
+        # +/- normal to X
+        numpy.array([fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]),  # 14: +X
+        numpy.array([fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]),  # 15: -X
+        # +/- normal to Z
+        numpy.array([fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]),  # 16: +Z
+        numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),  # 17: -Z
+    ]
+    return surface_coordinates

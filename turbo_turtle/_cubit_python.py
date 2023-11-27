@@ -366,38 +366,11 @@ def _partition(center=parsers.partition_default_center,
     zvector = numpy.array(zvector)
 
     # Create 6 4-sided pyramidal bodies defining the partitioning intersections
-    fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
-    fortyfive_vertices = [center + vector * big_number for vector in fortyfive_vectors]
-    # TODO: Return these from a function more closely coupled to ``vertices.fortyfive_vectors``
-    surface_coordinates = [
-        # +Y surfaces
-        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),  #  0:    +Y +Z
-        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),  #  1: -X +Y
-        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),  #  2:    +Y -Z
-        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),  #  3: +X +Y
-        # -Y surfaces
-        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),  #  4:    -Y +Z
-        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),  #  5: -X -Y
-        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),  #  6:    -Y -Z
-        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),  #  7: +X -Y
-        # +X surfaces
-        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),  #  8: +X    +Z
-        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),  #  9: +X    -Z
-        # -X surfaces
-        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),  # 10: -X    +Z
-        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),  # 11: -X    -Z
-        # +/- normal to Y
-        numpy.array(fortyfive_vertices[0:4]),  # 12: +Y
-        numpy.array(fortyfive_vertices[4:]),   # 13: -Y
-        # +/- normal to X
-        numpy.array([fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]),  # 14: +X
-        numpy.array([fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]),  # 15: -X
-        # +/- normal to Z
-        numpy.array([fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]),  # 16: +Z
-        numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),  # 17: -Z
-    ]
+    surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, big_number)
     surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
 
+    # TODO: Figure out how to cleanup these coordinate pairs such that they are independent from the
+    # fortyfives/pyramid_surfaces indices
     volume_surfaces = [
         surfaces[0:4] + [surfaces[12]],  # +Y
         surfaces[4:8] + [surfaces[13]],  # -Y
