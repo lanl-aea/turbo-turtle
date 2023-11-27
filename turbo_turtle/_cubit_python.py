@@ -149,6 +149,11 @@ def _create_spline_from_coordinates(coordinates):
 
 
 def _create_arc_from_coordinates(center, point1, point2):
+    """Create a circular arc cubit.Curve object from center and points on the curve
+
+    :returns: cubit curve object
+    :rtype: curbit.Curve
+    """
     center_vertex = cubit.create_vertex(*tuple(center))
 
     # Cubit creates arcs with anticlockwise rotation. Order vertices with most negative Y axis coordinate first.
@@ -160,9 +165,9 @@ def _create_arc_from_coordinates(center, point1, point2):
         vertex2 = cubit.create_vertex(*tuple(point1))
 
     cubit_command_or_exit(f"create curve arc center vertex {center_vertex.id()} {vertex1.id()} {vertex2.id()} normal 0 0 1")
+    curve = vertex1.curves()[0]
     cubit_command_or_exit(f"delete vertex {center_vertex.id()}")
-    # TODO: Return the curve object when a Cubit Python API method exists to create an arc from center and vertices
-    return None
+    return curve
 
 
 def _create_surface_from_coordinates(coordinates):
@@ -200,7 +205,6 @@ def _create_volume_from_surfaces(surfaces, keep=True):
     if keep:
         command = f"{command} keep"
     cubit_command_or_exit(command)
-    import pdb; pdb.set_trace()
     # TODO: Return a volume object when creation is possible with Cubit Python API
     return None
 
@@ -329,10 +333,6 @@ def _sphere(inner_radius, outer_radius,
     curves.append(_create_arc_from_coordinates(center_3d, outer_point1, outer_point2))
     curves.append(_create_curve_from_coordinates(inner_point1, outer_point1))
     curves.append(_create_curve_from_coordinates(inner_point2, outer_point2))
-    # TODO: VVV Replace free curve recovery when an arc by center and two points is available in Cubit Python API
-    curve_ids = cubit.get_list_of_free_ref_entities("curve")
-    curves = [cubit.curve(identity) for identity in curve_ids]
-    # TODO: ^^^ Replace free curve recovery when an arc by center and two points is available in Cubit Python API
     surface = cubit.create_surface(curves)
 
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
