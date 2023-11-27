@@ -258,7 +258,20 @@ def _get_volumes_from_name(name):
     :returns: list of cubit volumes with name prefix
     :rtype: list of cubit.Volume objects
     """
-    return [cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", name)]
+    parts = [cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", name)]
+    if len(parts) < 1:
+        raise RuntimeError("Could not find any volumes with prefix '{name}'")
+    return parts
+
+
+@_mixed_utilities.print_exception_message
+def _get_volumes_from_name_or_exit(*args, **kwargs):
+    """Thin wrapper around :meth:`turbo_turtle._cubit_python._get_volumes_from_name` to call ``sys.exit`` on exceptions
+
+    Wrapper of :meth:`turbo_turtle._cubit_python._get_volumes_from_name` with
+    :meth:`turbo_turtle._abaqus_python._mixed_utilities._print_exception_message`.
+    """
+    return get_volumes_from_name(*args, **kwargs)
 
 
 def cylinder(inner_radius, outer_radius, height, output_file,
@@ -459,5 +472,6 @@ def mesh(input_file, element_type,
 
 
 def _mesh(element_type, part_name, global_seed):
+    parts = _get_volumes_from_name_or_exit(part_name)
     cubit_command_or_exit(f"volume with '{part_name}*' size {global_seed}")
     cubit_command_or_exit(f"mesh volume with '{part_name}*'")
