@@ -17,13 +17,6 @@ from turbo_turtle._abaqus_python import vertices
 from turbo_turtle._abaqus_python import parsers
 
 
-def cubit_part_names(part_name):
-    if isinstance(part_name, str):
-        return part_name.replace("-", "_")
-    else:
-        return [name.replace("-", "_") for name in part_name]
-
-
 def cubit_command_or_exception(command):
     """Thin wrapper around ``cubit.cmd`` to raise an exception when returning False
 
@@ -86,7 +79,7 @@ def geometry(input_file, output_file,
     # TODO: Figure out how to get a better log of the non-APREPRO actions
     cubit.init(["cubit"])
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
-    part_name = cubit_part_names(part_name)
+    part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     surfaces = []
     for file_name, new_part in zip(input_file, part_name):
@@ -271,7 +264,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     """
     cubit.init(["cubit"])
-    part_name = cubit_part_names(part_name)
+    part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
 
     coordinates = vertices.cylinder(inner_radius, outer_radius, height)
@@ -300,7 +293,7 @@ def sphere(inner_radius, outer_radius, output_file,
     :param str part_name: name of the part to be created in the Abaqus model
     """
     cubit.init(["cubit"])
-    part_name = cubit_part_names(part_name)
+    part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     if input_file is not None:
         input_file = pathlib.Path(input_file).with_suffix(".cub")
@@ -361,7 +354,7 @@ def partition(input_file,
               big_number=parsers.partition_default_big_number):
 
     cubit.init(["cubit"])
-    part_name = cubit_part_names(part_name)
+    part_name = _mixed_utilities.cubit_part_names(part_name)
 
     if output_file is None:
         output_file = input_file

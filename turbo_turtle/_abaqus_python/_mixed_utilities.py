@@ -189,3 +189,10 @@ def substitute_element_type(mesh_file, element_type):
     if new_content != old_content:
         with open(mesh_file, 'w') as orphan_mesh:
             orphan_mesh.write(new_content)
+
+
+def cubit_part_names(part_name):
+    if isinstance(part_name, str):
+        return part_name.replace("-", "_")
+    else:
+        return [name.replace("-", "_") for name in part_name]
