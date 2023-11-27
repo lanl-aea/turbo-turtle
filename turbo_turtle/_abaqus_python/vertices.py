@@ -318,14 +318,14 @@ def fortyfive_vectors(xvector, zvector):
     yvector = numpy.cross(zvector, xvector)
 
     fortyfives = [
-        midpoint_vector( xvector,  yvector,  zvector),
-        midpoint_vector(-xvector,  yvector,  zvector),
-        midpoint_vector(-xvector,  yvector, -zvector),
-        midpoint_vector( xvector,  yvector, -zvector),
-        midpoint_vector( xvector, -yvector,  zvector),
-        midpoint_vector(-xvector, -yvector,  zvector),
-        midpoint_vector(-xvector, -yvector, -zvector),
-        midpoint_vector( xvector, -yvector, -zvector),
+        midpoint_vector( xvector,  yvector,  zvector),  # 0
+        midpoint_vector(-xvector,  yvector,  zvector),  # 1
+        midpoint_vector(-xvector,  yvector, -zvector),  # 2
+        midpoint_vector( xvector,  yvector, -zvector),  # 3
+        midpoint_vector( xvector, -yvector,  zvector),  # 4
+        midpoint_vector(-xvector, -yvector,  zvector),  # 5
+        midpoint_vector(-xvector, -yvector, -zvector),  # 6
+        midpoint_vector( xvector, -yvector, -zvector),  # 7
     ]
     fortyfives = [normalize_vector(vector) for vector in fortyfives]
 

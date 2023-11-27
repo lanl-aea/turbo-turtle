@@ -177,6 +177,14 @@ def _create_surface_from_coordinates(coordinates):
     return cubit.create_surface(curves)
 
 
+def _surface_numbers(surfaces):
+    return [surface.surfaces()[0].id() for surface in surfaces]
+
+
+def _create_volume_from_surfaces(surfaces):
+    pass
+
+
 def _rename_and_sweep(surface, part_name,
                       center=numpy.array([0., 0., 0.]),
                       planar=parsers.geometry_default_planar,
@@ -195,7 +203,7 @@ def _rename_and_sweep(surface, part_name,
     revolution_axis = numpy.array([0., 1., 0.])
     revolution_string = " ".join(map(str, revolution_axis))
     body_number = surface.id()
-    surface_number = surface.surfaces()[0].id()
+    surface_number = _surface_numbers(surface)[0]
     part_name = part_name.replace("-", "_")
     if planar:
         cubit_command_or_exit(f"body {body_number} rename '{part_name}'")
@@ -347,8 +355,17 @@ def _partition(center=parsers.partition_default_center,
         # -X surfaces
         numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),
         numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),
+        # +/- normal to Y
+        numpy.array(fortyfive_vertices[0:4]),
+        numpy.array(fortyfive_vertices[4:]),
+        # +/- normal to X
+        numpy.array([fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]),
+        numpy.array([fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]),
+        # +/- normal to Z
+        numpy.array([fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]),
+        numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),
     ]
     surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
-    surface_numbers = [surface.surfaces()[0].id() for surface in surfaces]
+    surface_numbers = _surface_numbers(surfaces)
     surface_string = " ".join(map(str, surface_numbers))
     cubit_command_or_exit(f"webcut volume all with sheet extended from surface {surface_string}")
