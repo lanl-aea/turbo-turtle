@@ -80,7 +80,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     if cubit:
         part_name_help_cubit = "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = f"Abaqus part name(s) {part_name_help_cubit}(default: %(default)s)"
+    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -127,7 +127,7 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
+    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -166,7 +166,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
+    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
@@ -213,7 +213,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = f"Abaqus part name {part_name_help_cubit}(default: %(default)s)"
+    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = create_parser(add_help=add_help, description=description, basename=basename)
 
