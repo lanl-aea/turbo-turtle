@@ -200,6 +200,7 @@ def _create_volume_from_surfaces(surfaces, keep=True):
     if keep:
         command = f"{command} keep"
     cubit_command_or_exit(command)
+    import pdb; pdb.set_trace()
     # TODO: Return a volume object when creation is possible with Cubit Python API
     return None
 
@@ -235,6 +236,8 @@ def _rename_and_sweep(surface, part_name,
         cubit_command_or_exit(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
                               f"angle {revolution_angle} merge")
         return_object = surface.volumes()[0]
+        volume_id = return_object.id()
+        cubit_command_or_exit(f"regularize volume {volume_id}")
 
     return_object.set_entity_name(part_name)
     return return_object
