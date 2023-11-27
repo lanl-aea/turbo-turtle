@@ -42,23 +42,6 @@ def construct_prog(basename):
     return prog
 
 
-def create_parser(add_help, description, basename):
-    """Handle the parser instantiation with or without the help message
-
-    :param bool add_help: Use a parser with a help message when True
-    :param str description: Description to add to a parser with a help message
-    :param str basename: File basename to use in the usage string of a parser with a help message
-
-    :returns: parser
-    :rtype: argparse.ArgumentParser
-    """
-    if add_help:
-        parser = argparse.ArgumentParser(description=description, prog=construct_prog(basename))
-    else:
-        parser = argparse.ArgumentParser(add_help=add_help)
-    return parser
-
-
 geometry_default_unit_conversion = 1.0
 geometry_default_planar = False
 geometry_default_euclidean_distance = 4.0
@@ -75,6 +58,16 @@ geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of r
                            "parsing an input file with [N, 2] array of XY coordinates."
 
 def geometry_parser(basename="geometry.py", add_help=True, description=geometry_cli_description, cubit=False):
+    """Return the geometry subcommand parser
+
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param bool cubit: Include the Cubit specific options and help language when True
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
 
     part_name_help_cubit = ""
     if cubit:
@@ -82,7 +75,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                                "ACIS compatibility. "
     part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
-    parser = create_parser(add_help=add_help, description=description, basename=basename)
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     parser.add_argument("--input-file", type=str, nargs="+", required=True,
                         help="Name of an input file(s) with points in x-y coordinate system")
@@ -122,6 +115,16 @@ cylinder_cli_description = "Accept dimensions of a right circular cylinder and g
 
 
 def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_cli_description, cubit=False):
+    """Return the cylinder subcommand parser
+
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param bool cubit: Include the Cubit specific options and help language when True
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
 
     part_name_help_cubit = ""
     if cubit:
@@ -129,7 +132,7 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
                                "ACIS compatibility. "
     part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
-    parser = create_parser(add_help=add_help, description=description, basename=basename)
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     parser.add_argument("--inner-radius", type=positive_float, required=True,
                         help="Inner radius of hollow cylinder")
@@ -161,6 +164,16 @@ sphere_cli_description = "Create a hollow, spherical geometry from a sketch in t
 
 
 def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_description, cubit=False):
+    """Return the sphere subcommand parser
+
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param bool cubit: Include the Cubit specific options and help language when True
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
 
     part_name_help_cubit = ""
     if cubit:
@@ -168,7 +181,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
                                "ACIS compatibility. "
     part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
-    parser = create_parser(add_help=add_help, description=description, basename=basename)
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--inner-radius', type=positive_float, required=True,
@@ -208,6 +221,16 @@ partition_cli_description = "Partition a spherical shape into a turtle shell giv
 
 
 def partition_parser(basename="partition.py", add_help=True, description=partition_cli_description, cubit=False):
+    """Return the partition subcommand parser
+
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param bool cubit: Include the Cubit specific options and help language when True
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
 
     part_name_help_cubit = ""
     if cubit:
@@ -215,7 +238,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
                                "ACIS compatibility. "
     part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
-    parser = create_parser(add_help=add_help, description=description, basename=basename)
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     requiredNamed = parser.add_argument_group('Required Named Arguments')
     requiredNamed.add_argument('--input-file', type=str, default=sphere_default_input_file,
@@ -252,8 +275,17 @@ mesh_cli_description = "Mesh an Abaqus part from a global seed"
 
 
 def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_description):
+    """Return the mesh subcommand parser
 
-    parser = create_parser(add_help=add_help, description=description, basename=basename)
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
+
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")
@@ -281,8 +313,17 @@ merge_default_part_name = [None]
 
 
 def merge_parser(basename="merge.py", add_help=True, description=merge_cli_description):
+    """Return the merge subcommand parser
 
-    parser = create_parser(add_help=add_help, description=description, basename=basename)
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
+
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     parser.add_argument("--input-file", type=str, nargs="+", required=True,
                         help="Abaqus CAE input file(s)")
@@ -308,8 +349,17 @@ export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
 
 def export_parser(basename="export.py", add_help=True, description=export_cli_description):
+    """Return the export subcommand parser
 
-    parser = create_parser(add_help=add_help, description=description, basename=basename)
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
+
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     parser.add_argument("--input-file", type=str, required=True,
                         help="Abaqus CAE input file")
@@ -348,8 +398,17 @@ image_color_map_choices = [
 
 
 def image_parser(basename="image.py", add_help=True, description=image_cli_description):
+    """Return the image subcommand parser
 
-    parser = create_parser(add_help=add_help, description=description, basename=basename)
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
+
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     parser.add_argument('--input-file', type=str, required=True,
                          help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
