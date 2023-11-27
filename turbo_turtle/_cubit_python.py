@@ -356,6 +356,8 @@ def _partition(center=parsers.partition_default_center,
                big_number=parsers.partition_default_big_number):
 
     center = numpy.array(center)
+    xvector = numpy.array(xvector)
+    zvector = numpy.array(zvector)
 
     # Create 6 4-sided pyramidal bodies defining the partitioning intersections
     fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
