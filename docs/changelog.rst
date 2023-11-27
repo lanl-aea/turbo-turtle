@@ -12,6 +12,7 @@ New Features
 ============
 - Draft implementation of ``cylinder`` subcommand with Cubit (:issue:`63`, :merge:`61`). By `Kyle Brindley`_.
 - Draft implementation of ``sphere`` subcommand with Cubit (:issue:`71`, :merge:`62`). By `Kyle Brindley`_.
+- Draft implementation of ``partition`` subcommand with Cubit (:issue:`72`, :merge:`66`). By `Kyle Brindley`_.
 
 Bug fixes
 =========
