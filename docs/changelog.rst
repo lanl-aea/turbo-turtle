@@ -15,6 +15,7 @@ New Features
   Brindley`_.
 - Add ability to export Genesis files from ``export`` subcommand with Cubit (:issue:`87`, :merge:`71`). By `Kyle
   Brindley`_.
+- Draft implementation of ``merge`` subcommand with Cubit (:issue:`82`, merge:`72`). By `Kyle Brindley`_.
 
 *******************
 v0.7.1 (2023-11-27)
