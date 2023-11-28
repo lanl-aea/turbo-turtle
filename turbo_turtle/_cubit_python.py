@@ -590,6 +590,8 @@ def export(input_file,
         output_file = destination / name
         output_file = output_file.with_suffix(".inp")
         _export(output_file, name, element, destination)
+        if element is not None:
+            _mixed_utilities.substitute_element_type(output_file, element)
 
 
 def _export(output_file, part_name, element_type, destination):
