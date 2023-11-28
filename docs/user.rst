@@ -6,9 +6,9 @@ User Manual
     :start-after: user-start-do-not-remove
     :end-before: user-end-do-not-remove
 
-********
-Examples
-********
+****************
+Examples: Abaqus
+****************
 
 See the :ref:`turbo_turtle_cli` documentation for additional subcommands and options.
 
@@ -81,3 +81,36 @@ Two-dimensional, axisymmetric sphere
    .. code-block::
 
       turbo-turtle export --input-file axisymmetric.cae --output-file axisymmetric.inp --model-name axisymmetric --part-name axisymmetric
+
+***************
+Examples: Cubit
+***************
+
+These examples are (nearly) identical to the Abaqus examples above, but appended with the ``--cubit`` flag. Because the
+commands are (nearly) identical, they will be included as a single command block. See the :ref:`turbo_turtle_cli`
+documentation for caveats in behavior for the Cubit implementation and translation of Abaqus jargon to Cubit jargon. The
+list of commands will be expanded as they are implemented.
+
+.. note::
+
+   * The ``--model-name`` option has no corresponding Cubit concept and is ignored in all Cubit implementations.
+   * The ``--element-type`` option maps to the Cubit meshing scheme concept. It is only used if a non-default scheme is
+     passed: trimesh or tetmesh
+
+Three-dimensional sphere
+========================
+
+.. code-block::
+
+   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cae --part-name sphere --cubit
+   turbo-turtle partition --input-file sphere.cae --output-file sphere.cae --part-name sphere --cubit
+   turbo-turtle mesh --input-file sphere.cae --output-file sphere.cae --part-name sphere --element-type dummy --global-seed 0.15 --cubit
+
+Two-dimensional, axisymmetric sphere
+====================================
+
+.. code-block::
+
+   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cae --part-name axisymmetric --revolution-angle 0 --cubit
+   turbo-turtle partition --input-file axisymmetric.cae --output-file axisymmetric.cae --part-name axisymmetric
+   turbo-turtle mesh --input-file axisymmetric.cae --output-file axisymmetric.cae --part-name axisymmetric --element-type dummy --global-seed 0.15
