@@ -68,7 +68,6 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " \
@@ -334,6 +333,10 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
+    part_name_help_cubit = ""
+    if cubit:
+        part_name_help_cubit = ". Unused by Cubit implementation. "
+    part_name_help = "Abaqus part name(s) to search for within model(s){} (default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -346,7 +349,7 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
     parser.add_argument("--model-name", type=str, nargs="+", default=merge_default_model_name,
                         help="Abaqus model name(s) to query in the input CAE file(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, nargs="+", default=merge_default_part_name,
-                        help="Part name(s) to search for within model(s) (default: %(default)s)")
+                        help=part_name_help)
     return parser
 
 
