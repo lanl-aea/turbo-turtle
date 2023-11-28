@@ -579,6 +579,17 @@ def export(input_file,
     :param list element_type: list of element types, one per part name or one global replacement for every part name
     :param str destination: write output orphan mesh files to this output directory
     """
+    cubit.init(["cubit"])
+    part_name = _mixed_utilities.cubit_part_names(part_name)
+    element_type = _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
+    input_file = pathlib.Path(input_file).with_suffix(".cub")
+
+    cubit_command_or_exit(f"open '{copy_file.name}'")
+    for name, element in zip(part_name, element_type):
+        _export(name, element, destination)
+
+
+def _export(name, element, destination):
     pass
 
 
