@@ -616,6 +616,7 @@ def _get_new_block_id():
     :returns: new block ID
     :rtype: int
     """
+    # TODO: replace with cubit.get_next_block_id()
     blocks_before = cubit.get_block_id_list()
     if len(blocks_before) >= 1:
         max_block_id = max(blocks_before)
@@ -625,8 +626,40 @@ def _get_new_block_id():
     return new_block_id
 
 
-def _export_genesis(part_name, element_type, destination):
+def _create_new_block(volumes):
+    """Create a new block for all volumes in list
+
+    Sheet bodies are added to block as surfaces. Volumes are added as volumes.
+
+    :param list volumes: list of Cubit volume objects
+
+    :returns: new block ID
+    :rtype: int
+    """
     new_block_id = _get_new_block_id()
+    volume_ids = [volume.id() for volume in volumes]
+    if any([cubit.is_sheet_body(volume_id) for volume_id in volume_ids]):
+        surfaces = _surface_numbers(_surfaces_for_volumes(parts))
+        surface_string = " ".join(map(str, surfaces))
+        cubit.cmd(f"block {new_block_id} add surface {surface_string}")
+    else:
+        cubit.cmd(f"block {new_block_id} add volume {part_string}")
+    return new_block_id
+
+
+def _create_volume_name_block(name):
+    volumes = _get_volumes_from_name(name)
+    new_block_id = _create_new_block(volumes)
+    cubit.cmd(f"block {new_block_id} name '{part_name}'")
+    return new_block_id
+
+
+def _export_genesis(output_file, part_name, element_type, destination):
+    block_ids = []
+    for name in part_name:
+        block_ids.append(_create_volume_name_block(name))
+    block_string = " ".join(map(str, block_ids))
+    cubit.cmd(f"export mesh '{output_file}' block {block_string} overwrite")
 
 
 def _export_abaqus_list(part_name, element_type, destination):
@@ -639,21 +672,7 @@ def _export_abaqus_list(part_name, element_type, destination):
 
 
 def _export_abaqus(output_file, part_name, element_type, destination):
-    new_block_id = _get_new_block_id()
-
-    # Get a list of part_name prefixed volumes
-    parts = _get_volumes_from_name(part_name)
-    part_ids = [part.id() for part in parts]
-    part_string = " ".join(map(str, part_ids))
-
-    if any([cubit.is_sheet_body(part_id) for part_id in part_ids]):
-        surfaces = _surface_numbers(_surfaces_for_volumes(parts))
-        surface_string = " ".join(map(str, surfaces))
-        cubit.cmd(f"block {new_block_id} add surface {surface_string}")
-    else:
-        cubit.cmd(f"block {new_block_id} add volume {part_string}")
-
-    cubit.cmd(f"block {new_block_id} name '{part_name}'")
+    new_block_id = _create_volume_name_block(part_name)
     cubit.cmd(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
 
