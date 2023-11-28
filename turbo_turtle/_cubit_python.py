@@ -134,6 +134,9 @@ def _create_spline_from_coordinates(coordinates):
     """Create a spline from a list of coordinates
 
     :param numpy.array coordinates: [N, 3] array of coordinates (x, y, z)
+
+    :returns: Cubit curve object defining a spline
+    :rtype: cubit.Curve
     """
     points = []
     for point in coordinates:
