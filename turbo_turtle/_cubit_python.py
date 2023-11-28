@@ -603,7 +603,7 @@ def merge(input_file, output_file):
     input_file = [pathlib.Path(path).with_suffix(".cub") for path in input_file]
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     for path in input_file:
-        cubit.cmd(f"import cubit '{output_file}' unique_genesis_ids")
+        cubit_command_or_exit(f"import cubit '{path}' unique_genesis_ids")
     cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 

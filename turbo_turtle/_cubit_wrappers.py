@@ -106,7 +106,7 @@ def merge(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.export(
+    sys.exit(_cubit_python.merge(
         args.input_file,
         args.output_file
     ))
