@@ -374,7 +374,17 @@ def partition(input_file,
               zvector=parsers.partition_default_zvector,
               part_name=parsers.partition_default_part_name,
               big_number=parsers.partition_default_big_number):
+    """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
+    coordinate planes.
 
+    :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
+    :param str output_file: Cubit ``*.cub`` file to write
+    :param list center: center location of the geometry
+    :param list xvector: Local x-axis vector defined in global coordinates
+    :param list zvector: Local z-axis vector defined in global coordinates
+    :param str part_name: part/volume name prefix
+    :param float big_number: Number larger than the outer radius of the part to partition.
+    """
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
 
@@ -394,6 +404,15 @@ def _partition(center=parsers.partition_default_center,
                zvector=parsers.partition_default_zvector,
                part_name=parsers.partition_default_part_name,
                big_number=parsers.partition_default_big_number):
+    """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
+    coordinate planes.
+
+    :param list center: center location of the geometry
+    :param list xvector: Local x-axis vector defined in global coordinates
+    :param list zvector: Local z-axis vector defined in global coordinates
+    :param str part_name: part/volume name prefix
+    :param float big_number: Number larger than the outer radius of the part to partition.
+    """
 
     center = numpy.array(center)
     xvector = numpy.array(xvector)
@@ -456,7 +475,14 @@ def mesh(input_file, element_type,
          output_file=parsers.mesh_default_output_file,
          part_name=parsers.mesh_default_part_name,
          global_seed=parsers.mesh_default_global_seed):
+    """Mesh Cubit volumes and sheet bodies by part/volume name
 
+    :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
+    :param str element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
+    :param str output_file: Cubit ``*.cub`` file to write
+    :param str part_name: part/volume name prefix
+    :param float global_seed: The global mesh seed size
+    """
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
 
@@ -472,6 +498,12 @@ def mesh(input_file, element_type,
 
 
 def _mesh(element_type, part_name, global_seed):
+    """Mesh Cubit volumes and sheet bodies by part/volume name
+
+    :param str element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
+    :param str part_name: part/volume name prefix
+    :param float global_seed: The global mesh seed size
+    """
     parts = _get_volumes_from_name_or_exit(part_name)
     element_type = element_type.lower()
     if element_type == "tetmesh":
