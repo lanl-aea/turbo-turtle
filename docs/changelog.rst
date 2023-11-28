@@ -8,6 +8,10 @@ Changelog
 v0.7.2 (unreleased)
 *******************
 
+New Features
+============
+- Draft implementation of ``image`` subcommand with Cubit (:issue:`81`, :merge:`68`). By `Kyle Brindley`_.
+
 *******************
 v0.7.1 (2023-11-27)
 *******************
