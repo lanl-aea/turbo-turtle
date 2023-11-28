@@ -120,6 +120,10 @@ def export(args, command):
     :param str command: cubit executable path
     """
     sys.exit(_cubit_python.export(
+        args.input_file,
+        part_name=args.part_name,
+        element_type=args.element_type,
+        destination=args.destination
     ))
 
 

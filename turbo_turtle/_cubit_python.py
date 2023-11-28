@@ -568,6 +568,20 @@ def _mesh(element_type, part_name, global_seed):
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
 
 
+def export(input_file,
+           part_name=parsers.export_default_part_name,
+           element_type=parsers.export_default_element_type,
+           destination=parsers.export_default_destination):
+    """Open a Cubit ``*.cub`` file and export ``part_name`` prefixed volumes as ``part_name``.inp
+
+    :param str input_file: Cubit ``*.cub`` file to open that already contains meshed parts/volumes
+    :param str part_name: list of part/volume name prefix to export
+    :param list element_type: list of element types, one per part name or one global replacement for every part name
+    :param str destination: write output orphan mesh files to this output directory
+    """
+    pass
+
+
 def image(input_file, output_file, cubit_command,
           x_angle=parsers.image_default_x_angle,
           y_angle=parsers.image_default_y_angle,
