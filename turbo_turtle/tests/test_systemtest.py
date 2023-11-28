@@ -169,12 +169,12 @@ system_tests = (
     ("half-sphere.cae",    360., (0., 0.), "upper",  "C3D8",       "C3D8R", False),
     # Cubit
     # TODO: Add element type and replacement when the mesh/export subcommands support Cubit
-    ("sphere.cae",         360., (0., 0.),  "both",    None,          None, True),
-    ("axisymmetric.cae",     0., (0., 0.),  "both",    None,          None, True),
-    ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,          None, True),
-    ("offset-sphere.cae",  360., (1., 1.),  "both",    None,          None, True),
-    ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,          None, True),
-    ("half-sphere.cae",    360., (0., 0.), "upper",    None,          None, True)
+    ("sphere.cae",         360., (0., 0.),  "both",    None,       "C3D8R", True),
+    ("axisymmetric.cae",     0., (0., 0.),  "both",    None,       "CAX4R", True),
+    ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,       "C3D8R", True),
+    ("offset-sphere.cae",  360., (1., 1.),  "both",    None,       "C3D8R", True),
+    ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,       "C3D8R", True),
+    ("half-sphere.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True)
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
