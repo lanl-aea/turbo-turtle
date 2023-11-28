@@ -95,7 +95,9 @@ list of commands will be expanded as they are implemented.
 
    * The ``--model-name`` option has no corresponding Cubit concept and is ignored in all Cubit implementations.
    * The :ref:`mesh_cli` subcommand ``--element-type`` option maps to the Cubit meshing scheme concept. It is only used
-     if a non-default scheme is passed: trimesh or tetmesh
+     if a non-default scheme is passed: trimesh or tetmesh. Because the Abaqus and Cubit implementations share a command
+     line parser, and the Abaqus implementation requires this option, it is always required in the Cubit implementation
+     as well.
 
 Three-dimensional sphere
 ========================
