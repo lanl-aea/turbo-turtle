@@ -82,7 +82,7 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
     ]
     # TODO: Update as Cubit support is added for partition/mesh/image/export
     if cubit:
-        commands = commands[0:4]
+        commands = commands[0:3]
     if cubit:
         commands = [f"{command} --cubit" for command in commands]
     return commands
