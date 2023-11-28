@@ -5,8 +5,15 @@ Changelog
 #########
 
 *******************
-v0.7.3 (unreleased)
+v0.8.1 (2023-11-28)
 *******************
+
+Breaking changes
+================
+- Exclude the opening/closing assembly scope keywords in the ``--assembly`` option of the ``export`` subcommand. More
+  consistent with the orphan mesh export behavior, which excludes the part/instance scope keywords. Allows users to more
+  easily modify the assembly scope without post-facto text file modification and with straight-forward ``*include``
+  keywords.  (:issue:`90`, :merge:`73`). By `Kyle Brindley`_.
 
 *******************
 v0.7.2 (2023-11-28)
