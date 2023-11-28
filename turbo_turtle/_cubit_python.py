@@ -587,7 +587,7 @@ def image(input_file, output_file,
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exit(f"open '{copy_file.name}'")
-        cubit_command_or_exit(f"rotate {x_angle} X")
-        cubit_command_or_exit(f"rotate {y_angle} Y")
-        cubit_command_or_exit(f"rotate {z_angle} Z")
+        cubit_command_or_exit(f"rotate {x_angle} about world x")
+        cubit_command_or_exit(f"rotate {y_angle} about world y")
+        cubit_command_or_exit(f"rotate {z_angle} about world z")
         cubit_command_or_exit(f"hardcopy '{output_file}' {output_file.suffix}")
