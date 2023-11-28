@@ -589,12 +589,12 @@ def export(input_file,
     for name, element in zip(part_name, element_type):
         output_file = destination / name
         output_file = output_file.with_suffix(".inp")
-        _export(output_file, name, element, destination)
+        _export_abaqus(output_file, name, element, destination)
         if element is not None:
             _mixed_utilities.substitute_element_type(output_file, element)
 
 
-def _export(output_file, part_name, element_type, destination):
+def _export_abaqus(output_file, part_name, element_type, destination):
     # Manage block ID
     blocks_before = cubit.get_block_id_list()
     if len(blocks_before) >= 1:
