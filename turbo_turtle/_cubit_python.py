@@ -618,7 +618,6 @@ def _export(output_file, part_name, element_type, destination):
         cubit.cmd(f"block {new_block_id} add volume {part_string}")
 
     cubit.cmd(f"block {new_block_id} name '{part_name}'")
-    cubit.cmd("save as 'debugging.cub' overwrite")
     cubit.cmd(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
 
