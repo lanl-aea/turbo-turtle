@@ -9,6 +9,7 @@ import numpy
 
 from turbo_turtle import _settings
 from turbo_turtle.main import get_parser
+from turbo_turtle.conftest import missing_display
 
 
 parser = get_parser()
@@ -82,7 +83,12 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
     ]
     # TODO: Update as Cubit support is added for partition/mesh/image/export
     if cubit:
-        commands = commands[0:4]
+        if not missing_display:
+            commands = commands[0:4]
+        else:
+            # Skip the image subcommand when DISPLAY is not found
+            commands = commands[0:3]
+
     if cubit:
         commands = [f"{command} --cubit" for command in commands]
     return commands
