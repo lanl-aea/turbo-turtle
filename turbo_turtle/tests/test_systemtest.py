@@ -55,9 +55,10 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
     :rtype: list
     """
     model = pathlib.Path(model).with_suffix(".cae")
+    image = model.with_suffix(".png")
     if cubit:
         model = model.with_suffix(".cub")
-    image = model.with_suffix(".png")
+        image = image.parent / f"{image.stem}-cubit{image.suffix}"
     assembly = model.stem + "_assembly.inp"
     center=character_delimited_list(center)
     xvector=character_delimited_list([1., 0., 0.])
@@ -81,7 +82,7 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
     ]
     # TODO: Update as Cubit support is added for partition/mesh/image/export
     if cubit:
-        commands = commands[0:3]
+        commands = commands[0:4]
     if cubit:
         commands = [f"{command} --cubit" for command in commands]
     return commands
