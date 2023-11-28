@@ -118,7 +118,7 @@ def get_parser():
     mesh_parser = parsers.mesh_parser(add_help=False, cubit=True)
     image_parser = parsers.image_parser(add_help=False, cubit=True)
     merge_parser = parsers.merge_parser(add_help=False)
-    export_parser = parsers.export_parser(add_help=False)
+    export_parser = parsers.export_parser(add_help=False, cubit=True)
 
     add_abaqus_and_cubit([
         geometry_parser,
@@ -175,8 +175,8 @@ def get_parser():
 
     subparsers.add_parser(
         "export",
-        help=parsers.export_cli_help,
-        description=parsers.export_cli_description,
+        help=append_cubit_help(parsers.export_cli_help),
+        description=append_cubit_description(parsers.export_cli_description),
         parents=[export_parser]
     )
 
