@@ -197,7 +197,7 @@ def main():
 
     keys = vars(args).keys()
     if "cubit" in keys and args.cubit:
-        command = None
+        command = _utilities.find_command_or_exit(args.cubit_command)
         import importlib.util
         if importlib.util.find_spec("cubit") is None:
             sys.path.append(str(_utilities.find_cubit_bin(args.cubit_command)))

@@ -12,6 +12,7 @@ import tempfile
 import numpy
 import cubit
 
+from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import _mixed_utilities
 from turbo_turtle._abaqus_python import vertices
 from turbo_turtle._abaqus_python import parsers
@@ -567,13 +568,15 @@ def _mesh(element_type, part_name, global_seed):
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
 
 
-def image(input_file, output_file,
+def image(input_file, output_file, cubit_command,
           x_angle=parsers.image_default_x_angle,
           y_angle=parsers.image_default_y_angle,
           z_angle=parsers.image_default_z_angle):
     """Open a Cubit ``*.cub`` file and save an image
 
-    Uses the Cubit APREPRO `hardcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions.
+    Uses the Cubit APREPRO `hardcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions. This
+    command only works in batch mode from Cubit APREPRO journal files, so an ``input_file``.jou is created for
+    execution.
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
     :param str output_file: Screenshot file to write
@@ -581,17 +584,17 @@ def image(input_file, output_file,
     :param float y_angle: Rotation about 'world' Y-axis in degrees
     :param float z_angle: Rotation about 'world' Z-axis in degrees
     """
-    cubit.init(["cubit"])
-
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file)
     output_type = output_file.suffix.strip('.')
 
-    # TODO: Check if Cubit modifies the file on open. If not, we can probably remove some of these tempfiles
-    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
-        shutil.copyfile(input_file, copy_file.name)
-        cubit_command_or_exit(f"open '{copy_file.name}'")
-        cubit_command_or_exit(f"rotate {x_angle} about world x")
-        cubit_command_or_exit(f"rotate {y_angle} about world y")
-        cubit_command_or_exit(f"rotate {z_angle} about world z")
-        cubit_command_or_exit(f"hardcopy '{output_file}' {output_type}")
+    journal_path = output_file.with_suffix(".jou")
+    with open(journal_path, "w") as journal_file:
+        journal_file.write(f"open '{input_file}'\n")
+        journal_file.write(f"rotate {x_angle} about world x\n")
+        journal_file.write(f"rotate {y_angle} about world y\n")
+        journal_file.write(f"rotate {z_angle} about world z\n")
+        journal_file.write(f"hardcopy '{output_file}' {output_type}\n")
+
+    command = f"{cubit_command} -batch {journal_path}"
+    _utilities.run_command(command)
