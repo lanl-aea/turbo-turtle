@@ -508,6 +508,14 @@ def _mesh_sheet_body(part, global_seed, element_type=None):
         surface.mesh()
 
 
+def _mesh_volume(part, global_seed, element_type=None):
+    part_id = part.id()
+    if element_type == "tetmesh":
+        cubit_command_or_exit(f"volume {part_id} scheme {element_type}")
+    cubit_command_or_exit(f"volume {part_id} size {global_seed}")
+    part.mesh()
+
+
 def _mesh(element_type, part_name, global_seed):
     """Mesh Cubit volumes and sheet bodies by part/volume name
 
@@ -522,7 +530,4 @@ def _mesh(element_type, part_name, global_seed):
         if cubit.is_sheet_body(part_id):
             _mesh_sheet_body(part, global_seed, element_type=element_type)
         else:
-            if element_type == "tetmesh":
-                cubit_command_or_exit(f"volume {part_id} scheme {element_type}")
-            cubit_command_or_exit(f"volume {part_id} size {global_seed}")
-            part.mesh()
+            _mesh_volume(part, global_seed, element_type=element_type)
