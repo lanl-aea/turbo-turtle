@@ -570,7 +570,7 @@ def _mesh(element_type, part_name, global_seed):
 def image(input_file, output_file):
     """Open a Cubit ``*.cub`` file and save an image
 
-    Uses the Cubit APREPRO `harcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions.
+    Uses the Cubit APREPRO `hardcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions.
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
     :param str output_file: Screenshot file to write
