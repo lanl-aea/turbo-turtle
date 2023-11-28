@@ -355,6 +355,8 @@ export_default_part_name = ["Part-1"]
 export_default_element_type = [None]
 export_default_destination = os.getcwd()
 export_default_assembly = None
+export_output_type_choices = ["abaqus", "genesis"]
+export_default_output_type = export_output_type_choices[0]
 export_cli_help = "Export an Abaqus part mesh as an orphan mesh"
 # TODO: Write a more descriptive behavior message
 export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
@@ -393,6 +395,11 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
                         help="Assembly file for exporting the assembly keyword block. If a file is provided, but no " \
                              "assembly instances are found, instance all provided part names and export assembly " \
                              "block (default: %(default)s)")
+    if cubit:
+        parser.add_argument("--output-type", choices=export_output_type_choices, default=export_default_output_type,
+                            help="Cubit output type. When 'abaqus' is selected, each part name is exported as an  " \
+                                 "orphan mesh to a ``part_name``.inp file. When 'genesis' is selected all blocks " \
+                                 "are output to a single file ``input_file``.g (default: %(default)s)")
 
     return parser
 

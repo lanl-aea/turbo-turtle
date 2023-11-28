@@ -571,7 +571,8 @@ def _mesh(element_type, part_name, global_seed):
 def export(input_file,
            part_name=parsers.export_default_part_name,
            element_type=parsers.export_default_element_type,
-           destination=parsers.export_default_destination):
+           destination=parsers.export_default_destination,
+           output_type=parsers.export_default_output_type):
     """Open a Cubit ``*.cub`` file and export ``part_name`` prefixed volumes as ``part_name``.inp
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains meshed parts/volumes
