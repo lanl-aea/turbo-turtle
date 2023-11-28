@@ -94,8 +94,8 @@ list of commands will be expanded as they are implemented.
 .. note::
 
    * The ``--model-name`` option has no corresponding Cubit concept and is ignored in all Cubit implementations.
-   * The ``--element-type`` option maps to the Cubit meshing scheme concept. It is only used if a non-default scheme is
-     passed: trimesh or tetmesh
+   * The :ref:`mesh_cli` subcommand ``--element-type`` option maps to the Cubit meshing scheme concept. It is only used
+     if a non-default scheme is passed: trimesh or tetmesh
 
 Three-dimensional sphere
 ========================

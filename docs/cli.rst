@@ -52,6 +52,8 @@ partition
    :nodefault:
    :path: partition
 
+.. _mesh_cli:
+
 mesh
 ----
 
