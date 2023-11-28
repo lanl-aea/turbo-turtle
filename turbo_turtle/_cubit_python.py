@@ -586,6 +586,11 @@ def export(input_file,
     destination = pathlib.Path(destination)
 
     cubit_command_or_exit(f"open '{input_file}'")
+
+    _export_abaqus_list(part_name, element_type, destination)
+
+
+def _export_abaqus_list(part_name, element_type, destination):
     for name, element in zip(part_name, element_type):
         output_file = destination / name
         output_file = output_file.with_suffix(".inp")
