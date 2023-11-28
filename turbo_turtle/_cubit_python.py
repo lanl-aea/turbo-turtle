@@ -543,7 +543,7 @@ def _mesh_volume(volume, global_seed, element_type=None):
 def _mesh_multiple_volumes(volumes, global_seed, element_type=None):
     """Mesh ``cubit.Volume`` objects as volumes or sheet bodies
 
-    :param cubit.Volume volume: Cubit volume to mesh
+    :param list volumes: list of Cubit volume objects to mesh
     """
     # TODO: Process all sheet bodies and all volumes with a single Cubit command set
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/80
