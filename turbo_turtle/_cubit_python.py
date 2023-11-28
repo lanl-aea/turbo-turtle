@@ -196,6 +196,20 @@ def _surface_numbers(surfaces):
     return [surface.surfaces()[0].id() for surface in surfaces]
 
 
+def _surfaces_for_volumes(volumes):
+    """Return a flat list of surface objects for a list of volumes
+
+    :param list volumes: list of Cubit volume objects
+
+    :returns: list of Cubit surface objects
+    :rtype: list
+    """
+    surfaces = []
+    for volume in volumes:
+        surfaces.extend(volume.surfaces())
+    return surfaces
+
+
 def _create_volume_from_surfaces(surfaces, keep=True):
     """Create a volume from the provided surfaces. Surfaces must create a closed volume.
 
@@ -596,8 +610,23 @@ def export(input_file,
         sys.exit(f"Uknown output type request '{output_type}'")
 
 
+def _get_new_block_id():
+    """Return a new block ID as the maximum ID+1
+
+    :returns: new block ID
+    :rtype: int
+    """
+    blocks_before = cubit.get_block_id_list()
+    if len(blocks_before) >= 1:
+        max_block_id = max(blocks_before)
+    else:
+        max_block_id = 0
+    new_block_id = max_block_id + 1
+    return new_block_id
+
+
 def _export_genesis(part_name, element_type, destination):
-    pass
+    new_block_id = _get_new_block_id()
 
 
 def _export_abaqus_list(part_name, element_type, destination):
@@ -610,13 +639,7 @@ def _export_abaqus_list(part_name, element_type, destination):
 
 
 def _export_abaqus(output_file, part_name, element_type, destination):
-    # Manage block ID
-    blocks_before = cubit.get_block_id_list()
-    if len(blocks_before) >= 1:
-        max_block_id = max(blocks_before)
-    else:
-        max_block_id = 0
-    new_block_id = max_block_id + 1
+    new_block_id = _get_new_block_id()
 
     # Get a list of part_name prefixed volumes
     parts = _get_volumes_from_name(part_name)
@@ -624,9 +647,7 @@ def _export_abaqus(output_file, part_name, element_type, destination):
     part_string = " ".join(map(str, part_ids))
 
     if any([cubit.is_sheet_body(part_id) for part_id in part_ids]):
-        surfaces = []
-        for part in parts:
-            surfaces.extend(_surface_numbers(part.surfaces()))
+        surfaces = _surface_numbers(_surfaces_for_volumes(parts))
         surface_string = " ".join(map(str, surfaces))
         cubit.cmd(f"block {new_block_id} add surface {surface_string}")
     else:
