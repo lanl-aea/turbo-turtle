@@ -197,6 +197,9 @@ def _create_volume_from_surfaces(surfaces, keep=True):
 
     :param list surfaces: List of Cubit surface objects
     :param bool keep: Keep the original surface objects/sheet bodies
+
+    :returns: Cubit volume object
+    :rtype: cubit.Volume
     """
     volumes_before = cubit.get_entities("volume")
     surface_numbers = _surface_numbers(surfaces)
@@ -225,7 +228,7 @@ def _rename_and_sweep(surface, part_name,
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
 
-    :returns: volume object
+    :returns: Cubit volume object
     :rtype: cubit.Volume
     """
     center = numpy.array(center)
@@ -255,7 +258,7 @@ def _get_volumes_from_name(name):
 
     :param str name: Name prefix to search for with ``cubit.get_all_ids_from_name``
 
-    :returns: list of cubit volumes with name prefix
+    :returns: list of Cubit volumes with name prefix
     :rtype: list of cubit.Volume objects
     """
     parts = [cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", name)]
