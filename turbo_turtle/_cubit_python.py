@@ -565,3 +565,23 @@ def _mesh(element_type, part_name, global_seed):
     parts = _get_volumes_from_name_or_exit(part_name)
     element_type = element_type.lower()
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
+
+
+def image(input_file, output_file):
+    """Open a Cubit ``*.cub`` file and save an image
+
+    Uses the Cubit APREPRO `harcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions.
+
+    :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
+    :param str output_file: Screenshot file to write
+    """
+    cubit.init(["cubit"])
+
+    input_file = pathlib.Path(input_file).with_suffix(".cub")
+    output_file = pathlib.Path(output_file)
+
+    # TODO: Check if Cubit modifies the file on open. If not, we can probably remove some of these tempfiles
+    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+        shutil.copyfile(input_file, copy_file.name)
+        cubit_command_or_exit(f"open '{copy_file.name}'")
+        cubit_command_or_exit(f"hardcopy '{output_file}' {output_file.suffix}")
