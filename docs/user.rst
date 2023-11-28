@@ -104,6 +104,8 @@ list of commands will be expanded as they are implemented.
 Three-dimensional sphere
 ========================
 
+.. figure:: sphere-cubit.png
+
 .. code-block::
 
    turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cub --part-name sphere --cubit
@@ -113,6 +115,8 @@ Three-dimensional sphere
 
 Two-dimensional, axisymmetric sphere
 ====================================
+
+.. figure:: axisymmetric-cubit.png
 
 .. code-block::
 
