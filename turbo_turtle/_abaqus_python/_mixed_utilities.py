@@ -192,6 +192,13 @@ def substitute_element_type(mesh_file, element_type):
 
 
 def cubit_part_names(part_name):
+    """Replace hyphens with underscores in strings for ACIS name compliance
+
+    :param list part_name: list of strings for character replacement(s)
+
+    :returns: modified list of part names
+    :rtype: list
+    """
     if isinstance(part_name, str):
         return part_name.replace("-", "_")
     else:
