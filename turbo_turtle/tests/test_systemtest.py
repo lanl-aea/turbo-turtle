@@ -174,7 +174,10 @@ system_tests = (
     ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,       "C3D8R", True),
     ("offset-sphere.cae",  360., (1., 1.),  "both",    None,       "C3D8R", True),
     ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,       "C3D8R", True),
-    ("half-sphere.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True)
+    ("half-sphere.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True),
+    # Cubit "element type" is really a "meshing scheme"
+    ("sphere-tets.cae",      360., (0., 0.), "both", "tetmesh",       None, True),
+    ("axisymmetric-tri.cae",   0., (0., 0.), "both", "trimesh",       None, True),
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
