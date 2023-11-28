@@ -267,7 +267,7 @@ def _get_volumes_from_name(name):
     """
     parts = [cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", name)]
     if len(parts) < 1:
-        raise RuntimeError("Could not find any volumes with prefix '{name}'")
+        raise RuntimeError(f"Could not find any volumes with prefix '{name}'")
     return parts
 
 
