@@ -324,7 +324,7 @@ merge_default_model_name = [None]
 merge_default_part_name = [None]
 
 
-def merge_parser(basename="merge.py", add_help=True, description=merge_cli_description):
+def merge_parser(basename="merge.py", add_help=True, description=merge_cli_description, cubit=False):
     """Return the merge subcommand parser
 
     :param str basename: Explicit script basename for the usage.

@@ -119,7 +119,7 @@ def get_parser():
     partition_parser = parsers.partition_parser(add_help=False, cubit=True)
     mesh_parser = parsers.mesh_parser(add_help=False, cubit=True)
     image_parser = parsers.image_parser(add_help=False, cubit=True)
-    merge_parser = parsers.merge_parser(add_help=False)
+    merge_parser = parsers.merge_parser(add_help=False, cubit=True)
     export_parser = parsers.export_parser(add_help=False, cubit=True)
 
     add_abaqus_and_cubit([
@@ -170,8 +170,8 @@ def get_parser():
 
     merge_parser = subparsers.add_parser(
         "merge",
-        help=parsers.merge_cli_help,
-        description=parsers.merge_cli_description,
+        help=append_cubit_help(parsers.merge_cli_help),
+        description=append_cubit_description(parsers.merge_cli_description),
         parents=[merge_parser]
     )
 
