@@ -48,7 +48,7 @@ def character_delimited_list(non_string_list, character=" "):
     return character.join(map(str, non_string_list))
 
 
-def setup_sphere_commands(model, angle, center, quadrant, element_type, element_replacement, cubit,
+def setup_sphere_commands(model, angle, center, quadrant, element_type, element_replacement, cubit, output_type,
                           turbo_turtle_command=turbo_turtle_command):
     """Return the sphere/partition/mesh commands for system testing
 
@@ -79,11 +79,12 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
         f"{turbo_turtle_command} export --input-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} " \
             f"--element-type {element_replacement} --destination . " \
-            f"--assembly {assembly}",
+            f"--assembly {assembly} --output-type {output_type}",
     ]
     # Skip the image subcommand when DISPLAY is not found
+    # Skip the image subcommand when running the Genesis variations. We don't need duplicate images of the cubit meshes
     # TODO: Update as Cubit support is added for partition/mesh/image/export
-    if cubit and missing_display:
+    if (cubit and missing_display) or (cubit and output_type.lower() == "genesis"):
         commands.pop(3)
 
     if cubit:
@@ -123,7 +124,7 @@ def setup_cylinder_commands(model, revolution_angle, cubit,
 
 
 def setup_merge_commands(part_name, turbo_turtle_command=turbo_turtle_command):
-    sphere_options = ("merge-sphere.cae", 360., (0., 0.), "both", "C3D8", "C3D8R", False)
+    sphere_options = ("merge-sphere.cae", 360., (0., 0.), "both", "C3D8", "C3D8R", False, "abaqus")
     commands = []
     commands.append(setup_sphere_commands(*sphere_options)[0])
     geometry_options = ("merge-multi-part",
@@ -159,25 +160,34 @@ commands_list.append([
 
 # Sphere/partition/mesh
 system_tests = (
-    # model/part,         angle,   center, quadrant, element_type, element_replacement, cubit
+    # model/part,         angle,   center, quadrant, element_type, element_replacement, cubit, output_type
     # Abaqus CAE
-    ("sphere.cae",         360., (0., 0.),  "both",  "C3D8",       "C3D8R", False),
-    ("axisymmetric.cae",     0., (0., 0.),  "both",  "CAX4",       "CAX4R", False),
-    ("quarter-sphere.cae",  90., (0., 0.),  "both",  "C3D8",       "C3D8R", False),
-    ("offset-sphere.cae",  360., (1., 1.),  "both",  "C3D8",       "C3D8R", False),
-    ("eigth-sphere.cae",    90., (0., 0.), "upper",  "C3D8",       "C3D8R", False),
-    ("half-sphere.cae",    360., (0., 0.), "upper",  "C3D8",       "C3D8R", False),
-    # Cubit
-    # TODO: Add element type and replacement when the mesh/export subcommands support Cubit
-    ("sphere.cae",         360., (0., 0.),  "both",    None,       "C3D8R", True),
-    ("axisymmetric.cae",     0., (0., 0.),  "both",    None,       "CAX4R", True),
-    ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,       "C3D8R", True),
-    ("offset-sphere.cae",  360., (1., 1.),  "both",    None,       "C3D8R", True),
-    ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,       "C3D8R", True),
-    ("half-sphere.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True),
+    ("sphere.cae",         360., (0., 0.),  "both",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("axisymmetric.cae",     0., (0., 0.),  "both",  "CAX4",       "CAX4R", False, "abaqus"),
+    ("quarter-sphere.cae",  90., (0., 0.),  "both",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("offset-sphere.cae",  360., (1., 1.),  "both",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("eigth-sphere.cae",    90., (0., 0.), "upper",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("half-sphere.cae",    360., (0., 0.), "upper",  "C3D8",       "C3D8R", False, "abaqus"),
+    # Cubit: for Abaqus INP
+    ("sphere.cae",         360., (0., 0.),  "both",    None,       "C3D8R", True, "abaqus"),
+    ("axisymmetric.cae",     0., (0., 0.),  "both",    None,       "CAX4R", True, "abaqus"),
+    ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,       "C3D8R", True, "abaqus"),
+    ("offset-sphere.cae",  360., (1., 1.),  "both",    None,       "C3D8R", True, "abaqus"),
+    ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,       "C3D8R", True, "abaqus"),
+    ("half-sphere.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True, "abaqus"),
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets.cae",      360., (0., 0.), "both", "tetmesh",       None, True),
-    ("axisymmetric-tri.cae",   0., (0., 0.), "both", "trimesh",       None, True),
+    ("sphere-tets.cae",      360., (0., 0.), "both", "tetmesh",       None, True, "abaqus"),
+    ("axisymmetric-tri.cae",   0., (0., 0.), "both", "trimesh",       None, True, "abaqus"),
+    # Cubit: for Genesis INP
+    ("sphere.cae",         360., (0., 0.),  "both",    None,       "C3D8R", True, "genesis"),
+    ("axisymmetric.cae",     0., (0., 0.),  "both",    None,       "CAX4R", True, "genesis"),
+    ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,       "C3D8R", True, "genesis"),
+    ("offset-sphere.cae",  360., (1., 1.),  "both",    None,       "C3D8R", True, "genesis"),
+    ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,       "C3D8R", True, "genesis"),
+    ("half-sphere.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True, "genesis"),
+    # Cubit "element type" is really a "meshing scheme"
+    ("sphere-tets.cae",      360., (0., 0.), "both", "tetmesh",       None, True, "genesis"),
+    ("axisymmetric-tri.cae",   0., (0., 0.), "both", "trimesh",       None, True, "genesis"),
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
