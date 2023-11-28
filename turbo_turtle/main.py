@@ -70,8 +70,10 @@ def append_cubit_help(text, append="with Abaqus or Cubit"):
     return f"{text} {append}"
 
 
-def append_cubit_description(text, append="Defaults to Abaqus, but can optionally run Cubit. Cubit implementation "
-                                          "replaces hyphens with underscores in part name(s)."):
+def append_cubit_description(text,
+                             append="Defaults to Abaqus, but can optionally run Cubit. Cubit implementation "
+                                    "replaces hyphens with underscores in part name(s) and ignores model/assembly name "
+                                    "arguments"):
     """Append common long description with optional Cubit text
 
     :param str text: original text
