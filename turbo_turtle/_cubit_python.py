@@ -497,6 +497,17 @@ def mesh(input_file, element_type,
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
+def _mesh_sheet_body(part, global_seed, element_type=None):
+    surface_objects = part.surfaces()
+    surfaces = [surface.id() for surface in surface_objects]
+    surface_string = " ".join(map(str, surfaces))
+    if element_type == "trimesh":
+        cubit_command_or_exit(f"surface {surface_string} scheme {element_type}")
+    cubit_command_or_exit(f"surface {surface_string} size {global_seed}")
+    for surface in surface_objects:
+        surface.mesh()
+
+
 def _mesh(element_type, part_name, global_seed):
     """Mesh Cubit volumes and sheet bodies by part/volume name
 
@@ -509,14 +520,7 @@ def _mesh(element_type, part_name, global_seed):
     for part in parts:
         part_id = part.id()
         if cubit.is_sheet_body(part_id):
-            surface_objects = part.surfaces()
-            surfaces = [surface.id() for surface in surface_objects]
-            surface_string = " ".join(map(str, surfaces))
-            if element_type == "trimesh":
-                cubit_command_or_exit(f"surface {surface_string} scheme {element_type}")
-            cubit_command_or_exit(f"surface {surface_string} size {global_seed}")
-            for surface in surface_objects:
-                surface.mesh()
+            _mesh_sheet_body(part, global_seed, element_type=element_type)
         else:
             if element_type == "tetmesh":
                 cubit_command_or_exit(f"volume {part_id} scheme {element_type}")
