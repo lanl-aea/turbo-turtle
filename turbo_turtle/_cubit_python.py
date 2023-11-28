@@ -599,9 +599,10 @@ def _export(output_file, part_name, element_type, destination):
     else:
         max_block_id = 0
     parts = _get_volumes_from_name(part_name)
+    part_ids = [part.id() for part in parts]
+    part_string = " ".join(map(str, part_ids))
     new_block_id = max_block_id + 1
-    for part in parts:
-        cubit.cmd(f"block {new_block_id} add volume {part.id()}")
+    cubit.cmd(f"block {new_block_id} add volume {part_string}")
     cubit.cmd(f"block {new_block_id} name '{part_name}'")
     cubit.cmd(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
