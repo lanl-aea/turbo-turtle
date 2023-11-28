@@ -360,7 +360,7 @@ export_cli_help = "Export an Abaqus part mesh as an orphan mesh"
 export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
 
 
-def export_parser(basename="export.py", add_help=True, description=export_cli_description):
+def export_parser(basename="export.py", add_help=True, description=export_cli_description, cubit=False):
     """Return the export subcommand parser
 
     :param str basename: Explicit script basename for the usage.
@@ -370,6 +370,11 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
+    part_name_help_cubit = ""
+    if cubit:
+        part_name_help_cubit = "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " \
+                               "ACIS compatibility. "
+    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -378,7 +383,7 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
     parser.add_argument("--model-name", type=str, default=export_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument("--part-name", type=str, nargs='+', default=export_default_part_name,
-                        help="List of Abaqus part names (default: %(default)s)")
+                        help=part_name_help)
     parser.add_argument("--element-type", type=str, nargs='+', default=export_default_element_type,
                         help="List of element types, one per part name or one global replacement for every part name " \
                              "(default: %(default)s)")

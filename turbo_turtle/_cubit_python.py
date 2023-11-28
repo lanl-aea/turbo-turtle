@@ -589,8 +589,10 @@ def export(input_file,
         _export(name, element, destination)
 
 
-def _export(name, element, destination):
-    pass
+def _export(part_name, element_type, destination):
+    blocks_before = cubit.get_entities("block")
+    parts = _get_volumes_from_name(part_name)
+    import pdb; pdb.set_trace()
 
 
 def image(input_file, output_file, cubit_command,
