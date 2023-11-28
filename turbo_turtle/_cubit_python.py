@@ -577,6 +577,9 @@ def image(input_file, output_file,
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
     :param str output_file: Screenshot file to write
+    :param float x_angle: Rotation about 'world' X-axis in degrees
+    :param float y_angle: Rotation about 'world' Y-axis in degrees
+    :param float z_angle: Rotation about 'world' Z-axis in degrees
     """
     cubit.init(["cubit"])
 
