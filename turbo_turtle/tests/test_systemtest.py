@@ -123,23 +123,40 @@ def setup_cylinder_commands(model, revolution_angle, cubit,
     return commands
 
 
-def setup_merge_commands(part_name, turbo_turtle_command=turbo_turtle_command):
-    sphere_options = ("merge-sphere.cae", 360., (0., 0.), "both", "C3D8", "C3D8R", False, "abaqus")
+def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_command):
     commands = []
+
+    sphere_model = pathlib.Path("merge-sphere.cae")
+    sphere_element_type = "C3D8"
+    sphere_element_replacement = "C3D8R"
+    geometry_model = pathlib.Path("merge-multi-part")
+    output_file = pathlib.Path("merge.cae")
+    if cubit:
+        sphere_model = sphere_model.with_suffix(".cub")
+        sphere_element_type = None
+        sphere_element_replacement = "HEX20"
+        geometry_model = geometry_model.with_suffix(".cub")
+        output_file = output_file.with_suffix(".cub")
+
+    # Create sphere file
+    sphere_options = (str(sphere_model), 360., (0., 0.), "both", sphere_element_type, sphere_element_replacement, cubit, "abaqus")
     commands.append(setup_sphere_commands(*sphere_options)[0])
-    geometry_options = ("merge-multi-part",
+
+    # Create washer/vase combined file
+    geometry_options = (str(geometry_model),
                         [_settings._project_root_abspath / "tests" / "washer.csv",
                          _settings._project_root_abspath / "tests" / "vase.csv"],
-                        360.0, False)
+                        360.0, cubit)
     commands.extend(setup_geometry_commands(*geometry_options))
 
-    merge_command =  f"{turbo_turtle_command} merge --input-file merge-sphere.cae merge-multi-part.cae " \
-                     f"--output-file merge.cae --merged-model-name merge " \
+    # Run the actual merge command
+    merge_command =  f"{turbo_turtle_command} merge --input-file {sphere_model} {geometry_model} " \
+                     f"--output-file {output_file} --merged-model-name merge " \
                      f"--model-name merge-multi-part merge-sphere"
     if part_name:
         merge_command += f" --part-name {part_name}"
-
     commands.append(merge_command)
+
     return commands
 
 # Help/Usage sign-of-life
@@ -230,7 +247,8 @@ for test in system_tests:
 
 # Merge tests
 for part_name in ("washer vase merge-sphere", ""):
-    commands_list.append(setup_merge_commands(part_name))
+    commands_list.append(setup_merge_commands(part_name, cubit=False))
+    commands_list.append(setup_merge_commands(part_name, cubit=True))
 
 
 @pytest.mark.systemtest
