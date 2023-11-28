@@ -506,6 +506,8 @@ def _mesh_sheet_body(volume, global_seed, element_type=None):
     :param float global_seed: Seed size, e.g. ``cubit.cmd(surface {} size {global_seed}``
     :param str element_type: Cubit meshing scheme. Accepts 'trimesh' or is ignored.
     """
+    # TODO: Process multiple sheet bodies with a single Cubit command set
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/80
     surface_objects = volume.surfaces()
     surfaces = [surface.id() for surface in surface_objects]
     surface_string = " ".join(map(str, surfaces))
@@ -523,6 +525,8 @@ def _mesh_volume(volume, global_seed, element_type=None):
     :param float global_seed: Seed size, e.g. ``cubit.cmd(volume {} size {global_seed}``
     :param str element_type: Cubit meshing scheme. Accepts 'tetmesh' or is ignored.
     """
+    # TODO: Process multiple volumes with a single Cubit command set
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/80
     volume_id = volume.id()
     if element_type == "tetmesh":
         cubit_command_or_exit(f"volume {volume_id} scheme {element_type}")
@@ -535,6 +539,8 @@ def _mesh_multiple_volumes(volumes, global_seed, element_type=None):
 
     :param cubit.Volume volume: Cubit volume to mesh
     """
+    # TODO: Process all sheet bodies and all volumes with a single Cubit command set
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/80
     for volume in volumes:
         volume_id = volume.id()
         if cubit.is_sheet_body(volume_id):
