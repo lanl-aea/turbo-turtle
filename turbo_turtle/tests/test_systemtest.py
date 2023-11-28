@@ -179,15 +179,15 @@ system_tests = (
     ("sphere-tets.cae",      360., (0., 0.), "both", "tetmesh",       None, True, "abaqus"),
     ("axisymmetric-tri.cae",   0., (0., 0.), "both", "trimesh",       None, True, "abaqus"),
     # Cubit: for Genesis INP
-    ("sphere.cae",         360., (0., 0.),  "both",    None,       "C3D8R", True, "genesis"),
-    ("axisymmetric.cae",     0., (0., 0.),  "both",    None,       "CAX4R", True, "genesis"),
-    ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,       "C3D8R", True, "genesis"),
-    ("offset-sphere.cae",  360., (1., 1.),  "both",    None,       "C3D8R", True, "genesis"),
-    ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,       "C3D8R", True, "genesis"),
-    ("half-sphere.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True, "genesis"),
+    ("sphere-genesis.cae",         360., (0., 0.),  "both",    None,       "C3D8R", True, "genesis"),
+    ("axisymmetric-genesis.cae",     0., (0., 0.),  "both",    None,       "CAX4R", True, "genesis"),
+    ("quarter-sphere-genesis.cae",  90., (0., 0.),  "both",    None,       "C3D8R", True, "genesis"),
+    ("offset-sphere-genesis.cae",  360., (1., 1.),  "both",    None,       "C3D8R", True, "genesis"),
+    ("eigth-sphere-genesis.cae",    90., (0., 0.), "upper",    None,       "C3D8R", True, "genesis"),
+    ("half-sphere-genesis.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True, "genesis"),
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets.cae",      360., (0., 0.), "both", "tetmesh",       None, True, "genesis"),
-    ("axisymmetric-tri.cae",   0., (0., 0.), "both", "trimesh",       None, True, "genesis"),
+    ("sphere-tets-genesis.cae",      360., (0., 0.), "both", "tetmesh",       None, True, "genesis"),
+    ("axisymmetric-tri-genesis.cae",   0., (0., 0.), "both", "trimesh",       None, True, "genesis"),
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))

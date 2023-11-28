@@ -174,6 +174,17 @@ def _create_arc_from_coordinates(center, point1, point2):
 
 
 def _create_surface_from_coordinates(coordinates):
+    """Create a surface from an [N, 3] array of coordinates
+
+    Each row of the array represents a coordinate in 3D space. Must have at least 3 rows or a RuntimeError is raised.
+    Coordinates are connected in pairs to create curves. First and last coordinate connected for final curve. Curves
+    must defind a closed perimeter to generate a surface.
+
+    :param numpy.array coordinates: [N, 3] array of 3D coordinates where N > 2.
+
+    :returns: Cubit surface object
+    :rtype: cubit.surface
+    """
     coordinates = numpy.array(coordinates)
     if coordinates.shape[0] < 3:
         raise RuntimeError("Requires at least 3 coordinates to create a surface")
@@ -605,8 +616,8 @@ def export(input_file,
     if output_type.lower() == "abaqus":
         _export_abaqus_list(part_name, element_type, destination)
     elif output_type.lower() == "genesis":
-        output_file = input_file.with_suffix(".g")
-        _export_genesis(output_file, part_name, element_type, destination)
+        output_file = destination / input_file.with_suffix(".g").name
+        _export_genesis(output_file, part_name, element_type)
     else:
         sys.exit(f"Uknown output type request '{output_type}'")
 
@@ -634,13 +645,28 @@ def _create_new_block(volumes):
 
 
 def _create_volume_name_block(name):
+    """Create a new block with all volumes prefixed by name
+
+    :param str name: Name for new block and prefix for volume search
+
+    :returns: New block ID
+    :rtype: int
+    """
     volumes = _get_volumes_from_name(name)
     new_block_id = _create_new_block(volumes)
     cubit.cmd(f"block {new_block_id} name '{name}'")
     return new_block_id
 
 
-def _export_genesis(output_file, part_name, element_type, destination):
+def _export_genesis(output_file, part_name, element_type):
+    """Export all volumes with part name prefix to the output file
+
+    Always creates new blocks named after the part/volume prefix.
+
+    :param pathlib.Path output_file: Genesis file to write
+    :param list part_name: list of part/volume names to create as blocks from all volumes with a matching prefix
+    :param list element_type: list of element type strings
+    """
     block_ids = []
     for name in part_name:
         block_ids.append(_create_volume_name_block(name))
@@ -649,15 +675,26 @@ def _export_genesis(output_file, part_name, element_type, destination):
 
 
 def _export_abaqus_list(part_name, element_type, destination):
+    """Export one Abaqus orphan mesh per part in the destination directory
+
+    :param list part_name: list of part/volume names to create as blocks from all volumes with a matching prefix
+    :param list element_type: List of element type strings
+    :param pathlib.Path destination: Parent directory for orphan mesh files
+    """
     for name, element in zip(part_name, element_type):
         output_file = destination / name
         output_file = output_file.with_suffix(".inp")
-        _export_abaqus(output_file, name, element, destination)
+        _export_abaqus(output_file, name)
         if element is not None:
             _mixed_utilities.substitute_element_type(output_file, element)
 
 
-def _export_abaqus(output_file, part_name, element_type, destination):
+def _export_abaqus(output_file, part_name):
+    """Create a block named after the part, add all volumes/surfaace with name prefix, export an Abaqus orphan mesh file
+
+    :param pathlib.Path output_file: Abaqus file to write
+    :param str part_name: part/volume name to create as blocks from all volumes with a matching prefix
+    """
     new_block_id = _create_volume_name_block(part_name)
     cubit.cmd(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
