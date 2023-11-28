@@ -583,16 +583,27 @@ def export(input_file,
     part_name = _mixed_utilities.cubit_part_names(part_name)
     element_type = _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
     input_file = pathlib.Path(input_file).with_suffix(".cub")
+    destination = pathlib.Path(destination)
 
-    cubit_command_or_exit(f"open '{copy_file.name}'")
+    cubit_command_or_exit(f"open '{input_file}'")
     for name, element in zip(part_name, element_type):
-        _export(name, element, destination)
+        output_file = destination / name
+        output_file = output_file.with_suffix(".inp")
+        _export(output_file, name, element, destination)
 
 
-def _export(part_name, element_type, destination):
-    blocks_before = cubit.get_entities("block")
+def _export(output_file, part_name, element_type, destination):
+    blocks_before = cubit.get_block_id_list()
+    if len(blocks_before) >= 1:
+        max_block_id = max(blocks_before)
+    else:
+        max_block_id = 0
     parts = _get_volumes_from_name(part_name)
-    import pdb; pdb.set_trace()
+    new_block_id = max_block_id + 1
+    for part in parts:
+        cubit.cmd(f"block {new_block_id} add volume {part.id()}")
+    cubit.cmd(f"block {new_block_id} name '{part_name}'")
+    cubit.cmd(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
 
 def image(input_file, output_file, cubit_command,
