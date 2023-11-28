@@ -123,7 +123,8 @@ def export(args, command):
         args.input_file,
         part_name=args.part_name,
         element_type=args.element_type,
-        destination=args.destination
+        destination=args.destination,
+        output_type=args.output_type
     ))
 
 

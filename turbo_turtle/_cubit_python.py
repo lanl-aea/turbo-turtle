@@ -588,7 +588,16 @@ def export(input_file,
 
     cubit_command_or_exit(f"open '{input_file}'")
 
-    _export_abaqus_list(part_name, element_type, destination)
+    if output_type.lower() == "abaqus":
+        _export_abaqus_list(part_name, element_type, destination)
+    elif output_type.lower() == "genesis":
+        _export_genesis(part_name, element_type, destination)
+    else:
+        sys.exit(f"Uknown output type request '{output_type}'")
+
+
+def _export_genesis(part_name, element_type, destination):
+    pass
 
 
 def _export_abaqus_list(part_name, element_type, destination):
