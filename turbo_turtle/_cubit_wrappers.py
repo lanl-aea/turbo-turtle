@@ -134,7 +134,7 @@ def image(args, command):
     """
     sys.exit(_cubit_python.image(
          args.input_file,
-         args.output_file
+         args.output_file,
          x_angle=args.x_angle,
          y_angle=args.y_angle,
          z_angle=args.z_angle

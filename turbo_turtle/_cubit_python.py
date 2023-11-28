@@ -590,4 +590,4 @@ def image(input_file, output_file,
         cubit_command_or_exit(f"rotate {x_angle} about world x")
         cubit_command_or_exit(f"rotate {y_angle} about world y")
         cubit_command_or_exit(f"rotate {z_angle} about world z")
-        cubit_command_or_exit(f"hardcopy '{output_file}' {output_file.suffix}")
+        cubit_command_or_exit(f"hardcopy '{output_file}' {output_file.suffix.strip('.')}")
