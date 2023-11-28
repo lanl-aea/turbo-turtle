@@ -582,6 +582,7 @@ def image(input_file, output_file,
 
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file)
+    output_type = output_file.suffix.strip('.')
 
     # TODO: Check if Cubit modifies the file on open. If not, we can probably remove some of these tempfiles
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
@@ -590,4 +591,4 @@ def image(input_file, output_file,
         cubit_command_or_exit(f"rotate {x_angle} about world x")
         cubit_command_or_exit(f"rotate {y_angle} about world y")
         cubit_command_or_exit(f"rotate {z_angle} about world z")
-        cubit_command_or_exit(f"hardcopy '{output_file}' {output_file.suffix.strip('.')}")
+        cubit_command_or_exit(f"hardcopy '{output_file}' {output_type}")
