@@ -60,9 +60,15 @@ def _export_assembly(assembly_file, model_name, part_name):
     block = model.keywordBlock.sieBlocks
     block_string = '\n'.join(block)
     regex = r"\*assembly.*?\*end assembly"
-    assembly = re.findall(regex, block_string, re.IGNORECASE | re.MULTILINE | re.DOTALL)
+    assembly_text = re.findall(regex, block_string, re.IGNORECASE | re.MULTILINE | re.DOTALL)
+    assembly_text = assembly_text[0]
+    assembly_text_list = assembly_text.split("\n")
+    assembly_text_list.pop(0)
+    assembly_text_list.pop(-1)
+    assembly_text = "\n".join(assembly_text_list)
     with open(assembly_file, 'w') as output:
-        output.write(assembly[0].strip())
+        output.write(assembly_text)
+        output.write("\n")
 
 
 def export_multiple_parts(model_name, part_name, element_type, destination):
