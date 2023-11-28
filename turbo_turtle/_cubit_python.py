@@ -595,17 +595,30 @@ def export(input_file,
 
 
 def _export(output_file, part_name, element_type, destination):
+    # Manage block ID
     blocks_before = cubit.get_block_id_list()
     if len(blocks_before) >= 1:
         max_block_id = max(blocks_before)
     else:
         max_block_id = 0
+    new_block_id = max_block_id + 1
+
+    # Get a list of part_name prefixed volumes
     parts = _get_volumes_from_name(part_name)
     part_ids = [part.id() for part in parts]
     part_string = " ".join(map(str, part_ids))
-    new_block_id = max_block_id + 1
-    cubit.cmd(f"block {new_block_id} add volume {part_string}")
+
+    if any([cubit.is_sheet_body(part_id) for part_id in part_ids]):
+        surfaces = []
+        for part in parts:
+            surfaces.extend(_surface_numbers(part.surfaces()))
+        surface_string = " ".join(map(str, surfaces))
+        cubit.cmd(f"block {new_block_id} add surface {surface_string}")
+    else:
+        cubit.cmd(f"block {new_block_id} add volume {part_string}")
+
     cubit.cmd(f"block {new_block_id} name '{part_name}'")
+    cubit.cmd("save as 'debugging.cub' overwrite")
     cubit.cmd(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
 
