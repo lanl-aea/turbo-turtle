@@ -112,16 +112,15 @@ def merge(args, command):
 
 
 def export(args, command):
-    """Python 3 wrapper around Cubit
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.export`
 
-    .. warning::
-
-       Not yet implemented. Will return a non-zero exit code.
+    Unpack the argument namespace into the full function interface
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit("Not yet implemented")
+    sys.exit(_cubit_python.export(
+    ))
 
 
 def image(args, command):
