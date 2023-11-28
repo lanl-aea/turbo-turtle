@@ -638,19 +638,20 @@ def _create_new_block(volumes):
     """
     new_block_id = _get_new_block_id()
     volume_ids = [volume.id() for volume in volumes]
+    volume_string = " ".join(map(str, volume_ids))
     if any([cubit.is_sheet_body(volume_id) for volume_id in volume_ids]):
-        surfaces = _surface_numbers(_surfaces_for_volumes(parts))
+        surfaces = _surface_numbers(_surfaces_for_volumes(volumes))
         surface_string = " ".join(map(str, surfaces))
         cubit.cmd(f"block {new_block_id} add surface {surface_string}")
     else:
-        cubit.cmd(f"block {new_block_id} add volume {part_string}")
+        cubit.cmd(f"block {new_block_id} add volume {volume_string}")
     return new_block_id
 
 
 def _create_volume_name_block(name):
     volumes = _get_volumes_from_name(name)
     new_block_id = _create_new_block(volumes)
-    cubit.cmd(f"block {new_block_id} name '{part_name}'")
+    cubit.cmd(f"block {new_block_id} name '{name}'")
     return new_block_id
 
 
