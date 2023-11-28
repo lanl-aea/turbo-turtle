@@ -571,7 +571,8 @@ def _mesh(element_type, part_name, global_seed):
 def image(input_file, output_file, cubit_command,
           x_angle=parsers.image_default_x_angle,
           y_angle=parsers.image_default_y_angle,
-          z_angle=parsers.image_default_z_angle):
+          z_angle=parsers.image_default_z_angle,
+          image_size=parsers.image_default_image_size):
     """Open a Cubit ``*.cub`` file and save an image
 
     Uses the Cubit APREPRO `hardcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions. This
@@ -591,6 +592,7 @@ def image(input_file, output_file, cubit_command,
     journal_path = output_file.with_suffix(".jou")
     with open(journal_path, "w") as journal_file:
         journal_file.write(f"open '{input_file}'\n")
+        journal_file.write(f"graphics windowsize {image_size[0]} {image_size[1]}\n")
         journal_file.write(f"rotate {x_angle} about world x\n")
         journal_file.write(f"rotate {y_angle} about world y\n")
         journal_file.write(f"rotate {z_angle} about world z\n")

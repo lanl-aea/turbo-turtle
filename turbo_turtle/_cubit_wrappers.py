@@ -138,5 +138,6 @@ def image(args, command):
          command,
          x_angle=args.x_angle,
          y_angle=args.y_angle,
-         z_angle=args.z_angle
+         z_angle=args.z_angle,
+         image_size=args.image_size
     ))

@@ -433,7 +433,7 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
     parser.add_argument('--z-angle', type=float, default=image_default_z_angle,
                         help='Viewer rotation about Z-axis in degrees (default: %(default)s)')
     parser.add_argument('--image-size', nargs=2, type=int, default=image_default_image_size,
-                        help="Image size in pixels (X, Y) (default: %(default)s)")
+                        help="Image size in pixels (width, height) (default: %(default)s)")
     parser.add_argument('--model-name', type=str, default=image_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=image_default_part_name,
