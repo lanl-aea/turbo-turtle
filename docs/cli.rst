@@ -62,6 +62,8 @@ mesh
    :nodefault:
    :path: mesh
 
+.. _image_cli:
+
 image
 -----
 

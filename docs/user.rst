@@ -98,6 +98,8 @@ list of commands will be expanded as they are implemented.
      if a non-default scheme is passed: trimesh or tetmesh. Because the Abaqus and Cubit implementations share a command
      line parser, and the Abaqus implementation requires this option, it is always required in the Cubit implementation
      as well.
+   * The :ref:`image_cli` subcommand must launch a Cubit window and the Cubit commands only work in APREPRO journal
+     files, so an ``output_file``.jou file is created.
 
 Three-dimensional sphere
 ========================
@@ -107,6 +109,7 @@ Three-dimensional sphere
    turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cub --part-name sphere --cubit
    turbo-turtle partition --input-file sphere.cub --output-file sphere.cub --part-name sphere --cubit
    turbo-turtle mesh --input-file sphere.cub --output-file sphere.cub --part-name sphere --element-type dummy --global-seed 0.15 --cubit
+   turbo-turtle image --input-file sphere.cub --output-file sphere.png --cubit
 
 Two-dimensional, axisymmetric sphere
 ====================================
@@ -116,3 +119,4 @@ Two-dimensional, axisymmetric sphere
    turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cub --part-name axisymmetric --revolution-angle 0 --cubit
    turbo-turtle partition --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric
    turbo-turtle mesh --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric --element-type dummy --global-seed 0.15
+   turbo-turtle image --input-file axisymmetric.cub --output-file axisymmetric.png --cubit
