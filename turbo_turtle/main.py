@@ -53,9 +53,7 @@ def add_abaqus_and_cubit(parsers):
         parser.add_argument("--cubit-command", nargs="+", default=_settings._default_cubit_options,
                             help="Cubit executable options (default: %(default)s)")
         parser.add_argument("--cubit", action="store_true",
-                            help="Flag to use Cubit instead of Abaqus. " \
-                                 "Check subcommand usage/help for implementation status " \
-                                 "(default: %(default)s)")
+                            help="Flag to use Cubit instead of Abaqus (default: %(default)s)")
 
 
 def append_cubit_help(text, append="with Abaqus or Cubit"):
