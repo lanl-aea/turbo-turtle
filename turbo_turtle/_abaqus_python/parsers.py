@@ -215,8 +215,8 @@ partition_default_zvector = [0.0, 0.0, 1.0]
 partition_default_model_name = "Model-1"
 partition_default_part_name = "Part-1"
 partition_default_big_number = 1e6
-partition_cli_help = "Partition a spherical shape into a turtle shell"
-partition_cli_description = "Partition a spherical shape into a turtle shell given a small number of locating, " \
+partition_cli_help = "Partition hollow spheres into a turtle shell"
+partition_cli_description = "Partition hollow spheres into a turtle shell given a small number of locating, " \
                             "clocking, and partition plane angle parameters."
 
 
@@ -355,7 +355,7 @@ export_default_part_name = ["Part-1"]
 export_default_element_type = [None]
 export_default_destination = os.getcwd()
 export_default_assembly = None
-export_output_type_choices = ["abaqus", "genesis"]
+export_output_type_choices = ["abaqus", "genesis", "genesis-normal", "genesis-hdf5"]
 export_default_output_type = export_output_type_choices[0]
 export_cli_help = "Export an Abaqus part mesh as an orphan mesh"
 # TODO: Write a more descriptive behavior message

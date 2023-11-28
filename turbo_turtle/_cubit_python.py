@@ -615,9 +615,9 @@ def export(input_file,
 
     if output_type.lower() == "abaqus":
         _export_abaqus_list(part_name, element_type, destination)
-    elif output_type.lower() == "genesis":
+    elif output_type.lower().starts_with("genesis"):
         output_file = destination / input_file.with_suffix(".g").name
-        _export_genesis(output_file, part_name, element_type)
+        _export_genesis(output_file, part_name, element_type, output_type)
     else:
         sys.exit(f"Uknown output type request '{output_type}'")
 
@@ -658,7 +658,28 @@ def _create_volume_name_block(name):
     return new_block_id
 
 
-def _export_genesis(output_file, part_name, element_type):
+def _set_genesis_output_type(output_type):
+    """Set Cubit exodus/genesis output type
+
+    :param str output_type: String identifying genesis output type: genesis (large format), genesis-normal, genesis-hdf5
+    """
+    if output_type.lower() == "genesis":
+        cubit_command_or_exit(f"set large exodus file on")
+    elif output_type.lower() == "genesis-normal":
+        cubit_command_or_exit(f"set large exodus file off")
+    elif output_type.lower() == "genesis-hdf5":
+        cubit_command_or_exit(f"set exodus netcdf4 on")
+    else:
+        raise RuntimeError("Unknown genesis output type '{output_type}'")
+
+
+@_mixed_utilities.print_exception_message
+def _set_genesis_output_type_or_exit(*args, **kwargs):
+    """Thin wrapper around :meth:`turbo_turtle._cubit_python._set_genesis_output_type` to call sys exit on exceptions"""
+    return _set_genesis_output_type(*args, **kwargs)
+
+
+def _export_genesis(output_file, part_name, element_type, output_type="genesis"):
     """Export all volumes with part name prefix to the output file
 
     Always creates new blocks named after the part/volume prefix.
@@ -666,12 +687,14 @@ def _export_genesis(output_file, part_name, element_type):
     :param pathlib.Path output_file: Genesis file to write
     :param list part_name: list of part/volume names to create as blocks from all volumes with a matching prefix
     :param list element_type: list of element type strings
+    :param str output_type: String identifying genesis output type: genesis (large format), genesis-normal, genesis-hdf5
     """
     block_ids = []
     for name, element in zip(part_name, element_type):
         block_ids.append(_create_volume_name_block(name))
         if element_type is not None:
             cubit_command_or_exit(f"block {block_ids[-1]} element type {element}")
+    _set_genesis_output_type_or_exit(output_type)
     block_string = " ".join(map(str, block_ids))
     cubit_command_or_exit(f"export mesh '{output_file}' block {block_string} overwrite")
 
