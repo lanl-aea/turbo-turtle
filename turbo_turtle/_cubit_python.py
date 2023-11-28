@@ -506,24 +506,19 @@ def _mesh(element_type, part_name, global_seed):
     """
     parts = _get_volumes_from_name_or_exit(part_name)
     element_type = element_type.lower()
-    if element_type == "tetmesh":
-        cubit_command_or_exit(f"volume with name '{part_name}*' scheme {element_type}")
-    elif element_type == "trimesh":
-        surfaces = []
-        for part in parts:
-            surface_objects = part.surfaces()
-            surfaces.extend([surface.id() for surface in surface_objects])
-        surface_string = " ".join(map(str, surfaces))
-        cubit_command_or_exit(f"surface {surface_string} scheme {element_type}")
     for part in parts:
         part_id = part.id()
         if cubit.is_sheet_body(part_id):
             surface_objects = part.surfaces()
             surfaces = [surface.id() for surface in surface_objects]
             surface_string = " ".join(map(str, surfaces))
+            if element_type == "trimesh":
+                cubit_command_or_exit(f"surface {surface_string} scheme {element_type}")
             cubit_command_or_exit(f"surface {surface_string} size {global_seed}")
             for surface in surface_objects:
                 surface.mesh()
         else:
+            if element_type == "tetmesh":
+                cubit_command_or_exit(f"volume {part_id} scheme {element_type}")
             cubit_command_or_exit(f"volume {part_id} size {global_seed}")
             part.mesh()
