@@ -155,6 +155,8 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
                      f"--model-name merge-multi-part merge-sphere"
     if part_name:
         merge_command += f" --part-name {part_name}"
+    if cubit:
+        merge_command = f"{merge_command} --cubit"
     commands.append(merge_command)
 
     return commands
