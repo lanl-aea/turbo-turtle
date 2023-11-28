@@ -567,7 +567,10 @@ def _mesh(element_type, part_name, global_seed):
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
 
 
-def image(input_file, output_file):
+def image(input_file, output_file,
+          x_angle=parsers.image_default_x_angle,
+          y_angle=parsers.image_default_y_angle,
+          z_angle=parsers.image_default_z_angle):
     """Open a Cubit ``*.cub`` file and save an image
 
     Uses the Cubit APREPRO `hardcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions.
@@ -584,4 +587,7 @@ def image(input_file, output_file):
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exit(f"open '{copy_file.name}'")
+        cubit_command_or_exit(f"rotate {x_angle} X")
+        cubit_command_or_exit(f"rotate {y_angle} Y")
+        cubit_command_or_exit(f"rotate {z_angle} Z")
         cubit_command_or_exit(f"hardcopy '{output_file}' {output_file.suffix}")
