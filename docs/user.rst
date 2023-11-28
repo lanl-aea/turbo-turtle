@@ -102,15 +102,15 @@ Three-dimensional sphere
 
 .. code-block::
 
-   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cae --part-name sphere --cubit
-   turbo-turtle partition --input-file sphere.cae --output-file sphere.cae --part-name sphere --cubit
-   turbo-turtle mesh --input-file sphere.cae --output-file sphere.cae --part-name sphere --element-type dummy --global-seed 0.15 --cubit
+   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cub --part-name sphere --cubit
+   turbo-turtle partition --input-file sphere.cub --output-file sphere.cub --part-name sphere --cubit
+   turbo-turtle mesh --input-file sphere.cub --output-file sphere.cub --part-name sphere --element-type dummy --global-seed 0.15 --cubit
 
 Two-dimensional, axisymmetric sphere
 ====================================
 
 .. code-block::
 
-   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cae --part-name axisymmetric --revolution-angle 0 --cubit
-   turbo-turtle partition --input-file axisymmetric.cae --output-file axisymmetric.cae --part-name axisymmetric
-   turbo-turtle mesh --input-file axisymmetric.cae --output-file axisymmetric.cae --part-name axisymmetric --element-type dummy --global-seed 0.15
+   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cub --part-name axisymmetric --revolution-angle 0 --cubit
+   turbo-turtle partition --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric
+   turbo-turtle mesh --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric --element-type dummy --global-seed 0.15
