@@ -47,8 +47,8 @@ Documentation
 Author Info
 ===========
 
-* `Thomas Roberts`_
 * `Kyle Brindley`_
+* `Thomas Roberts`_
 
 .. user-start-do-not-remove
 

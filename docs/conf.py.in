@@ -11,8 +11,8 @@ sys.dont_write_bytecode = True
 # -- Project information -----------------------------------------------------
 project_dir = pathlib.Path(r"@project_dir@").resolve()
 authors = [
+    ("Kyle Brindley", "<kbrindley@lanl.gov>"),
     ("Thomas Roberts", "<tproberts@lanl.gov>"),
-    ("Kyle Brindley", "<kbrindley@lanl.gov>")
 ]
 author_latex = r"\and ".join(author for author, email in authors)
 epub_author = ", ".join(author for author, email in authors)

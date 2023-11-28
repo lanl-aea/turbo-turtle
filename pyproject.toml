@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "turbo_turtle"
 authors = [
-    {name = "Thomas Roberts", email = "tproberts@lanl.gov"},
     {name = "Kyle Brindley", email = "kbrindley@lanl.gov"},
+    {name = "Thomas Roberts", email = "tproberts@lanl.gov"},
 ]
 description = "Partition hollow, spherical bodies using a turtle shell"
 readme = "README.rst"
