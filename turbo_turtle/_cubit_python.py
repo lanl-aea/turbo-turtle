@@ -638,9 +638,9 @@ def _create_new_block(volumes):
     if any([cubit.is_sheet_body(volume_id) for volume_id in volume_ids]):
         surfaces = _surface_numbers(_surfaces_for_volumes(volumes))
         surface_string = " ".join(map(str, surfaces))
-        cubit.cmd(f"block {new_block_id} add surface {surface_string}")
+        cubit_command_or_exit(f"block {new_block_id} add surface {surface_string}")
     else:
-        cubit.cmd(f"block {new_block_id} add volume {volume_string}")
+        cubit_command_or_exit(f"block {new_block_id} add volume {volume_string}")
     return new_block_id
 
 
@@ -654,7 +654,7 @@ def _create_volume_name_block(name):
     """
     volumes = _get_volumes_from_name(name)
     new_block_id = _create_new_block(volumes)
-    cubit.cmd(f"block {new_block_id} name '{name}'")
+    cubit_command_or_exit(f"block {new_block_id} name '{name}'")
     return new_block_id
 
 
@@ -668,10 +668,12 @@ def _export_genesis(output_file, part_name, element_type):
     :param list element_type: list of element type strings
     """
     block_ids = []
-    for name in part_name:
+    for name, element in zip(part_name, element_type):
         block_ids.append(_create_volume_name_block(name))
+        if element_type is not None:
+            cubit_command_or_exit(f"block {block_ids[-1]} element type {element}")
     block_string = " ".join(map(str, block_ids))
-    cubit.cmd(f"export mesh '{output_file}' block {block_string} overwrite")
+    cubit_command_or_exit(f"export mesh '{output_file}' block {block_string} overwrite")
 
 
 def _export_abaqus_list(part_name, element_type, destination):
@@ -696,7 +698,7 @@ def _export_abaqus(output_file, part_name):
     :param str part_name: part/volume name to create as blocks from all volumes with a matching prefix
     """
     new_block_id = _create_volume_name_block(part_name)
-    cubit.cmd(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
+    cubit_command_or_exit(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
 
 def image(input_file, output_file, cubit_command,
