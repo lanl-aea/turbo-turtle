@@ -610,22 +610,6 @@ def export(input_file,
         sys.exit(f"Uknown output type request '{output_type}'")
 
 
-def _get_new_block_id():
-    """Return a new block ID as the maximum ID+1
-
-    :returns: new block ID
-    :rtype: int
-    """
-    # TODO: replace with cubit.get_next_block_id()
-    blocks_before = cubit.get_block_id_list()
-    if len(blocks_before) >= 1:
-        max_block_id = max(blocks_before)
-    else:
-        max_block_id = 0
-    new_block_id = max_block_id + 1
-    return new_block_id
-
-
 def _create_new_block(volumes):
     """Create a new block for all volumes in list
 
@@ -636,7 +620,7 @@ def _create_new_block(volumes):
     :returns: new block ID
     :rtype: int
     """
-    new_block_id = _get_new_block_id()
+    new_block_id = cubit.get_next_block_id()
     volume_ids = [volume.id() for volume in volumes]
     volume_string = " ".join(map(str, volume_ids))
     if any([cubit.is_sheet_body(volume_id) for volume_id in volume_ids]):
