@@ -497,8 +497,16 @@ def mesh(input_file, element_type,
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
-def _mesh_sheet_body(part, global_seed, element_type=None):
-    surface_objects = part.surfaces()
+def _mesh_sheet_body(volume, global_seed, element_type=None):
+    """Mesh a volume that is a sheet body
+
+    Assumes ``cubit.is_sheet_body(volume.id())`` is ``True``.
+
+    :param cubit.Volume volume: Cubit volume to mesh as a sheet body
+    :param float global_seed: Seed size, e.g. ``cubit.cmd(surface {} size {global_seed}``
+    :param str element_type: Cubit meshing scheme. Accepts 'trimesh' or is ignored.
+    """
+    surface_objects = volume.surfaces()
     surfaces = [surface.id() for surface in surface_objects]
     surface_string = " ".join(map(str, surfaces))
     if element_type == "trimesh":
@@ -508,12 +516,31 @@ def _mesh_sheet_body(part, global_seed, element_type=None):
         surface.mesh()
 
 
-def _mesh_volume(part, global_seed, element_type=None):
-    part_id = part.id()
+def _mesh_volume(volume, global_seed, element_type=None):
+    """Mesh a volume
+
+    :param cubit.Volume volume: Cubit volume to mesh
+    :param float global_seed: Seed size, e.g. ``cubit.cmd(volume {} size {global_seed}``
+    :param str element_type: Cubit meshing scheme. Accepts 'tetmesh' or is ignored.
+    """
+    volume_id = volume.id()
     if element_type == "tetmesh":
-        cubit_command_or_exit(f"volume {part_id} scheme {element_type}")
-    cubit_command_or_exit(f"volume {part_id} size {global_seed}")
-    part.mesh()
+        cubit_command_or_exit(f"volume {volume_id} scheme {element_type}")
+    cubit_command_or_exit(f"volume {volume_id} size {global_seed}")
+    volume.mesh()
+
+
+def _mesh_multiple_volumes(volumes, global_seed, element_type=None):
+    """Mesh ``cubit.Volume`` objects as volumes or sheet bodies
+
+    :param cubit.Volume volume: Cubit volume to mesh
+    """
+    for volume in volumes:
+        volume_id = volume.id()
+        if cubit.is_sheet_body(volume_id):
+            _mesh_sheet_body(volume, global_seed, element_type=element_type)
+        else:
+            _mesh_volume(volume, global_seed, element_type=element_type)
 
 
 def _mesh(element_type, part_name, global_seed):
@@ -525,9 +552,4 @@ def _mesh(element_type, part_name, global_seed):
     """
     parts = _get_volumes_from_name_or_exit(part_name)
     element_type = element_type.lower()
-    for part in parts:
-        part_id = part.id()
-        if cubit.is_sheet_body(part_id):
-            _mesh_sheet_body(part, global_seed, element_type=element_type)
-        else:
-            _mesh_volume(part, global_seed, element_type=element_type)
+    _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
