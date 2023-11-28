@@ -81,13 +81,10 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
             f"--element-type {element_replacement} --destination . " \
             f"--assembly {assembly}",
     ]
+    # Skip the image subcommand when DISPLAY is not found
     # TODO: Update as Cubit support is added for partition/mesh/image/export
-    if cubit:
-        if not missing_display:
-            commands = commands[0:4]
-        else:
-            # Skip the image subcommand when DISPLAY is not found
-            commands = commands[0:3]
+    if cubit and missing_display:
+        commands.pop(3)
 
     if cubit:
         commands = [f"{command} --cubit" for command in commands]
