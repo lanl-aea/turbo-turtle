@@ -615,7 +615,7 @@ def export(input_file,
 
     if output_type.lower() == "abaqus":
         _export_abaqus_list(part_name, element_type, destination)
-    elif output_type.lower().starts_with("genesis"):
+    elif output_type.lower().startswith("genesis"):
         output_file = destination / input_file.with_suffix(".g").name
         _export_genesis(output_file, part_name, element_type, output_type)
     else:
