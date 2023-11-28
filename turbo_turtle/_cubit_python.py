@@ -339,8 +339,8 @@ def sphere(inner_radius, outer_radius, output_file,
     """
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
-    :param str output_file: output file name. Will be stripped of the extension and ``.cae`` will be used.
-    :param str input_file: input file name. Will be stripped of the extension and ``.cae`` will be used.
+    :param str output_file: output file name. Will be stripped of the extension and ``.cub`` will be used.
+    :param str input_file: input file name. Will be stripped of the extension and ``.cub`` will be used.
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
     :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
     :param tuple center: tuple of floats (X, Y) location for the center of the sphere
@@ -591,6 +591,20 @@ def _mesh(element_type, part_name, global_seed):
     parts = _get_volumes_from_name_or_exit(part_name)
     element_type = element_type.lower()
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
+
+
+def merge(input_file, output_file):
+    """Merge Cubit ``*.cub`` files with forced unique block IDs and save to output file
+
+    :param list input_file: List of Cubit ``*.cub`` file(s) to merge
+    :param str output_file: Cubit ``*.cub`` file to write
+    """
+    cubit.init(["cubit"])
+    input_file = [pathlib.Path(path).with_suffix(".cub") for path in input_file]
+    output_file = pathlib.Path(output_file).with_suffix(".cub")
+    for path in input_file:
+        cubit.cmd(f"import cubit '{output_file}' unique_genesis_ids")
+    cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
 def export(input_file,
