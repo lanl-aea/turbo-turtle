@@ -116,7 +116,7 @@ def get_parser():
     sphere_parser = parsers.sphere_parser(add_help=False, cubit=True)
     partition_parser = parsers.partition_parser(add_help=False, cubit=True)
     mesh_parser = parsers.mesh_parser(add_help=False, cubit=True)
-    image_parser = parsers.image_parser(add_help=False)
+    image_parser = parsers.image_parser(add_help=False, cubit=True)
     merge_parser = parsers.merge_parser(add_help=False)
     export_parser = parsers.export_parser(add_help=False)
 
@@ -182,8 +182,8 @@ def get_parser():
 
     subparsers.add_parser(
         "image",
-        help=parsers.image_cli_help,
-        description=parsers.image_cli_description,
+        help=append_cubit_help(parsers.image_cli_help),
+        description=append_cubit_description(parsers.image_cli_description),
         parents=[image_parser]
     )
 

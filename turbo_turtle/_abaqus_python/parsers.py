@@ -409,7 +409,7 @@ image_color_map_choices = [
 ]
 
 
-def image_parser(basename="image.py", add_help=True, description=image_cli_description):
+def image_parser(basename="image.py", add_help=True, description=image_cli_description, cubit=False):
     """Return the image subcommand parser
 
     :param str basename: Explicit script basename for the usage.
