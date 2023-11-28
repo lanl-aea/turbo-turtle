@@ -605,7 +605,8 @@ def export(input_file,
     if output_type.lower() == "abaqus":
         _export_abaqus_list(part_name, element_type, destination)
     elif output_type.lower() == "genesis":
-        _export_genesis(part_name, element_type, destination)
+        output_file = input_file.with_suffix(".g")
+        _export_genesis(output_file, part_name, element_type, destination)
     else:
         sys.exit(f"Uknown output type request '{output_type}'")
 
