@@ -161,5 +161,7 @@ def image(args, command):
     command += f"--y-angle {args.y_angle} "
     command += f"--z-angle {args.z_angle} "
     command += f"--image-size {' '.join(map(str, args.image_size))} "
-    command += f"--model-name {args.model_name} --part-name {args.part_name}"
+    command += f"--model-name {args.model_name} --part-name {args.part_name} "
+    if args.assembly:
+        command += "--assembly"
     _utilities.run_command(command)

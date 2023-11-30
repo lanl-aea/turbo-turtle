@@ -23,7 +23,7 @@ def main(input_file, output_file,
          model_name=parsers.image_default_model_name,
          part_name=parsers.image_default_part_name,
          color_map=parsers.image_color_map_choices[0],
-         assembly=False):
+         assembly=parsers.image_default_assembly):
     """Wrap image with file input handling
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
@@ -64,7 +64,7 @@ def image(output_file,
           model_name=parsers.image_default_model_name,
           part_name=parsers.image_default_part_name,
           color_map=parsers.image_color_map_choices[0],
-          assembly=False):
+          assembly=parsers.image_default_assembly):
     """Script for saving an assembly view image (colored by material) for a given Abaqus input file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
