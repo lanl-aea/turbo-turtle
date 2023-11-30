@@ -84,13 +84,18 @@ def image(output_file,
 
     output_file_stem, output_file_extension = os.path.splitext(output_file)
     output_file_extension = output_file_extension.lstrip(".")
-    assembly = abaqus.mdb.models[model_name].rootAssembly
-    if len(assembly.instances.keys()) == 0:
-        part = abaqus.mdb.models[model_name].parts[part_name]
-        assembly.Instance(name=part_name, part=part, dependent=abaqusConstants.ON)
-    session.viewports['Viewport: 1'].assemblyDisplay.setValues(
-        optimizationTasks=abaqusConstants.OFF, geometricRestrictions=abaqusConstants.OFF, stopConditions=abaqusConstants.OFF)
-    session.viewports['Viewport: 1'].setValues(displayedObject=assembly)
+
+    if assembly:
+        assembly_object = abaqus.mdb.models[model_name].rootAssembly
+        session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+            optimizationTasks=abaqusConstants.OFF,
+            geometricRestrictions=abaqusConstants.OFF,
+            stopConditions=abaqusConstants.OFF)
+        session.viewports['Viewport: 1'].setValues(displayedObject=assembly_object)
+    else:
+        part_object = abaqus.mdb.models[model_name].parts[part_name]
+        session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
+
     session.viewports['Viewport: 1'].view.rotate(xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL)
     session.viewports['Viewport: 1'].view.fitView()
     session.viewports['Viewport: 1'].enableMultipleColors()
