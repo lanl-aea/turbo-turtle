@@ -8,6 +8,11 @@ Changelog
 v0.8.1 (unreleased)
 *******************
 
+Documentation
+=============
+- Clarify which ``image`` subcommand options are unused by Cubit implementation (:issue:`85`, :merge:`75`). By `Kyle
+  Brindley`_.
+
 *******************
 v0.8.0 (2023-11-28)
 *******************

@@ -434,6 +434,12 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
+    help_cubit = ""
+    if cubit:
+        help_cubit = ". Unused by Cubit implementation."
+    model_name_help = "Abaqus model name{} (default: %(default)s)".format(help_cubit)
+    part_name_help = "Abaqus part name{} (default: %(default)s)".format(help_cubit)
+    color_map_help = "Color map{} (default: %(default)s)".format(help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -450,10 +456,10 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
     parser.add_argument('--image-size', nargs=2, type=int, default=image_default_image_size,
                         help="Image size in pixels (width, height) (default: %(default)s)")
     parser.add_argument('--model-name', type=str, default=image_default_model_name,
-                        help="Abaqus model name (default: %(default)s)")
+                        help=model_name_help)
     parser.add_argument('--part-name', type=str, default=image_default_part_name,
-                        help="Abaqus part name (default: %(default)s)")
+                        help=part_name_help)
     parser.add_argument('--color-map', type=str, choices=image_color_map_choices, default=image_color_map_choices[0],
-                        help="Color map (default: %(default)s)")
+                        help=color_map_help)
 
     return parser
