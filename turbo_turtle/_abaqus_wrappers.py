@@ -45,7 +45,8 @@ def cylinder(args, command):
     command += f"--output-file {args.output_file} "
     command += f"--model-name {args.model_name} "
     command += f"--part-name {args.part_name} "
-    command += f"--revolution-angle {args.revolution_angle}"
+    command += f"--revolution-angle {args.revolution_angle} "
+    command += f"--y-offset {args.y_offset}"
     _utilities.run_command(command)
 
 
