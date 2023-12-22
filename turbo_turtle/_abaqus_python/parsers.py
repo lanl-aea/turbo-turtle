@@ -108,6 +108,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
 
 
 cylinder_default_part_name = "Part-1"
+cylinder_default_y_offset = 0.
 cylinder_cli_help = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 cylinder_cli_description = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved " \
                            "geometry."
@@ -147,6 +148,8 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
                         help=part_name_help)
     parser.add_argument("--revolution-angle", type=float, default=geometry_default_revolution_angle,
                         help="Revolution angle for a 3D part in degrees (default: %(default)s)")
+    parser.add_argument("--y-offset", type=float, default=cylinder_default_y_offset,
+                        help="Offset along the global Y-axis (default: %(default)s)")
     return parser
 
 
