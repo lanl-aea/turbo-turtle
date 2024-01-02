@@ -24,6 +24,7 @@ Documentation
 Enhancements
 ============
 - Add a vertical offset option to the cylinder subcommand (:issue:`93`, :merge:`76`). By `Kyle Brindley`_.
+- Add a vertical offset option to the geometry subcommand (:issue:`95`, :merge:`78`). By `Kyle Brindley`_.
 
 *******************
 v0.8.0 (2023-11-28)
