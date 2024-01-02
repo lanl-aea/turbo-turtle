@@ -37,7 +37,7 @@ def main(inner_radius, outer_radius, height, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
-    coordinates = vertices.cylinder(inner_radius, outer_radius, height, y_offset)
+    coordinates = vertices.cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
     geometry.draw_part_from_splines(coordinates, planar=False, model_name=model_name, part_name=part_name,
                                     revolution_angle=revolution_angle)
 

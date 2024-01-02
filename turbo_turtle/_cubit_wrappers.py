@@ -38,7 +38,8 @@ def cylinder(args, command):
         args.height,
         args.output_file,
         part_name=args.part_name,
-        revolution_angle=args.revolution_angle
+        revolution_angle=args.revolution_angle,
+        y_offset=args.y_offset
     ))
 
 

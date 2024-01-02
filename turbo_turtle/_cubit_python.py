@@ -308,20 +308,25 @@ def _get_volumes_from_name_or_exit(*args, **kwargs):
 
 def cylinder(inner_radius, outer_radius, height, output_file,
              part_name=parsers.cylinder_default_part_name,
-             revolution_angle=parsers.geometry_default_revolution_angle):
-    """
+             revolution_angle=parsers.geometry_default_revolution_angle,
+             y_offset=parsers.cylinder_default_y_offset):
+    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
+
+    Centroid of cylinder is located on the global coordinate origin by default.
+
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
     :param float height: Height of the cylinder
     :param str output_file: Cubit ``*.cub`` database to save the part(s)
     :param list part_name: name(s) of the part(s) being created
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
+    :param float y_offset: vertical offset along the global Y-axis
     """
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
 
-    coordinates = vertices.cylinder(inner_radius, outer_radius, height)
+    coordinates = vertices.cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
     euclidean_distance = min(inner_radius, height) / 2.
     lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     surface = _draw_surface(lines, splines)
