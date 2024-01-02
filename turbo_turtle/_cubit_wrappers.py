@@ -58,7 +58,7 @@ def sphere(args, command):
         input_file=args.input_file,
         quadrant=args.quadrant,
         revolution_angle=args.revolution_angle,
-        center=args.center,
+        y_offset=args.y_offset,
         part_name=args.part_name
     ))
 

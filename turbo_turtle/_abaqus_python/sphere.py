@@ -61,7 +61,7 @@ def main(inner_radius, outer_radius, output_file,
 def sphere(inner_radius, outer_radius,
            quadrant=parsers.sphere_default_quadrant,
            revolution_angle=parsers.sphere_default_angle,
-           y_offset=parsers.sphere_default_y_offset,
+           center=parsers.sphere_default_center,
            model_name=parsers.sphere_default_model_name,
            part_name=parsers.sphere_default_part_name):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
@@ -74,15 +74,12 @@ def sphere(inner_radius, outer_radius,
     :param float outer_radius: outer radius (size of sphere)
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
     :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
-    :param float y_offset: vertical offset along the global Y-axis
+    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
     import abaqus
     import abaqusConstants
-
-    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
-    center = (0., y_offset)
 
     if not quadrant in parsers.sphere_quadrant_options:
         message = "Quadrant option must be one of: {}".format(quadrant_options)

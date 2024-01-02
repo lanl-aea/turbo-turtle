@@ -339,7 +339,7 @@ def sphere(inner_radius, outer_radius, output_file,
            input_file=parsers.sphere_default_input_file,
            quadrant=parsers.sphere_default_quadrant,
            revolution_angle=parsers.sphere_default_angle,
-           center=parsers.sphere_default_center,
+           y_offset=parsers.sphere_default_y_offset,
            part_name=parsers.sphere_default_part_name):
     """
     :param float inner_radius: inner radius (size of hollow)
@@ -348,10 +348,14 @@ def sphere(inner_radius, outer_radius, output_file,
     :param str input_file: input file name. Will be stripped of the extension and ``.cub`` will be used.
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
     :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
-    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param float y_offset: vertical offset along the global Y-axis
     :param str part_name: name of the part to be created in the Abaqus model
     """
     cubit.init(["cubit"])
+
+    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
+    center = (0., y_offset)
+
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     if input_file is not None:

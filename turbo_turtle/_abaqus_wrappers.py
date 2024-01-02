@@ -64,7 +64,7 @@ def sphere(args, command):
     if args.input_file is not None:
         command += f"--input-file {args.input_file} "
     command += f"--quadrant {args.quadrant} --revolution-angle {args.revolution_angle} "
-    command += f"--center {' '.join(map(str, args.center))} "
+    command += f"--y-offset {args.y_offset} "
     command += f"--model-name {args.model_name} --part-name {args.part_name}"
     _utilities.run_command(command)
 

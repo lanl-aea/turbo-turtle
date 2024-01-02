@@ -157,6 +157,7 @@ sphere_default_input_file = None
 sphere_default_quadrant = "both"
 sphere_default_revolution_angle = 360.
 sphere_default_y_offset = 0.
+sphere_default_center = (0., sphere_default_y_offset)
 sphere_default_model_name = "Model-1"
 sphere_default_part_name = "Part-1"
 sphere_quadrant_options = ["both", "upper", "lower"]
