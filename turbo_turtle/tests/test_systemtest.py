@@ -48,7 +48,7 @@ def character_delimited_list(non_string_list, character=" "):
     return character.join(map(str, non_string_list))
 
 
-def setup_sphere_commands(model, angle, center, quadrant, element_type, element_replacement, cubit, output_type,
+def setup_sphere_commands(model, angle, y_offset, quadrant, element_type, element_replacement, cubit, output_type,
                           turbo_turtle_command=turbo_turtle_command):
     """Return the sphere/partition/mesh commands for system testing
 
@@ -61,15 +61,15 @@ def setup_sphere_commands(model, angle, center, quadrant, element_type, element_
         model = model.with_suffix(".cub")
         image = image.parent / f"{image.stem}-cubit{image.suffix}"
     assembly = model.stem + "_assembly.inp"
-    center=character_delimited_list(center)
+    center="0. {y_offset} 0."
     xvector=character_delimited_list([1., 0., 0.])
     zvector=character_delimited_list([0., 0., 1.])
     commands = [
         f"{turbo_turtle_command} sphere --inner-radius 1 --outer-radius 2 --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --quadrant {quadrant} " \
-            f"--revolution-angle {angle} --center {center}",
+            f"--revolution-angle {angle} --y-offset {y_offset}",
         f"{turbo_turtle_command} partition --input-file {model} --output-file {model} " \
-            f"--model-name {model.stem} --part-name {model.stem} --center {center} 0 " \
+            f"--model-name {model.stem} --part-name {model.stem} --center {center} " \
             f"--xvector {xvector} --zvector {zvector}",
         f"{turbo_turtle_command} mesh --input-file {model} --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --global-seed 0.15 " \
@@ -179,34 +179,34 @@ commands_list.append([
 
 # Sphere/partition/mesh
 system_tests = (
-    # model/part,         angle,   center, quadrant, element_type, element_replacement, cubit, output_type
+    # model/part,         angle, y-offset, quadrant, element_type, element_replacement, cubit, output_type
     # Abaqus CAE
-    ("sphere.cae",         360., (0., 0.),  "both",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("axisymmetric.cae",     0., (0., 0.),  "both",  "CAX4",       "CAX4R", False, "abaqus"),
-    ("quarter-sphere.cae",  90., (0., 0.),  "both",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("offset-sphere.cae",  360., (1., 1.),  "both",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("eigth-sphere.cae",    90., (0., 0.), "upper",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("half-sphere.cae",    360., (0., 0.), "upper",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("sphere.cae",         360.,       0.,  "both",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("axisymmetric.cae",     0.,       0.,  "both",  "CAX4",       "CAX4R", False, "abaqus"),
+    ("quarter-sphere.cae",  90.,       0.,  "both",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("offset-sphere.cae",  360.,       1.,  "both",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("eigth-sphere.cae",    90.,       0., "upper",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("half-sphere.cae",    360.,       0., "upper",  "C3D8",       "C3D8R", False, "abaqus"),
     # Cubit: for Abaqus INP
-    ("sphere.cae",         360., (0., 0.),  "both",    None,       "C3D8R", True, "abaqus"),
-    ("axisymmetric.cae",     0., (0., 0.),  "both",    None,       "CAX4R", True, "abaqus"),
-    ("quarter-sphere.cae",  90., (0., 0.),  "both",    None,       "C3D8R", True, "abaqus"),
-    ("offset-sphere.cae",  360., (1., 1.),  "both",    None,       "C3D8R", True, "abaqus"),
-    ("eigth-sphere.cae",    90., (0., 0.), "upper",    None,       "C3D8R", True, "abaqus"),
-    ("half-sphere.cae",    360., (0., 0.), "upper",    None,       "C3D8R", True, "abaqus"),
+    ("sphere.cae",         360.,       0.,  "both",    None,       "C3D8R", True, "abaqus"),
+    ("axisymmetric.cae",     0.,       0.,  "both",    None,       "CAX4R", True, "abaqus"),
+    ("quarter-sphere.cae",  90.,       0.,  "both",    None,       "C3D8R", True, "abaqus"),
+    ("offset-sphere.cae",  360.,       1.,  "both",    None,       "C3D8R", True, "abaqus"),
+    ("eigth-sphere.cae",    90.,       0., "upper",    None,       "C3D8R", True, "abaqus"),
+    ("half-sphere.cae",    360.,       0., "upper",    None,       "C3D8R", True, "abaqus"),
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets.cae",      360., (0., 0.), "both", "tetmesh",       None, True, "abaqus"),
-    ("axisymmetric-tri.cae",   0., (0., 0.), "both", "trimesh",       None, True, "abaqus"),
+    ("sphere-tets.cae",      360.,     0., "both", "tetmesh",       None, True, "abaqus"),
+    ("axisymmetric-tri.cae",   0.,     0., "both", "trimesh",       None, True, "abaqus"),
     # Cubit: for Genesis INP
-    ("sphere-genesis.cae",         360., (0., 0.),  "both",   None,  "HEX", True, "genesis"),
-    ("axisymmetric-genesis.cae",     0., (0., 0.),  "both",   None, "QUAD", True, "genesis"),
-    ("quarter-sphere-genesis.cae",  90., (0., 0.),  "both",   None,  "HEX", True, "genesis"),
-    ("offset-sphere-genesis.cae",  360., (1., 1.),  "both",   None,  "HEX", True, "genesis"),
-    ("eigth-sphere-genesis.cae",    90., (0., 0.), "upper",   None,  "HEX", True, "genesis"),
-    ("half-sphere-genesis.cae",    360., (0., 0.), "upper",   None,  "HEX", True, "genesis"),
+    ("sphere-genesis.cae",         360., 0.,  "both",   None,  "HEX", True, "genesis"),
+    ("axisymmetric-genesis.cae",     0., 0.,  "both",   None, "QUAD", True, "genesis"),
+    ("quarter-sphere-genesis.cae",  90., 0.,  "both",   None,  "HEX", True, "genesis"),
+    ("offset-sphere-genesis.cae",  360., 1.,  "both",   None,  "HEX", True, "genesis"),
+    ("eigth-sphere-genesis.cae",    90., 0., "upper",   None,  "HEX", True, "genesis"),
+    ("half-sphere-genesis.cae",    360., 0., "upper",   None,  "HEX", True, "genesis"),
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets-genesis.cae",      360., (0., 0.), "both", "tetmesh",   "TRI", True, "genesis"),
-    ("axisymmetric-tri-genesis.cae",   0., (0., 0.), "both", "trimesh", "TETRA", True, "genesis"),
+    ("sphere-tets-genesis.cae",      360., 0., "both", "tetmesh",   "TRI", True, "genesis"),
+    ("axisymmetric-tri-genesis.cae",   0., 0., "both", "trimesh", "TETRA", True, "genesis"),
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
