@@ -16,8 +16,11 @@ import geometry
 def main(inner_radius, outer_radius, height, output_file,
          model_name=parsers.geometry_default_model_name,
          part_name=parsers.cylinder_default_part_name,
-         revolution_angle=parsers.geometry_default_revolution_angle):
+         revolution_angle=parsers.geometry_default_revolution_angle,
+         y_offset=parsers.geometry_default_y_offset):
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
+
+    Centroid of cylinder is located on the global coordinate origin by default.
 
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
@@ -26,6 +29,7 @@ def main(inner_radius, outer_radius, height, output_file,
     :param str model_name: name of the Abaqus model in which to create the part
     :param list part_name: name(s) of the part(s) being created
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
+    :param float y_offset: vertical offset along the global Y-axis
     """
     import abaqus
     import abaqusConstants
@@ -33,7 +37,7 @@ def main(inner_radius, outer_radius, height, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
-    coordinates = vertices.cylinder(inner_radius, outer_radius, height)
+    coordinates = vertices.cylinder(inner_radius, outer_radius, height, y_offset)
     geometry.draw_part_from_splines(coordinates, planar=False, model_name=model_name, part_name=part_name,
                                     revolution_angle=revolution_angle)
 
@@ -55,5 +59,6 @@ if __name__ == "__main__":
         output_file=args.output_file,
         model_name=args.model_name,
         part_name=args.part_name,
-        revolution_angle=args.revolution_angle
+        revolution_angle=args.revolution_angle,
+        y_offset=args.y_offset
     ))

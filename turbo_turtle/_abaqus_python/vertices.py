@@ -19,7 +19,7 @@ def rectalinear_coordinates(radius_list, angle_list):
     return coordinates
 
 
-def cylinder(inner_radius, outer_radius, height):
+def cylinder(inner_radius, outer_radius, height, y_offset=0.):
     """Return a :meth:`turbo_turtle._abaqus_python.geometry.draw_part_from_splines` compatible vertex array
 
     :param float inner_radius: Radius of the hollow center
@@ -27,10 +27,10 @@ def cylinder(inner_radius, outer_radius, height):
     :param float height: Height of the cylinder
     """
     coordinates = (
-        (inner_radius, height / 2.),
-        (outer_radius, height / 2.),
-        (outer_radius, -height / 2.),
-        (inner_radius, -height / 2.)
+        (inner_radius,  height / 2. + y_offset),
+        (outer_radius,  height / 2. + y_offset),
+        (outer_radius, -height / 2. + y_offset),
+        (inner_radius, -height / 2. + y_offset)
     )
     return numpy.array(coordinates)
 
