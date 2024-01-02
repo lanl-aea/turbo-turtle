@@ -5,13 +5,22 @@ Changelog
 #########
 
 *******************
-v0.8.1 (unreleased)
+v0.9.0 (unreleased)
 *******************
+
+Breaking changes
+================
+- Cylinder subcommand generates a cylinder with a centroid on the global coordinate system origin (:issue:`93`,
+  :merge:`76`). By `Kyle Brindley`_.
 
 Documentation
 =============
 - Clarify which ``image`` subcommand options are unused by Cubit implementation (:issue:`85`, :merge:`75`). By `Kyle
   Brindley`_.
+
+Enhancements
+============
+- Add a vertical offset option to the cylinder subcommand (:issue:`93`, :merge:`76`). By `Kyle Brindley`_.
 
 *******************
 v0.8.0 (2023-11-28)
