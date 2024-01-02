@@ -268,10 +268,25 @@ def test_break_coordinates_passthrough():
         mock_xy_values.assert_called_once_with([], rtol=1e-5, atol=1e-9)
 
 
-def test_cylinder():
+cylinder = {
+    "no offset": (
+        1., 2., 1., None, numpy.array([[1., 0.5], [2., 0.5], [2., -0.5], [1., -0.5]])
+    ),
+    "offset half height": (
+        1., 2., 1., 0.5, numpy.array([[1., 1.], [2., 1.], [2., 0.], [1., 0.]])
+    )
+}
+
+
+@pytest.mark.parametrize("inner_radius, outer_radius, height, y_offset, expected",
+                         cylinder.values(),
+                         ids=cylinder.keys())
+def test_cylinder(inner_radius, outer_radius, height, y_offset, expected):
     """Test :meth:`turbo_turtle._abaqus_python.vertices.cylinder`"""
-    expected = numpy.array([[1., 1.], [2., 1.], [2., 0.], [1., 0.]])
-    coordinates = vertices.cylinder(1., 2., 1.)
+    kwargs = {}
+    if y_offset is not None:
+        kwargs = {"y_offset": y_offset}
+    coordinates = vertices.cylinder(inner_radius, outer_radius, height, **kwargs)
     assert numpy.allclose(coordinates, expected)
 
 
