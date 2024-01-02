@@ -54,7 +54,8 @@ def geometry(input_file, output_file,
              euclidean_distance=parsers.geometry_default_euclidean_distance,
              delimiter=parsers.geometry_default_delimiter,
              header_lines=parsers.geometry_default_header_lines,
-             revolution_angle=parsers.geometry_default_revolution_angle):
+             revolution_angle=parsers.geometry_default_revolution_angle,
+             y_offset=parsers.geometry_default_y_offset):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
     Note that 2D axisymmetric sketches and sketches for 3D bodies of revolution about the global Y-axis must lie
@@ -73,6 +74,8 @@ def geometry(input_file, output_file,
     :param str delimiter: character to use as a delimiter when reading the input file
     :param int header_lines: number of lines in the header to skip when reading the input file
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
+    :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
+        conversion.
 
     :returns: writes ``{output_file}.cae``
     """
@@ -87,6 +90,7 @@ def geometry(input_file, output_file,
         coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
                                                          expected_dimensions=2, expected_columns=2)
         coordinates = coordinates * unit_conversion
+        coordinates[:, 1] += y_offset
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
         surfaces.append(_draw_surface(lines, splines))
 

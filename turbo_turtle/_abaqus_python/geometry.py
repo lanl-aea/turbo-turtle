@@ -23,6 +23,7 @@ def main(input_file, output_file,
          delimiter=parsers.geometry_default_delimiter,
          header_lines=parsers.geometry_default_header_lines,
          revolution_angle=parsers.geometry_default_revolution_angle,
+         y_offset=parsers.geometry_default_y_offset,
          rtol=parsers.geometry_default_rtol,
          atol=parsers.geometry_default_atol):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
@@ -46,6 +47,10 @@ def main(input_file, output_file,
     :param str delimiter: character to use as a delimiter when reading the input file
     :param int header_lines: number of lines in the header to skip when reading the input file
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
+    :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
+        conversion.
+    :param float rtol: relative tolerance for vertical/horizontal line checks
+    :param float atol: absolute tolerance for vertical/horizontal line checks
 
     :returns: writes ``{output_file}.cae``
     """
@@ -59,6 +64,7 @@ def main(input_file, output_file,
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
         coordinates = coordinates * unit_conversion
+        coordinates[:, 1] += y_offset
         try:
             draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,
@@ -164,6 +170,7 @@ if __name__ == "__main__":
         delimiter=args.delimiter,
         header_lines=args.header_lines,
         revolution_angle=args.revolution_angle,
+        y_offset=args.y_offset,
         rtol=args.rtol,
         atol=args.atol
     ))
