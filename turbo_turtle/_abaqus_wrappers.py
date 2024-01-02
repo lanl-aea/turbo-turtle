@@ -23,6 +23,7 @@ def geometry(args, command):
     command += f"--delimiter {args.delimiter} "
     command += f"--header-lines {args.header_lines} "
     command += f"--revolution-angle {args.revolution_angle} "
+    command += f"--y-offset {args.y_offset} "
     if args.rtol is not None:
         command += f"--rtol {args.rtol} "
     if args.atol is not None:

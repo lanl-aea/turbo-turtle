@@ -20,7 +20,8 @@ def geometry(args, command):
         euclidean_distance=args.euclidean_distance,
         delimiter=args.delimiter,
         header_lines=args.header_lines,
-        revolution_angle=args.revolution_angle
+        revolution_angle=args.revolution_angle,
+        y_offset=args.y_offset
     ))
 
 
