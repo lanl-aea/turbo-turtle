@@ -27,10 +27,10 @@ def cylinder(inner_radius, outer_radius, height):
     :param float height: Height of the cylinder
     """
     coordinates = (
-        (inner_radius, height),
-        (outer_radius, height),
-        (outer_radius, 0.),
-        (inner_radius, 0.)
+        (inner_radius, height / 2.),
+        (outer_radius, height / 2.),
+        (outer_radius, -height / 2.),
+        (inner_radius, -height / 2.)
     )
     return numpy.array(coordinates)
 
