@@ -147,7 +147,7 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
     geometry_options = (str(geometry_model),
                         [_settings._project_root_abspath / "tests" / "washer.csv",
                          _settings._project_root_abspath / "tests" / "vase.csv"],
-                        360.0, cubit)
+                        360.0, 0., cubit)
     commands.extend(setup_geometry_commands(*geometry_options))
 
     # Run the actual merge command
