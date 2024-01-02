@@ -61,7 +61,7 @@ def setup_sphere_commands(model, angle, y_offset, quadrant, element_type, elemen
         model = model.with_suffix(".cub")
         image = image.parent / f"{image.stem}-cubit{image.suffix}"
     assembly = model.stem + "_assembly.inp"
-    center="0. {y_offset} 0."
+    center=f"0. {y_offset} 0."
     xvector=character_delimited_list([1., 0., 0.])
     zvector=character_delimited_list([0., 0., 1.])
     commands = [
@@ -139,7 +139,7 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
         output_file = output_file.with_suffix(".cub")
 
     # Create sphere file
-    sphere_options = (str(sphere_model), 360., (0., 0.), "both", sphere_element_type, sphere_element_replacement, cubit, "abaqus")
+    sphere_options = (str(sphere_model), 360., 0., "both", sphere_element_type, sphere_element_replacement, cubit, "abaqus")
     commands.append(setup_sphere_commands(*sphere_options)[0])
 
     # Create washer/vase combined file
