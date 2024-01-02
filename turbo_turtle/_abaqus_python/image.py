@@ -22,7 +22,8 @@ def main(input_file, output_file,
          image_size=parsers.image_default_image_size,
          model_name=parsers.image_default_model_name,
          part_name=parsers.image_default_part_name,
-         color_map=parsers.image_color_map_choices[0]):
+         color_map=parsers.image_color_map_choices[0],
+         assembly=False):
     """Wrap image with file input handling
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
@@ -33,6 +34,7 @@ def main(input_file, output_file,
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
+    :param bool assembly: Flag for exporting an image of the root assembly rather than of a single part
 
     :returns: writes image to ``{output_file}``
     """
@@ -44,11 +46,11 @@ def main(input_file, output_file,
             shutil.copyfile(input_file, copy_file.name)
             abaqus.openMdb(pathName=copy_file.name)
             image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
-                  model_name=model_name, part_name=part_name, color_map=color_map)
+                  model_name=model_name, part_name=part_name, color_map=color_map, assembly=assembly)
     elif input_file_extension.lower() == ".inp":
         abaqus.mdb.ModelFromInputFile(name=model_name, inputFileName=input_file)
         image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
-              model_name=model_name, part_name=part_name, color_map=color_map)
+              model_name=model_name, part_name=part_name, color_map=color_map, assembly=assembly)
     else:
         message = "Uknown file extension {}".format(input_file_extension)
         _mixed_utilities.sys_exit(message)
@@ -61,7 +63,8 @@ def image(output_file,
           image_size=parsers.image_default_image_size,
           model_name=parsers.image_default_model_name,
           part_name=parsers.image_default_part_name,
-          color_map=parsers.image_color_map_choices[0]):
+          color_map=parsers.image_color_map_choices[0],
+          assembly=False):
     """Script for saving an assembly view image (colored by material) for a given Abaqus input file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
@@ -76,6 +79,8 @@ def image(output_file,
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
+    :param bool assembly: Flag for exporting an image of the root assembly rather than of a single part. If ``assembly`` 
+       is ``True``, the ``part-name`` parameter will be ignored.
 
     :returns: writes image to ``{output_file}``
     """
@@ -131,5 +136,6 @@ if __name__ == "__main__":
         image_size=args.image_size,
         model_name=args.model_name,
         part_name=args.part_name,
-        color_map=args.color_map
+        color_map=args.color_map,
+        assembly=args.assembly
     ))

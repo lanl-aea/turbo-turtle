@@ -465,5 +465,7 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
                         help=part_name_help)
     parser.add_argument('--color-map', type=str, choices=image_color_map_choices, default=image_color_map_choices[0],
                         help=color_map_help)
+    parser.add_argument('--assembly', action="store_true",
+                        help="Export an image of the root assembly rather than a single part (default: %(default)s)")
 
     return parser
