@@ -12,6 +12,9 @@ Breaking changes
 ================
 - Cylinder subcommand generates a cylinder with a centroid on the global coordinate system origin for consistency with
   sphere subcommand (:issue:`93`, :merge:`76`). By `Kyle Brindley`_.
+- Replace sphere subcommand center movement argument with a vertical offset movement for consistency with cylinder
+  subcommand and the Abaqus axisymmetric compatible geometry generation design (:issue:`94`, :merge:`77`). By `Kyle
+  Brindley`_.
 
 Documentation
 =============
