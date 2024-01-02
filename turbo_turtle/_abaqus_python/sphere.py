@@ -20,7 +20,7 @@ def main(inner_radius, outer_radius, output_file,
          input_file=parsers.sphere_default_input_file,
          quadrant=parsers.sphere_default_quadrant,
          revolution_angle=parsers.sphere_default_angle,
-         center=parsers.sphere_default_center,
+         y_offset=parsers.sphere_default_y_offset,
          model_name=parsers.sphere_default_model_name,
          part_name=parsers.sphere_default_part_name):
     """Wrap sphere function with file open and file write operations
@@ -31,11 +31,14 @@ def main(inner_radius, outer_radius, output_file,
     :param str input_file: input file name. Will be stripped of the extension and ``.cae`` will be used.
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
     :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
-    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param float y_offset: vertical offset along the global Y-axis
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
     import abaqus
+
+    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
+    center = (0., y_offset)
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
     if input_file is not None:
@@ -58,7 +61,7 @@ def main(inner_radius, outer_radius, output_file,
 def sphere(inner_radius, outer_radius,
            quadrant=parsers.sphere_default_quadrant,
            revolution_angle=parsers.sphere_default_angle,
-           center=parsers.sphere_default_center,
+           y_offset=parsers.sphere_default_y_offset,
            model_name=parsers.sphere_default_model_name,
            part_name=parsers.sphere_default_part_name):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
@@ -71,12 +74,15 @@ def sphere(inner_radius, outer_radius,
     :param float outer_radius: outer radius (size of sphere)
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
     :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
-    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param float y_offset: vertical offset along the global Y-axis
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
     import abaqus
     import abaqusConstants
+
+    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
+    center = (0., y_offset)
 
     if not quadrant in parsers.sphere_quadrant_options:
         message = "Quadrant option must be one of: {}".format(quadrant_options)
@@ -124,7 +130,7 @@ if __name__ == "__main__":
         input_file=args.input_file,
         quadrant=args.quadrant,
         revolution_angle=args.revolution_angle,
-        center=args.center,
+        y_offset=args.y_offset,
         model_name=args.model_name,
         part_name=args.part_name
     ))
