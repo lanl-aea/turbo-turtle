@@ -19,7 +19,7 @@ import _mixed_utilities
 def main(inner_radius, outer_radius, output_file,
          input_file=parsers.sphere_default_input_file,
          quadrant=parsers.sphere_default_quadrant,
-         revolution_angle=parsers.sphere_default_angle,
+         revolution_angle=parsers.sphere_default_revolution_angle,
          y_offset=parsers.sphere_default_y_offset,
          model_name=parsers.sphere_default_model_name,
          part_name=parsers.sphere_default_part_name):
@@ -60,7 +60,7 @@ def main(inner_radius, outer_radius, output_file,
 
 def sphere(inner_radius, outer_radius,
            quadrant=parsers.sphere_default_quadrant,
-           revolution_angle=parsers.sphere_default_angle,
+           revolution_angle=parsers.sphere_default_revolution_angle,
            center=parsers.sphere_default_center,
            model_name=parsers.sphere_default_model_name,
            part_name=parsers.sphere_default_part_name):
