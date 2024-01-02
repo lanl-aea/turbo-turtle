@@ -50,6 +50,7 @@ geometry_default_part_name = [None]
 geometry_default_delimiter = ","
 geometry_default_header_lines = 0
 geometry_default_revolution_angle = 360.0
+geometry_default_y_offset = 0.
 geometry_default_rtol = None
 geometry_default_atol = None
 geometry_cli_help = "Create 2D or 3D part(s) from XY coordinate list input file(s)"
@@ -82,7 +83,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                         help="Unit conversion multiplication factor (default: %(default)s)")
     parser.add_argument("--euclidean-distance", type=positive_float, default=geometry_default_euclidean_distance,
                         help="Connect points with a straight line if the distance between them is larger than this " \
-                             "(default: %(default)s)")
+                             "in units *after* the unit conversion (default: %(default)s)")
     parser.add_argument("--planar", action='store_true',
                         help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric " \
                              "(default: %(default)s)")
@@ -98,6 +99,8 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                         help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
     parser.add_argument("--revolution-angle", type=float, default=geometry_default_revolution_angle,
                         help="Revolution angle for a 3D part in degrees (default: %(default)s)")
+    parser.add_argument("--y-offset", type=float, default=geometry_default_y_offset,
+                        help="Offset along the global Y-axis in units *after* the unit conversion (default: %(default)s)")
     parser.add_argument("--rtol", type=float, default=geometry_default_rtol,
                         help="relative tolerance used by ``numpy.isclose``. If not provided, use numpy defaults " \
                              "(default: %(default)s)")
