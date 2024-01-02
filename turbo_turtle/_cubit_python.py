@@ -338,7 +338,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
 def sphere(inner_radius, outer_radius, output_file,
            input_file=parsers.sphere_default_input_file,
            quadrant=parsers.sphere_default_quadrant,
-           revolution_angle=parsers.sphere_default_angle,
+           revolution_angle=parsers.sphere_default_revolution_angle,
            y_offset=parsers.sphere_default_y_offset,
            part_name=parsers.sphere_default_part_name):
     """
@@ -378,7 +378,7 @@ def sphere(inner_radius, outer_radius, output_file,
 
 def _sphere(inner_radius, outer_radius,
             quadrant=parsers.sphere_default_quadrant,
-            revolution_angle=parsers.sphere_default_angle,
+            revolution_angle=parsers.sphere_default_revolution_angle,
             center=parsers.sphere_default_center,
             part_name=parsers.sphere_default_part_name):
     """
