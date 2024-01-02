@@ -10,8 +10,8 @@ v0.9.0 (unreleased)
 
 Breaking changes
 ================
-- Cylinder subcommand generates a cylinder with a centroid on the global coordinate system origin (:issue:`93`,
-  :merge:`76`). By `Kyle Brindley`_.
+- Cylinder subcommand generates a cylinder with a centroid on the global coordinate system origin for consistency with
+  sphere subcommand (:issue:`93`, :merge:`76`). By `Kyle Brindley`_.
 
 Documentation
 =============
