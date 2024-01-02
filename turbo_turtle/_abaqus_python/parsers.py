@@ -155,8 +155,8 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
 
 sphere_default_input_file = None
 sphere_default_quadrant = "both"
-sphere_default_angle = 360.
-sphere_default_center = [0., 0.]
+sphere_default_revolution_angle = 360.
+sphere_default_y_offset = 0.
 sphere_default_model_name = "Model-1"
 sphere_default_part_name = "Part-1"
 sphere_quadrant_options = ["both", "upper", "lower"]
@@ -197,10 +197,10 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
                         help="Abaqus model database to open (default: %(default)s)")
     parser.add_argument("--quadrant", type=str, choices=sphere_quadrant_options, default=sphere_default_quadrant,
                         help="XY plane quadrant: both, upper (I), lower (IV) (default: %(default)s)")
-    parser.add_argument('--revolution-angle', type=float, default=sphere_default_angle,
+    parser.add_argument('--revolution-angle', type=float, default=sphere_default_revolution_angle,
                         help="Angle of revolution about the +Y axis (default: %(default)s)")
-    parser.add_argument('--center', nargs=2, type=float, default=sphere_default_center,
-                        help="Center of the sphere (default: %(default)s)")
+    parser.add_argument('--y-offset', type=float, default=sphere_default_y_offset,
+                        help="Offset along the global Y-axis (default: %(default)s)")
     parser.add_argument('--model-name', type=str, default=sphere_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=sphere_default_part_name,
