@@ -217,6 +217,7 @@ system_tests = (
     # model/part,                                                           input_file, angle, y-offset, cubit
     # Abaqus
     ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., False),
+    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., False),
     ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., False),
     ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., False),
     ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., False),
@@ -226,6 +227,7 @@ system_tests = (
                              _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., False),
     # Cubit
     ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., True),
+    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., True),
     ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., True),
     ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., True),
     ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., True),
