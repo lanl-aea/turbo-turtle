@@ -93,8 +93,12 @@ def sphere(inner_radius, outer_radius,
     inner_point1, inner_point2, outer_point1, outer_point2 = arc_points
 
     sketch = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
-    sketch.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
-        direction=abaqusConstants.CLOCKWISE)
+    if numpy.allclose(inner_point1, center) and numpy.allclose(inner_point2, center):
+        inner_point1 = center
+        inner_point2 = center
+    else:
+        sketch.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
+            direction=abaqusConstants.CLOCKWISE)
     sketch.ArcByCenterEnds(center=center, point1=outer_point1, point2=outer_point2,
         direction=abaqusConstants.CLOCKWISE)
     sketch.Line(point1=outer_point1, point2=inner_point1)
