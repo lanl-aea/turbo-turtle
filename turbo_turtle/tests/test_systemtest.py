@@ -142,7 +142,7 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
         output_file = output_file.with_suffix(".cub")
 
     # Create sphere file
-    sphere_options = (str(sphere_model), 360., 0., "both", sphere_element_type, sphere_element_replacement, cubit, "abaqus")
+    sphere_options = (str(sphere_model), 1., 2., 360., 0., "both", sphere_element_type, sphere_element_replacement, cubit, "abaqus")
     commands.append(setup_sphere_commands(*sphere_options)[0])
 
     # Create washer/vase combined file
@@ -193,6 +193,7 @@ system_tests = (
     ("half-sphere.cae",          1.,     2., 360.,       0., "upper",  "C3D8",       "C3D8R", False, "abaqus"),
     # Cubit: for Abaqus INP
     ("sphere.cae",               1.,     2., 360.,       0.,  "both",    None,       "C3D8R", True, "abaqus"),
+    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",    None,       "C3D8R", True, "abaqus"),
     ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",    None,       "CAX4R", True, "abaqus"),
     ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",    None,       "C3D8R", True, "abaqus"),
     ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",    None,       "C3D8R", True, "abaqus"),
@@ -200,7 +201,6 @@ system_tests = (
     ("half-sphere.cae",          1.,     2., 360.,       0., "upper",    None,       "C3D8R", True, "abaqus"),
     # Cubit "element type" is really a "meshing scheme"
     ("sphere-tets.cae",          1.,     2., 360.,     0., "both", "tetmesh",       None, True, "abaqus"),
-    ("solid-sphere-tets.cae",    0.,     2., 360.,     0., "both", "tetmesh",       None, True, "abaqus"),
     ("axisymmetric-tri.cae",     1.,     2.,   0.,     0., "both", "trimesh",       None, True, "abaqus"),
     # Cubit: for Genesis INP
     ("sphere-genesis.cae",         1.,   2., 360., 0.,  "both",   None,  "HEX", True, "genesis"),
