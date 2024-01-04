@@ -403,7 +403,11 @@ def _sphere(inner_radius, outer_radius,
 
     center_3d = numpy.append(center, [0.])
     curves = []
-    curves.append(_create_arc_from_coordinates(center_3d, inner_point1, inner_point2))
+    if numpy.allclose(inner_point1, center) and numpy.allclose(inner_point2, center):
+        inner_point1 = center
+        inner_point2 = center
+    else:
+        curves.append(_create_arc_from_coordinates(center_3d, inner_point1, inner_point2))
     curves.append(_create_arc_from_coordinates(center_3d, outer_point1, outer_point2))
     curves.append(_create_curve_from_coordinates(inner_point1, outer_point1))
     curves.append(_create_curve_from_coordinates(inner_point2, outer_point2))
