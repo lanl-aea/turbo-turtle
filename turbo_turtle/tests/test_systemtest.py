@@ -88,7 +88,7 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
         commands.pop(3)
     # Skip the partition/mesh/image/export
     if inner_radius == 0:
-        commands = commands[0]
+        commands = [commands[0]]
     if cubit:
         commands = [f"{command} --cubit" for command in commands]
     return commands
