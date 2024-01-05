@@ -1,4 +1,5 @@
 import SCons.Builder
+
 # Importing WAVES internals is marginally preferred over project specific, hardcoded duplication of the WAVES settings
 from waves._settings import _cd_action_prefix
 from waves._settings import _redirect_action_postfix

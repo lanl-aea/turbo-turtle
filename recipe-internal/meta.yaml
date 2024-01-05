@@ -48,6 +48,7 @@ requirements:
   run:
     - python >=3.8
     - waves >=0.7
+    - scons
 
 test:
   requires:
