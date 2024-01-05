@@ -11,7 +11,7 @@ copies to the public, perform publicly and display publicly, and to permit other
 
 from importlib.metadata import version, PackageNotFoundError
 
-from waves import scons_extensions
+from turbo_turtle import scons_extensions
 
 try:
     __version__ = version("turbo_turtle")
