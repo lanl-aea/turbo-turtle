@@ -7,7 +7,8 @@ from turbo_turtle._settings import _cd_action_prefix
 from turbo_turtle._settings import _redirect_action_postfix
 
 
-def _turbo_turtle(program="turbo-turtle", subcommand="", options="", abaqus_command=["abaqus"]):
+def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
+                  abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
     """Return a generic Turbo-Turtle builder.
 
     .. warning::
@@ -28,8 +29,12 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="", abaqus_comm
     * ``program``: The Turbo-Turtle command line executable absolute or relative path
     * ``subcommand``: A Turbo-Turtle subcommand
     * ``options``: A list of subcommand options
-    * ``abaqus_command``: The Abaqus command line executable absolute or relative path. When provided as a keyword
-          argument, this should be a space delimited string, not a list.
+    * ``abaqus_command``: The Abaqus command line executable absolute or relative path. When provided as a builder
+          keyword argument, this must be a space delimited string, not a list.
+    * ``cubit_command``: The Cubit command line executable absolute or relative path. When provided as a builder keyword
+          argument, this must be a space delimited string, not a list.
+    * ``cubit``: The flag to use Cubit instead of Abaqus. When provided as a builder keyword argument, this must be
+          the string ``"--cubit"`` or an empty string ``""``
     * ``cd_action_prefix``: Advanced behavior. Most users should accept the defaults.
     * ``redirect_action_postfix``: Advanced behavior. Most users should accept the defaults.
 
@@ -42,11 +47,15 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="", abaqus_comm
     :param str subcommand: A Turbo-Turtle subcommand
     :param str options: A list of subcommand options
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
 
     :returns: SCons Turbo-Turtle builder
     :rtype: SCons.Builder.Builder
     """
-    action = ["${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} ${redirect_action_postfix}"]
+    cubit = "--cubit" if cubit else ""
+    action = ["${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} " \
+                  "--cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}"]
     builder = SCons.Builder.Builder(
         action=action,
         emitter=_first_target_emitter,
@@ -55,7 +64,9 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="", abaqus_comm
         program=program,
         subcommand=subcommand,
         options=options,
-        abaqus_command=" ".join(abaqus_command)
+        abaqus_command=" ".join(abaqus_command),
+        cubit_command=" ".join(cubit_command),
+        cubit=cubit
     )
     return builder
 
@@ -65,9 +76,9 @@ def _turbo_turtle_sphere(
     options="--output-file ${TARGETS[0].abspath} " \
             "--inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
             "--model-name ${model_name} --part-name ${part_name}",
-    abaqus_command=["abaqus"]
+    abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
 ):
-    """Turbo-Turtle sphere subcommand builder
+    """Turbo-Turtle sphere subcommand builder from template :ref:`turbo_turtle.scons_extensions._turbo_turtle`
 
     .. warning::
 
@@ -106,20 +117,23 @@ def _turbo_turtle_sphere(
     :param str subcommand: A Turbo-Turtle subcommand
     :param str options: A list of subcommand options.
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
 
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
     """
-    return _turbo_turtle(program=program, subcommand=subcommand, options=options, abaqus_command=abaqus_command)
+    return _turbo_turtle(program=program, subcommand=subcommand, options=options,
+                         abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
 def _turbo_turtle_partition(
     program="turbo-turtle", subcommand="partition",
     options="--input-file ${SOURCES[0].abspath} --output-file ${TARGETS[0].abspath} " \
             "--model-name ${model_name} --part-name ${part_name}",
-    abaqus_command=["abaqus"]
+    abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
 ):
-    """Turbo-Turtle sphere subcommand builder
+    """Turbo-Turtle sphere subcommand builder from template :ref:`turbo_turtle.scons_extensions._turbo_turtle`
 
     .. warning::
 
@@ -153,8 +167,11 @@ def _turbo_turtle_partition(
     :param str subcommand: A Turbo-Turtle subcommand
     :param str options: A list of subcommand options.
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
 
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
     """
-    return _turbo_turtle(program=program, subcommand=subcommand, options=options, abaqus_command=abaqus_command)
+    return _turbo_turtle(program=program, subcommand=subcommand, options=options,
+                         abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
