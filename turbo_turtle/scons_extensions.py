@@ -1,10 +1,9 @@
 import SCons.Builder
 
 # Importing WAVES internals is marginally preferred over project specific, hardcoded duplication of the WAVES settings
+from waves._settings import _cd_action_prefix
+from waves._settings import _redirect_action_postfix
 from waves.scons_extensions import _first_target_emitter
-
-from turbo_turtle._settings import _cd_action_prefix
-from turbo_turtle._settings import _redirect_action_postfix
 
 
 def _turbo_turtle(program="turbo-turtle", subcommand="", options="", abaqus_command=["abaqus"]):
@@ -17,7 +16,7 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="", abaqus_comm
        without warning and without a breaking change in the package version number.
 
     This builder provides a template action for the Turbo-Turtle CLI. The default behavior will not do anything unless
-    the ``subcommand`` argument is updated to one of the Turbo-Turtle CLI `cli_subcommands`_.
+    the ``subcommand`` argument is updated to one of the Turbo-Turtle CLI :ref:`cli_subcommands`.
 
     This builder and any builders created from this template will be most useful if the ``options`` argument places
     SCons substitution variables in the action string, e.g. ``--argument ${argument}``, such that the task definitions
