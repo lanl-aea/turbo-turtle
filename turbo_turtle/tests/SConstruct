@@ -22,6 +22,7 @@ env = Environment(
     uninstalled=GetOption("uninstalled"),
 )
 env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
+env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cubit"], env)
 env["turbo_turtle"] = "python -m turbo_turtle.main" if env["uninstalled"] else "turbo-turtle"
 env.Append(BUILDERS={
     "TurboTurtleSphere":
@@ -30,10 +31,16 @@ env.Append(BUILDERS={
     "TurboTurtlePartition":
         turbo_turtle.scons_extensions._turbo_turtle_partition(program=env["turbo_turtle"],
                                                               abaqus_command=[env['abaqus']]),
+    "TurboTurtleSphereCubit":
+        turbo_turtle.scons_extensions._turbo_turtle_sphere(program=env["turbo_turtle"],
+                                                           cubit_command=[env['cubit']], cubit=True),
+    "TurboTurtlePartitionCubit":
+        turbo_turtle.scons_extensions._turbo_turtle_partition(program=env["turbo_turtle"],
+                                                           cubit_command=[env['cubit']], cubit=True),
 })
 
 env.TurboTurtleSphere(
-    target=["sphere.cae"],
+    target=["scons-sphere.cae"],
     source=[str(project_configuration)],
     inner_radius=1.,
     outer_radius=2.,
@@ -42,8 +49,26 @@ env.TurboTurtleSphere(
 )
 
 env.TurboTurtlePartition(
-    target=["partition.cae"],
-    source=["sphere.cae"],
+    target=["scons-partition.cae"],
+    source=["scons-sphere.cae"],
+    model_name="sphere",
+    part_name="sphere"
+)
+
+env.TurboTurtleSphereCubit(
+    # TODO: revert to "sphere.cub" when WAVES 0.7.6 is available on conda-forge
+    target=["scons-sphere_cubit.cub"],
+    source=[str(project_configuration)],
+    inner_radius=1.,
+    outer_radius=2.,
+    model_name="sphere",
+    part_name="sphere"
+)
+
+env.TurboTurtlePartitionCubit(
+    # TODO: revert to "sphere.cub" and "partition.cub" when WAVES 0.7.6 is available on conda-forge
+    target=["scons-partition_cubit.cub"],
+    source=["scons-sphere_cubit.cub"],
     model_name="sphere",
     part_name="sphere"
 )

@@ -76,7 +76,7 @@ def _turbo_turtle_sphere(
     options="--output-file ${TARGETS[0].abspath} " \
             "--inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
             "--model-name ${model_name} --part-name ${part_name}",
-    abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
+    abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
 ):
     """Turbo-Turtle sphere subcommand builder from template :ref:`turbo_turtle.scons_extensions._turbo_turtle`
 
@@ -131,7 +131,7 @@ def _turbo_turtle_partition(
     program="turbo-turtle", subcommand="partition",
     options="--input-file ${SOURCES[0].abspath} --output-file ${TARGETS[0].abspath} " \
             "--model-name ${model_name} --part-name ${part_name}",
-    abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
+    abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
 ):
     """Turbo-Turtle sphere subcommand builder from template :ref:`turbo_turtle.scons_extensions._turbo_turtle`
 
