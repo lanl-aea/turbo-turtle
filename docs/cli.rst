@@ -9,6 +9,8 @@ Command Line Utilities
    :nodefault:
    :nosubcommands:
 
+.. _cli_subcommands:
+
 Sub-commands
 ============
 

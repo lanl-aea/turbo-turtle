@@ -12,11 +12,10 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="", abaqus_comm
 
        This builder is an early, minimally functional placeholder for future builders. It is intended for developer
        testing and early adopter feedback about design behavior and use cases. The interface and behavior may change
-       without warning and without a breaking change version number.
+       without warning and without a breaking change in the package version number.
 
     This builder provides a template action for the Turbo-Turtle CLI. The default behavior will not do anything unless
-    the ``subcommand`` argument is updated as one of the Turbo-Turtle CLI subcommands:
-    https://aea.re-pages.lanl.gov/python-projects/turbo-turtle/cli.html#sub-commands
+    the ``subcommand`` argument is updated to one of the Turbo-Turtle CLI `cli_subcommands`_.
 
     This builder and any builders created from this template will be most useful if the ``options`` argument places
     SCons substitution variables in the action string, e.g. ``--argument ${argument}``, such that the task definitions
@@ -71,10 +70,12 @@ def _turbo_turtle_sphere(
 
        This builder is an early, minimally functional placeholder for future builders. It is intended for developer
        testing and early adopter feedback about design behavior and use cases. The interface and behavior may change
-       without warning and without a breaking change version number.
+       without warning and without a breaking change in the package version number.
 
     This subcommand does not require an input file. If no input file is provided, use the calling SConscript file as the
-    task source file. Unless the ``options`` argument is overridden, the following task keyword arguments are *required*:
+    task source file. This builder requires at least one TARGET. The first TARGET file must correspond to the
+    ``--output-file`` option. Unless the ``options`` argument is overridden, the following task keyword arguments are
+    *required*:
 
     * ``inner_radius``
     * ``outer_radius``
@@ -100,6 +101,7 @@ def _turbo_turtle_sphere(
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str options: A list of subcommand options.
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
 
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
@@ -110,16 +112,21 @@ def _turbo_turtle_sphere(
 def _turbo_turtle_partition(
     program="turbo-turtle", subcommand="partition",
     options="--input-file ${SOURCES[0].abspath} --output-file ${TARGETS[0].abspath} " \
-            "--center ${center} " \
             "--model-name ${model_name} --part-name ${part_name}",
     abaqus_command=["abaqus"]
 ):
     """Turbo-Turtle sphere subcommand builder
 
-    This subcommand requires at least one source file. Unless the ``options`` argument is overridden, the following task
-    keyword arguments are *required*:
+    .. warning::
 
-    * ``center``: When provided as a keyword argument, this must be a space delimited string
+       This builder is an early, minimally functional placeholder for future builders. It is intended for developer
+       testing and early adopter feedback about design behavior and use cases. The interface and behavior may change
+       without warning and without a breaking change in the package version number.
+
+    This subcommand requires at least one source file. The first SOURCE file just correspond to the ``--input-file``
+    option. This builder requires at least one TARGET file. The TARGET file must correspond to the ``--output-file``
+    option. Unless the ``options`` argument is overridden, the following task keyword arguments are *required*:
+
     * ``model_name``
     * ``part_name``
 
@@ -133,7 +140,6 @@ def _turbo_turtle_partition(
        env.TurboTurtleSphere(
            target=["partition.cae"],
            source=["sphere.cae"],
-           center="0. 0. 0.",
            model_name="sphere",
            part_name="sphere"
        )
@@ -141,6 +147,7 @@ def _turbo_turtle_partition(
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str options: A list of subcommand options.
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
 
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
