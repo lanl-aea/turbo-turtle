@@ -78,7 +78,7 @@ def _turbo_turtle_sphere(
             "--model-name ${model_name} --part-name ${part_name}",
     abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
 ):
-    """Turbo-Turtle sphere subcommand builder from template :ref:`turbo_turtle.scons_extensions._turbo_turtle`
+    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions._turbo_turtle`
 
     .. warning::
 
@@ -133,7 +133,7 @@ def _turbo_turtle_partition(
             "--model-name ${model_name} --part-name ${part_name}",
     abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
 ):
-    """Turbo-Turtle sphere subcommand builder from template :ref:`turbo_turtle.scons_extensions._turbo_turtle`
+    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions._turbo_turtle`
 
     .. warning::
 
