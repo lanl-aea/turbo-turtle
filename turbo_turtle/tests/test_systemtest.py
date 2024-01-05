@@ -261,8 +261,11 @@ for part_name in ("washer vase merge-sphere", ""):
     commands_list.append(setup_merge_commands(part_name, cubit=True))
 
 # SCons extensions tests
-sconstruct = _settings.project_root_abspath / "tests/SConstruct"
-commands_list.append(f"scons --sconstruct {sconstruct} --turbo-turtle '{turbo_turtle_command}'")
+sconstruct = _settings._project_root_abspath / "tests/SConstruct"
+scons_test_command = f"scons . --sconstruct {sconstruct}"
+if not installed:
+    scons_test_command += " --uninstalled"
+commands_list.append(scons_test_command)
 
 
 @pytest.mark.systemtest
