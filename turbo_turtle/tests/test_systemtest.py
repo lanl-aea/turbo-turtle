@@ -204,6 +204,7 @@ system_tests = (
     ("axisymmetric-tri.cae",     1.,     2.,   0.,     0., "both", "trimesh",       None, True, "abaqus"),
     # Cubit: for Genesis INP
     ("sphere-genesis.cae",         1.,   2., 360., 0.,  "both",   None,  "HEX", True, "genesis"),
+    ("solid-sphere-genesis.cae",   0.,   2., 360., 0.,  "both",   None,  "HEX", True, "genesis"),
     ("axisymmetric-genesis.cae",   1.,   2.,   0., 0.,  "both",   None, "QUAD", True, "genesis"),
     ("quarter-sphere-genesis.cae", 1.,   2.,  90., 0.,  "both",   None,  "HEX", True, "genesis"),
     ("offset-sphere-genesis.cae",  1.,   2., 360., 1.,  "both",   None,  "HEX", True, "genesis"),
