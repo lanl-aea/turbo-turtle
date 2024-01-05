@@ -36,7 +36,7 @@ env.Append(BUILDERS={
                                                            cubit_command=[env['cubit']], cubit=True),
     "TurboTurtlePartitionCubit":
         turbo_turtle.scons_extensions._turbo_turtle_partition(program=env["turbo_turtle"],
-                                                           cubit_command=[env['cubit']], cubit=True),
+                                                              cubit_command=[env['cubit']], cubit=True),
 })
 
 env.TurboTurtleSphere(
