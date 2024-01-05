@@ -472,15 +472,23 @@ def _partition(center=parsers.partition_default_center,
     surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, big_number)
     surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
 
-    # TODO: Figure out how to cleanup these coordinate pairs such that they are independent from the
-    # fortyfives/pyramid_surfaces indices
+    # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
+    xy_plane, yz_plane, zx_plane = vertices.datum_planes(xvector, zvector)[:3]
+    surface_centroids = [list(cubit.get_surface_centroid(surface.surfaces()[0].id())) for surface in surfaces]
+    direction_vector = [numpy.subtract(centroid, center) for centroid in surface_centroids]
+    
+    xy_plane_dot = numpy.array(([numpy.dot(vector, xy_plane) for vector in direction_vector]))  
+    yz_plane_dot = numpy.array(([numpy.dot(vector, yz_plane) for vector in direction_vector]))  
+    zx_plane_dot = numpy.array(([numpy.dot(vector, zx_plane) for vector in direction_vector]))  
+
+    tol = 1e-9
     volume_surfaces = [
-        surfaces[0:4] + [surfaces[12]],  # +Y
-        surfaces[4:8] + [surfaces[13]],  # -Y
-        [surfaces[3], surfaces[7], surfaces[8], surfaces[9], surfaces[14]],   # +X
-        [surfaces[1], surfaces[5], surfaces[10], surfaces[11], surfaces[15]], # -X
-        [surfaces[0], surfaces[4], surfaces[8], surfaces[10], surfaces[16]],  # +Z
-        [surfaces[2], surfaces[6], surfaces[9], surfaces[11], surfaces[17]],  # -Z
+        numpy.array(surfaces)[numpy.where(zx_plane_dot >  tol)],  # +Y
+        numpy.array(surfaces)[numpy.where(zx_plane_dot < -tol)],  # -Y
+        numpy.array(surfaces)[numpy.where(yz_plane_dot >  tol)],  # +X
+        numpy.array(surfaces)[numpy.where(yz_plane_dot < -tol)],  # -X
+        numpy.array(surfaces)[numpy.where(xy_plane_dot >  tol)],  # +Z
+        numpy.array(surfaces)[numpy.where(xy_plane_dot < -tol)],  # -Z
     ]
     volumes = [_create_volume_from_surfaces(surface_list) for surface_list in volume_surfaces]
 
