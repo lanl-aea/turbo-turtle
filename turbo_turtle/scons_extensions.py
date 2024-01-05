@@ -33,7 +33,8 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="", abaqus_comm
     * ``cd_action_prefix``: Advanced behavior. Most users should accept the defaults.
     * ``redirect_action_postfix``: Advanced behavior. Most users should accept the defaults.
 
-    .. code-block:: action string construction
+    .. code-block::
+       :caption: action string construction
 
        ${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} ${redirect_action_postfix}
 
@@ -84,7 +85,8 @@ def _turbo_turtle_sphere(
     * ``model_name``
     * ``part_name``
 
-    .. code-block:: SConstruct
+    .. code-block::
+       :caption: SConstruct
 
        import waves
        import turbo_turtle.scons_extensions
@@ -132,7 +134,8 @@ def _turbo_turtle_partition(
     * ``model_name``
     * ``part_name``
 
-    .. code-block:: SConstruct
+    .. code-block::
+       :caption: SConstruct
 
        import waves
        import turbo_turtle.scons_extensions
