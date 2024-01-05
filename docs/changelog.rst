@@ -12,6 +12,8 @@ Internal Changes
 ================
 - Draft SCons extensions for subcommand builders. Considered draft implementations in the *internal* interface until
   final design interface and behavior are stabilized (:issue:`103`, :merge:`80`). By `Kyle Brindley`_.
+- Updated cubit partition scheme to identify surfaces relative to local coordinate system and principal planes
+  (:issue:`104`, :merge:`81`). By `Paula Rutherford`_.
 
 Enhancements
 ============
