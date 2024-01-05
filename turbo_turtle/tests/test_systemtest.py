@@ -260,6 +260,10 @@ for part_name in ("washer vase merge-sphere", ""):
     commands_list.append(setup_merge_commands(part_name, cubit=False))
     commands_list.append(setup_merge_commands(part_name, cubit=True))
 
+# SCons extensions tests
+sconstruct = _settings.project_root_abspath / "tests/SConstruct"
+commands_list.append(f"scons --sconstruct {sconstruct} --turbo-turtle '{turbo_turtle_command}'")
+
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", commands_list)

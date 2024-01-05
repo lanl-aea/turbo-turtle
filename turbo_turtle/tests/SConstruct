@@ -1,0 +1,50 @@
+import os
+import inspect
+import pathlib
+
+import waves
+
+import turbo_turtle
+
+AddOption(
+    "--turbo-turtle",
+    dest="turbo_turtle",
+    default="turbo-turtle",
+    nargs=1,
+    type="string",
+    action="store",
+    metavar="DIR",
+    help="Turbo-Turtle command line executable relative or absolute path. (default: '%default')"
+)
+
+project_configuration = pathlib.Path(inspect.getfile(lambda: None))
+
+env = Environment(
+    ENV=os.environ.copy(),
+    turbo_turtle=GetOption("turbo_turtle"),
+)
+env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
+env.Append(BUILDERS={
+    "TurboTurtleSphere":
+        turbo_turtle.scons_extensions._turbo_turtle_sphere(program=env["turbo_turtle"],
+                                                           abaqus_command=[env['abaqus']]),
+    "TurboTurtlePartition":
+        turbo_turtle.scons_extensions._turbo_turtle_partition(program=env["turbo_turtle"],
+                                                              abaqus_command=[env['abaqus']]),
+})
+
+env.TurboTurtleSphere(
+    target=["sphere.cae"],
+    source=[str(project_configuration)],
+    inner_radius=1.,
+    outer_radius=2.,
+    model_name="sphere",
+    part_name="sphere"
+)
+
+env.TurboTurtlePartition(
+    target=["partition.cae"],
+    source=["sphere.cae"],
+    model_name="sphere",
+    part_name="sphere"
+)

@@ -89,7 +89,7 @@ def _turbo_turtle_sphere(
        :caption: SConstruct
 
        import waves
-       import turbo_turtle.scons_extensions
+       import turbo_turtle
        env = Environment()
        env["turbo-turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
        env.Append(BUILDERS={"TurboTurtleSphere": turbo_turtle.scons_extensions._turbo_turtle_sphere()})
@@ -138,11 +138,11 @@ def _turbo_turtle_partition(
        :caption: SConstruct
 
        import waves
-       import turbo_turtle.scons_extensions
+       import turbo_turtle
        env = Environment()
        env["turbo-turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
        env.Append(BUILDERS={"TurboTurtlePartition": turbo_turtle.scons_extensions._turbo_turtle_partition()})
-       env.TurboTurtleSphere(
+       env.TurboTurtlePartition(
            target=["partition.cae"],
            source=["sphere.cae"],
            model_name="sphere",
