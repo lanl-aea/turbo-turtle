@@ -238,6 +238,27 @@ def _surfaces_for_volumes(volumes):
     return surfaces
 
 
+def _surfaces_by_vector(surfaces, principal_vector, center=numpy.zeros(3)):
+    """Return a flast list of Cubit surface objects that meet the requirement of a
+       positive dot product between a given vector and the vector between two points:
+       a user provided center point and a surface object centroid.
+
+    :param list surfaces: list of Cubit surface objects
+    :param numpy.array principal_vector: Local principal axis vector defined in global coordinates
+    :param numpy.array center: center location of the geometry
+
+    :returns: numpy.array of Cubit surface objects
+    :rtype: numpy.array
+    """
+    surface_centroids = _surface_centroids(surfaces)
+    direction_vectors = [numpy.subtract(centroid, center) for centroid in surface_centroids]
+    
+    vector_dot = numpy.array(([numpy.dot(direction_vector, principal_vector) for direction_vector in direction_vectors]))
+    # Account for numerical errors in significant digits
+    vector_dot[numpy.isclose(vector_dot, 0)] = 0  
+    return numpy.array(surfaces)[numpy.where(vector_dot >  0)]
+
+
 def _create_volume_from_surfaces(surfaces, keep=True):
     """Create a volume from the provided surfaces. Surfaces must create a closed volume.
 
@@ -479,6 +500,7 @@ def _partition(center=parsers.partition_default_center,
     center = numpy.array(center)
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
+    yvector = numpy.cross(zvector, xvector)
     parts = _get_volumes_from_name(part_name)
 
     # Create 6 4-sided pyramidal bodies defining the partitioning intersections
@@ -486,22 +508,13 @@ def _partition(center=parsers.partition_default_center,
     surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
 
     # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
-    xy_plane, yz_plane, zx_plane = vertices.datum_planes(xvector, zvector)[:3]
-    surface_centroids = _surface_centroids(surfaces)
-    direction_vector = [numpy.subtract(centroid, center) for centroid in surface_centroids]
-    
-    xy_plane_dot = numpy.array(([numpy.dot(vector, xy_plane) for vector in direction_vector]))  
-    yz_plane_dot = numpy.array(([numpy.dot(vector, yz_plane) for vector in direction_vector]))  
-    zx_plane_dot = numpy.array(([numpy.dot(vector, zx_plane) for vector in direction_vector]))  
-
-    tol = 1e-9
     volume_surfaces = [
-        numpy.array(surfaces)[numpy.where(zx_plane_dot >  tol)],  # +Y
-        numpy.array(surfaces)[numpy.where(zx_plane_dot < -tol)],  # -Y
-        numpy.array(surfaces)[numpy.where(yz_plane_dot >  tol)],  # +X
-        numpy.array(surfaces)[numpy.where(yz_plane_dot < -tol)],  # -X
-        numpy.array(surfaces)[numpy.where(xy_plane_dot >  tol)],  # +Z
-        numpy.array(surfaces)[numpy.where(xy_plane_dot < -tol)],  # -Z
+        _surfaces_by_vector(surfaces,  yvector, center),  # +Y
+        _surfaces_by_vector(surfaces, -yvector, center),  # -Y
+        _surfaces_by_vector(surfaces,  xvector, center),  # +X
+        _surfaces_by_vector(surfaces, -xvector, center),  # -X
+        _surfaces_by_vector(surfaces,  zvector, center),  # +Z
+        _surfaces_by_vector(surfaces, -zvector, center),  # -Z
     ]
     volumes = [_create_volume_from_surfaces(surface_list) for surface_list in volume_surfaces]
 
