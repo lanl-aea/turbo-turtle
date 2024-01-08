@@ -211,6 +211,19 @@ def _surface_numbers(surfaces):
     return [surface.surfaces()[0].id() for surface in surfaces]
 
 
+def _surface_centroids(surfaces):
+    """Return a list of 3D surface centroids from the provided list of surface objects
+
+    :param list surfaces: list of Cubit surface objects
+
+    :returns: list of surface centroids
+    :rtype: list of numpy.arrays
+    """
+    surface_ids = _surface_numbers(surfaces)
+    surface_centroids = [numpy.array(cubit.get_surface_centroid(id)) for id in surface_ids]
+    return surface_centroids
+
+
 def _surfaces_for_volumes(volumes):
     """Return a flat list of surface objects for a list of volumes
 
@@ -474,7 +487,7 @@ def _partition(center=parsers.partition_default_center,
 
     # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
     xy_plane, yz_plane, zx_plane = vertices.datum_planes(xvector, zvector)[:3]
-    surface_centroids = [list(cubit.get_surface_centroid(surface.surfaces()[0].id())) for surface in surfaces]
+    surface_centroids = _surface_centroids(surfaces)
     direction_vector = [numpy.subtract(centroid, center) for centroid in surface_centroids]
     
     xy_plane_dot = numpy.array(([numpy.dot(vector, xy_plane) for vector in direction_vector]))  
