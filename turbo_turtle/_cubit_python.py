@@ -239,9 +239,9 @@ def _surfaces_for_volumes(volumes):
 
 
 def _surfaces_by_vector(surfaces, principal_vector, center=numpy.zeros(3)):
-    """Return a flast list of Cubit surface objects that meet the requirement of a
-       positive dot product between a given vector and the vector between two points:
-       a user provided center point and a surface object centroid.
+    """Return a flat list of Cubit surface objects that meet the requirement of a
+    positive dot product between a given vector and the vector between two points:
+    a user provided center point and a surface object centroid.
 
     :param list surfaces: list of Cubit surface objects
     :param numpy.array principal_vector: Local principal axis vector defined in global coordinates
@@ -255,8 +255,8 @@ def _surfaces_by_vector(surfaces, principal_vector, center=numpy.zeros(3)):
     
     vector_dot = numpy.array(([numpy.dot(direction_vector, principal_vector) for direction_vector in direction_vectors]))
     # Account for numerical errors in significant digits
-    vector_dot[numpy.isclose(vector_dot, 0)] = 0  
-    return numpy.array(surfaces)[numpy.where(vector_dot >  0)]
+    vector_dot[numpy.isclose(vector_dot, 0.)] = 0.
+    return numpy.array(surfaces)[numpy.where(vector_dot > 0.)]
 
 
 def _create_volume_from_surfaces(surfaces, keep=True):
