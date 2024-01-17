@@ -19,6 +19,7 @@ Internal Changes
   final design interface and behavior are stabilized (:issue:`103`, :merge:`80`). By `Kyle Brindley`_.
 - Updated cubit partition scheme to identify surfaces relative to local coordinate system and principal planes
   (:issue:`104`, :merge:`81`). By `Paula Rutherford`_.
+- Expose the SCons builders as part of the (future) public API (:issue:`106`, :merge:`83`). By `Kyle Brindley`_.
 
 Enhancements
 ============
