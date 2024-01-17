@@ -26,17 +26,17 @@ env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cub
 env["turbo_turtle"] = "python -m turbo_turtle.main" if env["uninstalled"] else "turbo-turtle"
 env.Append(BUILDERS={
     "TurboTurtleSphere":
-        turbo_turtle.scons_extensions._turbo_turtle_sphere(program=env["turbo_turtle"],
-                                                           abaqus_command=[env['abaqus']]),
+        turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
+                                                          abaqus_command=[env['abaqus']]),
     "TurboTurtlePartition":
-        turbo_turtle.scons_extensions._turbo_turtle_partition(program=env["turbo_turtle"],
-                                                              abaqus_command=[env['abaqus']]),
+        turbo_turtle.scons_extensions.turbo_turtle_partition(program=env["turbo_turtle"],
+                                                             abaqus_command=[env['abaqus']]),
     "TurboTurtleSphereCubit":
-        turbo_turtle.scons_extensions._turbo_turtle_sphere(program=env["turbo_turtle"],
-                                                           cubit_command=[env['cubit']], cubit=True),
+        turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
+                                                          cubit_command=[env['cubit']], cubit=True),
     "TurboTurtlePartitionCubit":
-        turbo_turtle.scons_extensions._turbo_turtle_partition(program=env["turbo_turtle"],
-                                                              cubit_command=[env['cubit']], cubit=True),
+        turbo_turtle.scons_extensions.turbo_turtle_partition(program=env["turbo_turtle"],
+                                                             cubit_command=[env['cubit']], cubit=True),
 })
 
 env.TurboTurtleSphere(
