@@ -8,6 +8,11 @@ Changelog
 v0.9.1 (unreleased)
 *******************
 
+Bug fixes
+=========
+- Fix a part name variable in the ``image`` subcommand Abaqus implementation (:issue:`105`, :merge:`82`). By `Kyle
+  Brindley`_.
+
 Internal Changes
 ================
 - Draft SCons extensions for subcommand builders. Considered draft implementations in the *internal* interface until

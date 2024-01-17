@@ -48,7 +48,7 @@ def main(input_file, output_file,
     elif input_file_extension.lower() == ".inp":
         abaqus.mdb.ModelFromInputFile(name=model_name, inputFileName=input_file)
         image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
-              model_name=model_name, part_name=lart_name, color_map=color_map)
+              model_name=model_name, part_name=part_name, color_map=color_map)
     else:
         message = "Uknown file extension {}".format(input_file_extension)
         _mixed_utilities.sys_exit(message)
