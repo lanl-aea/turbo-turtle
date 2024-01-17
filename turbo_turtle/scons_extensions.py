@@ -71,7 +71,7 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
     return builder
 
 
-def _turbo_turtle_sphere(
+def turbo_turtle_sphere(
     program="turbo-turtle", subcommand="sphere",
     options="--output-file ${TARGETS[0].abspath} " \
             "--inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
@@ -127,7 +127,7 @@ def _turbo_turtle_sphere(
                          abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def _turbo_turtle_partition(
+def turbo_turtle_partition(
     program="turbo-turtle", subcommand="partition",
     options="--input-file ${SOURCES[0].abspath} --output-file ${TARGETS[0].abspath} " \
             "--model-name ${model_name} --part-name ${part_name}",
