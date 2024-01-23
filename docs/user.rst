@@ -45,7 +45,7 @@ Three-dimensional sphere
 
    .. code-block::
 
-      turbo-turtle export --input-file sphere.cae --output-file sphere.inp --model-name sphere --part-name sphere
+      turbo-turtle export --input-file sphere.cae --model-name sphere --part-name sphere
 
 Two-dimensional, axisymmetric sphere
 ====================================
@@ -80,7 +80,7 @@ Two-dimensional, axisymmetric sphere
 
    .. code-block::
 
-      turbo-turtle export --input-file axisymmetric.cae --output-file axisymmetric.inp --model-name axisymmetric --part-name axisymmetric
+      turbo-turtle export --input-file axisymmetric.cae --model-name axisymmetric --part-name axisymmetric
 
 ***************
 Examples: Cubit
@@ -112,7 +112,7 @@ Three-dimensional sphere
    turbo-turtle partition --input-file sphere.cub --output-file sphere.cub --part-name sphere --cubit
    turbo-turtle mesh --input-file sphere.cub --output-file sphere.cub --part-name sphere --element-type dummy --global-seed 0.15 --cubit
    turbo-turtle image --input-file sphere.cub --output-file sphere.png --cubit
-   turbo-turtle export --input-file sphere.cub --output-file sphere.inp --part-name sphere --cubit
+   turbo-turtle export --input-file sphere.cub --part-name sphere --cubit
 
 Two-dimensional, axisymmetric sphere
 ====================================
@@ -125,4 +125,4 @@ Two-dimensional, axisymmetric sphere
    turbo-turtle partition --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric
    turbo-turtle mesh --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric --element-type dummy --global-seed 0.15
    turbo-turtle image --input-file axisymmetric.cub --output-file axisymmetric.png --cubit
-   turbo-turtle export --input-file axisymmetric.cub --output-file axisymmetric.inp --part-name axisymmetric
+   turbo-turtle export --input-file axisymmetric.cub --part-name axisymmetric
