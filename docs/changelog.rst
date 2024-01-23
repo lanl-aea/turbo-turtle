@@ -13,6 +13,10 @@ Bug fixes
 - Fix a part name variable in the ``image`` subcommand Abaqus implementation (:issue:`105`, :merge:`82`). By `Kyle
   Brindley`_.
 
+Documentation
+=============
+- Match user manual ``export`` subcommand options to implementation (:issue:`109`, :merge:`84`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Draft SCons extensions for subcommand builders. Considered draft implementations in the *internal* interface until
