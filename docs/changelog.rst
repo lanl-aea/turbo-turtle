@@ -8,6 +8,11 @@ Changelog
 v0.10.0 (unreleased)
 ********************
 
+Enhancements
+============
+- Improved Abaqus partitioning algorithm for handling pre-existing features (:issue:`70`, :merge:`86`). By `Kyle
+  Brindley`_ and `Thomas Roberts`_.
+
 *******************
 v0.9.1 (2024-01-24)
 *******************
