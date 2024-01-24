@@ -123,6 +123,10 @@ def partition(center, xvector, zvector, model_name, part_name):
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
 
+    xvector = vertices.normalize_vector(xvector)
+    zvector = vertices.normalize_vector(zvector)
+    yvector = numpy.cross(zvector, xvector)
+
     center = numpy.array(center)
     plane_normals = vertices.datum_planes(xvector, zvector)
     partition_planes = [datum_plane(center, normal, part) for normal in plane_normals]
@@ -141,9 +145,12 @@ def partition(center, xvector, zvector, model_name, part_name):
     p2_y = numpy.cos(angle) * big_number
 
     # Partition by sketch on 45 degree planes
-    for plane, normal in zip(plane_normals[3:], partition_planes[3:]):
+    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.vertices.datum_planes tuple order. Find a way to
+    # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
+    positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
+    for edge, plane in zip(positive_sketch_axis, partition_planes[3:]):
         # TODO: Move axis datum to dedicated function
-        point = center + normal
+        point = center + edge
         axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
         # TODO: Move to a dedicated partition function
         for sign in [1.0, -1.0]:
