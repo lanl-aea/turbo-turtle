@@ -155,12 +155,15 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
             sketch.Line(point1=(0.0, 0.0), point2=vertex_1)
             sketch.Line(point1=(0.0, 0.0), point2=vertex_2)
             sketch.Line(point1=vertex_1, point2=vertex_2)
-            part.PartitionCellBySketch(
-                sketchPlane=plane,
-                sketchUpEdge=axis,
-                cells=part.cells[:],
-                sketch=sketch
-            )
+            try:
+                part.PartitionCellBySketch(
+                    sketchPlane=plane,
+                    sketchUpEdge=axis,
+                    cells=part.cells[:],
+                    sketch=sketch
+                )
+            except AbaqusException as err:
+                pass
 
     abaqus.mdb.models[model_name].parts[part_name].checkGeometry()
 
