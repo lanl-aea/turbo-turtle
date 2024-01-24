@@ -52,6 +52,20 @@ def main(input_file,
         abaqus.mdb.saveAs(pathName=output_file)
 
 
+def datum_axis(center, normal, part):
+    """Return an Abaqus DataAxis object by center and normal axis
+
+    :param numpy.array center: center location of the geometry
+    :param numpy.array normal: plane normal vector
+    :param abaqus.mdb.models[].parts[] part: Abaqus part object
+
+    :returns: Abaqus datum axis object
+    :rtype: DatumAxis
+    """
+    point = center + normal
+    return part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
+
+
 def datum_plane(center, normal, part):
     """Return an Abaqus DataPlane object by center and normal axis
 
@@ -62,8 +76,7 @@ def datum_plane(center, normal, part):
     :returns: Abaqus Datum Plane object
     :rtype: DatumPlane
     """
-    point = center + normal
-    axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
+    axis = datum_axis(center, normal, part)
     return part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
 
 
@@ -104,7 +117,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     plane_normals = vertices.datum_planes(xvector, zvector)
     partition_planes = [datum_plane(center, normal, part) for normal in plane_normals]
 
-    # Partition by local coordinate system x/y/z planes
+    # Partition by three (3) local coordinate system x/y/z planes
     for plane in partition_planes[0:3]:
         try:
             part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
@@ -117,7 +130,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
     positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
 
-    # Partition by sketch on 45 degree planes
+    # Partition by sketch on the six (6) 45 degree planes
     for edge, plane in zip(positive_sketch_axis, partition_planes[3:]):
         # TODO: Move axis datum to dedicated function
         point = center + edge
