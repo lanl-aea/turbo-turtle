@@ -67,36 +67,6 @@ def datum_plane(center, normal, part):
     return part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
 
 
-def remove_faces_vertices(center, primary_vectors, fortyfive_vectors, part):
-    """Return two sets of vertex indices on the: primary and forty-five degree vectors
-
-    :param numpy.array center: Center of the local coordinate system
-    :param list primary_vectors: Vectors defining the primary axes (expect 3)
-    :param list fortyfive_vectors: Vectors defining the (1, 1, 1) vector variations (expect 4)
-    :param abaqus.mdb.models[].parts[] part: Abaqus part object
-
-    :returns: Two set objects containing: vertex indices on the primary axes, vertex indices on the fortyfive vectors
-    :rtype: tuple (primary_index, fortyfive_index)
-    """
-    center = numpy.array(center)
-    primary_index = []
-    fortyfive_index = []
-    for vertex in part.vertices:
-        current_point = numpy.array(vertex.pointOn[0])
-        current_vector = current_point - center
-        # Find all vertices lying on the (local) coordinate system axes
-        if vertices.any_parallel(current_vector, primary_vectors):
-            primary_index.append(vertex.index)
-            continue
-        # Find all vertices lying on the (local) coordinate system (1,1,1) vector variations
-        if vertices.any_parallel(current_vector, fortyfive_vectors):
-            fortyfive_index.append(vertex.index)
-            continue
-    primary_index = set(primary_index)
-    fortyfive_index = set(fortyfive_index)
-    return primary_index, fortyfive_index
-
-
 def partition(center, xvector, zvector, model_name, part_name, big_number=parsers.partition_default_big_number):
     """Partition the model/part with the turtle shell method, also know as the soccer ball method.
 
