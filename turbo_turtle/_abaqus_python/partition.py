@@ -52,24 +52,24 @@ def main(input_file,
         abaqus.mdb.saveAs(pathName=output_file)
 
 
-def datum_axis(center, normal, part):
+def datum_axis(center, vector, part):
     """Return an Abaqus DataAxis object by center and normal axis
 
-    :param numpy.array center: center location of the geometry
-    :param numpy.array normal: plane normal vector
+    :param numpy.array center: center location of the axis
+    :param numpy.array vector: axis vector
     :param abaqus.mdb.models[].parts[] part: Abaqus part object
 
     :returns: Abaqus datum axis object
     :rtype: DatumAxis
     """
-    point = center + normal
+    point = center + vector
     return part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
 
 
 def datum_plane(center, normal, part):
     """Return an Abaqus DataPlane object by center and normal axis
 
-    :param numpy.array center: center location of the geometry
+    :param numpy.array center: center location of the plane
     :param numpy.array normal: plane normal vector
     :param abaqus.mdb.models[].parts[] part: Abaqus part object
 
@@ -132,9 +132,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
 
     # Partition by sketch on the six (6) 45 degree planes
     for edge, plane in zip(positive_sketch_axis, partition_planes[3:]):
-        # TODO: Move axis datum to dedicated function
-        point = center + edge
-        axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
+        axis = datum_axis(center, edge, part)
         # TODO: Move to a dedicated partition function
         for sign in [1.0, -1.0]:
             vertex_1 = (-big_number_coordinates[0], sign * big_number_coordinates[1])
