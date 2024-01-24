@@ -24,7 +24,8 @@ def main(input_file,
          xvector=parsers.partition_default_xvector,
          zvector=parsers.partition_default_zvector,
          model_name=parsers.partition_default_model_name,
-         part_name=parsers.partition_default_part_name):
+         part_name=parsers.partition_default_part_name,
+         big_number=parsers.partition_default_big_number):
     """Wrap  partition function with file open and file write operations
 
     :param str input_file: Abaqus CAE model database to open
@@ -34,6 +35,7 @@ def main(input_file,
     :param list zvector: Local z-axis vector defined in global coordinates
     :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
     :param str part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
+    :param float big_number: Number larger than the outer radius of the part to partition.
 
     :returns: Abaqus CAE database named ``{output_file}.cae``
     """
@@ -46,7 +48,7 @@ def main(input_file,
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
-        partition(center, xvector, zvector, model_name, part_name)
+        partition(center, xvector, zvector, model_name, part_name, big_number=big_number)
         abaqus.mdb.saveAs(pathName=output_file)
 
 
@@ -95,7 +97,7 @@ def remove_faces_vertices(center, primary_vectors, fortyfive_vectors, part):
     return primary_index, fortyfive_index
 
 
-def partition(center, xvector, zvector, model_name, part_name):
+def partition(center, xvector, zvector, model_name, part_name, big_number=parsers.partition_default_big_number):
     """Partition the model/part with the turtle shell method, also know as the soccer ball method.
 
     If the body is modeled with fractional symmetry (e.g. quater or half symmetry), this code will attempt all
@@ -110,6 +112,7 @@ def partition(center, xvector, zvector, model_name, part_name):
     :param list zvector: Local z-axis vector defined in global coordinates
     :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
     :param str part_name: part to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
+    :param float big_number: Number larger than the outer radius of the part to partition.
     """
     import abaqus
     import caeModules
@@ -139,7 +142,6 @@ def partition(center, xvector, zvector, model_name, part_name):
             pass
 
     # TODO: Move to mixed Python utilities function and test
-    big_number = 15.0
     angle = numpy.arccos(numpy.sqrt(2.0/3.0))
     p2_x = numpy.sin(angle) * big_number
     p2_y = numpy.cos(angle) * big_number
@@ -246,5 +248,6 @@ if __name__ == "__main__":
             xvector=args.xvector,
             zvector=args.zvector,
             model_name=args.model_name,
-            part_name=args.part_name
+            part_name=args.part_name,
+            big_number=args.big_number
         ))

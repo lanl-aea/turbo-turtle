@@ -262,11 +262,8 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument('--part-name', type=str, default=partition_default_part_name,
                         help=part_name_help)
-    # TODO: Remove conditional if/when Abaqus partition algorithm uses big number (probably as a sketch based partition)
-    if cubit:
-        parser.add_argument('--big-number', type=float, default=partition_default_big_number,
-                            help="Number larger than the outer radius of the part to partition. Presently only used by " \
-                                 "Cubit implementation (default: %(default)s)")
+    parser.add_argument('--big-number', type=float, default=partition_default_big_number,
+                        help="Number larger than the outer radius of the part to partition (default: %(default)s)")
 
     return parser
 
