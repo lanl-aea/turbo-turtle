@@ -111,21 +111,22 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         except:
             pass
 
-    # TODO: Move to mixed Python utilities function and test
-    angle = numpy.arccos(numpy.sqrt(2.0/3.0))
-    p2_x = numpy.sin(angle) * big_number
-    p2_y = numpy.cos(angle) * big_number
-
-    # Partition by sketch on 45 degree planes
-    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.vertices.datum_planes tuple order. Find a way to
+    angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0/3.0))
+    big_number_coordinates = vertices.rectalinear_coordinates([big_number], [angle])[0]
+    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.vertices.datum_planes` tuple order. Find a way to
     # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
     positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
+
+    # Partition by sketch on 45 degree planes
     for edge, plane in zip(positive_sketch_axis, partition_planes[3:]):
         # TODO: Move axis datum to dedicated function
         point = center + edge
         axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
         # TODO: Move to a dedicated partition function
         for sign in [1.0, -1.0]:
+            vertex_1 = (-big_number_coordinates[0], sign * big_number_coordinates[1])
+            vertex_2 = ( big_number_coordinates[0], sign * big_number_coordinates[1])
+
             transform = part.MakeSketchTransform(
                 sketchPlane=plane,
                 sketchUpEdge=axis,
@@ -140,9 +141,9 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
             )
             sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
             part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
-            sketch.Line(point1=(0.0, 0.0), point2=(-p2_x, sign * p2_y))
-            sketch.Line(point1=(0.0, 0.0), point2=(p2_x, sign * p2_y))
-            sketch.Line(point1=(-p2_x, sign * p2_y), point2=(p2_x, sign * p2_y))
+            sketch.Line(point1=(0.0, 0.0), point2=vertex_1)
+            sketch.Line(point1=(0.0, 0.0), point2=vertex_2)
+            sketch.Line(point1=vertex_1, point2=vertex_2)
             part.PartitionCellBySketch(
                 sketchPlane=plane,
                 sketchUpEdge=axis,
