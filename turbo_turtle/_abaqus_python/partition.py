@@ -113,44 +113,64 @@ def partition(center, xvector, zvector, model_name, part_name):
     """
     import abaqus
     import caeModules
+    import abaqusConstants
 
 
     if center is None:
         print('\nTurboTurtle was canceled\n')
         return
 
-    part = abaqus.mdb.models[model_name].parts[part_name]
+    model = abaqus.mdb.models[model_name]
+    part = model.parts[part_name]
 
     center = numpy.array(center)
     plane_normals = vertices.datum_planes(xvector, zvector)
     partition_planes = [datum_plane(center, normal, part) for normal in plane_normals]
-    for plane in partition_planes:
+
+    # Partition by local coordinate system x/y/z planes
+    for plane in partition_planes[0:3]:
         try:
             part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
         except:
             pass
 
-    zvector = plane_normals[0]
-    xvector = plane_normals[1]
-    yvector = plane_normals[2]
-    primary_vectors = (xvector, yvector, zvector)
-    fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
-    primary_index, fortyfive_index = remove_faces_vertices(center, primary_vectors, fortyfive_vectors, part)
+    # TODO: Move to mixed Python utilities function and test
+    big_number = 15.0
+    angle = numpy.arccos(numpy.sqrt(2.0/3.0))
+    p2_x = numpy.sin(angle) * big_number
+    p2_y = numpy.cos(angle) * big_number
 
-    # Append a list of faces with 2 vertices on a primary axis and 2 vertices on a fortyfive axis
-    remove_face = []
-    for face in part.faces:
-        current_vertex_identities = set(face.getVertices())
-        primary_intersection_count = len(current_vertex_identities & primary_index)
-        fortyfive_intersection_count = len(current_vertex_identities & fortyfive_index)
-        if primary_intersection_count == 2 and fortyfive_intersection_count == 2:
-            remove_face.append(face)
+    # Partition by sketch on 45 degree planes
+    for plane, normal in zip(plane_normals[3:], partition_planes[3:]):
+        # TODO: Move axis datum to dedicated function
+        point = center + normal
+        axis = part.datums[part.DatumAxisByTwoPoint(point1=tuple(center), point2=tuple(point)).id]
+        # TODO: Move to a dedicated partition function
+        for sign in [1.0, -1.0]:
+            transform = part.MakeSketchTransform(
+                sketchPlane=plane,
+                sketchUpEdge=axis,
+                sketchPlaneSide=abaqusConstants.SIDE1,
+                origin=center
+            )
+            sketch = model.ConstrainedSketch(
+                name='__profile__',
+                sheetSize=91.45,
+                gridSpacing=2.28,
+                transform=transform
+            )
+            sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
+            part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
+            sketch.Line(point1=(0.0, 0.0), point2=(-p2_x, sign * p2_y))
+            sketch.Line(point1=(0.0, 0.0), point2=(p2_x, sign * p2_y))
+            sketch.Line(point1=(-p2_x, sign * p2_y), point2=(p2_x, sign * p2_y))
+            part.PartitionCellBySketch(
+                sketchPlane=plane,
+                sketchUpEdge=axis,
+                cells=part.cells[:],
+                sketch=sketch
+            )
 
-    if len(remove_face) > 0:
-        part.RemoveFaces(faceList=remove_face, deleteCells=False)
-        part.RemoveRedundantEntities(vertexList=part.vertices[:], edgeList=part.edges[:])
-
-    # Step 29 - validate geometry
     abaqus.mdb.models[model_name].parts[part_name].checkGeometry()
 
 
