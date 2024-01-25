@@ -33,7 +33,6 @@ def main(input_file, output_file,
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
-    :param bool assembly: Flag for exporting an image of the root assembly rather than of a single part
 
     :returns: writes image to ``{output_file}``
     """
@@ -63,7 +62,7 @@ def image(output_file,
           model_name=parsers.image_default_model_name,
           part_name=parsers.image_default_part_name,
           color_map=parsers.image_color_map_choices[0]):
-    """Script for saving an assembly view image (colored by material) for a given Abaqus input file.
+    """Script for saving a part or assembly view image (colored by material) for a given Abaqus input file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
 
