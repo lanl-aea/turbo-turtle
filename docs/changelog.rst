@@ -8,6 +8,11 @@ Changelog
 v0.10.1 (unreleased)
 ********************
 
+Enhancements
+============
+- Allow for assembly image generation by optionally excluding ``--part-name`` when using the ``image`` subcommand 
+  (:issue:`92`, :merge:`74`). By `Thomas Roberts`_.
+
 ********************
 v0.10.0 (2024-01-24)
 ********************
