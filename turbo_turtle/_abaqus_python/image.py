@@ -78,8 +78,6 @@ def image(output_file,
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
-    :param bool assembly: Flag for exporting an image of the root assembly rather than of a single part. If ``assembly`` 
-       is ``True``, the ``part-name`` parameter will be ignored.
 
     :returns: writes image to ``{output_file}``
     """
