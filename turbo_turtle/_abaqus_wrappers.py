@@ -85,7 +85,7 @@ def partition(args, command):
     command += f"--center {' '.join(map(str, args.center))} "
     command += f"--xvector {' '.join(map(str, args.xvector))} "
     command += f"--zvector {' '.join(map(str, args.zvector))} "
-    command += f"--model-name {args.model_name} --part-name {args.part_name} "
+    command += f"--model-name {args.model_name} --part-name {' '.join(map(str, args.part_name))} "
     command += f"--big-number {args.big_number}"
     _utilities.run_command(command)
 

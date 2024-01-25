@@ -219,7 +219,7 @@ partition_default_center = [0.0, 0.0, 0.0]
 partition_default_xvector = [1.0, 0.0, 0.0]
 partition_default_zvector = [0.0, 0.0, 1.0]
 partition_default_model_name = "Model-1"
-partition_default_part_name = "Part-1"
+partition_default_part_name = ]"Part-1"]
 partition_default_big_number = 1e6
 partition_cli_help = "Partition hollow spheres into a turtle shell"
 partition_cli_description = "Partition hollow spheres into a turtle shell given a small number of locating, " \
@@ -260,7 +260,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
                         help="Local z-axis vector defined in global coordinates (default: %(default)s)")
     parser.add_argument('--model-name', type=str, default=partition_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
-    parser.add_argument('--part-name', type=str, default=partition_default_part_name,
+    parser.add_argument('--part-name', type=str, nargs='+', default=partition_default_part_name,
                         help=part_name_help)
     parser.add_argument('--big-number', type=float, default=partition_default_big_number,
                         help="Number larger than the outer radius of the part to partition (default: %(default)s)")
