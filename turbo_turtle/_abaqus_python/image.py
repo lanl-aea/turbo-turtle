@@ -31,7 +31,7 @@ def main(input_file, output_file,
     :param float y_angle: Rotation about Y-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param float z_angle: Rotation about Z-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param str model_name: model to query in the Abaqus model database
-    :param str part_name: part to query in the specified Abaqus model
+    :param list part_name: list of parts to query in the specified Abaqus model
     :param str color_map: color map key
     :param bool assembly: Flag for exporting an image of the root assembly rather than of a single part
 
@@ -67,15 +67,17 @@ def image(output_file,
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
 
-    If the model assembly has no instances, use ``part_name`` to generate one. The ``input_file`` is not modified to
-    include this generated instance.
+    If ``part_name`` is specified, an image of that part will be exported. If no ``part_name`` is specified, the model's 
+    root assembly will be queried and if empty, all parts in the model will be instanced into the root assembly. Then, 
+    an image of the root assembly will be exported. The ``input_file`` is not modified to include any generated 
+    instances.
 
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
     :param float x_angle: Rotation about X-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param float y_angle: Rotation about Y-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param float z_angle: Rotation about Z-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param str model_name: model to query in the Abaqus model database
-    :param str part_name: part to query in the specified Abaqus model
+    :param list part_name: list of parts to query in the specified Abaqus model
     :param str color_map: color map key
     :param bool assembly: Flag for exporting an image of the root assembly rather than of a single part. If ``assembly`` 
        is ``True``, the ``part-name`` parameter will be ignored.
