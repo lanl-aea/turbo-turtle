@@ -31,7 +31,7 @@ def main(input_file, output_file,
     :param float y_angle: Rotation about Y-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param float z_angle: Rotation about Z-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param str model_name: model to query in the Abaqus model database
-    :param list part_name: list of parts to query in the specified Abaqus model
+    :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
     :param bool assembly: Flag for exporting an image of the root assembly rather than of a single part
 
@@ -77,7 +77,7 @@ def image(output_file,
     :param float y_angle: Rotation about Y-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param float z_angle: Rotation about Z-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
     :param str model_name: model to query in the Abaqus model database
-    :param list part_name: list of parts to query in the specified Abaqus model
+    :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
     :param bool assembly: Flag for exporting an image of the root assembly rather than of a single part. If ``assembly`` 
        is ``True``, the ``part-name`` parameter will be ignored.
@@ -89,20 +89,18 @@ def image(output_file,
 
     output_file_stem, output_file_extension = os.path.splitext(output_file)
     output_file_extension = output_file_extension.lstrip(".")
-
-    if len(part_name) == 0:
+    if part_name is None:
         model = abaqus.mdb.models[model_name]
-        assembly = mdb.model.rootAssembly
+        assembly = model.rootAssembly
         if len(assembly.instances.keys()) == 0:
-            for new_instance in mdb.parts.keys():
-                part = abaqus.mdb.models[model_name].parts[new_instance]
+            for new_instance in model.parts.keys():
+                part = model.parts[new_instance]
                 assembly.Instance(name=new_instance, part=part, dependent=abaqusConstants.ON)
-        assembly_object = abaqus.mdb.models[model_name].rootAssembly
         session.viewports['Viewport: 1'].assemblyDisplay.setValues(
             optimizationTasks=abaqusConstants.OFF,
             geometricRestrictions=abaqusConstants.OFF,
             stopConditions=abaqusConstants.OFF)
-        session.viewports['Viewport: 1'].setValues(displayedObject=assembly_object)
+        session.viewports['Viewport: 1'].setValues(displayedObject=assembly)
     else:
         part_object = abaqus.mdb.models[model_name].parts[part_name]
         session.viewports['Viewport: 1'].setValues(displayedObject=part_object)

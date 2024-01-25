@@ -416,8 +416,7 @@ image_default_y_angle = 0.
 image_default_z_angle = 0.
 image_default_image_size = [1920, 1080]
 image_default_model_name = "Model-1"
-image_default_part_name = "Part-1"
-image_default_assembly = False
+image_default_part_name = None
 image_cli_help = "Save an image of an Abaqus model"
 image_cli_description = "Save an assembly view image (colored by material) for a given Abaqus input file"
 # One time dump from session.viewports['Viewport: 1'].colorMappings.keys()) to stay Python 3 compatible
@@ -466,7 +465,4 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
                         help=part_name_help)
     parser.add_argument('--color-map', type=str, choices=image_color_map_choices, default=image_color_map_choices[0],
                         help=color_map_help)
-    parser.add_argument('--assembly', action="store_true",
-                        help="Export an image of the root assembly rather than a single part (default: %(default)s)")
-
     return parser
