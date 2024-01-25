@@ -22,8 +22,7 @@ def main(input_file, output_file,
          image_size=parsers.image_default_image_size,
          model_name=parsers.image_default_model_name,
          part_name=parsers.image_default_part_name,
-         color_map=parsers.image_color_map_choices[0],
-         assembly=parsers.image_default_assembly):
+         color_map=parsers.image_color_map_choices[0]):
     """Wrap image with file input handling
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
@@ -46,11 +45,11 @@ def main(input_file, output_file,
             shutil.copyfile(input_file, copy_file.name)
             abaqus.openMdb(pathName=copy_file.name)
             image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
-                  model_name=model_name, part_name=part_name, color_map=color_map, assembly=assembly)
+                  model_name=model_name, part_name=part_name, color_map=color_map)
     elif input_file_extension.lower() == ".inp":
         abaqus.mdb.ModelFromInputFile(name=model_name, inputFileName=input_file)
         image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
-              model_name=model_name, part_name=part_name, color_map=color_map, assembly=assembly)
+              model_name=model_name, part_name=part_name, color_map=color_map)
     else:
         message = "Uknown file extension {}".format(input_file_extension)
         _mixed_utilities.sys_exit(message)
@@ -63,8 +62,7 @@ def image(output_file,
           image_size=parsers.image_default_image_size,
           model_name=parsers.image_default_model_name,
           part_name=parsers.image_default_part_name,
-          color_map=parsers.image_color_map_choices[0],
-          assembly=parsers.image_default_assembly):
+          color_map=parsers.image_color_map_choices[0]):
     """Script for saving an assembly view image (colored by material) for a given Abaqus input file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
@@ -90,7 +88,13 @@ def image(output_file,
     output_file_stem, output_file_extension = os.path.splitext(output_file)
     output_file_extension = output_file_extension.lstrip(".")
 
-    if assembly:
+    if len(part_name) == 0:
+        model = abaqus.mdb.models[model_name]
+        assembly = mdb.model.rootAssembly
+        if len(assembly.instances.keys()) == 0:
+            for new_instance in mdb.parts.keys():
+                part = abaqus.mdb.models[model_name].parts[new_instance]
+                assembly.Instance(name=new_instance, part=part, dependent=abaqusConstants.ON)
         assembly_object = abaqus.mdb.models[model_name].rootAssembly
         session.viewports['Viewport: 1'].assemblyDisplay.setValues(
             optimizationTasks=abaqusConstants.OFF,
@@ -137,5 +141,4 @@ if __name__ == "__main__":
         model_name=args.model_name,
         part_name=args.part_name,
         color_map=args.color_map,
-        assembly=args.assembly
     ))
