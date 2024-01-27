@@ -468,7 +468,7 @@ def partition(input_file,
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
     :param list zvector: Local z-axis vector defined in global coordinates
-    :param str part_name: part/volume name prefix
+    :param list part_name: part/volume name prefixes
     :param float big_number: Number larger than the outer radius of the part to partition.
     """
     cubit.init(["cubit"])
@@ -496,7 +496,7 @@ def _partition(center=parsers.partition_default_center,
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
     :param list zvector: Local z-axis vector defined in global coordinates
-    :param str part_name: part/volume name prefix
+    :param list part_name: part/volume name prefixes
     :param float big_number: Number larger than the outer radius of the part to partition.
     """
 
@@ -504,57 +504,59 @@ def _partition(center=parsers.partition_default_center,
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
     yvector = numpy.cross(zvector, xvector)
-    parts = _get_volumes_from_name(part_name)
+    
+    for current_part_name in part_name:
+        parts = _get_volumes_from_name(current_part_name)
 
-    # Create 6 4-sided pyramidal bodies defining the partitioning intersections
-    surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, big_number)
-    surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+        # Create 6 4-sided pyramidal bodies defining the partitioning intersections
+        surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, big_number)
+        surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
 
-    # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
-    volume_surfaces = [
-        _surfaces_by_vector(surfaces,  yvector, center),  # +Y
-        _surfaces_by_vector(surfaces, -yvector, center),  # -Y
-        _surfaces_by_vector(surfaces,  xvector, center),  # +X
-        _surfaces_by_vector(surfaces, -xvector, center),  # -X
-        _surfaces_by_vector(surfaces,  zvector, center),  # +Z
-        _surfaces_by_vector(surfaces, -zvector, center),  # -Z
-    ]
-    volumes = [_create_volume_from_surfaces(surface_list) for surface_list in volume_surfaces]
+        # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
+        volume_surfaces = [
+            _surfaces_by_vector(surfaces,  yvector, center),  # +Y
+            _surfaces_by_vector(surfaces, -yvector, center),  # -Y
+            _surfaces_by_vector(surfaces,  xvector, center),  # +X
+            _surfaces_by_vector(surfaces, -xvector, center),  # -X
+            _surfaces_by_vector(surfaces,  zvector, center),  # +Z
+            _surfaces_by_vector(surfaces, -zvector, center),  # -Z
+        ]
+        volumes = [_create_volume_from_surfaces(surface_list) for surface_list in volume_surfaces]
 
-    # Remove pyramidal construction surfaces
-    surface_numbers = _surface_numbers(surfaces)
-    surface_string = " ".join(map(str, surface_numbers))
-    cubit_command_or_exit(f"delete surface {surface_string}")
+        # Remove pyramidal construction surfaces
+        surface_numbers = _surface_numbers(surfaces)
+        surface_string = " ".join(map(str, surface_numbers))
+        cubit_command_or_exit(f"delete surface {surface_string}")
 
-    # Create intersections/partitions
-    for number, volume in enumerate(volumes):
-        volume_id = volume.id()
+        # Create intersections/partitions
+        for number, volume in enumerate(volumes):
+            volume_id = volume.id()
+            for part in parts:
+                cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
+            cubit_command_or_exit(f"delete volume {volume_id}")
         for part in parts:
-            cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
-        cubit_command_or_exit(f"delete volume {volume_id}")
-    for part in parts:
-        cubit_command_or_exit(f"delete volume {part.id()}")
+            cubit_command_or_exit(f"delete volume {part.id()}")
 
-    # Create local coordinate system primary planes and webcut
-    yvector = numpy.cross(zvector, xvector)
-    surface_coordinates = [
-        numpy.array([center, center + xvector, center + yvector]),
-        numpy.array([center, center + yvector, center + zvector]),
-        numpy.array([center, center + zvector, center + xvector]),
-    ]
-    surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
-    surface_numbers = _surface_numbers(surfaces)
-    for number in surface_numbers:
-        cubit_command_or_exit(f"webcut volume all with plane from surface {number}")
-    surface_string = " ".join(map(str, surface_numbers))
-    cubit_command_or_exit(f"delete surface {surface_string}")
+        # Create local coordinate system primary planes and webcut
+        yvector = numpy.cross(zvector, xvector)
+        surface_coordinates = [
+            numpy.array([center, center + xvector, center + yvector]),
+            numpy.array([center, center + yvector, center + zvector]),
+            numpy.array([center, center + zvector, center + xvector]),
+        ]
+        surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+        surface_numbers = _surface_numbers(surfaces)
+        for number in surface_numbers:
+            cubit_command_or_exit(f"webcut volume all with plane from surface {number}")
+        surface_string = " ".join(map(str, surface_numbers))
+        cubit_command_or_exit(f"delete surface {surface_string}")
 
-    # Imprint and merge
-    parts = _get_volumes_from_name(part_name)
-    part_ids = [part.id() for part in parts]
-    part_string = " ".join(map(str, part_ids))
-    cubit_command_or_exit(f"imprint volume {part_string}")
-    cubit_command_or_exit(f"merge volume {part_string}")
+        # Imprint and merge
+        parts = _get_volumes_from_name(current_part_name)
+        part_ids = [part.id() for part in parts]
+        part_string = " ".join(map(str, part_ids))
+        cubit_command_or_exit(f"imprint volume {part_string}")
+        cubit_command_or_exit(f"merge volume {part_string}")
 
 
 def mesh(input_file, element_type,
