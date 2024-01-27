@@ -17,6 +17,11 @@ Internal Changes
 ================
 - Remove duplication in CI environment creation logic (:issue:`121`, :merge:`101`). By `Kyle Brindley`_.
 
+Enhancements
+============
+- Allow multiple part names to be specified within a single input file and model name for the
+  ``partition`` subcommand (:issue:`110`, :merge:`88`). By `Thomas Roberts`_.
+
 ********************
 v0.10.1 (2024-02-12)
 ********************
