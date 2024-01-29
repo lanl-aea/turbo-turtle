@@ -8,6 +8,11 @@ Changelog
 v0.10.1 (unreleased)
 ********************
 
+Internal Changes
+================
+- Update CLI description for the ``image`` subcommand to be consistent with changes from :issue:`92` (:issue:`111`, 
+  :merge:`89`). By `Thomas Roberts`_.
+
 Enhancements
 ============
 - Allow for assembly image generation by optionally excluding ``--part-name`` when using the ``image`` subcommand 
