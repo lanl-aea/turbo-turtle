@@ -211,3 +211,17 @@ class TestVertices(unittest.TestCase):
         for radius_list, angle_list, expected in tests:
             coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
             assert numpy.allclose(coordinates, expected)
+
+    def test_normalize_vector(self):
+        one_over_root_three = 1. / math.sqrt(3.)
+        tests = [
+            ((0., 0., 0.), numpy.array([0., 0., 0.])),
+            ((1., 0., 0.), numpy.array([1., 0., 0.])),
+            ((0., 1., 0.), numpy.array([0., 1., 0.])),
+            ((0., 0., 1.), numpy.array([0., 0., 1.])),
+            ((1., 1., 1.), numpy.array([one_over_root_three, one_over_root_three, one_over_root_three])),
+            ((2., 2., 2.), numpy.array([one_over_root_three, one_over_root_three, one_over_root_three])),
+        ]
+        for vector, expected in tests:
+            normalized = vertices.normalize_vector(vector)
+            assert numpy.allclose(normalized, expected)
