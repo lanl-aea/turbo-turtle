@@ -93,3 +93,42 @@ class TestVertices(unittest.TestCase):
             all_splines = vertices._break_coordinates(coordinates, euclidean_distance)
             for spline, expectation in zip(all_splines, expected):
                 assert numpy.allclose(spline, expectation)
+
+    def test_line_pairs(self):
+        tests = [
+            (
+                [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])],
+                [(numpy.array([1.0, -0.5]), numpy.array([2.0, -0.5])),
+                 (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),
+                 (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),
+                 (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5]))]
+            ),
+            (
+                [numpy.array([[ 5.1, -5. ],
+                              [ 5. , -4.8],
+                              [ 4.5, -4. ],
+                              [ 4.1, -3. ],
+                              [ 4. , -2.5]]),
+                 numpy.array([[ 4. ,  2.5],
+                              [ 4.1,  3. ],
+                              [ 4.5,  4. ],
+                              [ 5. ,  4.8],
+                              [ 5.1,  5. ]]),
+                 numpy.array([[ 3.0,  5.0]]),
+                 numpy.array([[ 3.0, -4.0]]),
+                 numpy.array([[ 0.0, -4.0]]),
+                 numpy.array([[ 0.0, -5.0]])],
+                [(numpy.array([ 4. , -2.5]), numpy.array([ 4. ,  2.5])),
+                 (numpy.array([ 5.1,  5. ]), numpy.array([ 3.0,  5.0])),
+                 (numpy.array([ 3.0,  5.0]), numpy.array([ 3.0, -4.0])),
+                 (numpy.array([ 3.0, -4.0]), numpy.array([ 0.0, -4.0])),
+                 (numpy.array([ 0.0, -4.0]), numpy.array([ 0.0, -5.0])),
+                 (numpy.array([ 0.0, -5.0]), numpy.array([ 5.1, -5. ]))]
+            )
+        ]
+        for all_splines, expected in tests:
+            line_pairs = vertices._line_pairs(all_splines)
+            for pair, expectation in zip(line_pairs, expected):
+                assert len(pair) == len(expectation)
+                assert numpy.allclose(pair[0], expectation[0])
+                assert numpy.allclose(pair[1], expectation[1])
