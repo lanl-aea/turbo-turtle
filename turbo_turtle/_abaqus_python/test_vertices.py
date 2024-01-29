@@ -288,3 +288,25 @@ class TestVertices(unittest.TestCase):
             planes = vertices.datum_planes(xvector, zvector)
             for plane, expectation in zip(planes, expected):
                 assert numpy.allclose(plane, expectation)
+
+    def test_fortyfive_vectors(self):
+        over_root_three = 1. / math.sqrt(3.)
+        tests = [
+            (
+                numpy.array([1., 0., 0.]), numpy.array([0., 0., 1.]),
+                [
+                    numpy.array([ over_root_three,  over_root_three,  over_root_three]),
+                    numpy.array([-over_root_three,  over_root_three,  over_root_three]),
+                    numpy.array([-over_root_three,  over_root_three, -over_root_three]),
+                    numpy.array([ over_root_three,  over_root_three, -over_root_three]),
+                    numpy.array([ over_root_three, -over_root_three,  over_root_three]),
+                    numpy.array([-over_root_three, -over_root_three,  over_root_three]),
+                    numpy.array([-over_root_three, -over_root_three, -over_root_three]),
+                    numpy.array([ over_root_three, -over_root_three, -over_root_three]),
+                ]
+            ),
+        ]
+        for xvector, zvector, expected in tests:
+            fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
+            for vector, expectation in zip(fortyfive_vectors, expected):
+                assert numpy.allclose(vector, expectation)
