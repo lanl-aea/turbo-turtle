@@ -53,3 +53,43 @@ class TestVertices(unittest.TestCase):
         for bool_list_1, bool_list_2, expected in tests:
             bools = vertices._bool_via_or(bool_list_1, bool_list_2)
             assert bools == expected
+
+    def test_break_coordinates(self):
+        tests = [
+            (numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
+             4,
+             [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])]),
+            (numpy.array([[ 5.1, -5. ],
+                          [ 5. , -4.8],
+                          [ 4.5, -4. ],
+                          [ 4.1, -3. ],
+                          [ 4. , -2.5],
+                          [ 4. ,  2.5],
+                          [ 4.1,  3. ],
+                          [ 4.5,  4. ],
+                          [ 5. ,  4.8],
+                          [ 5.1,  5. ],
+                          [ 3. ,  5. ],
+                          [ 3. , -4. ],
+                          [ 0. , -4. ],
+                          [ 0. , -5. ]]),
+             4,
+             [numpy.array([[ 5.1, -5. ],
+                           [ 5. , -4.8],
+                           [ 4.5, -4. ],
+                           [ 4.1, -3. ],
+                           [ 4. , -2.5]]),
+              numpy.array([[ 4. ,  2.5],
+                           [ 4.1,  3. ],
+                           [ 4.5,  4. ],
+                           [ 5. ,  4.8],
+                           [ 5.1,  5. ]]),
+              numpy.array([[ 3.0,  5.0]]),
+              numpy.array([[ 3.0, -4.0]]),
+              numpy.array([[ 0.0, -4.0]]),
+              numpy.array([[ 0.0, -5.0]])])
+        ]
+        for coordinates, euclidean_distance, expected in tests:
+            all_splines = vertices._break_coordinates(coordinates, euclidean_distance)
+            for spline, expectation in zip(all_splines, expected):
+                assert numpy.allclose(spline, expectation)
