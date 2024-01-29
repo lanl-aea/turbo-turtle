@@ -237,3 +237,23 @@ class TestVertices(unittest.TestCase):
         for first, second, expected in tests:
             midpoint = vertices.midpoint_vector(first, second)
             assert numpy.allclose(midpoint, expected)
+
+    def test_is_parallel(self):
+        tests = [
+            ((1., 1., 1.), (1., 1., 1.), True),
+            ((1., 0., 0.), (0., 0., 1.), False),
+            ((0., 1., 0.), (0., 2., 0.), True),
+        ]
+        for first, second, expected in tests:
+            boolean = vertices.is_parallel(first, second)
+            assert boolean == expected
+
+    def test_any_parallel(self):
+        tests = [
+            ((1., 1., 1.), [(1., 1., 1.), (1., 0., 0.)], True),
+            ((1., 0., 0.), [(0., 0., 1.), (0., 1., 0.)], False),
+            ((0., 1., 0.), [(2., 0., 0.), (0., 2., 0.)], True),
+        ]
+        for first, options, expected in tests:
+            boolean = vertices.any_parallel(first, options)
+            assert boolean == expected
