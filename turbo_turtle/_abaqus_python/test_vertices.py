@@ -187,3 +187,15 @@ class TestVertices(unittest.TestCase):
             assert len(splines) == len(expected_splines)
             for spline, expectation in zip(splines, expected_splines):
                 assert numpy.allclose(spline, expectation)
+
+    def test_cylinder(self):
+        tests = [
+            (1., 2., 1., None, numpy.array([[1., 0.5], [2., 0.5], [2., -0.5], [1., -0.5]])),
+            (1., 2., 1., 0.5, numpy.array([[1., 1.], [2., 1.], [2., 0.], [1., 0.]]))
+        ]
+        for inner_radius, outer_radius, height, y_offset, expected in tests:
+            kwargs = {}
+            if y_offset is not None:
+                kwargs = {"y_offset": y_offset}
+            coordinates = vertices.cylinder(inner_radius, outer_radius, height, **kwargs)
+            assert numpy.allclose(coordinates, expected)
