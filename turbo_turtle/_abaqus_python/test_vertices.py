@@ -41,3 +41,15 @@ class TestVertices(unittest.TestCase):
         for coordinates, euclidean_distance, expected in tests:
             bools = vertices._compare_euclidean_distance(coordinates, euclidean_distance)
             assert bools == expected
+
+    def test_bool_via_or(self):
+        tests = [
+            ([True, True], [False, False], [True, True]),
+            ([False, False], [False, False], [False, False]),
+            ([True, True], [True, True], [True, True]),
+            ([True, False], [False, True], [True, True]),
+            ([False, True], [True, False], [True, True])
+        ]
+        for bool_list_1, bool_list_2, expected in tests:
+            bools = vertices._bool_via_or(bool_list_1, bool_list_2)
+            assert bools == expected
