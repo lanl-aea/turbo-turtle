@@ -12,10 +12,11 @@ Internal Changes
 ================
 - Update CLI description for the ``image`` subcommand to be consistent with changes from :issue:`92` (:issue:`111`, 
   :merge:`89`). By `Thomas Roberts`_.
+- Duplicate vertices Python 3 unit tests in Abaqus Python 2 (:issue:`60`, :merge:`90`). By `Kyle Brindley`_.
 
 Enhancements
 ============
-- Allow for assembly image generation by optionally excluding ``--part-name`` when using the ``image`` subcommand 
+- Allow for assembly image generation by optionally excluding ``--part-name`` when using the ``image`` subcommand
   (:issue:`92`, :merge:`74`). By `Thomas Roberts`_.
 
 ********************
