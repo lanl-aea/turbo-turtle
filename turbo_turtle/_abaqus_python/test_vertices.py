@@ -5,6 +5,7 @@
 """
 import os
 import sys
+import math
 import inspect
 import unittest
 
@@ -198,4 +199,15 @@ class TestVertices(unittest.TestCase):
             if y_offset is not None:
                 kwargs = {"y_offset": y_offset}
             coordinates = vertices.cylinder(inner_radius, outer_radius, height, **kwargs)
+            assert numpy.allclose(coordinates, expected)
+
+    def test_rectalinear_coordinates(self):
+        number = math.sqrt(2.**2 / 2.)
+        tests = [
+            ((1, 1, 1, 1), (0, math.pi / 2, math.pi, 2 * math.pi), ((1, 0), (0, 1), (-1, 0), (1, 0))),
+            ((2, 2, 2, 2), (math.pi / 4, math.pi * 3 / 4, math.pi * 5 / 4, math.pi * 7 / 4),
+             ((number, number), (-number, number), (-number, -number), (number, -number)))
+        ]
+        for radius_list, angle_list, expected in tests:
+            coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
             assert numpy.allclose(coordinates, expected)
