@@ -225,3 +225,15 @@ class TestVertices(unittest.TestCase):
         for vector, expected in tests:
             normalized = vertices.normalize_vector(vector)
             assert numpy.allclose(normalized, expected)
+
+    def test_midpoint_vector(self):
+        tests = [
+            ([1., 0, 0], [0, 1., 0], numpy.array([0.5, 0.5, 0.])),
+            ([1., 0, 0], [0, -1., 0], numpy.array([0.5, -0.5, 0.])),
+            ([0, 1., 0], [0, 0, 1.], numpy.array([0, 0.5, 0.5])),
+            ([0, 1., 0], [0, 0, -1.], numpy.array([0, 0.5, -0.5])),
+            ([1., 1., 1.], [-1., 1., 1.], numpy.array([0, 1., 1.])),
+        ]
+        for first, second, expected in tests:
+            midpoint = vertices.midpoint_vector(first, second)
+            assert numpy.allclose(midpoint, expected)
