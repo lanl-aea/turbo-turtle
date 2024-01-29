@@ -189,6 +189,14 @@ class TestVertices(unittest.TestCase):
             for spline, expectation in zip(splines, expected_splines):
                 assert numpy.allclose(spline, expectation)
 
+    # TODO: flesh out when we figure out how to patch in Abaqus Python 2
+    def test_lines_and_splines_passthrough(self):
+        pass
+
+    # TODO: flesh out when we figure out how to patch in Abaqus Python 2
+    def test_break_coordinates_passthrough(self):
+        pass
+
     def test_cylinder(self):
         tests = [
             (1., 2., 1., None, numpy.array([[1., 0.5], [2., 0.5], [2., -0.5], [1., -0.5]])),
@@ -257,3 +265,26 @@ class TestVertices(unittest.TestCase):
         for first, options, expected in tests:
             boolean = vertices.any_parallel(first, options)
             assert boolean == expected
+
+    def test_datum_planes(self):
+        norm = math.sqrt(0.5)
+        tests = [
+            (
+                (1., 0., 0.), (0., 0., 1.),
+                [
+                 numpy.array([0., 0., 1.]),  # XY plane
+                 numpy.array([1., 0., 0.]),  # YZ plane
+                 numpy.array([0., 1., 0.]),  # ZX plane
+                 numpy.array([ norm,  norm, 0.]),
+                 numpy.array([ norm, -norm, 0.]),
+                 numpy.array([ 0., norm,  norm]),
+                 numpy.array([ 0., norm, -norm]),
+                 numpy.array([  norm, 0., norm]),
+                 numpy.array([ -norm, 0., norm])
+                ]
+            ),
+        ]
+        for xvector, zvector, expected in tests:
+            planes = vertices.datum_planes(xvector, zvector)
+            for plane, expectation in zip(planes, expected):
+                assert numpy.allclose(plane, expectation)
