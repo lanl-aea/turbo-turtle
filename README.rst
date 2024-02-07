@@ -17,11 +17,15 @@
 Turbo Turtle
 ############
 
-.. image:: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/badges/main/pipeline.svg?key_text=re-git+tests&key_width=80
+.. |pipeline| image:: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/badges/main/pipeline.svg?key_text=re-git+tests&key_width=80
    :target: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/pipelines
 
-.. image:: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/badges/release.svg?key_text=re-git+release
+.. |release| image:: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/badges/release.svg?key_text=re-git+release
    :target: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/releases
+
+|pipeline|
+
+|release|
 
 .. inclusion-marker-do-not-remove
 
