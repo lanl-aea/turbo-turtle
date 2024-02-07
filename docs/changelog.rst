@@ -14,6 +14,8 @@ Internal Changes
   :merge:`89`). By `Thomas Roberts`_.
 - Duplicate vertices Python 3 unit tests in Abaqus Python 2 (:issue:`60`, :merge:`90`). By `Kyle Brindley`_.
 - Add boa to the CI environment for faster mambabuild packaging (:issue:`118`, :merge:`97`). By `Kyle Brindley`_.
+- Build the package with boa and run the fast-test and conda-build jobs in parallel (:issue:`119`, :merge:`99`). By
+  `Kyle Brindley`_.
 
 Enhancements
 ============
