@@ -13,6 +13,7 @@ Internal Changes
 - Update CLI description for the ``image`` subcommand to be consistent with changes from :issue:`92` (:issue:`111`, 
   :merge:`89`). By `Thomas Roberts`_.
 - Duplicate vertices Python 3 unit tests in Abaqus Python 2 (:issue:`60`, :merge:`90`). By `Kyle Brindley`_.
+- Add boa to the CI environment for faster mambabuild packaging (:issue:`118`, :merge:`97`). By `Kyle Brindley`_.
 
 Enhancements
 ============
