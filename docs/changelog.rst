@@ -8,6 +8,10 @@ Changelog
 v0.10.1 (unreleased)
 ********************
 
+Documentation
+=============
+- Document the re-git manual tag release step (:issue:`117`, :merge:`96`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Update CLI description for the ``image`` subcommand to be consistent with changes from :issue:`92` (:issue:`111`, 

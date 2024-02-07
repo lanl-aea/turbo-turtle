@@ -87,3 +87,4 @@ Steps needed for a release include:
       $ git push origin release-0-4-1 --tags
 
 6. Merge the release branch to ``main``
+7. Create a new release for the new tag: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/releases
