@@ -17,6 +17,12 @@
 Turbo Turtle
 ############
 
+.. image:: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/badges/main/pipeline.svg?key_text=re-git+tests&key_width=80
+   :target: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/pipelines
+
+.. image:: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/badges/release.svg?key_text=re-git+release
+   :target: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/releases
+
 .. inclusion-marker-do-not-remove
 
 ***********
