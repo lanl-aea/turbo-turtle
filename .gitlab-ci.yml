@@ -7,7 +7,6 @@ workflow:
 stages:
   - environment
   - test
-  - build
   - deploy
 
 before_script:
@@ -83,7 +82,7 @@ test:
     - shell-aea
 
 conda-build:
-  stage: build
+  stage: test
   variables:
     GIT_STRATEGY: clone
   dependencies: []
