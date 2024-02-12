@@ -8,6 +8,11 @@ Changelog
 v0.10.1 (unreleased)
 ********************
 
+Bug fixes
+=========
+- Pass the color map option from the image subcommand Python 3 CLI to the Abaqus Python CLI (:issue:`120`,
+  :merge:`100`). By `Kyle Brindley`_.
+
 Documentation
 =============
 - Document the re-git manual tag release step (:issue:`117`, :merge:`96`). By `Kyle Brindley`_.
