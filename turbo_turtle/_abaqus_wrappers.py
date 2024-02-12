@@ -163,5 +163,6 @@ def image(args, command):
     command += f"--image-size {' '.join(map(str, args.image_size))} "
     command += f"--model-name {args.model_name} "
     if args.part_name is not None:
-        command += f"--part-name {args.part_name}"
+        command += f"--part-name {args.part_name} "
+    command += f"--color-map {args.color_map}"
     _utilities.run_command(command)
