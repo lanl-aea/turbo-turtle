@@ -1,4 +1,3 @@
-import pathlib
 import argparse
 
 from unittest.mock import patch
