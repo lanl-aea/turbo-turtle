@@ -8,6 +8,10 @@ Changelog
 v0.10.2 (unreleased)
 ********************
 
+Internal Changes
+================
+- Remove duplication in CI environment creation logic (:issue:`121`, :merge:`101`). By `Kyle Brindley`_.
+
 ********************
 v0.10.1 (2024-02-12)
 ********************
