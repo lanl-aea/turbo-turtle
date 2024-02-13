@@ -66,6 +66,9 @@ def _geometry_xyplot(args):
         for line in lines:
             array = numpy.array(line)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1])
+        for spline in splines:
+            array = numpy.array(spline)
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1])
     matplotlib.pyplot.savefig(args.output_file)
 
 
