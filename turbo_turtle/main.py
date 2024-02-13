@@ -61,7 +61,7 @@ def _geometry_xyplot(args):
     if len(part_name) > 1:
         colors = matplotlib.cm.rainbow(part_name)  # NOT part of refactor
     else:
-        colors = ["blue"]
+        colors = ["black"]
     for file_name, new_part, color in zip(args.input_file, part_name, colors):
         coordinates = _mixed_utilities.return_genfromtxt(file_name, args.delimiter, args.header_lines,
                                                          expected_dimensions=2, expected_columns=2)
@@ -71,7 +71,7 @@ def _geometry_xyplot(args):
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:
             array = numpy.array(line)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, marker="o")
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, marker="o", markerfacecolor="none")
         for spline in splines:
             array = numpy.array(spline)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, marker="+", linestyle="dashed")
