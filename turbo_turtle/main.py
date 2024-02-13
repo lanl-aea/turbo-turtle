@@ -50,6 +50,7 @@ def _geometry_xyplot(args):
     """
     import numpy
     import matplotlib.pyplot
+
     from turbo_turtle._abaqus_python import _mixed_utilities
     from turbo_turtle._abaqus_python import vertices
 
@@ -57,7 +58,11 @@ def _geometry_xyplot(args):
     # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
     part_name = _mixed_utilities.validate_part_name_or_exit(args.input_file, args.part_name)
-    for file_name, new_part in zip(args.input_file, part_name):
+    if len(part_name) > 1:
+        colors = matplotlib.cm.rainbow(part_name)  # NOT part of refactor
+    else:
+        colors = ["blue"]
+    for file_name, new_part, color in zip(args.input_file, part_name, colors):
         coordinates = _mixed_utilities.return_genfromtxt(file_name, args.delimiter, args.header_lines,
                                                          expected_dimensions=2, expected_columns=2)
         coordinates = coordinates * args.unit_conversion
@@ -66,10 +71,10 @@ def _geometry_xyplot(args):
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:
             array = numpy.array(line)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1], marker="o")
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, marker="o")
         for spline in splines:
             array = numpy.array(spline)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1], marker="+", linestyle="dashed")
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, marker="+", linestyle="dashed")
     matplotlib.pyplot.savefig(args.output_file)
 
 
