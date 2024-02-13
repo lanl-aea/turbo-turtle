@@ -50,6 +50,16 @@ def _geometry_xyplot(args):
     """
     print("Geometry XYPlot not yet implemented")
 
+    # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
+    part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
+    for file_name, new_part in zip(input_file, part_name):
+        coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
+                                                         expected_dimensions=2, expected_columns=2)
+        coordinates = coordinates * unit_conversion
+        coordinates[:, 1] += y_offset
+        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
+    # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
+
 
 def add_abaqus_and_cubit(parsers):
     """Add the Abaqus and Cubit command arguments to each parser in the parsers list
