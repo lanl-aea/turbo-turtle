@@ -65,10 +65,10 @@ def _geometry_xyplot(args):
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:
             array = numpy.array(line)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1])
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], marker="o")
         for spline in splines:
             array = numpy.array(spline)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1])
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], marker="+", linestyle="dashed")
     matplotlib.pyplot.savefig(args.output_file)
 
 
