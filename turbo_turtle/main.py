@@ -42,6 +42,10 @@ def _docs(print_local_path=False):
         webbrowser.open(str(_settings._installed_docs_index))
 
 
+def _geometry_xyplot(args):
+    print("Geometry XYPlot not yet implemented")
+
+
 def add_abaqus_and_cubit(parsers):
     """Add the Abaqus and Cubit command arguments to each parser in the parsers list
 
@@ -139,6 +143,11 @@ def get_parser():
     )
 
     subparsers.add_parser(
+        "geometry-xyplot",
+        parents=[geometry_parser]
+    )
+
+    subparsers.add_parser(
         "cylinder",
         help=append_cubit_help(parsers.cylinder_cli_help),
         description=append_cubit_description(parsers.cylinder_cli_description),
@@ -210,11 +219,12 @@ def main():
         command = _utilities.find_command_or_exit(args.abaqus_command)
         from turbo_turtle import _abaqus_wrappers as _wrappers
 
-
     if args.subcommand not in subcommand_list:
         parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
+    elif args.subcommand == "geometry-xyplot":
+        _geometry_xyplot(args)
     else:
         wrapper_command = getattr(_wrappers, args.subcommand)
         wrapper_command(args, command)
