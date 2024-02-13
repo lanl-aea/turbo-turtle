@@ -42,11 +42,18 @@ def _docs(print_local_path=False):
         webbrowser.open(str(_settings._installed_docs_index))
 
 
-def _geometry_xyplot(args):
+def _geometry_xyplot(input_file, output_file,
+                     part_name=parsers.geometry_default_part_name,
+                     unit_conversion=parsers.geometry_default_unit_conversion,
+                     euclidean_distance=parsers.geometry_default_euclidean_distance,
+                     delimiter=parsers.geometry_default_delimiter,
+                     header_lines=parsers.geometry_default_header_lines,
+                     y_offset=parsers.geometry_default_y_offset):
     """Plotter for :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` division of coordinates into lines and splines
 
-    :param argparse.Namespace args: namespace of parsed arguments from
-        :meth:`turbo_turtle._abaqus_python.parsers.geometry_parser`
+    See the :meth:`turbo_turtle._abaqus_python.parsers.geometry_parser`,
+    :meth:`turbo_turtle._abaqus_python.geometry.main`, or :meth:`turbo_turtle._cubit_python.geometry` interfaces for a
+    description of the input arguments.
     """
     import numpy
     import matplotlib.pyplot
@@ -57,17 +64,17 @@ def _geometry_xyplot(args):
     matplotlib.pyplot.figure()
     # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
-    part_name = _mixed_utilities.validate_part_name_or_exit(args.input_file, args.part_name)
+    part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     if len(part_name) > 1:
         colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(part_name)))  # NOT part of refactor
     else:
         colors = ["black"]
-    for file_name, new_part, color in zip(args.input_file, part_name, colors):
-        coordinates = _mixed_utilities.return_genfromtxt(file_name, args.delimiter, args.header_lines,
+    for file_name, new_part, color in zip(input_file, part_name, colors):
+        coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
                                                          expected_dimensions=2, expected_columns=2)
-        coordinates = coordinates * args.unit_conversion
-        coordinates[:, 1] += args.y_offset
-        lines, splines = vertices.lines_and_splines(coordinates, args.euclidean_distance)
+        coordinates = coordinates * unit_conversion
+        coordinates[:, 1] += y_offset
+        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:
             array = numpy.array(line)
@@ -75,7 +82,7 @@ def _geometry_xyplot(args):
         for spline in splines:
             array = numpy.array(spline)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, marker="+", linestyle="dashed")
-    matplotlib.pyplot.savefig(args.output_file)
+    matplotlib.pyplot.savefig(output_file)
 
 
 def add_abaqus_and_cubit(parsers):
@@ -258,7 +265,13 @@ def main():
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     elif args.subcommand == "geometry-xyplot":
-        _geometry_xyplot(args)
+        _geometry_xyplot(args.input_file, args.output_file,
+                         part_name=args.part_name,
+                         unit_conversion=args.unit_conversion,
+                         euclidean_distance=args.euclidean_distance,
+                         delimiter=args.delimiter,
+                         header_lines=args.header_lines,
+                         y_offset=args.y_offset)
     else:
         wrapper_command = getattr(_wrappers, args.subcommand)
         wrapper_command(args, command)
