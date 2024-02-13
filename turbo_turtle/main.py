@@ -59,7 +59,7 @@ def _geometry_xyplot(args):
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
     part_name = _mixed_utilities.validate_part_name_or_exit(args.input_file, args.part_name)
     if len(part_name) > 1:
-        colors = matplotlib.cm.rainbow(part_name)  # NOT part of refactor
+        colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(part_name)))  # NOT part of refactor
     else:
         colors = ["black"]
     for file_name, new_part, color in zip(args.input_file, part_name, colors):
