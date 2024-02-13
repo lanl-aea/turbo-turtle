@@ -11,6 +11,8 @@ v0.10.2 (unreleased)
 Internal Changes
 ================
 - Remove duplication in CI environment creation logic (:issue:`121`, :merge:`101`). By `Kyle Brindley`_.
+- Placeholder ``geometry-xyplot`` subcommand to plot lines-and-splines coordinate breaks (:issue:`122`, :merge:`102`).
+  By `Kyle Brindley`_.
 
 ********************
 v0.10.1 (2024-02-12)
