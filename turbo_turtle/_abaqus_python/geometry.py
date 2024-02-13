@@ -60,11 +60,14 @@ def main(input_file, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     output_file = os.path.splitext(output_file)[0] + ".cae"
+    # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
         coordinates = coordinates * unit_conversion
         coordinates[:, 1] += y_offset
+    # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         try:
             draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,

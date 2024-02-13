@@ -55,6 +55,7 @@ def _geometry_xyplot(args):
 
     matplotlib.pyplot.figure()
     # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
     part_name = _mixed_utilities.validate_part_name_or_exit(args.input_file, args.part_name)
     for file_name, new_part in zip(args.input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt(file_name, args.delimiter, args.header_lines,

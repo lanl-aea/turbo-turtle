@@ -86,12 +86,15 @@ def geometry(input_file, output_file,
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     surfaces = []
+    # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
                                                          expected_dimensions=2, expected_columns=2)
         coordinates = coordinates * unit_conversion
         coordinates[:, 1] += y_offset
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
+    # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         surfaces.append(_draw_surface(lines, splines))
 
     for surface, new_part in zip(surfaces, part_name):
@@ -252,7 +255,7 @@ def _surfaces_by_vector(surfaces, principal_vector, center=numpy.zeros(3)):
     """
     surface_centroids = _surface_centroids(surfaces)
     direction_vectors = [numpy.subtract(centroid, center) for centroid in surface_centroids]
-    
+
     vector_dot = numpy.array(([numpy.dot(direction_vector, principal_vector) for direction_vector in direction_vectors]))
     # Account for numerical errors in significant digits
     vector_dot[numpy.isclose(vector_dot, 0.)] = 0.
