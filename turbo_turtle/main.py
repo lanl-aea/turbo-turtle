@@ -43,6 +43,11 @@ def _docs(print_local_path=False):
 
 
 def _geometry_xyplot(args):
+    """Plotter for :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` division of coordinates into lines and splines
+
+    :param argparse.Namespace args: namespace of parsed arguments from
+        :meth:`turbo_turtle._abaqus_python.parsers.geometry_parser`
+    """
     print("Geometry XYPlot not yet implemented")
 
 
@@ -144,6 +149,8 @@ def get_parser():
 
     subparsers.add_parser(
         "geometry-xyplot",
+        help="Plot the lines-and-splines as parsed by the geometry subcommand.",
+        description="Plot the lines-and-splines as parsed by the geometry subcommand.",
         parents=[geometry_parser]
     )
 
