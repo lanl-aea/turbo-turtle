@@ -94,6 +94,16 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
     return commands
 
 
+def setup_geometry_xyplot_commands(model, input_file):
+    part_name = character_delimited_list(csv.stem for csv in input_file)
+    input_file = character_delimited_list(input_file)
+    commands =[
+        f"{turbo_turtle_command} geometry-xyplot --input-file {input_file} --output-file {model}.png " \
+        f"--part-name {part_name}"
+    ]
+    return commands
+
+
 def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit,
                             turbo_turtle_command=turbo_turtle_command):
     model = pathlib.Path(model).with_suffix(".cae")
@@ -216,6 +226,18 @@ system_tests = (
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
+
+# Geometry XY Plot tests
+system_tests = (
+    # model/part,                                                  input_file
+    ("washer",     [_settings._project_root_abspath / "tests" / "washer.csv"]),
+    ("vase",       [_settings._project_root_abspath / "tests" / "vase.csv"]),
+    ("multi-part", [_settings._project_root_abspath / "tests" / "washer.csv",
+                    _settings._project_root_abspath / "tests" / "vase.csv"]),
+)
+for test in system_tests:
+    commands_list.append(setup_geometry_xyplot_commands(*test))
+
 
 # Geometry tests
 system_tests = (
