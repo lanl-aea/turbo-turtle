@@ -16,6 +16,7 @@ AddOption(
 )
 
 project_configuration = pathlib.Path(inspect.getfile(lambda: None))
+project_directory = project_configuration.parent
 
 env = Environment(
     ENV=os.environ.copy(),
@@ -42,7 +43,7 @@ env.Append(BUILDERS={
 
 env.TurboTurtleGeometry(
     target=["scons-vase.cae"],
-    source=["vase.csv"],
+    source=[str(project_directory / "vase.csv")],
 )
 
 env.TurboTurtleSphere(
