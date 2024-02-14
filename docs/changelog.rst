@@ -13,6 +13,11 @@ New Features
 - ``geometry-xyplot`` subcommand to plot lines-and-splines coordinate breaks (:issue:`122`, :merge:`102`).
   By `Kyle Brindley`_.
 
+Bug fixes
+=========
+- Only partition the requested part name(s) in the Cubit ``partition`` implementation (:issue:`110`, :merge:`88`). By
+  `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Remove duplication in CI environment creation logic (:issue:`121`, :merge:`101`). By `Kyle Brindley`_.
@@ -20,7 +25,7 @@ Internal Changes
 Enhancements
 ============
 - Allow multiple part names to be specified within a single input file and model name for the
-  ``partition`` subcommand (:issue:`110`, :merge:`88`). By `Thomas Roberts`_.
+  ``partition`` subcommand (:issue:`110`, :merge:`88`). By `Thomas Roberts`_ and `Kyle Brindley`_.
 
 ********************
 v0.10.1 (2024-02-12)
