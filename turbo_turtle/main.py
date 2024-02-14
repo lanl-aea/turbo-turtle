@@ -48,18 +48,28 @@ def _geometry_xyplot(input_file, output_file,
                      euclidean_distance=parsers.geometry_default_euclidean_distance,
                      delimiter=parsers.geometry_default_delimiter,
                      header_lines=parsers.geometry_default_header_lines,
-                     y_offset=parsers.geometry_default_y_offset):
+                     y_offset=parsers.geometry_default_y_offset,
+                     no_markers=False):
     """Plotter for :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` division of coordinates into lines and splines
 
     See the :meth:`turbo_turtle._abaqus_python.parsers.geometry_parser`,
     :meth:`turbo_turtle._abaqus_python.geometry.main`, or :meth:`turbo_turtle._cubit_python.geometry` interfaces for a
     description of the input arguments.
+
+    :param bool no_markers: Exclude the vertex markers from the plot. Plot only lines.
     """
     import numpy
     import matplotlib.pyplot
 
     from turbo_turtle._abaqus_python import _mixed_utilities
     from turbo_turtle._abaqus_python import vertices
+
+    if no_markers:
+        line_kwargs = {}
+        spline_kwargs = {}
+    else:
+        line_kwargs = {"marker": "o"}
+        spline_kwargs = {"marker": "+"}
 
     matplotlib.pyplot.figure()
     # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
@@ -78,10 +88,10 @@ def _geometry_xyplot(input_file, output_file,
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:
             array = numpy.array(line)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, marker="o", markerfacecolor="none")
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, markerfacecolor="none", **line_kwargs)
         for spline in splines:
             array = numpy.array(spline)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, marker="+", linestyle="dashed")
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, linestyle="dashed", **spline_kwargs)
     matplotlib.pyplot.savefig(output_file)
 
 
@@ -181,10 +191,18 @@ def get_parser():
         parents=[geometry_parser]
     )
 
+    geometry_xyplot_parser = geometry_parser
+    geometry_xyplot_parser.add_argument(
+        "--no-markers", action="store_true",
+        help="Exclude vertex markers and only plot lines (default: %(default)s)"
+    )
     subparsers.add_parser(
         "geometry-xyplot",
         help="Plot the lines-and-splines as parsed by the geometry subcommand.",
-        description="Plot the lines-and-splines as parsed by the geometry subcommand.",
+        description="Plot the lines-and-splines as parsed by the geometry subcommand. " \
+                    "Lines are shown as solid lines with circle markers at the vertices. " \
+                    "Splines are show as dashed lines with plus sign markers at the vertices. " \
+                    "If there is more than one part, each part is shown in a unique color.",
         parents=[geometry_parser]
     )
 
@@ -271,7 +289,8 @@ def main():
                          euclidean_distance=args.euclidean_distance,
                          delimiter=args.delimiter,
                          header_lines=args.header_lines,
-                         y_offset=args.y_offset)
+                         y_offset=args.y_offset,
+                         no_markers=args.no_markers)
     else:
         wrapper_command = getattr(_wrappers, args.subcommand)
         wrapper_command(args, command)
