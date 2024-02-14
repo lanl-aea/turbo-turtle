@@ -24,8 +24,8 @@ Internal Changes
 
 Enhancements
 ============
-- Allow multiple part names to be specified within a single input file and model name for the
-  ``partition`` subcommand (:issue:`110`, :merge:`88`). By `Thomas Roberts`_ and `Kyle Brindley`_.
+- Partition multiple parts found in a single input file in the ``partition`` subcommand (:issue:`110`, :merge:`88`). By
+  `Thomas Roberts`_ and `Kyle Brindley`_.
 
 ********************
 v0.10.1 (2024-02-12)
