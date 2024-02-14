@@ -58,6 +58,37 @@ def builder(subcommand):
     This builder calls the internal interface associated with Turbo-Turtle :ref:`cli_subcommands`.
     All subcommand options can be provided as per-task keyword arguments
 
+    .. warning::
+
+       Common environment key naming conventions, e.g. ``cubit``, may override builder variables and defaults. If you
+       experience unexpected errors or behavior, verify that your construction environment (``env``) doesn't override
+       the subcommand CLI variable names.
+
+       For example, it is common to search for an absolute path to an executable and save the path to an environment
+       variable as
+
+       .. code-block::
+
+          env["cubit"] = waves.scons_extensions.add_program(["cubit"], env)
+
+       which will override the Turbo-Turtle subcommand ``--cubit`` boolean in the builder. It is best to avoid SCons
+       construction environment variable names that clash with the Turbo-Turtle subcommand CLI variables. If this is not
+       possible or is impractical, clashing variables can be overridden on a task-by-task basis as
+
+       .. code-block::
+
+          env.TurboTurtleGeometry(target=["vase.cae"], source=["vase.csv"], cubit=False)
+
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["abaqus"] = waves.scons_extensions.add_program(["abaqus"], env)
+       env.Append(BUILDERS={"TurboTurtleGeometry": turbo_turtle.scons_extensions.builder("geometry")})
+       env.TurboTurtleGeometry(target=["vase.cae"], source=["vase.csv"])
+
     :param str subcommand: The Turbo-Turtle subcommand to build
 
     :return: Turbo-Turtle builder
