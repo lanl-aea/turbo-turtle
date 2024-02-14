@@ -10,7 +10,7 @@ v0.10.3 (unreleased)
 
 Enhancements
 ============
-- Allow users to turn off vertex markers in the ``geometry-xyplot`` subcommand output. By `Kyle Brindley`_.
+- Allow users to turn off vertex markers in the ``geometry-xyplot`` subcommand output (:merge:`104`). By `Kyle Brindley`_.
 
 ********************
 v0.10.2 (2024-02-14)
