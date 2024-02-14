@@ -5,6 +5,48 @@ from waves.scons_extensions import _first_target_emitter
 
 from turbo_turtle._settings import _cd_action_prefix
 from turbo_turtle._settings import _redirect_action_postfix
+from turbo_turtle._settings import _default_abaqus_options
+from turbo_turtle._settings import _default_cubit_options
+from turbo_turtle._abaqus_python import parsers
+
+
+def _build_geometry(target, source, env):
+    """Define the geometry builder action when calling internal package and not the cli
+
+    :param list target: The target file list of strings
+    :param list source: The source file list of SCons.Node.FS.File objects
+    :param SCons.Script.SConscript.SConsEnvironment env: The builder's SCons construction environment object
+    """
+    # TODO: recover defaults from parsers without re-creating. Maybe build defaults as dictionary in parsers module?
+    # Set default kwargs to match parsers module
+    kwargs = {
+        "unit_conversion": parsers.geometry_default_unit_conversion,
+        "planar": parsers.geometry_default_planar,
+        "euclidean_distance": parsers.geometry_default_euclidean_distance,
+        "model_name": parsers.geometry_default_model_name,
+        "part_name": parsers.geometry_default_part_name,
+        "delimiter": parsers.geometry_default_delimiter,
+        "header_lines": parsers.geometry_default_header_lines,
+        "revolution_angle": parsers.geometry_default_revolution_angle,
+        "y_offset": parsers.geometry_default_y_offset,
+        "rtol": parsers.geometry_default_rtol,
+        "atol": parsers.geometry_default_atol
+    }
+
+    # Global CLI settings
+    kwargs.update({
+        "abaqus_command": _settings._default_abaqus_options,
+        "cubit_command": _settings._default_cubit_options,
+        "cubit": False
+    })
+
+    # Update kwargs with any keys that exist in the environment
+    kwargs.update({key: env[key] for key in kwargs.keys()})
+
+    # Recover correct wrappers module from main interface
+    _wrappers, command = _utilities.set_wrappers_and_command(args)
+    wrapper_command = getattr(_wrappers, "geometry")
+    wrapper_command(args, command)
 
 
 def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
