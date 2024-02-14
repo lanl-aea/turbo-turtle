@@ -77,8 +77,12 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
-    parser.add_argument("--input-file", type=str, nargs="+", required=True,
-                        help="Name of an input file(s) with points in x-y coordinate system")
+    required = parser.add_argument_group('required options')
+    required.add_argument("--input-file", type=str, nargs="+", required=True,
+                          help="Name of an input file(s) with points in x-y coordinate system")
+    required.add_argument("--output-file", type=str, required=True,
+                          help="Name of the output Abaqus CAE file to save (default: %(default)s)")
+
     parser.add_argument("--unit-conversion", type=positive_float, default=geometry_default_unit_conversion,
                         help="Unit conversion multiplication factor (default: %(default)s)")
     parser.add_argument("--euclidean-distance", type=positive_float, default=geometry_default_euclidean_distance,
@@ -91,8 +95,6 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, nargs="+", default=geometry_default_part_name,
                         help=part_name_help)
-    parser.add_argument("--output-file", type=str, required=True,
-                        help="Name of the output Abaqus CAE file to save (default: %(default)s)")
     parser.add_argument("--delimiter", type=str, default=geometry_default_delimiter,
                         help="Delimiter character between columns in the points file(s) (default: %(default)s)")
     parser.add_argument("--header-lines", type=int, default=geometry_default_header_lines,
@@ -137,14 +139,16 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
-    parser.add_argument("--inner-radius", type=positive_float, required=True,
-                        help="Inner radius of hollow cylinder")
-    parser.add_argument("--outer-radius", type=positive_float, required=True,
-                        help="Outer radius of cylinder")
-    parser.add_argument("--height", type=positive_float, required=True,
-                        help="Height of the right circular cylinder")
-    parser.add_argument("--output-file", type=str, required=True,
-                        help="Name of the output Abaqus CAE file to save (default: %(default)s)")
+    required = parser.add_argument_group('required options')
+    required.add_argument("--inner-radius", type=positive_float, required=True,
+                          help="Inner radius of hollow cylinder")
+    required.add_argument("--outer-radius", type=positive_float, required=True,
+                          help="Outer radius of cylinder")
+    required.add_argument("--height", type=positive_float, required=True,
+                          help="Height of the right circular cylinder")
+    required.add_argument("--output-file", type=str, required=True,
+                          help="Name of the output Abaqus CAE file to save (default: %(default)s)")
+
     parser.add_argument("--model-name", type=str, default=geometry_default_model_name,
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
     parser.add_argument("--part-name", type=str, default=cylinder_default_part_name,
@@ -189,13 +193,13 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
-    requiredNamed = parser.add_argument_group('Required Named Arguments')
-    requiredNamed.add_argument('--inner-radius', type=positive_float, required=True,
-                               help="Inner radius (hollow size)")
-    requiredNamed.add_argument('--outer-radius', type=positive_float, required=True,
-                               help="Outer radius (sphere size)")
-    requiredNamed.add_argument('--output-file', type=str, required=True,
-                               help="Abaqus model database to create")
+    required = parser.add_argument_group('required options')
+    required.add_argument('--inner-radius', type=positive_float, required=True,
+                          help="Inner radius (hollow size)")
+    required.add_argument('--outer-radius', type=positive_float, required=True,
+                          help="Outer radius (sphere size)")
+    required.add_argument('--output-file', type=str, required=True,
+                          help="Abaqus model database to create")
 
     parser.add_argument('--input-file', type=str, default=sphere_default_input_file,
                         help="Abaqus model database to open (default: %(default)s)")
@@ -246,9 +250,9 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
-    requiredNamed = parser.add_argument_group('Required Named Arguments')
-    requiredNamed.add_argument('--input-file', type=str, default=sphere_default_input_file,
-                               help="Abaqus model database to open (default: %(default)s)")
+    required = parser.add_argument_group('required options')
+    required.add_argument('--input-file', type=str, default=sphere_default_input_file,
+                          help="Abaqus model database to open (default: %(default)s)")
 
     parser.add_argument('--output-file', type=str, default=partition_default_output_file,
                         help="Abaqus model database to save to. Defaults to the specified --input-file")
@@ -302,10 +306,12 @@ def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_descript
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
-    parser.add_argument("--input-file", type=str, required=True,
-                        help="Abaqus CAE input file")
-    parser.add_argument("--element-type", type=str, required=True,
-                        help=element_type_help)
+    required = parser.add_argument_group('required options')
+    required.add_argument("--input-file", type=str, required=True,
+                          help="Abaqus CAE input file")
+    required.add_argument("--element-type", type=str, required=True,
+                          help=element_type_help)
+
     parser.add_argument("--output-file", type=str, default=mesh_default_output_file,
                         help="Abaqus CAE output file (default: %(default)s)")
     parser.add_argument("--model-name", type=str, default=mesh_default_model_name,
@@ -344,10 +350,12 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
-    parser.add_argument("--input-file", type=str, nargs="+", required=True,
-                        help="Abaqus CAE input file(s)")
-    parser.add_argument("--output-file", type=str, required=True,
-                        help="Abaqus CAE file to save the merged model")
+    required = parser.add_argument_group('required options')
+    required.add_argument("--input-file", type=str, nargs="+", required=True,
+                          help="Abaqus CAE input file(s)")
+    required.add_argument("--output-file", type=str, required=True,
+                          help="Abaqus CAE file to save the merged model")
+
     parser.add_argument("--merged-model-name", type=str, default=merge_default_merged_model_name,
                         help="Model to create and merge parts into (default: %(default)s)")
     parser.add_argument("--model-name", type=str, nargs="+", default=merge_default_model_name,
@@ -387,8 +395,10 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
-    parser.add_argument("--input-file", type=str, required=True,
-                        help="Abaqus CAE input file")
+    required = parser.add_argument_group('required options')
+    required.add_argument("--input-file", type=str, required=True,
+                          help="Abaqus CAE input file")
+
     parser.add_argument("--model-name", type=str, default=export_default_model_name,
                         help="Abaqus model name (default: %(default)s)")
     parser.add_argument("--part-name", type=str, nargs='+', default=export_default_part_name,
@@ -447,10 +457,12 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
-    parser.add_argument('--input-file', type=str, required=True,
-                         help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
-    parser.add_argument('--output-file', type=str, required=True,
-                        help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
+    required = parser.add_argument_group('required options')
+    required.add_argument('--input-file', type=str, required=True,
+                          help='Abaqus input file. Supports ``*.inp`` and ``*.cae``.')
+    required.add_argument('--output-file', type=str, required=True,
+                          help='Output image from the Abaqus viewport. Supports ``*.png`` and ``*.svg``.')
+
     parser.add_argument('--x-angle', type=float, default=image_default_x_angle,
                         help='Viewer rotation about X-axis in degrees (default: %(default)s)')
     parser.add_argument('--y-angle', type=float, default=image_default_y_angle,
