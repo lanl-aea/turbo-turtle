@@ -352,9 +352,9 @@ def _get_volumes_from_name_or_exit(*args, **kwargs):
 
 
 def cylinder(inner_radius, outer_radius, height, output_file,
-             part_name=parsers.cylinder_default_part_name,
+             part_name=parsers.cylinder_defaults["part_name"],
              revolution_angle=parsers.geometry_defaults["revolution_angle"],
-             y_offset=parsers.cylinder_default_y_offset):
+             y_offset=parsers.cylinder_defaults["y_offset"]):
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 
     Centroid of cylinder is located on the global coordinate origin by default.
@@ -381,11 +381,11 @@ def cylinder(inner_radius, outer_radius, height, output_file,
 
 
 def sphere(inner_radius, outer_radius, output_file,
-           input_file=parsers.sphere_default_input_file,
-           quadrant=parsers.sphere_default_quadrant,
-           revolution_angle=parsers.sphere_default_revolution_angle,
-           y_offset=parsers.sphere_default_y_offset,
-           part_name=parsers.sphere_default_part_name):
+           input_file=parsers.sphere_defaults["input_file"],
+           quadrant=parsers.sphere_defaults["quadrant"],
+           revolution_angle=parsers.sphere_defaults["revolution_angle"],
+           y_offset=parsers.sphere_defaults["y_offset"],
+           part_name=parsers.sphere_defaults["part_name"]):
     """
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
@@ -422,10 +422,10 @@ def sphere(inner_radius, outer_radius, output_file,
 
 
 def _sphere(inner_radius, outer_radius,
-            quadrant=parsers.sphere_default_quadrant,
-            revolution_angle=parsers.sphere_default_revolution_angle,
-            center=parsers.sphere_default_center,
-            part_name=parsers.sphere_default_part_name):
+            quadrant=parsers.sphere_defaults["quadrant"],
+            revolution_angle=parsers.sphere_defaults["revolution_angle"],
+            center=parsers.sphere_defaults["center"],
+            part_name=parsers.sphere_defaults["part_name"]):
     """
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
@@ -458,12 +458,12 @@ def _sphere(inner_radius, outer_radius,
 
 
 def partition(input_file,
-              output_file=parsers.partition_default_output_file,
-              center=parsers.partition_default_center,
-              xvector=parsers.partition_default_xvector,
-              zvector=parsers.partition_default_zvector,
-              part_name=parsers.partition_default_part_name,
-              big_number=parsers.partition_default_big_number):
+              output_file=parsers.partition_defaults["output_file"],
+              center=parsers.partition_defaults["center"],
+              xvector=parsers.partition_defaults["xvector"],
+              zvector=parsers.partition_defaults["zvector"],
+              part_name=parsers.partition_defaults["part_name"],
+              big_number=parsers.partition_defaults["big_number"]):
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
 
@@ -489,11 +489,11 @@ def partition(input_file,
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
-def _partition(center=parsers.partition_default_center,
-               xvector=parsers.partition_default_xvector,
-               zvector=parsers.partition_default_zvector,
-               part_name=parsers.partition_default_part_name,
-               big_number=parsers.partition_default_big_number):
+def _partition(center=parsers.partition_defaults["center"],
+               xvector=parsers.partition_defaults["xvector"],
+               zvector=parsers.partition_defaults["zvector"],
+               part_name=parsers.partition_defaults["part_name"],
+               big_number=parsers.partition_defaults["big_number"]):
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
 
@@ -576,9 +576,9 @@ def _partition(center=parsers.partition_default_center,
 
 
 def mesh(input_file, element_type,
-         output_file=parsers.mesh_default_output_file,
-         part_name=parsers.mesh_default_part_name,
-         global_seed=parsers.mesh_default_global_seed):
+         output_file=parsers.mesh_defaults["output_file"],
+         part_name=parsers.mesh_defaults["part_name"],
+         global_seed=parsers.mesh_defaults["global_seed"]):
     """Mesh Cubit volumes and sheet bodies by part/volume name
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
@@ -680,10 +680,10 @@ def merge(input_file, output_file):
 
 
 def export(input_file,
-           part_name=parsers.export_default_part_name,
-           element_type=parsers.export_default_element_type,
-           destination=parsers.export_default_destination,
-           output_type=parsers.export_default_output_type):
+           part_name=parsers.export_defaults["part_name"],
+           element_type=parsers.export_defaults["element_type"],
+           destination=parsers.export_defaults["destination"],
+           output_type=parsers.export_defaults["output_type"]):
     """Open a Cubit ``*.cub`` file and export ``part_name`` prefixed volumes as ``part_name``.inp
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains meshed parts/volumes
@@ -811,10 +811,10 @@ def _export_abaqus(output_file, part_name):
 
 
 def image(input_file, output_file, cubit_command,
-          x_angle=parsers.image_default_x_angle,
-          y_angle=parsers.image_default_y_angle,
-          z_angle=parsers.image_default_z_angle,
-          image_size=parsers.image_default_image_size):
+          x_angle=parsers.image_defaults["x_angle"],
+          y_angle=parsers.image_defaults["y_angle"],
+          z_angle=parsers.image_defaults["z_angle"],
+          image_size=parsers.image_defaults["image_size"]):
     """Open a Cubit ``*.cub`` file and save an image
 
     Uses the Cubit APREPRO `hardcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions. This

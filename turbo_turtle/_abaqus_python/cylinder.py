@@ -15,9 +15,9 @@ import geometry
 
 def main(inner_radius, outer_radius, height, output_file,
          model_name=parsers.geometry_defaults["model_name"],
-         part_name=parsers.cylinder_default_part_name,
+         part_name=parsers.cylinder_defaults["part_name"],
          revolution_angle=parsers.geometry_defaults["revolution_angle"],
-         y_offset=parsers.cylinder_default_y_offset):
+         y_offset=parsers.cylinder_defaults["y_offset"]):
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 
     Centroid of cylinder is located on the global coordinate origin by default.

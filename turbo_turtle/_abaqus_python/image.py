@@ -16,12 +16,12 @@ import _abaqus_utilities
 
 
 def main(input_file, output_file,
-         x_angle=parsers.image_default_x_angle,
-         y_angle=parsers.image_default_y_angle,
-         z_angle=parsers.image_default_z_angle,
-         image_size=parsers.image_default_image_size,
-         model_name=parsers.image_default_model_name,
-         part_name=parsers.image_default_part_name,
+         x_angle=parsers.image_defaults["x_angle"],
+         y_angle=parsers.image_defaults["y_angle"],
+         z_angle=parsers.image_defaults["z_angle"],
+         image_size=parsers.image_defaults["image_size"],
+         model_name=parsers.image_defaults["model_name"],
+         part_name=parsers.image_defaults["part_name"],
          color_map=parsers.image_color_map_choices[0]):
     """Wrap image with file input handling
 
@@ -55,12 +55,12 @@ def main(input_file, output_file,
 
 
 def image(output_file,
-          x_angle=parsers.image_default_x_angle,
-          y_angle=parsers.image_default_y_angle,
-          z_angle=parsers.image_default_z_angle,
-          image_size=parsers.image_default_image_size,
-          model_name=parsers.image_default_model_name,
-          part_name=parsers.image_default_part_name,
+          x_angle=parsers.image_defaults["x_angle"],
+          y_angle=parsers.image_defaults["y_angle"],
+          z_angle=parsers.image_defaults["z_angle"],
+          image_size=parsers.image_defaults["image_size"],
+          model_name=parsers.image_defaults["model_name"],
+          part_name=parsers.image_defaults["part_name"],
           color_map=parsers.image_color_map_choices[0]):
     """Script for saving a part or assembly view image for a given Abaqus input file.
 

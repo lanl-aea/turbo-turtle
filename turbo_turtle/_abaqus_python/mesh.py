@@ -15,10 +15,10 @@ import _abaqus_utilities
 
 
 def main(input_file, element_type,
-         output_file=parsers.mesh_default_output_file,
-         model_name=parsers.mesh_default_model_name,
-         part_name=parsers.mesh_default_part_name,
-         global_seed=parsers.mesh_default_global_seed):
+         output_file=parsers.mesh_defaults["output_file"],
+         model_name=parsers.mesh_defaults["model_name"],
+         part_name=parsers.mesh_defaults["part_name"],
+         global_seed=parsers.mesh_defaults["global_seed"]):
     """Wrap mesh function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
@@ -42,9 +42,9 @@ def main(input_file, element_type,
 
 
 def mesh(element_type,
-         model_name=parsers.mesh_default_model_name,
-         part_name=parsers.mesh_default_part_name,
-         global_seed=parsers.mesh_default_global_seed):
+         model_name=parsers.mesh_defaults["model_name"],
+         part_name=parsers.mesh_defaults["part_name"],
+         global_seed=parsers.mesh_defaults["global_seed"]):
     """Apply a global seed and mesh the specified part
 
     :param str element_type: Abaqus element type

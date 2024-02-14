@@ -13,9 +13,9 @@ import _mixed_utilities
 
 
 def main(input_file, output_file,
-         merged_model_name=parsers.merge_default_merged_model_name,
-         model_name=parsers.merge_default_model_name,
-         part_name=parsers.merge_default_part_name):
+         merged_model_name=parsers.merge_defaults["merged_model_name"],
+         model_name=parsers.merge_defaults["model_name"],
+         part_name=parsers.merge_defaults["part_name"]):
     """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model
 
     This script loops through all input file(s) specified and merges the intersection of provided model/part name(s) and

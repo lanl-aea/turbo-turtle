@@ -17,12 +17,12 @@ import _mixed_utilities
 
 
 def main(inner_radius, outer_radius, output_file,
-         input_file=parsers.sphere_default_input_file,
-         quadrant=parsers.sphere_default_quadrant,
-         revolution_angle=parsers.sphere_default_revolution_angle,
-         y_offset=parsers.sphere_default_y_offset,
-         model_name=parsers.sphere_default_model_name,
-         part_name=parsers.sphere_default_part_name):
+         input_file=parsers.sphere_defaults["input_file"],
+         quadrant=parsers.sphere_defaults["quadrant"],
+         revolution_angle=parsers.sphere_defaults["revolution_angle"],
+         y_offset=parsers.sphere_defaults["y_offset"],
+         model_name=parsers.sphere_defaults["model_name"],
+         part_name=parsers.sphere_defaults["part_name"]):
     """Wrap sphere function with file open and file write operations
 
     :param float inner_radius: inner radius (size of hollow)
@@ -59,11 +59,11 @@ def main(inner_radius, outer_radius, output_file,
 
 
 def sphere(inner_radius, outer_radius,
-           quadrant=parsers.sphere_default_quadrant,
-           revolution_angle=parsers.sphere_default_revolution_angle,
-           center=parsers.sphere_default_center,
-           model_name=parsers.sphere_default_model_name,
-           part_name=parsers.sphere_default_part_name):
+           quadrant=parsers.sphere_defaults["quadrant"],
+           revolution_angle=parsers.sphere_defaults["revolution_angle"],
+           center=parsers.sphere_defaults["center"],
+           model_name=parsers.sphere_defaults["model_name"],
+           part_name=parsers.sphere_defaults["part_name"]):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
 
     .. warning::

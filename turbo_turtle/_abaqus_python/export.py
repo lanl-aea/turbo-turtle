@@ -16,11 +16,11 @@ import _mixed_utilities
 
 
 def main(input_file,
-         model_name=parsers.export_default_model_name,
-         part_name=parsers.export_default_part_name,
-         element_type=parsers.export_default_element_type,
-         destination=parsers.export_default_destination,
-         assembly=parsers.export_default_assembly):
+         model_name=parsers.export_defaults["model_name"],
+         part_name=parsers.export_defaults["part_name"],
+         element_type=parsers.export_defaults["element_type"],
+         destination=parsers.export_defaults["destination"],
+         assembly=parsers.export_defaults["assembly)"]:
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
@@ -101,8 +101,8 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
 
 
 def export(output_file,
-           model_name=parsers.export_default_model_name,
-           part_name=parsers.export_default_part_name[0]):
+           model_name=parsers.export_defaults["model_name"],
+           part_name=parsers.export_defaults["part_name"][0]):
     """Export an orphan mesh from a single part
 
     :param str output_file: Abaqus CAE file to save with the newly meshed part
