@@ -63,7 +63,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
-    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
     :param bool cubit: Include the Cubit specific options and help language when True
 
     :returns: argparse parser
@@ -122,7 +122,7 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
-    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
     :param bool cubit: Include the Cubit specific options and help language when True
 
     :returns: argparse parser
@@ -174,7 +174,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
-    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
     :param bool cubit: Include the Cubit specific options and help language when True
 
     :returns: argparse parser
@@ -231,7 +231,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
-    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
     :param bool cubit: Include the Cubit specific options and help language when True
 
     :returns: argparse parser
@@ -282,7 +282,7 @@ def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_descript
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
-    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
 
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
@@ -332,7 +332,7 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
-    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
 
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
@@ -374,7 +374,7 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
-    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
 
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
@@ -433,7 +433,7 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
-    :param str sphere_cli_description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
 
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
