@@ -25,6 +25,7 @@ env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq20
 env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cubit"], env)
 env["turbo_turtle"] = "python -m turbo_turtle.main" if env["uninstalled"] else "turbo-turtle"
 env.Append(BUILDERS={
+    "TurboTurtleGeometry": turbo_turtle.scons_extensions.builder("geometry"),
     "TurboTurtleSphere":
         turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
                                                           abaqus_command=[env['abaqus']]),
@@ -38,6 +39,11 @@ env.Append(BUILDERS={
         turbo_turtle.scons_extensions.turbo_turtle_partition(program=env["turbo_turtle"],
                                                              cubit_command=[env['cubit']], cubit=True),
 })
+
+env.TurboTurtleGeometry(
+    target=["scons-vase.cae"],
+    source=["vase.csv"],
+)
 
 env.TurboTurtleSphere(
     target=["scons-sphere.cae"],
@@ -72,3 +78,5 @@ env.TurboTurtlePartitionCubit(
     model_name="sphere",
     part_name="sphere"
 )
+
+waves.scons_extensions.project_help_message()
