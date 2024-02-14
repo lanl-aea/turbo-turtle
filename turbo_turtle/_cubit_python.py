@@ -561,7 +561,7 @@ def _partition(center=parsers.partition_default_center,
         part_string = " ".join(map(str, part_ids))
         cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
 
-    # Clean up primary surfaces
+    # Clean up pyramid volumes and primary surfaces
     cubit_command_or_exit(f"delete volume {pyramid_volume_string}")
     cubit_command_or_exit(f"delete surface {primary_surface_string}")
 
