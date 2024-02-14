@@ -53,8 +53,19 @@ def _action(target, source, env):
 
     # Recover correct wrappers module from main interface
     _wrappers, command = _utilities.set_wrappers_and_command(args)
-    wrapper_command = getattr(_wrappers, args.subcommand)
-    wrapper_command(args, command)
+    if args.subcommand == "geometry-xyplot":
+        from turbo_turtle.main import _geometry_xyplot
+        _geometry_xyplot(args.input_file, args.output_file,
+                         part_name=args.part_name,
+                         unit_conversion=args.unit_conversion,
+                         euclidean_distance=args.euclidean_distance,
+                         delimiter=args.delimiter,
+                         header_lines=args.header_lines,
+                         y_offset=args.y_offset,
+                         no_markers=args.no_markers)
+    else:
+        wrapper_command = getattr(_wrappers, args.subcommand)
+        wrapper_command(args, command)
 
 
 def builder(subcommand):
