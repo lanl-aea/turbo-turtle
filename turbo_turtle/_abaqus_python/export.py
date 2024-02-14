@@ -20,7 +20,7 @@ def main(input_file,
          part_name=parsers.export_defaults["part_name"],
          element_type=parsers.export_defaults["element_type"],
          destination=parsers.export_defaults["destination"],
-         assembly=parsers.export_defaults["assembly)"]:
+         assembly=parsers.export_defaults["assembly"]):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed

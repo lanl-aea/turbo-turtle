@@ -25,7 +25,7 @@ def main(input_file,
          zvector=parsers.partition_defaults["zvector"],
          model_name=parsers.partition_defaults["model_name"],
          part_name=parsers.partition_defaults["part_name"],
-         big_number=parsers.partition_defaults["big_number):"]
+         big_number=parsers.partition_defaults["big_number"]):
     """Wrap  partition function with file open and file write operations
 
     :param str input_file: Abaqus CAE model database to open
@@ -80,7 +80,7 @@ def datum_plane(center, normal, part):
     return part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
 
 
-def partition(center, xvector, zvector, model_name, part_name, big_number=parsers.partition_defaults["big_number)"]:
+def partition(center, xvector, zvector, model_name, part_name, big_number=parsers.partition_defaults["big_number"]):
     """Partition the model/part with the turtle shell method, also know as the soccer ball method.
 
     If the body is modeled with fractional symmetry (e.g. quater or half symmetry), this code will attempt all
