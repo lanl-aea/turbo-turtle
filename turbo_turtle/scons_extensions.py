@@ -44,7 +44,9 @@ def _geometry_action(target, source, env):
     kwargs.update({key: env[key] for key in kwargs.keys()})
 
     # Recover correct wrappers module from main interface
-    _wrappers, command = _utilities.set_wrappers_and_command(args)
+    _wrappers, command = _utilities.set_wrappers_and_command(
+        kwargs["abaqus_command", kwargs["cubit_command"], kwargs["cubit"]
+    )
     wrapper_command = getattr(_wrappers, "geometry")
     wrapper_command(args, command)
 

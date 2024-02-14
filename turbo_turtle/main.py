@@ -263,7 +263,6 @@ def main():
     subcommand_list = parser._subparsers._group_actions[0].choices.keys()
     args = parser.parse_args()
 
-    _wrappers, command = _utilities.set_wrappers_and_command(args)
 
     if args.subcommand not in subcommand_list:
         parser.print_help()
@@ -279,6 +278,9 @@ def main():
                          y_offset=args.y_offset,
                          no_markers=args.no_markers)
     else:
+        _wrappers, command = _utilities.set_wrappers_and_command(
+            args.abaqus_command, args.cubit_command, args.cubit
+        )
         wrapper_command = getattr(_wrappers, args.subcommand)
         wrapper_command(args, command)
 
