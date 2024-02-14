@@ -49,8 +49,6 @@ def _action(target, source, env):
     if not isinstance(args.cubit, bool):
         args.cubit = False
 
-    print(args)
-
     # Recover correct wrappers module from main interface
     _wrappers, command = _utilities.set_wrappers_and_command(args)
     if args.subcommand == "geometry-xyplot":
