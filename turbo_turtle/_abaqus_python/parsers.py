@@ -81,7 +81,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     required.add_argument("--input-file", type=str, nargs="+", required=True,
                           help="Name of an input file(s) with points in x-y coordinate system")
     required.add_argument("--output-file", type=str, required=True,
-                          help="Name of the output Abaqus CAE file to save (default: %(default)s)")
+                          help="Name of the output Abaqus CAE file to save")
 
     parser.add_argument("--unit-conversion", type=positive_float, default=geometry_default_unit_conversion,
                         help="Unit conversion multiplication factor (default: %(default)s)")
@@ -147,7 +147,7 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
     required.add_argument("--height", type=positive_float, required=True,
                           help="Height of the right circular cylinder")
     required.add_argument("--output-file", type=str, required=True,
-                          help="Name of the output Abaqus CAE file to save (default: %(default)s)")
+                          help="Name of the output Abaqus CAE file to save")
 
     parser.add_argument("--model-name", type=str, default=geometry_default_model_name,
                         help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
