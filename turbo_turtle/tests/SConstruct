@@ -54,12 +54,14 @@ for flag, extension in cubit_flag:
     env.TurboTurtleGeometry(
         target=[f"scons-vase{extension}"],
         source=[str(project_directory / "vase.csv")],
-        cubit=flag
+        cubit=flag,
+        output_file="${TARGET.abspath}"
     )
     env.TurboTurtleGeometry(
         target=[f"scons-washer{extension}"],
         source=[str(project_directory / "washer.csv")],
-        cubit=flag
+        cubit=flag,
+        output_file="${TARGET.abspath}"
     )
     env.TurboTurtleGeometry(
         target=[f"scons-multi-part{extension}"],
@@ -67,27 +69,31 @@ for flag, extension in cubit_flag:
             str(project_directory / "vase.csv"),
             str(project_directory / "washer.csv")
         ],
-        cubit=flag
+        cubit=flag,
+        output_file="${TARGET.abspath}"
     )
 
     # Geometry-XY Plot
     env.TurboTurtleGeometryXYPlot(
-        target=["scons-vase.png"],
+        target=[f"scons-vase{extension}.png"],
         source=[str(project_directory / "vase.csv")],
-        cubit=flag
+        cubit=flag,
+        output_file="${TARGET.abspath}"
     )
     env.TurboTurtleGeometryXYPlot(
-        target=["scons-washer.png"],
+        target=[f"scons-washer{extension}.png"],
         source=[str(project_directory / "washer.csv")],
-        cubit=flag
+        cubit=flag,
+        output_file="${TARGET.abspath}"
     )
     env.TurboTurtleGeometryXYPlot(
-        target=["scons-multi-part.png"],
+        target=[f"scons-multi-part{extension}.png"],
         source=[
             str(project_directory / "vase.csv"),
             str(project_directory / "washer.csv")
         ],
-        cubit=flag
+        cubit=flag,
+        output_file="${TARGET.abspath}"
     )
 
     # Sphere
