@@ -1,5 +1,6 @@
-import SCons.Builder
+import argparse
 
+import SCons.Builder
 # Importing WAVES internals is marginally preferred over project specific, hardcoded duplication of the WAVES settings
 from waves.scons_extensions import _first_target_emitter
 
@@ -20,6 +21,7 @@ def _geometry_action(target, source, env):
     # TODO: recover defaults from parsers without re-creating. Maybe build defaults as dictionary in parsers module?
     # Set default kwargs to match parsers module
     kwargs = {
+        "subcommand": geometry,
         "unit_conversion": parsers.geometry_default_unit_conversion,
         "planar": parsers.geometry_default_planar,
         "euclidean_distance": parsers.geometry_default_euclidean_distance,
@@ -42,6 +44,9 @@ def _geometry_action(target, source, env):
 
     # Update kwargs with any keys that exist in the environment
     kwargs.update({key: env[key] for key in kwargs.keys()})
+
+    # Build the expected namespace object
+    args = argparse.Namespace(**kwargs)
 
     # Recover correct wrappers module from main interface
     _wrappers, command = _utilities.set_wrappers_and_command(args)
