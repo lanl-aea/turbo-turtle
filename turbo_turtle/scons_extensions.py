@@ -41,6 +41,10 @@ def _action(target, source, env):
     kwargs["input_file"] = [path.abspath for path in source]
     kwargs["output_file"] = target[0].abspath
     args = argparse.Namespace(**kwargs)
+    if not isinstance(args.cubit, bool):
+        args.cubit = False
+
+    print(args)
 
     # Recover correct wrappers module from main interface
     _wrappers, command = _utilities.set_wrappers_and_command(args)
