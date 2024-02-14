@@ -69,8 +69,14 @@ def _action(target, source, env):
 def builder(subcommand):
     """Turbo-Turtle subcommand builder
 
+    .. warning::
+
+       This builder is an early, minimally functional placeholder for future builders. It is intended for developer
+       testing and early adopter feedback about design behavior and use cases. The interface and behavior may change
+       without warning and without a breaking change in the package version number.
+
     This builder calls the internal wrapper interfaces associated with Turbo-Turtle subcommands. See the
-   :ref:`abaqus_python_api` and :ref:`cubit_python_api` for the available keyword arguments and their Python types.
+    :ref:`abaqus_python_api` and :ref:`cubit_python_api` for the available keyword arguments and their Python types.
 
     Implemented and tested for subcommands:
 
