@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import os
 import inspect
 import pathlib
@@ -44,6 +45,12 @@ env.Append(BUILDERS={
 env.TurboTurtleGeometry(
     target=["scons-vase.cae"],
     source=[str(project_directory / "vase.csv")],
+)
+
+env.TurboTurtleGeometry(
+    target=["scons-vase.cub"],
+    source=[str(project_directory / "vase.csv")],
+    cubit=True
 )
 
 env.TurboTurtleSphere(

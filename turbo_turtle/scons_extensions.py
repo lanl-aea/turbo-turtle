@@ -100,7 +100,6 @@ def builder(subcommand):
         action = [
             SCons.Action.Action(_action, varlist=varlist)
         ],
-        emitter=_first_target_emitter,
         subcommand=subcommand
     )
     return internal_builder
