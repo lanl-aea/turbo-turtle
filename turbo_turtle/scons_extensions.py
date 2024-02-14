@@ -22,16 +22,16 @@ def _geometry_action(target, source, env):
     # Set default kwargs to match parsers module
     kwargs = {
         "subcommand": "geometry",
-        "unit_conversion": parsers.geometry_defaults["unit_conversion"]
-        "planar": parsers.geometry_defaults["planar"]
-        "euclidean_distance": parsers.geometry_defaults["euclidean_distance"]
-        "model_name": parsers.geometry_defaults["model_name"]
-        "part_name": parsers.geometry_defaults["part_name"]
-        "delimiter": parsers.geometry_defaults["delimiter"]
-        "header_lines": parsers.geometry_defaults["header_lines"]
-        "revolution_angle": parsers.geometry_defaults["revolution_angle"]
-        "y_offset": parsers.geometry_defaults["y_offset"]
-        "rtol": parsers.geometry_defaults["rtol"]
+        "unit_conversion": parsers.geometry_defaults["unit_conversion"],
+        "planar": parsers.geometry_defaults["planar"],
+        "euclidean_distance": parsers.geometry_defaults["euclidean_distance"],
+        "model_name": parsers.geometry_defaults["model_name"],
+        "part_name": parsers.geometry_defaults["part_name"],
+        "delimiter": parsers.geometry_defaults["delimiter"],
+        "header_lines": parsers.geometry_defaults["header_lines"],
+        "revolution_angle": parsers.geometry_defaults["revolution_angle"],
+        "y_offset": parsers.geometry_defaults["y_offset"],
+        "rtol": parsers.geometry_defaults["rtol"],
         "atol": parsers.geometry_defaults["atol"]
     }
 

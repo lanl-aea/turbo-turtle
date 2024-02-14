@@ -86,30 +86,30 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                           help="Name of the output Abaqus CAE file to save")
 
     optional = parser.add_argument_group('optional arguments')
-    optional.add_argument("--unit-conversion", type=positive_float, default=geometry_defaults["unit_conversion"]
+    optional.add_argument("--unit-conversion", type=positive_float, default=geometry_defaults["unit_conversion"],
                           help="Unit conversion multiplication factor (default: %(default)s)")
-    optional.add_argument("--euclidean-distance", type=positive_float, default=geometry_defaults["euclidean_distance"]
+    optional.add_argument("--euclidean-distance", type=positive_float, default=geometry_defaults["euclidean_distance"],
                           help="Connect points with a straight line if the distance between them is larger than this " \
                                "in units *after* the unit conversion (default: %(default)s)")
     optional.add_argument("--planar", action='store_true',
                           help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric " \
                                "(default: %(default)s)")
-    optional.add_argument("--model-name", type=str, default=geometry_defaults["model_name"]
+    optional.add_argument("--model-name", type=str, default=geometry_defaults["model_name"],
                           help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
-    optional.add_argument("--part-name", type=str, nargs="+", default=geometry_defaults["part_name"]
+    optional.add_argument("--part-name", type=str, nargs="+", default=geometry_defaults["part_name"],
                           help=part_name_help)
-    optional.add_argument("--delimiter", type=str, default=geometry_defaults["delimiter"]
+    optional.add_argument("--delimiter", type=str, default=geometry_defaults["delimiter"],
                           help="Delimiter character between columns in the points file(s) (default: %(default)s)")
-    optional.add_argument("--header-lines", type=int, default=geometry_defaults["header_lines"]
+    optional.add_argument("--header-lines", type=int, default=geometry_defaults["header_lines"],
                           help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
-    optional.add_argument("--revolution-angle", type=float, default=geometry_defaults["revolution_angle"]
+    optional.add_argument("--revolution-angle", type=float, default=geometry_defaults["revolution_angle"],
                           help="Revolution angle for a 3D part in degrees (default: %(default)s)")
-    optional.add_argument("--y-offset", type=float, default=geometry_defaults["y_offset"]
+    optional.add_argument("--y-offset", type=float, default=geometry_defaults["y_offset"],
                           help="Offset along the global Y-axis in units *after* the unit conversion (default: %(default)s)")
-    optional.add_argument("--rtol", type=float, default=geometry_defaults["rtol"]
+    optional.add_argument("--rtol", type=float, default=geometry_defaults["rtol"],
                           help="relative tolerance used by ``numpy.isclose``. If not provided, use numpy defaults " \
                                "(default: %(default)s)")
-    optional.add_argument("--atol", type=float, default=geometry_defaults["atol"]
+    optional.add_argument("--atol", type=float, default=geometry_defaults["atol"],
                           help="absolute tolerance used by ``numpy.isclose``. If not provided, use numpy defaults " \
                                "(default: %(default)s)")
     return parser
@@ -153,11 +153,11 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
                           help="Name of the output Abaqus CAE file to save")
 
     optional = parser.add_argument_group('optional arguments')
-    optional.add_argument("--model-name", type=str, default=geometry_defaults["model_name"]
+    optional.add_argument("--model-name", type=str, default=geometry_defaults["model_name"],
                           help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
     optional.add_argument("--part-name", type=str, default=cylinder_default_part_name,
                           help=part_name_help)
-    optional.add_argument("--revolution-angle", type=float, default=geometry_defaults["revolution_angle"]
+    optional.add_argument("--revolution-angle", type=float, default=geometry_defaults["revolution_angle"],
                           help="Revolution angle for a 3D part in degrees (default: %(default)s)")
     optional.add_argument("--y-offset", type=float, default=cylinder_default_y_offset,
                           help="Offset along the global Y-axis (default: %(default)s)")

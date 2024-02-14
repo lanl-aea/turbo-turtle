@@ -14,9 +14,9 @@ import geometry
 
 
 def main(inner_radius, outer_radius, height, output_file,
-         model_name=parsers.geometry_default_model_name,
+         model_name=parsers.geometry_defaults["model_name"],
          part_name=parsers.cylinder_default_part_name,
-         revolution_angle=parsers.geometry_default_revolution_angle,
+         revolution_angle=parsers.geometry_defaults["revolution_angle"],
          y_offset=parsers.cylinder_default_y_offset):
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 
