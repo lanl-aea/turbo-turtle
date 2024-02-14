@@ -44,6 +44,18 @@ geometry
 *********************
 |PROJECT| Subcommands
 *********************
+***************
+geometry-xyplot
+***************
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: geometry-xyplot
+
+*********************
+|PROJECT| Subcommands
+*********************
 ********
 cylinder
 ********

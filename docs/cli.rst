@@ -30,6 +30,14 @@ geometry
    :nodefault:
    :path: geometry
 
+geometry-xyplot
+---------------
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: geometry-xyplot
+
 cylinder
 --------
 
