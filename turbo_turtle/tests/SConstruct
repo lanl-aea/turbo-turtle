@@ -86,12 +86,14 @@ for flag, extension in cubit_flag:
         source=[str(project_directory / "vase.csv")],
         cubit=flag,
         output_file="${TARGET.abspath}",
+        part_name=["scons-vase"]
     )
     env.TurboTurtleGeometryXYPlot(
         target=[f"scons-washer{extension}.png"],
         source=[str(project_directory / "washer.csv")],
         cubit=flag,
         output_file="${TARGET.abspath}",
+        part_name=["scons-washer"]
     )
     env.TurboTurtleGeometryXYPlot(
         target=[f"scons-multi-part{extension}.png"],
@@ -101,6 +103,7 @@ for flag, extension in cubit_flag:
         ],
         cubit=flag,
         output_file="${TARGET.abspath}",
+        part_name=["scons-vase", "scons-washer"]
     )
 
     # Sphere
