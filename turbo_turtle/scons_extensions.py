@@ -11,29 +11,18 @@ from turbo_turtle._settings import _default_cubit_options
 from turbo_turtle._abaqus_python import parsers
 
 
-def _geometry_action(target, source, env):
-    """Define the geometry builder action when calling internal package and not the cli
+def _action(target, source, env):
+    """Define the builder action when calling internal package and not the cli
+
+    Requires the ``subcommand`` keyword argument in the SCons task construction environment ``env``.
 
     :param list target: The target file list of strings
     :param list source: The source file list of SCons.Node.FS.File objects
     :param SCons.Script.SConscript.SConsEnvironment env: The builder's SCons construction environment object
     """
-    # TODO: recover defaults from parsers without re-creating. Maybe build defaults as dictionary in parsers module?
-    # Set default kwargs to match parsers module
-    kwargs = {
-        "subcommand": "geometry",
-        "unit_conversion": parsers.geometry_defaults["unit_conversion"],
-        "planar": parsers.geometry_defaults["planar"],
-        "euclidean_distance": parsers.geometry_defaults["euclidean_distance"],
-        "model_name": parsers.geometry_defaults["model_name"],
-        "part_name": parsers.geometry_defaults["part_name"],
-        "delimiter": parsers.geometry_defaults["delimiter"],
-        "header_lines": parsers.geometry_defaults["header_lines"],
-        "revolution_angle": parsers.geometry_defaults["revolution_angle"],
-        "y_offset": parsers.geometry_defaults["y_offset"],
-        "rtol": parsers.geometry_defaults["rtol"],
-        "atol": parsers.geometry_defaults["atol"]
-    }
+    # Set default kwargs to match parsers.subcommand defaults dictionary
+    subcommand = env["subcommand"]
+    kwargs = getattr(parsers, f"{subcommand}_defaults")
 
     # Global CLI settings
     kwargs.update({
@@ -54,22 +43,25 @@ def _geometry_action(target, source, env):
     wrapper_command(args, command)
 
 
-def geometry():
-    """Turbo-Turtle geometry subcommand builder
+def builder(subcommand):
+    """Turbo-Turtle subcommand builder
 
-    This builder calls the internal interface associated with the :ref:`geometry_cli` subcommand.
+    This builder calls the internal interface associated with Turbo-Turtle :ref:`cli_subcommands`.
     All subcommand options can be provided as per-task keyword arguments
 
-    :return: Turbo-Turtle geometry builder
+    :param str subcommand: The Turbo-Turtle subcommand to build
+
+    :return: Turbo-Turtle builder
     :rtype: SCons.Builder.Builder
     """
-    geometry_builder = SCons.Builder.Builder(
+    internal_builder = SCons.Builder.Builder(
         action = [
-            SCons.Action.Action(_geometry_action, varlist=kwargs.keys())
+            SCons.Action.Action(_action, varlist=kwargs.keys())
         ],
         emitter=_first_target_emitter,
+        subcommand=subcommand
     )
-    return geometry_builder
+    return internal_builder
 
 
 def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
