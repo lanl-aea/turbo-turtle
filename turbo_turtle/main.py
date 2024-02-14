@@ -263,20 +263,7 @@ def main():
     subcommand_list = parser._subparsers._group_actions[0].choices.keys()
     args = parser.parse_args()
 
-    keys = vars(args).keys()
-    if "cubit" in keys and args.cubit:
-        command = _utilities.find_command_or_exit(args.cubit_command)
-        cubit_bin = _utilities.find_cubit_bin([command])
-        cubitx = cubit_bin / "cubitx"
-        if cubitx.exists():
-            command = cubitx
-        import importlib.util
-        if importlib.util.find_spec("cubit") is None:
-            sys.path.append(str(cubit_bin))
-        from turbo_turtle import _cubit_wrappers as _wrappers
-    elif "abaqus_command" in vars(args).keys():
-        command = _utilities.find_command_or_exit(args.abaqus_command)
-        from turbo_turtle import _abaqus_wrappers as _wrappers
+    _wrappers, command = _utilities.set_wrappers_and_command(args)
 
     if args.subcommand not in subcommand_list:
         parser.print_help()

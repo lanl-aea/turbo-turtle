@@ -106,3 +106,29 @@ def run_command(command):
         stdout = subprocess.check_output(command)
     except subprocess.CalledProcessError as err:
         sys.exit(err.output.decode())
+
+
+def set_wrappers_and_command(args):
+    """Read an argument namespace and set the wrappers and command appropriately
+
+    :param argparse.Namespace args: namespace of parsed arguments from :meth:`turbo_turtle.main.get_parser`
+
+    :return: _wrappers, command. Wrapper module, executable command string.
+    :rtype: tuple
+    """
+    keys = vars(args).keys()
+    if "cubit" in keys and args.cubit:
+        command = find_command_or_exit(args.cubit_command)
+        cubit_bin = find_cubit_bin([command])
+        cubitx = cubit_bin / "cubitx"
+        if cubitx.exists():
+            command = cubitx
+        import importlib.util
+        if importlib.util.find_spec("cubit") is None:
+            sys.path.append(str(cubit_bin))
+        from turbo_turtle import _cubit_wrappers as _wrappers
+    elif "abaqus_command" in keys:
+        command = find_command_or_exit(args.abaqus_command)
+        from turbo_turtle import _abaqus_wrappers as _wrappers
+
+    return _wrappers, command
