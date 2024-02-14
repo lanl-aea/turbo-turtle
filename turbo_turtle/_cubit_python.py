@@ -548,6 +548,7 @@ def _partition(center=parsers.partition_default_center,
         volume_id = volume.id()
         for part in parts:
             cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
+        cubit_command_or_exit(f"delete volume {volume_id}")
     for part in parts:
         cubit_command_or_exit(f"delete volume {part.id()}")
 
@@ -560,9 +561,7 @@ def _partition(center=parsers.partition_default_center,
     for number in primary_surface_numbers:
         cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
 
-    # Clean up cutting pyramidal volumes and primary surfaces
-    for volume in pyramid_volumes:
-        cubit_command_or_exit(f"delete volume {volume_id}")
+    # Clean up primary surfaces
     surface_string = " ".join(map(str, primary_surface_numbers))
     cubit_command_or_exit(f"delete surface {surface_string}")
 
