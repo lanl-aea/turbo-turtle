@@ -13,8 +13,7 @@ from turbo_turtle._abaqus_python import parsers
 
 
 def _get_defaults_dictionary(subcommand):
-    defaults_dictionary = f"{subcommand}_defaults"
-    default_dictionary.replace("-", "_")
+    defaults_dictionary = f"{subcommand}_defaults".replace("-", "_")
     return getattr(parsers, defaults_dictionary)
 
 
