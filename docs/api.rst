@@ -43,6 +43,8 @@ _cubit_wrappers
    :members:
    :private-members:
 
+.. _cubit_python_api:
+
 _cubit_python
 =============
 
@@ -123,6 +125,8 @@ _mixed_utilities
 .. automodule:: turbo_turtle._abaqus_python._mixed_utilities
    :members:
    :private-members:
+
+.. _abaqus_python_api:
 
 *************
 Abaqus Python

@@ -69,8 +69,21 @@ def _action(target, source, env):
 def builder(subcommand):
     """Turbo-Turtle subcommand builder
 
-    This builder calls the internal interface associated with Turbo-Turtle :ref:`cli_subcommands`.
-    All subcommand options can be provided as per-task keyword arguments
+    This builder calls the internal wrapper interfaces associated with Turbo-Turtle subcommands. See the
+   :ref:`abaqus_python_api` and :ref:`cubit_python_api` for the available keyword arguments and their Python types.
+
+    Implemented and tested for subcommands:
+
+    * geometry
+
+      * Abaqus: :meth:`turbo_turtle._abaqus_python.geometry.main`
+      * Cubit: :meth:`turbo_turtle._cubit_python.geometry`
+
+    * geometry-xyplot: :meth:`turbo_turtle.main._geometry_xyplot`
+    * merge
+
+      * Abaqus: :meth:`turbo_turtle._abaqus_python.merge.main`
+      * Cubit: :meth:`turbo_turtle._cubit_python.merge`
 
     .. warning::
 
