@@ -323,15 +323,19 @@ def _rename_and_sweep(surface, part_name,
     return return_object
 
 
-def _get_volumes_from_name(name):
-    """Return all volume objects with the prefix ``name``
+def _get_volumes_from_name(names):
+    """Return all volume objects with a prefix from the ``names`` list
 
-    :param str name: Name prefix to search for with ``cubit.get_all_ids_from_name``
+    :param list names: Name(s) prefix to search for with ``cubit.get_all_ids_from_name``
 
     :returns: list of Cubit volumes with name prefix
     :rtype: list of cubit.Volume objects
     """
-    parts = [cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", name)]
+    if isinstance(names, str):
+        names = [names]
+    parts = []
+    for name in names:
+        parts.extend([cubit.volume(number) for number in cubit.get_all_ids_from_name("volume", name)])
     if len(parts) < 1:
         raise RuntimeError(f"Could not find any volumes with prefix '{name}'")
     return parts
@@ -538,35 +542,38 @@ def _partition(center=parsers.partition_default_center,
     primary_surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
     primary_surface_numbers = _surface_numbers(primary_surfaces)
 
-    for current_part_name in part_name:
-        parts = _get_volumes_from_name(current_part_name)
-
-        # Create intersections/partitions
-        for volume in pyramid_volumes:
-            volume_id = volume.id()
-            for part in parts:
-                cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
+    # Create intersections/partitions
+    parts = _get_volumes_from_name(part_name)
+    for volume in pyramid_volumes:
+        volume_id = volume.id()
         for part in parts:
-            cubit_command_or_exit(f"delete volume {part.id()}")
+            cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
+    for part in parts:
+        cubit_command_or_exit(f"delete volume {part.id()}")
 
-        # Update part (volume) objects and IDs
-        parts = _get_volumes_from_name(current_part_name)
-        part_ids = [part.id() for part in parts]
-        part_string = " ".join(map(str, part_ids))
+    # Update part (volume) objects and IDs
+    parts = _get_volumes_from_name(part_name)
+    part_ids = [part.id() for part in parts]
+    part_string = " ".join(map(str, part_ids))
 
-        # Webcut with local coordinate system primary planes
-        for number in primary_surface_numbers:
-            cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
-
-        # Imprint and merge
-        cubit_command_or_exit(f"imprint volume {part_string}")
-        cubit_command_or_exit(f"merge volume {part_string}")
+    # Webcut with local coordinate system primary planes
+    for number in primary_surface_numbers:
+        cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
 
     # Clean up cutting pyramidal volumes and primary surfaces
     for volume in pyramid_volumes:
         cubit_command_or_exit(f"delete volume {volume_id}")
     surface_string = " ".join(map(str, primary_surface_numbers))
     cubit_command_or_exit(f"delete surface {surface_string}")
+
+    # Imprint and merge
+    for current_part_name in part_name:
+        parts = _get_volumes_from_name(current_part_name)
+        part_ids = [part.id() for part in parts]
+        part_string = " ".join(map(str, part_ids))
+
+        cubit_command_or_exit(f"imprint volume {part_string}")
+        cubit_command_or_exit(f"merge volume {part_string}")
 
 
 def mesh(input_file, element_type,
