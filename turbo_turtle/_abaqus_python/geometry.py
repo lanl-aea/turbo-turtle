@@ -15,16 +15,16 @@ import _mixed_utilities
 
 
 def main(input_file, output_file,
-         planar=parsers.geometry_default_planar,
-         model_name=parsers.geometry_default_model_name,
-         part_name=parsers.geometry_default_part_name,
-         unit_conversion=parsers.geometry_default_unit_conversion,
-         euclidean_distance=parsers.geometry_default_euclidean_distance,
-         delimiter=parsers.geometry_default_delimiter,
-         header_lines=parsers.geometry_default_header_lines,
-         revolution_angle=parsers.geometry_default_revolution_angle,
-         y_offset=parsers.geometry_default_y_offset,
-         rtol=parsers.geometry_default_rtol,
+         planar=parsers.geometry_defaults["planar"]
+         model_name=parsers.geometry_defaults["model_name"]
+         part_name=parsers.geometry_defaults["part_name"]
+         unit_conversion=parsers.geometry_defaults["unit_conversion"]
+         euclidean_distance=parsers.geometry_defaults["euclidean_distance"]
+         delimiter=parsers.geometry_defaults["delimiter"]
+         header_lines=parsers.geometry_defaults["header_lines"]
+         revolution_angle=parsers.geometry_defaults["revolution_angle"]
+         y_offset=parsers.geometry_defaults["y_offset"]
+         rtol=parsers.geometry_defaults["rtol"]
          atol=parsers.geometry_default_atol):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
@@ -81,12 +81,12 @@ def main(input_file, output_file,
 
 
 def draw_part_from_splines(coordinates,
-                           planar=parsers.geometry_default_planar,
-                           model_name=parsers.geometry_default_model_name,
-                           part_name=parsers.geometry_default_part_name,
-                           euclidean_distance=parsers.geometry_default_euclidean_distance,
-                           revolution_angle=parsers.geometry_default_revolution_angle,
-                           rtol=parsers.geometry_default_rtol,
+                           planar=parsers.geometry_defaults["planar"]
+                           model_name=parsers.geometry_defaults["model_name"]
+                           part_name=parsers.geometry_defaults["part_name"]
+                           euclidean_distance=parsers.geometry_defaults["euclidean_distance"]
+                           revolution_angle=parsers.geometry_defaults["revolution_angle"]
+                           rtol=parsers.geometry_defaults["rtol"]
                            atol=parsers.geometry_default_atol):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar

@@ -43,12 +43,12 @@ def _docs(print_local_path=False):
 
 
 def _geometry_xyplot(input_file, output_file,
-                     part_name=parsers.geometry_default_part_name,
-                     unit_conversion=parsers.geometry_default_unit_conversion,
-                     euclidean_distance=parsers.geometry_default_euclidean_distance,
-                     delimiter=parsers.geometry_default_delimiter,
-                     header_lines=parsers.geometry_default_header_lines,
-                     y_offset=parsers.geometry_default_y_offset,
+                     part_name=parsers.geometry_defaults["part_name"]
+                     unit_conversion=parsers.geometry_defaults["unit_conversion"]
+                     euclidean_distance=parsers.geometry_defaults["euclidean_distance"]
+                     delimiter=parsers.geometry_defaults["delimiter"]
+                     header_lines=parsers.geometry_defaults["header_lines"]
+                     y_offset=parsers.geometry_defaults["y_offset"]
                      no_markers=False):
     """Plotter for :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` division of coordinates into lines and splines
 

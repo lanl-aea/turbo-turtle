@@ -48,13 +48,13 @@ def cubit_command_or_exit(*args, **kwargs):
 
 
 def geometry(input_file, output_file,
-             planar=parsers.geometry_default_planar,
-             part_name=parsers.geometry_default_part_name,
-             unit_conversion=parsers.geometry_default_unit_conversion,
-             euclidean_distance=parsers.geometry_default_euclidean_distance,
-             delimiter=parsers.geometry_default_delimiter,
-             header_lines=parsers.geometry_default_header_lines,
-             revolution_angle=parsers.geometry_default_revolution_angle,
+             planar=parsers.geometry_defaults["planar"]
+             part_name=parsers.geometry_defaults["part_name"]
+             unit_conversion=parsers.geometry_defaults["unit_conversion"]
+             euclidean_distance=parsers.geometry_defaults["euclidean_distance"]
+             delimiter=parsers.geometry_defaults["delimiter"]
+             header_lines=parsers.geometry_defaults["header_lines"]
+             revolution_angle=parsers.geometry_defaults["revolution_angle"]
              y_offset=parsers.geometry_default_y_offset):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
@@ -287,7 +287,7 @@ def _create_volume_from_surfaces(surfaces, keep=True):
 
 def _rename_and_sweep(surface, part_name,
                       center=numpy.array([0., 0., 0.]),
-                      planar=parsers.geometry_default_planar,
+                      planar=parsers.geometry_defaults["planar"]
                       revolution_angle=parsers.geometry_default_revolution_angle):
     """Recover body or volume from body surface, sweep part if required, and rename body/volume by part name
 
@@ -353,7 +353,7 @@ def _get_volumes_from_name_or_exit(*args, **kwargs):
 
 def cylinder(inner_radius, outer_radius, height, output_file,
              part_name=parsers.cylinder_default_part_name,
-             revolution_angle=parsers.geometry_default_revolution_angle,
+             revolution_angle=parsers.geometry_defaults["revolution_angle"]
              y_offset=parsers.cylinder_default_y_offset):
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 

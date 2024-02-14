@@ -21,18 +21,18 @@ def _geometry_action(target, source, env):
     # TODO: recover defaults from parsers without re-creating. Maybe build defaults as dictionary in parsers module?
     # Set default kwargs to match parsers module
     kwargs = {
-        "subcommand": geometry,
-        "unit_conversion": parsers.geometry_default_unit_conversion,
-        "planar": parsers.geometry_default_planar,
-        "euclidean_distance": parsers.geometry_default_euclidean_distance,
-        "model_name": parsers.geometry_default_model_name,
-        "part_name": parsers.geometry_default_part_name,
-        "delimiter": parsers.geometry_default_delimiter,
-        "header_lines": parsers.geometry_default_header_lines,
-        "revolution_angle": parsers.geometry_default_revolution_angle,
-        "y_offset": parsers.geometry_default_y_offset,
-        "rtol": parsers.geometry_default_rtol,
-        "atol": parsers.geometry_default_atol
+        "subcommand": "geometry",
+        "unit_conversion": parsers.geometry_defaults["unit_conversion"]
+        "planar": parsers.geometry_defaults["planar"]
+        "euclidean_distance": parsers.geometry_defaults["euclidean_distance"]
+        "model_name": parsers.geometry_defaults["model_name"]
+        "part_name": parsers.geometry_defaults["part_name"]
+        "delimiter": parsers.geometry_defaults["delimiter"]
+        "header_lines": parsers.geometry_defaults["header_lines"]
+        "revolution_angle": parsers.geometry_defaults["revolution_angle"]
+        "y_offset": parsers.geometry_defaults["y_offset"]
+        "rtol": parsers.geometry_defaults["rtol"]
+        "atol": parsers.geometry_defaults["atol"]
     }
 
     # Global CLI settings
