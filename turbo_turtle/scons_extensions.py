@@ -50,7 +50,7 @@ def _geometry_action(target, source, env):
 
     # Recover correct wrappers module from main interface
     _wrappers, command = _utilities.set_wrappers_and_command(args)
-    wrapper_command = getattr(_wrappers, "geometry")
+    wrapper_command = getattr(_wrappers, args.subcommand)
     wrapper_command(args, command)
 
 
