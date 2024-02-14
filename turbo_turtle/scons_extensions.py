@@ -43,6 +43,7 @@ def _action(target, source, env):
 
     # Build the expected namespace object
     kwargs["subcommand"] = subcommand
+    # TODO: Required arguments are different for every subcommand. How do we handle different requirements and types?
     kwargs["input_file"] = [path.abspath for path in source]
     kwargs["output_file"] = target[0].abspath
     args = argparse.Namespace(**kwargs)
@@ -50,6 +51,7 @@ def _action(target, source, env):
         args.cubit = False
 
     # Recover correct wrappers module from main interface
+    # TODO: Move to a common function shared with main module. Move to _utilities?
     _wrappers, command = _utilities.set_wrappers_and_command(args)
     if args.subcommand == "geometry-xyplot":
         from turbo_turtle.main import _geometry_xyplot
