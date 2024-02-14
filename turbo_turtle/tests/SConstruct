@@ -28,6 +28,7 @@ env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cub
 env["turbo_turtle"] = "python -m turbo_turtle.main" if env["uninstalled"] else "turbo-turtle"
 env.Append(BUILDERS={
     "TurboTurtleGeometry": turbo_turtle.scons_extensions.builder("geometry"),
+    "TurboTurtleGeometryXYPlot": turbo_turtle.scons_extensions.builder("geometry-xyplot"),
     "TurboTurtleSphere":
         turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
                                                           abaqus_command=[env['abaqus']]),
@@ -42,47 +43,82 @@ env.Append(BUILDERS={
                                                              cubit_command=[env['cubit']], cubit=True),
 })
 
-env.TurboTurtleGeometry(
-    target=["scons-vase.cae"],
-    source=[str(project_directory / "vase.csv")],
-)
+# API builders
+cubit_flag = [
+    False,  # Use Abaqus as backend
+    True  # Use Cubit as backend
+]
+for flag in cubit_flag:
 
-env.TurboTurtleGeometry(
-    target=["scons-vase.cub"],
-    source=[str(project_directory / "vase.csv")],
-    cubit=True
-)
+    # Geometry
+    env.TurboTurtleGeometry(
+        target=["scons-vase.cae"],
+        source=[str(project_directory / "vase.csv")],
+        cubit=flag
+    )
+    env.TurboTurtleGeometry(
+        target=["scons-washer.cae"],
+        source=[str(project_directory / "washer.csv")],
+        cubit=flag
+    )
+    env.TurboTurtleGeometry(
+        target=["scons-multi-part.cae"],
+        source=[
+            str(project_directory / "vase.csv"),
+            str(project_directory / "washer.csv")
+        ],
+        cubit=flag
+    )
 
+    # Geometry-XY Plot
+    env.TurboTurtleGeometryXYPlot(
+        target=["scons-vase.png"],
+        source=[str(project_directory / "vase.csv")],
+        cubit=flag
+    )
+    env.TurboTurtleGeometryXYPlot(
+        target=["scons-washer.png"],
+        source=[str(project_directory / "washer.csv")],
+        cubit=flag
+    )
+    env.TurboTurtleGeometryXYPlot(
+        target=["scons-multi-part.png"],
+        source=[
+            str(project_directory / "vase.csv"),
+            str(project_directory / "washer.csv")
+        ],
+        cubit=flag
+    )
+
+    # Sphere
+
+
+# CLI builders
 env.TurboTurtleSphere(
-    target=["scons-sphere.cae"],
+    target=["scons-cli-sphere.cae"],
     source=[str(project_configuration)],
     inner_radius=1.,
     outer_radius=2.,
     model_name="sphere",
     part_name="sphere"
 )
-
 env.TurboTurtlePartition(
-    target=["scons-partition.cae"],
-    source=["scons-sphere.cae"],
+    target=["scons-cli-partition.cae"],
+    source=["scons-cli-sphere.cae"],
     model_name="sphere",
     part_name="sphere"
 )
-
 env.TurboTurtleSphereCubit(
-    # TODO: revert to "sphere.cub" when WAVES 0.7.6 is available on conda-forge
-    target=["scons-sphere_cubit.cub"],
+    target=["scons-cli-sphere.cub"],
     source=[str(project_configuration)],
     inner_radius=1.,
     outer_radius=2.,
     model_name="sphere",
     part_name="sphere"
 )
-
 env.TurboTurtlePartitionCubit(
-    # TODO: revert to "sphere.cub" and "partition.cub" when WAVES 0.7.6 is available on conda-forge
-    target=["scons-partition_cubit.cub"],
-    source=["scons-sphere_cubit.cub"],
+    target=["scons-cli-partition.cub"],
+    source=["scons-cli-sphere.cub"],
     model_name="sphere",
     part_name="sphere"
 )
