@@ -117,7 +117,7 @@ def set_wrappers_and_command(args):
     :rtype: tuple
     """
     keys = vars(args).keys()
-    if "cubit" in keys and args.cubit:
+    if "cubit" in keys and args.cubit is True:
         command = find_command_or_exit(args.cubit_command)
         cubit_bin = find_cubit_bin([command])
         cubitx = cubit_bin / "cubitx"
