@@ -526,6 +526,7 @@ def _partition(center=parsers.partition_default_center,
     ]
     pyramid_volumes = [_create_volume_from_surfaces(surface_list) for surface_list in pyramid_volume_surfaces]
     pyramid_volume_numbers = [pyramid.id() for pyramid in pyramid_volumes]
+    pyramid_volume_string = " ". join(map(str, pyramid_volume_numbers))
 
     # Remove pyramidal construction surfaces
     surface_numbers = _surface_numbers(pyramid_surfaces)
@@ -542,6 +543,7 @@ def _partition(center=parsers.partition_default_center,
     ]
     primary_surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
     primary_surface_numbers = _surface_numbers(primary_surfaces)
+    primary_surface_string = " ".join(map(str, primary_surface_numbers))
 
     # Create intersections/partitions
     parts = _get_volumes_from_name(part_name)
@@ -560,9 +562,7 @@ def _partition(center=parsers.partition_default_center,
         cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
 
     # Clean up primary surfaces
-    pyramid_volume_string = " ". join(map(str, pyramid_volume_numbers))
     cubit_command_or_exit(f"delete volume {pyramid_volume_string}")
-    primary_surface_string = " ".join(map(str, primary_surface_numbers))
     cubit_command_or_exit(f"delete surface {primary_surface_string}")
 
     # Imprint and merge
