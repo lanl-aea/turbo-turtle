@@ -29,6 +29,7 @@ env["turbo_turtle"] = "python -m turbo_turtle.main" if env["uninstalled"] else "
 env.Append(BUILDERS={
     "TurboTurtleGeometry": turbo_turtle.scons_extensions.builder("geometry"),
     "TurboTurtleGeometryXYPlot": turbo_turtle.scons_extensions.builder("geometry-xyplot"),
+    "TurboTurtleMerge": turbo_turtle.scons_extensions.builder("merge"),
     "TurboTurtleSphere":
         turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
                                                           abaqus_command=[env['abaqus']]),
@@ -55,13 +56,17 @@ for flag, extension in cubit_flag:
         target=[f"scons-vase{extension}"],
         source=[str(project_directory / "vase.csv")],
         cubit=flag,
-        output_file="${TARGET.abspath}"
+        output_file="${TARGET.abspath}",
+        model_name="scons-vase",
+        part_name=["scons-vase"]
     )
     env.TurboTurtleGeometry(
         target=[f"scons-washer{extension}"],
         source=[str(project_directory / "washer.csv")],
         cubit=flag,
-        output_file="${TARGET.abspath}"
+        output_file="${TARGET.abspath}",
+        model_name="scons-washer",
+        part_name=["scons-washer"]
     )
     env.TurboTurtleGeometry(
         target=[f"scons-multi-part{extension}"],
@@ -70,7 +75,9 @@ for flag, extension in cubit_flag:
             str(project_directory / "washer.csv")
         ],
         cubit=flag,
-        output_file="${TARGET.abspath}"
+        output_file="${TARGET.abspath}",
+        model_name="scons-multi-part",
+        part_name=["scons-vase", "scons-washer"]
     )
 
     # Geometry-XY Plot
@@ -78,13 +85,13 @@ for flag, extension in cubit_flag:
         target=[f"scons-vase{extension}.png"],
         source=[str(project_directory / "vase.csv")],
         cubit=flag,
-        output_file="${TARGET.abspath}"
+        output_file="${TARGET.abspath}",
     )
     env.TurboTurtleGeometryXYPlot(
         target=[f"scons-washer{extension}.png"],
         source=[str(project_directory / "washer.csv")],
         cubit=flag,
-        output_file="${TARGET.abspath}"
+        output_file="${TARGET.abspath}",
     )
     env.TurboTurtleGeometryXYPlot(
         target=[f"scons-multi-part{extension}.png"],
@@ -93,10 +100,24 @@ for flag, extension in cubit_flag:
             str(project_directory / "washer.csv")
         ],
         cubit=flag,
-        output_file="${TARGET.abspath}"
+        output_file="${TARGET.abspath}",
     )
 
     # Sphere
+    # Cylinder
+    # Partition
+    # Mesh
+    # Image
+    # Merge
+    env.TurboTurtleMerge(
+        target=[f"scons-merge-multi-part{extension}"],
+        source=[f"scons-vase{extension}", f"scons-washer{extension}"],
+        cubit=flag,
+        output_file="${TARGET.abspath}",
+        model_name=["scons-vase", "scons-washer"],
+        part_name=["scons-vase", "scons-washer"],
+        merged_model_name="scons-merge-multi-part"
+    )
 
 
 # CLI builders
