@@ -22,6 +22,8 @@ docs
    :nodefault:
    :path: docs
 
+.. _geometry_cli:
+
 geometry
 --------
 

@@ -10,7 +10,7 @@ from turbo_turtle._settings import _default_cubit_options
 from turbo_turtle._abaqus_python import parsers
 
 
-def _build_geometry(target, source, env):
+def _geometry_action(target, source, env):
     """Define the geometry builder action when calling internal package and not the cli
 
     :param list target: The target file list of strings
@@ -47,6 +47,24 @@ def _build_geometry(target, source, env):
     _wrappers, command = _utilities.set_wrappers_and_command(args)
     wrapper_command = getattr(_wrappers, "geometry")
     wrapper_command(args, command)
+
+
+def geometry():
+    """Turbo-Turtle geometry subcommand builder
+
+    This builder calls the internal interface associated with the :ref:`geometry_cli` subcommand.
+    All subcommand options can be provided as per-task keyword arguments
+
+    :return: Turbo-Turtle geometry builder
+    :rtype: SCons.Builder.Builder
+    """
+    geometry_builder = SCons.Builder.Builder(
+        action = [
+            SCons.Action.Action(_geometry_action, varlist=kwargs.keys())
+        ]
+        emitter=_first_target_emitter,
+    )
+    return geometry_builder
 
 
 def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
