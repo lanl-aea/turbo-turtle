@@ -8,6 +8,7 @@ from turbo_turtle._settings import _cd_action_prefix
 from turbo_turtle._settings import _redirect_action_postfix
 from turbo_turtle._settings import _default_abaqus_options
 from turbo_turtle._settings import _default_cubit_options
+from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import parsers
 
 
@@ -26,15 +27,19 @@ def _action(target, source, env):
 
     # Global CLI settings
     kwargs.update({
-        "abaqus_command": _settings._default_abaqus_options,
-        "cubit_command": _settings._default_cubit_options,
+        "abaqus_command": _default_abaqus_options,
+        "cubit_command": _default_cubit_options,
         "cubit": False
     })
 
     # Update kwargs with any keys that exist in the environment
-    kwargs.update({key: env[key] for key in kwargs.keys()})
+    update_keys = set(kwargs.keys()).intersection(env.keys())
+    kwargs.update({key: env[key] for key in update_keys})
 
     # Build the expected namespace object
+    kwargs["subcommand"] = subcommand
+    kwargs["input_file"] = [path.abspath for path in source]
+    kwargs["output_file"] = target[0].abspath
     args = argparse.Namespace(**kwargs)
 
     # Recover correct wrappers module from main interface
@@ -54,9 +59,11 @@ def builder(subcommand):
     :return: Turbo-Turtle builder
     :rtype: SCons.Builder.Builder
     """
+    kwargs = getattr(parsers, f"{subcommand}_defaults")
+    varlist = list(kwargs.keys()) + ["abaqus_command", "cubit_command", "cubit"]
     internal_builder = SCons.Builder.Builder(
         action = [
-            SCons.Action.Action(_action, varlist=kwargs.keys())
+            SCons.Action.Action(_action, varlist=varlist)
         ],
         emitter=_first_target_emitter,
         subcommand=subcommand
