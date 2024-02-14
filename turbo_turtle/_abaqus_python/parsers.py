@@ -55,6 +55,7 @@ geometry_defaults = {
     'rtol': None,
     'atol': None,
 }
+geometry_xyplot_defaults = geometry_defaults
 geometry_cli_help = "Create 2D or 3D part(s) from XY coordinate list input file(s)"
 geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
                            "sketching lines and splines in the XY plane. Line and spline definitions are formed by " \

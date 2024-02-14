@@ -12,6 +12,12 @@ from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import parsers
 
 
+def _get_defaults_dictionary(subcommand):
+    defaults_dictionary = f"{subcommand}_defaults"
+    default_dictionary.replace("-", "_")
+    return getattr(parsers, defaults_dictionary)
+
+
 def _action(target, source, env):
     """Define the builder action when calling internal package and not the cli
 
@@ -23,7 +29,7 @@ def _action(target, source, env):
     """
     # Set default kwargs to match parsers.subcommand defaults dictionary
     subcommand = env["subcommand"]
-    kwargs = getattr(parsers, f"{subcommand}_defaults")
+    kwargs = _get_defaults_dictionary(subcommand)
 
     # Global CLI settings
     kwargs.update({
@@ -94,7 +100,7 @@ def builder(subcommand):
     :return: Turbo-Turtle builder
     :rtype: SCons.Builder.Builder
     """
-    kwargs = getattr(parsers, f"{subcommand}_defaults")
+    kwargs = _get_defaults_dictionary(subcommand)
     varlist = list(kwargs.keys()) + ["abaqus_command", "cubit_command", "cubit"]
     internal_builder = SCons.Builder.Builder(
         action = [
