@@ -12,7 +12,7 @@ def geometry(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.geometry(
+    _cubit_python.geometry(
         args.input_file, args.output_file,
         planar=args.planar,
         part_name=args.part_name,
@@ -22,7 +22,7 @@ def geometry(args, command):
         header_lines=args.header_lines,
         revolution_angle=args.revolution_angle,
         y_offset=args.y_offset
-    ))
+    )
 
 
 def cylinder(args, command):
@@ -33,7 +33,7 @@ def cylinder(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.cylinder(
+    _cubit_python.cylinder(
         args.inner_radius,
         args.outer_radius,
         args.height,
@@ -41,7 +41,7 @@ def cylinder(args, command):
         part_name=args.part_name,
         revolution_angle=args.revolution_angle,
         y_offset=args.y_offset
-    ))
+    )
 
 
 def sphere(args, command):
@@ -52,7 +52,7 @@ def sphere(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.sphere(
+    _cubit_python.sphere(
         args.inner_radius,
         args.outer_radius,
         args.output_file,
@@ -61,7 +61,7 @@ def sphere(args, command):
         revolution_angle=args.revolution_angle,
         y_offset=args.y_offset,
         part_name=args.part_name
-    ))
+    )
 
 
 def partition(args, command):
@@ -72,7 +72,7 @@ def partition(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.partition(
+    _cubit_python.partition(
          args.input_file,
          output_file=args.output_file,
          center=args.center,
@@ -80,7 +80,7 @@ def partition(args, command):
          zvector=args.zvector,
          part_name=args.part_name,
          big_number=args.big_number
-    ))
+    )
 
 
 def mesh(args, command):
@@ -91,13 +91,13 @@ def mesh(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.mesh(
+    _cubit_python.mesh(
          args.input_file,
          args.element_type,
          output_file=args.output_file,
          part_name=args.part_name,
          global_seed=args.global_seed
-    ))
+    )
 
 
 def merge(args, command):
@@ -108,10 +108,10 @@ def merge(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.merge(
+    _cubit_python.merge(
         args.input_file,
         args.output_file
-    ))
+    )
 
 
 def export(args, command):
@@ -122,13 +122,13 @@ def export(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.export(
+    _cubit_python.export(
         args.input_file,
         part_name=args.part_name,
         element_type=args.element_type,
         destination=args.destination,
         output_type=args.output_type
-    ))
+    )
 
 
 def image(args, command):
@@ -139,7 +139,7 @@ def image(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: cubit executable path
     """
-    sys.exit(_cubit_python.image(
+    _cubit_python.image(
          args.input_file,
          args.output_file,
          command,
@@ -147,4 +147,4 @@ def image(args, command):
          y_angle=args.y_angle,
          z_angle=args.z_angle,
          image_size=args.image_size
-    ))
+    )
