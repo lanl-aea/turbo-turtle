@@ -63,7 +63,7 @@ def geometry():
     geometry_builder = SCons.Builder.Builder(
         action = [
             SCons.Action.Action(_geometry_action, varlist=kwargs.keys())
-        ]
+        ],
         emitter=_first_target_emitter,
     )
     return geometry_builder
