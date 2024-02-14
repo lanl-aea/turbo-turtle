@@ -118,6 +118,12 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.vertices.datum_planes` tuple order. Find a way to
     # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
     positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
+    sketch_vertex_pairs = (
+        ((-big_number_coordinates[0],  big_number_coordinates[1]),
+         ( big_number_coordinates[0],  big_number_coordinates[1])),
+        ((-big_number_coordinates[0], -big_number_coordinates[1]),
+         ( big_number_coordinates[0], -big_number_coordinates[1]))
+    )
 
     model = abaqus.mdb.models[model_name]
     for current_part in part_name:
@@ -137,10 +143,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         for edge, plane in zip(positive_sketch_axis, partition_planes[3:]):
             axis = datum_axis(center, edge, part)
             # TODO: Move to a dedicated partition function
-            for sign in [1.0, -1.0]:
-                vertex_1 = (-big_number_coordinates[0], sign * big_number_coordinates[1])
-                vertex_2 = ( big_number_coordinates[0], sign * big_number_coordinates[1])
-
+            for vertex_1, vertex_2 in sketch_vertex_pairs:
                 transform = part.MakeSketchTransform(
                     sketchPlane=plane,
                     sketchUpEdge=axis,
