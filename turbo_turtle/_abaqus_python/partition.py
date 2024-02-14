@@ -106,16 +106,24 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         print('\nTurboTurtle was canceled\n')
         return
 
+    # Process input and calculate local coordinate system properties
+    xvector = vertices.normalize_vector(xvector)
+    zvector = vertices.normalize_vector(zvector)
+    yvector = numpy.cross(zvector, xvector)
+    center = numpy.array(center)
+    plane_normals = vertices.datum_planes(xvector, zvector)
+
+    angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0/3.0))
+    big_number_coordinates = vertices.rectalinear_coordinates([big_number], [angle])[0]
+    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.vertices.datum_planes` tuple order. Find a way to
+    # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
+    positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
+
     model = abaqus.mdb.models[model_name]
     for current_part in part_name:
         part = model.parts[current_part]
 
-        xvector = vertices.normalize_vector(xvector)
-        zvector = vertices.normalize_vector(zvector)
-        yvector = numpy.cross(zvector, xvector)
-
-        center = numpy.array(center)
-        plane_normals = vertices.datum_planes(xvector, zvector)
+        # Create local coordinate system primary partition planes
         partition_planes = [datum_plane(center, normal, part) for normal in plane_normals]
 
         # Partition by three (3) local coordinate system x/y/z planes
@@ -124,12 +132,6 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
                 part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
             except:
                 pass
-
-        angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0/3.0))
-        big_number_coordinates = vertices.rectalinear_coordinates([big_number], [angle])[0]
-        # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.vertices.datum_planes` tuple order. Find a way to
-        # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
-        positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
 
         # Partition by sketch on the six (6) 45 degree planes
         for edge, plane in zip(positive_sketch_axis, partition_planes[3:]):
