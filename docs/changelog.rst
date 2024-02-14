@@ -8,6 +8,10 @@ Changelog
 v0.10.3 (unreleased)
 ********************
 
+New Features
+============
+- Add a draft general purpose SCons builder (:merge:`106`). By `Kyle Brindley`_.
+
 Documentation
 =============
 - Consistent required option formatting in CLI usage (:issue:`124`, :merge:`105`). By `Kyle Brindley`_.
