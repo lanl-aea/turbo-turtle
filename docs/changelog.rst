@@ -8,6 +8,10 @@ Changelog
 v0.10.3 (unreleased)
 ********************
 
+Documentation
+=============
+- Consistent required option formatting in CLI usage (:issue:`124`, :merge:`105`). By `Kyle Brindley`_.
+
 Enhancements
 ============
 - Allow users to turn off vertex markers in the ``geometry-xyplot`` subcommand output (:merge:`104`). By `Kyle Brindley`_.
