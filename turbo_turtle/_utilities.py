@@ -108,14 +108,17 @@ def run_command(command):
         sys.exit(err.output.decode())
 
 
-def set_wrappers_and_command(abaqus_command, cubit_command, cubit=False):
+def set_wrappers_and_command(args):
     """Read an argument namespace and set the wrappers and command appropriately
+
+    :param argparse.Namespace args: namespace of parsed arguments from :meth:`turbo_turtle.main.get_parser`
 
     :return: _wrappers, command. Wrapper module, executable command string.
     :rtype: tuple
     """
-    if cubit:
-        command = find_command_or_exit(cubit_command)
+    keys = vars(args).keys()
+    if "cubit" in keys and args.cubit:
+        command = find_command_or_exit(args.cubit_command)
         cubit_bin = find_cubit_bin([command])
         cubitx = cubit_bin / "cubitx"
         if cubitx.exists():
@@ -124,8 +127,8 @@ def set_wrappers_and_command(abaqus_command, cubit_command, cubit=False):
         if importlib.util.find_spec("cubit") is None:
             sys.path.append(str(cubit_bin))
         from turbo_turtle import _cubit_wrappers as _wrappers
-    else:
-        command = find_command_or_exit(abaqus_command)
+    elif "abaqus_command" in keys:
+        command = find_command_or_exit(args.abaqus_command)
         from turbo_turtle import _abaqus_wrappers as _wrappers
 
     return _wrappers, command
