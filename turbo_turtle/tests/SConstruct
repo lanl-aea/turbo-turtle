@@ -45,24 +45,24 @@ env.Append(BUILDERS={
 
 # API builders
 cubit_flag = [
-    False,  # Use Abaqus as backend
-    True  # Use Cubit as backend
+    (False, ".cae"),  # Use Abaqus as backend
+    (True, ".cub")  # Use Cubit as backend
 ]
-for flag in cubit_flag:
+for flag, extension in cubit_flag:
 
     # Geometry
     env.TurboTurtleGeometry(
-        target=["scons-vase.cae"],
+        target=[f"scons-vase{extension}"],
         source=[str(project_directory / "vase.csv")],
         cubit=flag
     )
     env.TurboTurtleGeometry(
-        target=["scons-washer.cae"],
+        target=[f"scons-washer{extension}"],
         source=[str(project_directory / "washer.csv")],
         cubit=flag
     )
     env.TurboTurtleGeometry(
-        target=["scons-multi-part.cae"],
+        target=[f"scons-multi-part{extension}"],
         source=[
             str(project_directory / "vase.csv"),
             str(project_directory / "washer.csv")
