@@ -540,8 +540,6 @@ def _partition(center=parsers.partition_default_center,
 
     for current_part_name in part_name:
         parts = _get_volumes_from_name(current_part_name)
-        part_ids = [part.id() for part in parts]
-        part_string = " ".join(map(str, part_ids))
 
         # Create intersections/partitions
         for volume in pyramid_volumes:
@@ -551,12 +549,16 @@ def _partition(center=parsers.partition_default_center,
         for part in parts:
             cubit_command_or_exit(f"delete volume {part.id()}")
 
+        # Update part (volume) objects and IDs
+        parts = _get_volumes_from_name(current_part_name)
+        part_ids = [part.id() for part in parts]
+        part_string = " ".join(map(str, part_ids))
+
         # Webcut with local coordinate system primary planes
         for number in primary_surface_numbers:
             cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
 
         # Imprint and merge
-        parts = _get_volumes_from_name(current_part_name)
         cubit_command_or_exit(f"imprint volume {part_string}")
         cubit_command_or_exit(f"merge volume {part_string}")
 
