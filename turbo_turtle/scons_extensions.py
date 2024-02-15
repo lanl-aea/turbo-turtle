@@ -150,6 +150,11 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
 
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
+
     This builder and any builders created from this template will be most useful if the ``options`` argument places
     SCons substitution variables in the action string, e.g. ``--argument ${argument}``, such that the task definitions
     can modify the options on a per-task basis. Any option set in this manner *must* be provided by the task definition.
@@ -217,6 +222,11 @@ def geometry(program="turbo-turtle", subcommand="geometry",
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
 
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -240,6 +250,11 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
 
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
+
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -265,6 +280,11 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
 
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
+
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
 
     Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
 
@@ -296,6 +316,11 @@ def sphere(program="turbo-turtle", subcommand="sphere",
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
 
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
+
     Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
 
     * ``inner_radius``
@@ -325,6 +350,11 @@ def partition(program="turbo-turtle", subcommand="partition",
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
 
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -348,6 +378,11 @@ def mesh(program="turbo-turtle", subcommand="mesh",
 
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
+
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
 
     Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
 
@@ -377,6 +412,11 @@ def image(program="turbo-turtle", subcommand="image",
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
 
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -401,6 +441,11 @@ def merge(program="turbo-turtle", subcommand="merge",
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
 
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -424,6 +469,11 @@ def export(program="turbo-turtle", subcommand="export",
 
     At least one target must be specified. The first target determines the working directory for the builder's action.
     The action changes the working directory to the first target's parent directory prior to execution.
+
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
