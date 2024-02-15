@@ -144,12 +144,6 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
                 abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a generic Turbo-Turtle CLI builder.
 
-    .. warning::
-
-       This builder is an early, minimally functional placeholder for future builders. It is intended for developer
-       testing and early adopter feedback about design behavior and use cases. The interface and behavior may change
-       without warning and without a breaking change in the package version number.
-
     This builder provides a template action for the Turbo-Turtle CLI. The default behavior will not do anything unless
     the ``subcommand`` argument is updated to one of the Turbo-Turtle CLI :ref:`cli_subcommands`.
 
@@ -424,9 +418,7 @@ def turbo_turtle_sphere(
 
     .. warning::
 
-       This builder is an early, minimally functional placeholder for future builders. It is intended for developer
-       testing and early adopter feedback about design behavior and use cases. The interface and behavior may change
-       without warning and without a breaking change in the package version number.
+       This builder will be deprecated in favor of :meth:`turbo_turtle.scons_extensions.sphere`.
 
     This subcommand does not require an input file. If no input file is provided, use the calling SConscript file as the
     task source file. This builder requires at least one TARGET. The first TARGET file must correspond to the
@@ -479,9 +471,7 @@ def turbo_turtle_partition(
 
     .. warning::
 
-       This builder is an early, minimally functional placeholder for future builders. It is intended for developer
-       testing and early adopter feedback about design behavior and use cases. The interface and behavior may change
-       without warning and without a breaking change in the package version number.
+       This builder will be deprecated in favor of :meth:`turbo_turtle.scons_extensions.partition`.
 
     This subcommand requires at least one source file. The first SOURCE file just correspond to the ``--input-file``
     option. This builder requires at least one TARGET file. The TARGET file must correspond to the ``--output-file``
