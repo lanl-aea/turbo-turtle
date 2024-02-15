@@ -109,9 +109,9 @@ cubit_flag = [
     (True, "cub")  # Use Cubit as backend
 ]
 for flag, extension in cubit_flag:
+    backend = "cubit" if flag is True else "abaqus"
     for interface in ["api", "cli"]:
 
-        backend = "cubit" if flag is True else "abaqus"
         if interface == "cli":
             cubit_option = "--cubit" if flag is True else ""
         else:
@@ -123,7 +123,7 @@ for flag, extension in cubit_flag:
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-vase.{extension}"],
             source=[str(project_directory / "vase.csv")],
-            backend=cubit_option,
+            backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-vase",
             part_name=" ".join(part_name) if interface == "cli" else part_name
