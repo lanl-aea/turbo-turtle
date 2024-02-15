@@ -8,6 +8,7 @@ from turbo_turtle._settings import _cd_action_prefix
 from turbo_turtle._settings import _redirect_action_postfix
 from turbo_turtle._settings import _default_abaqus_options
 from turbo_turtle._settings import _default_cubit_options
+from turbo_turtle._settings import _default_backend
 from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import parsers
 
@@ -141,7 +142,7 @@ def _api_builder(subcommand):
 
 
 def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
-                abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+                abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a generic Turbo-Turtle CLI builder.
 
     This builder provides a template action for the Turbo-Turtle CLI. The default behavior will not do anything unless
@@ -177,7 +178,7 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend {backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -210,7 +211,7 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     cubit = "--cubit" if cubit is True else ""
     action = ["${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
                   "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
-                  "${cubit} ${redirect_action_postfix}"]
+                  "--backend ${backend} ${redirect_action_postfix}"]
     builder = SCons.Builder.Builder(
         action=action,
         emitter=_first_target_emitter,
@@ -222,7 +223,7 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
         options=options,
         abaqus_command=" ".join(abaqus_command),
         cubit_command=" ".join(cubit_command),
-        cubit=cubit
+        backend=backend
     )
     return builder
 
@@ -230,7 +231,7 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
 def geometry(program="turbo-turtle", subcommand="geometry",
              required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
              options="",
-             abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+             abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle geometry subcommand CLI builder
 
     See the :ref:`geometry_cli` CLI documentation for detailed subcommand usage and options.
@@ -247,7 +248,7 @@ def geometry(program="turbo-turtle", subcommand="geometry",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -275,13 +276,13 @@ def geometry(program="turbo-turtle", subcommand="geometry",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
                     required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
                     options="",
-                    abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+                    abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder
 
     See the :ref:`geometry_xyplot_cli` CLI documentation for detailed subcommand usage and options.
@@ -298,7 +299,7 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -326,14 +327,14 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def cylinder(program="turbo-turtle", subcommand="cylinder",
              required="--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
                       "--height ${height}",
              options="",
-             abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+             abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle cylinder subcommand CLI builder
 
     See the :ref:`cylinder_cli` CLI documentation for detailed subcommand usage and options.
@@ -356,7 +357,7 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -385,13 +386,13 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def sphere(program="turbo-turtle", subcommand="sphere",
            required="--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius}",
            options="",
-           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle sphere subcommand CLI builder
 
     See the :ref:`sphere_cli` CLI documentation for detailed subcommand usage and options.
@@ -413,7 +414,7 @@ def sphere(program="turbo-turtle", subcommand="sphere",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -441,13 +442,13 @@ def sphere(program="turbo-turtle", subcommand="sphere",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def partition(program="turbo-turtle", subcommand="partition",
               required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
               options="",
-              abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+              abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle partition subcommand CLI builder
 
     See the :ref:`partition_cli` CLI documentation for detailed subcommand usage and options.
@@ -464,7 +465,7 @@ def partition(program="turbo-turtle", subcommand="partition",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -490,13 +491,13 @@ def partition(program="turbo-turtle", subcommand="partition",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def mesh(program="turbo-turtle", subcommand="mesh",
          required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} --element-type ${element_type}",
          options="",
-         abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+         abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle mesh subcommand CLI builder
 
     See the :ref:`mesh_cli` CLI documentation for detailed subcommand usage and options.
@@ -517,7 +518,7 @@ def mesh(program="turbo-turtle", subcommand="mesh",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -544,13 +545,13 @@ def mesh(program="turbo-turtle", subcommand="mesh",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def image(program="turbo-turtle", subcommand="image",
           required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
           options="",
-          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle image subcommand CLI builder
 
     See the :ref:`image_cli` CLI documentation for detailed subcommand usage and options.
@@ -567,7 +568,7 @@ def image(program="turbo-turtle", subcommand="image",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -593,13 +594,13 @@ def image(program="turbo-turtle", subcommand="image",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def merge(program="turbo-turtle", subcommand="merge",
           required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
           options="",
-          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle merge subcommand CLI builder
 
     See the :ref:`merge_cli` CLI documentation for detailed subcommand usage and options.
@@ -616,7 +617,7 @@ def merge(program="turbo-turtle", subcommand="merge",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -642,13 +643,13 @@ def merge(program="turbo-turtle", subcommand="merge",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def export(program="turbo-turtle", subcommand="export",
            required="--input-file ${SOURCE.abspath}",
            options="",
-           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
     """Return a Turbo-Turtle export subcommand CLI builder
 
     See the :ref:`export_cli` CLI documentation for detailed subcommand usage and options.
@@ -665,7 +666,7 @@ def export(program="turbo-turtle", subcommand="export",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
 
     .. code-block::
        :caption: SConstruct
@@ -691,7 +692,7 @@ def export(program="turbo-turtle", subcommand="export",
     :param bool cubit: Boolean to use Cubit instead of Abaqus
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def turbo_turtle_sphere(
@@ -751,8 +752,12 @@ def turbo_turtle_sphere(
     message = "The 'turbo_turtle.scons_extensions.turbo_turtle_sphere' builder will be deprecated in a future " \
               "version. Use the 'turbo_turtle.scons_extensions.sphere' builder instead."
     warnings.warn(message, DeprecationWarning)
+    if cubit is True:
+        backend = "cubit"
+    else:
+        backend = "abaqus"
     return cli_builder(program=program, subcommand=subcommand, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
 def turbo_turtle_partition(
@@ -806,5 +811,9 @@ def turbo_turtle_partition(
     message = "The 'turbo_turtle.scons_extensions.turbo_turtle_partition' builder will be deprecated in a future " \
               "version. Use the 'turbo_turtle.scons_extensions.partition' builder instead."
     warnings.warn(message, DeprecationWarning)
+    if cubit is True:
+        backend = "cubit"
+    else:
+        backend = "abaqus"
     return cli_builder(program=program, subcommand=subcommand, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)

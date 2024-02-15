@@ -90,7 +90,7 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
     if inner_radius == 0:
         commands = [commands[0]]
     if cubit:
-        commands = [f"{command} --cubit" for command in commands]
+        commands = [f"{command} --backend cubit" for command in commands]
     return commands
 
 
@@ -117,7 +117,7 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit
             f"--y-offset {y_offset}",
     ]
     if cubit:
-        commands = [f"{command} --cubit" for command in commands]
+        commands = [f"{command} --backend cubit" for command in commands]
     return commands
 
 
@@ -132,7 +132,7 @@ def setup_cylinder_commands(model, revolution_angle, cubit,
             f"--inner-radius 1 --outer-radius 2 --height 1"
     ]
     if cubit:
-        commands = [f"{command} --cubit" for command in commands]
+        commands = [f"{command} --backend cubit" for command in commands]
     return commands
 
 
@@ -169,7 +169,7 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
     if part_name:
         merge_command += f" --part-name {part_name}"
     if cubit:
-        merge_command = f"{merge_command} --cubit"
+        merge_command = f"{merge_command} --backend cubit"
     commands.append(merge_command)
 
     return commands

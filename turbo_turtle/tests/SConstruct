@@ -112,7 +112,7 @@ for flag, extension in cubit_flag:
     for interface in ["api", "cli"]:
 
         if interface == "cli":
-            cubit_option = "--cubit" if flag is True else ""
+            cubit_option = "--backend cubit" if flag is True else ""
         else:
             cubit_option = flag
 
@@ -198,7 +198,7 @@ for flag, extension in cubit_flag:
 
     # Subcommands not implemented in API builder
     interface = "cli"
-    cubit_option = "--cubit" if flag is True else ""
+    cubit_option = "--backend cubit" if flag is True else ""
 
     # Cylinder
     builder = f"cylinder_{interface}"
