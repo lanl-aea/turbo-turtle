@@ -147,6 +147,9 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     This builder provides a template action for the Turbo-Turtle CLI. The default behavior will not do anything unless
     the ``subcommand`` argument is updated to one of the Turbo-Turtle CLI :ref:`cli_subcommands`.
 
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
+
     This builder and any builders created from this template will be most useful if the ``options`` argument places
     SCons substitution variables in the action string, e.g. ``--argument ${argument}``, such that the task definitions
     can modify the options on a per-task basis. Any option set in this manner *must* be provided by the task definition.
@@ -211,6 +214,9 @@ def geometry(program="turbo-turtle", subcommand="geometry",
     See the :ref:`geometry_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
 
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -231,6 +237,9 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
 
     See the :ref:`geometry_xyplot_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -253,6 +262,9 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
 
     See the :ref:`cylinder_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
 
     Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
 
@@ -281,6 +293,9 @@ def sphere(program="turbo-turtle", subcommand="sphere",
     See the :ref:`sphere_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
 
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
+
     Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
 
     * ``inner_radius``
@@ -307,6 +322,9 @@ def partition(program="turbo-turtle", subcommand="partition",
     See the :ref:`partition_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
 
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -327,6 +345,9 @@ def mesh(program="turbo-turtle", subcommand="mesh",
 
     See the :ref:`mesh_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
 
     Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
 
@@ -353,6 +374,9 @@ def image(program="turbo-turtle", subcommand="image",
     See the :ref:`image_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
 
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -374,6 +398,9 @@ def merge(program="turbo-turtle", subcommand="merge",
     See the :ref:`merge_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
 
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -394,6 +421,9 @@ def export(program="turbo-turtle", subcommand="export",
 
     See the :ref:`export_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
