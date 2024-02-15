@@ -66,7 +66,7 @@ env.Append(BUILDERS={
         program=env["turbo_turtle"],
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
-        options="--model-name ${model_name} --part-name ${part_name}"
+        options="--model-name ${model_name} --part-name ${part_name} --global-seed ${global_seed}"
     ),
     "image_cli": turbo_turtle.scons_extensions.image(
         program=env["turbo_turtle"],
@@ -244,7 +244,8 @@ for flag, extension in cubit_flag:
         cubit=cubit_option,
         model_name=f"scons-{interface}-sphere-{extension}",
         part_name=f"scons-{interface}-sphere-{extension}",
-        element_type="C3D8R"
+        element_type="C3D8R",
+        global_seed=0.15
     )
 
     # Image
