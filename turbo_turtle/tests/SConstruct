@@ -111,8 +111,9 @@ cubit_flag = [
 for flag, extension in cubit_flag:
     for interface in ["api", "cli"]:
 
+        backend = "cubit" if flag is True else "abaqus"
         if interface == "cli":
-            cubit_option = "--backend cubit" if flag is True else ""
+            cubit_option = "--cubit" if flag is True else ""
         else:
             cubit_option = flag
 
@@ -122,7 +123,7 @@ for flag, extension in cubit_flag:
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-vase.{extension}"],
             source=[str(project_directory / "vase.csv")],
-            cubit=cubit_option,
+            backend=cubit_option,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-vase",
             part_name=" ".join(part_name) if interface == "cli" else part_name
@@ -131,7 +132,7 @@ for flag, extension in cubit_flag:
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-washer.{extension}"],
             source=[str(project_directory / "washer.csv")],
-            cubit=cubit_option,
+            backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-washer",
             part_name=" ".join(part_name) if interface == "cli" else part_name
@@ -143,7 +144,7 @@ for flag, extension in cubit_flag:
                 str(project_directory / "vase.csv"),
                 str(project_directory / "washer.csv")
             ],
-            cubit=cubit_option,
+            backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-multi-part",
             part_name=" ".join(part_name) if interface == "cli" else part_name
@@ -155,7 +156,7 @@ for flag, extension in cubit_flag:
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-vase.{extension}.png"],
             source=[str(project_directory / "vase.csv")],
-            cubit=cubit_option,
+            backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-vase",
             part_name=" ".join(part_name) if interface == "cli" else part_name
@@ -164,7 +165,7 @@ for flag, extension in cubit_flag:
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-washer.{extension}.png"],
             source=[str(project_directory / "washer.csv")],
-            cubit=cubit_option,
+            backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-washer",
             part_name=" ".join(part_name) if interface == "cli" else part_name
@@ -176,7 +177,7 @@ for flag, extension in cubit_flag:
                 str(project_directory / "vase.csv"),
                 str(project_directory / "washer.csv")
             ],
-            cubit=cubit_option,
+            backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-multi-part",
             part_name=" ".join(part_name) if interface == "cli" else part_name
@@ -189,7 +190,7 @@ for flag, extension in cubit_flag:
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-merge-multi-part.{extension}"],
             source=[f"scons-{interface}-vase.{extension}", f"scons-{interface}-washer.{extension}"],
-            cubit=cubit_option,
+            backend=backend,
             output_file="${TARGET.abspath}",
             model_name=" ".join(model_name) if interface == "cli" else model_name,
             part_name=" ".join(part_name) if interface == "cli" else part_name,
@@ -205,7 +206,7 @@ for flag, extension in cubit_flag:
     env["BUILDERS"][builder](env,
         target=[f"scons-{interface}-cylinder.{extension}"],
         source=[str(project_configuration)],
-        cubit=cubit_option,
+        backend=backend,
         inner_radius=1.,
         outer_radius=2.,
         height=1.,
@@ -218,7 +219,7 @@ for flag, extension in cubit_flag:
     env["BUILDERS"][builder](env,
         target=[f"scons-{interface}-sphere.{extension}"],
         source=[str(project_configuration)],
-        cubit=cubit_option,
+        backend=backend,
         inner_radius=1.,
         outer_radius=2.,
         model_name=f"scons-{interface}-sphere-{extension}",
@@ -231,7 +232,7 @@ for flag, extension in cubit_flag:
     env["BUILDERS"][builder](env,
         target=[f"scons-{interface}-partition.{extension}"],
         source=[f"scons-{interface}-sphere.{extension}"],
-        cubit=cubit_option,
+        backend=backend,
         model_name=f"scons-{interface}-sphere-{extension}",
         part_name=f"scons-{interface}-sphere-{extension}"
     )
@@ -241,7 +242,7 @@ for flag, extension in cubit_flag:
     env["BUILDERS"][builder](env,
         target=[f"scons-{interface}-mesh.{extension}"],
         source=[f"scons-{interface}-partition.{extension}"],
-        cubit=cubit_option,
+        backend=backend,
         model_name=f"scons-{interface}-sphere-{extension}",
         part_name=f"scons-{interface}-sphere-{extension}",
         element_type="C3D8R",
@@ -255,7 +256,7 @@ for flag, extension in cubit_flag:
     #env["BUILDERS"][builder](env,
     #    target=[f"scons-{interface}-image-{extension}.png"],
     #    source=[f"scons-{interface}-mesh.{extension}"],
-    #    cubit=cubit_option,
+    #    backend=backend,
     #    model_name=f"scons-{interface}-sphere-{extension}",
     #    part_name=f"scons-{interface}-sphere-{extension}"
     #)
@@ -268,7 +269,7 @@ for flag, extension in cubit_flag:
     env["BUILDERS"][builder](env,
         target=[input_file],
         source=[f"scons-{interface}-mesh.{extension}"],
-        cubit=cubit_option,
+        backend=backend,
         model_name=f"scons-{interface}-sphere-{extension}",
         part_name=f"scons-{interface}-sphere-{extension}"
     )
