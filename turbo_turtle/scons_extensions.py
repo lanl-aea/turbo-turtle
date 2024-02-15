@@ -208,7 +208,9 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     return builder
 
 
-def geometry(program="turbo-turtle", subcommand="geometry", required="", options="",
+def geometry(program="turbo-turtle", subcommand="geometry",
+             required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
+             options="",
              abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle geometry subcommand CLI builder
 
@@ -227,7 +229,9 @@ def geometry(program="turbo-turtle", subcommand="geometry", required="", options
                        abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot", required="", options="",
+def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
+                    required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
+                    options="",
                     abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder
 
@@ -246,13 +250,22 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot", requir
                        abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def cylinder(program="turbo-turtle", subcommand="cylinder", required="", options="",
+def cylinder(program="turbo-turtle", subcommand="cylinder",
+             required="--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
+                      "--height ${height}",
+             options="",
              abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle cylinder subcommand CLI builder
 
     See the :ref:`cylinder_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
 
+    Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
+
+    * ``inner_radius``
+    * ``outer_radius``
+    * ``height``
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -265,13 +278,20 @@ def cylinder(program="turbo-turtle", subcommand="cylinder", required="", options
                        abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def sphere(program="turbo-turtle", subcommand="sphere", required="", options="",
+def sphere(program="turbo-turtle", subcommand="sphere",
+           required="--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius}",
+           options="",
            abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle sphere subcommand CLI builder
 
     See the :ref:`sphere_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
 
+    Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
+
+    * ``inner_radius``
+    * ``outer_radius``
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -284,7 +304,9 @@ def sphere(program="turbo-turtle", subcommand="sphere", required="", options="",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def partition(program="turbo-turtle", subcommand="partition", required="", options="",
+def partition(program="turbo-turtle", subcommand="partition",
+              required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
+              options="",
               abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle partition subcommand CLI builder
 
@@ -303,12 +325,18 @@ def partition(program="turbo-turtle", subcommand="partition", required="", optio
                        abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def mesh(program="turbo-turtle", subcommand="mesh", required="", options="",
+def mesh(program="turbo-turtle", subcommand="mesh",
+         required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} --element-type ${element_type}",
+         options="",
          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle mesh subcommand CLI builder
 
     See the :ref:`mesh_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    Unless the ``required`` argument is overridden, the following task keyword arguments are *required*:
+
+    * ``element_type``
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -322,7 +350,9 @@ def mesh(program="turbo-turtle", subcommand="mesh", required="", options="",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def image(program="turbo-turtle", subcommand="image", required="", options="",
+def image(program="turbo-turtle", subcommand="image",
+          required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
+          options="",
           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle image subcommand CLI builder
 
@@ -341,7 +371,9 @@ def image(program="turbo-turtle", subcommand="image", required="", options="",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def merge(program="turbo-turtle", subcommand="merge", required="", options="",
+def merge(program="turbo-turtle", subcommand="merge",
+          required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
+          options="",
           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle merge subcommand CLI builder
 
@@ -360,7 +392,9 @@ def merge(program="turbo-turtle", subcommand="merge", required="", options="",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
-def export(program="turbo-turtle", subcommand="export", required="", options="",
+def export(program="turbo-turtle", subcommand="export",
+           required="--input-file ${SOURCE.abspath}",
+           options="",
            abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle export subcommand CLI builder
 
