@@ -104,18 +104,12 @@ env.Append(BUILDERS={
 })
 
 # API builders
-cubit_flag = [
-    (False, "cae"),  # Use Abaqus as backend
-    (True, "cub")  # Use Cubit as backend
+backend_options = [
+    ("abaqus", "cae"),
+    ("cubit", "cub")
 ]
-for flag, extension in cubit_flag:
-    backend = "cubit" if flag is True else "abaqus"
+for backend, extension in backend_options:
     for interface in ["api", "cli"]:
-
-        if interface == "cli":
-            cubit_option = "--cubit" if flag is True else ""
-        else:
-            cubit_option = flag
 
         # Geometry
         builder = f"geometry_{interface}"
@@ -199,7 +193,6 @@ for flag, extension in cubit_flag:
 
     # Subcommands not implemented in API builder
     interface = "cli"
-    cubit_option = "--backend cubit" if flag is True else ""
 
     # Cylinder
     builder = f"cylinder_{interface}"
@@ -264,7 +257,7 @@ for flag, extension in cubit_flag:
     # Export
     builder = f"export_{interface}"
     input_file = f"scons-{interface}-sphere-{extension}.inp"
-    if flag is True:
+    if backend == "cubit":
         input_file = input_file.replace("-", "_")
     env["BUILDERS"][builder](env,
         target=[input_file],
