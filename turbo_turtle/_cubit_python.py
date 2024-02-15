@@ -508,6 +508,47 @@ def webcut_local_coordinate_primary_planes(center, xvector, zvector, names):
     return _get_volumes_from_name(names)
 
 
+def create_pyramid_volumes(center, xvector, zvector, size):
+    """Return the six (6) four-sided pyramid volumes defined by a cube's center point and six outer faces
+
+    :param list center: center location of the geometry
+    :param list xvector: Local x-axis vector defined in global coordinates
+    :param list zvector: Local z-axis vector defined in global coordinates
+    :param float size: Half-length of the cube diagonals (length of the pyramid tip to corner)
+
+    :returns: list of Cubit volumes
+    :rtype: list of cubit.Volume objects
+    """
+
+    center = numpy.array(center)
+    xvector = numpy.array(xvector)
+    zvector = numpy.array(zvector)
+    yvector = numpy.cross(zvector, xvector)
+
+    # Create 6 4-sided pyramidal bodies defining the partitioning intersections
+    surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, size)
+    pyramid_surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+
+    # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
+    pyramid_volume_surfaces = [
+        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y
+        _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y
+        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X
+        _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X
+        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z
+        _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z
+    ]
+    pyramid_volumes = [_create_volume_from_surfaces(surface_list) for surface_list in pyramid_volume_surfaces]
+
+    # Remove pyramidal construction surfaces
+    surface_numbers = _surface_numbers(pyramid_surfaces)
+    surface_string = " ".join(map(str, surface_numbers))
+    cubit_command_or_exit(f"delete surface {surface_string}")
+    # TODO: ^^ Move pyramid volume creation to a dedicated function ^^
+
+    return pyramid_volumes
+
+
 def partition(input_file,
               output_file=parsers.partition_defaults["output_file"],
               center=parsers.partition_defaults["center"],
@@ -560,30 +601,10 @@ def _partition(center=parsers.partition_defaults["center"],
     zvector = numpy.array(zvector)
     yvector = numpy.cross(zvector, xvector)
 
-    # TODO: VV Move pyramid volume creation to a dedicated function VV
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/75
-    # Create 6 4-sided pyramidal bodies defining the partitioning intersections
-    surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, big_number)
-    pyramid_surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
-
-    # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
-    pyramid_volume_surfaces = [
-        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y
-        _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y
-        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X
-        _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X
-        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z
-        _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z
-    ]
-    pyramid_volumes = [_create_volume_from_surfaces(surface_list) for surface_list in pyramid_volume_surfaces]
+    # Create pyramid partitioning (intersecting) volumes
+    pyramid_volumes = create_pyramid_volumes(center, xvector, zvector, big_number)
     pyramid_volume_numbers = [pyramid.id() for pyramid in pyramid_volumes]
     pyramid_volume_string = " ". join(map(str, pyramid_volume_numbers))
-
-    # Remove pyramidal construction surfaces
-    surface_numbers = _surface_numbers(pyramid_surfaces)
-    surface_string = " ".join(map(str, surface_numbers))
-    cubit_command_or_exit(f"delete surface {surface_string}")
-    # TODO: ^^ Move pyramid volume creation to a dedicated function ^^
 
     # Create intersections/partitions
     parts = _get_volumes_from_name(part_name)
