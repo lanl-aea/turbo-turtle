@@ -1,0 +1,51 @@
+"""Test Turbo-Turtle SCons builders and support functions"""
+
+import pytest
+import SCons
+
+from turbo_turtle import scons_extensions
+
+
+def check_action_string(nodes, post_action, node_count, action_count, expected_string):
+    """Verify the expected action string against a builder's target nodes
+
+    :param SCons.Node.NodeList nodes: Target node list returned by a builder
+    :param list post_action: list of post action strings passed to builder
+    :param int node_count: expected length of ``nodes``
+    :param int action_count: expected length of action list for each node
+    :param str expected_string: the builder's action string.
+
+    .. note::
+
+       The method of interrogating a node's action list results in a newline separated string instead of a list of
+       actions. The ``expected_string`` should contain all elements of the expected action list as a single, newline
+       separated string. The ``action_count`` should be set to ``1`` until this method is updated to search for the
+       finalized action list.
+    """
+    for action in post_action:
+        expected_string = expected_string + f"\ncd ${{TARGET.dir.abspath}} && {action}"
+    assert len(nodes) == node_count
+    for node in nodes:
+        node.get_executor()
+        assert len(node.executor.action_list) == action_count
+        assert str(node.executor.action_list[0]) == expected_string
+
+
+# TODO: Figure out how to cleanly reset the construction environment between parameter sets
+cli_builder = {
+    "default behavior": ({}, 1, 1, ["input1.txt"], ["input1.txt.stdout"]),
+}
+
+
+@pytest.mark.parametrize("kwargs, node_count, action_count, source_list, target_list",
+                         cli_builder.values(),
+                         ids=cli_builder.keys())
+def test_mcnp_solver(kwargs, node_count, action_count, source_list, target_list):
+    env = SCons.Environment.Environment()
+    expected_string = "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
+                      "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
+                      "${cubit} ${redirect_action_postfix}"
+
+    env.Append(BUILDERS={"TurboTurtleCLIBuilder": scons_extensions.cli_builder(**kwargs)})
+    nodes = env.TurboTurtleCLIBuilder(target=target_list, source=source_list)
+    check_action_string(nodes, [], node_count, action_count, expected_string)
