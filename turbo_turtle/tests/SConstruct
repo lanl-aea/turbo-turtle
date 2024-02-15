@@ -250,7 +250,7 @@ for flag, extension in cubit_flag:
     # Image
     builder = f"image_{interface}"
     env["BUILDERS"][builder](env,
-        target=[f"scons-{interface}-image.{extension}.png"],
+        target=[f"scons-{interface}-image-{extension}.png"],
         source=[f"scons-{interface}-mesh.{extension}"],
         cubit=cubit_option,
         model_name=f"scons-{interface}-sphere-{extension}",
