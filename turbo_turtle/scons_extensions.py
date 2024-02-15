@@ -179,6 +179,23 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleCLIBuilder": turbo_turtle.scons_extensions.cli_builder(
+            program=env["turbo_turtle],
+            subcommand="geometry",
+            required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}"
+       })
+       env.TurboTurtleCLIBuilder(
+           target=["target.cae"],
+           source=["source.csv"],
+       )
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -232,6 +249,23 @@ def geometry(program="turbo-turtle", subcommand="geometry",
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleGeometry": turbo_turtle.scons_extensions.geometry(
+            program=env["turbo_turtle],
+            options="--part-name ${part_name}"
+       })
+       env.TurboTurtleGeometry(
+           target=["target.cae"],
+           source=["source1.csv", "source2.csv"],
+           part_name="source1 source2"
+       )
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -265,6 +299,23 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
        :caption: action string construction
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleGeometryXYPlot": turbo_turtle.scons_extensions.geometry_xyplot(
+            program=env["turbo_turtle],
+            options="--part-name ${part_name}"
+       })
+       env.TurboTurtleGeometryXYPlot(
+           target=["target.png"],
+           source=["source1.csv", "source2.csv"],
+           part_name="source1 source2"
+       )
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -307,6 +358,24 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleCylinder": turbo_turtle.scons_extensions.cylinder(
+            program=env["turbo_turtle]
+       })
+       env.TurboTurtleCylinder(
+           target=["target.cae"],
+           source=["SConstruct"],
+           inner_radius=1.,
+           outer_radius=2.,
+           height=1.
+       )
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -346,6 +415,23 @@ def sphere(program="turbo-turtle", subcommand="sphere",
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
+            program=env["turbo_turtle]
+       })
+       env.TurboTurtleSphere(
+           target=["target.cae"],
+           source=["SConstruct"],
+           inner_radius=1.,
+           outer_radius=2.
+       )
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -379,6 +465,21 @@ def partition(program="turbo-turtle", subcommand="partition",
        :caption: action string construction
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
+            program=env["turbo_turtle]
+       })
+       env.TurboTurtlePartition(
+           target=["target.cae"],
+           source=["source.cae"],
+       )
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -418,6 +519,22 @@ def mesh(program="turbo-turtle", subcommand="mesh",
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
+            program=env["turbo_turtle]
+       })
+       env.TurboTurtleMesh(
+           target=["target.cae"],
+           source=["source.cae"],
+           element_type="C3D8R"
+       )
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -451,6 +568,21 @@ def image(program="turbo-turtle", subcommand="image",
        :caption: action string construction
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleImage": turbo_turtle.scons_extensions.image(
+            program=env["turbo_turtle]
+       })
+       env.TurboTurtleImage(
+           target=["target.png"],
+           source=["source.cae"],
+       )
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -486,6 +618,21 @@ def merge(program="turbo-turtle", subcommand="merge",
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleMerge": turbo_turtle.scons_extensions.merge(
+            program=env["turbo_turtle]
+       })
+       env.TurboTurtleMerge(
+           target=["target.cae"],
+           source=["source1.cae", "source2.cae"],
+       )
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -519,6 +666,21 @@ def export(program="turbo-turtle", subcommand="export",
        :caption: action string construction
 
        ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={"TurboTurtleExport": turbo_turtle.scons_extensions.export(
+            program=env["turbo_turtle]
+       })
+       env.TurboTurtleExport(
+           target=["target.inp"],
+           source=["source.cae"],
+       )
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
