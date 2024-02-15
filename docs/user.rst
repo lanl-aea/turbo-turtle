@@ -86,10 +86,10 @@ Two-dimensional, axisymmetric sphere
 Examples: Cubit
 ***************
 
-These examples are (nearly) identical to the Abaqus examples above, but appended with the ``--cubit`` flag. Because the
-commands are (nearly) identical, they will be included as a single command block. See the :ref:`turbo_turtle_cli`
-documentation for caveats in behavior for the Cubit implementation and translation of Abaqus jargon to Cubit jargon. The
-list of commands will be expanded as they are implemented.
+These examples are (nearly) identical to the Abaqus examples above, but appended with the ``--backend cubit`` option.
+Because the commands are (nearly) identical, they will be included as a single command block. See the
+:ref:`turbo_turtle_cli` documentation for caveats in behavior for the Cubit implementation and translation of Abaqus
+jargon to Cubit jargon. The list of commands will be expanded as they are implemented.
 
 .. note::
 
@@ -108,11 +108,11 @@ Three-dimensional sphere
 
 .. code-block::
 
-   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cub --part-name sphere --cubit
-   turbo-turtle partition --input-file sphere.cub --output-file sphere.cub --part-name sphere --cubit
-   turbo-turtle mesh --input-file sphere.cub --output-file sphere.cub --part-name sphere --element-type dummy --global-seed 0.15 --cubit
-   turbo-turtle image --input-file sphere.cub --output-file sphere.png --cubit
-   turbo-turtle export --input-file sphere.cub --part-name sphere --cubit
+   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file sphere.cub --part-name sphere --backend cubit
+   turbo-turtle partition --input-file sphere.cub --output-file sphere.cub --part-name sphere --backend cubit
+   turbo-turtle mesh --input-file sphere.cub --output-file sphere.cub --part-name sphere --element-type dummy --global-seed 0.15 --backend cubit
+   turbo-turtle image --input-file sphere.cub --output-file sphere.png --backend cubit
+   turbo-turtle export --input-file sphere.cub --part-name sphere --backend cubit
 
 Two-dimensional, axisymmetric sphere
 ====================================
@@ -121,8 +121,8 @@ Two-dimensional, axisymmetric sphere
 
 .. code-block::
 
-   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cub --part-name axisymmetric --revolution-angle 0 --cubit
+   turbo-turtle sphere --inner-radius 1 --outer-radius 2 --output-file axisymmetric.cub --part-name axisymmetric --revolution-angle 0 --backend cubit
    turbo-turtle partition --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric
    turbo-turtle mesh --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric --element-type dummy --global-seed 0.15
-   turbo-turtle image --input-file axisymmetric.cub --output-file axisymmetric.png --cubit
+   turbo-turtle image --input-file axisymmetric.cub --output-file axisymmetric.png --backend cubit
    turbo-turtle export --input-file axisymmetric.cub --part-name axisymmetric
