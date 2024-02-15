@@ -142,7 +142,7 @@ for flag, extension in cubit_flag:
 # Deprecated CLI builders
 # TODO: Remove these builders for version 1.0
 env.TurboTurtleSphere(
-    target=["scons-cli-sphere.cae"],
+    target=["scons-deprecated-sphere.cae"],
     source=[str(project_configuration)],
     inner_radius=1.,
     outer_radius=2.,
@@ -150,13 +150,13 @@ env.TurboTurtleSphere(
     part_name="sphere"
 )
 env.TurboTurtlePartition(
-    target=["scons-cli-partition.cae"],
-    source=["scons-cli-sphere.cae"],
+    target=["scons-deprecated-partition.cae"],
+    source=["scons-deprecated-sphere.cae"],
     model_name="sphere",
     part_name="sphere"
 )
 env.TurboTurtleSphereCubit(
-    target=["scons-cli-sphere.cub"],
+    target=["scons-deprecated-sphere.cub"],
     source=[str(project_configuration)],
     inner_radius=1.,
     outer_radius=2.,
@@ -164,8 +164,8 @@ env.TurboTurtleSphereCubit(
     part_name="sphere"
 )
 env.TurboTurtlePartitionCubit(
-    target=["scons-cli-partition.cub"],
-    source=["scons-cli-sphere.cub"],
+    target=["scons-deprecated-partition.cub"],
+    source=["scons-deprecated-sphere.cub"],
     model_name="sphere",
     part_name="sphere"
 )
