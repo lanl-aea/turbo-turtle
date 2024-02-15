@@ -162,11 +162,11 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
     * ``program``: The Turbo-Turtle command line executable absolute or relative path
     * ``subcommand``: A Turbo-Turtle subcommand
     * ``options``: A list of subcommand options
-    * ``abaqus_command``: The Abaqus command line executable absolute or relative path. When provided as a builder
+    * ``abaqus_command``: The Abaqus command line executable absolute or relative path. When provided as a task
           keyword argument, this must be a space delimited string, not a list.
-    * ``cubit_command``: The Cubit command line executable absolute or relative path. When provided as a builder keyword
+    * ``cubit_command``: The Cubit command line executable absolute or relative path. When provided as a task keyword
           argument, this must be a space delimited string, not a list.
-    * ``cubit``: The flag to use Cubit instead of Abaqus. When provided as a builder keyword argument, this must be
+    * ``cubit``: The flag to use Cubit instead of Abaqus. When provided as a task keyword argument, this must be
           the string ``"--cubit"`` or an empty string ``""``
     * ``cd_action_prefix``: Advanced behavior. Most users should accept the defaults.
     * ``redirect_action_postfix``: Advanced behavior. Most users should accept the defaults.
@@ -174,7 +174,7 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${redirect_action_postfix}
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -186,7 +186,7 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
     :returns: SCons Turbo-Turtle builder
     :rtype: SCons.Builder.Builder
     """
-    cubit = "--cubit" if cubit else ""
+    cubit = "--cubit" if cubit is True else ""
     action = ["${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} " \
                   "--cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}"]
     builder = SCons.Builder.Builder(
