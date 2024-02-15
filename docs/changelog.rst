@@ -11,6 +11,7 @@ v0.11.1 (unreleased)
 Internal Changes
 ================
 - Dedicated Cubit imprint and merge function (:issue:`76`, :merge:`110`). By `Kyle Brindley`_.
+- Dedicated local coordinate primary plane webcutting function (:issue:`77`, :merge:`111`). By `Kyle Brindley`_.
 
 ********************
 v0.11.0 (2024-02-15)

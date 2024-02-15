@@ -470,6 +470,44 @@ def imprint_and_merge(names):
     cubit_command_or_exit(f"merge volume {part_string}")
 
 
+def webcut_local_coordinate_primary_planes(center, xvector, zvector, names):
+    """Webcut all volumes with a prefix in the ``names`` list on the local coordinate system primary planes
+
+    :param list center: center location of the geometry
+    :param list xvector: Local x-axis vector defined in global coordinates
+    :param list zvector: Local z-axis vector defined in global coordinates
+    :param list names: Volume name prefix(es) to search for with ``cubit.get_all_ids_from_name``
+
+    :returns: list of Cubit volumes with name prefix(es)
+    :rtype: list of cubit.Volume objects
+    """
+    center = numpy.array(center)
+    xvector = numpy.array(xvector)
+    zvector = numpy.array(zvector)
+    yvector = numpy.cross(zvector, xvector)
+    # Create local coordinate system primary planes
+    surface_coordinates = [
+        numpy.array([center, center + xvector, center + yvector]),
+        numpy.array([center, center + yvector, center + zvector]),
+        numpy.array([center, center + zvector, center + xvector]),
+    ]
+    primary_surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+    primary_surface_numbers = _surface_numbers(primary_surfaces)
+    primary_surface_string = " ".join(map(str, primary_surface_numbers))
+
+    # Webcut with local coordinate system primary planes
+    for number in primary_surface_numbers:
+        parts = _get_volumes_from_name(names)
+        part_ids = [part.id() for part in parts]
+        part_string = " ".join(map(str, part_ids))
+        cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
+
+    # Clean up primary surfaces
+    cubit_command_or_exit(f"delete surface {primary_surface_string}")
+
+    return _get_volumes_from_name(names)
+
+
 def partition(input_file,
               output_file=parsers.partition_defaults["output_file"],
               center=parsers.partition_defaults["center"],
@@ -547,17 +585,6 @@ def _partition(center=parsers.partition_defaults["center"],
     cubit_command_or_exit(f"delete surface {surface_string}")
     # TODO: ^^ Move pyramid volume creation to a dedicated function ^^
 
-    # Create local coordinate system primary planes
-    yvector = numpy.cross(zvector, xvector)
-    surface_coordinates = [
-        numpy.array([center, center + xvector, center + yvector]),
-        numpy.array([center, center + yvector, center + zvector]),
-        numpy.array([center, center + zvector, center + xvector]),
-    ]
-    primary_surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
-    primary_surface_numbers = _surface_numbers(primary_surfaces)
-    primary_surface_string = " ".join(map(str, primary_surface_numbers))
-
     # Create intersections/partitions
     parts = _get_volumes_from_name(part_name)
     for volume in pyramid_volumes:
@@ -568,15 +595,10 @@ def _partition(center=parsers.partition_defaults["center"],
         cubit_command_or_exit(f"delete volume {part.id()}")
 
     # Webcut with local coordinate system primary planes
-    for number in primary_surface_numbers:
-        parts = _get_volumes_from_name(part_name)
-        part_ids = [part.id() for part in parts]
-        part_string = " ".join(map(str, part_ids))
-        cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
+    webcut_local_coordinate_primary_planes(center, xvector, zvector, part_name)
 
     # Clean up pyramid volumes and primary surfaces
     cubit_command_or_exit(f"delete volume {pyramid_volume_string}")
-    cubit_command_or_exit(f"delete surface {primary_surface_string}")
 
     # Imprint and merge
     for current_part_name in part_name:
