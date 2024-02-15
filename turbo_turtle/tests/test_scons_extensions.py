@@ -32,20 +32,20 @@ def check_action_string(nodes, post_action, node_count, action_count, expected_s
 
 
 # TODO: Figure out how to cleanly reset the construction environment between parameter sets
-cli_builder = {
-    "default behavior": ({}, 1, 1, ["input1.txt"], ["input1.txt.stdout"]),
+test_builder = {
+    "cli_builder": ("cli_builder", {}, 1, 1, ["input1.txt"], ["input1.txt.stdout"]),
 }
 
 
-@pytest.mark.parametrize("kwargs, node_count, action_count, source_list, target_list",
-                         cli_builder.values(),
-                         ids=cli_builder.keys())
-def test_mcnp_solver(kwargs, node_count, action_count, source_list, target_list):
+@pytest.mark.parametrize("builder, kwargs, node_count, action_count, source_list, target_list",
+                         test_builder.values(),
+                         ids=test_builder.keys())
+def test_builder(builder, kwargs, node_count, action_count, source_list, target_list):
     env = SCons.Environment.Environment()
     expected_string = "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
                       "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
                       "${cubit} ${redirect_action_postfix}"
 
-    env.Append(BUILDERS={"TurboTurtleCLIBuilder": scons_extensions.cli_builder(**kwargs)})
-    nodes = env.TurboTurtleCLIBuilder(target=target_list, source=source_list)
+    env.Append(BUILDERS={builder: scons_extensions.cli_builder(**kwargs)})
+    nodes = env["BUILDERS"][builder](env, target=target_list, source=source_list)
     check_action_string(nodes, [], node_count, action_count, expected_string)
