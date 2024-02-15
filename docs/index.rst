@@ -9,6 +9,7 @@
    :caption: User Manual
 
    user
+   external_api
    cli
 
 .. toctree::

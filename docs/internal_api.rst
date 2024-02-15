@@ -13,12 +13,8 @@ These modules are intended purely for use in Python 3.
 scons_extensions
 ================
 
-.. warning::
-
-   The SCons extensions module is intended for eventual use as an external API; however, they are currently considered
-   "alpha" test implementations and are subject to change without warning.
-
 .. automodule:: turbo_turtle.scons_extensions
+   :noindex:
    :members:
    :private-members:
 
