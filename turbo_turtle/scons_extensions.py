@@ -208,6 +208,177 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     return builder
 
 
+def geometry(program="turbo-turtle", subcommand="geometry", required="", options="",
+             abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle geometry subcommand CLI builder
+
+    See the :ref:`geometry_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
+def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot", required="", options="",
+                    abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder
+
+    See the :ref:`geometry_xyplot_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
+def cylinder(program="turbo-turtle", subcommand="cylinder", required="", options="",
+             abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle cylinder subcommand CLI builder
+
+    See the :ref:`cylinder_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
+def sphere(program="turbo-turtle", subcommand="sphere", required="", options="",
+           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle sphere subcommand CLI builder
+
+    See the :ref:`sphere_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
+def partition(program="turbo-turtle", subcommand="partition", required="", options="",
+              abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle partition subcommand CLI builder
+
+    See the :ref:`partition_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
+def mesh(program="turbo-turtle", subcommand="mesh", required="", options="",
+         abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle mesh subcommand CLI builder
+
+    See the :ref:`mesh_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
+def image(program="turbo-turtle", subcommand="image", required="", options="",
+          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle image subcommand CLI builder
+
+    See the :ref:`image_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
+def merge(program="turbo-turtle", subcommand="merge", required="", options="",
+          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle merge subcommand CLI builder
+
+    See the :ref:`merge_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
+def export(program="turbo-turtle", subcommand="export", required="", options="",
+           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
+    """Return a Turbo-Turtle export subcommand CLI builder
+
+    See the :ref:`export_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    """
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+
+
 def turbo_turtle_sphere(
     program="turbo-turtle", subcommand="sphere",
     options="--output-file ${TARGETS[0].abspath} " \

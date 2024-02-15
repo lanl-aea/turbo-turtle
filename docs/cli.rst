@@ -32,6 +32,8 @@ geometry
    :nodefault:
    :path: geometry
 
+.. _geometry_xyplot_cli:
+
 geometry-xyplot
 ---------------
 
@@ -39,6 +41,8 @@ geometry-xyplot
    :ref: turbo_turtle.main.get_parser
    :nodefault:
    :path: geometry-xyplot
+
+.. _cylinder_cli:
 
 cylinder
 --------
@@ -48,6 +52,8 @@ cylinder
    :nodefault:
    :path: cylinder
 
+.. _sphere_cli:
+
 sphere
 ------
 
@@ -55,6 +61,8 @@ sphere
    :ref: turbo_turtle.main.get_parser
    :nodefault:
    :path: sphere
+
+.. _partition_cli:
 
 partition
 ---------
@@ -84,6 +92,8 @@ image
    :nodefault:
    :path: image
 
+.. _merge_cli:
+
 merge
 -----
 
@@ -91,6 +101,8 @@ merge
    :ref: turbo_turtle.main.get_parser
    :nodefault:
    :path: merge
+
+.. _export_cli:
 
 export
 ------
