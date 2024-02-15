@@ -141,7 +141,7 @@ def _api_builder(subcommand):
 
 
 def turbo_turtle(program="turbo-turtle", subcommand="", options="",
-                  abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
+                 abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
     """Return a generic Turbo-Turtle CLI builder.
 
     .. warning::
