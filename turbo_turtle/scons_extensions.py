@@ -140,7 +140,7 @@ def _api_builder(subcommand):
     return internal_builder
 
 
-def turbo_turtle(program="turbo-turtle", subcommand="", options="",
+def turbo_turtle(program="turbo-turtle", subcommand="", required="", options="",
                  abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
     """Return a generic Turbo-Turtle CLI builder.
 
@@ -161,7 +161,8 @@ def turbo_turtle(program="turbo-turtle", subcommand="", options="",
 
     * ``program``: The Turbo-Turtle command line executable absolute or relative path
     * ``subcommand``: A Turbo-Turtle subcommand
-    * ``options``: A list of subcommand options
+    * ``required``: A space delimited string of subcommand required arguments
+    * ``options``: A space delimited string of subcommand optional arguments
     * ``abaqus_command``: The Abaqus command line executable absolute or relative path. When provided as a task
           keyword argument, this must be a space delimited string, not a list.
     * ``cubit_command``: The Cubit command line executable absolute or relative path. When provided as a task keyword
@@ -174,11 +175,12 @@ def turbo_turtle(program="turbo-turtle", subcommand="", options="",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
-    :param str options: A list of subcommand options
+    :param str required: A space delimited of subcommand required arguments
+    :param str options: A space delimited of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool cubit: Boolean to use Cubit instead of Abaqus
@@ -187,8 +189,9 @@ def turbo_turtle(program="turbo-turtle", subcommand="", options="",
     :rtype: SCons.Builder.Builder
     """
     cubit = "--cubit" if cubit is True else ""
-    action = ["${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} " \
-                  "--cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}"]
+    action = ["${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
+                  "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
+                  "${cubit} ${redirect_action_postfix}"]
     builder = SCons.Builder.Builder(
         action=action,
         emitter=_first_target_emitter,
@@ -196,6 +199,7 @@ def turbo_turtle(program="turbo-turtle", subcommand="", options="",
         redirect_action_postfix=_redirect_action_postfix,
         program=program,
         subcommand=subcommand,
+        required=required,
         options=options,
         abaqus_command=" ".join(abaqus_command),
         cubit_command=" ".join(cubit_command),
