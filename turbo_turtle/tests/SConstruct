@@ -250,6 +250,7 @@ for flag, extension in cubit_flag:
 
     # Image
     # TODO: chase down why this fails in the CI jobs, but not locally
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/129
     #builder = f"image_{interface}"
     #env["BUILDERS"][builder](env,
     #    target=[f"scons-{interface}-image-{extension}.png"],
