@@ -27,9 +27,14 @@ env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq20
 env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cubit"], env)
 env["turbo_turtle"] = "python -m turbo_turtle.main" if env["uninstalled"] else "turbo-turtle"
 env.Append(BUILDERS={
+    # API Builders
     "TurboTurtleGeometry": turbo_turtle.scons_extensions._api_builder("geometry"),
     "TurboTurtleGeometryXYPlot": turbo_turtle.scons_extensions._api_builder("geometry-xyplot"),
     "TurboTurtleMerge": turbo_turtle.scons_extensions._api_builder("merge"),
+    # CLI builders
+    "geometry": turbo_turtle.scons_extensions.geometry(),
+    # Deprecated CLI builders
+    # TODO: Remove these builders for version 1.0
     "TurboTurtleSphere":
         turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
                                                           abaqus_command=[env['abaqus']]),
@@ -53,57 +58,57 @@ for flag, extension in cubit_flag:
 
     # Geometry
     env.TurboTurtleGeometry(
-        target=[f"scons-vase{extension}"],
+        target=[f"scons-api-vase{extension}"],
         source=[str(project_directory / "vase.csv")],
         cubit=flag,
         output_file="${TARGET.abspath}",
-        model_name="scons-vase",
-        part_name=["scons-vase"]
+        model_name="scons-api-vase",
+        part_name=["scons-api-vase"]
     )
     env.TurboTurtleGeometry(
-        target=[f"scons-washer{extension}"],
+        target=[f"scons-api-washer{extension}"],
         source=[str(project_directory / "washer.csv")],
         cubit=flag,
         output_file="${TARGET.abspath}",
-        model_name="scons-washer",
-        part_name=["scons-washer"]
+        model_name="scons-api-washer",
+        part_name=["scons-api-washer"]
     )
     env.TurboTurtleGeometry(
-        target=[f"scons-multi-part{extension}"],
+        target=[f"scons-api-multi-part{extension}"],
         source=[
             str(project_directory / "vase.csv"),
             str(project_directory / "washer.csv")
         ],
         cubit=flag,
         output_file="${TARGET.abspath}",
-        model_name="scons-multi-part",
-        part_name=["scons-vase", "scons-washer"]
+        model_name="scons-api-multi-part",
+        part_name=["scons-api-vase", "scons-api-washer"]
     )
 
     # Geometry-XY Plot
     env.TurboTurtleGeometryXYPlot(
-        target=[f"scons-vase{extension}.png"],
+        target=[f"scons-api-vase{extension}.png"],
         source=[str(project_directory / "vase.csv")],
         cubit=flag,
         output_file="${TARGET.abspath}",
-        part_name=["scons-vase"]
+        part_name=["scons-api-vase"]
     )
     env.TurboTurtleGeometryXYPlot(
-        target=[f"scons-washer{extension}.png"],
+        target=[f"scons-api-washer{extension}.png"],
         source=[str(project_directory / "washer.csv")],
         cubit=flag,
         output_file="${TARGET.abspath}",
-        part_name=["scons-washer"]
+        part_name=["scons-api-washer"]
     )
     env.TurboTurtleGeometryXYPlot(
-        target=[f"scons-multi-part{extension}.png"],
+        target=[f"scons-api-multi-part{extension}.png"],
         source=[
             str(project_directory / "vase.csv"),
             str(project_directory / "washer.csv")
         ],
         cubit=flag,
         output_file="${TARGET.abspath}",
-        part_name=["scons-vase", "scons-washer"]
+        part_name=["scons-api-vase", "scons-api-washer"]
     )
 
     # Sphere
@@ -113,17 +118,27 @@ for flag, extension in cubit_flag:
     # Image
     # Merge
     env.TurboTurtleMerge(
-        target=[f"scons-merge-multi-part{extension}"],
-        source=[f"scons-vase{extension}", f"scons-washer{extension}"],
+        target=[f"scons-api-merge-multi-part{extension}"],
+        source=[f"scons-api-vase{extension}", f"scons-api-washer{extension}"],
         cubit=flag,
         output_file="${TARGET.abspath}",
-        model_name=["scons-vase", "scons-washer"],
-        part_name=["scons-vase", "scons-washer"],
-        merged_model_name="scons-merge-multi-part"
+        model_name=["scons-api-vase", "scons-api-washer"],
+        part_name=["scons-api-vase", "scons-api-washer"],
+        merged_model_name="scons-api-merge-multi-part"
     )
 
+    # CLI builders
+    env.geometry(
+        target=[f"scons-vase{extension}"],
+        source=[str(project_directory / "vase.csv")],
+        cubit=flag,
+        output_file="${TARGET.abspath}",
+        model_name="scons-vase",
+        part_name=["scons-vase"]
+    )
 
-# CLI builders
+# Deprecated CLI builders
+# TODO: Remove these builders for version 1.0
 env.TurboTurtleSphere(
     target=["scons-cli-sphere.cae"],
     source=[str(project_configuration)],

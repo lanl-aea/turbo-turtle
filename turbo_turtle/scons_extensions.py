@@ -457,7 +457,7 @@ def turbo_turtle_sphere(
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
     """
-    # TODO: Remove this entire function for version 1.0
+    # TODO: Remove these builders for version 1.0
     import warnings
     warnings.simplefilter('always', DeprecationWarning)
     message = "The 'turbo_turtle.scons_extensions.turbo_turtle_sphere' builder will be deprecated in a future " \
@@ -511,7 +511,7 @@ def turbo_turtle_partition(
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
     """
-    # TODO: Remove this entire function for version 1.0
+    # TODO: Remove these builders for version 1.0
     import warnings
     warnings.simplefilter('always', DeprecationWarning)
     message = "The 'turbo_turtle.scons_extensions.turbo_turtle_partition' builder will be deprecated in a future " \
