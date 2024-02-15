@@ -140,8 +140,8 @@ def _api_builder(subcommand):
     return internal_builder
 
 
-def turbo_turtle(program="turbo-turtle", subcommand="", required="", options="",
-                 abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
+def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
+                abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
     """Return a generic Turbo-Turtle CLI builder.
 
     .. warning::
@@ -215,7 +215,7 @@ def turbo_turtle_sphere(
             "--model-name ${model_name} --part-name ${part_name}",
     abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
 ):
-    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions.turbo_turtle`
+    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions.cli_builder`
 
     .. warning::
 
@@ -260,8 +260,8 @@ def turbo_turtle_sphere(
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
     """
-    return turbo_turtle(program=program, subcommand=subcommand, options=options,
-                         abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+    return cli_builder(program=program, subcommand=subcommand, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
 def turbo_turtle_partition(
@@ -270,7 +270,7 @@ def turbo_turtle_partition(
             "--model-name ${model_name} --part-name ${part_name}",
     abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
 ):
-    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions.turbo_turtle`
+    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions.cli_builder`
 
     .. warning::
 
@@ -310,5 +310,5 @@ def turbo_turtle_partition(
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
     """
-    return turbo_turtle(program=program, subcommand=subcommand, options=options,
-                         abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
+    return cli_builder(program=program, subcommand=subcommand, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
