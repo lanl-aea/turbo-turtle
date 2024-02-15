@@ -52,6 +52,7 @@ env.Append(BUILDERS={
     ),
     # Deprecated CLI builders
     # TODO: Remove these builders for version 1.0
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/127
     "TurboTurtleSphere":
         turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
                                                           abaqus_command=[env['abaqus']]),
@@ -166,6 +167,7 @@ for flag, extension, interface in cubit_flag:
 
 # Deprecated CLI builders
 # TODO: Remove these builders for version 1.0
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/127
 env.TurboTurtleSphere(
     target=["scons-deprecated-sphere.cae"],
     source=[str(project_configuration)],
