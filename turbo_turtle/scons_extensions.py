@@ -68,7 +68,7 @@ def _action(target, source, env):
         wrapper_command(args, command)
 
 
-def builder(subcommand):
+def _api_builder(subcommand):
     """Turbo-Turtle subcommand builder
 
     .. warning::
@@ -121,12 +121,12 @@ def builder(subcommand):
        import turbo_turtle
        env = Environment()
        env["abaqus"] = waves.scons_extensions.add_program(["abaqus"], env)
-       env.Append(BUILDERS={"TurboTurtleGeometry": turbo_turtle.scons_extensions.builder("geometry")})
+       env.Append(BUILDERS={"TurboTurtleGeometry": turbo_turtle.scons_extensions._api_builder("geometry")})
        env.TurboTurtleGeometry(target=["vase.cae"], source=["vase.csv"])
 
     :param str subcommand: The Turbo-Turtle subcommand to build
 
-    :return: Turbo-Turtle builder
+    :return: Turbo-Turtle API builder
     :rtype: SCons.Builder.Builder
     """
     kwargs = _get_defaults_dictionary(subcommand)
@@ -140,9 +140,9 @@ def builder(subcommand):
     return internal_builder
 
 
-def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
+def turbo_turtle(program="turbo-turtle", subcommand="", options="",
                   abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
-    """Return a generic Turbo-Turtle builder.
+    """Return a generic Turbo-Turtle CLI builder.
 
     .. warning::
 
@@ -174,7 +174,7 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
     .. code-block::
        :caption: action string construction
 
-       ${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${redirect_action_postfix}
+       ${cd_action_prefix} ${program} ${subcommand} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -183,7 +183,7 @@ def _turbo_turtle(program="turbo-turtle", subcommand="", options="",
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool cubit: Boolean to use Cubit instead of Abaqus
 
-    :returns: SCons Turbo-Turtle builder
+    :returns: SCons Turbo-Turtle CLI builder
     :rtype: SCons.Builder.Builder
     """
     cubit = "--cubit" if cubit is True else ""
@@ -211,7 +211,7 @@ def turbo_turtle_sphere(
             "--model-name ${model_name} --part-name ${part_name}",
     abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
 ):
-    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions._turbo_turtle`
+    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions.turbo_turtle`
 
     .. warning::
 
@@ -236,7 +236,7 @@ def turbo_turtle_sphere(
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleSphere": turbo_turtle.scons_extensions._turbo_turtle_sphere()})
+       env.Append(BUILDERS={"TurboTurtleSphere": turbo_turtle.scons_extensions.turbo_turtle_sphere()})
        env.TurboTurtleSphere(
            target=["sphere.cae"],
            source=["SConstruct"],
@@ -256,7 +256,7 @@ def turbo_turtle_sphere(
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
     """
-    return _turbo_turtle(program=program, subcommand=subcommand, options=options,
+    return turbo_turtle(program=program, subcommand=subcommand, options=options,
                          abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
 
 
@@ -266,7 +266,7 @@ def turbo_turtle_partition(
             "--model-name ${model_name} --part-name ${part_name}",
     abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
 ):
-    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions._turbo_turtle`
+    """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions.turbo_turtle`
 
     .. warning::
 
@@ -288,7 +288,7 @@ def turbo_turtle_partition(
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtlePartition": turbo_turtle.scons_extensions._turbo_turtle_partition()})
+       env.Append(BUILDERS={"TurboTurtlePartition": turbo_turtle.scons_extensions.turbo_turtle_partition()})
        env.TurboTurtlePartition(
            target=["partition.cae"],
            source=["sphere.cae"],
@@ -306,5 +306,5 @@ def turbo_turtle_partition(
     :returns: SCons Turbo-Turtle sphere builder
     :rtype: SCons.Builder.Builder
     """
-    return _turbo_turtle(program=program, subcommand=subcommand, options=options,
+    return turbo_turtle(program=program, subcommand=subcommand, options=options,
                          abaqus_command=abaqus_command, cubit_command=cubit_command, cubit=cubit)
