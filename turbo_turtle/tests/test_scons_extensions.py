@@ -33,7 +33,16 @@ def check_action_string(nodes, post_action, node_count, action_count, expected_s
 
 # TODO: Figure out how to cleanly reset the construction environment between parameter sets
 test_builder = {
-    "cli_builder": ("cli_builder", {}, 1, 1, ["input1.txt"], ["input1.txt.stdout"]),
+    "cli_builder": ("cli_builder", {}, 1, 1, ["cli_builder.txt"], ["cli_builder.txt.stdout"]),
+    "geometry": ("geometry", {}, 1, 1, ["geometry.txt"], ["geometry.txt.stdout"]),
+    "geometry_xyplot": ("geometry_xyplot", {}, 1, 1, ["geometry_xyplot.txt"], ["geometry_xyplot.txt.stdout"]),
+    "cylinder": ("cylinder", {}, 1, 1, ["cylinder.txt"], ["cylinder.txt.stdout"]),
+    "sphere": ("sphere", {}, 1, 1, ["sphere.txt"], ["sphere.txt.stdout"]),
+    "partition": ("partition", {}, 1, 1, ["partition.txt"], ["partition.txt.stdout"]),
+    "mesh": ("mesh", {}, 1, 1, ["mesh.txt"], ["mesh.txt.stdout"]),
+    "image": ("image", {}, 1, 1, ["image.txt"], ["image.txt.stdout"]),
+    "merge": ("merge", {}, 1, 1, ["merge.txt"], ["merge.txt.stdout"]),
+    "export": ("export", {}, 1, 1, ["export.txt"], ["export.txt.stdout"]),
 }
 
 
