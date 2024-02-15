@@ -549,6 +549,38 @@ def create_pyramid_volumes(center, xvector, zvector, size):
     return pyramid_volumes
 
 
+def create_pyramid_partitions(center, xvector, zvector, size, names):
+    """Partition all volumes with a prefix in the ``names`` list with the size pyramids defined by a cube
+
+    :param list center: center location of the geometry
+    :param list xvector: Local x-axis vector defined in global coordinates
+    :param list zvector: Local z-axis vector defined in global coordinates
+    :param float size: Half-length of the cube diagonals (length of the pyramid tip to corner)
+    :param list names: Volume name prefix(es) to search for with ``cubit.get_all_ids_from_name``
+
+    :returns: list of Cubit volumes
+    :rtype: list of cubit.Volume objects
+    """
+    # Create pyramid partitioning (intersecting) volumes
+    pyramid_volumes = create_pyramid_volumes(center, xvector, zvector, size)
+    pyramid_volume_numbers = [pyramid.id() for pyramid in pyramid_volumes]
+    pyramid_volume_string = " ". join(map(str, pyramid_volume_numbers))
+
+    # Create pyramidal intersections/partitions
+    parts = _get_volumes_from_name(names)
+    for volume in pyramid_volumes:
+        volume_id = volume.id()
+        for part in parts:
+            cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
+    for part in parts:
+        cubit_command_or_exit(f"delete volume {part.id()}")
+
+    # Clean up pyramid volumes
+    cubit_command_or_exit(f"delete volume {pyramid_volume_string}")
+
+    return _get_volumes_from_name(names)
+
+
 def partition(input_file,
               output_file=parsers.partition_defaults["output_file"],
               center=parsers.partition_defaults["center"],
@@ -601,25 +633,11 @@ def _partition(center=parsers.partition_defaults["center"],
     zvector = numpy.array(zvector)
     yvector = numpy.cross(zvector, xvector)
 
-    # Create pyramid partitioning (intersecting) volumes
-    pyramid_volumes = create_pyramid_volumes(center, xvector, zvector, big_number)
-    pyramid_volume_numbers = [pyramid.id() for pyramid in pyramid_volumes]
-    pyramid_volume_string = " ". join(map(str, pyramid_volume_numbers))
-
-    # Create intersections/partitions
-    parts = _get_volumes_from_name(part_name)
-    for volume in pyramid_volumes:
-        volume_id = volume.id()
-        for part in parts:
-            cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
-    for part in parts:
-        cubit_command_or_exit(f"delete volume {part.id()}")
+    # Create pyramidal intersections/partitions
+    create_pyramid_partitions(center, xvector, zvector, big_number, part_name)
 
     # Webcut with local coordinate system primary planes
     webcut_local_coordinate_primary_planes(center, xvector, zvector, part_name)
-
-    # Clean up pyramid volumes and primary surfaces
-    cubit_command_or_exit(f"delete volume {pyramid_volume_string}")
 
     # Imprint and merge
     for current_part_name in part_name:
