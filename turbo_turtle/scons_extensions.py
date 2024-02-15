@@ -35,7 +35,10 @@ def _action(target, source, env):
     kwargs.update({
         "abaqus_command": _default_abaqus_options,
         "cubit_command": _default_cubit_options,
-        "cubit": False
+        # TODO: remove deprecated cubit flag
+        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
+        "cubit": False,
+        "backend": _default_backend
     })
 
     # Update kwargs with any keys that exist in the environment
@@ -48,8 +51,6 @@ def _action(target, source, env):
     kwargs["input_file"] = [path.abspath for path in source]
     kwargs["output_file"] = target[0].abspath
     args = argparse.Namespace(**kwargs)
-    if not isinstance(args.cubit, bool):
-        args.cubit = False
 
     # Recover correct wrappers module from main interface
     # TODO: Move to a common function shared with main module. Move to _utilities?
@@ -131,7 +132,9 @@ def _api_builder(subcommand):
     :rtype: SCons.Builder.Builder
     """
     kwargs = _get_defaults_dictionary(subcommand)
-    varlist = list(kwargs.keys()) + ["abaqus_command", "cubit_command", "cubit"]
+    # TODO: remove deprecated cubit flag
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
+    varlist = list(kwargs.keys()) + ["abaqus_command", "cubit_command", "cubit", "backend"]
     internal_builder = SCons.Builder.Builder(
         action = [
             SCons.Action.Action(_action, varlist=varlist)
@@ -170,8 +173,7 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
           keyword argument, this must be a space delimited string, not a list.
     * ``cubit_command``: The Cubit command line executable absolute or relative path. When provided as a task keyword
           argument, this must be a space delimited string, not a list.
-    * ``cubit``: The flag to use Cubit instead of Abaqus. When provided as a task keyword argument, this must be
-          the string ``"--cubit"`` or an empty string ``""``
+    * ``backend``: The backed software.
     * ``cd_action_prefix``: Advanced behavior. Most users should accept the defaults.
     * ``redirect_action_postfix``: Advanced behavior. Most users should accept the defaults.
 
@@ -203,7 +205,7 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
 
     :returns: SCons Turbo-Turtle CLI builder
     :rtype: SCons.Builder.Builder
@@ -273,7 +275,7 @@ def geometry(program="turbo-turtle", subcommand="geometry",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -324,7 +326,7 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -383,7 +385,7 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -439,7 +441,7 @@ def sphere(program="turbo-turtle", subcommand="sphere",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -488,7 +490,7 @@ def partition(program="turbo-turtle", subcommand="partition",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -542,7 +544,7 @@ def mesh(program="turbo-turtle", subcommand="mesh",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -591,7 +593,7 @@ def image(program="turbo-turtle", subcommand="image",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -640,7 +642,7 @@ def merge(program="turbo-turtle", subcommand="merge",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -689,7 +691,7 @@ def export(program="turbo-turtle", subcommand="export",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool cubit: Boolean to use Cubit instead of Abaqus
+    :param bool backend: The backend software
     """
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
