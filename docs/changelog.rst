@@ -8,6 +8,10 @@ Changelog
 v0.11.1 (unreleased)
 ********************
 
+Internal Changes
+================
+- Dedicated Cubit imprint and merge function (:issue:`76`, :merge:`110`). By `Kyle Brindley`_.
+
 ********************
 v0.11.0 (2024-02-15)
 ********************

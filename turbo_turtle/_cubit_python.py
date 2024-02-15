@@ -457,6 +457,19 @@ def _sphere(inner_radius, outer_radius,
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
 
 
+def imprint_and_merge(names):
+    """Imprint and merge all volume objects with a prefix from the ``names`` list
+
+    :param list names: Name(s) prefix to search for with ``cubit.get_all_ids_from_name``
+    """
+    parts = _get_volumes_from_name(names)
+    part_ids = [part.id() for part in parts]
+    part_string = " ".join(map(str, part_ids))
+
+    cubit_command_or_exit(f"imprint volume {part_string}")
+    cubit_command_or_exit(f"merge volume {part_string}")
+
+
 def partition(input_file,
               output_file=parsers.partition_defaults["output_file"],
               center=parsers.partition_defaults["center"],
@@ -567,12 +580,7 @@ def _partition(center=parsers.partition_defaults["center"],
 
     # Imprint and merge
     for current_part_name in part_name:
-        parts = _get_volumes_from_name(current_part_name)
-        part_ids = [part.id() for part in parts]
-        part_string = " ".join(map(str, part_ids))
-
-        cubit_command_or_exit(f"imprint volume {part_string}")
-        cubit_command_or_exit(f"merge volume {part_string}")
+        imprint_and_merge([current_part_name])
 
 
 def mesh(input_file, element_type,
