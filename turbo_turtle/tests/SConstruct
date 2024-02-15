@@ -120,6 +120,7 @@ for flag, extension, interface in cubit_flag:
         source=[str(project_directory / "vase.csv")],
         cubit=cubit_option,
         output_file="${TARGET.abspath}",
+        model_name=f"scons-{interface}-vase",
         part_name=" ".join(part_name) if interface == "cli" else part_name
     )
     part_name = [f"scons-{interface}-washer"]
@@ -128,6 +129,7 @@ for flag, extension, interface in cubit_flag:
         source=[str(project_directory / "washer.csv")],
         cubit=cubit_option,
         output_file="${TARGET.abspath}",
+        model_name=f"scons-{interface}-washer",
         part_name=" ".join(part_name) if interface == "cli" else part_name
     )
     part_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
@@ -139,6 +141,7 @@ for flag, extension, interface in cubit_flag:
         ],
         cubit=cubit_option,
         output_file="${TARGET.abspath}",
+        model_name=f"scons-{interface}-multi-part",
         part_name=" ".join(part_name) if interface == "cli" else part_name
     )
 
