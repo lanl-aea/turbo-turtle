@@ -141,7 +141,7 @@ def _api_builder(subcommand):
 
 
 def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
-                abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False):
+                abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a generic Turbo-Turtle CLI builder.
 
     .. warning::
@@ -179,8 +179,8 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
-    :param str required: A space delimited of subcommand required arguments
-    :param str options: A space delimited of subcommand optional arguments
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool cubit: Boolean to use Cubit instead of Abaqus
