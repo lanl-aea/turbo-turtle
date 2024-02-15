@@ -32,7 +32,9 @@ env.Append(BUILDERS={
     "TurboTurtleGeometryXYPlot": turbo_turtle.scons_extensions._api_builder("geometry-xyplot"),
     "TurboTurtleMerge": turbo_turtle.scons_extensions._api_builder("merge"),
     # CLI builders
-    "geometry": turbo_turtle.scons_extensions.geometry(),
+    "geometry": turbo_turtle.scons_extensions.geometry(program=env["turbo_turtle"],
+                                                       abaqus_command=[env['abaqus']],
+                                                       cubit_command=[env['cubit']]),
     # Deprecated CLI builders
     # TODO: Remove these builders for version 1.0
     "TurboTurtleSphere":
@@ -131,7 +133,7 @@ for flag, extension in cubit_flag:
     env.geometry(
         target=[f"scons-vase{extension}"],
         source=[str(project_directory / "vase.csv")],
-        cubit=flag,
+        cubit="--cubit" if flag is True else "",
         output_file="${TARGET.abspath}",
         model_name="scons-vase",
         part_name=["scons-vase"]
