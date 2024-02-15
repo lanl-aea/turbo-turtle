@@ -366,7 +366,7 @@ def image(program="turbo-turtle", subcommand="image",
 
 
 def merge(program="turbo-turtle", subcommand="merge",
-          required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
+          required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
           options="",
           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, cubit=False):
     """Return a Turbo-Turtle merge subcommand CLI builder
