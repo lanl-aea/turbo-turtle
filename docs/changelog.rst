@@ -8,6 +8,9 @@ Changelog
 v0.10.3 (unreleased)
 ********************
 
+New Features
+============
+- SCons CLI builders for every subcommand (:issue:`125`, :merge:`107`). By `Kyle Brindley`_.
 
 Documentation
 =============
