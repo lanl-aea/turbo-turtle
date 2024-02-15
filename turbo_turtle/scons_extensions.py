@@ -227,6 +227,11 @@ def geometry(program="turbo-turtle", subcommand="geometry",
     subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
     ``target.stdout``.
 
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -255,6 +260,11 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
     a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
     subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
     ``target.stdout``.
+
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -292,6 +302,11 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
     * ``outer_radius``
     * ``height``
 
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -326,6 +341,11 @@ def sphere(program="turbo-turtle", subcommand="sphere",
     * ``inner_radius``
     * ``outer_radius``
 
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -354,6 +374,11 @@ def partition(program="turbo-turtle", subcommand="partition",
     a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
     subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
     ``target.stdout``.
+
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -388,6 +413,11 @@ def mesh(program="turbo-turtle", subcommand="mesh",
 
     * ``element_type``
 
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -416,6 +446,11 @@ def image(program="turbo-turtle", subcommand="image",
     a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
     subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
     ``target.stdout``.
+
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
@@ -446,6 +481,11 @@ def merge(program="turbo-turtle", subcommand="merge",
     subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
     ``target.stdout``.
 
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
+
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
     :param str required: A space delimited string of subcommand required arguments
@@ -474,6 +514,11 @@ def export(program="turbo-turtle", subcommand="export",
     a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
     subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
     ``target.stdout``.
+
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} ${cubit} ${redirect_action_postfix}
 
     :param str program: The Turbo-Turtle command line executable absolute or relative path
     :param str subcommand: A Turbo-Turtle subcommand
