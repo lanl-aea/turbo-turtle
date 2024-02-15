@@ -210,7 +210,6 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     :returns: SCons Turbo-Turtle CLI builder
     :rtype: SCons.Builder.Builder
     """
-    cubit = "--cubit" if cubit is True else ""
     action = ["${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
                   "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
                   "--backend ${backend} ${redirect_action_postfix}"]

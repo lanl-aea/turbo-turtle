@@ -53,7 +53,7 @@ def test_builder(builder, kwargs, node_count, action_count, source_list, target_
     env = SCons.Environment.Environment()
     expected_string = "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
                       "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
-                      "${cubit} ${redirect_action_postfix}"
+                      "--backend ${backend} ${redirect_action_postfix}"
 
     env.Append(BUILDERS={builder: scons_extensions.cli_builder(**kwargs)})
     nodes = env["BUILDERS"][builder](env, target=target_list, source=source_list)
