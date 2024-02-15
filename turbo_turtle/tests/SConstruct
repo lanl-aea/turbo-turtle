@@ -30,7 +30,6 @@ env.Append(BUILDERS={
     # API Builders
     "geometry_api": turbo_turtle.scons_extensions._api_builder("geometry"),
     "geometry_xyplot_api": turbo_turtle.scons_extensions._api_builder("geometry-xyplot"),
-    "sphere_api": turbo_turtle.scons_extensions._api_builder("sphere"),
     "merge_api": turbo_turtle.scons_extensions._api_builder("merge"),
     # CLI builders
     "geometry_cli": turbo_turtle.scons_extensions.geometry(
@@ -45,7 +44,31 @@ env.Append(BUILDERS={
         cubit_command=[env['cubit']],
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
+    "cylinder_cli": turbo_turtle.scons_extensions.cylinder(
+        program=env["turbo_turtle"],
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
+        options="--model-name ${model_name} --part-name ${part_name}"
+    ),
     "sphere_cli": turbo_turtle.scons_extensions.sphere(
+        program=env["turbo_turtle"],
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
+        options="--model-name ${model_name} --part-name ${part_name}"
+    ),
+    "partition_cli": turbo_turtle.scons_extensions.partition(
+        program=env["turbo_turtle"],
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
+        options="--model-name ${model_name} --part-name ${part_name}"
+    ),
+    "mesh_cli": turbo_turtle.scons_extensions.mesh(
+        program=env["turbo_turtle"],
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
+        options="--model-name ${model_name} --part-name ${part_name}"
+    ),
+    "image_cli": turbo_turtle.scons_extensions.image(
         program=env["turbo_turtle"],
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
@@ -56,6 +79,12 @@ env.Append(BUILDERS={
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
         options="--model-name ${model_name} --part-name ${part_name} --merged-model-name ${merged_model_name}"
+    ),
+    "export_cli": turbo_turtle.scons_extensions.export(
+        program=env["turbo_turtle"],
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
+        options="--model-name ${model_name} --part-name ${part_name}"
     ),
     # Deprecated CLI builders
     # TODO: Remove these builders for version 1.0
@@ -76,8 +105,8 @@ env.Append(BUILDERS={
 
 # API builders
 cubit_flag = [
-    (False, ".cae"),  # Use Abaqus as backend
-    (True, ".cub")  # Use Cubit as backend
+    (False, "cae"),  # Use Abaqus as backend
+    (True, "cub")  # Use Cubit as backend
 ]
 for flag, extension in cubit_flag:
     for interface in ["api", "cli"]:
@@ -91,7 +120,7 @@ for flag, extension in cubit_flag:
         builder = f"geometry_{interface}"
         part_name = [f"scons-{interface}-vase"]
         env["BUILDERS"][builder](env,
-            target=[f"scons-{interface}-vase{extension}"],
+            target=[f"scons-{interface}-vase.{extension}"],
             source=[str(project_directory / "vase.csv")],
             cubit=cubit_option,
             output_file="${TARGET.abspath}",
@@ -100,7 +129,7 @@ for flag, extension in cubit_flag:
         )
         part_name = [f"scons-{interface}-washer"]
         env["BUILDERS"][builder](env,
-            target=[f"scons-{interface}-washer{extension}"],
+            target=[f"scons-{interface}-washer.{extension}"],
             source=[str(project_directory / "washer.csv")],
             cubit=cubit_option,
             output_file="${TARGET.abspath}",
@@ -109,7 +138,7 @@ for flag, extension in cubit_flag:
         )
         part_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
         env["BUILDERS"][builder](env,
-            target=[f"scons-{interface}-multi-part{extension}"],
+            target=[f"scons-{interface}-multi-part.{extension}"],
             source=[
                 str(project_directory / "vase.csv"),
                 str(project_directory / "washer.csv")
@@ -124,7 +153,7 @@ for flag, extension in cubit_flag:
         builder = f"geometry_xyplot_{interface}"
         part_name = [f"scons-{interface}-vase"]
         env["BUILDERS"][builder](env,
-            target=[f"scons-{interface}-vase{extension}.png"],
+            target=[f"scons-{interface}-vase.{extension}.png"],
             source=[str(project_directory / "vase.csv")],
             cubit=cubit_option,
             output_file="${TARGET.abspath}",
@@ -133,7 +162,7 @@ for flag, extension in cubit_flag:
         )
         part_name = [f"scons-{interface}-washer"]
         env["BUILDERS"][builder](env,
-            target=[f"scons-{interface}-washer{extension}.png"],
+            target=[f"scons-{interface}-washer.{extension}.png"],
             source=[str(project_directory / "washer.csv")],
             cubit=cubit_option,
             output_file="${TARGET.abspath}",
@@ -142,7 +171,7 @@ for flag, extension in cubit_flag:
         )
         part_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
         env["BUILDERS"][builder](env,
-            target=[f"scons-{interface}-multi-part{extension}.png"],
+            target=[f"scons-{interface}-multi-part.{extension}.png"],
             source=[
                 str(project_directory / "vase.csv"),
                 str(project_directory / "washer.csv")
@@ -158,8 +187,8 @@ for flag, extension in cubit_flag:
         model_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
         part_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
         env["BUILDERS"][builder](env,
-            target=[f"scons-{interface}-merge-multi-part{extension}"],
-            source=[f"scons-{interface}-vase{extension}", f"scons-{interface}-washer{extension}"],
+            target=[f"scons-{interface}-merge-multi-part.{extension}"],
+            source=[f"scons-{interface}-vase.{extension}", f"scons-{interface}-washer.{extension}"],
             cubit=cubit_option,
             output_file="${TARGET.abspath}",
             model_name=" ".join(model_name) if interface == "cli" else model_name,
@@ -168,24 +197,78 @@ for flag, extension in cubit_flag:
         )
 
     # Subcommands not implemented in API builder
-    # Sphere
     interface = "cli"
     cubit_option = "--cubit" if flag is True else ""
-    builder = f"sphere_{interface}"
+
+    # Cylinder
+    builder = f"cylinder_{interface}"
     env["BUILDERS"][builder](env,
-        target=[f"scons-{interface}-sphere{extension}"],
+        target=[f"scons-{interface}-cylinder.{extension}"],
         source=[str(project_configuration)],
         cubit=cubit_option,
         inner_radius=1.,
         outer_radius=2.,
-        model_name=f"scons-{interface}-sphere",
-        part_name=f"scons-{interface}-sphere"
+        height=1.,
+        model_name=f"scons-{interface}-cylinder",
+        part_name=f"scons-{interface}-cylinder"
     )
 
-    # Cylinder
+    # Sphere
+    builder = f"sphere_{interface}"
+    env["BUILDERS"][builder](env,
+        target=[f"scons-{interface}-sphere.{extension}"],
+        source=[str(project_configuration)],
+        cubit=cubit_option,
+        inner_radius=1.,
+        outer_radius=2.,
+        model_name=f"scons-{interface}-sphere-{extension}",
+        part_name=f"scons-{interface}-sphere-{extension}"
+    )
+
+
     # Partition
+    builder = f"partition_{interface}"
+    env["BUILDERS"][builder](env,
+        target=[f"scons-{interface}-partition.{extension}"],
+        source=[f"scons-{interface}-sphere.{extension}"],
+        cubit=cubit_option,
+        model_name=f"scons-{interface}-sphere-{extension}",
+        part_name=f"scons-{interface}-sphere-{extension}"
+    )
+
     # Mesh
+    builder = f"mesh_{interface}"
+    env["BUILDERS"][builder](env,
+        target=[f"scons-{interface}-mesh.{extension}"],
+        source=[f"scons-{interface}-partition.{extension}"],
+        cubit=cubit_option,
+        model_name=f"scons-{interface}-sphere-{extension}",
+        part_name=f"scons-{interface}-sphere-{extension}",
+        element_type="C3D8R"
+    )
+
     # Image
+    builder = f"image_{interface}"
+    env["BUILDERS"][builder](env,
+        target=[f"scons-{interface}-image.{extension}.png"],
+        source=[f"scons-{interface}-mesh.{extension}"],
+        cubit=cubit_option,
+        model_name=f"scons-{interface}-sphere-{extension}",
+        part_name=f"scons-{interface}-sphere-{extension}"
+    )
+
+    # Export
+    builder = f"export_{interface}"
+    input_file = f"scons-{interface}-sphere-{extension}.inp"
+    if flag is True:
+        input_file = input_file.replace("-", "_")
+    env["BUILDERS"][builder](env,
+        target=[input_file],
+        source=[f"scons-{interface}-mesh.{extension}"],
+        cubit=cubit_option,
+        model_name=f"scons-{interface}-sphere-{extension}",
+        part_name=f"scons-{interface}-sphere-{extension}"
+    )
 
 # Deprecated CLI builders
 # TODO: Remove these builders for version 1.0
