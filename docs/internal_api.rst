@@ -1,4 +1,4 @@
-.. _api:
+.. _internal_api:
 
 ############
 Internal API

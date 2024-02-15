@@ -47,7 +47,7 @@ sphinx_configuration_files = [
 sphinx_source_files = [
     "README.rst",
     "SConscript",
-    "api.rst",
+    "internal_api.rst",
     "changelog.rst",
     "cli.rst",
     "devops.rst",
