@@ -5,8 +5,17 @@ Changelog
 #########
 
 ********************
-v0.10.3 (unreleased)
+v0.11.1 (unreleased)
 ********************
+
+********************
+v0.11.0 (2024-02-15)
+********************
+
+Breaking changes
+================
+- Replace the ``--cubit`` flag with a ``--backend`` option that defaults to Abaqus (:issue:`126`, :merge:`108`). By
+  `Kyle Brindley`_.
 
 New Features
 ============
