@@ -105,8 +105,12 @@ def add_abaqus_and_cubit(parsers):
                             help="Abaqus executable options (default: %(default)s)")
         parser.add_argument("--cubit-command", nargs="+", default=_settings._default_cubit_options,
                             help="Cubit executable options (default: %(default)s)")
-        parser.add_argument("--cubit", action="store_true",
-                            help="Flag to use Cubit instead of Abaqus (default: %(default)s)")
+        backend = parser.add_mutually_exclusive_group(required=False)
+        backend.add_argument("--cubit", action="store_true",
+                             help="DEPRECATED. Use ``--backend cubit``. " \
+                                  "Flag to use Cubit instead of Abaqus (default: %(default)s)")
+        backend.add_argument("--backend", choices=_settings._backend_choices, default=_settings._default_backend,
+                             help="Back end software (default: %(default)s)")
 
 
 def append_cubit_help(text, append="with Abaqus or Cubit"):
