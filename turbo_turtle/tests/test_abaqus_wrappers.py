@@ -8,7 +8,7 @@ from turbo_turtle import _settings
 from turbo_turtle import _abaqus_wrappers
 
 
-namespace_sparse = {
+image_namespace_sparse = {
     "input_file": "input_file",
     "output_file": "output_file",
     "x_angle": 0.,
@@ -19,9 +19,9 @@ namespace_sparse = {
     "part_name": None,
     "color_map": "color_map"
 }
-namespace_full = copy.deepcopy(namespace_sparse)
-namespace_full.update({"part_name": "part_name"}),
-expected_options_sparse = [
+image_namespace_full = copy.deepcopy(image_namespace_sparse)
+image_namespace_full.update({"part_name": "part_name"}),
+image_expected_options_sparse = [
     "command",
     "--input-file",
     "--output-file",
@@ -32,25 +32,29 @@ expected_options_sparse = [
     "--model-name",
     "--color-map"
 ]
-image = {
-    "no part-name": (
-        namespace_sparse,
-        expected_options_sparse,
+wrapper_tests = {
+    "image: no part-name": (
+        "image",
+        image_namespace_sparse,
+        image_expected_options_sparse,
         ["--part-name"]
     ),
-    "part-name": (
-        namespace_full,
-        expected_options_sparse + ["--part-name"],
+    "image: part-name": (
+        "image",
+        image_namespace_full,
+        image_expected_options_sparse + ["--part-name"],
         []
     ),
 }
 
 
-@pytest.mark.parametrize("namespace, expected_options, unexpected_options", image.values(), ids=image.keys())
-def test_image(namespace, expected_options, unexpected_options):
+@pytest.mark.parametrize("subcommand, namespace, expected_options, unexpected_options",
+                         wrapper_tests.values(), ids=wrapper_tests.keys())
+def test_image(subcommand, namespace, expected_options, unexpected_options):
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
-        _abaqus_wrappers.image(args, "command")
+        subcommand_wrapper = getattr(_abaqus_wrappers, subcommand)
+        subcommand_wrapper(args, "/dummy/command/abaqus")
     mock_run.assert_called_once()
     command_string = mock_run.call_args[0][0]
     for option in expected_options:
