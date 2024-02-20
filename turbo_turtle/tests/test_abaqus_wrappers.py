@@ -156,6 +156,27 @@ merge_expected_options_sparse = [
 ]
 merge_unexpected_options_sparse = ["--model-name", "--part-name"]
 
+export_namespace_sparse = {
+    "input_file": "input_file",
+    "model_name": "model_name",
+    "part_name": ["part_name"],
+    "element_type": [None],
+    "destination": ".",
+    "assembly": None
+}
+export_namespace_full = copy.deepcopy(export_namespace_sparse)
+export_namespace_full.update({
+    "element_type": ["element_type"],
+    "assembly": True,
+}),
+export_expected_options_sparse = [
+    "--input-file",
+    "--model-name",
+    "--part-name",
+    "--destination"
+]
+export_unexpected_options_sparse = ["--element-type", "--assembly"]
+
 image_namespace_sparse = {
     "input_file": "input_file",
     "output_file": "output_file",
@@ -235,6 +256,18 @@ wrapper_tests = {
         "mesh",
         mesh_namespace_full,
         mesh_expected_options_sparse + mesh_unexpected_options_sparse,
+        []
+    ),
+    "export: sparse": (
+        "export",
+        export_namespace_sparse,
+        export_expected_options_sparse,
+        export_unexpected_options_sparse
+    ),
+    "export: full": (
+        "export",
+        export_namespace_full,
+        export_expected_options_sparse + export_unexpected_options_sparse,
         []
     ),
     "image: no part-name": (
