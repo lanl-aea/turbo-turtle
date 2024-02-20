@@ -210,7 +210,7 @@ wrapper_tests = {
         cylinder_expected_options,
         []
     ),
-    "geometry: no output-file": (
+    "geometry: sparse": (
         "geometry",
         geometry_namespace_sparse,
         geometry_expected_options_sparse,
@@ -222,37 +222,37 @@ wrapper_tests = {
         geometry_expected_options_sparse + geometry_unexpected_options_sparse,
         []
     ),
-    "sphere: no input-file": (
+    "sphere: sparse": (
         "sphere",
         sphere_namespace_sparse,
         sphere_expected_options_sparse,
         sphere_unexpected_options_sparse
     ),
-    "sphere: input-file": (
+    "sphere: full": (
         "sphere",
         sphere_namespace_full,
         sphere_expected_options_sparse + sphere_unexpected_options_sparse,
         []
     ),
-    "partition: no output-file": (
+    "partition: sparse": (
         "partition",
         partition_namespace_sparse,
         partition_expected_options_sparse,
         partition_unexpected_options_sparse
     ),
-    "partition: output-file": (
+    "partition: full": (
         "partition",
         partition_namespace_full,
         partition_expected_options_sparse + partition_unexpected_options_sparse,
         []
     ),
-    "mesh: no output-file": (
+    "mesh: sparse": (
         "mesh",
         mesh_namespace_sparse,
         mesh_expected_options_sparse,
         mesh_unexpected_options_sparse
     ),
-    "mesh: output-file": (
+    "mesh: full": (
         "mesh",
         mesh_namespace_full,
         mesh_expected_options_sparse + mesh_unexpected_options_sparse,
@@ -270,13 +270,13 @@ wrapper_tests = {
         export_expected_options_sparse + export_unexpected_options_sparse,
         []
     ),
-    "image: no part-name": (
+    "image: sparse": (
         "image",
         image_namespace_sparse,
         image_expected_options_sparse,
         image_unexpected_options_sparse
     ),
-    "image: part-name": (
+    "image: full": (
         "image",
         image_namespace_full,
         image_expected_options_sparse + image_unexpected_options_sparse,
@@ -287,7 +287,7 @@ wrapper_tests = {
 
 @pytest.mark.parametrize("subcommand, namespace, expected_options, unexpected_options",
                          wrapper_tests.values(), ids=wrapper_tests.keys())
-def test_image(subcommand, namespace, expected_options, unexpected_options):
+def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_options):
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
         subcommand_wrapper = getattr(_abaqus_wrappers, subcommand)
