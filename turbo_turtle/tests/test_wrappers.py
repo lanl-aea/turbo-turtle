@@ -300,13 +300,20 @@ def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_opt
         assert option not in command_string
 
 
-geometry_keywords = copy.deepcopy(geometry_namespace_sparse)
+def trim_namespace(original, pop_keys):
+    modified = copy.deepcopy(original)
+    for key in pop_keys:
+        modified.pop(key)
+    return modified
+
+
 geometry_positional = ("input_file", "output_file")
-for positional in geometry_positional:
-    geometry_keywords.pop(positional)
 geometry_unused = ("model_name", "atol", "rtol")
-for unused in geometry_unused:
-    geometry_keywords.pop(unused)
+geometry_keywords = trim_namespace(geometry_namespace_sparse, geometry_positional + geometry_unused)
+
+cylinder_positional = ("inner_radius", "outer_radius", "height", "output_file")
+cylinder_unused = ("model_name",)
+cylinder_keywords = trim_namespace(cylinder_namespace, cylinder_positional + cylinder_unused)
 
 cubit_wrapper_tests = {
     "geometry": (
@@ -314,6 +321,12 @@ cubit_wrapper_tests = {
         geometry_namespace_sparse,
         (["input_file"], "output_file"),
         geometry_keywords
+    ),
+    "cylinder": (
+        "cylinder",
+        cylinder_namespace,
+        (1., 2., 1., "output_file"),
+        cylinder_keywords
     ),
 }
 
