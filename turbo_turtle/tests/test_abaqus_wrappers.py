@@ -8,6 +8,27 @@ from turbo_turtle import _settings
 from turbo_turtle import _abaqus_wrappers
 
 
+abaqus_command = "/dummy/command/abaqus"
+
+mesh_namespace_sparse = {
+    "input_file": "input_file",
+    "element_type": "element_type",
+    "output_file": None,
+    "model_name": "model_name",
+    "part_name": "part_name",
+    "global_seed": "global_seed"
+}
+mesh_namespace_full = copy.deepcopy(mesh_namespace_sparse)
+mesh_namespace_full.update({"output_file": "output_file"}),
+mesh_expected_options_sparse = [
+    abaqus_command,
+    "--input-file",
+    "--element-type",
+    "--model-name",
+    "--part-name",
+    "--global-seed"
+]
+
 image_namespace_sparse = {
     "input_file": "input_file",
     "output_file": "output_file",
@@ -22,7 +43,7 @@ image_namespace_sparse = {
 image_namespace_full = copy.deepcopy(image_namespace_sparse)
 image_namespace_full.update({"part_name": "part_name"}),
 image_expected_options_sparse = [
-    "command",
+    abaqus_command,
     "--input-file",
     "--output-file",
     "--x-angle",
@@ -32,7 +53,20 @@ image_expected_options_sparse = [
     "--model-name",
     "--color-map"
 ]
+
 wrapper_tests = {
+    "mesh: no output-file": (
+        "mesh",
+        mesh_namespace_sparse,
+        mesh_expected_options_sparse,
+        ["--output-file"]
+    ),
+    "mesh: output-file": (
+        "mesh",
+        mesh_namespace_full,
+        mesh_expected_options_sparse + ["--output-file"],
+        []
+    ),
     "image: no part-name": (
         "image",
         image_namespace_sparse,
@@ -54,7 +88,7 @@ def test_image(subcommand, namespace, expected_options, unexpected_options):
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
         subcommand_wrapper = getattr(_abaqus_wrappers, subcommand)
-        subcommand_wrapper(args, "/dummy/command/abaqus")
+        subcommand_wrapper(args, abaqus_command)
     mock_run.assert_called_once()
     command_string = mock_run.call_args[0][0]
     for option in expected_options:
