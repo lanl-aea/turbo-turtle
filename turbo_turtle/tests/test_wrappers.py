@@ -331,6 +331,12 @@ merge_positional = ("input_file", "output_file")
 merge_unused = ("model_name", "merged_model_name", "part_name")
 merge_keywords = trim_namespace(merge_namespace_sparse, merge_positional + merge_unused)
 
+export_namespace_cubit = copy.deepcopy(export_namespace_sparse)
+export_namespace_cubit["output_type"] = "output_type"
+export_positional = ("input_file",)
+export_unused = ("model_name", "assembly")
+export_keywords = trim_namespace(export_namespace_cubit, export_positional + export_unused)
+
 cubit_wrapper_tests = {
     "geometry": (
         "geometry",
@@ -367,6 +373,12 @@ cubit_wrapper_tests = {
         merge_namespace_sparse,
         (["input_file"], "output_file"),
         merge_keywords
+    ),
+    "export": (
+        "export",
+        export_namespace_cubit,
+        ("input_file",),
+        export_keywords
     ),
 }
 
