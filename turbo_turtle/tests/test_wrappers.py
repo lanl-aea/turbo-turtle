@@ -319,6 +319,10 @@ sphere_positional = ("inner_radius", "outer_radius", "output_file")
 sphere_unused = ("model_name",)
 sphere_keywords = trim_namespace(sphere_namespace_sparse, sphere_positional + sphere_unused)
 
+partition_positional = ("input_file",)
+partition_unused = ("model_name",)
+partition_keywords = trim_namespace(partition_namespace_sparse, partition_positional + partition_unused)
+
 cubit_wrapper_tests = {
     "geometry": (
         "geometry",
@@ -337,6 +341,12 @@ cubit_wrapper_tests = {
         sphere_namespace_sparse,
         (1., 2., "output_file"),
         sphere_keywords
+    ),
+    "partition": (
+        "partition",
+        partition_namespace_sparse,
+        ("input_file",),
+        partition_keywords
     ),
 }
 
