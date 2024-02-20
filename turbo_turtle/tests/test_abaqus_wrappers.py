@@ -10,6 +10,41 @@ from turbo_turtle import _abaqus_wrappers
 
 abaqus_command = "/dummy/command/abaqus"
 
+geometry_namespace_sparse = {
+    "input_file": "input_file",
+    "output_file": "output_file",
+    "unit_conversion": 1.,
+    "euclidean_distance": 1.,
+    "planar": None,
+    "model_name": "model_name",
+    "part_name": [None],
+    "delimiter": ",",
+    "header_lines": 0,
+    "revolution_angle": 360.,
+    "y_offset": 0.,
+    "rtol": None,
+    "atol": None
+}
+geometry_namespace_full = copy.deepcopy(geometry_namespace_sparse)
+geometry_namespace_full.update({
+    "planar": True,
+    "part_name": ["part_name"],
+    "rtol": 1.e-9,
+    "atol": 1.e-9
+}),
+geometry_expected_options_sparse = [
+    "--input-file",
+    "--output-file",
+    "--unit-conversion",
+    "--euclidean-distance",
+    "--model-name",
+    "--delimiter",
+    "--header-lines",
+    "--revolution-angle",
+    "--y-offset"
+]
+geometry_unexpected_options_sparse = ["--planar", "--part-name", "--atol", "--rtol"]
+
 cylinder_namespace = {
     "inner_radius": 1.,
     "outer_radius": 2.,
@@ -129,6 +164,18 @@ wrapper_tests = {
         "cylinder",
         cylinder_namespace,
         cylinder_expected_options,
+        []
+    ),
+    "geometry: no output-file": (
+        "geometry",
+        geometry_namespace_sparse,
+        geometry_expected_options_sparse,
+        geometry_unexpected_options_sparse
+    ),
+    "geometry: full": (
+        "geometry",
+        geometry_namespace_full,
+        geometry_expected_options_sparse + geometry_unexpected_options_sparse,
         []
     ),
     "sphere: no input-file": (
