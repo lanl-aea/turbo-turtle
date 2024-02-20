@@ -10,6 +10,29 @@ from turbo_turtle import _abaqus_wrappers
 
 abaqus_command = "/dummy/command/abaqus"
 
+partition_namespace_sparse = {
+    "input_file": "input_file",
+    "output_file": None,
+    "center": (0., 0., 0.),
+    "xvector": (0., 0., 0.),
+    "zvector": (0., 0., 0.),
+    "model_name": "model_name",
+    "part_name": ["part_name"],
+    "big_number": 0.
+}
+partition_namespace_full = copy.deepcopy(partition_namespace_sparse)
+partition_namespace_full.update({"output_file": "output_file"}),
+partition_expected_options_sparse = [
+    abaqus_command,
+    "--input-file",
+    "--center",
+    "--xvector",
+    "--zvector",
+    "--model-name",
+    "--part-name",
+    "--big-number"
+]
+
 mesh_namespace_sparse = {
     "input_file": "input_file",
     "element_type": "element_type",
@@ -55,6 +78,18 @@ image_expected_options_sparse = [
 ]
 
 wrapper_tests = {
+    "partition: no output-file": (
+        "partition",
+        partition_namespace_sparse,
+        partition_expected_options_sparse,
+        ["--output-file"]
+    ),
+    "partition: output-file": (
+        "partition",
+        partition_namespace_full,
+        partition_expected_options_sparse + ["--output-file"],
+        []
+    ),
     "mesh: no output-file": (
         "mesh",
         mesh_namespace_sparse,
