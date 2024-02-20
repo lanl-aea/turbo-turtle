@@ -14,6 +14,7 @@ Internal Changes
 - Dedicated Cubit local coordinate primary plane webcutting function (:issue:`77`, :merge:`111`). By `Kyle Brindley`_.
 - Dedicated Cubit pyramidal volume creation and partitioning functions (:issue:`131`, :merge:`112`). By `Kyle
   Brindley`_.
+- Unit test the pass through Abaqus Python CLI construction (:issue:`58`, :merge:`113`). By `Kyle Brindley`_.
 
 ********************
 v0.11.0 (2024-02-15)
