@@ -37,7 +37,7 @@ wrapper_tests = {
                          wrapper_tests.values(), ids=wrapper_tests.keys())
 def test_cubit_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
-    with patch("turbo_turtle._cubit_python.geometry") as mock_geometry:
+    with patch(f"turbo_turtle._cubit_python.{subcommand}") as mock_function:
         subcommand_wrapper = getattr(_cubit_wrappers, subcommand)
         subcommand_wrapper(args, cubit_command)
-    mock_geometry.assert_called_once_with(*positional, **keywords)
+    mock_function.assert_called_once_with(*positional, **keywords)
