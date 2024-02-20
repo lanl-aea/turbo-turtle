@@ -15,6 +15,7 @@ Internal Changes
 - Dedicated Cubit pyramidal volume creation and partitioning functions (:issue:`131`, :merge:`112`). By `Kyle
   Brindley`_.
 - Unit test the pass through Abaqus Python CLI construction (:issue:`58`, :merge:`113`). By `Kyle Brindley`_.
+- Unit test the pass through Cubit Python API unpacking (:issue:`91`, :merge:`114`). By `Kyle Brindley`_.
 
 ********************
 v0.11.0 (2024-02-15)
