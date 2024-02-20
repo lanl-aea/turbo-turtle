@@ -327,6 +327,10 @@ mesh_positional = ("input_file", "element_type")
 mesh_unused = ("model_name",)
 mesh_keywords = trim_namespace(mesh_namespace_sparse, mesh_positional + mesh_unused)
 
+merge_positional = ("input_file", "output_file")
+merge_unused = ("model_name", "merged_model_name", "part_name")
+merge_keywords = trim_namespace(merge_namespace_sparse, merge_positional + merge_unused)
+
 cubit_wrapper_tests = {
     "geometry": (
         "geometry",
@@ -357,6 +361,12 @@ cubit_wrapper_tests = {
         mesh_namespace_sparse,
         ("input_file", "element_type"),
         mesh_keywords
+    ),
+    "merge": (
+        "merge",
+        merge_namespace_sparse,
+        (["input_file"], "output_file"),
+        merge_keywords
     ),
 }
 
