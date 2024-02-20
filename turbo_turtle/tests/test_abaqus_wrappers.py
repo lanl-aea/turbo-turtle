@@ -32,6 +32,31 @@ cylinder_expected_options = [
     "--y-offset"
 ]
 
+sphere_namespace_sparse = {
+    "inner_radius": 1.,
+    "outer_radius": 2.,
+    "output_file": "output_file",
+    "input_file": None,
+    "quadrant": "both",
+    "revolution_angle": 360.,
+    "y_offset": 0.,
+    "model_name": "model_name",
+    "part_name": "part_name",
+}
+sphere_namespace_full = copy.deepcopy(sphere_namespace_sparse)
+sphere_namespace_full.update({"input_file": "input_file"}),
+sphere_expected_options_sparse = [
+    abaqus_command,
+    "--inner-radius",
+    "--outer-radius",
+    "--output-file",
+    "--quadrant",
+    "--revolution-angle",
+    "--y-offset",
+    "--model-name",
+    "--part-name",
+]
+
 partition_namespace_sparse = {
     "input_file": "input_file",
     "output_file": None,
@@ -104,6 +129,18 @@ wrapper_tests = {
         "cylinder",
         cylinder_namespace,
         cylinder_expected_options,
+        []
+    ),
+    "sphere: no input-file": (
+        "sphere",
+        sphere_namespace_sparse,
+        sphere_expected_options_sparse,
+        ["--input-file"]
+    ),
+    "sphere: input-file": (
+        "sphere",
+        sphere_namespace_full,
+        sphere_expected_options_sparse + ["--input-file"],
         []
     ),
     "partition: no output-file": (
