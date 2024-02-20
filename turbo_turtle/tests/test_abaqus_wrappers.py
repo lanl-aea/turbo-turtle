@@ -35,17 +35,19 @@ expected_options_sparse = [
 image = {
     "no part-name": (
         namespace_sparse,
-        expected_options_sparse
+        expected_options_sparse,
+        ["--part-name"]
     ),
     "part-name": (
         namespace_full,
-        expected_options_sparse + ["--part-name"]
+        expected_options_sparse + ["--part-name"],
+        []
     ),
 }
 
 
-@pytest.mark.parametrize("namespace, expected_options", image.values(), ids=image.keys())
-def test_image(namespace, expected_options):
+@pytest.mark.parametrize("namespace, expected_options, unexpected_options", image.values(), ids=image.keys())
+def test_image(namespace, expected_options, unexpected_options):
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
         _abaqus_wrappers.image(args, "command")
@@ -53,5 +55,5 @@ def test_image(namespace, expected_options):
     command_string = mock_run.call_args[0][0]
     for option in expected_options:
         assert option in command_string
-    if "part_name" in args and args.part_name is None:
-        assert "--part-name" not in command_string
+    for option in unexpected_options:
+        assert option not in command_string
