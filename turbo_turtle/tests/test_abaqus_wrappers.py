@@ -8,6 +8,17 @@ from turbo_turtle import _abaqus_wrappers
 
 
 
+expected_options_sparse = [
+    "command",
+    "--input-file",
+    "--output-file",
+    "--x-angle",
+    "--y-angle",
+    "--z-angle",
+    "--image-size",
+    "--model-name",
+    "--color-map"
+]
 image = {
     "part-name": (
         argparse.Namespace(
@@ -21,18 +32,7 @@ image = {
             part_name="part_name",
             color_map="color_map"
         ),
-        [
-            "command",
-            "--input-file",
-            "--output-file",
-            "--x-angle",
-            "--y-angle",
-            "--z-angle",
-            "--image-size",
-            "--model-name",
-            "--part-name",
-            "--color-map"
-        ]
+        expected_options_sparse + ["--part-name"]
     ),
     "no part-name": (
         argparse.Namespace(
@@ -46,17 +46,7 @@ image = {
             part_name=None,
             color_map="color_map"
         ),
-        [
-            "command",
-            "--input-file",
-            "--output-file",
-            "--x-angle",
-            "--y-angle",
-            "--z-angle",
-            "--image-size",
-            "--model-name",
-            "--color-map"
-        ]
+        expected_options_sparse
     ),
 }
 
