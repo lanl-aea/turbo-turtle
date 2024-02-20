@@ -91,6 +91,7 @@ sphere_expected_options_sparse = [
     "--model-name",
     "--part-name",
 ]
+sphere_unexpected_options_sparse = ["--input-file"]
 
 partition_namespace_sparse = {
     "input_file": "input_file",
@@ -114,6 +115,7 @@ partition_expected_options_sparse = [
     "--part-name",
     "--big-number"
 ]
+partition_unexpected_options_sparse = ["--output-file"]
 
 mesh_namespace_sparse = {
     "input_file": "input_file",
@@ -133,6 +135,7 @@ mesh_expected_options_sparse = [
     "--part-name",
     "--global-seed"
 ]
+mesh_unexpected_options_sparse = ["--output-file"]
 
 image_namespace_sparse = {
     "input_file": "input_file",
@@ -158,6 +161,7 @@ image_expected_options_sparse = [
     "--model-name",
     "--color-map"
 ]
+image_unexpected_options_sparse = ["--part-name"]
 
 wrapper_tests = {
     "cylinder": (
@@ -182,48 +186,48 @@ wrapper_tests = {
         "sphere",
         sphere_namespace_sparse,
         sphere_expected_options_sparse,
-        ["--input-file"]
+        sphere_unexpected_options_sparse
     ),
     "sphere: input-file": (
         "sphere",
         sphere_namespace_full,
-        sphere_expected_options_sparse + ["--input-file"],
+        sphere_expected_options_sparse + sphere_unexpected_options_sparse,
         []
     ),
     "partition: no output-file": (
         "partition",
         partition_namespace_sparse,
         partition_expected_options_sparse,
-        ["--output-file"]
+        partition_unexpected_options_sparse
     ),
     "partition: output-file": (
         "partition",
         partition_namespace_full,
-        partition_expected_options_sparse + ["--output-file"],
+        partition_expected_options_sparse + partition_unexpected_options_sparse,
         []
     ),
     "mesh: no output-file": (
         "mesh",
         mesh_namespace_sparse,
         mesh_expected_options_sparse,
-        ["--output-file"]
+        mesh_unexpected_options_sparse
     ),
     "mesh: output-file": (
         "mesh",
         mesh_namespace_full,
-        mesh_expected_options_sparse + ["--output-file"],
+        mesh_expected_options_sparse + mesh_unexpected_options_sparse,
         []
     ),
     "image: no part-name": (
         "image",
         image_namespace_sparse,
         image_expected_options_sparse,
-        ["--part-name"]
+        image_unexpected_options_sparse
     ),
     "image: part-name": (
         "image",
         image_namespace_full,
-        image_expected_options_sparse + ["--part-name"],
+        image_expected_options_sparse + image_unexpected_options_sparse,
         []
     ),
 }
