@@ -4,11 +4,11 @@ from unittest.mock import patch
 
 import pytest
 
-from turbo_turtle import _settings
 from turbo_turtle import _abaqus_wrappers
+from turbo_turtle import _cubit_wrappers
 
 
-abaqus_command = "/dummy/command/abaqus"
+command = "/dummy/command"
 
 geometry_namespace_sparse = {
     "input_file": ["input_file"],
@@ -56,7 +56,7 @@ cylinder_namespace = {
     "y_offset": 0.
 }
 cylinder_expected_options = [
-    abaqus_command,
+    command,
     "--inner-radius",
     "--outer-radius",
     "--height",
@@ -81,7 +81,7 @@ sphere_namespace_sparse = {
 sphere_namespace_full = copy.deepcopy(sphere_namespace_sparse)
 sphere_namespace_full.update({"input_file": "input_file"}),
 sphere_expected_options_sparse = [
-    abaqus_command,
+    command,
     "--inner-radius",
     "--outer-radius",
     "--output-file",
@@ -106,7 +106,7 @@ partition_namespace_sparse = {
 partition_namespace_full = copy.deepcopy(partition_namespace_sparse)
 partition_namespace_full.update({"output_file": "output_file"}),
 partition_expected_options_sparse = [
-    abaqus_command,
+    command,
     "--input-file",
     "--center",
     "--xvector",
@@ -128,7 +128,7 @@ mesh_namespace_sparse = {
 mesh_namespace_full = copy.deepcopy(mesh_namespace_sparse)
 mesh_namespace_full.update({"output_file": "output_file"}),
 mesh_expected_options_sparse = [
-    abaqus_command,
+    command,
     "--input-file",
     "--element-type",
     "--model-name",
@@ -191,7 +191,7 @@ image_namespace_sparse = {
 image_namespace_full = copy.deepcopy(image_namespace_sparse)
 image_namespace_full.update({"part_name": "part_name"}),
 image_expected_options_sparse = [
-    abaqus_command,
+    command,
     "--input-file",
     "--output-file",
     "--x-angle",
@@ -291,10 +291,42 @@ def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_opt
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
         subcommand_wrapper = getattr(_abaqus_wrappers, subcommand)
-        subcommand_wrapper(args, abaqus_command)
+        subcommand_wrapper(args, command)
     mock_run.assert_called_once()
     command_string = mock_run.call_args[0][0]
     for option in expected_options:
         assert option in command_string
     for option in unexpected_options:
         assert option not in command_string
+
+
+geometry_keywords = copy.deepcopy(geometry_namespace_sparse)
+geometry_positional = ("input_file", "output_file")
+for positional in geometry_positional:
+    geometry_keywords.pop(positional)
+geometry_unused = ("model_name", "atol", "rtol")
+for unused in geometry_unused:
+    geometry_keywords.pop(unused)
+
+cubit_wrapper_tests = {
+    "geometry": (
+        "geometry",
+        geometry_namespace_sparse,
+        (["input_file"], "output_file"),
+        geometry_keywords
+    ),
+}
+
+
+@pytest.mark.parametrize("subcommand, namespace, positional, keywords",
+                         cubit_wrapper_tests.values(), ids=cubit_wrapper_tests.keys())
+def test_cubit_wrappers(subcommand, namespace, positional, keywords):
+    args = argparse.Namespace(**namespace)
+    with patch(f"turbo_turtle._cubit_python.{subcommand}") as mock_function:
+        subcommand_wrapper = getattr(_cubit_wrappers, subcommand)
+        subcommand_wrapper(args, command)
+    mock_function.assert_called_once()
+    call_positional = mock_function.call_args[0]
+    call_keywords = mock_function.call_args[1]
+    assert call_positional == positional
+    assert call_keywords == keywords
