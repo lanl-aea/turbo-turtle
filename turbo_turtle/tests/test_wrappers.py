@@ -323,6 +323,10 @@ partition_positional = ("input_file",)
 partition_unused = ("model_name",)
 partition_keywords = trim_namespace(partition_namespace_sparse, partition_positional + partition_unused)
 
+mesh_positional = ("input_file", "element_type")
+mesh_unused = ("model_name",)
+mesh_keywords = trim_namespace(mesh_namespace_sparse, mesh_positional + mesh_unused)
+
 cubit_wrapper_tests = {
     "geometry": (
         "geometry",
@@ -347,6 +351,12 @@ cubit_wrapper_tests = {
         partition_namespace_sparse,
         ("input_file",),
         partition_keywords
+    ),
+    "mesh": (
+        "mesh",
+        mesh_namespace_sparse,
+        ("input_file", "element_type"),
+        mesh_keywords
     ),
 }
 
