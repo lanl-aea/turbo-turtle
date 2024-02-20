@@ -301,11 +301,22 @@ def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_opt
 
 
 def trim_namespace(original, pop_keys):
+    """Create a modified dictionary deepcopy by removing the provided keys
+
+    :returns: Modified dictionary deepcopy with pop keys removed
+    :rtype: dict
+    """
     modified = copy.deepcopy(original)
     for key in pop_keys:
         if key in modified:
             modified.pop(key)
     return modified
+
+
+def test_trim_namespace():
+    original = {"keep": "keep", "pop": "pop"}
+    modified = trim_namespace(original, ("pop",))
+    assert modified == {"keep": "keep"}
 
 
 geometry_positional = ("input_file", "output_file")
