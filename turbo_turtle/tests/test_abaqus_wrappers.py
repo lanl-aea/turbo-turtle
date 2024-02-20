@@ -1,37 +1,73 @@
 import argparse
-
 from unittest.mock import patch
+
+import pytest
 
 from turbo_turtle import _settings
 from turbo_turtle import _abaqus_wrappers
 
 
-def test_image():
-    args = argparse.Namespace(
-        input_file="input_file",
-        output_file="output_file",
-        x_angle=0.,
-        y_angle=0.,
-        z_angle=0.,
-        image_size=[1, 2],
-        model_name="model_name",
-        part_name="part_name",
-        color_map="color_map"
-    )
-    expected_cli_options = [
-        "command",
-        "--input-file",
-        "--output-file",
-        "--x-angle",
-        "--y-angle",
-        "--z-angle",
-        "--image-size",
-        "--model-name",
-        "--part-name",
-        "--color-map"
-    ]
+
+image = {
+    "part-name": (
+        argparse.Namespace(
+            input_file="input_file",
+            output_file="output_file",
+            x_angle=0.,
+            y_angle=0.,
+            z_angle=0.,
+            image_size=[1, 2],
+            model_name="model_name",
+            part_name="part_name",
+            color_map="color_map"
+        ),
+        [
+            "command",
+            "--input-file",
+            "--output-file",
+            "--x-angle",
+            "--y-angle",
+            "--z-angle",
+            "--image-size",
+            "--model-name",
+            "--part-name",
+            "--color-map"
+        ]
+    ),
+    "no part-name": (
+        argparse.Namespace(
+            input_file="input_file",
+            output_file="output_file",
+            x_angle=0.,
+            y_angle=0.,
+            z_angle=0.,
+            image_size=[1, 2],
+            model_name="model_name",
+            part_name=None,
+            color_map="color_map"
+        ),
+        [
+            "command",
+            "--input-file",
+            "--output-file",
+            "--x-angle",
+            "--y-angle",
+            "--z-angle",
+            "--image-size",
+            "--model-name",
+            "--color-map"
+        ]
+    ),
+}
+
+
+@pytest.mark.parametrize("namespace, expected_options", image.values(), ids=image.keys())
+def test_image(namespace, expected_options):
     with patch("turbo_turtle._utilities.run_command") as mock_run:
-        _abaqus_wrappers.image(args, "command")
+        _abaqus_wrappers.image(namespace, "command")
     mock_run.assert_called_once()
-    for option in expected_cli_options:
-        assert option in mock_run.call_args[0][0]
+    command_string = mock_run.call_args[0][0]
+    for option in expected_options:
+        assert option in command_string
+    if namespace.part_name is None:
+        assert "--part-name" not in command_string
