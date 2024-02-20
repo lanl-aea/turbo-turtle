@@ -11,7 +11,7 @@ from turbo_turtle import _abaqus_wrappers
 abaqus_command = "/dummy/command/abaqus"
 
 geometry_namespace_sparse = {
-    "input_file": "input_file",
+    "input_file": ["input_file"],
     "output_file": "output_file",
     "unit_conversion": 1.,
     "euclidean_distance": 1.,
@@ -136,6 +136,25 @@ mesh_expected_options_sparse = [
     "--global-seed"
 ]
 mesh_unexpected_options_sparse = ["--output-file"]
+
+merge_namespace_sparse = {
+    "input_file": ["input_file"],
+    "output_file": "output_file",
+    "merged_model_name": "merged_model_name",
+    "model_name": [None],
+    "part_name": [None],
+}
+merge_namespace_full = copy.deepcopy(merge_namespace_sparse)
+merge_namespace_full.update({
+    "model_name": ["model_name"],
+    "part_name": ["part_name"],
+}),
+merge_expected_options_sparse = [
+    "--input-file",
+    "--output-file",
+    "--merged-model-name",
+]
+merge_unexpected_options_sparse = ["--model-name", "--part-name"]
 
 image_namespace_sparse = {
     "input_file": "input_file",
