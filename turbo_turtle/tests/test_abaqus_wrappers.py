@@ -10,6 +10,28 @@ from turbo_turtle import _abaqus_wrappers
 
 abaqus_command = "/dummy/command/abaqus"
 
+cylinder_namespace = {
+    "inner_radius": 1.,
+    "outer_radius": 2.,
+    "height": 1.,
+    "output_file": "output_file",
+    "model_name": "model_name",
+    "part_name": "part_name",
+    "revolution_angle": 360.,
+    "y_offset": 0.
+}
+cylinder_expected_options = [
+    abaqus_command,
+    "--inner-radius",
+    "--outer-radius",
+    "--height",
+    "--output-file",
+    "--model-name",
+    "--part-name",
+    "--revolution-angle",
+    "--y-offset"
+]
+
 partition_namespace_sparse = {
     "input_file": "input_file",
     "output_file": None,
@@ -78,6 +100,12 @@ image_expected_options_sparse = [
 ]
 
 wrapper_tests = {
+    "cylinder": (
+        "cylinder",
+        cylinder_namespace,
+        cylinder_expected_options,
+        []
+    ),
     "partition: no output-file": (
         "partition",
         partition_namespace_sparse,
