@@ -315,6 +315,10 @@ cylinder_positional = ("inner_radius", "outer_radius", "height", "output_file")
 cylinder_unused = ("model_name",)
 cylinder_keywords = trim_namespace(cylinder_namespace, cylinder_positional + cylinder_unused)
 
+sphere_positional = ("inner_radius", "outer_radius", "output_file")
+sphere_unused = ("model_name",)
+sphere_keywords = trim_namespace(sphere_namespace_sparse, sphere_positional + sphere_unused)
+
 cubit_wrapper_tests = {
     "geometry": (
         "geometry",
@@ -327,6 +331,12 @@ cubit_wrapper_tests = {
         cylinder_namespace,
         (1., 2., 1., "output_file"),
         cylinder_keywords
+    ),
+    "sphere": (
+        "sphere",
+        sphere_namespace_sparse,
+        (1., 2., "output_file"),
+        sphere_keywords
     ),
 }
 
