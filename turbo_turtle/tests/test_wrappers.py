@@ -303,7 +303,8 @@ def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_opt
 def trim_namespace(original, pop_keys):
     modified = copy.deepcopy(original)
     for key in pop_keys:
-        modified.pop(key)
+        if key in modified:
+            modified.pop(key)
     return modified
 
 
@@ -336,6 +337,10 @@ export_namespace_cubit["output_type"] = "output_type"
 export_positional = ("input_file",)
 export_unused = ("model_name", "assembly")
 export_keywords = trim_namespace(export_namespace_cubit, export_positional + export_unused)
+
+image_positional = ("input_file", "output_file", "command")
+image_unused = ("model_name", "part_name", "color_map")
+image_keywords = trim_namespace(image_namespace_sparse, image_positional + image_unused)
 
 cubit_wrapper_tests = {
     "geometry": (
@@ -379,6 +384,12 @@ cubit_wrapper_tests = {
         export_namespace_cubit,
         ("input_file",),
         export_keywords
+    ),
+    "image": (
+        "image",
+        image_namespace_sparse,
+        ("input_file", "output_file", command),
+        image_keywords
     ),
 }
 
