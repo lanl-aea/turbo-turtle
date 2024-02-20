@@ -21,13 +21,13 @@ geometry_keywords = {
     "y_offset": 0.
 }
 geometry_namespace = copy.deepcopy(geometry_keywords)
-geometry_namespace.update({"input_file": "input_file", "output_file": "output_file"})
+geometry_namespace.update({"input_file": ["input_file"], "output_file": "output_file"})
 
 wrapper_tests = {
     "geometry": (
         "geometry",
         geometry_namespace,
-        ("input_file", "output_file"),
+        (["input_file"], "output_file"),
         geometry_keywords
     ),
 }
