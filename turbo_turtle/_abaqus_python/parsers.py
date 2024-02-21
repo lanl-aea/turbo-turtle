@@ -10,7 +10,7 @@ import argparse
 
 
 def positive_float(argument):
-    """Type function for argparse - positive floats
+    """Type function for argparse - positive floats including zero
 
     Abaqus Python 2 and Python 3 compatible argparse type method:
     https://docs.python.org/3.8/library/argparse.html#type.
@@ -27,6 +27,27 @@ def positive_float(argument):
         raise argparse.ArgumentTypeError("invalid float value: '{}'".format(argument))
     if not argument >= MINIMUM_VALUE:
         raise argparse.ArgumentTypeError("invalid positive float: '{}'".format(argument))
+    return argument
+
+
+def positive_int(argument):
+    """Type function for argparse - positive integers including zero
+
+    Abaqus Python 2 and Python 3 compatible argparse type method:
+    https://docs.python.org/3.8/library/argparse.html#type.
+
+    :param str argument: string argument from argparse
+
+    :returns: argument
+    :rtype: int
+    """
+    MINIMUM_VALUE = 0
+    try:
+        argument = int(argument)
+    except ValueError:
+        raise argparse.ArgumentTypeError("invalid integer value: '{}'".format(argument))
+    if not argument >= MINIMUM_VALUE:
+        raise argparse.ArgumentTypeError("invalid positive integer: '{}'".format(argument))
     return argument
 
 
@@ -100,7 +121,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                           help=part_name_help)
     optional.add_argument("--delimiter", type=str, default=geometry_defaults["delimiter"],
                           help="Delimiter character between columns in the points file(s) (default: %(default)s)")
-    optional.add_argument("--header-lines", type=int, default=geometry_defaults["header_lines"],
+    optional.add_argument("--header-lines", type=positive_int, default=geometry_defaults["header_lines"],
                           help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
     optional.add_argument("--revolution-angle", type=float, default=geometry_defaults["revolution_angle"],
                           help="Revolution angle for a 3D part in degrees (default: %(default)s)")
@@ -497,7 +518,7 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
                           help='Viewer rotation about Y-axis in degrees (default: %(default)s)')
     optional.add_argument('--z-angle', type=float, default=image_defaults["z_angle"],
                           help='Viewer rotation about Z-axis in degrees (default: %(default)s)')
-    optional.add_argument('--image-size', nargs=2, type=int, default=image_defaults["image_size"],
+    optional.add_argument('--image-size', nargs=2, type=positive_int, default=image_defaults["image_size"],
                           help="Image size in pixels (width, height) (default: %(default)s)")
     optional.add_argument('--model-name', type=str, default=image_defaults["model_name"],
                           help=model_name_help)
