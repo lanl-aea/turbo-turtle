@@ -106,10 +106,10 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                           help="Revolution angle for a 3D part in degrees (default: %(default)s)")
     optional.add_argument("--y-offset", type=float, default=geometry_defaults["y_offset"],
                           help="Offset along the global Y-axis in units *after* the unit conversion (default: %(default)s)")
-    optional.add_argument("--rtol", type=float, default=geometry_defaults["rtol"],
+    optional.add_argument("--rtol", type=positive_float, default=geometry_defaults["rtol"],
                           help="relative tolerance used by ``numpy.isclose``. If not provided, use numpy defaults " \
                                "(default: %(default)s)")
-    optional.add_argument("--atol", type=float, default=geometry_defaults["atol"],
+    optional.add_argument("--atol", type=positive_float, default=geometry_defaults["atol"],
                           help="absolute tolerance used by ``numpy.isclose``. If not provided, use numpy defaults " \
                                "(default: %(default)s)")
     return parser
@@ -282,7 +282,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
                           help="Abaqus model name (default: %(default)s)")
     optional.add_argument('--part-name', type=str, nargs='+', default=partition_defaults["part_name"],
                           help=part_name_help)
-    optional.add_argument('--big-number', type=float, default=partition_defaults["big_number"],
+    optional.add_argument('--big-number', type=positive_float, default=partition_defaults["big_number"],
                           help="Number larger than the outer radius of the part to partition (default: %(default)s)")
 
     return parser
