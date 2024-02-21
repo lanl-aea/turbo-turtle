@@ -17,6 +17,11 @@ Internal Changes
 - Unit test the pass through Abaqus Python CLI construction (:issue:`58`, :merge:`113`). By `Kyle Brindley`_.
 - Unit test the pass through Cubit Python API unpacking (:issue:`91`, :merge:`114`). By `Kyle Brindley`_.
 
+Enhancements
+============
+- Enforce positive floats and integers for CLI options requiring a positive value (:issue:`55`, :merge:`115`). By `Kyle
+  Brindley`_.
+
 ********************
 v0.11.0 (2024-02-15)
 ********************
