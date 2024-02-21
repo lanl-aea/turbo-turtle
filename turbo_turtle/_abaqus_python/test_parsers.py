@@ -36,3 +36,20 @@ class TestParsers(unittest.TestCase):
     @unittest.expectedFailure
     def test_positive_float_nonfloat_exception():
         argument = parsers.positive_float("negative_one")
+
+    def test_positive_int(self):
+        tests = [
+            ("0", 0),
+            ("1", 1)
+        ]
+        for input_string, expected_int in tests:
+            argument = parsers.positive_int(input_string)
+            assert numpy.isclose(argument, expected_int)
+
+    @unittest.expectedFailure
+    def test_positive_int_negative_exception():
+        argument = parsers.positive_int("-1.")
+
+    @unittest.expectedFailure
+    def test_positive_int_nonint_exception():
+        argument = parsers.positive_int("negative_one")
