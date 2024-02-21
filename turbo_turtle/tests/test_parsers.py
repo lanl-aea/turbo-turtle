@@ -77,6 +77,11 @@ subcommand_parser = {
         ["--inner-radius", "1.", "--outer-radius", "2.", "--output-file", "output_file"],
         ["center"]
     ),
+    "partition": (
+        "partition",
+        ["--input-file", "input_file"],
+        []
+    ),
 }
 
 
@@ -102,7 +107,7 @@ def test_subcommand_parser(subcommand, required_argv, exclude_keys):
             defaults_argv.append(str(value))
         if isinstance(value, list) and value[0] is not None:
             defaults_argv.append(f"--{key.replace('_', '-')}")
-            defaults_argv.append(" ".join(map(str, value)))
+            defaults_argv.extend([str(item) for item in value])
 
     argv = ["dummy"] + required_argv + defaults_argv
     with patch("sys.argv", argv):

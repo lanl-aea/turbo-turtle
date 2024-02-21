@@ -288,7 +288,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     required = parser.add_argument_group('required arguments')
-    required.add_argument('--input-file', type=str, default=sphere_defaults["input_file"],
+    required.add_argument('--input-file', type=str,
                           help="Abaqus model database to open (default: %(default)s)")
 
     optional = parser.add_argument_group('optional arguments')
