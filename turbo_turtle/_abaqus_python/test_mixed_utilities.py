@@ -32,7 +32,7 @@ class TestMixedUtilities(unittest.TestCase):
     def test_validate_element_type_exception1(self):
         element_type = _mixed_utilities.validate_element_type(1, ["C3D8", "C3D8"])
 
-    def test_validate_element_type_exception1(self):
+    def test_validate_element_type_exception1_exit(self):
         with self.assertRaises(SystemExit):
             element_type = _mixed_utilities.validate_element_type_or_exit(1, ["C3D8", "C3D8"])
 
@@ -40,7 +40,7 @@ class TestMixedUtilities(unittest.TestCase):
     def test_validate_element_type_exception2(self):
         element_type = _mixed_utilities.validate_element_type(3, ["C3D8", "C3D8"])
 
-    def test_validate_element_type_exception2(self):
+    def test_validate_element_type_exception2_exit(self):
         with self.assertRaises(SystemExit):
             element_type = _mixed_utilities.validate_element_type_or_exit(3, ["C3D8", "C3D8"])
 
