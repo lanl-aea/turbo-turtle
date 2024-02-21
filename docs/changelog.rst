@@ -18,6 +18,7 @@ Internal Changes
 - Unit test the pass through Cubit Python API unpacking (:issue:`91`, :merge:`114`). By `Kyle Brindley`_.
 - Unit test the default argument values in the subcommand argparse parsers (:issue:`55`, :merge:`115`). By `Kyle
   Brindley`_.
+- Report unit test coverage in Gitlab-CI pipelines (:merge:`116`). By `Kyle Brindley`_.
 
 Enhancements
 ============
