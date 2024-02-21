@@ -30,11 +30,11 @@ class TestParsers(unittest.TestCase):
             assert numpy.isclose(argument, expected_float)
 
     @unittest.expectedFailure
-    def test_positive_float_negative_exception():
+    def test_positive_float_negative_exception(self):
         argument = parsers.positive_float("-1.")
 
     @unittest.expectedFailure
-    def test_positive_float_nonfloat_exception():
+    def test_positive_float_nonfloat_exception(self):
         argument = parsers.positive_float("negative_one")
 
     def test_positive_int(self):
@@ -47,9 +47,17 @@ class TestParsers(unittest.TestCase):
             assert numpy.isclose(argument, expected_int)
 
     @unittest.expectedFailure
-    def test_positive_int_negative_exception():
+    def test_positive_int_negative_exception(self):
         argument = parsers.positive_int("-1.")
 
     @unittest.expectedFailure
-    def test_positive_int_nonint_exception():
+    def test_positive_int_nonint_exception(self):
         argument = parsers.positive_int("negative_one")
+
+    def test_construct_prog(self):
+        tests = [
+            ("script", "abaqus cae -noGui script --")
+        ]
+        for basename, expected_prog in tests:
+            prog = parsers.construct_prog(basename)
+            assert prog == expected_prog
