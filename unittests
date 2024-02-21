@@ -18,7 +18,7 @@ targets = env.Command(
     target=target,
     source=pytest_source_list,
     action=[
-        "${pytest_command} -vvv --cov",
+        "${pytest_command} -vvv -m 'not systemtest' --cov",
         "${coverage_command}"
     ],
     pytest_command=pytest_command
@@ -27,6 +27,18 @@ env.Alias("pytest", targets)
 env.Alias("unittests", targets)
 env.Alias("regression", targets)
 # Always run pytests in place of a complete source list
+env.AlwaysBuild(targets)
+
+systemtest_command = "PYTHONDONTWRITEBYTECODE=1 pytest -v --no-showlocals -n 4 -m systemtest --tb=short --junitxml=${TARGETS[0].name} --cache-clear"
+target = ["systemtest_results.xml"]
+source = pytest_source_list + [str(pathlib.Path("turbo_turtle/tests/test_systemtest.py"))]
+targets = env.Command(
+    target=target,
+    source=source,
+    action=systemtest_command
+)
+env.Alias("systemtest", targets)
+env.Alias("regression", targets)
 env.AlwaysBuild(targets)
 
 target = ["test_abaqus_python.txt"]
