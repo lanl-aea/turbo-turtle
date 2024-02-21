@@ -21,7 +21,8 @@ targets = env.Command(
         "${pytest_command} -vvv -m 'not systemtest' --cov",
         "${coverage_command}"
     ],
-    pytest_command=pytest_command
+    pytest_command=pytest_command,
+    coverage_command=coverage_command
 )
 env.Alias("pytest", targets)
 env.Alias("unittests", targets)
