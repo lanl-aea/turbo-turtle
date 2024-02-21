@@ -46,3 +46,16 @@ def test_positive_int(input_string, expected_int, outcome):
             assert argument == expected_int
         finally:
             pass
+
+
+construct_prog = {
+    "script": ("script", "abaqus cae -noGui script --")
+}
+
+
+@pytest.mark.parametrize("basename, expected_prog",
+                         construct_prog.values(),
+                         ids=construct_prog.keys())
+def test_construct_prog(basename, expected_prog):
+    prog = parsers.construct_prog(basename)
+    assert prog == expected_prog
