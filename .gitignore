@@ -6,6 +6,8 @@ conda-bld/
 _version.py
 test_results.xml
 test_abaqus_python.txt
+.coverage
+coverage*.xml
 
 .sconsign.dblite
 config.log
