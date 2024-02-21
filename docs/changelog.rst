@@ -16,6 +16,8 @@ Internal Changes
   Brindley`_.
 - Unit test the pass through Abaqus Python CLI construction (:issue:`58`, :merge:`113`). By `Kyle Brindley`_.
 - Unit test the pass through Cubit Python API unpacking (:issue:`91`, :merge:`114`). By `Kyle Brindley`_.
+- Unit test the default argument values in the subcommand argparse parsers (:issue:`55`, :merge:`115`). By `Kyle
+  Brindley`_.
 
 Enhancements
 ============
