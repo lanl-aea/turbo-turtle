@@ -59,3 +59,24 @@ construct_prog = {
 def test_construct_prog(basename, expected_prog):
     prog = parsers.construct_prog(basename)
     assert prog == expected_prog
+
+
+def test_geometry_parser():
+    positional_argv = ["--input-file", "input_file", "--output-file", "output_file"]
+
+    defaults = parsers.geometry_defaults
+    defaults_argv = []
+    for key, value in defaults.items():
+        if not isinstance(value, list) and value is not None and value is not False:
+            defaults_argv.append(f"--{key.replace('_', '-')}")
+            defaults_argv.append(str(value))
+        if isinstance(value, list) and value[0] is not None:
+            defaults_argv.append(f"--{key.replace('_', '-')}")
+            defaults_argv.append(" ".join(map(str, value)))
+
+    argv = ["dummy"] + positional_argv + defaults_argv
+    with patch("sys.argv", argv):
+        args, unknown = parsers.geometry_parser().parse_known_args()
+    args_dictionary = vars(args)
+    for key, value in defaults.items():
+        assert args_dictionary[key] == value

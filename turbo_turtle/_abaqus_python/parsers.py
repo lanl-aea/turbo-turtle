@@ -6,6 +6,7 @@ CLI parser(s). Other content, such as project/package settings type variables, c
 as the Abaqus Python package settings file and the parsers file.
 """
 import os
+import copy
 import argparse
 
 
@@ -136,7 +137,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     return parser
 
 
-geometry_xyplot_defaults = geometry_defaults
+geometry_xyplot_defaults = copy.deepcopy(geometry_defaults)
 geometry_xyplot_defaults["no_markers"] = False
 
 
