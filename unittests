@@ -28,7 +28,12 @@ env.Alias("regression", targets)
 env.AlwaysBuild(targets)
 
 target = ["test_abaqus_python.txt"]
-source = ["turbo_turtle/_abaqus_python/test_abaqus_utilities.py"]
+source = [
+    "turbo_turtle/_abaqus_python/test_abaqus_utilities.py",
+    "turbo_turtle/_abaqus_python/test_mixed_utilities.py",
+    "turbo_turtle/_abaqus_python/test_parsers.py",
+    "turbo_turtle/_abaqus_python/test_vertices.py",
+]
 targets = env.Command(
     target=target,
     source=source,
