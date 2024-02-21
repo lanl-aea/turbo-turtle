@@ -62,14 +62,36 @@ def test_construct_prog(basename, expected_prog):
 
 
 subcommand_parser = {
-    "geometry": ("geometry", ["--input-file", "input_file", "--output-file", "output_file"]),
+    "geometry": (
+        "geometry",
+        ["--input-file", "input_file", "--output-file", "output_file"],
+        []
+    ),
+    "cylinder": (
+        "cylinder",
+        ["--inner-radius", "1.", "--outer-radius", "2.", "--height", "1.", "--output-file", "output_file"],
+        []
+    ),
+    "sphere": (
+        "sphere",
+        ["--inner-radius", "1.", "--outer-radius", "2.", "--output-file", "output_file"],
+        ["center"]
+    ),
 }
 
 
-@pytest.mark.parametrize("subcommand, positional_argv",
+@pytest.mark.parametrize("subcommand, required_argv, exclude_keys",
                          subcommand_parser.values(),
                          ids=subcommand_parser.keys())
-def test_subcommand_parser(subcommand, positional_argv):
+def test_subcommand_parser(subcommand, required_argv, exclude_keys):
+    """Test the default value assignments in the subcommand parsers
+
+    :param str subcommand: the subcommand parser to test
+    :param list required_argv: the argv list of strings for parser positional (required) arguments that have no
+        default(s)
+    :param list exclude_keys: keys that aren't used or set by the parser, but are included in the defaults dictionary.
+        These are excluded from the key: value argparse.Namespace tests.
+    """
     subcommand_defaults = getattr(parsers, f"{subcommand}_defaults")
     subcommand_parser = getattr(parsers, f"{subcommand}_parser")
 
@@ -82,9 +104,10 @@ def test_subcommand_parser(subcommand, positional_argv):
             defaults_argv.append(f"--{key.replace('_', '-')}")
             defaults_argv.append(" ".join(map(str, value)))
 
-    argv = ["dummy"] + positional_argv + defaults_argv
+    argv = ["dummy"] + required_argv + defaults_argv
     with patch("sys.argv", argv):
         args, unknown = subcommand_parser().parse_known_args()
     args_dictionary = vars(args)
     for key, value in subcommand_defaults.items():
-        assert args_dictionary[key] == value
+        if key not in exclude_keys:
+            assert args_dictionary[key] == value
