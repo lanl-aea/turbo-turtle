@@ -16,7 +16,7 @@ import _mixed_utilities
 
 
 class TestMixedUtilities(unittest.TestCase):
-    """Python unittest's for :meth:`turbo_turtle._abaqus_python._mixed_utilities`"""
+    """Abaqus Python unittests for :meth:`turbo_turtle._abaqus_python._mixed_utilities`"""
 
     def test_validate_element_type(self):
         tests = [
