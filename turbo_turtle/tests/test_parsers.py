@@ -82,6 +82,26 @@ subcommand_parser = {
         ["--input-file", "input_file"],
         []
     ),
+    "mesh": (
+        "mesh",
+        ["--input-file", "input_file", "--element-type", "C3D8"],
+        []
+    ),
+    "merge": (
+        "merge",
+        ["--input-file", "input_file", "--output-file", "output_file"],
+        []
+    ),
+    "export": (
+        "export",
+        ["--input-file", "input_file"],
+        ["output_type"]
+    ),
+    "image": (
+        "image",
+        ["--input-file", "input_file", "--output-file", "output_file"],
+        []
+    ),
 }
 
 
