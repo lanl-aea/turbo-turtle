@@ -61,12 +61,20 @@ def test_construct_prog(basename, expected_prog):
     assert prog == expected_prog
 
 
-def test_geometry_parser():
-    positional_argv = ["--input-file", "input_file", "--output-file", "output_file"]
+subcommand_parser = {
+    "geometry": ("geometry", ["--input-file", "input_file", "--output-file", "output_file"]),
+}
 
-    defaults = parsers.geometry_defaults
+
+@pytest.mark.parametrize("subcommand, positional_argv",
+                         subcommand_parser.values(),
+                         ids=subcommand_parser.keys())
+def test_subcommand_parser(subcommand, positional_argv):
+    subcommand_defaults = getattr(parsers, f"{subcommand}_defaults")
+    subcommand_parser = getattr(parsers, f"{subcommand}_parser")
+
     defaults_argv = []
-    for key, value in defaults.items():
+    for key, value in subcommand_defaults.items():
         if not isinstance(value, list) and value is not None and value is not False:
             defaults_argv.append(f"--{key.replace('_', '-')}")
             defaults_argv.append(str(value))
@@ -76,7 +84,7 @@ def test_geometry_parser():
 
     argv = ["dummy"] + positional_argv + defaults_argv
     with patch("sys.argv", argv):
-        args, unknown = parsers.geometry_parser().parse_known_args()
+        args, unknown = subcommand_parser().parse_known_args()
     args_dictionary = vars(args)
-    for key, value in defaults.items():
+    for key, value in subcommand_defaults.items():
         assert args_dictionary[key] == value
