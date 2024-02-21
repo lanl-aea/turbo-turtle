@@ -11,13 +11,15 @@ pytest_source_list = [
 ]
 
 pytest_command = "PYTHONDONTWRITEBYTECODE=1 pytest --junitxml=${TARGET.abspath}"
-target = ["test_results.xml"]
+coverage_command = "coverage xml"
+target = ["test_results.xml", "coverage.xml"]
 
 targets = env.Command(
     target=target,
     source=pytest_source_list,
     action=[
-        "${pytest_command} -vvv",
+        "${pytest_command} -vvv --cov",
+        "${coverage_command}"
     ],
     pytest_command=pytest_command
 )
