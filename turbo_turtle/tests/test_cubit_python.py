@@ -65,3 +65,22 @@ create_arc_from_coordinates = {
 def test_create_arc_from_coordinates(center, point1, point2, length):
     curve = _cubit_python._create_arc_from_coordinates(center, point1, point2)
     assert numpy.isclose(curve.length(), length)
+
+
+create_surface_from_coordinates = {
+    "too few points": (numpy.array([[0., 0., 0.]]), pytest.raises(RuntimeError)),
+    "three points": (numpy.array([[0., 0., 0.], [1., 0., 0.], [0., 1., 0.]]), does_not_raise()),
+    "four points": (numpy.array([[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1., 0.]]), does_not_raise()),
+}
+
+
+@pytest.mark.parametrize("coordinates, outcome",
+                         create_surface_from_coordinates.values(),
+                         ids=create_surface_from_coordinates.keys())
+def test_create_surface_from_coordinates(coordinates, outcome):
+    with outcome:
+        try:
+            surface = _cubit_python._create_surface_from_coordinates(coordinates)
+            assert len(surface.curves()) == coordinates.shape[0]
+        finally:
+            pass
