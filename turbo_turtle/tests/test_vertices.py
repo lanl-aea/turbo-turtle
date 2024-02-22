@@ -190,6 +190,24 @@ def test_line_pairs(all_splines, expected):
         assert numpy.allclose(pair[1], expectation[1])
 
 
+scale_and_offset_coordinates = {
+    "no modifications": (
+        numpy.array([[0., 0.,], [1., 1.]]),
+        1.,
+        0.,
+        numpy.array([[0., 0.,], [1., 1.]])
+    )
+}
+
+
+@pytest.mark.parametrize("coordinates, unit_conversion, y_offset, expected",
+                         scale_and_offset_coordinates.values(),
+                         ids=scale_and_offset_coordinates.keys())
+def test_scale_and_offset_coordinates(coordinates, unit_conversion, y_offset, expected):
+    new_coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+    assert numpy.allclose(new_coordinates, expected)
+
+
 the_real_mccoy = {
     "washer": (
         numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),

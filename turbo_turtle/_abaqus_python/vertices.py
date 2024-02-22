@@ -65,7 +65,7 @@ def sphere(center, inner_radius, outer_radius, quadrant):
     return points
 
 
-def scale_and_offset_coordinates(coordinates, unit_conversion, y_offset):
+def scale_and_offset_coordinates(coordinates, unit_conversion=1., y_offset=0.):
     """Scale and offset XY coordinates in a 2 column numpy array
 
     First multiply by the unit conversion. Then offset the Y coordinates (2nd column) by adding the y offset
