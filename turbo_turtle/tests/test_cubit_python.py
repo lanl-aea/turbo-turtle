@@ -81,6 +81,8 @@ def test_create_surface_from_coordinates(coordinates, outcome):
     with outcome:
         try:
             surface = _cubit_python._create_surface_from_coordinates(coordinates)
+            assert len(surface.surfaces()) == 1
             assert len(surface.curves()) == coordinates.shape[0]
+            assert len(surface.vertices()) == coordinates.shape[0]
         finally:
             pass
