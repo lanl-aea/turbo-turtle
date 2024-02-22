@@ -82,8 +82,7 @@ def _geometry_xyplot(input_file, output_file,
     for file_name, new_part, color in zip(input_file, part_name, colors):
         coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
                                                          expected_dimensions=2, expected_columns=2)
-        coordinates = coordinates * unit_conversion
-        coordinates[:, 1] += y_offset
+        coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:

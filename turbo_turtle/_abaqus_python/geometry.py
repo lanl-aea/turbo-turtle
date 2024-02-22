@@ -65,8 +65,7 @@ def main(input_file, output_file,
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
-        coordinates = coordinates * unit_conversion
-        coordinates[:, 1] += y_offset
+        coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         try:
             draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
