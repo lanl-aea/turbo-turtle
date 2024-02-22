@@ -22,6 +22,7 @@ Internal Changes
 - Refact and unit test the coordinate modification performed by geometry subcommand (:issue:`102`, :merge:`117`). By
   `Kyle Brindley`_.
 - Add a missing unit test for the Abaqus Python CLI merge construction (:merge:`118`). By `Kyle Brindley`_.
+- Draft unit tests for Cubit curve and surface creation from coordinates (:merge:`119`). By `Kyle Brindley`_.
 
 Enhancements
 ============
