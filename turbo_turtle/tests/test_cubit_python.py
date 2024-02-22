@@ -47,5 +47,21 @@ create_curve_from_coordinates = {
                          ids=create_curve_from_coordinates.keys())
 def test_create_curve_from_coordinates(point1, point2, center, length):
     curve = _cubit_python._create_curve_from_coordinates(point1, point2)
+    assert curve.dimension() == 1
     assert numpy.isclose(curve.length(), length)
     assert numpy.allclose(curve.center_point(), center)
+
+
+quarter_arc_length = 2. * numpy.pi / 4.
+create_arc_from_coordinates = {
+    "float": ((0., 0., 0.), (1., 0., 0.), (0., 1., 0.), quarter_arc_length),
+    "int": ((0, 0, 0), (1, 0, 0), (0, 1, 0), quarter_arc_length),
+}
+
+
+@pytest.mark.parametrize("center, point1, point2, length",
+                         create_arc_from_coordinates.values(),
+                         ids=create_arc_from_coordinates.keys())
+def test_create_arc_from_coordinates(center, point1, point2, length):
+    curve = _cubit_python._create_arc_from_coordinates(center, point1, point2)
+    assert numpy.isclose(curve.length(), length)
