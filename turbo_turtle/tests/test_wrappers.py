@@ -258,6 +258,18 @@ wrapper_tests = {
         mesh_expected_options_sparse + mesh_unexpected_options_sparse,
         []
     ),
+    "merge: sparse": (
+        "merge",
+        merge_namespace_sparse,
+        merge_expected_options_sparse,
+        merge_unexpected_options_sparse
+    ),
+    "merge: full": (
+        "merge",
+        merge_namespace_full,
+        merge_expected_options_sparse + merge_unexpected_options_sparse,
+        []
+    ),
     "export: sparse": (
         "export",
         export_namespace_sparse,
