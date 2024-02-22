@@ -65,6 +65,21 @@ def sphere(center, inner_radius, outer_radius, quadrant):
     return points
 
 
+def scale_and_offset_coordinates(coordinates, unit_conversion, y_offset):
+    """Scale and offset XY coordinates in a 2 column numpy array
+
+    First multiply by the unit conversion. Then offset the Y coordinates (2nd column) by adding the y offset
+
+    :param numpy.array coordinates: [N, 2] array of XY coordinates.
+    :param float unit_conversion: multiplication factor applies to all coordinates
+    :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
+        conversion.
+    """
+    coordinates = coordinates * unit_conversion
+    coordinates[:, 1] += y_offset
+    return coordinates
+
+
 def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
     """Accept a [N, 2] numpy array of XY coordinates and return line point pairs and splines
 
