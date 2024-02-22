@@ -46,7 +46,7 @@ create_curve_from_coordinates = {
                          create_curve_from_coordinates.values(),
                          ids=create_curve_from_coordinates.keys())
 def test_create_curve_from_coordinates(point1, point2, center, length):
-    curve = _cubit_python._create_curve_from_coordinates(point1, point2)
+    curve = _cubit_python.create_curve_from_coordinates(point1, point2)
     assert curve.dimension() == 1
     assert numpy.isclose(curve.length(), length)
     assert numpy.allclose(curve.center_point(), center)
@@ -63,7 +63,7 @@ create_arc_from_coordinates = {
                          create_arc_from_coordinates.values(),
                          ids=create_arc_from_coordinates.keys())
 def test_create_arc_from_coordinates(center, point1, point2, length):
-    curve = _cubit_python._create_arc_from_coordinates(center, point1, point2)
+    curve = _cubit_python.create_arc_from_coordinates(center, point1, point2)
     assert numpy.isclose(curve.length(), length)
 
 
@@ -80,7 +80,7 @@ create_surface_from_coordinates = {
 def test_create_surface_from_coordinates(coordinates, outcome):
     with outcome:
         try:
-            surface = _cubit_python._create_surface_from_coordinates(coordinates)
+            surface = _cubit_python.create_surface_from_coordinates(coordinates)
             assert len(surface.surfaces()) == 1
             assert len(surface.curves()) == coordinates.shape[0]
             assert len(surface.vertices()) == coordinates.shape[0]

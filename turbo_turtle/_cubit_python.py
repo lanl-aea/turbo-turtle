@@ -115,7 +115,7 @@ def _draw_surface(lines, splines):
     for first, second in lines:
         point1 = tuple(first) + (0.,)
         point2 = tuple(second) + (0.,)
-        curves.append(_create_curve_from_coordinates(point1, point2))
+        curves.append(create_curve_from_coordinates(point1, point2))
     for spline in splines:
         zero_column = numpy.zeros([len(spline), 1])
         spline_3d = numpy.append(spline, zero_column, axis=1)
@@ -123,7 +123,7 @@ def _draw_surface(lines, splines):
     return cubit.create_surface(curves)
 
 
-def _create_curve_from_coordinates(point1, point2):
+def create_curve_from_coordinates(point1, point2):
     """Create a curve from 2 three-dimensional coordinates
 
     :param tuple point1: First set of coordinates (x1, y1, z1)
@@ -156,7 +156,7 @@ def _create_spline_from_coordinates(coordinates):
     return curve
 
 
-def _create_arc_from_coordinates(center, point1, point2):
+def create_arc_from_coordinates(center, point1, point2):
     """Create a circular arc cubit.Curve object from center and points on the curve
 
     :returns: cubit curve object
@@ -179,7 +179,7 @@ def _create_arc_from_coordinates(center, point1, point2):
     return curve
 
 
-def _create_surface_from_coordinates(coordinates):
+def create_surface_from_coordinates(coordinates):
     """Create a surface from an [N, 3] array of coordinates
 
     Each row of the array represents a coordinate in 3D space. Must have at least 3 rows or a RuntimeError is raised.
@@ -198,7 +198,7 @@ def _create_surface_from_coordinates(coordinates):
     last = numpy.array([coordinates[-1]])
     coordinates_shift = numpy.append(last, coordinates[0:-1], axis=0)
     for point1, point2 in zip(coordinates, coordinates_shift):
-        curves.append(_create_curve_from_coordinates(point1, point2))
+        curves.append(create_curve_from_coordinates(point1, point2))
     return cubit.create_surface(curves)
 
 
@@ -447,10 +447,10 @@ def _sphere(inner_radius, outer_radius,
         inner_point1 = center
         inner_point2 = center
     else:
-        curves.append(_create_arc_from_coordinates(center_3d, inner_point1, inner_point2))
-    curves.append(_create_arc_from_coordinates(center_3d, outer_point1, outer_point2))
-    curves.append(_create_curve_from_coordinates(inner_point1, outer_point1))
-    curves.append(_create_curve_from_coordinates(inner_point2, outer_point2))
+        curves.append(create_arc_from_coordinates(center_3d, inner_point1, inner_point2))
+    curves.append(create_arc_from_coordinates(center_3d, outer_point1, outer_point2))
+    curves.append(create_curve_from_coordinates(inner_point1, outer_point1))
+    curves.append(create_curve_from_coordinates(inner_point2, outer_point2))
     surface = cubit.create_surface(curves)
 
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
@@ -490,7 +490,7 @@ def webcut_local_coordinate_primary_planes(center, xvector, zvector, names):
         numpy.array([center, center + yvector, center + zvector]),
         numpy.array([center, center + zvector, center + xvector]),
     ]
-    primary_surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+    primary_surfaces = [create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
     primary_surface_numbers = _surface_numbers(primary_surfaces)
     primary_surface_string = " ".join(map(str, primary_surface_numbers))
 
@@ -526,7 +526,7 @@ def create_pyramid_volumes(center, xvector, zvector, size):
 
     # Create 6 4-sided pyramidal bodies defining the partitioning intersections
     surface_coordinates = vertices.pyramid_surfaces(center, xvector, zvector, size)
-    pyramid_surfaces = [_create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
+    pyramid_surfaces = [create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
 
     # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
     pyramid_volume_surfaces = [
