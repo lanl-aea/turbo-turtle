@@ -119,7 +119,7 @@ def _draw_surface(lines, splines):
     for spline in splines:
         zero_column = numpy.zeros([len(spline), 1])
         spline_3d = numpy.append(spline, zero_column, axis=1)
-        curves.append(_create_spline_from_coordinates(spline_3d))
+        curves.append(create_spline_from_coordinates(spline_3d))
     return cubit.create_surface(curves)
 
 
@@ -137,7 +137,7 @@ def create_curve_from_coordinates(point1, point2):
     return cubit.create_curve(vertex1, vertex2)
 
 
-def _create_spline_from_coordinates(coordinates):
+def create_spline_from_coordinates(coordinates):
     """Create a spline from a list of coordinates
 
     :param numpy.array coordinates: [N, 3] array of coordinates (x, y, z)
@@ -145,6 +145,11 @@ def _create_spline_from_coordinates(coordinates):
     :returns: Cubit curve object defining a spline
     :rtype: cubit.Curve
     """
+    coordinates = numpy.array(coordinates)
+    minimum = 2
+    if coordinates.shape[0] < minimum:
+        raise RuntimeError(f"Requires at least {minimum} coordinates to create a spline")
+
     points = []
     for point in coordinates:
         points.append(cubit.create_vertex(*tuple(point)))

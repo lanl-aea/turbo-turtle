@@ -52,6 +52,26 @@ def test_create_curve_from_coordinates(point1, point2, center, length):
     assert numpy.allclose(curve.center_point(), center)
 
 
+create_spline_from_coordinates = {
+    "too few points": (numpy.array([[0., 0., 0.]]), pytest.raises(RuntimeError)),
+    "two points": (numpy.array([[0., 0., 0.], [1., 0., 0.]]), does_not_raise()),
+    "three points": (numpy.array([[0., 0., 0.], [1., 0., 0.], [0., 1., 0.]]), does_not_raise()),
+    "four points": (numpy.array([[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1., 0.]]), does_not_raise()),
+}
+
+
+@pytest.mark.parametrize("coordinates, outcome",
+                         create_spline_from_coordinates.values(),
+                         ids=create_spline_from_coordinates.keys())
+def test_create_spline_from_coordinates(coordinates, outcome):
+    with outcome:
+        try:
+            curve = _cubit_python.create_spline_from_coordinates(coordinates)
+            assert curve.dimension() == 1
+        finally:
+            pass
+
+
 quarter_arc_length = 2. * numpy.pi / 4.
 create_arc_from_coordinates = {
     "float": ((0., 0., 0.), (1., 0., 0.), (0., 1., 0.), quarter_arc_length),
@@ -68,7 +88,7 @@ def test_create_arc_from_coordinates(center, point1, point2, length):
 
 
 create_surface_from_coordinates = {
-    "too few points": (numpy.array([[0., 0., 0.]]), pytest.raises(RuntimeError)),
+    "too few points": (numpy.array([[0., 0., 0.], [1., 0., 0.]]), pytest.raises(RuntimeError)),
     "three points": (numpy.array([[0., 0., 0.], [1., 0., 0.], [0., 1., 0.]]), does_not_raise()),
     "four points": (numpy.array([[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1., 0.]]), does_not_raise()),
 }
