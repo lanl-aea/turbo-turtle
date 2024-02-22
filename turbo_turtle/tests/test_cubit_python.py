@@ -15,7 +15,7 @@ cubit_command_or_exception = {
 @pytest.mark.parametrize("command, outcome",
                          cubit_command_or_exception.values(),
                          ids=cubit_command_or_exception.keys())
-def test_cubit_command_or_exception(command, outcome):
+def test_cubit_command_or(command, outcome):
     with outcome:
         try:
             success = _cubit_python.cubit_command_or_exception(command)
@@ -23,10 +23,13 @@ def test_cubit_command_or_exception(command, outcome):
         finally:
             pass
 
-
-cubit_command_or_exit = {
-}
-
-
-def test_cubit_command_or_exit():
-    pass
+    if not isinstance(outcome, does_not_raise):
+        exit_outcome = pytest.raises(SystemExit)
+    else:
+        exit_outcome = outcome
+    with exit_outcome:
+        try:
+            success = _cubit_python.cubit_command_or_exit(command)
+            assert success is True
+        finally:
+            pass
