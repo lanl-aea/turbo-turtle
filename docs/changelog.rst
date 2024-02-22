@@ -19,6 +19,9 @@ Internal Changes
 - Unit test the default argument values in the subcommand argparse parsers (:issue:`55`, :merge:`115`). By `Kyle
   Brindley`_.
 - Report unit test coverage in Gitlab-CI pipelines (:merge:`116`). By `Kyle Brindley`_.
+- Refact and unit test the coordinate modification performed by geometry subcommand (:issue:`102`, :merge:`117`). By
+  `Kyle Brindley`_.
+- Add a missing unit test for the Abaqus Python CLI merge construction (:merge:`118`). By `Kyle Brindley`_.
 
 Enhancements
 ============
