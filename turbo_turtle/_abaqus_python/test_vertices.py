@@ -134,6 +134,37 @@ class TestVertices(unittest.TestCase):
                 assert numpy.allclose(pair[0], expectation[0])
                 assert numpy.allclose(pair[1], expectation[1])
 
+    def test_scale_and_offset_coordinates(self):
+        tests = [
+            (
+                numpy.array([[0., 0.,], [1., 1.]]),
+                1.,
+                0.,
+                numpy.array([[0., 0.,], [1., 1.]])
+            ),
+            (
+                numpy.array([[0., 0.,], [1., 1.]]),
+                2.,
+                0.,
+                numpy.array([[0., 0.,], [2., 2.]])
+            ),
+            (
+                numpy.array([[0., 0.,], [1., 1.]]),
+                1.,
+                1.,
+                numpy.array([[0., 1.,], [1., 2.]])
+            ),
+            (
+                numpy.array([[0., 0.,], [1., 1.]]),
+                2.,
+                1.,
+                numpy.array([[0., 1.,], [2., 3.]])
+            ),
+        ]
+        for coordinates, unit_conversion, y_offset, expected in tests:
+            new_coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+            assert numpy.allclose(new_coordinates, expected)
+
     def test_lines_and_splines(self):
         tests = [
             (
