@@ -196,7 +196,25 @@ scale_and_offset_coordinates = {
         1.,
         0.,
         numpy.array([[0., 0.,], [1., 1.]])
-    )
+    ),
+    "scale": (
+        numpy.array([[0., 0.,], [1., 1.]]),
+        2.,
+        0.,
+        numpy.array([[0., 0.,], [2., 2.]])
+    ),
+    "offset": (
+        numpy.array([[0., 0.,], [1., 1.]]),
+        1.,
+        1.,
+        numpy.array([[0., 1.,], [1., 2.]])
+    ),
+    "both": (
+        numpy.array([[0., 0.,], [1., 1.]]),
+        2.,
+        1.,
+        numpy.array([[0., 1.,], [2., 3.]])
+    ),
 }
 
 
