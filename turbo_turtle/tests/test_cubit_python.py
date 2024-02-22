@@ -19,8 +19,14 @@ def test_cubit_command_or_exception(command, outcome):
     with outcome:
         try:
             success = _cubit_python.cubit_command_or_exception(command)
+            assert success is True
         finally:
             pass
+
+
+cubit_command_or_exit = {
+}
+
 
 def test_cubit_command_or_exit():
     pass
