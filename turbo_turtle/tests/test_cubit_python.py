@@ -1,5 +1,6 @@
 from contextlib import nullcontext as does_not_raise
 
+import numpy
 import pytest
 cubit = pytest.importorskip("cubit", reason="Could not import Cubit")
 
@@ -33,3 +34,18 @@ def test_cubit_command_or(command, outcome):
             assert success is True
         finally:
             pass
+
+
+create_curve_from_coordinates = {
+    "float": ((0., 0., 0.), (1., 0., 0.), (0.5, 0., 0.), 1.0),
+    "int": ((0, 0, 0), (1, 0, 0), (0.5, 0., 0.), 1.0),
+}
+
+
+@pytest.mark.parametrize("point1, point2, center, length",
+                         create_curve_from_coordinates.values(),
+                         ids=create_curve_from_coordinates.keys())
+def test_create_curve_from_coordinates(point1, point2, center, length):
+    curve = _cubit_python._create_curve_from_coordinates(point1, point2)
+    assert numpy.isclose(curve.length(), length)
+    assert numpy.allclose(curve.center_point(), center)
