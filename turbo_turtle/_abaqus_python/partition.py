@@ -221,13 +221,24 @@ def get_inputs():
 
 if __name__ == "__main__":
     try:
+        import abaqus
         center, xvector, zvector, loop_through_parts = get_inputs()
         if center is None:
             print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
         else:
-            model_name=None
-            part_name=[]
+            model_name = session.viewports[session.currentViewportName].displayedObject.modelName
+            if loop_through_parts:
+                part_name = abaqus.mdb.models[model_name].parts.keys()
+            else:
+                part_name = [session.viewports[session.currentViewportName].displayedObject.name]
             partition(center, xvector, zvector, model_name, part_name)
+
+            # Need to reset the viewport - if the last partition action hits the except statement, the user will be left
+            # in a sketch view that is hard to exit from
+            part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
+            session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
+            session.viewports['Viewport: 1'].view.setValues(session.views['Iso'])
+            session.viewports['Viewport: 1'].view.fitView()
 
     except:
         parser = parsers.partition_parser(basename=basename)
