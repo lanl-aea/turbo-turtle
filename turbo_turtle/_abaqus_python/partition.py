@@ -101,11 +101,6 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     import caeModules
     import abaqusConstants
 
-
-    if center is None:
-        print('\nTurboTurtle was canceled\n')
-        return
-
     # Process input and calculate local coordinate system properties
     xvector = vertices.normalize_vector(xvector)
     zvector = vertices.normalize_vector(zvector)
@@ -223,6 +218,9 @@ def get_inputs():
 if __name__ == "__main__":
     try:
         center, xvector, zvector = get_inputs()
+        if center is None:
+            print('\nTurboTurtle was canceled\n')
+        return
         model_name=None
         part_name=[]
         partition(center, xvector, zvector, model_name, part_name)
