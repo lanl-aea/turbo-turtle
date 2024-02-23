@@ -22,6 +22,12 @@ def _docs_parser():
     return parser
 
 
+def _partition_print_path():
+    """Print the absolute path to partition.py
+    """
+    print(f"{_settings._abaqus_python_abspath}/partition.py")
+
+
 def _docs(print_local_path=False):
     """Open or print the package's installed documentation
 
@@ -274,6 +280,8 @@ def main():
         parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
+    elif args.subcommand == "partition" and args.print_local_path:
+        _partition_print_path()
     elif args.subcommand == "geometry-xyplot":
         _geometry_xyplot(args.input_file, args.output_file,
                          part_name=args.part_name,
