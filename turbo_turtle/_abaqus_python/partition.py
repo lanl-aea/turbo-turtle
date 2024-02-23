@@ -191,11 +191,12 @@ def get_inputs():
     fields = (('Center:','0.0, 0.0, 0.0'),
               ('X-Vector:', '1.0, 0.0, 0.0'),
               ('Z-Vector:', '0.0, 0.0, 1.0'),
+              ('Loop Through Parts:', 'No (or Yes/y)'),
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
-    center, xvector, zvector, cp_parameters = getInputs(fields=fields,
+    center, xvector, zvector, loop_through_parts = cp_parameters = getInputs(fields=fields,
         label='Specify Geometric Parameters:',
         dialogTitle='Turbo Turtle', )
-    if center is not None:
+    if center is not None:  # Center will be None if the user hits the "cancel/esc" button
         if cp_parameters != fields[-1][-1]:
             cp_param = [x.replace('\n', '') for x in cp_parameters.split('\n')]
             center = ast.literal_eval(cp_param[0].replace('Center: ', ''))
@@ -211,18 +212,22 @@ def get_inputs():
         print('X-Vector: {}'.format(xvector))
         print('Z-Vector: {}'.format(zvector))
         print('')
-    return center, xvector, zvector
+        if loop_through_parts.upper() == "YES" or loop_through_parts.upper() == "Y":
+            loop_through_parts = True
+        else:
+            loop_through_parts = False  # Accept the default message or anything other than yes/y as False
+    return center, xvector, zvector, loop_through_parts
 
 
 if __name__ == "__main__":
     try:
-        center, xvector, zvector = get_inputs()
+        center, xvector, zvector, loop_through_parts = get_inputs()
         if center is None:
-            print('\nTurboTurtle was canceled\n')
-        return
-        model_name=None
-        part_name=[]
-        partition(center, xvector, zvector, model_name, part_name)
+            print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
+        else:
+            model_name=None
+            part_name=[]
+            partition(center, xvector, zvector, model_name, part_name)
 
     except:
         parser = parsers.partition_parser(basename=basename)
