@@ -194,7 +194,6 @@ def get_inputs():
               ('Loop Through Parts:', 'No (or Yes/y)'),
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
     center, xvector, zvector, loop_through_parts, cp_parameters = getInputs(fields=fields,
-        label='Specify Geometric Parameters:',
         dialogTitle='Turbo Turtle', )
     if center is not None:  # Center will be None if the user hits the "cancel/esc" button
         if cp_parameters != fields[-1][-1]:
@@ -208,6 +207,7 @@ def get_inputs():
             zvector = list(ast.literal_eval(zvector))
         print('\nPartitioning Parameters Entered By User:')
         print('----------------------------------------')
+        print('Only copy the three lines below to use "Copy and Paste Parameters"\n')
         print('Center: {}'.format(center))
         print('X-Vector: {}'.format(xvector))
         print('Z-Vector: {}'.format(zvector))
