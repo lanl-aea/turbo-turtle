@@ -188,7 +188,6 @@ def get_inputs():
     """
     from abaqus import getInputs
 
-
     fields = (('Center:','0.0, 0.0, 0.0'),
               ('X-Vector:', '1.0, 0.0, 0.0'),
               ('Z-Vector:', '0.0, 0.0, 1.0'),
@@ -200,8 +199,8 @@ def get_inputs():
         if cp_parameters != fields[-1][-1]:
             cp_param = [x.replace('\n', '') for x in cp_parameters.split('\n')]
             center = ast.literal_eval(cp_param[0].replace('Center: ', ''))
-            xpoint = ast.literal_eval(cp_param[1].replace('X-Vector: ', ''))
-            zpoint = ast.literal_eval(cp_param[2].replace('Z-Vector: ', ''))
+            xvector = ast.literal_eval(cp_param[1].replace('X-Vector: ', ''))
+            zvector = ast.literal_eval(cp_param[2].replace('Z-Vector: ', ''))
         else:
             center = list(ast.literal_eval(center))
             xvector = list(ast.literal_eval(xvector))
@@ -212,7 +211,7 @@ def get_inputs():
         print('X-Vector: {}'.format(xvector))
         print('Z-Vector: {}'.format(zvector))
         print('')
-    return center, xpoint, zpoint
+    return center, xvector, zvector
 
 
 if __name__ == "__main__":
