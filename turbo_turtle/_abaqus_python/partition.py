@@ -193,7 +193,7 @@ def get_inputs():
               ('Z-Vector:', '0.0, 0.0, 1.0'),
               ('Loop Through Parts:', 'No (or Yes/y)'),
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
-    center, xvector, zvector, loop_through_parts = cp_parameters = getInputs(fields=fields,
+    center, xvector, zvector, loop_through_parts, cp_parameters = getInputs(fields=fields,
         label='Specify Geometric Parameters:',
         dialogTitle='Turbo Turtle', )
     if center is not None:  # Center will be None if the user hits the "cancel/esc" button
