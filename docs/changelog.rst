@@ -8,6 +8,10 @@ Changelog
 v0.11.1 (unreleased)
 ********************
 
+New Features
+============
+- Revamp the Abaqus CAE GUI partitioning capability (:issue:`133`, merge:`122`). By `Thomas Roberts`_.
+
 Internal Changes
 ================
 - Dedicated Cubit imprint and merge function (:issue:`76`, :merge:`110`). By `Kyle Brindley`_.
