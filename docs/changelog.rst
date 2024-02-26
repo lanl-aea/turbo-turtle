@@ -8,12 +8,9 @@ Changelog
 v0.11.1 (unreleased)
 ********************
 
-New Features
-============
-- Revamp the Abaqus CAE GUI partitioning capability (:issue:`133`, merge:`122`). By `Thomas Roberts`_.
-
 Internal Changes
 ================
+- Work-in-progress support for Abaqus CAE GUI partitioning capability (:issue:`133`, merge:`122`). By `Thomas Roberts`_.
 - Dedicated Cubit imprint and merge function (:issue:`76`, :merge:`110`). By `Kyle Brindley`_.
 - Dedicated Cubit local coordinate primary plane webcutting function (:issue:`77`, :merge:`111`). By `Kyle Brindley`_.
 - Dedicated Cubit pyramidal volume creation and partitioning functions (:issue:`131`, :merge:`112`). By `Kyle
