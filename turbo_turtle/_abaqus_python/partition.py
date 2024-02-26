@@ -269,11 +269,11 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
 
 
 if __name__ == "__main__":
-    try:
+    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         gui_wrapper(inputs_function=_partition_gui_get_inputs,
             subcommand_function=partition, 
             post_action_function=_partition_gui_post_action)
-    except:
+    else:
         parser = parsers.partition_parser(basename=basename)
         try:
             args, unknown = parser.parse_known_args()
