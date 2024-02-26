@@ -186,22 +186,15 @@ def _gui_get_inputs():
     * Copy and Paste Parameters - copy and paste the parameters printed to the Abaqus Python terminal to make 
       re-use of previous partition parameters easier
 
-    **IMPORTANT** - this function must return values in the same order as the ``partition`` function
+    **IMPORTANT** - this function must key-value pairs that will successfully unpack as ``**kwargs`` in ``partition``
 
-    :return: ``center`` - center location of the geometry
-    :rtype: list
+    :return: ``user_inputs`` - a dictionary of the following key-value pair types:
 
-    :return: ``xvector`` - location on the x-axis local to the geometry
-    :rtype: list
-
-    :return: ``zvector`` - location on the z-axis local to the geometry
-    :rtype: list
-
-    :return ``model_name`` - name of the model in the current viewport
-    :rtype: str
-
-    :return ``part_name`` - name of the part in the current viewport, or a list of all part names in the model
-    :rtype: list
+    * ``center``: ``list`` type,  center location of the geometry
+    * ``xvector``: ``list`` type, location on the x-axis local to the geometry
+    * ``zvector``: ``list`` type, location on the z-axis local to the geometry
+    * ``model_name``: ``str`` type, name of the model in the current viewport
+    * ``part_name``: ``list`` type, name of the part in the current viewport, or a list of all part names in the model
     """
     from abaqus import getInputs
 
@@ -236,7 +229,11 @@ def _gui_get_inputs():
         else:  # Accept anything other than yes/y as No
             part_name = [session.viewports[session.currentViewportName].displayedObject.name]
         model_name = session.viewports[session.currentViewportName].displayedObject.modelName
-    return center, xvector, zvector, model_name, part_name
+        user_inputs = {'center': center, 'xvector': xvector, 'zvector': zvector,
+                       'model_name': model_name, 'part_name': part_name}
+    else:
+        user_inputs = {}
+    return user_inputs
 
 
 def _gui_post_action(center, xvector, zvector, model_name, part_name):
@@ -259,12 +256,16 @@ def _gui_post_action(center, xvector, zvector, model_name, part_name):
 
 
 def gui_wrapper(inputs_function, subcommand_function, post_action_function=None):
-    """Wrapper around the abaqus.getInputs function and calls a turbo_turtle._abaqus_python module
+    """Wrapper for a function calling ``abaqus.getInputs``, then the wrapper calls a ``turbo_turtle`` subcommand module
 
     ``inputs_function`` cannot have any function arguments. ``inputs_function`` must return
-    values to match the arguments of the ``subcommand_function``. ``post_action_function`` must have identical
-    arguments to ``subcommand_function`` or the ability to ignore provided arguments. Any return values from 
+    a dictionary of key-value pairs that match the ``subcommand_function`` arguments. ``post_action_function`` must have
+    identical arguments to ``subcommand_function`` or the ability to ignore provided arguments. Any return values from
     ``post_action_function`` will have no affect.
+
+    This wrapper expects the dictionary output from ``inputs_function`` to be empty when the GUI interface is exited
+    early (escape or cancel). Otherwise, the dictionary will be unpacked as ``**kwargs`` into ``subcommand_function``
+    and ``post_action_function``.
     
     :param func inputs_function: function to get user inputs through the Abaqus CAE GUI
     :param func subcommand_function: function with arguments matching the return values from ``inputs_function``
@@ -272,13 +273,13 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
     """
     import abaqus
 
-    user_inputs = inputs_function()  # Tuple of user inputs, if the user Cancels, all will be None
-    if user_inputs[0] is None:
-        print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
-    else:
-        subcommand_function(*user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
+    user_inputs = inputs_function()  # Dictionary user inputs, if the user Cancels, user_inputs will be {}
+    if user_inputs:
+        subcommand_function(**user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
         if post_action_function is not None:
-            post_action_function(*user_inputs)
+            post_action_function(**user_inputs)
+    else:
+        print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
 
 
 if __name__ == "__main__":
