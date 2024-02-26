@@ -22,7 +22,7 @@ def _docs_parser():
     return parser
 
 
-def _print_abaqus_subcommand_file_location(subcommand):
+def _print_abaqus_module_location(subcommand):
     """Print the absolute path to the Abaqus python module for a given subcommand
 
     :param str subcommand: Abaqus subcommand name
@@ -112,10 +112,11 @@ def add_abaqus_and_cubit(parsers):
                             help="Abaqus executable options (default: %(default)s)")
         parser.add_argument("--cubit-command", nargs="+", default=_settings._default_cubit_options,
                             help="Cubit executable options (default: %(default)s)")
-        parser.add_argument("-p", "--print-subcommand-path", action="store_true",
-                            help="Print the absolute path to the locally installed subcommand Abaqus python module. " \
-                                 "Run this script in Abaqus CAE Python terminal with 'execPyFile()' or from " \
-                                 "the File->Run Script menu")
+        parser.add_argument("-p", "--print-abaqus-module-path", action="store_true",
+                            help="Print the absolute path to the locally installed Abaqus python module for " \
+                                 "the specified subcommand. Run this script in Abaqus CAE Python terminal with " \
+                                 "'execPyFile()' or from the File->Run Script menu. NOTE: this is an alpha " \
+                                 "feature for early adopters and developer testing of possible GUI support.")
         # TODO: remove deprecated cubit flag
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
         backend = parser.add_mutually_exclusive_group(required=False)
@@ -286,8 +287,8 @@ def main():
         parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
-    elif args.print_subcommand_path:
-        _print_abaqus_subcommand_file_location(args.subcommand)
+    elif args.print_abaqus_module_path:
+        _print_abaqus_module_location(args.subcommand)
     elif args.subcommand == "geometry-xyplot":
         _geometry_xyplot(args.input_file, args.output_file,
                          part_name=args.part_name,
