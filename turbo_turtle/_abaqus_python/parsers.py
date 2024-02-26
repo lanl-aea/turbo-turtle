@@ -288,7 +288,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     required = parser.add_argument_group('required arguments')
-    required.add_argument('--input-file', type=str,
+    required.add_argument('--input-file', type=str, required=True,
                           help="Abaqus model database to open (default: %(default)s)")
 
     optional = parser.add_argument_group('optional arguments')
@@ -306,11 +306,6 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
                           help=part_name_help)
     optional.add_argument('--big-number', type=positive_float, default=partition_defaults["big_number"],
                           help="Number larger than the outer radius of the part to partition (default: %(default)s)")
-    local_path_help = "Print the path to the local install of Turbo-Turtle's partition script. Run this script in " \
-                      "Abaqus CAE Python terminal with 'execPyFile()' or from the File->Run Script menu"
-    optional.add_argument('--print-local-path', action='store_true',
-                          help=local_path_help)
-
     return parser
 
 
