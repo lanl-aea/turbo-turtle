@@ -22,10 +22,12 @@ def _docs_parser():
     return parser
 
 
-def _partition_print_path():
-    """Print the absolute path to partition.py
+def _print_abaqus_subcommand_file_location(subcommand):
+    """Print the absolute path to the Abaqus python module for a given subcommand
+
+    :param str subcommand: Abaqus subcommand name
     """
-    print(f"{_settings._abaqus_python_abspath}/partition.py")
+    print(f"{_settings._abaqus_python_abspath}/{subcommand}.py")
 
 
 def _docs(print_local_path=False):
@@ -280,8 +282,8 @@ def main():
         parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
-    elif args.subcommand == "partition" and args.print_local_path:
-        _partition_print_path()
+    elif args.print_local_path:
+        _print_abaqus_subcommand_file_location(args.subcommand)
     elif args.subcommand == "geometry-xyplot":
         _geometry_xyplot(args.input_file, args.output_file,
                          part_name=args.part_name,
