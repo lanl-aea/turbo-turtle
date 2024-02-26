@@ -117,7 +117,7 @@ def add_abaqus_and_cubit(parsers):
                             help="Abaqus executable options (default: %(default)s)")
         parser.add_argument("--cubit-command", nargs="+", default=_settings._default_cubit_options,
                             help="Cubit executable options (default: %(default)s)")
-        parser.add_argument("-p", "--print-abaqus-module-path", action="store_true",
+        parser.add_argument("--print-abaqus-module-path", action="store_true",
                             help="Print the absolute path to the locally installed Abaqus python module for " \
                                  "the specified subcommand. Run this script in Abaqus CAE Python terminal with " \
                                  "'execPyFile()' or from the File->Run Script menu. NOTE: this is an alpha " \
