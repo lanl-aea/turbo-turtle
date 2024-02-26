@@ -23,7 +23,14 @@ def _docs_parser():
 
 
 def _print_abaqus_module_location(subcommand):
-    """Print the absolute path to the Abaqus python module for a given subcommand
+    """Print the absolute path to the Abaqus python module for a given subcommand.
+
+    This function assumes the naming convention that the subcommand have a matching Abaqus python module with an
+    identical name existing in ``_settings.abaqus_python_abspath``.
+
+    The following subcommands depend on this naming convention:
+
+    * :meth:`turbo_turtle._abaqus_python.partition`
 
     :param str subcommand: Abaqus subcommand name
     """
