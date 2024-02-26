@@ -205,6 +205,8 @@ def _partition_gui_get_inputs():
     """
     from abaqus import getInputs
 
+    model_name=None  # Set defaults in case the user cancels turbo-turtle
+    part_name=[]
     fields = (('Center:','0.0, 0.0, 0.0'),
               ('X-Vector:', '1.0, 0.0, 0.0'),
               ('Z-Vector:', '0.0, 0.0, 1.0'),
@@ -237,9 +239,17 @@ def _partition_gui_get_inputs():
     return center, xvector, zvector, model_name, part_name
 
 
-def _partition_gui_post_action():
-    # Need to reset the viewport - if the last partition action hits the except statement, the user will be left
-    # in a sketch view that is hard to exit from
+def _partition_gui_post_action(center, xvector, zvector, model_name, part_name):
+    """Action performed after running partition
+
+    After partitioning, this funciton resets the viewport - if the last partition action hits the except statement, the
+    user will otherwise be left in a sketch view that is hard to exit from
+
+    This function is designed to have the exact same arguments as 
+    :meth:`turbo_turtle._abaqus_python.partition.partition`
+    """
+    import abaqus
+
     part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
     session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
     session.viewports['Viewport: 1'].view.setValues(session.views['Iso'])
@@ -249,9 +259,10 @@ def _partition_gui_post_action():
 def gui_wrapper(inputs_function, subcommand_function, post_action_function=None):
     """Wrapper around the abaqus.getInputs function and calls a turbo_turtle._abaqus_python module
 
-    ``inputs_function`` and ``post_action_function`` cannot have any function arguments. ``inputs_function`` must return 
-    values to match the arguments of the ``subcommand_function``. Any return values from ``post_action_function`` will 
-    have no affect.
+    ``inputs_function`` cannot have any function arguments. ``inputs_function`` must return
+    values to match the arguments of the ``subcommand_function``. ``post_action_function`` must have identical
+    arguments to ``subcommand_function`` or the ability to ignore provided arguments. Any return values from 
+    ``post_action_function`` will have no affect.
     
     :param func inputs_function: function to get user inputs through the Abaqus CAE GUI
     :param func subcommand_function: function with arguments matching the return values from ``inputs_function``
@@ -265,7 +276,7 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
     else:
         subcommand_function(*user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
         if post_action_function is not None:
-            post_action_function()
+            post_action_function(*user_inputs)
 
 
 if __name__ == "__main__":
