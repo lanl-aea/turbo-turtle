@@ -205,8 +205,8 @@ def _partition_gui_get_inputs():
     """
     from abaqus import getInputs
 
-    model_name=None  # Set defaults in case the user cancels turbo-turtle
-    part_name=[]
+    model_name = None  # Set defaults in case the user cancels turbo-turtle
+    part_name = []
     fields = (('Center:','0.0, 0.0, 0.0'),
               ('X-Vector:', '1.0, 0.0, 0.0'),
               ('Z-Vector:', '0.0, 0.0, 1.0'),
@@ -242,8 +242,10 @@ def _partition_gui_get_inputs():
 def _partition_gui_post_action(center, xvector, zvector, model_name, part_name):
     """Action performed after running partition
 
-    After partitioning, this funciton resets the viewport - if the last partition action hits the except statement, the
-    user will otherwise be left in a sketch view that is hard to exit from
+    After partitioning, this funciton resets the viewport - if the last partition action hits the an AbaqusException
+    except statement in the ``partition`` function, the user will otherwise be left in a sketch view that is hard to
+    exit from. An example of this is partioning a half-sphere; half of the partitioning actions are expected to fail,
+    since there is no geometry to partition on the open-end of the half-sphere.
 
     This function is designed to have the exact same arguments as 
     :meth:`turbo_turtle._abaqus_python.partition.partition`
@@ -282,8 +284,8 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
 if __name__ == "__main__":
     if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         gui_wrapper(inputs_function=_partition_gui_get_inputs,
-            subcommand_function=partition, 
-            post_action_function=_partition_gui_post_action)
+                    subcommand_function=partition,
+                    post_action_function=_partition_gui_post_action)
     else:
         parser = parsers.partition_parser(basename=basename)
         try:
