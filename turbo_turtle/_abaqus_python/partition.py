@@ -258,6 +258,7 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
     :param func post_action_function: function to call for script actions after calling ``subcommand_function``
     """
     import abaqus
+
     user_inputs = inputs_function()  # Tuple of user inputs, if the user Cancels, all will be None
     if user_inputs[0] is None:
         print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
