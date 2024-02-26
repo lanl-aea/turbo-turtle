@@ -171,11 +171,22 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         abaqus.mdb.models[model_name].parts[current_part].checkGeometry()
 
 
-def get_inputs():
+def _partition_gui_get_inputs():
     """Interactive Inputs
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
-    GUI window with text boxes to enter values for the outputs listed below:
+    GUI window with text boxes to enter the following values:
+    
+    GUI-INPUTS
+    ==========
+    * Center - center location of the geometry
+    * X-Vector - location on the x-axis local to the geometry
+    * Z-Vector - location on the z-axis local to the geometry
+    * Loop Through Parts - Yes/No value to loop through all parts in the current model
+    * Copy and Paste Parameters - copy and paste the parameters printed to the Abaqus Python terminal to make 
+      re-use of previous partition parameters easier
+
+    **IMPORTANT** - this function must return values in the same order as the ``partition`` function
 
     :return: ``center`` - center location of the geometry
     :rtype: list
@@ -184,6 +195,12 @@ def get_inputs():
     :rtype: list
 
     :return: ``zvector`` - location on the z-axis local to the geometry
+    :rtype: list
+
+    :return ``model_name`` - name of the model in the current viewport
+    :rtype: str
+
+    :return ``part_name`` - name of the part in the current viewport, or a list of all part names in the model
     :rtype: list
     """
     from abaqus import getInputs
@@ -213,33 +230,48 @@ def get_inputs():
         print('Z-Vector: {}'.format(zvector))
         print('')
         if loop_through_parts.upper() == "YES" or loop_through_parts.upper() == "Y":
-            loop_through_parts = True
-        else:
-            loop_through_parts = False  # Accept the default message or anything other than yes/y as False
-    return center, xvector, zvector, loop_through_parts
+            part_name = abaqus.mdb.models[model_name].parts.keys()
+        else:  # Accept anything other than yes/y as No
+            part_name = [session.viewports[session.currentViewportName].displayedObject.name]
+        model_name = session.viewports[session.currentViewportName].displayedObject.modelName
+    return center, xvector, zvector, model_name, part_name
+
+
+def _partition_gui_post_action():
+    # Need to reset the viewport - if the last partition action hits the except statement, the user will be left
+    # in a sketch view that is hard to exit from
+    part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
+    session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
+    session.viewports['Viewport: 1'].view.setValues(session.views['Iso'])
+    session.viewports['Viewport: 1'].view.fitView()
+
+
+def gui_wrapper(inputs_function, subcommand_function, post_action_function=None):
+    """Wrapper around the abaqus.getInputs function and calls a turbo_turtle._abaqus_python module
+
+    ``inputs_function`` and ``post_action_function`` cannot have any function arguments. ``inputs_function`` must return 
+    values to match the arguments of the ``subcommand_function``. Any return values from ``post_action_function`` will 
+    have no affect.
+    
+    :param func inputs_function: function to get user inputs through the Abaqus CAE GUI
+    :param func subcommand_function: function with arguments matching the return values from ``inputs_function``
+    :param func post_action_function: function to call for script actions after calling ``subcommand_function``
+    """
+    import abaqus
+    user_inputs = inputs_function()  # Tuple of user inputs, if the user Cancels, all will be None
+    if user_inputs[0] is None:
+        print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
+    else:
+        subcommand_function(*user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
+        if post_action_function is not None:
+            post_action_function()
 
 
 if __name__ == "__main__":
     try:
-        import abaqus
-        center, xvector, zvector, loop_through_parts = get_inputs()
-        if center is None:
-            print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
-        else:
-            model_name = session.viewports[session.currentViewportName].displayedObject.modelName
-            if loop_through_parts:
-                part_name = abaqus.mdb.models[model_name].parts.keys()
-            else:
-                part_name = [session.viewports[session.currentViewportName].displayedObject.name]
-            partition(center, xvector, zvector, model_name, part_name)
-
-            # Need to reset the viewport - if the last partition action hits the except statement, the user will be left
-            # in a sketch view that is hard to exit from
-            part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
-            session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
-            session.viewports['Viewport: 1'].view.setValues(session.views['Iso'])
-            session.viewports['Viewport: 1'].view.fitView()
-
+        gui_wrapper(inputs_function=_partition_gui_get_inputs,
+            subcommand_function=partition, 
+            post_action_function=_partition_gui_post_action)
     except:
         parser = parsers.partition_parser(basename=basename)
         try:
