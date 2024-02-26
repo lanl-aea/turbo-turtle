@@ -171,7 +171,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         abaqus.mdb.models[model_name].parts[current_part].checkGeometry()
 
 
-def _partition_gui_get_inputs():
+def _gui_get_inputs():
     """Interactive Inputs
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
@@ -239,7 +239,7 @@ def _partition_gui_get_inputs():
     return center, xvector, zvector, model_name, part_name
 
 
-def _partition_gui_post_action(center, xvector, zvector, model_name, part_name):
+def _gui_post_action(center, xvector, zvector, model_name, part_name):
     """Action performed after running partition
 
     After partitioning, this funciton resets the viewport - if the last partition action hits the an AbaqusException
@@ -283,9 +283,9 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
 
 if __name__ == "__main__":
     if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
-        gui_wrapper(inputs_function=_partition_gui_get_inputs,
+        gui_wrapper(inputs_function=_gui_get_inputs,
                     subcommand_function=partition,
-                    post_action_function=_partition_gui_post_action)
+                    post_action_function=_gui_post_action)
     else:
         parser = parsers.partition_parser(basename=basename)
         try:
