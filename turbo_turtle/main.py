@@ -34,6 +34,8 @@ def _print_abaqus_module_location(subcommand):
 
     :param str subcommand: Abaqus subcommand name
     """
+    # TODO: remove need for consistency between subcommand and abaqus python module name
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/134
     print(f"{_settings._abaqus_python_abspath}/{subcommand}.py")
 
 
