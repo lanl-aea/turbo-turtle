@@ -28,10 +28,6 @@ def _print_abaqus_module_location(subcommand):
     This function assumes the naming convention that the subcommand have a matching Abaqus python module with an
     identical name existing in ``_settings.abaqus_python_abspath``.
 
-    The following subcommands depend on this naming convention:
-
-    * :meth:`turbo_turtle._abaqus_python.partition`
-
     :param str subcommand: Abaqus subcommand name
     """
     # TODO: remove need for consistency between subcommand and abaqus python module name
