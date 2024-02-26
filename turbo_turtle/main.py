@@ -125,7 +125,8 @@ def add_abaqus_and_cubit(parsers):
                             help="Print the absolute path to the locally installed Abaqus python module for " \
                                  "the specified subcommand. Run this script in Abaqus CAE Python terminal with " \
                                  "'execPyFile()' or from the File->Run Script menu. NOTE: this is an alpha " \
-                                 "feature for early adopters and developer testing of possible GUI support.")
+                                 "feature for early adopters and developer testing of possible GUI support " \
+                                 "(default: %(default)s)")
         # TODO: remove deprecated cubit flag
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
         backend = parser.add_mutually_exclusive_group(required=False)
