@@ -26,3 +26,10 @@ def test_docs():
          pytest.raises(SystemExit):
         main._docs(print_local_path=True)
         mock_webbrowser_open.assert_not_called()
+
+def test_print_abaqus_module():
+    """Test the print-abaqus-module subcommand behavior"""
+    fake_subcommand = "fake_subcommand"
+    expected_output = f"{_settings._abaqus_python_abspath}/{fake_subcommand}.py"
+    returned_output = main._print_abaqus_module_location(fake_subcommand)
+    assert expected_output == returned_output
