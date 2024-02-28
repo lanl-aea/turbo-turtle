@@ -6,6 +6,8 @@ from turbo_turtle import _settings
 from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import parsers
 
+from turbo_turtle._abaqus_python._mixed_utilities import sys_exit
+
 
 def _docs_parser():
     """Get parser object for docs subcommand command line options
@@ -44,23 +46,27 @@ def _docs(print_local_path=False):
 
 def _print_abaqus_module_parser():
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("--specify-subcommand",  # Can't use --subcommand because it conflicts with the main parser
-                        type=str, required=True,
+    parser.add_argument("specify_subcommand",  # Can't use --subcommand because it conflicts with the main parser
                         help="Subcommand to query for printing the Abaqus python module absolute path")
     return parser
 
 
-def _print_abaqus_module_location(subcommand):
+def _print_abaqus_module_location(subcommand, subcommand_list):
     """Print the absolute path to the Abaqus python module for a given subcommand.
 
     This function assumes the naming convention that the subcommand have a matching Abaqus python module with an
-    identical name existing in ``_settings.abaqus_python_abspath``.
+    identical name existing in ``_settings.abaqus_python_abspath``. If ``subcommand`` is not in the list of valid
+    subcommands, this function will exit with an error.
 
     :param str subcommand: Abaqus subcommand name
+    :param list subcommand_list: list of valid subcommands
     """
-    # TODO: remove need for consistency between subcommand and abaqus python module name
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/134
-    print(f"{_settings._abaqus_python_abspath}/{subcommand}.py")
+    if subcommand not in subcommand_list:
+        sys_exit(f"'{subcommand}' is not a valid subcommand")
+    else:
+        # TODO: remove need for consistency between subcommand and abaqus python module name
+        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/134
+        print(f"{_settings._abaqus_python_abspath}/{subcommand}.py")
 
 
 def _geometry_xyplot(input_file, output_file,
@@ -305,7 +311,7 @@ def main():
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     elif args.subcommand == "print-abaqus-module":
-        _print_abaqus_module_location(args.specify_subcommand)
+        _print_abaqus_module_location(args.specify_subcommand, subcommand_list)
     elif args.subcommand == "geometry-xyplot":
         _geometry_xyplot(args.input_file, args.output_file,
                          part_name=args.part_name,
