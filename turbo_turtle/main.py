@@ -22,19 +22,6 @@ def _docs_parser():
     return parser
 
 
-def _print_abaqus_module_location(subcommand):
-    """Print the absolute path to the Abaqus python module for a given subcommand.
-
-    This function assumes the naming convention that the subcommand have a matching Abaqus python module with an
-    identical name existing in ``_settings.abaqus_python_abspath``.
-
-    :param str subcommand: Abaqus subcommand name
-    """
-    # TODO: remove need for consistency between subcommand and abaqus python module name
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/134
-    print(f"{_settings._abaqus_python_abspath}/{subcommand}.py")
-
-
 def _docs(print_local_path=False):
     """Open or print the package's installed documentation
 
@@ -53,6 +40,27 @@ def _docs(print_local_path=False):
     else:
         import webbrowser
         webbrowser.open(str(_settings._installed_docs_index))
+
+
+def _print_abaqus_module_parser():
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--subcommand",
+                        type=str, required=True,
+                        help="Subcommand to query for printing the Abaqus python module absolute path")
+    return parser
+
+
+def _print_abaqus_module_location(subcommand):
+    """Print the absolute path to the Abaqus python module for a given subcommand.
+
+    This function assumes the naming convention that the subcommand have a matching Abaqus python module with an
+    identical name existing in ``_settings.abaqus_python_abspath``.
+
+    :param str subcommand: Abaqus subcommand name
+    """
+    # TODO: remove need for consistency between subcommand and abaqus python module name
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/134
+    print(f"{_settings._abaqus_python_abspath}/{subcommand}.py")
 
 
 def _geometry_xyplot(input_file, output_file,
@@ -117,12 +125,6 @@ def add_abaqus_and_cubit(parsers):
                             help="Abaqus executable options (default: %(default)s)")
         parser.add_argument("--cubit-command", nargs="+", default=_settings._default_cubit_options,
                             help="Cubit executable options (default: %(default)s)")
-        parser.add_argument("--print-abaqus-module-path", action="store_true",
-                            help="Print the absolute path to the locally installed Abaqus python module for " \
-                                 "the specified subcommand. Run this script in Abaqus CAE Python terminal with " \
-                                 "'execPyFile()' or from the File->Run Script menu. NOTE: this is an alpha " \
-                                 "feature for early adopters and developer testing of possible GUI support " \
-                                 "(default: %(default)s)")
         # TODO: remove deprecated cubit flag
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
         backend = parser.add_mutually_exclusive_group(required=False)
@@ -187,6 +189,17 @@ def get_parser():
         description=f"Open the packaged {_settings._project_name_short} HTML documentation in the  " \
                      "system default web browser",
         parents=[docs_parser])
+
+    print_abaqus_module_parser = _print_abaqus_module_parser()
+    subparsers.add_parser(
+        "print-abaqus-module",
+        help="Print the absolute path to the locally installed Abaqus python module for " \
+             "the specified subcommand.",
+        description="***NOTE: this is an alpha feature for early adopters and developer testing of possible GUI " \
+                    "support*** Print the absolute path to the locally installed Abaqus python module for the " \
+                    "specified subcommand. Run this script in the Abaqus CAE Python terminal with 'execPyFile()' " \
+                    "or from the File->Run Script menu.",
+        parents=[print_abaqus_module_parser])
 
     geometry_parser = parsers.geometry_parser(add_help=False, cubit=True)
     cylinder_parser = parsers.cylinder_parser(add_help=False, cubit=True)
@@ -293,7 +306,7 @@ def main():
         parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
-    elif args.print_abaqus_module_path:
+    elif args.subcommand == "print-abaqus-module":
         _print_abaqus_module_location(args.subcommand)
     elif args.subcommand == "geometry-xyplot":
         _geometry_xyplot(args.input_file, args.output_file,
