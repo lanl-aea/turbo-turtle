@@ -6,8 +6,6 @@ from turbo_turtle import _settings
 from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python import parsers
 
-from turbo_turtle._abaqus_python._mixed_utilities import sys_exit
-
 
 def _docs_parser():
     """Get parser object for docs subcommand command line options
@@ -62,7 +60,7 @@ def _print_abaqus_module_location(subcommand, subcommand_list):
     :param list subcommand_list: list of valid subcommands
     """
     if subcommand not in subcommand_list:
-        sys_exit(f"'{subcommand}' is not a valid subcommand")
+        sys.exit(f"'{subcommand}' is not a valid subcommand")
     else:
         # TODO: remove need for consistency between subcommand and abaqus python module name
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/134
