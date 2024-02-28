@@ -44,7 +44,7 @@ def _docs(print_local_path=False):
 
 def _print_abaqus_module_parser():
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("--subcommand",
+    parser.add_argument("--specify-subcommand",  # Can't use --subcommand because it conflicts with the main parser
                         type=str, required=True,
                         help="Subcommand to query for printing the Abaqus python module absolute path")
     return parser
@@ -300,14 +300,12 @@ def main():
     subcommand_list = parser._subparsers._group_actions[0].choices.keys()
     args = parser.parse_args()
 
-    _wrappers, command = _utilities.set_wrappers_and_command(args)
-
     if args.subcommand not in subcommand_list:
         parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
     elif args.subcommand == "print-abaqus-module":
-        _print_abaqus_module_location(args.subcommand)
+        _print_abaqus_module_location(args.specify_subcommand)
     elif args.subcommand == "geometry-xyplot":
         _geometry_xyplot(args.input_file, args.output_file,
                          part_name=args.part_name,
@@ -318,6 +316,7 @@ def main():
                          y_offset=args.y_offset,
                          no_markers=args.no_markers)
     else:
+        _wrappers, command = _utilities.set_wrappers_and_command(args)
         wrapper_command = getattr(_wrappers, args.subcommand)
         wrapper_command(args, command)
 
