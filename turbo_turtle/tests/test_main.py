@@ -39,7 +39,8 @@ def test_print_abaqus_module(capsys):
     assert expected_output == returned_output.out
     
     # Test the vaildation of the provided subcommand with subcommand list
-    with patch("turbo_turtle._abaqus_python._mixed_utilities.sys_exit") as mock_sys_exit:
+    with patch("turbo_turtle._abaqus_python._mixed_utilities.sys_exit") as mock_sys_exit, \
+         pytest.raises(SystemExit):
         another_fake_subcommand = "another_fake_subcommand"
         main._print_abaqus_module_location(another_fake_subcommand, fake_subcommand_list)
         mock_sys_exit.assert_called()
