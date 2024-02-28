@@ -25,6 +25,7 @@ Internal Changes
 - Add a missing unit test for the Abaqus Python CLI merge construction (:merge:`118`). By `Kyle Brindley`_.
 - Unit tests for Cubit curve and surface creation from coordinates (:merge:`119`, :merge:`120`). By `Kyle Brindley`_.
 - Build coverage artifacts in build directory (:merge:`121`). By `Kyle Brindley`_.
+- Fix the docs and print abaqus module unit tests (:issue:`136`, :merge:`123`). By `Kyle Brindley`_.
 
 Enhancements
 ============
