@@ -36,7 +36,7 @@ def test_print_abaqus_module(capsys):
     expected_output = f"{_settings._abaqus_python_abspath}/{fake_subcommand}.py\n"
     main._print_abaqus_module_location(fake_subcommand, fake_subcommand_list)
     returned_output = capsys.readouterr()
-    assert expected_output == returned_output
+    assert expected_output == returned_output.out
     
     # Test the vaildation of the provided subcommand with subcommand list
     with patch("turbo_turtle._abaqus_python._mixed_utilities.sys_exit") as mock_sys_exit:
