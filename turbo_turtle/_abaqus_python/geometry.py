@@ -72,7 +72,9 @@ def main(input_file, output_file,
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,
                                    rtol=rtol, atol=atol)
         except:
-            message = "Error: failed to create part '{}' from '{}'\n".format(new_part, file_name)
+            message = "Error: failed to create part '{}' from '{}'. Check the XY coordinates for " \
+                      "inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
+                      "subcommand can plot points to aid in troubleshooting.\n".format(new_part, file_name)
             _mixed_utilities.sys_exit(message)
 
     abaqus.mdb.saveAs(pathName=output_file)
