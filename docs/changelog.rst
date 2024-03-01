@@ -8,6 +8,10 @@ Changelog
 v0.11.2 (unreleased)
 ********************
 
+Documentation
+=============
+- Improve Abaqus geometry error message (:merge:`124`). By `Kyle Brindley`_.
+
 ********************
 v0.11.1 (2024-03-01)
 ********************
