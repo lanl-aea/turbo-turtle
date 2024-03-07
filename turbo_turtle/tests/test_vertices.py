@@ -326,6 +326,37 @@ def test_cylinder(inner_radius, outer_radius, height, y_offset, expected):
     assert numpy.allclose(coordinates, expected)
 
 
+cylinder_lines = {
+    "no offset": (
+        1., 2., 1., None,
+        [(numpy.array([1.,  0.5]), numpy.array([2.,  0.5])),
+         (numpy.array([2.,  0.5]), numpy.array([2., -0.5])),
+         (numpy.array([2., -0.5]), numpy.array([1., -0.5])),
+         (numpy.array([1., -0.5]), numpy.array([1.,  0.5]))],
+    ),
+    "offset half height": (
+        1., 2., 1., 0.5,
+        [(numpy.array([1., 1.]), numpy.array([2., 1.])),
+         (numpy.array([2., 1.]), numpy.array([2., 0.])),
+         (numpy.array([2., 0.]), numpy.array([1., 0.])),
+         (numpy.array([1., 0.]), numpy.array([1., 1.]))],
+    )
+}
+
+
+@pytest.mark.parametrize("inner_radius, outer_radius, height, y_offset, expected",
+                         cylinder_lines.values(),
+                         ids=cylinder_lines.keys())
+def test_cylinder_lines(inner_radius, outer_radius, height, y_offset, expected):
+    """Test :meth:`turbo_turtle._abaqus_python.vertices.cylinder_lines`"""
+    kwargs = {}
+    if y_offset is not None:
+        kwargs = {"y_offset": y_offset}
+    lines = vertices.cylinder_lines(inner_radius, outer_radius, height, **kwargs)
+    for line, expected_line in zip(lines, expected):
+        assert numpy.allclose(line, expected_line)
+
+
 number = math.sqrt(2.**2 / 2.)
 rectalinear_coordinates = {
     "unit circle": (
