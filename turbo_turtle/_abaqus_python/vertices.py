@@ -142,6 +142,9 @@ def modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion=
         conversion.
     :param float rtol: relative tolerance used by ``numpy.isclose``. If None, use the numpy default.
     :param float atol: absolute tolerance used by ``numpy.isclose``. If None, use the numpy default.
+
+    :returns: list of line pairs and list of spline arrays
+    :rtype: tuple
     """
     coordinates = scale_and_offset_coordinates(coordinates, unit_conversion, y_offset=y_offset)
     lines, splines = lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
