@@ -1,7 +1,7 @@
 """
 .. warning::
 
-   These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_mixed_utilities`
+   These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_vertices`
 """
 import os
 import sys
