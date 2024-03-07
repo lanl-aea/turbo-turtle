@@ -143,8 +143,8 @@ def modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion,
     :param float rtol: relative tolerance used by ``numpy.isclose``. If None, use the numpy default.
     :param float atol: absolute tolerance used by ``numpy.isclose``. If None, use the numpy default.
     """
-    coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
-    lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
+    coordinates = scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+    lines, splines = lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     return lines, splines
 
 
