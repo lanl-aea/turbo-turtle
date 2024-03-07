@@ -376,7 +376,6 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
 
-    # TODO: Move to common wrapper function for re-use in cylinder subcommand implementations
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
     surface = _draw_surface(lines, [])
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle)
