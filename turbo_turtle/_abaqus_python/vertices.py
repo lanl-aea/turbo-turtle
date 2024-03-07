@@ -48,7 +48,7 @@ def cylinder_lines(inner_radius, outer_radius, height, y_offset=0.):
     :returns: list of line segment coordinate pairs
     :rtype: list of (numpy.array, numpy.array) tuples
     """
-    coordinates = vertices.cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
+    coordinates = cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
     euclidean_distance = min(inner_radius, height) / 2.
     lines, splines = lines_and_splines(coordinates, euclidean_distance)
     return lines
