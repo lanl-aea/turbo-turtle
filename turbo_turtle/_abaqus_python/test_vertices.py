@@ -240,6 +240,27 @@ class TestVertices(unittest.TestCase):
             coordinates = vertices.cylinder(inner_radius, outer_radius, height, **kwargs)
             assert numpy.allclose(coordinates, expected)
 
+    def test_cylinder_lines(self):
+        tests = [
+            (1., 2., 1., None,
+             [(numpy.array([1.,  0.5]), numpy.array([2.,  0.5])),
+              (numpy.array([2.,  0.5]), numpy.array([2., -0.5])),
+              (numpy.array([2., -0.5]), numpy.array([1., -0.5])),
+              (numpy.array([1., -0.5]), numpy.array([1.,  0.5]))]),
+            (1., 2., 1., 0.5,
+             [(numpy.array([1., 1.]), numpy.array([2., 1.])),
+              (numpy.array([2., 1.]), numpy.array([2., 0.])),
+              (numpy.array([2., 0.]), numpy.array([1., 0.])),
+              (numpy.array([1., 0.]), numpy.array([1., 1.]))])
+        ]
+        for inner_radius, outer_radius, height, y_offset, expected in tests:
+            kwargs = {}
+            if y_offset is not None:
+                kwargs = {"y_offset": y_offset}
+            lines = vertices.cylinder_lines(inner_radius, outer_radius, height, **kwargs)
+            for line, expected_line in zip(lines, expected):
+                assert numpy.allclose(line, expected_line)
+
     def test_rectalinear_coordinates(self):
         number = math.sqrt(2.**2 / 2.)
         tests = [
