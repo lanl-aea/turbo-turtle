@@ -74,6 +74,8 @@ def _geometry_xyplot(input_file, output_file,
                      delimiter=parsers.geometry_xyplot_defaults["delimiter"],
                      header_lines=parsers.geometry_xyplot_defaults["header_lines"],
                      y_offset=parsers.geometry_xyplot_defaults["y_offset"],
+                     rtol=parsers.geometry_defaults["rtol"],
+                     atol=parsers.geometry_defaults["atol"],
                      no_markers=parsers.geometry_xyplot_defaults["no_markers"]):
     """Plotter for :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` division of coordinates into lines and splines
 
@@ -108,7 +110,7 @@ def _geometry_xyplot(input_file, output_file,
         coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
                                                          expected_dimensions=2, expected_columns=2)
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
-        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
+        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:
             array = numpy.array(line)
@@ -318,6 +320,8 @@ def main():
                          delimiter=args.delimiter,
                          header_lines=args.header_lines,
                          y_offset=args.y_offset,
+                         rtol=args.rtol,
+                         atol=args.atol,
                          no_markers=args.no_markers)
     else:
         _wrappers, command = _utilities.set_wrappers_and_command(args)
