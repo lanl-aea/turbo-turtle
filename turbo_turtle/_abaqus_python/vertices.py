@@ -130,7 +130,7 @@ def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
     return lines, splines
 
 
-def modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset, rtol=None, atol=None):
+def modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion=1., y_offset=0., rtol=None, atol=None):
     """Combine :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` with
     :meth:`turbo_turtle._abaqus_python.vertices.scale_and_offset_coordinates` for common re-use in geometry subcommand
     implementations.
@@ -143,7 +143,7 @@ def modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion,
     :param float rtol: relative tolerance used by ``numpy.isclose``. If None, use the numpy default.
     :param float atol: absolute tolerance used by ``numpy.isclose``. If None, use the numpy default.
     """
-    coordinates = scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+    coordinates = scale_and_offset_coordinates(coordinates, unit_conversion, y_offset=y_offset)
     lines, splines = lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     return lines, splines
 

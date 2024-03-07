@@ -287,6 +287,16 @@ def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expe
         assert numpy.allclose(spline, expectation)
 
 
+def test_modified_lines_and_splines():
+    coordinates = numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
+    euclidean_distance = 4.
+    with patch("turbo_turtle._abaqus_python.vertices.scale_and_offset_coordinates", return_value=coordinates) as mock_scale, \
+         patch("turbo_turtle._abaqus_python.vertices.lines_and_splines", return_value=([], [])) as mock_lines:
+        lines, splines = vertices.modified_lines_and_splines(coordinates, euclidean_distance)
+    mock_scale.assert_called_once()
+    mock_lines.assert_called_once()
+
+
 def test_lines_and_splines_passthrough():
     with patch("turbo_turtle._abaqus_python.vertices._break_coordinates", return_value=[]) as mock_break_coordinates, \
          patch("turbo_turtle._abaqus_python.vertices._line_pairs", return_value=[]):
