@@ -381,7 +381,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
 
     # TODO: Move to common wrapper function for re-use in cylinder subcommand implementations
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
-    surface = _draw_surface(lines, splines)
+    surface = _draw_surface(lines, [])
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle)
 
     cubit_command_or_exit(f"save as '{output_file}' overwrite")
