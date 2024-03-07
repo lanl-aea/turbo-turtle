@@ -379,6 +379,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
 
+    # TODO: Move to common wrapper function for re-use in cylinder subcommand implementations
     coordinates = vertices.cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
     euclidean_distance = min(inner_radius, height) / 2.
     lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)

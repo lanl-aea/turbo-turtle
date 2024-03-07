@@ -37,8 +37,11 @@ def main(inner_radius, outer_radius, height, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
+    # TODO: Move to common wrapper function for re-use in cylinder subcommand implementations
     coordinates = vertices.cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
-    geometry.draw_part_from_splines(coordinates, planar=False, model_name=model_name, part_name=part_name,
+    euclidean_distance = min(inner_radius, height) / 2.
+    lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
+    geometry.draw_part_from_splines(lines, splines, planar=False, model_name=model_name, part_name=part_name,
                                     revolution_angle=revolution_angle)
 
     abaqus.mdb.saveAs(pathName=output_file)
