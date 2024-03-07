@@ -55,7 +55,9 @@ def geometry(input_file, output_file,
              delimiter=parsers.geometry_defaults["delimiter"],
              header_lines=parsers.geometry_defaults["header_lines"],
              revolution_angle=parsers.geometry_defaults["revolution_angle"],
-             y_offset=parsers.geometry_defaults["y_offset"]):
+             y_offset=parsers.geometry_defaults["y_offset"],
+             rtol=parsers.geometry_defaults["rtol"],
+             atol=parsers.geometry_defaults["atol"]):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
     Note that 2D axisymmetric sketches and sketches for 3D bodies of revolution about the global Y-axis must lie
@@ -76,8 +78,10 @@ def geometry(input_file, output_file,
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
     :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
         conversion.
+    :param float rtol: relative tolerance for vertical/horizontal line checks
+    :param float atol: absolute tolerance for vertical/horizontal line checks
 
-    :returns: writes ``{output_file}.cae``
+    :returns: writes ``{output_file}.cub``
     """
     # TODO: Figure out how to log the Cubit operations without printing to console
     # TODO: Figure out how to get a better log of the non-APREPRO actions
@@ -92,7 +96,7 @@ def geometry(input_file, output_file,
         coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
                                                          expected_dimensions=2, expected_columns=2)
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
-        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
+        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         surfaces.append(_draw_surface(lines, splines))
 

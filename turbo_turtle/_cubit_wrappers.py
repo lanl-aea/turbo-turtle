@@ -21,7 +21,9 @@ def geometry(args, command):
         delimiter=args.delimiter,
         header_lines=args.header_lines,
         revolution_angle=args.revolution_angle,
-        y_offset=args.y_offset
+        y_offset=args.y_offset,
+        rtol=args.rtol,
+        atol=args.atol
     )
 
 
