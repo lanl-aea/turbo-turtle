@@ -109,8 +109,8 @@ def _geometry_xyplot(input_file, output_file,
     for file_name, new_part, color in zip(input_file, part_name, colors):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
-        lines, splines = modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
-                                                    rtol=rtol, atol=atol)
+        lines, splines = vertices.modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
+                                                             rtol=rtol, atol=atol)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:
             array = numpy.array(line)

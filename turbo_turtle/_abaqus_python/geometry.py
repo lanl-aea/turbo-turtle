@@ -65,8 +65,8 @@ def main(input_file, output_file,
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
-        lines, splines = modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
-                                                    rtol=rtol, atol=atol)
+        lines, splines = vertices.modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
+                                                             rtol=rtol, atol=atol)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         try:
             draw_part_from_splines(lines, splines, planar=planar, model_name=model_name, part_name=new_part,
