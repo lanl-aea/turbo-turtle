@@ -66,9 +66,10 @@ def main(input_file, output_file,
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         try:
-            draw_part_from_splines(coordinates, planar=planar, model_name=model_name, part_name=new_part,
+            draw_part_from_splines(lines, splines, planar=planar, model_name=model_name, part_name=new_part,
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,
                                    rtol=rtol, atol=atol)
         except:
@@ -81,7 +82,7 @@ def main(input_file, output_file,
 
 
 
-def draw_part_from_splines(coordinates,
+def draw_part_from_splines(lines, splines,
                            planar=parsers.geometry_defaults["planar"],
                            model_name=parsers.geometry_defaults["model_name"],
                            part_name=parsers.geometry_defaults["part_name"],
@@ -107,7 +108,8 @@ def draw_part_from_splines(coordinates,
 
     **Note:** This function will always connect the first and last coordinates
 
-    :param numpy.array coordinates: [N, 2] array of XY coordinates.
+    :param list lines: list of [2, 2] shaped arrays of (x, y) coordinates defining a line segment
+    :param list splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a spline
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Abaqus model in which to create the part
     :param str part_name: name of the part being created
@@ -127,7 +129,6 @@ def draw_part_from_splines(coordinates,
     sketch.ConstructionLine(point1=(0.0, 0.0), point2=(1.0, 0.0))
     sketch.FixedConstraint(entity=sketch.geometry[3])
 
-    lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     for spline in splines:
         spline = tuple(map(tuple, spline))
         sketch.Spline(points=spline)
