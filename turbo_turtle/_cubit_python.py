@@ -90,14 +90,11 @@ def geometry(input_file, output_file,
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     surfaces = []
-    # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
         lines, splines = vertices.modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
                                                              rtol=rtol, atol=atol)
-    # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         surfaces.append(_draw_surface(lines, splines))
 
     for surface, new_part in zip(surfaces, part_name):

@@ -99,8 +99,6 @@ def _geometry_xyplot(input_file, output_file,
         spline_kwargs = {"marker": "+"}
 
     matplotlib.pyplot.figure()
-    # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     if len(part_name) > 1:
         colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(part_name)))  # NOT part of refactor
@@ -111,7 +109,6 @@ def _geometry_xyplot(input_file, output_file,
                                                                  expected_dimensions=2, expected_columns=2)
         lines, splines = vertices.modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
                                                              rtol=rtol, atol=atol)
-    # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         for line in lines:
             array = numpy.array(line)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, markerfacecolor="none", **line_kwargs)
