@@ -332,7 +332,7 @@ def test_trim_namespace():
 
 
 geometry_positional = ("input_file", "output_file")
-geometry_unused = ("model_name", "atol", "rtol")
+geometry_unused = ("model_name",)
 geometry_keywords = trim_namespace(geometry_namespace_sparse, geometry_positional + geometry_unused)
 
 cylinder_positional = ("inner_radius", "outer_radius", "height", "output_file")
