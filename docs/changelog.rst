@@ -12,6 +12,16 @@ Documentation
 =============
 - Improve Abaqus geometry error message (:merge:`124`). By `Kyle Brindley`_.
 
+Internal Changes
+================
+- Reduce duplicate logic in geometry and cylinder subcommand implementations (:issue:`123`, :merge:`126`). By `Kyle
+  Brindley`_.
+
+Enhancements
+============
+- Implement the numpy tolerance checks for the Cubit geometry and geometery-xyplot subcommands (:issue:`123`,
+  :merge:`126`). By `Kyle Brindley`_.
+
 ********************
 v0.11.1 (2024-03-01)
 ********************
