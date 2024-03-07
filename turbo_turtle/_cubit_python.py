@@ -95,8 +95,8 @@ def geometry(input_file, output_file,
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
-        coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
-        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
+        lines, splines = modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
+                                                    rtol=rtol, atol=atol)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
         surfaces.append(_draw_surface(lines, splines))
 
