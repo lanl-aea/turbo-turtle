@@ -93,8 +93,8 @@ def geometry(input_file, output_file,
     # TODO: VV Everything between todo markers should be a common function to remove triply repeated logic VV
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/123
     for file_name, new_part in zip(input_file, part_name):
-        coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
-                                                         expected_dimensions=2, expected_columns=2)
+        coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
+                                                                 expected_dimensions=2, expected_columns=2)
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     # TODO: ^^ Everything between todo markers should be a common function to remove triply repeated logic ^^
