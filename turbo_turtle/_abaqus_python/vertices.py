@@ -20,11 +20,14 @@ def rectalinear_coordinates(radius_list, angle_list):
 
 
 def cylinder(inner_radius, outer_radius, height, y_offset=0.):
-    """Return a :meth:`turbo_turtle._abaqus_python.geometry.draw_part_from_splines` compatible vertex array
+    """Return a :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` compatible vertex array
 
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
     :param float height: Height of the cylinder
+
+    :returns: vertex coordinate array
+    :rtype: numpy.array
     """
     coordinates = (
         (inner_radius,  height / 2. + y_offset),
@@ -33,6 +36,22 @@ def cylinder(inner_radius, outer_radius, height, y_offset=0.):
         (inner_radius, -height / 2. + y_offset)
     )
     return numpy.array(coordinates)
+
+
+def cylinder_lines(inner_radius, outer_radius, height, y_offset=0.):
+    """Return the line coordinate pairs defining a cylinder
+
+    :param float inner_radius: Radius of the hollow center
+    :param float outer_radius: Outer radius of the cylinder
+    :param float height: Height of the cylinder
+
+    :returns: list of line segment coordinate pairs
+    :rtype: list of (numpy.array, numpy.array) tuples
+    """
+    coordinates = vertices.cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
+    euclidean_distance = min(inner_radius, height) / 2.
+    lines, splines = lines_and_splines(coordinates, euclidean_distance)
+    return lines
 
 
 def sphere(center, inner_radius, outer_radius, quadrant):
