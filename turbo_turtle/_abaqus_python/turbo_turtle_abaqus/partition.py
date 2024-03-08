@@ -6,6 +6,7 @@ import shutil
 import inspect
 import argparse
 import tempfile
+import fnmatch
 
 import numpy
 
@@ -182,11 +183,12 @@ def _gui_get_inputs():
     * Center - center location of the geometry
     * X-Vector - location on the x-axis local to the geometry
     * Z-Vector - location on the z-axis local to the geometry
-    * Loop Through Parts - Yes/No value to loop through all parts in the current model
+    * Part Name(s) - part name(s) to partition as a comma separated list (NO SPACES). This can also be a glob statement
     * Copy and Paste Parameters - copy and paste the parameters printed to the Abaqus Python terminal to make 
       re-use of previous partition parameters easier
 
-    **IMPORTANT** - this function must key-value pairs that will successfully unpack as ``**kwargs`` in ``partition``
+    **IMPORTANT** - this function must return key-value pairs that will successfully unpack as ``**kwargs`` in
+    ``partition``
 
     :return: ``user_inputs`` - a dictionary of the following key-value pair types:
 
@@ -198,14 +200,16 @@ def _gui_get_inputs():
     """
     from abaqus import getInputs
 
-    model_name = None  # Set defaults in case the user cancels turbo-turtle
-    part_name = []
-    fields = (('Center:','0.0, 0.0, 0.0'),
-              ('X-Vector:', '1.0, 0.0, 0.0'),
-              ('Z-Vector:', '0.0, 0.0, 1.0'),
-              ('Loop Through Parts:', 'No (or Yes/y)'),
+    default_center = str(partition_defaults['center']).replace('[', '').replace(']', '')
+    default_x_vector = str(partition_defaults['xvector']).replace('[', '').replace(']', '')
+    default_z_vector = str(partition_defaults['zvector']).replace('[', '').replace(']', '')
+    default_part_name = session.viewports[session.currentViewportName].displayedObject.name
+    fields = (('Center:', default_center),
+              ('X-Vector:', default_x_vector),
+              ('Z-Vector:', default_z_vector),
+              ('Part Name(s):', default_part_name),
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
-    center, xvector, zvector, loop_through_parts, cp_parameters = getInputs(fields=fields,
+    center, xvector, zvector, part_name_strings, cp_parameters = getInputs(fields=fields,
         dialogTitle='Turbo Turtle', )
     if center is not None:  # Center will be None if the user hits the "cancel/esc" button
         if cp_parameters != fields[-1][-1]:
@@ -224,11 +228,12 @@ def _gui_get_inputs():
         print('X-Vector: {}'.format(xvector))
         print('Z-Vector: {}'.format(zvector))
         print('')
-        if loop_through_parts.upper() == "YES" or loop_through_parts.upper() == "Y":
-            part_name = abaqus.mdb.models[model_name].parts.keys()
-        else:  # Accept anything other than yes/y as No
-            part_name = [session.viewports[session.currentViewportName].displayedObject.name]
+
         model_name = session.viewports[session.currentViewportName].displayedObject.modelName
+        part_name = []
+        for this_part_name_string in part_name_strings.split(','):
+            part_name += fnmatch.filter(abaqus.mdb.models[model_name].parts.keys(), this_part_name_string)
+
         user_inputs = {'center': center, 'xvector': xvector, 'zvector': zvector,
                        'model_name': model_name, 'part_name': part_name}
     else:
@@ -283,25 +288,30 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
 
 
 def partition_gui():
+    """Function with no inputs required for driving the plugin
+    """
     gui_wrapper(inputs_function=_gui_get_inputs,
                 subcommand_function=partition,
                 post_action_function=_gui_post_action)
 
 
 if __name__ == "__main__":
-    parser = parsers.partition_parser(basename=basename)
-    try:
-        args, unknown = parser.parse_known_args()
-    except SystemExit as err:
-        sys.exit(err.code)
+    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+        partition_gui()
+    else:
+        parser = parsers.partition_parser(basename=basename)
+        try:
+            args, unknown = parser.parse_known_args()
+        except SystemExit as err:
+            sys.exit(err.code)
 
-    sys.exit(main(
-        input_file=args.input_file,
-        output_file=args.output_file,
-        center=args.center,
-        xvector=args.xvector,
-        zvector=args.zvector,
-        model_name=args.model_name,
-        part_name=args.part_name,
-        big_number=args.big_number
-    ))
+        sys.exit(main(
+            input_file=args.input_file,
+            output_file=args.output_file,
+            center=args.center,
+            xvector=args.xvector,
+            zvector=args.zvector,
+            model_name=args.model_name,
+            part_name=args.part_name,
+            big_number=args.big_number
+        ))
