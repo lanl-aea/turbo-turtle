@@ -200,9 +200,9 @@ def _gui_get_inputs():
     """
     from abaqus import getInputs
 
-    default_center = str(partition_defaults['center']).replace('[', '').replace(']', '')
-    default_x_vector = str(partition_defaults['xvector']).replace('[', '').replace(']', '')
-    default_z_vector = str(partition_defaults['zvector']).replace('[', '').replace(']', '')
+    default_center = str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')
+    default_x_vector = str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')
+    default_z_vector = str(parsers.partition_defaults['zvector']).replace('[', '').replace(']', '')
     default_part_name = session.viewports[session.currentViewportName].displayedObject.name
     fields = (('Center:', default_center),
               ('X-Vector:', default_x_vector),
