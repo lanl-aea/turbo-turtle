@@ -51,8 +51,6 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
     :param func subcommand_function: function with arguments matching the return values from ``inputs_function``
     :param func post_action_function: function to call for script actions after calling ``subcommand_function``
     """
-    import abaqus
-
     user_inputs = inputs_function()  # Dictionary user inputs, if the user Cancels, user_inputs will be {}
     if user_inputs:
         subcommand_function(**user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
