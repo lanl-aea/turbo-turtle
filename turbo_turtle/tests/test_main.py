@@ -28,18 +28,11 @@ def test_docs():
     mock_webbrowser_open.assert_not_called()
 
 
-def test_print_abaqus_module(capsys):
-    """Test the print-abaqus-module subcommand behavior"""
-    fake_subcommand = "fake_subcommand"
-    fake_subcommand_list = [fake_subcommand]
+def test_print_abaqus_path(capsys):
+    """Test the print-abaqus-path subcommand behavior"""
 
     # Test printing behavior
-    expected_output = f"{_settings._abaqus_python_abspath}/{fake_subcommand}.py\n"
-    main._print_abaqus_module_location(fake_subcommand, fake_subcommand_list)
+    expected_output = f"{_settings._abaqus_python_abspath}\n"
+    main._print_abaqus_path_location()
     returned_output = capsys.readouterr()
     assert expected_output == returned_output.out
-
-    # Test the vaildation of the provided subcommand with subcommand list
-    with pytest.raises(SystemExit):
-        another_fake_subcommand = "another_fake_subcommand"
-        main._print_abaqus_module_location(another_fake_subcommand, fake_subcommand_list)
