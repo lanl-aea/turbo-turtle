@@ -11,6 +11,7 @@
    user
    external_api
    cli
+   gui
 
 .. toctree::
    :maxdepth: 1

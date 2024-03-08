@@ -22,6 +22,8 @@ docs
    :nodefault:
    :path: docs
 
+.. _print_abaqus_path_cli:
+
 print-abaqus-path
 -----------------
 
