@@ -282,25 +282,26 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
         print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
 
 
-if __name__ == "__main__":
-    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
-        gui_wrapper(inputs_function=_gui_get_inputs,
-                    subcommand_function=partition,
-                    post_action_function=_gui_post_action)
-    else:
-        parser = parsers.partition_parser(basename=basename)
-        try:
-            args, unknown = parser.parse_known_args()
-        except SystemExit as err:
-            sys.exit(err.code)
+def partition_gui():
+    gui_wrapper(inputs_function=_gui_get_inputs,
+                subcommand_function=partition,
+                post_action_function=_gui_post_action)
 
-        sys.exit(main(
-            input_file=args.input_file,
-            output_file=args.output_file,
-            center=args.center,
-            xvector=args.xvector,
-            zvector=args.zvector,
-            model_name=args.model_name,
-            part_name=args.part_name,
-            big_number=args.big_number
-        ))
+
+if __name__ == "__main__":
+    parser = parsers.partition_parser(basename=basename)
+    try:
+        args, unknown = parser.parse_known_args()
+    except SystemExit as err:
+        sys.exit(err.code)
+
+    sys.exit(main(
+        input_file=args.input_file,
+        output_file=args.output_file,
+        center=args.center,
+        xvector=args.xvector,
+        zvector=args.zvector,
+        model_name=args.model_name,
+        part_name=args.part_name,
+        big_number=args.big_number
+    ))
