@@ -1,6 +1,6 @@
-###########################
-Abaqus Python & GUI Plugins
-###########################
+############################
+Abaqus Python & GUI Plug-ins
+############################
 
 .. warning::
    
@@ -15,6 +15,39 @@ Abaqus Python Package
 Turbo-Turtle's Abaqus python package can be imported into your own custom Abaqus python scripts should you with to use 
 the internal API rather than running turbo-turtle via command line. The :ref:`print_abaqus_path_cli` documentation 
 describes how to retrieve the absolute path to your locally installed Abaqus python package.
+
+Directory Structure
+===================
+
+The turbo-turtle Abaqus python package is organized in the directory structure as shown below, where the top-level 
+``_abaqus_python`` directory is the package parent and plug-in central directory; the sub-directory 
+``turbo_turtle_abaqus`` is the Abaqus python package directory.
+
+.. code-block::
+
+   $ pwd
+   /path/to/turbo_turtle
+   $ tree _abaqus_python
+   _abaqus_python/
+   ├── turbo_turtle_abaqus
+   │   ├── _abaqus_utilities.py
+   │   ├── cylinder.py
+   │   ├── export.py
+   │   ├── geometry.py
+   │   ├── image.py
+   │   ├── __init__.py
+   │   ├── merge.py
+   │   ├── mesh.py
+   │   ├── _mixed_utilities.py
+   │   ├── parsers.py
+   │   ├── partition.py
+   │   ├── sphere.py
+   │   ├── test_abaqus_utilities.py
+   │   ├── test_mixed_utilities.py
+   │   ├── test_parsers.py
+   │   ├── test_vertices.py
+   │   └── vertices.py
+   └── turbo_turtle_plugin.py
 
 Importing Turbo-Turtle Modules
 ==============================
