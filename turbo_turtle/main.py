@@ -42,29 +42,21 @@ def _docs(print_local_path=False):
         webbrowser.open(str(_settings._installed_docs_index))
 
 
-def _print_abaqus_module_parser():
+def _print_abaqus_path_parser():
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("specify_subcommand",  # Can't use --subcommand because it conflicts with the main parser
-                        help="Subcommand to query for printing the Abaqus python module absolute path")
+    # This parser has no arguments. Current implementation acts like a flag
     return parser
 
 
-def _print_abaqus_module_location(subcommand, subcommand_list):
-    """Print the absolute path to the Abaqus python module for a given subcommand.
+def _print_abaqus_path_location():
+    """Print the absolute path to the Turbo Turtle Abaqus Python package directory
 
-    This function assumes the naming convention that the subcommand have a matching Abaqus python module with an
-    identical name existing in ``_settings.abaqus_python_abspath``. If ``subcommand`` is not in the list of valid
-    subcommands, this function will exit with an error.
-
-    :param str subcommand: Abaqus subcommand name
-    :param list subcommand_list: list of valid subcommands
+    Exits with a non-zero exit code if the settings variable ``_abaqus_python_abspath`` does not exist
     """
-    if subcommand not in subcommand_list:
-        sys.exit(f"'{subcommand}' is not a valid subcommand")
+    if not _settings._abaqus_python_abspath.exists():
+        sys.exit("Could not find a documented path to the Abaqus python package directory")
     else:
-        # TODO: remove need for consistency between subcommand and abaqus python module name
-        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/134
-        print(f"{_settings._abaqus_python_abspath}/{subcommand}.py")
+        print(_settings._abaqus_python_abspath)
 
 
 def _geometry_xyplot(input_file, output_file,
@@ -193,16 +185,15 @@ def get_parser():
                      "system default web browser",
         parents=[docs_parser])
 
-    print_abaqus_module_parser = _print_abaqus_module_parser()
+    print_abaqus_path_parser = _print_abaqus_path_parser()
     subparsers.add_parser(
-        "print-abaqus-module",
-        help="Print the absolute path to the locally installed Abaqus python module for " \
-             "the specified subcommand.",
+        "print-abaqus-path",
+        help="Print the absolute path to the locally installed Abaqus python package directory.",
         description="***NOTE: this is an alpha feature for early adopters and developer testing of possible GUI " \
-                    "support*** Print the absolute path to the locally installed Abaqus python module for the " \
-                    "specified subcommand. Run this script in the Abaqus CAE Python terminal with 'execPyFile()' " \
-                    "or from the File->Run Script menu.",
-        parents=[print_abaqus_module_parser])
+                    "support*** Print the absolute path to the locally installed Abaqus python package directory. " \
+                    "If this directory is on your PYTHONPATH, you can directly import Turbo Turtle Abaqus python " \
+                    "packages in your own scrips (i.e. import _abaqus_python.partition as turbo_turtle_partition)",
+        parents=[print_abaqus_path_parser])
 
     geometry_parser = parsers.geometry_parser(add_help=False, cubit=True)
     cylinder_parser = parsers.cylinder_parser(add_help=False, cubit=True)
@@ -307,8 +298,8 @@ def main():
         parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
-    elif args.subcommand == "print-abaqus-module":
-        _print_abaqus_module_location(args.specify_subcommand, subcommand_list)
+    elif args.subcommand == "print-abaqus-path":
+        _print_abaqus_path_location()
     elif args.subcommand == "geometry-xyplot":
         _geometry_xyplot(args.input_file, args.output_file,
                          part_name=args.part_name,
