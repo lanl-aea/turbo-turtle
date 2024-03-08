@@ -229,7 +229,7 @@ def _gui_get_inputs():
     * ``rtol``: ``float`` type, relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
     * ``atol``: ``float`` type, absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
     """
-    from abaqus import getInputs
+    import abaqus
 
     default_input_files = 'File1.csv,File2.csv OR *.csv'
     default_part_names = 'Part-1,Part-2, OR None'
@@ -257,7 +257,7 @@ def _gui_get_inputs():
               ('atol:', default_atol), )
 
     (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,
-     delimiter, header_lines, y_offset, rtol, atol) = getInputs(fields=fields, dialogTitle='Turbo Turtle Geometry', )
+     delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(fields=fields, dialogTitle='Turbo Turtle Geometry', )
 
     if input_file_strings is not None:  #  will be None if the user hits the "cancel/esc" button
         input_file = []
@@ -293,6 +293,7 @@ def _gui_get_inputs():
 def geometry_gui():
     """Function with no inputs required for driving the plugin
     """
+    import abaqus
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
                                   subcommand_function=geometry,
                                   post_action_function=None)
