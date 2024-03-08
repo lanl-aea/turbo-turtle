@@ -290,28 +290,12 @@ def _gui_get_inputs():
     return user_inputs
 
 
-def _gui_post_action(model_name, **kwargs):
-    """Action performed after running geometry
-
-    Set the view to look at the last part that was created.
-
-    This function is designed to have the exact same arguments as 
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.geometry`
-    """
-    import abaqus
-
-    part_object = abaqus.mdb.models[model_name].parts[abaqus.mdb.models[model_name].parts.keys()[-1]]
-    session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
-    session.viewports['Viewport: 1'].view.setValues(session.views['Iso'])
-    session.viewports['Viewport: 1'].view.fitView()
-
-
 def geometry_gui():
     """Function with no inputs required for driving the plugin
     """
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
                                   subcommand_function=geometry,
-                                  post_action_function=_gui_post_action)
+                                  post_action_function=None)
 
 
 if __name__ == "__main__":
