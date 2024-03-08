@@ -22,6 +22,14 @@ docs
    :nodefault:
    :path: docs
 
+print-abaqus-path
+-----------------
+
+.. argparse::
+   :ref: turbo_turtle.main.get_parser
+   :nodefault:
+   :path: print-abaqus-path
+
 .. _geometry_cli:
 
 geometry

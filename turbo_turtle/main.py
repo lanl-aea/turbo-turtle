@@ -192,7 +192,7 @@ def get_parser():
         description="***NOTE: this is an alpha feature for early adopters and developer testing of possible GUI " \
                     "support*** Print the absolute path to the locally installed Abaqus python package directory. " \
                     "If this directory is on your PYTHONPATH, you can directly import Turbo Turtle Abaqus python " \
-                    "packages in your own scrips (i.e. import _abaqus_python.partition as turbo_turtle_partition)",
+                    "packages in your own scrips (i.e. import turbo_turtle_abaqus.partition)",
         parents=[print_abaqus_path_parser])
 
     geometry_parser = parsers.geometry_parser(add_help=False, cubit=True)
