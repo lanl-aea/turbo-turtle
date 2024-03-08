@@ -261,7 +261,7 @@ def _gui_get_inputs():
     return user_inputs
 
 
-def _gui_post_action(center, xvector, zvector, model_name, part_name):
+def _gui_post_action(model_name, part_name, **kwargs):
     """Action performed after running partition
 
     After partitioning, this funciton resets the viewport - if the last partition action hits the an AbaqusException
