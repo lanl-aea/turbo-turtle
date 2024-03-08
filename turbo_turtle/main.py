@@ -56,7 +56,7 @@ def _print_abaqus_path_location():
     if not _settings._abaqus_python_abspath.exists():
         sys.exit("Could not find a documented path to the Abaqus python package directory")
     else:
-        print(_settings._abaqus_python_abspath)
+        print(_settings._abaqus_python_parent_abspath)
 
 
 def _geometry_xyplot(input_file, output_file,
