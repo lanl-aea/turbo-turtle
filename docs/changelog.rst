@@ -16,6 +16,8 @@ Internal Changes
 ================
 - Reduce duplicate logic in geometry and cylinder subcommand implementations (:issue:`123`, :merge:`126`). By `Kyle
   Brindley`_.
+- Make the Abaqus python package importable and change the GUI behavior to be a plug-in rather than direct execution on 
+  a python module (:issue:`137`, :merge:`127`). By `Thomas Roberts`_.
 
 Enhancements
 ============
