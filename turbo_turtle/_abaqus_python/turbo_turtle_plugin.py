@@ -1,7 +1,6 @@
 """ Turbo-Turtle Plugin Driver Script
 
-This script defines Abaqus CAE plugin toolkit options. For this script to work, the code that this script calls must be 
-in the same directory as this script.
+This script defines Abaqus CAE plugin toolkit options
 """
 from abaqusGui import getAFXApp
 
