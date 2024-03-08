@@ -158,6 +158,8 @@ sphere
    :members:
    :private-members:
 
+.. _abaqus_python_partition_api:
+
 partition
 =========
 
