@@ -1,6 +1,8 @@
+import ast
 import inspect
 import os
 import sys
+import glob
 
 import numpy
 
@@ -12,6 +14,7 @@ sys.path.insert(0, parent)
 import parsers
 import vertices
 import _mixed_utilities
+import _abaqus_utilities
 
 
 def main(input_file, output_file,
@@ -55,14 +58,14 @@ def main(input_file, output_file,
     :returns: writes ``{output_file}.cae``
     """
     import abaqus
-    import abaqusConstants
 
-    abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
-    geometry(input_file=input_file, planar=planar, model_name=model_name, part_name=part_name,
+    error_messages = geometry(input_file=input_file, planar=planar, model_name=model_name, part_name=part_name,
              revolution_angle=revolution_angle, delimiter=delimiter, header_lines=header_lines,
-             euclidean_distance=euclidean_disance, unit_conversion=unit_conversion, y_offset=y_offset,
+             euclidean_distance=euclidean_distance, unit_conversion=unit_conversion, y_offset=y_offset,
              rtol=rtol, atol=atol)
+    for message in error_messages:
+        _mixed_utilities.sys_exit(message)
     abaqus.mdb.saveAs(pathName=output_file)
 
 
@@ -89,6 +92,11 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
     :param float rtol: relative tolerance for vertical/horizontal line checks
     :param float atol: absolute tolerance for vertical/horizontal line checks
     """
+    import abaqus
+    import abaqusConstants
+
+    abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+    error_messages = []
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
@@ -103,7 +111,8 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
             message = "Error: failed to create part '{}' from '{}'. Check the XY coordinates for " \
                       "inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
                       "subcommand can plot points to aid in troubleshooting.\n".format(new_part, file_name)
-            _mixed_utilities.sys_exit(message)
+            error_messages.append(message)
+    return error_messages
 
 
 def draw_part_from_splines(lines, splines,
@@ -180,20 +189,118 @@ def draw_part_from_splines(lines, splines,
     del abaqus.mdb.models[model_name].sketches['__profile__']
 
 
-def _gui_post_action(center, xvector, zvector, model_name, part_name):
-    """Action performed after running partition
+def _gui_get_inputs():
+    """Interactive Inputs
 
-    After partitioning, this funciton resets the viewport - if the last partition action hits the an AbaqusException
-    except statement in the ``partition`` function, the user will otherwise be left in a sketch view that is hard to
-    exit from. An example of this is partioning a half-sphere; half of the partitioning actions are expected to fail,
-    since there is no geometry to partition on the open-end of the half-sphere.
+    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
+    GUI window with text boxes to enter the following values:
+
+    GUI-INPUTS
+    ==========
+    * Input File(s) - glob statement or comma separated list of files (NO SPACES) with points in x-y coordinates
+    * Part Name(s) - part names for the parts being created. If ``None``, then part name is determined by the input files.
+      This must either ``None``, a single part name, or a comma separated list of part names (NO SPACES)
+    * Model Name - parts will be created in a new model with this name
+    * Unit Conversion - unit conversion multiplication factor
+    * Euclidean Distance - connect points with a straight line if the distance between them is larger than this
+    * Planar Geometry Switch - switch to indicate that the 2D model is planar not axisymmetric (``True`` for planar)
+    * Revolution Angle - revolution angle for a 3D part in degrees
+    * Delimiter - delimiter character between columns in the input file(s)
+    * Header Lines - number of header lines to skip in the input file(s)
+    * Y-Offset - offset along the global y-axis
+    * rtol - relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+    * atol - absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+
+    **IMPORTANT** - this function must return key-value pairs that will successfully unpack as ``**kwargs`` in
+    ``geometry``
+
+    :return: ``user_inputs`` - a dictionary of the following key-value pair types:
+
+    * ``input_file``: ``list`` type, input text files with points in x-y coordinates
+    * ``part_name``: ``list`` type, part names, one for each input file, or ``None``
+    * ``model_name``: ``str`` type, new model containing the part generated from the input file(s)
+    * ``unit_conversion``: ``float`` type, unit conversion multiplication factor
+    * ``euclidean_distance``: ``float`` type, distance between points for deciding to draw a straight line
+    * ``planar``: ``bool`` type, switch for making 2D geometry planar, instead of axisymmetric
+    * ``revolution_angle``: ``float`` type, revolution angle in degrees for 3D geometry
+    * ``delimiter``: ``str`` type, delimiter character between columns in the input file(s)
+    * ``header_lines``: ``int`` type, number of header lines to skip in the input file(s)
+    * ``y_offset``: ``float`` type, offset along the y-axis
+    * ``rtol``: ``float`` type, relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+    * ``atol``: ``float`` type, absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+    """
+    from abaqus import getInputs
+
+    default_input_files = 'File1.csv,File2.csv OR *.csv'
+    default_part_names = 'Part-1,Part-2, OR None'
+    default_model_name = parsers.geometry_defaults['model_name']
+    default_unit_conversion = str(parsers.geometry_defaults['unit_conversion'])
+    default_euclidean_distance = str(parsers.geometry_defaults['euclidean_distance'])
+    default_planar = str(parsers.geometry_defaults['planar'])
+    default_revolution_angle = str(parsers.geometry_defaults['revolution_angle'])
+    default_delimiter = parsers.geometry_defaults['delimiter']
+    default_header_lines = str(parsers.geometry_defaults['header_lines'])
+    default_y_offset = str(parsers.geometry_defaults['y_offset'])
+    default_rtol = str(parsers.geometry_defaults['rtol'])
+    default_atol = str(parsers.geometry_defaults['atol'])
+    fields = (('Input File(s):', default_input_files),
+              ('Part Name(s):', default_part_names),
+              ('Model Name:', default_model_name),
+              ('Unit Conversion:', default_unit_conversion),
+              ('Euclidean Distance:', default_euclidean_distance),
+              ('Planar Geometry Switch:', default_planar),
+              ('Revolution Angle:', default_revolution_angle),
+              ('Delimiter:', default_delimiter),
+              ('Header Lines:', default_header_lines),
+              ('Y-Offset:', default_y_offset),
+              ('rtol:', default_rtol),
+              ('atol:', default_atol), )
+
+    (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,
+     delimiter, header_lines, y_offset, rtol, atol) = getInputs(fields=fields, dialogTitle='Turbo Turtle Geometry', )
+
+    if input_file_strings is not None:  #  will be None if the user hits the "cancel/esc" button
+        input_file = []
+        if input_file_strings != default_input_files:
+            for this_input_file_string in input_file_strings.split(','):
+                input_file += glob.glob(this_input_file_string)
+
+        if part_name_strings == 'None' or part_name_strings == default_part_names:
+            part_name = [None]
+        else:
+            part_name = part_name_strings.split(',')
+
+        if rtol == 'None':
+            rtol = None
+        else:
+            rtol = float(rtol)
+
+        if atol == 'None':
+            atol = None
+        else:
+            atol = float(atol)
+
+        user_inputs = {'model_name': model_name, 'input_file': input_file, 'part_name': part_name,
+                       'unit_conversion': float(unit_conversion), 'euclidean_distance': float(euclidean_distance),
+                       'planar': ast.literal_eval(planar), 'revolution_angle': float(revolution_angle),
+                       'delimiter': delimiter, 'header_lines': int(header_lines), 'y_offset': float(y_offset),
+                       'rtol': rtol, 'atol': atol}
+    else:
+        user_inputs = {}
+    return user_inputs
+
+
+def _gui_post_action(model_name, **kwargs):
+    """Action performed after running geometry
+
+    Set the view to look at the last part that was created.
 
     This function is designed to have the exact same arguments as 
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.partition.partition`
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.geometry`
     """
     import abaqus
 
-    part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
+    part_object = abaqus.mdb.models[model_name].parts[abaqus.mdb.models[model_name].parts.keys()[-1]]
     session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
     session.viewports['Viewport: 1'].view.setValues(session.views['Iso'])
     session.viewports['Viewport: 1'].view.fitView()
@@ -202,16 +309,16 @@ def _gui_post_action(center, xvector, zvector, model_name, part_name):
 def geometry_gui():
     """Function with no inputs required for driving the plugin
     """
-    gui_wrapper(inputs_function=_gui_get_inputs,
-                subcommand_function=geometry,
-                post_action_function=_gui_post_action)
+    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
+                                  subcommand_function=geometry,
+                                  post_action_function=_gui_post_action)
 
 
 if __name__ == "__main__":
     if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         geometry_gui()
     else:
-    parser = parsers.partition_parser(basename=basename)
+        parser = parsers.geometry_parser(basename=basename)
         try:
             args, unknown = parser.parse_known_args()
         except SystemExit as err:
