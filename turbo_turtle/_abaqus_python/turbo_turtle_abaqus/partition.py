@@ -198,7 +198,7 @@ def _gui_get_inputs():
     * ``model_name``: ``str`` type, name of the model in the current viewport
     * ``part_name``: ``list`` type, name of the part in the current viewport, or a list of all part names in the model
     """
-    from abaqus import getInputs
+    import abaqus
 
     default_center = str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')
     default_x_vector = str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')
@@ -209,7 +209,7 @@ def _gui_get_inputs():
               ('Z-Vector:', default_z_vector),
               ('Part Name(s):', default_part_name),
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
-    center, xvector, zvector, part_name_strings, cp_parameters = getInputs(fields=fields,
+    center, xvector, zvector, part_name_strings, cp_parameters = abaqus.getInputs(fields=fields,
         dialogTitle='Turbo Turtle', )
     if center is not None:  # Center will be None if the user hits the "cancel/esc" button
         if cp_parameters != fields[-1][-1]:
