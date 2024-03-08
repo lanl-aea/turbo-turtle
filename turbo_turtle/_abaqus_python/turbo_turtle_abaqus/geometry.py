@@ -58,8 +58,38 @@ def main(input_file, output_file,
     import abaqusConstants
 
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
-    part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     output_file = os.path.splitext(output_file)[0] + ".cae"
+    geometry(input_file=input_file, planar=planar, model_name=model_name, part_name=part_name,
+             revolution_angle=revolution_angle, delimiter=delimiter, header_lines=header_lines,
+             euclidean_distance=euclidean_disance, unit_conversion=unit_conversion, y_offset=y_offset,
+             rtol=rtol, atol=atol)
+    abaqus.mdb.saveAs(pathName=output_file)
+
+
+def geometry(input_file, planar, model_name, part_name, revolution_angle, delimiter, header_lines,
+             euclidean_distance, unit_conversion, y_offset, rtol, atol):
+    """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
+
+    This function drive the geometry creation of 2D planar, 2D axisymetric, or 3D revolved bodies and operates on a new 
+    Abaqus moddel database object.
+
+    :param str input_file: input text file(s) with coordinates to draw
+    :param str output_file: Abaqus CAE database to save the part(s)
+    :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
+    :param str model_name: name of the Abaqus model in which to create the part
+    :param list part_name: name(s) of the part(s) being created
+    :param float unit_conversion: multiplication factor applies to all coordinates
+    :param float euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
+        Distance should be provided in units *after* the unit conversion
+    :param str delimiter: character to use as a delimiter when reading the input file
+    :param int header_lines: number of lines in the header to skip when reading the input file
+    :param float revolution_angle: angle of solid revolution for ``3D`` geometries
+    :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
+        conversion.
+    :param float rtol: relative tolerance for vertical/horizontal line checks
+    :param float atol: absolute tolerance for vertical/horizontal line checks
+    """
+    part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
@@ -74,9 +104,6 @@ def main(input_file, output_file,
                       "inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
                       "subcommand can plot points to aid in troubleshooting.\n".format(new_part, file_name)
             _mixed_utilities.sys_exit(message)
-
-    abaqus.mdb.saveAs(pathName=output_file)
-
 
 
 def draw_part_from_splines(lines, splines,
@@ -153,26 +180,55 @@ def draw_part_from_splines(lines, splines,
     del abaqus.mdb.models[model_name].sketches['__profile__']
 
 
+def _gui_post_action(center, xvector, zvector, model_name, part_name):
+    """Action performed after running partition
+
+    After partitioning, this funciton resets the viewport - if the last partition action hits the an AbaqusException
+    except statement in the ``partition`` function, the user will otherwise be left in a sketch view that is hard to
+    exit from. An example of this is partioning a half-sphere; half of the partitioning actions are expected to fail,
+    since there is no geometry to partition on the open-end of the half-sphere.
+
+    This function is designed to have the exact same arguments as 
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.partition.partition`
+    """
+    import abaqus
+
+    part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
+    session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
+    session.viewports['Viewport: 1'].view.setValues(session.views['Iso'])
+    session.viewports['Viewport: 1'].view.fitView()
+
+
+def geometry_gui():
+    """Function with no inputs required for driving the plugin
+    """
+    gui_wrapper(inputs_function=_gui_get_inputs,
+                subcommand_function=geometry,
+                post_action_function=_gui_post_action)
+
+
 if __name__ == "__main__":
+    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+        geometry_gui()
+    else:
+    parser = parsers.partition_parser(basename=basename)
+        try:
+            args, unknown = parser.parse_known_args()
+        except SystemExit as err:
+            sys.exit(err.code)
 
-    parser = parsers.geometry_parser(basename=basename)
-    try:
-        args, unknown = parser.parse_known_args()
-    except SystemExit as err:
-        sys.exit(err.code)
-
-    sys.exit(main(
-        input_file=args.input_file,
-        output_file=args.output_file,
-        planar=args.planar,
-        model_name=args.model_name,
-        part_name=args.part_name,
-        unit_conversion=args.unit_conversion,
-        euclidean_distance=args.euclidean_distance,
-        delimiter=args.delimiter,
-        header_lines=args.header_lines,
-        revolution_angle=args.revolution_angle,
-        y_offset=args.y_offset,
-        rtol=args.rtol,
-        atol=args.atol
-    ))
+        sys.exit(main(
+            input_file=args.input_file,
+            output_file=args.output_file,
+            planar=args.planar,
+            model_name=args.model_name,
+            part_name=args.part_name,
+            unit_conversion=args.unit_conversion,
+            euclidean_distance=args.euclidean_distance,
+            delimiter=args.delimiter,
+            header_lines=args.header_lines,
+            revolution_angle=args.revolution_angle,
+            y_offset=args.y_offset,
+            rtol=args.rtol,
+            atol=args.atol
+        ))
