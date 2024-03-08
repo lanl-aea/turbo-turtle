@@ -18,7 +18,7 @@ import parsers
 
 
 class TestParsers(unittest.TestCase):
-    """Abaqus Python unittests for :meth:`turbo_turtle._abaqus_python.parsers`"""
+    """Abaqus Python unittests for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers`"""
 
     def test_positive_float(self):
         tests = [

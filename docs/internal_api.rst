@@ -99,26 +99,26 @@ be co-located in the Abaqus Python module. Each module should be self-contained 
 Abaqus Python namespace with Python 3 modules, and vice versa.
 
 These modules may have duplicate :ref:`python3_tests` ``turbo_turtle/tests/test*.py`` and :ref:`abaqus_python_tests`
-``turbo_turtle/_abaqus_python/test*.py``
+``turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test*.py``
 
 parsers
 =======
 
-.. automodule:: turbo_turtle._abaqus_python.parsers
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers
    :members:
    :private-members:
 
 vertices
 ========
 
-.. automodule:: turbo_turtle._abaqus_python.vertices
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices
    :members:
    :private-members:
 
 _mixed_utilities
 ================
 
-.. automodule:: turbo_turtle._abaqus_python._mixed_utilities
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities
    :members:
    :private-members:
 
@@ -133,63 +133,63 @@ The modules are intended purely for Abaqus Python use, but may freely use the mi
 _abaqus_utilities
 =================
 
-.. automodule:: turbo_turtle._abaqus_python._abaqus_utilities
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus._abaqus_utilities
    :members:
    :private-members:
 
 geometry
 ========
 
-.. automodule:: turbo_turtle._abaqus_python.geometry
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry
    :members:
    :private-members:
 
 cylinder
 ========
 
-.. automodule:: turbo_turtle._abaqus_python.cylinder
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.cylinder
    :members:
    :private-members:
 
 sphere
 ======
 
-.. automodule:: turbo_turtle._abaqus_python.sphere
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.sphere
    :members:
    :private-members:
 
 partition
 =========
 
-.. automodule:: turbo_turtle._abaqus_python.partition
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.partition
    :members:
    :private-members:
 
 mesh
 ====
 
-.. automodule:: turbo_turtle._abaqus_python.mesh
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.mesh
    :members:
    :private-members:
 
 image
 =====
 
-.. automodule:: turbo_turtle._abaqus_python.image
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.image
    :members:
    :private-members:
 
 merge
 =====
 
-.. automodule:: turbo_turtle._abaqus_python.merge
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.merge
    :members:
    :private-members:
 
 export
 ======
 
-.. automodule:: turbo_turtle._abaqus_python.export
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.export
    :members:
    :private-members:
 
@@ -204,7 +204,7 @@ the project root directory
 
 .. code-block::
 
-   $ abq2023 python -m unittest discover turbo_turtle/_abaqus_python
+   $ abq2023 python -m unittest discover turbo_turtle/_abaqus_python/turbo_turtle_abaqus
 
 The test execution is also available as an SCons alias: ``test_abaqus_python``, which is collected under the aliases:
 ``unittest`` and ``regression``.
@@ -212,13 +212,13 @@ The test execution is also available as an SCons alias: ``test_abaqus_python``, 
 test_mixed_utilities
 ====================
 
-.. automodule:: turbo_turtle._abaqus_python.test_mixed_utilities
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.test_mixed_utilities
    :members:
    :private-members:
 
 test_abaqus_utilities
 =====================
 
-.. automodule:: turbo_turtle._abaqus_python.test_abaqus_utilities
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.test_abaqus_utilities
    :members:
    :private-members:

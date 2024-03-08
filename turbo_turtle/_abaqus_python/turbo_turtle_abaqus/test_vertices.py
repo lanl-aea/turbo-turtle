@@ -19,7 +19,7 @@ import vertices
 
 
 class TestVertices(unittest.TestCase):
-    """Python unittest's for :meth:`turbo_turtle._abaqus_python.vertices`"""
+    """Python unittest's for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices`"""
 
     def test_compare_xy_values(self):
         tests = [

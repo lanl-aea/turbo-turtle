@@ -20,7 +20,7 @@ def rectalinear_coordinates(radius_list, angle_list):
 
 
 def cylinder(inner_radius, outer_radius, height, y_offset=0.):
-    """Return a :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` compatible vertex array
+    """Return a :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` compatible vertex array
 
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
@@ -131,8 +131,8 @@ def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
 
 
 def modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion=1., y_offset=0., rtol=None, atol=None):
-    """Combine :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` with
-    :meth:`turbo_turtle._abaqus_python.vertices.scale_and_offset_coordinates` for common re-use in geometry subcommand
+    """Combine :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` with
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.scale_and_offset_coordinates` for common re-use in geometry subcommand
     implementations.
 
     :param numpy.array coordinates: [N, 2] array of XY coordinates.

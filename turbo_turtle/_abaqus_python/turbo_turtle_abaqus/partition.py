@@ -110,7 +110,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
 
     angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0/3.0))
     big_number_coordinates = vertices.rectalinear_coordinates([big_number], [angle])[0]
-    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.vertices.datum_planes` tuple order. Find a way to
+    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.datum_planes` tuple order. Find a way to
     # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
     positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
     sketch_vertex_pairs = (
@@ -245,7 +245,7 @@ def _gui_post_action(center, xvector, zvector, model_name, part_name):
     since there is no geometry to partition on the open-end of the half-sphere.
 
     This function is designed to have the exact same arguments as 
-    :meth:`turbo_turtle._abaqus_python.partition.partition`
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.partition.partition`
     """
     import abaqus
 

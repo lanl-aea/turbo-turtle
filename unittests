@@ -46,10 +46,10 @@ env.AlwaysBuild(targets)
 
 target = ["test_abaqus_python.txt"]
 source = [
-    "turbo_turtle/_abaqus_python/test_abaqus_utilities.py",
-    "turbo_turtle/_abaqus_python/test_mixed_utilities.py",
-    "turbo_turtle/_abaqus_python/test_parsers.py",
-    "turbo_turtle/_abaqus_python/test_vertices.py",
+    "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_abaqus_utilities.py",
+    "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_mixed_utilities.py",
+    "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_parsers.py",
+    "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_vertices.py",
 ]
 targets = env.Command(
     target=target,

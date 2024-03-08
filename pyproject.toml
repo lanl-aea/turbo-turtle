@@ -25,7 +25,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["turbo_turtle", "turbo_turtle.tests", "turbo_turtle._abaqus_python"]
+packages = ["turbo_turtle", "turbo_turtle.tests", "turbo_turtle._abaqus_python.turbo_turtle_abaqus"]
 zip-safe = false
 
 [project.scripts]

@@ -13,9 +13,9 @@ import numpy
 import cubit
 
 from turbo_turtle import _utilities
-from turbo_turtle._abaqus_python import _mixed_utilities
-from turbo_turtle._abaqus_python import vertices
-from turbo_turtle._abaqus_python import parsers
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
 def cubit_command_or_exception(command):
@@ -37,7 +37,7 @@ def cubit_command_or_exit(*args, **kwargs):
     """Thin wrapper around ``cubit.cmd`` to call ``sys.exit`` when returning False
 
     Wrapper of :meth:`turbo_turtle._cubit_python.cubit_command_or_exception` with
-    :meth:`turbo_turtle._abaqus_python._mixed_utilities._print_exception_message`.
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._print_exception_message`.
 
     Cubit returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
     SystemExit with ``sys.exit`` when the command returns False.
@@ -351,7 +351,7 @@ def _get_volumes_from_name_or_exit(*args, **kwargs):
     """Thin wrapper around :meth:`turbo_turtle._cubit_python._get_volumes_from_name` to call ``sys.exit`` on exceptions
 
     Wrapper of :meth:`turbo_turtle._cubit_python._get_volumes_from_name` with
-    :meth:`turbo_turtle._abaqus_python._mixed_utilities._print_exception_message`.
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._print_exception_message`.
     """
     return _get_volumes_from_name(*args, **kwargs)
 

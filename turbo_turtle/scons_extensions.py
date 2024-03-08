@@ -10,7 +10,7 @@ from turbo_turtle._settings import _default_abaqus_options
 from turbo_turtle._settings import _default_cubit_options
 from turbo_turtle._settings import _default_backend
 from turbo_turtle import _utilities
-from turbo_turtle._abaqus_python import parsers
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
 def _get_defaults_dictionary(subcommand):
@@ -86,13 +86,13 @@ def _api_builder(subcommand):
 
     * geometry
 
-      * Abaqus: :meth:`turbo_turtle._abaqus_python.geometry.main`
+      * Abaqus: :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.main`
       * Cubit: :meth:`turbo_turtle._cubit_python.geometry`
 
     * geometry-xyplot: :meth:`turbo_turtle.main._geometry_xyplot`
     * merge
 
-      * Abaqus: :meth:`turbo_turtle._abaqus_python.merge.main`
+      * Abaqus: :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.merge.main`
       * Cubit: :meth:`turbo_turtle._cubit_python.merge`
 
     .. warning::

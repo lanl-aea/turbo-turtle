@@ -4,7 +4,7 @@ import argparse
 from turbo_turtle import __version__
 from turbo_turtle import _settings
 from turbo_turtle import _utilities
-from turbo_turtle._abaqus_python import parsers
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
 def _docs_parser():
@@ -69,10 +69,10 @@ def _geometry_xyplot(input_file, output_file,
                      rtol=parsers.geometry_defaults["rtol"],
                      atol=parsers.geometry_defaults["atol"],
                      no_markers=parsers.geometry_xyplot_defaults["no_markers"]):
-    """Plotter for :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines` division of coordinates into lines and splines
+    """Plotter for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` division of coordinates into lines and splines
 
-    See the :meth:`turbo_turtle._abaqus_python.parsers.geometry_parser`,
-    :meth:`turbo_turtle._abaqus_python.geometry.main`, or :meth:`turbo_turtle._cubit_python.geometry` interfaces for a
+    See the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.geometry_parser`,
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.main`, or :meth:`turbo_turtle._cubit_python.geometry` interfaces for a
     description of the input arguments.
 
     :param bool no_markers: Exclude the vertex markers from the plot. Plot only lines.
@@ -80,8 +80,8 @@ def _geometry_xyplot(input_file, output_file,
     import numpy
     import matplotlib.pyplot
 
-    from turbo_turtle._abaqus_python import _mixed_utilities
-    from turbo_turtle._abaqus_python import vertices
+    from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
+    from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
 
     if no_markers:
         line_kwargs = {}

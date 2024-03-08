@@ -11,11 +11,11 @@ from contextlib import nullcontext as does_not_raise
 import numpy
 import pytest
 
-from turbo_turtle._abaqus_python import _mixed_utilities
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
 
 
 def test_sys_exit():
-    """Test :meth:`turbo_turtle._abaqus_python._mixed_utilities.sys_exit` sys.exit wrapper.
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.sys_exit` sys.exit wrapper.
 
     We can't test the Abaqus Python override print to ``sys.__stderr__`` because the print statement is not valid Python
     3 code.
@@ -63,10 +63,10 @@ validate_part_name = {
                          validate_part_name.values(),
                          ids=validate_part_name.keys())
 def test_validate_part_name(input_file, original_part_name, expected, outcome):
-    """Test :meth:`turbo_turtle._abaqus_python._mixed_utilities.validate_part_name`
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_part_name`
 
     Tests both the expection raising version and the system exit version
-    :meth:`turbo_turtle._abaqus_python._mixed_utilities.validate_part_name_or_exit`
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_part_name_or_exit`
 
     :param str input_file: dummy input file name
     :param list original_part_name: List of part names passed to function under test
@@ -115,10 +115,10 @@ validate_element_type = {
                          validate_element_type.values(),
                          ids=validate_element_type.keys())
 def test_validate_element_type(length_part_name, original_element_type, expected, outcome):
-    """Test :meth:`turbo_turtle._abaqus_python._mixed_utilities.validate_element_type`
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_element_type`
 
     Tests both the expection raising version and the system exit version
-    :meth:`turbo_turtle._abaqus_python._mixed_utilities.validate_element_type_or_exit`
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_element_type_or_exit`
 
     :param int length_part_name: length of the ``part_name`` list
     :param list original_element_type: List of element types passed to function under test
@@ -161,10 +161,10 @@ return_genfromtxt = {
                          return_genfromtxt.values(),
                          ids=return_genfromtxt.keys())
 def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome):
-    """Test :meth:`turbo_turtle._abaqus_python._mixed_utilities.return_genfromtxt`
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.return_genfromtxt`
 
     Tests both the expection raising version and the system exit version
-    :meth:`turbo_turtle._abaqus_python._mixed_utilities.return_genfromtxt_or_exit`
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.return_genfromtxt_or_exit`
 
     :param str file_name: dummy data file name
     :param str delimiter: String for file name delimiter character
@@ -265,11 +265,11 @@ def test_element_type_regex(content, element_type, expected):
 
 def test_substitute_element_type():
     with patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
-         patch("turbo_turtle._abaqus_python._mixed_utilities._element_type_regex", return_value="old_content"):
+         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._element_type_regex", return_value="old_content"):
         _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
         open_mock.assert_called_once()
     with patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
-         patch("turbo_turtle._abaqus_python._mixed_utilities._element_type_regex", return_value="new_content"):
+         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._element_type_regex", return_value="new_content"):
         _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
         assert open_mock.call_count == 2
 

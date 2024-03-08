@@ -9,7 +9,7 @@ import pytest
 import numpy
 import math
 
-from turbo_turtle._abaqus_python import vertices
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
 
 
 compare_xy_values = {
@@ -276,7 +276,7 @@ the_real_mccoy = {
                          the_real_mccoy.values(),
                          ids=the_real_mccoy.keys())
 def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expected_splines):
-    """Test :meth:`turbo_turtle._abaqus_python.vertices.lines_and_splines`"""
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines`"""
     lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     for pair, expectation in zip(lines, expected_lines):
         assert len(pair) == len(expectation)
@@ -290,24 +290,24 @@ def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expe
 def test_modified_lines_and_splines():
     coordinates = numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
     euclidean_distance = 4.
-    with patch("turbo_turtle._abaqus_python.vertices.scale_and_offset_coordinates", return_value=coordinates) as mock_scale, \
-         patch("turbo_turtle._abaqus_python.vertices.lines_and_splines", return_value=([], [])) as mock_lines:
+    with patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.scale_and_offset_coordinates", return_value=coordinates) as mock_scale, \
+         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines", return_value=([], [])) as mock_lines:
         lines, splines = vertices.modified_lines_and_splines(coordinates, euclidean_distance)
     mock_scale.assert_called_once()
     mock_lines.assert_called_once()
 
 
 def test_lines_and_splines_passthrough():
-    with patch("turbo_turtle._abaqus_python.vertices._break_coordinates", return_value=[]) as mock_break_coordinates, \
-         patch("turbo_turtle._abaqus_python.vertices._line_pairs", return_value=[]):
+    with patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._break_coordinates", return_value=[]) as mock_break_coordinates, \
+         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._line_pairs", return_value=[]):
         all_splines = vertices.lines_and_splines([], 4.0, rtol=1e-5, atol=1e-9)
         mock_break_coordinates.assert_called_once_with([], 4.0, rtol=1e-5, atol=1e-9)
 
 
 def test_break_coordinates_passthrough():
-    with patch("turbo_turtle._abaqus_python.vertices._compare_xy_values") as mock_xy_values, \
-         patch("turbo_turtle._abaqus_python.vertices._compare_euclidean_distance"), \
-         patch("turbo_turtle._abaqus_python.vertices._bool_via_or"), \
+    with patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_xy_values") as mock_xy_values, \
+         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_euclidean_distance"), \
+         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._bool_via_or"), \
          patch("numpy.where"), \
          patch("numpy.split"):
         all_splines = vertices._break_coordinates([], 4.0, rtol=1e-5, atol=1e-9)
@@ -328,7 +328,7 @@ cylinder = {
                          cylinder.values(),
                          ids=cylinder.keys())
 def test_cylinder(inner_radius, outer_radius, height, y_offset, expected):
-    """Test :meth:`turbo_turtle._abaqus_python.vertices.cylinder`"""
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.cylinder`"""
     kwargs = {}
     if y_offset is not None:
         kwargs = {"y_offset": y_offset}
@@ -358,7 +358,7 @@ cylinder_lines = {
                          cylinder_lines.values(),
                          ids=cylinder_lines.keys())
 def test_cylinder_lines(inner_radius, outer_radius, height, y_offset, expected):
-    """Test :meth:`turbo_turtle._abaqus_python.vertices.cylinder_lines`"""
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.cylinder_lines`"""
     kwargs = {}
     if y_offset is not None:
         kwargs = {"y_offset": y_offset}
@@ -383,7 +383,7 @@ rectalinear_coordinates = {
                          rectalinear_coordinates.values(),
                          ids=rectalinear_coordinates.keys())
 def test_rectalinear_coordinates(radius_list, angle_list, expected):
-    """Test :meth:`turbo_turtle._abaqus_python.vertices.rectalinear_coordinates`"""
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`"""
     coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
     assert numpy.allclose(coordinates, expected)
 

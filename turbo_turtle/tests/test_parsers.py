@@ -5,7 +5,7 @@ from contextlib import nullcontext as does_not_raise
 import pytest
 import numpy
 
-from turbo_turtle._abaqus_python import parsers
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
 positive_float = {

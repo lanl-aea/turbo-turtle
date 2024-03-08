@@ -19,7 +19,7 @@ import abaqusConstants
 
 
 class TestAbaqusUtilities(unittest.TestCase):
-    """Python unittest's for :meth:`turbo_turtle._abaqus_python._abaqus_utilities`"""
+    """Python unittest's for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._abaqus_utilities`"""
 
     def test_return_abaqus_constant(self):
         attribute = _abaqus_utilities.return_abaqus_constant("C3D8")
