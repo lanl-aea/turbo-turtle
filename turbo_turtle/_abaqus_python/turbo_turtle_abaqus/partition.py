@@ -203,7 +203,7 @@ def _gui_get_inputs():
     default_center = str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')
     default_x_vector = str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')
     default_z_vector = str(parsers.partition_defaults['zvector']).replace('[', '').replace(']', '')
-    default_part_name = session.viewports[session.currentViewportName].displayedObject.name
+    default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
     fields = (('Center:', default_center),
               ('X-Vector:', default_x_vector),
               ('Z-Vector:', default_z_vector),
@@ -229,7 +229,7 @@ def _gui_get_inputs():
         print('Z-Vector: {}'.format(zvector))
         print('')
 
-        model_name = session.viewports[session.currentViewportName].displayedObject.modelName
+        model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
         part_name = []
         for this_part_name_string in part_name_strings.split(','):
             part_name += fnmatch.filter(abaqus.mdb.models[model_name].parts.keys(), this_part_name_string)
@@ -255,9 +255,9 @@ def _gui_post_action(center, xvector, zvector, model_name, part_name):
     import abaqus
 
     part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
-    session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
-    session.viewports['Viewport: 1'].view.setValues(session.views['Iso'])
-    session.viewports['Viewport: 1'].view.fitView()
+    abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
+    abaqus.session.viewports['Viewport: 1'].view.setValues(abaqus.session.views['Iso'])
+    abaqus.session.viewports['Viewport: 1'].view.fitView()
 
 
 def gui_wrapper(inputs_function, subcommand_function, post_action_function=None):
