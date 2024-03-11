@@ -6,6 +6,13 @@ from abaqusGui import *
 
 toolset = getAFXApp().getAFXMainWindow().getPluginToolset()  # Do this only once
 
+# Geometry Gui Plugin
+toolset.registerKernelMenuButton(
+    buttonText='Turbo-Turtle|Geometry',
+    moduleName='turbo_turtle_abaqus.geometry', functionName='geometry_gui()',
+    applicableModules=('Part', ),
+    icon=afxCreateIcon('turboTurtleIcon.png'))
+
 # Partition Gui Plugin
 toolset.registerKernelMenuButton(
     buttonText='Turbo-Turtle|Partition',
