@@ -137,6 +137,8 @@ _abaqus_utilities
    :members:
    :private-members:
 
+.. _abaqus_python_geometry_api:
+
 geometry
 ========
 
