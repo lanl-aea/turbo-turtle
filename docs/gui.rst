@@ -12,7 +12,7 @@ Abaqus Python & GUI Plug-ins
 Abaqus Python Package
 *********************
 
-Turbo-Turtle's Abaqus python package can be imported into your own custom Abaqus python scripts should you with to use 
+Turbo-Turtle's Abaqus python package can be imported into your own custom Abaqus python scripts should you wish to use 
 the internal API rather than running turbo-turtle via command line. The :ref:`print_abaqus_path_cli` documentation 
 describes how to retrieve the absolute path to your locally installed Abaqus python package.
 
@@ -127,7 +127,7 @@ following to your ``abaqus_v6.env`` file:
    plugin_central_dir = "/path/to/turbo_turtle/_abaqus_python"
 
 Included below is a shell command that can be used to append to your ``abaqus_v6.env`` file in the current working 
-directory. Note that if you with to change your home directory's ``abaqus_v6.env`` file, you only need to modify the 
+directory. Note that if you wish to change your home directory's ``abaqus_v6.env`` file, you only need to modify the 
 command below with the path to the Abaqus evironment file (i.e. ``~/abaqus_v6.env``).
 
 .. code-block::
