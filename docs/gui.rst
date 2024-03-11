@@ -138,7 +138,7 @@ Running Turbo-Turtle Plug-ins
 =============================
 
 Once your Abaqus environment has been pointed at the turbo-turtle Abaqus python package directory, GUI plug-ins should 
-be available in Abaqus/CAE through the Plug-ins...Turbo-Turtle drop-down menus. Click on the Plug-in you would like to 
+be available in Abaqus/CAE through the 'Plug-ins...Turbo-Turtle' drop-down menus. Click on the Plug-in you would like to 
 run, and a dialogue box will pop up in your GUI session.
 
 GUI Plug-in Documentation
