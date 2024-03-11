@@ -193,7 +193,8 @@ def _gui_get_inputs():
     """Interactive Inputs
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
-    GUI window with text boxes to enter the following values:
+    GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
+    below, also update ``gui_help_string`` that gets used as the GUI ``label``.
 
     GUI-INPUTS
     ==========
@@ -231,6 +232,24 @@ def _gui_get_inputs():
     """
     import abaqus
 
+    gui_help_string = """
+    GUI-INPUTS
+    ==========
+    * Input File(s) - glob statement or comma separated list of files (NO SPACES) with points in x-y coordinates
+    * Part Name(s) - part names for the parts being created. If ``None``, then part name is determined by the
+      input files. This must either ``None``, a single part name, or a comma separated list of part names (NO SPACES)
+    * Model Name - parts will be created in a new model with this name
+    * Unit Conversion - unit conversion multiplication factor
+    * Euclidean Distance - connect points with a straight line if the distance between them is larger than this
+    * Planar Geometry Switch - switch to indicate that the 2D model is planar not axisymmetric (``True`` for planar)
+    * Revolution Angle - revolution angle for a 3D part in degrees
+    * Delimiter - delimiter character between columns in the input file(s)
+    * Header Lines - number of header lines to skip in the input file(s)
+    * Y-Offset - offset along the global y-axis
+    * rtol - relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+    * atol - absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+    """
+
     default_input_files = 'File1.csv,File2.csv OR *.csv'
     default_part_names = 'Part-1,Part-2, OR None'
     default_model_name = parsers.geometry_defaults['model_name']
@@ -257,8 +276,11 @@ def _gui_get_inputs():
               ('atol:', default_atol), )
 
     (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,
-     delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(fields=fields, dialogTitle='Turbo Turtle Geometry', )
-
+    delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(
+        dialogTitle='Turbo Turtle Geometry',
+        label=gui_help_string,
+        fields=fields
+    )
     if input_file_strings is not None:  #  will be None if the user hits the "cancel/esc" button
         input_file = []
         if input_file_strings != default_input_files:
