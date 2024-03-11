@@ -215,7 +215,11 @@ def _gui_get_inputs():
     default_center = str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')
     default_x_vector = str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')
     default_z_vector = str(parsers.partition_defaults['zvector']).replace('[', '').replace(']', '')
-    default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
+    try:
+        default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
+    except AttributeError:
+        print('Warning: could not determine a default part name using the current viewport')
+        default_part_name = parsers.partition_defaults['part_name'][0]  # part_name defaults to list of length 1
     fields = (('Center:', default_center),
               ('X-Vector:', default_x_vector),
               ('Z-Vector:', default_z_vector),
