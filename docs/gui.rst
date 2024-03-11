@@ -68,7 +68,7 @@ PYTHONPATH Modifications
 
 .. warning::
    
-   Modifying your local python environment can have unexpected consiquences. Proceed with caution.
+   Modifying your local python environment can have unexpected consequences. Proceed with caution.
    
 In order for the turbo-turtle Abaqus python API to be importable, the package parent directory must be on your 
 ``PYTHONPATH``. This can be achived in several ways:
@@ -111,7 +111,7 @@ Make Turbo-Turtle Plug-ins Available
 
 .. warning::
 
-   Modifying your local Abaqus environment can have unexpected consiquences. Proceed with caution.
+   Modifying your local Abaqus environment can have unexpected consequences. Proceed with caution.
 
 In order for Abaqus to recognize turbo-turtle's plugins, you must modify your Abaqus environment with either 
 ``abaqus_v6.env`` or ``custom_v6.env``, either of which can exist in your local home directory or in the working 
