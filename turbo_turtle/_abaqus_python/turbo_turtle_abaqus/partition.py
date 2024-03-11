@@ -166,7 +166,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
                     )
                 # TODO: Is is possible to distinguish between expected failures (operating on an incomplete sphere, so
                 # sketch doesn't intersect) and unexpected failures (bad options, missing geometry, etc)?
-                except AbaqusException as err:
+                except abaqus.AbaqusException as err:
                     pass
 
         abaqus.mdb.models[model_name].parts[current_part].checkGeometry()
