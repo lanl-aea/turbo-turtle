@@ -177,14 +177,14 @@ def _gui_get_inputs():
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the following values:
-    
+
     GUI-INPUTS
     ==========
     * Center - center location of the geometry
     * X-Vector - location on the x-axis local to the geometry
     * Z-Vector - location on the z-axis local to the geometry
     * Part Name(s) - part name(s) to partition as a comma separated list (NO SPACES). This can also be a glob statement
-    * Copy and Paste Parameters - copy and paste the parameters printed to the Abaqus Python terminal to make 
+    * Copy and Paste Parameters - copy and paste the parameters printed to the Abaqus Python terminal to make
       re-use of previous partition parameters easier
 
     **IMPORTANT** - this function must return key-value pairs that will successfully unpack as ``**kwargs`` in
@@ -249,7 +249,7 @@ def _gui_post_action(center, xvector, zvector, model_name, part_name):
     exit from. An example of this is partioning a half-sphere; half of the partitioning actions are expected to fail,
     since there is no geometry to partition on the open-end of the half-sphere.
 
-    This function is designed to have the exact same arguments as 
+    This function is designed to have the exact same arguments as
     :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.partition.partition`
     """
     import abaqus
@@ -271,7 +271,7 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
     This wrapper expects the dictionary output from ``inputs_function`` to be empty when the GUI interface is exited
     early (escape or cancel). Otherwise, the dictionary will be unpacked as ``**kwargs`` into ``subcommand_function``
     and ``post_action_function``.
-    
+
     :param func inputs_function: function to get user inputs through the Abaqus CAE GUI
     :param func subcommand_function: function with arguments matching the return values from ``inputs_function``
     :param func post_action_function: function to call for script actions after calling ``subcommand_function``
