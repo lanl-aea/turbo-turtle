@@ -54,7 +54,7 @@ def _print_abaqus_path_location():
     Exits with a non-zero exit code if the settings variable ``_abaqus_python_parent_abspath`` does not exist.
     """
     if not _settings._abaqus_python_parent_abspath.exists():
-        sys.exit("Could not find a documented path to the Abaqus python package directory")
+        sys.exit("Could not find a documented path to the Abaqus Python package directory")
     else:
         print(_settings._abaqus_python_parent_abspath)
 
@@ -191,7 +191,7 @@ def get_parser():
         help="Print the absolute path to Turbo-Turtle's Abaqus Python compatible package.",
         description="***NOTE: this is an alpha feature for early adopters and developer testing of possible GUI " \
                     "support*** Print the absolute path to Turbo-Turtle's Abaqus Python compatible package. " \
-                    "If this directory is on your PYTHONPATH, you can directly import Turbo Turtle Abaqus python " \
+                    "If this directory is on your PYTHONPATH, you can directly import Turbo Turtle Abaqus Python " \
                     "packages in your own scrips (i.e. import turbo_turtle_abaqus.partition)",
         parents=[print_abaqus_path_parser])
 
