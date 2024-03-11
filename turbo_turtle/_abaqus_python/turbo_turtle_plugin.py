@@ -8,5 +8,6 @@ toolset = getAFXApp().getAFXMainWindow().getPluginToolset()  # Do this only once
 
 # Partition Gui Plugin
 toolset.registerKernelMenuButton(
-buttonText='Turbo-Turtle|Partition',
-moduleName='turbo_turtle_abaqus.partition', functionName='partition_gui()')
+    buttonText='Turbo-Turtle|Partition',
+    moduleName='turbo_turtle_abaqus.partition', functionName='partition_gui()',
+    applicableModules=('Part', ))
