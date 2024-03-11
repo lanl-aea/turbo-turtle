@@ -176,7 +176,8 @@ def _gui_get_inputs():
     """Partition Interactive Inputs
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
-    GUI window with text boxes to enter the following values:
+    GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
+    below, also update ``gui_help_string`` that gets used as the GUI ``label``.
 
     GUI-INPUTS
     ==========
@@ -200,6 +201,17 @@ def _gui_get_inputs():
     """
     import abaqus
 
+    gui_help_string = """
+    GUI-INPUTS
+    ==========
+    * Center - center location of the geometry
+    * X-Vector - location on the x-axis local to the geometry
+    * Z-Vector - location on the z-axis local to the geometry
+    * Part Name(s) - part name(s) to partition as a comma separated list (NO SPACES). This can also be a glob statement
+    * Copy and Paste Parameters - copy and paste the parameters printed to the Abaqus Python terminal to make
+      re-use of previous partition parameters easier
+    """
+
     default_center = str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')
     default_x_vector = str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')
     default_z_vector = str(parsers.partition_defaults['zvector']).replace('[', '').replace(']', '')
@@ -211,7 +223,7 @@ def _gui_get_inputs():
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
     center, xvector, zvector, part_name_strings, cp_parameters = abaqus.getInputs(
         dialogTitle='Turbo Turtle Partition',
-        label=_gui_get_inputs.__doc__,
+        label=gui_help_string,
         fields=fields
     )
     if center is not None:  # Center will be None if the user hits the "cancel/esc" button
