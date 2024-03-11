@@ -18,6 +18,7 @@ Internal Changes
   Brindley`_.
 - Make the Abaqus python package importable and change the GUI behavior to be a plug-in rather than direct execution on 
   a python module (:issue:`137`, :merge:`127`). By `Thomas Roberts`_.
+- Work-in-progress support for Abaqus CAE GUI geometry capability (:issue:`138`, :merge:`128`). By `Thomas Roberts`_.
 
 Enhancements
 ============
