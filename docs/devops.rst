@@ -91,4 +91,3 @@ script, you can use an import statement like shown below (assuming the ``_abaqus
    import turbo_turtle_abaqus.partition
 
    turbo_turtle_abaqus.partition.main()
-
