@@ -53,7 +53,7 @@ def _print_abaqus_path_location():
 
     Exits with a non-zero exit code if the settings variable ``_abaqus_python_abspath`` does not exist
     """
-    if not _settings._abaqus_python_abspath.exists():
+    if not _settings._abaqus_python_parent_abspath.exists():
         sys.exit("Could not find a documented path to the Abaqus python package directory")
     else:
         print(_settings._abaqus_python_parent_abspath)
