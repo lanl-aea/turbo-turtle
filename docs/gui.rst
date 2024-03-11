@@ -23,12 +23,12 @@ Make Turbo-Turtle Plug-ins Available
 
    Modifying your local Abaqus environment can have unexpected consequences. Proceed with caution.
 
-In order for Abaqus to recognize turbo-turtle's plugins, you must modify your Abaqus environment with either 
+In order for Abaqus to recognize Turbo-Turtle's plugins, you must modify your Abaqus environment with either 
 ``abaqus_v6.env`` or ``custom_v6.env``, either of which can exist in your local home directory or in the working 
 directory where you will run Abaqus/CAE.
 
 Abaqus looks for the ``plugin_central_dir`` variable to add to the paths where it looks for plugins. Using the absolute 
-path to your locally installed turbo-turtle Abaqus python package (see :ref:`print_abaqus_path_cli`), you must add the 
+path to your locally installed Turbo-Turtle Abaqus Python package (see :ref:`print_abaqus_path_cli`), you must add the 
 following to your ``abaqus_v6.env`` file:
 
 .. code-block:: Python
@@ -47,6 +47,6 @@ command below with the path to the Abaqus evironment file (i.e. ``~/abaqus_v6.en
 Running Turbo-Turtle Plug-ins
 =============================
 
-Once your Abaqus environment has been pointed at the turbo-turtle Abaqus python package directory, GUI plug-ins should 
+Once your Abaqus environment has been pointed at the Turbo-Turtle Abaqus Python package directory, GUI plug-ins should 
 be available in Abaqus/CAE through the 'Plug-ins...Turbo-Turtle' drop-down menus. Click on the Plug-in you would like to 
 run, and a dialogue box will pop up in your GUI session.
