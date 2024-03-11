@@ -71,32 +71,12 @@ PYTHONPATH Modifications
    Modifying your local python environment can have unexpected consequences. Proceed with caution.
    
 In order for the turbo-turtle Abaqus python API to be importable, the package parent directory must be on your 
-``PYTHONPATH``. This can be achived in several ways:
-
-#. Add to your ``PYTHONPATH`` enviornment variable prior to executing Abaqus CAE
+``PYTHONPATH``. You can use the following command to add to your ``PYTHONPATH`` enviornment variable prior to executing 
+Abaqus CAE:
    
    .. code-block::
 
       PYTHONPATH=$(turbo_turtle print-abaqus-path):$PYTHONPATH abq2023 cae -noGui myScript.py
-
-#. Within your python script, before importing turbo-turtle modules
-
-   First, get the path to the locally installed package parent directory, noting that this might change if/when you 
-   update your Conda enviornment.
-   
-   .. code-block::
-   
-      turbo-turtle print-abaqus-path
-      /path/to/turbo_turtle/_abaqus_python
-
-   Next, use ``sys.path`` to add to your PYTHONPATH at run-time.
-
-   .. code-block:: Python
-   
-      import sys
-      sys.path.append('/path/to/turbo_turtle/_abaqus_python')
-      
-      import turbo_turtle_abaqus.partition
 
 ************
 GUI Plug-ins
