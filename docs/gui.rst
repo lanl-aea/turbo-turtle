@@ -49,20 +49,6 @@ The turbo-turtle Abaqus python package is organized in the directory structure a
    │   └── vertices.py
    └── turbo_turtle_plugin.py
 
-Importing Turbo-Turtle Modules
-==============================
-
-Turbo-Turtle's Abaqus python package has been design for you to make import statements at the package level. This 
-removes the risks of clashing with the Abaqus python namespace when importing turbo-turtle modules. In your python 
-script, you can use an import statement like shown below (assuming the ``_abaqus_python`` package directory is on your 
-``PYTHONPATH``).
-
-.. code-block:: Python
-
-   import turbo_turtle_abaqus.partition
-   
-   turbo_turtle_abaqus.partition.main()
-
 PYTHONPATH Modifications
 ========================
 
@@ -77,6 +63,20 @@ Abaqus CAE:
    .. code-block::
 
       PYTHONPATH=$(turbo_turtle print-abaqus-path):$PYTHONPATH abq2023 cae -noGui myScript.py
+
+Importing Turbo-Turtle Modules
+==============================
+
+Turbo-Turtle's Abaqus python package has been design for you to make import statements at the package level. This 
+removes the risks of clashing with the Abaqus python namespace when importing turbo-turtle modules. In your python 
+script, you can use an import statement like shown below (assuming the ``_abaqus_python`` package directory is on your 
+``PYTHONPATH``).
+
+.. code-block:: Python
+
+   import turbo_turtle_abaqus.partition
+   
+   turbo_turtle_abaqus.partition.main()
 
 ************
 GUI Plug-ins
