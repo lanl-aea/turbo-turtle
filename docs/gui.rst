@@ -122,8 +122,8 @@ path to your locally installed turbo-turtle Abaqus python package (see :ref:`pri
 following to your ``abaqus_v6.env`` file:
 
 .. code-block:: Python
+   :caption: abaqus_v6.env
 
-   # abaqus_v6.env
    plugin_central_dir = "/path/to/turbo_turtle/_abaqus_python"
 
 Included below is a shell command that can be used to append to your ``abaqus_v6.env`` file in the current working 
