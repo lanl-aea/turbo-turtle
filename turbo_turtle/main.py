@@ -51,7 +51,7 @@ def _print_abaqus_path_parser():
 def _print_abaqus_path_location():
     """Print the absolute path to the Turbo Turtle Abaqus Python package directory
 
-    Exits with a non-zero exit code if the settings variable ``_abaqus_python_abspath`` does not exist
+    Exits with a non-zero exit code if the settings variable ``_abaqus_python_parent_abspath`` does not exist.
     """
     if not _settings._abaqus_python_parent_abspath.exists():
         sys.exit("Could not find a documented path to the Abaqus python package directory")
