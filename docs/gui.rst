@@ -14,7 +14,7 @@ Abaqus Python Package
 
 Turbo-Turtle's Abaqus python package can be imported into your own custom Abaqus python scripts should you wish to use 
 the internal API rather than running turbo-turtle via command line. The :ref:`print_abaqus_path_cli` documentation 
-describes how to retrieve the absolute path to your locally installed Abaqus python package.
+describes how to retrieve the absolute path to Turbo-Turtle's Abaqus Python compatible package.
 
 Directory Structure
 ===================
