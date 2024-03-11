@@ -210,7 +210,7 @@ def _gui_get_inputs():
               ('Part Name(s):', default_part_name),
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
     center, xvector, zvector, part_name_strings, cp_parameters = abaqus.getInputs(
-        dialogTitle='Turbo Turtle',
+        dialogTitle='Turbo Turtle Partition',
         label=_gui_get_inputs.__doc__,
         fields=fields
     )
