@@ -81,7 +81,7 @@ Abaqus CAE:
 Importing Turbo-Turtle Modules
 ------------------------------
 
-Turbo-Turtle's Abaqus Python package has been design for you to make import statements at the package level. This
+Turbo-Turtle's Abaqus Python package has been designed for you to make import statements at the package level. This
 removes the risks of clashing with the Abaqus Python namespace when importing Turbo-Turtle modules. In your Python
 script, you can use an import statement like shown below (assuming the ``_abaqus_python`` package directory is on your
 ``PYTHONPATH``).
