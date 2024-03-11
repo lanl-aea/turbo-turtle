@@ -91,6 +91,9 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
         conversion.
     :param float rtol: relative tolerance for vertical/horizontal line checks
     :param float atol: absolute tolerance for vertical/horizontal line checks
+    
+    :return: error messages from failed part creation
+    :rtype: list
     """
     import abaqus
     import abaqusConstants
@@ -111,6 +114,7 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
             message = "Error: failed to create part '{}' from '{}'. Check the XY coordinates for " \
                       "inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
                       "subcommand can plot points to aid in troubleshooting.\n".format(new_part, file_name)
+            print(message)
             error_messages.append(message)
     return error_messages
 
