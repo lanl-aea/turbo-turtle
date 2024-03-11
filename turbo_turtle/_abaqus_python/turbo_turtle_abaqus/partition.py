@@ -209,8 +209,11 @@ def _gui_get_inputs():
               ('Z-Vector:', default_z_vector),
               ('Part Name(s):', default_part_name),
               ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
-    center, xvector, zvector, part_name_strings, cp_parameters = abaqus.getInputs(fields=fields,
-        dialogTitle='Turbo Turtle', )
+    center, xvector, zvector, part_name_strings, cp_parameters = abaqus.getInputs(
+        dialogTitle='Turbo Turtle',
+        label=_gui_get_inputs.__doc__,
+        fields=fields
+    )
     if center is not None:  # Center will be None if the user hits the "cancel/esc" button
         if cp_parameters != fields[-1][-1]:
             cp_param = [x.replace('\n', '') for x in cp_parameters.split('\n')]
@@ -292,10 +295,6 @@ def partition_gui():
                 subcommand_function=partition,
                 post_action_function=_gui_post_action)
 
-def partition_gui_help():
-   """Function that prints the ``_gui_get_inputs`` docstring for a help message in the GUI
-   """
-   print(_gui_get_inputs.__doc__)
 
 if __name__ == "__main__":
     if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
