@@ -21,7 +21,8 @@ Make Turbo-Turtle Plug-ins Available
 
 .. warning::
 
-   Modifying your local Abaqus environment can have unexpected consequences. Proceed with caution.
+   Modifying the Abaqus environment should be considered an advanced usage. See the `Abaqus Environment Documentation`_
+   for details of behavior and side effects.
 
 In order for Abaqus to recognize Turbo-Turtle's plugins, you must modify your Abaqus environment with either 
 ``abaqus_v6.env`` or ``custom_v6.env``, either of which can exist in your local home directory or in the working 

@@ -18,3 +18,4 @@
 .. _`Gitlab Flow`: https://about.gitlab.com/topics/version-control/what-is-gitlab-flow/
 .. _`hardcopy`: https://cubit.sandia.gov/files/cubit/16.14/help_manual/WebHelp/environment_control/graphics_window_control/hardcopy_output.htm
 .. _`Using plug-ins section of the Abaqus/CAE User's Guide`: https://help.3ds.com/2023/english/dssimulia_established/simacaecaerefmap/simacae-c-plgregisterstored.htm?contextscope=all&highlight=using+plugins&id=9fcb7bcc65db4b8d93760006eede175e&analyticsContext=search-result&analyticsSearch=using%20plugins&myapp=false
+.. _`Abaqus Environment Documentation`: https://help.3ds.com/2023/english/dssimulia_established/simacaeilgrefmap/simailg-m-envusing-sb.htm?contextscope=all&highlight=abaqus_v6.env&id=18a97d67637947f9af33ac74513c8801&analyticsContext=search-result&analyticsSearch=abaqus_v6.env&myapp=false
