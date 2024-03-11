@@ -13,8 +13,8 @@ GUI Plug-ins
 ************
 
 Abaqus allows for custom GUI plug-ins to be added to the Abaqus/CAE environment. For more information about Abaqus/CAE 
-plug-ins and how to make them available to you in Abaqus/CAE, see the **Using plug-ins** section of your Abaqus/CAE 
-User's Guide.
+plug-ins and how to make them available to you in Abaqus/CAE, see the
+`Using plug-ins section of the Abaqus/CAE User's Guide`_.
 
 Make Turbo-Turtle Plug-ins Available
 ====================================

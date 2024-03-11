@@ -17,3 +17,4 @@
 .. _`Conda package structure`: https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/packages.html#package-structure
 .. _`Gitlab Flow`: https://about.gitlab.com/topics/version-control/what-is-gitlab-flow/
 .. _`hardcopy`: https://cubit.sandia.gov/files/cubit/16.14/help_manual/WebHelp/environment_control/graphics_window_control/hardcopy_output.htm
+.. _`Using plug-ins section of the Abaqus/CAE User's Guide`: https://help.3ds.com/2023/english/dssimulia_established/simacaecaerefmap/simacae-c-plgregisterstored.htm?contextscope=all&highlight=using+plugins&id=9fcb7bcc65db4b8d93760006eede175e&analyticsContext=search-result&analyticsSearch=using%20plugins&myapp=false
