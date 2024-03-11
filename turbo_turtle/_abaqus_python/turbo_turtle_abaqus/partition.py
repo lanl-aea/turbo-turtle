@@ -173,7 +173,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Partition Interactive Inputs
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the following values:
@@ -286,12 +286,16 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
 
 
 def partition_gui():
-    """Function with no inputs required for driving the plugin
+    """Function with no inputs that drives the plug-in
     """
     gui_wrapper(inputs_function=_gui_get_inputs,
                 subcommand_function=partition,
                 post_action_function=_gui_post_action)
 
+def partition_gui_help():
+   """Function that prints the ``_gui_get_inputs`` docstring for a help message in the GUI
+   """
+   print(_gui_get_inputs.__doc__)
 
 if __name__ == "__main__":
     if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
