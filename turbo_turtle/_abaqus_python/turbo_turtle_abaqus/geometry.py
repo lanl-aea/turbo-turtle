@@ -240,8 +240,9 @@ def _gui_get_inputs():
     GUI-INPUTS
     ==========
     * Input File(s) - glob statement or comma separated list of files (NO SPACES) with points in x-y coordinates
-    * Part Name(s) - part names for the parts being created. If ``None``, then part name is determined by the
-      input files. This must either ``None``, a single part name, or a comma separated list of part names (NO SPACES)
+    * Part Name(s) - part names for the parts being created. If ``None`` or blank, then part name is determined by the
+      input files. This must either ``None`` or blank, a single part name, or a comma separated list of
+      part names (NO SPACES)
     * Model Name - parts will be created in a new model with this name
     * Unit Conversion - unit conversion multiplication factor
     * Euclidean Distance - connect points with a straight line if the distance between them is larger than this
@@ -250,12 +251,12 @@ def _gui_get_inputs():
     * Delimiter - delimiter character between columns in the input file(s)
     * Header Lines - number of header lines to skip in the input file(s)
     * Y-Offset - offset along the global y-axis
-    * rtol - relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
-    * atol - absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+    * rtol - relative tolerance used by ``numpy.isclose``. If ``None`` or blank, use numpy defaults
+    * atol - absolute tolerance used by ``numpy.isclose``. If ``None`` or blank, use numpy defaults
     """
 
     default_input_files = 'File1.csv,File2.csv OR *.csv'
-    default_part_names = 'Part-1,Part-2, OR None'
+    default_part_names = 'Part-1,Part-2, OR None OR blank'
     default_model_name = parsers.geometry_defaults['model_name']
     default_unit_conversion = str(parsers.geometry_defaults['unit_conversion'])
     default_euclidean_distance = str(parsers.geometry_defaults['euclidean_distance'])
@@ -291,17 +292,17 @@ def _gui_get_inputs():
             for this_input_file_string in input_file_strings.split(','):
                 input_file += glob.glob(this_input_file_string)
 
-        if part_name_strings == 'None' or part_name_strings == default_part_names:
+        if part_name_strings == 'None' or part_name_strings == default_part_names or not part_name_strings:
             part_name = [None]
         else:
             part_name = part_name_strings.split(',')
 
-        if rtol == 'None':
+        if rtol == 'None' or not rtol:
             rtol = None
         else:
             rtol = float(rtol)
 
-        if atol == 'None':
+        if atol == 'None' or not atol:
             atol = None
         else:
             atol = float(atol)
