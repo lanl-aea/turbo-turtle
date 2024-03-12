@@ -269,8 +269,13 @@ def _gui_post_action(model_name, part_name, **kwargs):
     exit from. An example of this is partioning a half-sphere; half of the partitioning actions are expected to fail,
     since there is no geometry to partition on the open-end of the half-sphere.
 
-    This function is designed to have the exact same arguments as
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.partition.partition`
+    This function requires a subset of the arguments of
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.partition.partition`. Any other arguments than
+    the ones documented below will be unpacked but ignored. This behvior makes it convenient to wrap around this
+    function by simply unpacking the entire keyword arguments dictionary required for ``partition``.
+
+    :param str model_name: name of the Abaqus model to query in the post-action
+    :param str part_name: name of the part to place in the viewport during the post-action
     """
     import abaqus
 

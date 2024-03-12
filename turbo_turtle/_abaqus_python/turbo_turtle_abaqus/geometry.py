@@ -322,8 +322,12 @@ def _gui_post_action(model_name, **kwargs):
     After geometry, set the viewport to look at the last part in the parts list, simply for convenience. Otherwise, the 
     user will be left at a blank Abaqus/CAE screen.
 
-    This function is designed to have the exact same arguments as 
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.geometry`
+    This function requires a subset of the arguments of
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.geometry`. Any other arguments than
+    the ones documented below will be unpacked but ignored. This behvior makes it convenient to wrap around this 
+    function by simply unpacking the entire keyword arguments dictionary required for ``geometry``.
+
+    :param str model_name: name of the Abaqus model to query in the post-action
     """
     import abaqus
 
