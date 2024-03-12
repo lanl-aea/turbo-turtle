@@ -233,6 +233,8 @@ def _gui_get_inputs():
     * ``y_offset``: ``float`` type, offset along the y-axis
     * ``rtol``: ``float`` type, relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
     * ``atol``: ``float`` type, absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+    
+    :return: `error_message` - can be used to print an error to the Abaqus/CAE message area about invalid inputs
     """
     import abaqus
 
@@ -286,12 +288,17 @@ def _gui_get_inputs():
         label=gui_help_string,
         fields=fields
     )
+
+    error_message = ''  # If blank return user inputs as a populated dict, otherwise, user_inputs={}
+    user_inputs = {}
     if input_file_strings is not None:  #  will be None if the user hits the "cancel/esc" button
         input_file = []
-        if input_file_strings != default_input_files:
+        if input_file_strings and input_file_strings != default_input_files:
             for this_input_file_string in input_file_strings.split(','):
                 input_file += glob.glob(this_input_file_string)
-
+        else:
+            error_message = 'Error: You must specify at least one input file'
+        
         if part_name_strings == 'None' or part_name_strings == default_part_names or not part_name_strings:
             part_name = [None]
         else:
@@ -307,14 +314,14 @@ def _gui_get_inputs():
         else:
             atol = float(atol)
 
-        user_inputs = {'model_name': model_name, 'input_file': input_file, 'part_name': part_name,
-                       'unit_conversion': float(unit_conversion), 'euclidean_distance': float(euclidean_distance),
-                       'planar': ast.literal_eval(planar), 'revolution_angle': float(revolution_angle),
-                       'delimiter': delimiter, 'header_lines': int(header_lines), 'y_offset': float(y_offset),
-                       'rtol': rtol, 'atol': atol}
-    else:
-        user_inputs = {}
-    return user_inputs
+    if not error_message:
+        user_inputs = {'model_name': model_name, 'input_file': input_file, 'part_name': part_name,                   
+            'unit_conversion': float(unit_conversion), 'euclidean_distance': float(euclidean_distance),
+            'planar': ast.literal_eval(planar), 'revolution_angle': float(revolution_angle),
+            'delimiter': delimiter, 'header_lines': int(header_lines), 'y_offset': float(y_offset),
+            'rtol': rtol, 'atol': atol}
+
+    return user_inputs, error_message
 
 
 def _gui_post_action(model_name, **kwargs):
