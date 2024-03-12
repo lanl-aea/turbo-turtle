@@ -61,9 +61,9 @@ def main(input_file, output_file,
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
     error_messages = geometry(input_file=input_file, planar=planar, model_name=model_name, part_name=part_name,
-             revolution_angle=revolution_angle, delimiter=delimiter, header_lines=header_lines,
-             euclidean_distance=euclidean_distance, unit_conversion=unit_conversion, y_offset=y_offset,
-             rtol=rtol, atol=atol)
+        revolution_angle=revolution_angle, delimiter=delimiter, header_lines=header_lines,
+        euclidean_distance=euclidean_distance, unit_conversion=unit_conversion, y_offset=y_offset,
+        rtol=rtol, atol=atol)
     for message in error_messages:
         _mixed_utilities.sys_exit(message)
     abaqus.mdb.saveAs(pathName=output_file)
