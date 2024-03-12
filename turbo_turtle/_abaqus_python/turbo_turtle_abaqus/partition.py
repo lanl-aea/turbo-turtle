@@ -225,7 +225,7 @@ def _gui_get_inputs():
               ('X-Vector:', default_x_vector),
               ('Z-Vector:', default_z_vector),
               ('Part Name(s):', default_part_name),
-              ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'), )
+              ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'))
     center, xvector, zvector, part_name_strings, cp_parameters = abaqus.getInputs(
         dialogTitle='Turbo Turtle Partition',
         label=gui_help_string,

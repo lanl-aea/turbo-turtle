@@ -280,7 +280,7 @@ def _gui_get_inputs():
               ('Header Lines:', default_header_lines),
               ('Y-Offset:', default_y_offset),
               ('rtol:', default_rtol),
-              ('atol:', default_atol), )
+              ('atol:', default_atol))
 
     (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,
     delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(
