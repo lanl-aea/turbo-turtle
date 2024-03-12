@@ -280,7 +280,7 @@ def _gui_post_action(model_name, part_name, **kwargs):
     abaqus.session.viewports['Viewport: 1'].view.fitView()
 
 
-def partition_gui():
+def _gui():
     """Function with no inputs that drives the plug-in
     """
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,

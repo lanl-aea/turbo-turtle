@@ -333,7 +333,7 @@ def _gui_post_action(model_name, **kwargs):
     abaqus.session.viewports['Viewport: 1'].view.fitView()
 
 
-def geometry_gui():
+def _gui():
     """Function with no inputs required for driving the plugin
     """
     import abaqus
