@@ -270,20 +270,20 @@ def _gui_get_inputs():
     default_rtol = str(parsers.geometry_defaults['rtol'])
     default_atol = str(parsers.geometry_defaults['atol'])
     fields = (('Input File(s):', default_input_files),
-              ('Part Name(s):', default_part_names),
-              ('Model Name:', default_model_name),
-              ('Unit Conversion:', default_unit_conversion),
-              ('Euclidean Distance:', default_euclidean_distance),
-              ('Planar Geometry Switch:', default_planar),
-              ('Revolution Angle:', default_revolution_angle),
-              ('Delimiter:', default_delimiter),
-              ('Header Lines:', default_header_lines),
-              ('Y-Offset:', default_y_offset),
-              ('rtol:', default_rtol),
-              ('atol:', default_atol))
+        ('Part Name(s):', default_part_names),
+        ('Model Name:', default_model_name),
+        ('Unit Conversion:', default_unit_conversion),
+        ('Euclidean Distance:', default_euclidean_distance),
+        ('Planar Geometry Switch:', default_planar),
+        ('Revolution Angle:', default_revolution_angle),
+        ('Delimiter:', default_delimiter),
+        ('Header Lines:', default_header_lines),
+        ('Y-Offset:', default_y_offset),
+        ('rtol:', default_rtol),
+        ('atol:', default_atol))
 
     (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,
-    delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(
+        delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(
         dialogTitle='Turbo Turtle Geometry',
         label=gui_help_string,
         fields=fields
