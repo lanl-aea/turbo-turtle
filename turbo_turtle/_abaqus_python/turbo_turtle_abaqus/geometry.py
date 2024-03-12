@@ -355,7 +355,10 @@ def _gui():
 
 if __name__ == "__main__":
     if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
-        geometry_gui()
+        try:
+            _gui()
+        except RuntimeError as err:
+            _mixed_utilities.sys_exit(err)
     else:
         parser = parsers.geometry_parser(basename=basename)
         try:

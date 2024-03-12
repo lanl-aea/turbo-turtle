@@ -44,19 +44,24 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
     ``post_action_function`` will have no affect.
 
     This wrapper expects the dictionary output from ``inputs_function`` to be empty when the GUI interface is exited
-    early (escape or cancel). Otherwise, the dictionary will be unpacked as ``**kwargs`` into ``subcommand_function``
-    and ``post_action_function``.
+    early (escape or cancel). The ``error_message`` string is used to exit with no Abaqus actions performed
+    and print an error message to the Abaqus/CAE message area; the primary use for this is checking for invalid
+    user inputs. Otherwise, the dictionary will be unpacked as ``**kwargs`` into ``subcommand_function``
+    and ``post_action_function`` and an empty string ``error_message`` will be ignored.
 
     :param func inputs_function: function to get user inputs through the Abaqus CAE GUI
     :param func subcommand_function: function with arguments matching the return values from ``inputs_function``
     :param func post_action_function: function to call for script actions after calling ``subcommand_function``
     """
     user_inputs, error_message = inputs_function()  # dict of user inputs. If 'Cancel' or invalid input, user_inputs={}
-    if user_inputs:
-        subcommand_function(**user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
-        if post_action_function is not None:
-            post_action_function(**user_inputs)
-    elif error_message:
+    if error_message:
         print(error_message)
+    elif user_inputs:
+        try:
+            subcommand_function(**user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
+            if post_action_function is not None:
+                post_action_function(**user_inputs)
+        except RuntimeError as err:
+            print(err.message)
     else:
         print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
