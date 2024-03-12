@@ -340,7 +340,6 @@ def _gui_post_action(model_name, **kwargs):
 def _gui():
     """Function with no inputs required for driving the plugin
     """
-    import abaqus
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
                                   subcommand_function=geometry,
                                   post_action_function=_gui_post_action)
