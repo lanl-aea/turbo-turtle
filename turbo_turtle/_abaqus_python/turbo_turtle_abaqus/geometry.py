@@ -60,12 +60,13 @@ def main(input_file, output_file,
     import abaqus
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
-    error_messages = geometry(input_file=input_file, planar=planar, model_name=model_name, part_name=part_name,
-        revolution_angle=revolution_angle, delimiter=delimiter, header_lines=header_lines,
-        euclidean_distance=euclidean_distance, unit_conversion=unit_conversion, y_offset=y_offset,
-        rtol=rtol, atol=atol)
-    for message in error_messages:
-        _mixed_utilities.sys_exit(message)
+    try:
+        geometry(input_file=input_file, planar=planar, model_name=model_name, part_name=part_name,
+            revolution_angle=revolution_angle, delimiter=delimiter, header_lines=header_lines,
+            euclidean_distance=euclidean_distance, unit_conversion=unit_conversion, y_offset=y_offset,
+            rtol=rtol, atol=atol)
+    except RuntimeError as err:
+        _mixed_utilities.sys_exit(err.message)
     abaqus.mdb.saveAs(pathName=output_file)
 
 
@@ -73,8 +74,10 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
              euclidean_distance, unit_conversion, y_offset, rtol, atol):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
-    This function drive the geometry creation of 2D planar, 2D axisymetric, or 3D revolved bodies and operates on a new 
+    This function drive the geometry creation of 2D planar, 2D axisymetric, or 3D revolved bodies and operates on a new
     Abaqus moddel database object.
+
+    Raises a RuntimeError if any CSV file fails to create a sketch or part.
 
     :param str input_file: input text file(s) with coordinates to draw
     :param str output_file: Abaqus CAE database to save the part(s)
@@ -91,9 +94,6 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
         conversion.
     :param float rtol: relative tolerance for vertical/horizontal line checks
     :param float atol: absolute tolerance for vertical/horizontal line checks
-    
-    :return: error messages from failed part creation
-    :rtype: list
     """
     import abaqus
     import abaqusConstants
@@ -114,9 +114,9 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
             message = "Error: failed to create part '{}' from '{}'. Check the XY coordinates for " \
                       "inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
                       "subcommand can plot points to aid in troubleshooting.\n".format(new_part, file_name)
-            print(message)
             error_messages.append(message)
-    return error_messages
+    if error_messages:
+        raise RuntimeError("\n".join(error_messages))
 
 
 def draw_part_from_splines(lines, splines,
@@ -233,7 +233,7 @@ def _gui_get_inputs():
     * ``y_offset``: ``float`` type, offset along the y-axis
     * ``rtol``: ``float`` type, relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
     * ``atol``: ``float`` type, absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
-    
+
     :return: `error_message` - can be used to print an error to the Abaqus/CAE message area about invalid inputs
     """
     import abaqus
@@ -298,7 +298,7 @@ def _gui_get_inputs():
                 input_file += glob.glob(this_input_file_string)
         else:
             error_message = 'Error: You must specify at least one input file'
-        
+
         if part_name_strings == 'None' or part_name_strings == default_part_names or not part_name_strings:
             part_name = [None]
         else:
@@ -315,7 +315,7 @@ def _gui_get_inputs():
             atol = float(atol)
 
     if not error_message:
-        user_inputs = {'model_name': model_name, 'input_file': input_file, 'part_name': part_name,                   
+        user_inputs = {'model_name': model_name, 'input_file': input_file, 'part_name': part_name,
             'unit_conversion': float(unit_conversion), 'euclidean_distance': float(euclidean_distance),
             'planar': ast.literal_eval(planar), 'revolution_angle': float(revolution_angle),
             'delimiter': delimiter, 'header_lines': int(header_lines), 'y_offset': float(y_offset),
@@ -327,12 +327,12 @@ def _gui_get_inputs():
 def _gui_post_action(model_name, **kwargs):
     """Action performed after running geometry
 
-    After geometry, set the viewport to look at the last part in the parts list, simply for convenience. Otherwise, the 
+    After geometry, set the viewport to look at the last part in the parts list, simply for convenience. Otherwise, the
     user will be left at a blank Abaqus/CAE screen.
 
     This function requires a subset of the arguments of
     :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.geometry`. Any other arguments than
-    the ones documented below will be unpacked but ignored. This behvior makes it convenient to wrap around this 
+    the ones documented below will be unpacked but ignored. This behvior makes it convenient to wrap around this
     function by simply unpacking the entire keyword arguments dictionary required for ``geometry``.
 
     :param str model_name: name of the Abaqus model to query in the post-action
