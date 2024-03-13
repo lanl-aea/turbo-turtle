@@ -99,7 +99,9 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
     import abaqusConstants
 
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
-    error_messages = []
+
+    failed_parts = ()  # Tuple of Tuples keeping track of parts that failed and their input files
+
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
@@ -111,12 +113,13 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,
                                    rtol=rtol, atol=atol)
         except:
-            message = "Error: failed to create part '{}' from '{}'. Check the XY coordinates for " \
-                      "inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
-                      "subcommand can plot points to aid in troubleshooting.\n".format(new_part, file_name)
-            error_messages.append(message)
-    if error_messages:
-        raise RuntimeError("\n".join(error_messages))
+            failed_parts += ((part_name, file_name), )
+    if failed_parts:
+        error_message = ["Error: failed to create the following parts from input files. Check the XY coordinates " \
+                         "for inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
+                         "subcommand can plot points to aid in troubleshooting."]
+        error_message += ["    {}, {}".format(this_part, this_file) for this_part, this_file in failed_parts]
+        raise RuntimeError("\n".join(error_message))
 
 
 def draw_part_from_splines(lines, splines,
@@ -233,8 +236,6 @@ def _gui_get_inputs():
     * ``y_offset``: ``float`` type, offset along the y-axis
     * ``rtol``: ``float`` type, relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
     * ``atol``: ``float`` type, absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
-
-    :return: `error_message` - can be used to print an error to the Abaqus/CAE message area about invalid inputs
     """
     import abaqus
 
@@ -289,16 +290,15 @@ def _gui_get_inputs():
         fields=fields
     )
 
-    error_message = ''  # If blank return user inputs as a populated dict, otherwise, user_inputs={}
-    user_inputs = {}
     if input_file_strings is not None:  #  will be None if the user hits the "cancel/esc" button
         input_file = []
         if input_file_strings and input_file_strings != default_input_files:
             for this_input_file_string in input_file_strings.split(','):
                 input_file += glob.glob(this_input_file_string)
-        else:
+        else:  # Catch an if the user fails to specify input files
             error_message = 'Error: You must specify at least one input file'
-
+            raise RuntimeError(error_message)
+            
         if part_name_strings == 'None' or part_name_strings == default_part_names or not part_name_strings:
             part_name = [None]
         else:
@@ -314,14 +314,14 @@ def _gui_get_inputs():
         else:
             atol = float(atol)
 
-    if not error_message:
         user_inputs = {'model_name': model_name, 'input_file': input_file, 'part_name': part_name,
             'unit_conversion': float(unit_conversion), 'euclidean_distance': float(euclidean_distance),
             'planar': ast.literal_eval(planar), 'revolution_angle': float(revolution_angle),
             'delimiter': delimiter, 'header_lines': int(header_lines), 'y_offset': float(y_offset),
             'rtol': rtol, 'atol': atol}
-
-    return user_inputs, error_message
+    else:
+        user_inputs = {}
+    return user_inputs
 
 
 def _gui_post_action(model_name, **kwargs):
@@ -355,10 +355,7 @@ def _gui():
 
 if __name__ == "__main__":
     if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
-        try:
-            _gui()
-        except RuntimeError as err:
-            _mixed_utilities.sys_exit(err)
+        _gui()
     else:
         parser = parsers.geometry_parser(basename=basename)
         try:
