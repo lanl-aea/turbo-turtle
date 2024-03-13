@@ -113,7 +113,7 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,
                                    rtol=rtol, atol=atol)
         except:
-            failed_parts += ((part_name, file_name), )
+            failed_parts += ((new_part, file_name), )
     if failed_parts:
         error_message = ["Error: failed to create the following parts from input files. Check the XY coordinates " \
                          "for inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
