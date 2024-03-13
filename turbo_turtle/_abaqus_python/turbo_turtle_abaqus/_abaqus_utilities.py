@@ -53,11 +53,8 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
     """
     user_inputs = inputs_function()  # dict of user inputs. If the user hits 'Cancel/esc', user_inputs={}
     if user_inputs:
-        try:
-            subcommand_function(**user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
-            if post_action_function is not None:
-                post_action_function(**user_inputs)
-        except RuntimeError as err:
-            print(err.message)
+        subcommand_function(**user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
+        if post_action_function is not None:
+            post_action_function(**user_inputs)
     else:
         print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
