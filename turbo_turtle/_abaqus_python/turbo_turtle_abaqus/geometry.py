@@ -100,7 +100,7 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
 
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
 
-    failed_parts = []  # Tuple of Tuples keeping track of parts that failed and their input files
+    failed_parts = []  # List of Tuples keeping track of parts that failed and their input files
 
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     for file_name, new_part in zip(input_file, part_name):
