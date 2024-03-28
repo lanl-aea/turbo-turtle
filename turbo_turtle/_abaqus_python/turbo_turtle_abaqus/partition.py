@@ -18,6 +18,7 @@ sys.path.insert(0, parent)
 import parsers
 import vertices
 import _abaqus_utilities
+import _mixed_settings
 
 
 def main(input_file,
@@ -202,16 +203,7 @@ def _gui_get_inputs():
     """
     import abaqus
 
-    gui_help_string = """
-    GUI-INPUTS
-    ==========
-    * Center - center location of the geometry
-    * X-Vector - location on the x-axis local to the geometry
-    * Z-Vector - location on the z-axis local to the geometry
-    * Part Name(s) - part name(s) to partition as a comma separated list (NO SPACES). This can also be a glob statement
-    * Copy and Paste Parameters - copy and paste the parameters printed to the Abaqus Python terminal to make
-      re-use of previous partition parameters easier
-    """
+    gui_help_string = _mixed_settings._partition_gui_help_string
 
     default_center = str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')
     default_x_vector = str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')

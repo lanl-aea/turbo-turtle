@@ -15,7 +15,7 @@ import parsers
 import vertices
 import _mixed_utilities
 import _abaqus_utilities
-
+import _mixed_settings
 
 def main(input_file, output_file,
          planar=parsers.geometry_defaults["planar"],
@@ -239,24 +239,7 @@ def _gui_get_inputs():
     """
     import abaqus
 
-    gui_help_string = """
-    GUI-INPUTS
-    ==========
-    * Input File(s) - glob statement or comma separated list of files (NO SPACES) with points in x-y coordinates
-    * Part Name(s) - part names for the parts being created. If ``None`` or blank, then part name is determined by the
-      input files. This must either ``None`` or blank, a single part name, or a comma separated list of
-      part names (NO SPACES)
-    * Model Name - parts will be created in a new model with this name
-    * Unit Conversion - unit conversion multiplication factor
-    * Euclidean Distance - connect points with a straight line if the distance between them is larger than this
-    * Planar Geometry Switch - switch to indicate that the 2D model is planar not axisymmetric (``True`` for planar)
-    * Revolution Angle - revolution angle for a 3D part in degrees
-    * Delimiter - delimiter character between columns in the input file(s)
-    * Header Lines - number of header lines to skip in the input file(s)
-    * Y-Offset - offset along the global y-axis
-    * rtol - relative tolerance used by ``numpy.isclose``. If ``None`` or blank, use numpy defaults
-    * atol - absolute tolerance used by ``numpy.isclose``. If ``None`` or blank, use numpy defaults
-    """
+    gui_help_string = _mixed_settings._geometry_gui_help_string
 
     default_input_files = 'File1.csv,File2.csv OR *.csv'
     default_part_names = 'Part-1,Part-2, OR None OR blank'
