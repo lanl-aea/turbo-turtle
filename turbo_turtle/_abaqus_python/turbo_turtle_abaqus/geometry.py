@@ -202,7 +202,7 @@ def _gui_get_inputs():
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
-    below, also update ``gui_help_string`` that gets used as the GUI ``label``.
+    below, also update ``_mixed_settings._geometry_gui_help_string`` that gets used as the GUI ``label``.
 
     GUI-INPUTS
     ==========
@@ -240,7 +240,6 @@ def _gui_get_inputs():
     """
     import abaqus
 
-    gui_help_string = _mixed_settings._geometry_gui_help_string
 
     default_input_files = 'File1.csv,File2.csv OR *.csv'
     default_part_names = 'Part-1,Part-2, OR None OR blank'
@@ -270,7 +269,7 @@ def _gui_get_inputs():
     (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,
         delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(
         dialogTitle='Turbo Turtle Geometry',
-        label=gui_help_string,
+        label=_mixed_settings._geometry_gui_help_string,
         fields=fields
     )
 

@@ -179,7 +179,7 @@ def _gui_get_inputs():
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
-    below, also update ``gui_help_string`` that gets used as the GUI ``label``.
+    below, also update ``_mixed_settings._partition_gui_help_string`` that gets used as the GUI ``label``.
 
     GUI-INPUTS
     ==========
@@ -203,7 +203,6 @@ def _gui_get_inputs():
     """
     import abaqus
 
-    gui_help_string = _mixed_settings._partition_gui_help_string
 
     default_center = str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')
     default_x_vector = str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')
@@ -220,7 +219,7 @@ def _gui_get_inputs():
         ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters'))
     center, xvector, zvector, part_name_strings, cp_parameters = abaqus.getInputs(
         dialogTitle='Turbo Turtle Partition',
-        label=gui_help_string,
+        label=_mixed_settings._partition_gui_help_string,
         fields=fields
     )
     if center is not None:  # Center will be None if the user hits the "cancel/esc" button
