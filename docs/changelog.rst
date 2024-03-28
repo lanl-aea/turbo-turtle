@@ -10,6 +10,8 @@ v0.11.2 (unreleased)
 
 Documentation
 =============
+- Use built-in Abaqus/CAE plug-in documentation features to display GUI plug-in help messages and link to documentation 
+  in the Abaqus/CAE GUI (:issue:`142`, :merge:`129`). By `Thomas Roberts`_.
 - Improve Abaqus geometry error message (:merge:`124`). By `Kyle Brindley`_.
 
 Internal Changes
