@@ -17,6 +17,7 @@ import _mixed_utilities
 import _abaqus_utilities
 import _mixed_settings
 
+
 def main(input_file, output_file,
          planar=parsers.geometry_defaults["planar"],
          model_name=parsers.geometry_defaults["model_name"],
