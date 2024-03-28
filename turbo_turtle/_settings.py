@@ -1,9 +1,11 @@
 import pathlib
 
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_settings
 
+
+_project_root_abspath = pathlib.Path(_mixed_settings._project_root_abspath)
 _project_name = "Turbo Turtle"
 _project_name_short = "turbo-turtle"
-_project_root_abspath = pathlib.Path(__file__).parent.resolve()
 _abaqus_python_parent_abspath = _project_root_abspath / "_abaqus_python"
 _abaqus_python_abspath = _abaqus_python_parent_abspath / "turbo_turtle_abaqus"
 _installed_docs_index = _project_root_abspath / "docs/index.html"
