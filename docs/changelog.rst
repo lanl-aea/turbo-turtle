@@ -10,7 +10,7 @@ v0.11.2 (unreleased)
 
 Documentation
 =============
-- Use built-in Abaqus/CAE plug-in documentation features to display GUI plug-in help messages and link to documentation 
+- Use built-in Abaqus/CAE plug-in documentation features to display GUI plug-in help messages and link to documentation
   in the Abaqus/CAE GUI (:issue:`142`, :merge:`129`). By `Thomas Roberts`_.
 - Improve Abaqus geometry error message (:merge:`124`). By `Kyle Brindley`_.
 
@@ -18,7 +18,7 @@ Internal Changes
 ================
 - Reduce duplicate logic in geometry and cylinder subcommand implementations (:issue:`123`, :merge:`126`). By `Kyle
   Brindley`_.
-- Make the Abaqus python package importable and change the GUI behavior to be a plug-in rather than direct execution on 
+- Make the Abaqus python package importable and change the GUI behavior to be a plug-in rather than direct execution on
   a python module (:issue:`137`, :merge:`127`). By `Thomas Roberts`_.
 - Work-in-progress support for Abaqus CAE GUI geometry capability (:issue:`138`, :merge:`128`). By `Thomas Roberts`_.
 
@@ -26,6 +26,8 @@ Enhancements
 ============
 - Implement the numpy tolerance checks for the Cubit geometry and geometery-xyplot subcommands (:issue:`123`,
   :merge:`126`). By `Kyle Brindley`_.
+- Add an option to add vertex index annotations to the geometery-xyplot subcommand (:issue:`147`, :merge:`130`). By
+  `Kyle Brindley`_.
 
 ********************
 v0.11.1 (2024-03-01)
