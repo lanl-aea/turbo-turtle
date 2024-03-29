@@ -59,23 +59,27 @@ def _print_abaqus_path_location():
         print(_settings._abaqus_python_parent_abspath)
 
 
-def _geometry_xyplot(input_file, output_file,
-                     part_name=parsers.geometry_xyplot_defaults["part_name"],
-                     unit_conversion=parsers.geometry_xyplot_defaults["unit_conversion"],
-                     euclidean_distance=parsers.geometry_xyplot_defaults["euclidean_distance"],
-                     delimiter=parsers.geometry_xyplot_defaults["delimiter"],
-                     header_lines=parsers.geometry_xyplot_defaults["header_lines"],
-                     y_offset=parsers.geometry_xyplot_defaults["y_offset"],
-                     rtol=parsers.geometry_defaults["rtol"],
-                     atol=parsers.geometry_defaults["atol"],
-                     no_markers=parsers.geometry_xyplot_defaults["no_markers"]):
+def _geometry_xyplot(
+    input_file, output_file,
+    part_name=parsers.geometry_xyplot_defaults["part_name"],
+    unit_conversion=parsers.geometry_xyplot_defaults["unit_conversion"],
+    euclidean_distance=parsers.geometry_xyplot_defaults["euclidean_distance"],
+    delimiter=parsers.geometry_xyplot_defaults["delimiter"],
+    header_lines=parsers.geometry_xyplot_defaults["header_lines"],
+    y_offset=parsers.geometry_xyplot_defaults["y_offset"],
+    rtol=parsers.geometry_defaults["rtol"],
+    atol=parsers.geometry_defaults["atol"],
+    no_markers=parsers.geometry_xyplot_defaults["no_markers"],
+    annotate=parser.geometry_xyplot_defaults["annotate"]
+):
     """Plotter for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` division of coordinates into lines and splines
 
     See the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.geometry_parser`,
     :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.main`, or :meth:`turbo_turtle._cubit_python.geometry` interfaces for a
     description of the input arguments.
 
-    :param bool no_markers: Exclude the vertex markers from the plot. Plot only lines.
+    :param bool no_markers: Exclude vertex markers and only plot lines.
+    :param bool annotate: Annotate the vertex coordinates with their index from the source CSV file.
     """
     import numpy
     import matplotlib.pyplot
@@ -107,6 +111,10 @@ def _geometry_xyplot(input_file, output_file,
         for spline in splines:
             array = numpy.array(spline)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, linestyle="dashed", **spline_kwargs)
+        if annotate:
+            for index, coordinate in enumerate(coordinates):
+                matplotlib.pyplot.annotate(str(index), coordinate, color=color)
+
     matplotlib.pyplot.savefig(output_file)
 
 
@@ -226,6 +234,10 @@ def get_parser():
     geometry_xyplot_parser.add_argument(
         "--no-markers", action="store_true",
         help="Exclude vertex markers and only plot lines (default: %(default)s)"
+    )
+    geometry_xyplot_parser.add_argument(
+        "--annotate", action="store_true",
+        help="Annotate the vertex coordinates with their index from the source CSV file (default: %(default)s)"
     )
     subparsers.add_parser(
         "geometry-xyplot",
