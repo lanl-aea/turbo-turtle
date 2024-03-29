@@ -70,7 +70,7 @@ def _geometry_xyplot(
     rtol=parsers.geometry_defaults["rtol"],
     atol=parsers.geometry_defaults["atol"],
     no_markers=parsers.geometry_xyplot_defaults["no_markers"],
-    annotate=parser.geometry_xyplot_defaults["annotate"]
+    annotate=parsers.geometry_xyplot_defaults["annotate"]
 ):
     """Plotter for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` division of coordinates into lines and splines
 
@@ -313,16 +313,19 @@ def main():
     elif args.subcommand == "print-abaqus-path":
         _print_abaqus_path_location()
     elif args.subcommand == "geometry-xyplot":
-        _geometry_xyplot(args.input_file, args.output_file,
-                         part_name=args.part_name,
-                         unit_conversion=args.unit_conversion,
-                         euclidean_distance=args.euclidean_distance,
-                         delimiter=args.delimiter,
-                         header_lines=args.header_lines,
-                         y_offset=args.y_offset,
-                         rtol=args.rtol,
-                         atol=args.atol,
-                         no_markers=args.no_markers)
+        _geometry_xyplot(
+            args.input_file, args.output_file,
+            part_name=args.part_name,
+            unit_conversion=args.unit_conversion,
+            euclidean_distance=args.euclidean_distance,
+            delimiter=args.delimiter,
+            header_lines=args.header_lines,
+            y_offset=args.y_offset,
+            rtol=args.rtol,
+            atol=args.atol,
+            no_markers=args.no_markers,
+            annotate=args.annotate
+        )
     else:
         _wrappers, command = _utilities.set_wrappers_and_command(args)
         wrapper_command = getattr(_wrappers, args.subcommand)
