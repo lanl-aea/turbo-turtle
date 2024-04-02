@@ -50,7 +50,7 @@ def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name
     This function drives the geometry creation of a cylinder whose axis of symmetry is located on the global coordinate 
     origin by default, and always on the global Y-axis.
 
-    Raises a RuntimeError if inner radius, outer radius, or height are not specified.
+    :raises RuntimeError: if inner radius, outer radius, or height are not specified.
 
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder

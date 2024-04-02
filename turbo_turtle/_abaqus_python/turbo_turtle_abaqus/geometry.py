@@ -78,8 +78,6 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
     This function drive the geometry creation of 2D planar, 2D axisymetric, or 3D revolved bodies and operates on a new
     Abaqus moddel database object.
 
-    Raises a RuntimeError if any CSV file fails to create a sketch or part.
-
     :param str input_file: input text file(s) with coordinates to draw
     :param str output_file: Abaqus CAE database to save the part(s)
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
@@ -95,6 +93,8 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
         conversion.
     :param float rtol: relative tolerance for vertical/horizontal line checks
     :param float atol: absolute tolerance for vertical/horizontal line checks
+
+    :raises RuntimeError: failure to create a sketch or part from a CSV file.
     """
     import abaqus
     import abaqusConstants
