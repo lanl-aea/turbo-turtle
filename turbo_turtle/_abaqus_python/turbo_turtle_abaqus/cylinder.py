@@ -47,6 +47,8 @@ def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name
     This function drives the geometry creation of a cylinder whose axis of symmetry is located on the global coordinate 
     origin by default, and always on the global Y-axis.
 
+    Raises a RuntimeError if inner radius, outer radius, or height are not specified.
+
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
     :param float height: Height of the cylinder
@@ -55,6 +57,9 @@ def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name
     :param list part_name: name(s) of the part(s) being created
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     """
+    import abaqus
+    import abaqusConstants
+
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset)
     geometry.draw_part_from_splines(lines, [], planar=False, model_name=model_name, part_name=part_name,
@@ -92,7 +97,6 @@ def _gui_get_inputs():
     * ``y_offset``: ``float`` type, offset along the y-axis
     """
     import abaqus
-
 
     default_part_name = parsers.cylinder_defaults['part_name']
     default_model_name = parsers.geometry_defaults['model_name']
@@ -147,21 +151,31 @@ def _gui_post_action(model_name, part_name, **kwargs):
     abaqus.session.viewports['Viewport: 1'].view.fitView()
 
 
+def _gui():
+    """Function with no inputs required for driving the plugin
+    """
+    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
+                                  subcommand_function=cylinder,
+                                  post_action_function=_gui_post_action)
+
+
 if __name__ == "__main__":
+    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+        _gui()
+    else:
+        parser = parsers.cylinder_parser(basename=basename)
+        try:
+            args, unknown = parser.parse_known_args()
+        except SystemExit as err:
+            sys.exit(err.code)
 
-    parser = parsers.cylinder_parser(basename=basename)
-    try:
-        args, unknown = parser.parse_known_args()
-    except SystemExit as err:
-        sys.exit(err.code)
-
-    sys.exit(main(
-        inner_radius=args.inner_radius,
-        outer_radius=args.outer_radius,
-        height=args.height,
-        output_file=args.output_file,
-        model_name=args.model_name,
-        part_name=args.part_name,
-        revolution_angle=args.revolution_angle,
-        y_offset=args.y_offset
-    ))
+        sys.exit(main(
+            inner_radius=args.inner_radius,
+            outer_radius=args.outer_radius,
+            height=args.height,
+            output_file=args.output_file,
+            model_name=args.model_name,
+            part_name=args.part_name,
+            revolution_angle=args.revolution_angle,
+            y_offset=args.y_offset
+        ))
