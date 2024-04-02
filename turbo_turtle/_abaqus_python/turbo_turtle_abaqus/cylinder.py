@@ -62,6 +62,60 @@ def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name
                                     revolution_angle=revolution_angle)
 
 
+def _gui_get_inputs():
+    """Interactive Inputs
+
+    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
+    GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
+    below, also update ``_mixed_settings._cylinder_gui_help_string`` that gets used as the GUI ``label``.
+
+    GUI-INPUTS
+    ==========
+    * Part Name - part name for the cylinder being created.
+    * Model Name - parts will be created in a new model with this name
+    * Inner Radius - inner radius of the cylinder
+    * Outer Radius - outer radius of the cylinder
+    * Height - height of the cylinder
+    * Revolution Angle - revolution angle for a 3D part in degrees
+    * Y-Offset - offset along the global y-axis
+
+    **IMPORTANT** - this function must return key-value pairs that will successfully unpack as ``**kwargs`` in
+    ``cylinder``
+
+    :return: ``user_inputs`` - a dictionary of the following key-value pair types:
+
+    * ``part_name``: ``str`` type, part name of the cylinder
+    * ``model_name``: ``str`` type, new model containing the part generated from the input file(s)
+    * ``inner_radius``: ``float`` type, inner radius of the cylinder
+    * ``outer_radius``: ``float`` type, outer radius of the cylinder
+    * ``height``: ``float`` type, height of the cylinder
+    * ``revolution_angle``: ``float`` type, revolution angle in degrees for 3D geometry
+    * ``y_offset``: ``float`` type, offset along the y-axis
+    """
+    import abaqus
+
+
+    default_part_name = parsers.cylinder_defaults['part_name']
+    default_model_name = parsers.geometry_defaults['model_name']
+    default_revolution_angle = str(parsers.geometry_defaults['revolution_angle'])
+    default_y_offset = str(parsers.cylinder_defaults['y_offset'])
+    fields = (('Part Name:', default_part_name),
+        ('Model Name:', default_model_name),
+        ('Inner Radius:', ''),
+        ('Outer Radius:', ''),
+        ('Height:', ''),
+        ('Revolution Angle:', default_revolution_angle),
+        ('Y-Offset:', default_y_offset))
+
+    (part_name, model_name, inner_radius, outer_radius, height, revolution_angle, y_offset = abaqus.getInputs(
+        dialogTitle='Turbo Turtle Cylinder',
+        label=_mixed_settings.cylinder_gui_help_string,
+        fields=fields
+    )
+
+    return user_inputs
+
+
 if __name__ == "__main__":
 
     parser = parsers.cylinder_parser(basename=basename)
