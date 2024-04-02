@@ -238,6 +238,8 @@ def _gui_get_inputs():
     * ``y_offset``: ``float`` type, offset along the y-axis
     * ``rtol``: ``float`` type, relative tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
     * ``atol``: ``float`` type, absolute tolerance used by ``numpy.isclose``. If ``None``, use numpy defaults
+
+    :raises RuntimeError: if at least one input file is not specified
     """
     import abaqus
 
