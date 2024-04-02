@@ -11,6 +11,8 @@ sys.path.insert(0, parent)
 import parsers
 import vertices
 import geometry
+import _abaqus_utilities
+import _mixed_settings
 
 
 def main(inner_radius, outer_radius, height, output_file,
@@ -110,9 +112,9 @@ def _gui_get_inputs():
         ('Revolution Angle:', default_revolution_angle),
         ('Y-Offset:', default_y_offset))
 
-    (part_name, model_name, inner_radius, outer_radius, height, revolution_angle, y_offset = abaqus.getInputs(
+    part_name, model_name, inner_radius, outer_radius, height, revolution_angle, y_offset = abaqus.getInputs(
         dialogTitle='Turbo Turtle Cylinder',
-        label=_mixed_settings.cylinder_gui_help_string,
+        label=_mixed_settings._cylinder_gui_help_string,
         fields=fields
     )
 
@@ -121,9 +123,9 @@ def _gui_get_inputs():
             error_message = 'Error: You must specify an inner and outer radius and a height for the cylinder'
             raise RuntimeError(error_message)
 
-        user_inputs = {'inner_radius': inner_radius, 'outer_radius': outer_radius, 'height': height,
-            'y_offset': y_offset, 'model_name': model_name, 'part_name': part_name,
-            'revolution_angle': revolution_angle}
+        user_inputs = {'inner_radius': float(inner_radius), 'outer_radius': float(outer_radius),
+            'height': float(height), 'y_offset': float(y_offset), 'model_name': model_name, 'part_name': part_name,
+            'revolution_angle': float(revolution_angle)}
     else:
         user_inputs = {}
     return user_inputs
