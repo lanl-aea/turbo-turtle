@@ -37,9 +37,10 @@ def main(inner_radius, outer_radius, height, output_file,
     import abaqusConstants
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
-
-    cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name, revolution_angle)
-
+    try:
+        cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name, revolution_angle)
+    except RuntimeError as err:
+        _mixed_utilities.sys_exit(err.message)
     abaqus.mdb.saveAs(pathName=output_file)
 
 
