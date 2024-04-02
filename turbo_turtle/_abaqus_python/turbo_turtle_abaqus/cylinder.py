@@ -62,7 +62,8 @@ def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name
     import abaqus
     import abaqusConstants
 
-    abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+    if model_name not in abaqus.mdb.models.keys():
+        abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset)
     geometry.draw_part_from_splines(lines, [], planar=False, model_name=model_name, part_name=part_name,
                                     revolution_angle=revolution_angle)

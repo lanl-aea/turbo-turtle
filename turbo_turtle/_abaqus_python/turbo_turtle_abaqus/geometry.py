@@ -99,7 +99,8 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
     import abaqus
     import abaqusConstants
 
-    abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+    if model_name not in abaqus.mdb.models.keys():
+        abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
 
     failed_parts = []  # List of Tuples keeping track of parts that failed and their input files
 
