@@ -256,7 +256,8 @@ def _gui_get_inputs():
     default_y_offset = str(parsers.geometry_defaults['y_offset'])
     default_rtol = str(parsers.geometry_defaults['rtol'])
     default_atol = str(parsers.geometry_defaults['atol'])
-    fields = (('Input File(s):', default_input_files),
+    fields = (
+        ('Input File(s):', default_input_files),
         ('Part Name(s):', default_part_names),
         ('Model Name:', default_model_name),
         ('Unit Conversion:', default_unit_conversion),
@@ -267,7 +268,8 @@ def _gui_get_inputs():
         ('Header Lines:', default_header_lines),
         ('Y-Offset:', default_y_offset),
         ('rtol:', default_rtol),
-        ('atol:', default_atol))
+        ('atol:', default_atol)
+    )
 
     (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,
         delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(
