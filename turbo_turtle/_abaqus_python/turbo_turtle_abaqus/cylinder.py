@@ -34,7 +34,6 @@ def main(inner_radius, outer_radius, height, output_file,
     import abaqus
     import abaqusConstants
 
-    abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
     cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name, revolution_angle)
@@ -56,7 +55,7 @@ def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name
     :param list part_name: name(s) of the part(s) being created
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     """
-
+    abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset)
     geometry.draw_part_from_splines(lines, [], planar=False, model_name=model_name, part_name=part_name,
                                     revolution_angle=revolution_angle)
@@ -113,6 +112,16 @@ def _gui_get_inputs():
         fields=fields
     )
 
+    if part_name is not None:  # will be None if the user hits the "cancel/esc" button
+        if not inner_radius or not outer_radius or not height:
+            error_message = 'Error: You must specify an inner and outer radius and a height for the cylinder'
+            raise RuntimeError(error_message)
+
+        user_inputs = {'inner_radius': inner_radius, 'outer_radius': outer_radius, 'height': height,
+            'y_offset': y_offset, 'model_name': model_name, 'part_name': part_name,
+            'revolution_angle': revolution_angle}
+    else:
+        user_inputs = {}
     return user_inputs
 
 
