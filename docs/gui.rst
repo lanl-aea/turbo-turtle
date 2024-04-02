@@ -50,10 +50,10 @@ Running Turbo-Turtle Plug-ins
 
 Once your Abaqus environment has been pointed at the Turbo-Turtle Abaqus Python package directory, GUI plug-ins should 
 be available in Abaqus/CAE through the 'Plug-ins...Turbo-Turtle' drop-down menus. All available Turbo-Turtle plug-ins 
-are available by a name idendentical (or nearly identical) to the Turbo-Turtle subcommand names.
+are available by a name identical (or nearly identical) to the Turbo-Turtle subcommand names.
 
 Clicking on a plug-in name will launch a dialog box in Abaqus/CAE for user inputs to the plug-in. A help message is 
-displayed at the above the sections for user input. In general, the GUI plug-in interfaces are designed to behave the 
+displayed above the sections for user input. In general, the GUI plug-in interfaces are designed to behave the 
 same way as the Turbo-Turtle :ref:`turbo_turtle_cli`. However, the help message at the top of the dialog box will 
 describe any nuances specific to the GUI plug-in interface.
 
@@ -63,10 +63,11 @@ Getting More Help for Turbo-Turtle Plug-ins
 In adition to displaying a help message in the plug-in user interface, Turbo-Turtle plug-ins utilize built-in Abaqus/CAE 
 features to display more information about a GUI plug-in. In the same way you would access a Turbo-Turtle plug-in 
 (through the 'Plug-ins' menu), navigate to the 'About Plug-ins' tab at the bottom of the 'Plug-ins' drop-down menu. Here 
-you will see the available information for all GUI plug-ins that are available in your Abaqus/CAE environment. Expand 
+you can find information for all GUI plug-ins that are available in your Abaqus/CAE environment. Expand 
 the 'Turbo-Turtle' section and then click the name of the plug-in you need help with. Note that there will be no 
 information on the 'Turbo-Turtle' tab, but rather within the sub-tabs for different Turbo-Turtle plug-ins.
 
-From each plug-in's tab in the 'About Plug-ins' menu, you can see author, version, install directory, a 'View' help 
-button, applicable Abaqus/CAE modules, and a description of the plug-in. Clicking the 'View' help button will launch a 
-web-browser linked to locally installed version of the HTML documentation.
+From each plug-in's sub-tab in the 'About Plug-ins...Turbo-Turtle' menu, you can see author, version, and install 
+directory information; a 'View' help button; applicable Abaqus/CAE modules for the plug-in; and a description of the 
+plug-in. Clicking the 'View' help button will launch a web-browser linked to the locally installed version of the HTML 
+documentation.
