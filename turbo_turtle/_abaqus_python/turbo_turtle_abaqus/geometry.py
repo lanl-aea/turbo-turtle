@@ -97,10 +97,8 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
     :raises RuntimeError: failure to create a sketch or part from a CSV file.
     """
     import abaqus
-    import abaqusConstants
 
-    if model_name not in abaqus.mdb.models.keys():
-        abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+    _abaqus_utilities._conditionally_create_model(model_name)
 
     failed_parts = []  # List of Tuples keeping track of parts that failed and their input files
 

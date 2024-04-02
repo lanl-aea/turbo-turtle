@@ -35,6 +35,18 @@ def return_abaqus_constant_or_exit(*args, **kwargs):
     return return_abaqus_constant(*args, **kwargs)
 
 
+def _conditionally_create_model(model_name):
+    """Create a new model in an Abaqus database if the specified model name is not already existing
+
+    :param str model_name: Abaqus model name
+    """
+    import abaqus
+    import abaqusConstants
+
+    if model_name not in abaqus.mdb.models.keys():
+        abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+
+
 def gui_wrapper(inputs_function, subcommand_function, post_action_function=None):
     """Wrapper for a function calling ``abaqus.getInputs``, then the wrapper calls a ``turbo_turtle`` subcommand module
 
