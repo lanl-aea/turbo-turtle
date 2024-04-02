@@ -50,8 +50,6 @@ def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name
     This function drives the geometry creation of a cylinder whose axis of symmetry is located on the global coordinate 
     origin by default, and always on the global Y-axis.
 
-    :raises RuntimeError: if inner radius, outer radius, or height are not specified.
-
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
     :param float height: Height of the cylinder
@@ -99,6 +97,8 @@ def _gui_get_inputs():
     * ``height``: ``float`` type, height of the cylinder
     * ``revolution_angle``: ``float`` type, revolution angle in degrees for 3D geometry
     * ``y_offset``: ``float`` type, offset along the y-axis
+
+    :raises RuntimeError: if inner radius, outer radius, or height are not specified.
     """
     import abaqus
 
