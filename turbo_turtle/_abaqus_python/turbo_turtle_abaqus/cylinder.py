@@ -37,11 +37,29 @@ def main(inner_radius, outer_radius, height, output_file,
     abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
-    lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
-    geometry.draw_part_from_splines(lines, [], planar=False, model_name=model_name, part_name=part_name,
-                                    revolution_angle=revolution_angle)
+    cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name, revolution_angle)
 
     abaqus.mdb.saveAs(pathName=output_file)
+
+
+def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name, revolution_angle):
+    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
+
+    This function drives the geometry creation of a cylinder whose axis of symmetry is located on the global coordinate 
+    origin by default, and always on the global Y-axis.
+
+    :param float inner_radius: Radius of the hollow center
+    :param float outer_radius: Outer radius of the cylinder
+    :param float height: Height of the cylinder
+    :param float y_offset: vertical offset along the global Y-axis
+    :param str model_name: name of the Abaqus model in which to create the part
+    :param list part_name: name(s) of the part(s) being created
+    :param float revolution_angle: angle of solid revolution for ``3D`` geometries
+    """
+
+    lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset)
+    geometry.draw_part_from_splines(lines, [], planar=False, model_name=model_name, part_name=part_name,
+                                    revolution_angle=revolution_angle)
 
 
 if __name__ == "__main__":
