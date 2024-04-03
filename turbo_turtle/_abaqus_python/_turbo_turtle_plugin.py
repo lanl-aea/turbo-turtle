@@ -26,6 +26,16 @@ toolset.registerKernelMenuButton(
     author=_mixed_settings._author,
     description=_mixed_settings._cylinder_gui_help_string)
 
+# Sphere Gui Plugin
+toolset.registerKernelMenuButton(
+    buttonText='Turbo-Turtle|Sphere',
+    moduleName='turbo_turtle_abaqus.sphere', functionName='_gui()',
+    applicableModules=('Part', ),
+    icon=afxCreateIcon('turboTurtleIcon.png'),
+    helpUrl=_mixed_settings._gui_docs_file,
+    author=_mixed_settings._author,
+    description=_mixed_settings._sphere_gui_help_string)
+
 # Geometry Gui Plugin
 toolset.registerKernelMenuButton(
     buttonText='Turbo-Turtle|Geometry',
