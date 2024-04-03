@@ -276,7 +276,7 @@ def _gui_get_inputs():
         fields=fields
     )
 
-    if input_file_strings is not None:  #  will be None if the user hits the "cancel/esc" button
+    if input_file_strings is not None:  # Will be None if the user hits the "cancel/esc" button
         input_file = []
         if input_file_strings and input_file_strings != default_input_files:
             for this_input_file_string in input_file_strings.split(','):

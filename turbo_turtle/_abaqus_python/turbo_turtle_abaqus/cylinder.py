@@ -120,7 +120,7 @@ def _gui_get_inputs():
         fields=fields
     )
 
-    if part_name is not None:  # will be None if the user hits the "cancel/esc" button
+    if part_name is not None:  # Will be None if the user hits the "cancel/esc" button
         if not inner_radius or not outer_radius or not height:
             error_message = 'Error: You must specify an inner and outer radius and a height for the cylinder'
             raise RuntimeError(error_message)

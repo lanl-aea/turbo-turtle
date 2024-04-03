@@ -187,7 +187,7 @@ def _gui_get_inputs():
         fields=fields
     )
 
-    if part_name is not None:  # will be None if the user hits the "cancel/esc" button
+    if part_name is not None:  # Will be None if the user hits the "cancel/esc" button
         if not inner_radius or not outer_radius:
             error_message = 'Error: You must specify an inner and outer radius for the sphere'
             raise RuntimeError(error_message)
