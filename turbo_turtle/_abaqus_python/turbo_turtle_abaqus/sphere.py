@@ -62,7 +62,8 @@ def main(inner_radius, outer_radius, output_file,
     abaqus.mdb.saveAs(pathName=output_file)
 
 
-def sphere(inner_radius, outer_radius, center,
+def sphere(inner_radius, outer_radius,
+           center=parsers.sphere_defaults["center"],
            quadrant=parsers.sphere_defaults["quadrant"],
            revolution_angle=parsers.sphere_defaults["revolution_angle"],
            model_name=parsers.sphere_defaults["model_name"],
