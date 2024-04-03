@@ -40,6 +40,7 @@ def main(inner_radius, outer_radius, output_file,
     import abaqus
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
+
     try:
         if input_file is not None:
             input_file = os.path.splitext(input_file)[0] + ".cae"
@@ -84,11 +85,9 @@ def sphere(inner_radius, outer_radius,
     # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
     center = (0., y_offset)
 
-    if not quadrant in parsers.sphere_quadrant_options:
-        message = "Quadrant option must be one of: {}".format(quadrant_options)
-        _mixed_utilities.sys_exit(message)
-
     _abaqus_utilities._conditionally_create_model(model_name)
+
+    _validate_sphere_quadrant(quadrant, parsers.sphere_quadrant_options)
 
     model = abaqus.mdb.models[model_name]
 
@@ -117,6 +116,19 @@ def sphere(inner_radius, outer_radius,
         part = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D, type=abaqusConstants.DEFORMABLE_BODY)
         part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqusConstants.OFF)
     del sketch
+
+
+def _validate_sphere_quadrant(quadrant, valid_quadrants):
+    """Validate the user-provided sphere quadrant against a provided list of valid quadrants
+
+    :param str quadrant: user provided sphere quadrant
+    :param list valid_quadrants: valid quadrant to check against
+
+    :raises RuntimError: if user provided quadrant is invalid
+    """
+    if quadrant not in valid_quadrants:
+        error_message = "Error: Quadrant option must be one of: {}".format(valid_quadrants)
+        raise RuntimeError(error_message)
 
 
 def _gui_get_inputs():
@@ -180,9 +192,7 @@ def _gui_get_inputs():
             error_message = 'Error: You must specify an inner and outer radius for the sphere'
             raise RuntimeError(error_message)
 
-        if quadrant not in parsers.sphere_quadrant_options:
-            print("Warning: '{}' is not a valid quadrant name. Choose from {}".format(
-                quadrant, ', '.join(parsers.sphere_quadrant_options)))
+        _validate_sphere_quadrant(quadrant, parsers.sphere_quadrant_options)
 
         user_inputs = {'inner_radius': float(inner_radius), 'outer_radius': float(outer_radius), 'quadrant': quadrant,
                        'revolution_angle': float(revolution_angle), 'y_offset': float(y_offset),
