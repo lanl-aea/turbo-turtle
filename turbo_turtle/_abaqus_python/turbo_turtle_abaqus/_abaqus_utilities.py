@@ -35,6 +35,31 @@ def return_abaqus_constant_or_exit(*args, **kwargs):
     return return_abaqus_constant(*args, **kwargs)
 
 
+def _view_part_gui_post_action(model_name, part_name, **kwargs):
+    """Place a part in the current viewport as a GUI post-action
+
+    Depending on if ``part_name`` is a list or a string, either place the last part in the list or the string part name 
+    in the viewport.
+
+    This function requires the arguments documented below, and any other arguments will be unpacked but ignored. This 
+    behavior makes it convenient to use this function generally with the arguments of any of the GUI plug-in actions (so 
+    long as those documented below are present).
+
+    :param str model_name: name of the Abaqus model to query in the post-action
+    :param str/list part_name: name of the part to place in the viewport. If ``list`` type, use the last part name in 
+        the list. If ``str`` type, use that part name directly.
+    """
+    import abaqus
+
+    if isinstance(part_name, list)
+        part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
+    else:
+        part_object = abaqus.mdb.models[model_name].parts[part_name]
+    abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
+    abaqus.session.viewports['Viewport: 1'].view.setValues(abaqus.session.views['Iso'])
+    abaqus.session.viewports['Viewport: 1'].view.fitView()
+
+
 def _conditionally_create_model(model_name):
     """Create a new model in an Abaqus database if the specified model name is not already existing
 

@@ -310,33 +310,12 @@ def _gui_get_inputs():
     return user_inputs
 
 
-def _gui_post_action(model_name, **kwargs):
-    """Action performed after running geometry
-
-    After geometry, set the viewport to look at the last part in the parts list, simply for convenience. Otherwise, the
-    user will be left at a blank Abaqus/CAE screen.
-
-    This function requires a subset of the arguments of
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.geometry`. Any other arguments than
-    the ones documented below will be unpacked but ignored. This behvior makes it convenient to wrap around this
-    function by simply unpacking the entire keyword arguments dictionary required for ``geometry``.
-
-    :param str model_name: name of the Abaqus model to query in the post-action
-    """
-    import abaqus
-
-    part_object = abaqus.mdb.models[model_name].parts[abaqus.mdb.models[model_name].parts.keys()[-1]]
-    abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
-    abaqus.session.viewports['Viewport: 1'].view.setValues(abaqus.session.views['Iso'])
-    abaqus.session.viewports['Viewport: 1'].view.fitView()
-
-
 def _gui():
     """Function with no inputs required for driving the plugin
     """
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
                                   subcommand_function=geometry,
-                                  post_action_function=_gui_post_action)
+                                  post_action_function=_abaqus_utilities._view_part_gui_post_action)
 
 
 if __name__ == "__main__":

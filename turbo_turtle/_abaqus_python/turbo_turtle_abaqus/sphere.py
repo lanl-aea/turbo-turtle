@@ -192,6 +192,14 @@ def _gui_get_inputs():
     return user_inputs
 
 
+def _gui():
+    """Function with no inputs required for driving the plugin
+    """
+    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
+                                  subcommand_function=sphere,
+                                  post_action_function=_abaqus_utilities._view_part_gui_post_action)
+
+
 if __name__ == "__main__":
 
     parser = parsers.sphere_parser(basename=basename)
