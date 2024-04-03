@@ -52,9 +52,8 @@ def _view_part_gui_post_action(model_name, part_name, **kwargs):
     import abaqus
 
     if isinstance(part_name, list):
-        part_object = abaqus.mdb.models[model_name].parts[part_name[-1]]
-    else:
-        part_object = abaqus.mdb.models[model_name].parts[part_name]
+        part_name = part_name[-1]
+    part_object = abaqus.mdb.models[model_name].parts[part_name]
     abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
     abaqus.session.viewports['Viewport: 1'].view.setValues(abaqus.session.views['Iso'])
     abaqus.session.viewports['Viewport: 1'].view.fitView()
