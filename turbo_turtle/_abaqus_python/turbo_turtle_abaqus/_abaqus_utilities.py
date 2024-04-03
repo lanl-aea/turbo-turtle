@@ -35,7 +35,7 @@ def return_abaqus_constant_or_exit(*args, **kwargs):
     return return_abaqus_constant(*args, **kwargs)
 
 
-def _view_part_gui_post_action(model_name, part_name, **kwargs):
+def _view_part(model_name, part_name, **kwargs):
     """Place a part in the current viewport as a GUI post-action
 
     Depending on if ``part_name`` is a list or a string, either place the last part in the list or the string part name 

@@ -315,7 +315,7 @@ def _gui():
     """
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
                                   subcommand_function=geometry,
-                                  post_action_function=_abaqus_utilities._view_part_gui_post_action)
+                                  post_action_function=_abaqus_utilities._view_part)
 
 
 if __name__ == "__main__":
