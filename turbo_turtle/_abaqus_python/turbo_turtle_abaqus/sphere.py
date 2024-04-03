@@ -14,6 +14,8 @@ sys.path.insert(0, parent)
 import parsers
 import vertices
 import _mixed_utilities
+import _abaqus_utilities
+import _mixed_settings
 
 
 def main(inner_radius, outer_radius, output_file,
@@ -37,31 +39,29 @@ def main(inner_radius, outer_radius, output_file,
     """
     import abaqus
 
-    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
-    center = (0., y_offset)
-
     output_file = os.path.splitext(output_file)[0] + ".cae"
-    if input_file is not None:
-        input_file = os.path.splitext(input_file)[0] + ".cae"
-        # Avoid modifying the contents or timestamp on the input file.
-        # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-        with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
-            shutil.copyfile(input_file, copy_file.name)
-            abaqus.openMdb(pathName=copy_file.name)
-            sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
+    try:
+        if input_file is not None:
+            input_file = os.path.splitext(input_file)[0] + ".cae"
+            # Avoid modifying the contents or timestamp on the input file.
+            # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
+            with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
+                shutil.copyfile(input_file, copy_file.name)
+                abaqus.openMdb(pathName=copy_file.name)
+                sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, y_offset=y_offset,
+                       model_name=model_name, part_name=part_name)
+        else:
+            sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, y_offset=y_offset,
                    model_name=model_name, part_name=part_name)
-            abaqus.mdb.saveAs(pathName=output_file)
-
-    else:
-        sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
-               model_name=model_name, part_name=part_name)
-        abaqus.mdb.saveAs(pathName=output_file)
+    except RuntimeError as err:
+        _mixed_utilities.sys_exit(err.message)
+    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def sphere(inner_radius, outer_radius,
            quadrant=parsers.sphere_defaults["quadrant"],
            revolution_angle=parsers.sphere_defaults["revolution_angle"],
-           center=parsers.sphere_defaults["center"],
+           y_offset=parsers.sphere_defaults["y_offset"],
            model_name=parsers.sphere_defaults["model_name"],
            part_name=parsers.sphere_defaults["part_name"]):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
@@ -74,19 +74,22 @@ def sphere(inner_radius, outer_radius,
     :param float outer_radius: outer radius (size of sphere)
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
     :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
-    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param float y_offset: vertical offset along the global Y-axis
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
     import abaqus
     import abaqusConstants
 
+    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
+    center = (0., y_offset)
+
     if not quadrant in parsers.sphere_quadrant_options:
         message = "Quadrant option must be one of: {}".format(quadrant_options)
         _mixed_utilities.sys_exit(message)
 
-    if not model_name in abaqus.mdb.models.keys():
-        abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
+    _abaqus_utilities._conditionally_create_model(model_name)
+
     model = abaqus.mdb.models[model_name]
 
     arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
