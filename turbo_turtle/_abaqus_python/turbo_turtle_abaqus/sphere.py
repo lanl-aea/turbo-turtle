@@ -203,8 +203,7 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs required for driving the plugin
-    """
+    """Function with no inputs required for driving the plugin"""
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
                                   subcommand_function=sphere,
                                   post_action_function=_abaqus_utilities._view_part)
