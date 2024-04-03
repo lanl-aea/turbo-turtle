@@ -165,20 +165,14 @@ def _gui_get_inputs():
     """
     import abaqus
 
-    default_part_name = parsers.sphere_defaults['part_name']
-    default_model_name = parsers.sphere_defaults['model_name']
-    default_revolution_angle = str(parsers.sphere_defaults['revolution_angle'])
-    default_y_offset = str(parsers.sphere_defaults['y_offset'])
-    default_quadrant = parsers.sphere_defaults["quadrant"]
-
     fields = (
-        ('Part Name:', default_part_name),
-        ('Model Name:', default_model_name),
+        ('Part Name:', parsers.sphere_defaults['part_name']),
+        ('Model Name:', parsers.sphere_defaults['model_name']),
         ('Inner Radius:', ''),
         ('Outer Radius:', ''),
-        ('Revolution Angle:', default_revolution_angle),
-        ('Y-Offset:', default_y_offset),
-        ('Quadrant:', default_quadrant)
+        ('Revolution Angle:', str(parsers.sphere_defaults['revolution_angle'])),
+        ('Y-Offset:', str(parsers.sphere_defaults['y_offset'])),
+        ('Quadrant:', parsers.sphere_defaults['quadrant'])
     )
 
     part_name, model_name, inner_radius, outer_radius, revolution_angle, y_offset, quadrant = abaqus.getInputs(

@@ -203,10 +203,6 @@ def _gui_get_inputs():
     """
     import abaqus
 
-
-    default_center = str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')
-    default_x_vector = str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')
-    default_z_vector = str(parsers.partition_defaults['zvector']).replace('[', '').replace(']', '')
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
     except AttributeError:
@@ -214,9 +210,9 @@ def _gui_get_inputs():
         default_part_name = parsers.partition_defaults['part_name'][0]  # part_name defaults to list of length 1
 
     fields = (
-        ('Center:', default_center),
-        ('X-Vector:', default_x_vector),
-        ('Z-Vector:', default_z_vector),
+        ('Center:', str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')),
+        ('X-Vector:', str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')),
+        ('Z-Vector:', str(parsers.partition_defaults['zvector']).replace('[', '').replace(']', '')),
         ('Part Name(s):', default_part_name),
         ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters')
     )

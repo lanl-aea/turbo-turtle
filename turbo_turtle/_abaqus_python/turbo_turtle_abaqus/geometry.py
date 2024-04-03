@@ -244,29 +244,20 @@ def _gui_get_inputs():
 
     default_input_files = 'File1.csv,File2.csv OR *.csv'
     default_part_names = 'Part-1,Part-2, OR None OR blank'
-    default_model_name = parsers.geometry_defaults['model_name']
-    default_unit_conversion = str(parsers.geometry_defaults['unit_conversion'])
-    default_euclidean_distance = str(parsers.geometry_defaults['euclidean_distance'])
-    default_planar = str(parsers.geometry_defaults['planar'])
-    default_revolution_angle = str(parsers.geometry_defaults['revolution_angle'])
-    default_delimiter = parsers.geometry_defaults['delimiter']
-    default_header_lines = str(parsers.geometry_defaults['header_lines'])
-    default_y_offset = str(parsers.geometry_defaults['y_offset'])
-    default_rtol = str(parsers.geometry_defaults['rtol'])
-    default_atol = str(parsers.geometry_defaults['atol'])
+
     fields = (
         ('Input File(s):', default_input_files),
         ('Part Name(s):', default_part_names),
-        ('Model Name:', default_model_name),
-        ('Unit Conversion:', default_unit_conversion),
-        ('Euclidean Distance:', default_euclidean_distance),
-        ('Planar Geometry Switch:', default_planar),
-        ('Revolution Angle:', default_revolution_angle),
-        ('Delimiter:', default_delimiter),
-        ('Header Lines:', default_header_lines),
-        ('Y-Offset:', default_y_offset),
-        ('rtol:', default_rtol),
-        ('atol:', default_atol)
+        ('Model Name:', parsers.geometry_defaults['model_name']),
+        ('Unit Conversion:', str(parsers.geometry_defaults['unit_conversion'])),
+        ('Euclidean Distance:', str(parsers.geometry_defaults['euclidean_distance'])),
+        ('Planar Geometry Switch:', str(parsers.geometry_defaults['planar'])),
+        ('Revolution Angle:', str(parsers.geometry_defaults['revolution_angle'])),
+        ('Delimiter:', parsers.geometry_defaults['delimiter']),
+        ('Header Lines:', str(parsers.geometry_defaults['header_lines'])),
+        ('Y-Offset:', str(parsers.geometry_defaults['y_offset'])),
+        ('rtol:', str(parsers.geometry_defaults['rtol'])),
+        ('atol:', str(parsers.geometry_defaults['atol']))
     )
 
     (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,

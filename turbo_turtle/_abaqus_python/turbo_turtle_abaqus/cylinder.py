@@ -99,19 +99,14 @@ def _gui_get_inputs():
     """
     import abaqus
 
-    default_part_name = parsers.cylinder_defaults['part_name']
-    default_model_name = parsers.geometry_defaults['model_name']
-    default_revolution_angle = str(parsers.geometry_defaults['revolution_angle'])
-    default_y_offset = str(parsers.cylinder_defaults['y_offset'])
-
     fields = (
-        ('Part Name:', default_part_name),
-        ('Model Name:', default_model_name),
+        ('Part Name:', parsers.cylinder_defaults['part_name']),
+        ('Model Name:', parsers.geometry_defaults['model_name']),
         ('Inner Radius:', ''),
         ('Outer Radius:', ''),
         ('Height:', ''),
-        ('Revolution Angle:', default_revolution_angle),
-        ('Y-Offset:', default_y_offset)
+        ('Revolution Angle:', str(parsers.geometry_defaults['revolution_angle'])),
+        ('Y-Offset:', str(parsers.cylinder_defaults['y_offset']))
     )
 
     part_name, model_name, inner_radius, outer_radius, height, revolution_angle, y_offset = abaqus.getInputs(
