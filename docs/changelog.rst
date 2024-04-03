@@ -22,6 +22,7 @@ Documentation
 
 Internal Changes
 ================
+- Work-in-progress support for Abaqus CAE GUI sphere capability (:issue:`152`, :merge:`133`). By `Thomas Roberts`_.
 - Work-in-progress support for Abaqus CAE GUI cylinder capability (:issue:`150`, :merge:`132`). By `Thomas Roberts`_.
 - Reduce duplicate logic in geometry and cylinder subcommand implementations (:issue:`123`, :merge:`126`). By `Kyle
   Brindley`_.
