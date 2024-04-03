@@ -119,6 +119,79 @@ def sphere(inner_radius, outer_radius,
     del sketch
 
 
+def _gui_get_inputs():
+    """Interactive Inputs
+
+    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
+    GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
+    below, also update ``_mixed_settings._sphere_gui_help_string`` that gets used as the GUI ``label``.
+
+    GUI-INPUTS
+    ==========
+    * Part Name - part name for the sphere being created.
+    * Model Name - parts will be created in a new model with this name
+    * Inner Radius - inner radius of the sphere
+    * Outer Radius - outer radius of the sphere
+    * Revolution Angle - revolution angle for a 3D part in degrees
+    * Y-Offset - offset along the global y-axis
+    * Quadrant - XY plane quadrant for drawing the sphere. Choose from 'both', 'upper', or 'lower'
+
+    **IMPORTANT** - this function must return key-value pairs that will successfully unpack as ``**kwargs`` in
+    ``sphere``
+
+    :return: ``user_inputs`` - a dictionary of the following key-value pair types:
+
+    * ``part_name``: ``str`` type, part name of the cylinder
+    * ``model_name``: ``str`` type, new model containing the part generated from the input file(s)
+    * ``inner_radius``: ``float`` type, inner radius of the cylinder
+    * ``outer_radius``: ``float`` type, outer radius of the cylinder
+    * ``revolution_angle``: ``float`` type, revolution angle in degrees for 3D geometry
+    * ``y_offset``: ``float`` type, offset along the y-axis
+    * ``quadrant``: ``str`` type, XY plane quadrant for drawing the sphere
+
+    :raises RuntimeError: if inner radius or  outer radius are not specified.
+    """
+    import abaqus
+
+    default_part_name = parsers.sphere_defaults['part_name']
+    default_model_name = parsers.sphere_defaults['model_name']
+    default_revolution_angle = str(parsers.sphere_defaults['revolution_angle'])
+    default_y_offset = str(parsers.sphere_defaults['y_offset'])
+    default_quadrant = parsers.sphere_defaults["quadrant"]
+
+    fields = (
+        ('Part Name:', default_part_name),
+        ('Model Name:', default_model_name),
+        ('Inner Radius:', ''),
+        ('Outer Radius:', ''),
+        ('Revolution Angle:', default_revolution_angle),
+        ('Y-Offset:', default_y_offset),
+        ('Quadrant:', default_quadrant)
+    )
+
+    part_name, model_name, inner_radius, outer_radius, revolution_angle, y_offset, quadrant = abaqus.getInputs(
+        dialogTitle='Turbo Turtle Sphere',
+        label=_mixed_settings._sphere_gui_help_string,
+        fields=fields
+    )
+
+    if part_name is not None:  # will be None if the user hits the "cancel/esc" button
+        if not inner_radius or not outer_radius:
+            error_message = 'Error: You must specify an inner and outer radius for the sphere'
+            raise RuntimeError(error_message)
+
+        if quadrant not in parsers.sphere_quadrant_options:
+            print("Warning: '{}' is not a valid quadrant name. Choose from {}".format(
+                quadrant, ', '.join(parsers.sphere_quadrant_options)))
+
+        user_inputs = {'inner_radius': float(inner_radius), 'outer_radius': float(outer_radius), 'quadrant': quadrant,
+                       'revolution_angle': float(revolution_angle), 'y_offset': float(y_offset),
+                       'model_name': model_name, 'part_name': part_name}
+    else:
+        user_inputs = {}
+    return user_inputs
+
+
 if __name__ == "__main__":
 
     parser = parsers.sphere_parser(basename=basename)
