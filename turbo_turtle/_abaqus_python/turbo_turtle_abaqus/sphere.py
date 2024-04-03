@@ -41,6 +41,9 @@ def main(inner_radius, outer_radius, output_file,
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
+    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
+    center = (0., y_offset)
+
     try:
         if input_file is not None:
             input_file = os.path.splitext(input_file)[0] + ".cae"
@@ -49,20 +52,19 @@ def main(inner_radius, outer_radius, output_file,
             with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
                 shutil.copyfile(input_file, copy_file.name)
                 abaqus.openMdb(pathName=copy_file.name)
-                sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, y_offset=y_offset,
+                sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                        model_name=model_name, part_name=part_name)
         else:
-            sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, y_offset=y_offset,
+            sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                    model_name=model_name, part_name=part_name)
     except RuntimeError as err:
         _mixed_utilities.sys_exit(err.message)
     abaqus.mdb.saveAs(pathName=output_file)
 
 
-def sphere(inner_radius, outer_radius,
+def sphere(inner_radius, outer_radius, center,
            quadrant=parsers.sphere_defaults["quadrant"],
            revolution_angle=parsers.sphere_defaults["revolution_angle"],
-           y_offset=parsers.sphere_defaults["y_offset"],
            model_name=parsers.sphere_defaults["model_name"],
            part_name=parsers.sphere_defaults["part_name"]):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
@@ -73,17 +75,14 @@ def sphere(inner_radius, outer_radius,
 
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
+    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
     :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
-    :param float y_offset: vertical offset along the global Y-axis
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
     import abaqus
     import abaqusConstants
-
-    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
-    center = (0., y_offset)
 
     _abaqus_utilities._conditionally_create_model(model_name)
 
@@ -182,15 +181,18 @@ def _gui_get_inputs():
     )
 
     if part_name is not None:  # Will be None if the user hits the "cancel/esc" button
+        # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
+        center = (0., float(y_offset))
+
         if not inner_radius or not outer_radius:
             error_message = 'Error: You must specify an inner and outer radius for the sphere'
             raise RuntimeError(error_message)
 
         _validate_sphere_quadrant(quadrant, parsers.sphere_quadrant_options)
 
-        user_inputs = {'inner_radius': float(inner_radius), 'outer_radius': float(outer_radius), 'quadrant': quadrant,
-                       'revolution_angle': float(revolution_angle), 'y_offset': float(y_offset),
-                       'model_name': model_name, 'part_name': part_name}
+        user_inputs = {'inner_radius': float(inner_radius), 'outer_radius': float(outer_radius), 'center': center, 
+                       'quadrant': quadrant, 'revolution_angle': float(revolution_angle), 'model_name': model_name, 
+                       'part_name': part_name}
     else:
         user_inputs = {}
     return user_inputs
