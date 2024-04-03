@@ -141,10 +141,10 @@ def _gui_get_inputs():
 
     :return: ``user_inputs`` - a dictionary of the following key-value pair types:
 
-    * ``part_name``: ``str`` type, part name of the cylinder
+    * ``part_name``: ``str`` type, part name of the sphere
     * ``model_name``: ``str`` type, new model containing the part generated from the input file(s)
-    * ``inner_radius``: ``float`` type, inner radius of the cylinder
-    * ``outer_radius``: ``float`` type, outer radius of the cylinder
+    * ``inner_radius``: ``float`` type, inner radius of the sphere
+    * ``outer_radius``: ``float`` type, outer radius of the sphere
     * ``revolution_angle``: ``float`` type, revolution angle in degrees for 3D geometry
     * ``y_offset``: ``float`` type, offset along the y-axis
     * ``quadrant``: ``str`` type, XY plane quadrant for drawing the sphere

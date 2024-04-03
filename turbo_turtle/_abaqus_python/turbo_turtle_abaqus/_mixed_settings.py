@@ -24,6 +24,18 @@ GUI-INPUTS
 * Y-Offset - offset along the global y-axis
 """
 
+_sphere_gui_help_string = """
+GUI-INPUTS
+==========
+* Part Name - part name for the sphere being created.
+* Model Name - parts will be created in a new model with this name
+* Inner Radius - inner radius of the sphere
+* Outer Radius - outer radius of the sphere
+* Revolution Angle - revolution angle for a 3D part in degrees
+* Y-Offset - offset along the global y-axis
+* Quadrant - XY plane quadrant for drawing the sphere. Choose from 'both', 'upper', or 'lower'
+"""
+
 _geometry_gui_help_string = """
 GUI-INPUTS
 ==========
