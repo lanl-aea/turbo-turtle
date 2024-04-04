@@ -244,7 +244,7 @@ def main():
     elif args.subcommand == "print-abaqus-path":
         _print_abaqus_path_location()
     elif args.subcommand == "geometry-xyplot":
-        geometry_xyplot.geometry_xyplot(
+        geometry_xyplot._main(
             args.input_file, args.output_file,
             part_name=args.part_name,
             unit_conversion=args.unit_conversion,

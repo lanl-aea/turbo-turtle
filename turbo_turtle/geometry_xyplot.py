@@ -27,35 +27,36 @@ def _get_parser() -> argparse.ArgumentParser:
 
 
 def geometry_xyplot(
-    input_file, output_file,
-    part_name=parsers.geometry_xyplot_defaults["part_name"],
-    unit_conversion=parsers.geometry_xyplot_defaults["unit_conversion"],
-    euclidean_distance=parsers.geometry_xyplot_defaults["euclidean_distance"],
-    delimiter=parsers.geometry_xyplot_defaults["delimiter"],
-    header_lines=parsers.geometry_xyplot_defaults["header_lines"],
-    y_offset=parsers.geometry_xyplot_defaults["y_offset"],
-    rtol=parsers.geometry_defaults["rtol"],
-    atol=parsers.geometry_defaults["atol"],
+    coordinates_list: list,
+    part_name: list[None | str] = parsers.geometry_xyplot_defaults["part_name"],
+    unit_conversion float = parsers.geometry_xyplot_defaults["unit_conversion"],
+    euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
+    y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],
+    rtol: None | float = parsers.geometry_defaults["rtol"],
+    atol: None | float = parsers.geometry_defaults["atol"],
     no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
     annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
     scale: bool = parsers.geometry_xyplot_defaults["scale"]
-) -> None:
-    """Plotter for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` division of
-    coordinates into lines and splines.
+) -> matplotlib.Figure:
+    """Return a matplotlib figure with the coordinates plotted consistently with geometry and geometry-xyplot
+    subcommands
 
-    See the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.geometry_parser`,
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.main`, or
-    :meth:`turbo_turtle._cubit_python.geometry` interfaces for a description of the input arguments.
+    :param coordinates_list: List of 2D numpy arrays of (X, Y) coordinates
+    :param part_name: name(s) of the part(s) being created
+    :param unit_conversion: multiplication factor applies to all coordinates
+    :param euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
+        Distance should be provided in units *after* the unit conversion
+    :param y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
+        conversion.
+    :param rtol: relative tolerance for vertical/horizontal line checks
+    :param atol: absolute tolerance for vertical/horizontal line checks
 
     :param no_markers: Exclude vertex markers and only plot lines.
     :param annotate: Annotate the vertex coordinates with their index from the source CSV file.
     :param scale: Change the plot aspect ratio to use the same scale for the X and Y axes.
-    """
-    import numpy
-    import matplotlib.pyplot
 
-    from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
-    from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
+    :returns: matplotlib figure
+    """
 
     if no_markers:
         line_kwargs = {}
@@ -64,15 +65,13 @@ def geometry_xyplot(
         line_kwargs = {"marker": "o"}
         spline_kwargs = {"marker": "+"}
 
-    matplotlib.pyplot.figure()
+    figure = matplotlib.pyplot.figure()
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     if len(part_name) > 1:
         colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(part_name)))  # NOT part of refactor
     else:
         colors = ["black"]
-    for file_name, new_part, color in zip(input_file, part_name, colors):
-        coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
-                                                                 expected_dimensions=2, expected_columns=2)
+    for coordinates, color in zip(coordinates_list, colors):
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         for line in lines:
@@ -86,7 +85,71 @@ def geometry_xyplot(
                 matplotlib.pyplot.annotate(str(index), coordinate, color=color)
 
     if scale:
-        ax = matplotlib.pyplot.gca()
-        ax.set_aspect("equal", adjustable="box")
+        figure.axes.set_aspect("equal", adjustable="box")
 
-    matplotlib.pyplot.savefig(output_file)
+    return figure
+
+
+def _main(
+    input_file: list, output_file: str,
+    part_name: list[None | str] = parsers.geometry_xyplot_defaults["part_name"],
+    unit_conversion float = parsers.geometry_xyplot_defaults["unit_conversion"],
+    euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
+    delimiter: str = parsers.geometry_xyplot_defaults["delimiter"],
+    header_lines: int = parsers.geometry_xyplot_defaults["header_lines"],
+    y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],
+    rtol: None | float = parsers.geometry_defaults["rtol"],
+    atol: None | float = parsers.geometry_defaults["atol"],
+    no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
+    annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
+    scale: bool = parsers.geometry_xyplot_defaults["scale"]
+) -> None:
+    """Plotter for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` division of
+    coordinates into lines and splines.
+
+    See the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.geometry_parser`,
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.main`, or
+    :meth:`turbo_turtle._cubit_python.geometry` interfaces for a description of the input arguments.
+
+    :param str input_file: input text file(s) with coordinates to draw
+    :param str output_file: Abaqus CAE database to save the part(s)
+    :param list part_name: name(s) of the part(s) being created
+    :param float unit_conversion: multiplication factor applies to all coordinates
+    :param float euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
+        Distance should be provided in units *after* the unit conversion
+    :param str delimiter: character to use as a delimiter when reading the input file
+    :param int header_lines: number of lines in the header to skip when reading the input file
+    :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
+        conversion.
+    :param float rtol: relative tolerance for vertical/horizontal line checks
+    :param float atol: absolute tolerance for vertical/horizontal line checks
+
+    :param no_markers: Exclude vertex markers and only plot lines.
+    :param annotate: Annotate the vertex coordinates with their index from the source CSV file.
+    :param scale: Change the plot aspect ratio to use the same scale for the X and Y axes.
+
+    :returns: writes ``{output_file}`` matplotlib image
+    """
+    import numpy
+    import matplotlib.pyplot
+
+    from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
+    from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
+
+    coordinates_list [_mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
+                                                                 expected_dimensions=2, expected_columns=2)
+                      for file_name in input_file]
+    figure = geometry_xyplot(
+        coordinates_list,
+        part_name=part_name,
+        unit_conversion=unit_conversion,
+        euclidean_distance=euclidean_distance,
+        y_offset=y_offset,
+        rtol=rtol,
+        atol=atol,
+        no_markers=no_markers,
+        annotate=annotate,
+        scale=scale
+    )
+
+    figure.savefig(output_file)
