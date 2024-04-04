@@ -41,6 +41,10 @@
    zreferences
    README
 
+.. raw:: latex
+
+   \part{Indices and Tables}
+
 .. only:: html
 
    Indices and tables
