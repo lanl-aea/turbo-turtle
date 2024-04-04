@@ -6,6 +6,10 @@ from turbo_turtle import geometry_xyplot
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
+def test_geometry_xyplot():
+    pass
+
+
 def test_main():
     kwargs = {}
     expected_call_kwargs = {
@@ -19,6 +23,7 @@ def test_main():
         "scale": parsers.geometry_xyplot_defaults["scale"]
     }
     with patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.return_genfromtxt_or_exit"), \
+         patch("matplotlib.pyplot.figure.savefig"), \
          patch("turbo_turtle.geometry_xyplot.geometry_xyplot") as mock_plot:
         geometry_xyplot._main(["dummy.in"], ["dummy.out"], **kwargs)
     assert mock_plot.call_args.kwargs == expected_call_kwargs
