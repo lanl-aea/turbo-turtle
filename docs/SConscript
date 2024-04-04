@@ -38,6 +38,7 @@ for target, source in copy_files:
 # Things required for Sphinx configuration or missed by scanning *.rst and *.txt files
 sphinx_configuration_files = [
     "conf.py",
+    'references.bib',  # Found in conf.py, which is not currently scanned
     "targets.txt",  # Found in conf.py, which is not currently scanned
     "turboTurtleLogo.png",
     "_static/custom.css",
@@ -55,7 +56,8 @@ sphinx_source_files = [
     "gui.rst",
     "index.rst",
     "release_philosophy.rst",
-    "user.rst"
+    "user.rst",
+    "zreferences.rst"
 ]
 
 targets = [f"html/{pathlib.Path(source).with_suffix('.html')}" for source in sphinx_source_files if ".rst" in source]
