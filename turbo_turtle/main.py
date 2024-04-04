@@ -70,7 +70,8 @@ def _geometry_xyplot(
     rtol=parsers.geometry_defaults["rtol"],
     atol=parsers.geometry_defaults["atol"],
     no_markers=parsers.geometry_xyplot_defaults["no_markers"],
-    annotate=parsers.geometry_xyplot_defaults["annotate"]
+    annotate=parsers.geometry_xyplot_defaults["annotate"],
+    scale=parsers.geometry_xyplot_defaults["scale"]
 ):
     """Plotter for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` division of coordinates into lines and splines
 
@@ -114,6 +115,10 @@ def _geometry_xyplot(
         if annotate:
             for index, coordinate in enumerate(coordinates):
                 matplotlib.pyplot.annotate(str(index), coordinate, color=color)
+
+    if scale:
+        ax = matplotlib.pyplot.gca()
+        ax.set_aspect("equal", adjustable="box")
 
     matplotlib.pyplot.savefig(output_file)
 
@@ -239,6 +244,10 @@ def get_parser():
         "--annotate", action="store_true",
         help="Annotate the vertex coordinates with their index from the source CSV file (default: %(default)s)"
     )
+    geometry_xyplot_parser.add_argument(
+        "--scale", action="store_true",
+        help="Change the plot aspect ratio to use the same scale for the X and Y axes (default: %(default)s)"
+    )
     subparsers.add_parser(
         "geometry-xyplot",
         help="Plot the lines-and-splines as parsed by the geometry subcommand.",
@@ -324,7 +333,8 @@ def main():
             rtol=args.rtol,
             atol=args.atol,
             no_markers=args.no_markers,
-            annotate=args.annotate
+            annotate=args.annotate,
+            scale=args.scale
         )
     else:
         _wrappers, command = _utilities.set_wrappers_and_command(args)

@@ -21,6 +21,11 @@ Internal Changes
 ================
 - Improved unit tests for the CLI builders (:issue:`151`, :merge:`135`). By `Kyle Brindley`_.
 
+Enhancements
+============
+- Add an option to use equally scaled X and Y axes in ``geometry-xyplot`` subcommand (:issue:`157`, :merge:`138`). By
+  `Kyle Brindley`_.
+
 ********************
 v0.11.2 (2024-03-29)
 ********************

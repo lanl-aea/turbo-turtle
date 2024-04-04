@@ -140,7 +140,8 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
 geometry_xyplot_defaults = copy.deepcopy(geometry_defaults)
 geometry_xyplot_defaults.update({
     "no_markers": False,
-    "annotate": False
+    "annotate": False,
+    "scale": False
 })
 
 
