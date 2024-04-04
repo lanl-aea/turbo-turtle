@@ -2,6 +2,15 @@
 User Manual
 ###########
 
+|PROJECT| is a wrapper around common modeling operations in Abaqus :cite:`abaqus` and Cubit :cite:`cubit`. As much as
+possible, the work for each subcommand is perfomed in Python 3 :cite:`python` to minimize solution approach duplication.
+|PROJECT| makes a best effort to maintain common behaviors and features across each third-party software's modeling
+concepts.
+
+***********
+Quick Start
+***********
+
 .. include:: README.txt
     :start-after: user-start-do-not-remove
     :end-before: user-end-do-not-remove
@@ -10,7 +19,9 @@ User Manual
 Examples: Abaqus
 ****************
 
-See the :ref:`turbo_turtle_cli` documentation for additional subcommands and options.
+|PROJECT| was originally written using Abaqus as the backend modeling and meshing software. Most of the interface
+options and descriptions use the Abaqus modeling concepts and jargon. See the :ref:`turbo_turtle_cli` documentation for
+additional subcommands and options.
 
 Three-dimensional sphere
 ========================
@@ -126,3 +137,28 @@ Two-dimensional, axisymmetric sphere
    turbo-turtle mesh --input-file axisymmetric.cub --output-file axisymmetric.cub --part-name axisymmetric --element-type dummy --global-seed 0.15
    turbo-turtle image --input-file axisymmetric.cub --output-file axisymmetric.png --backend cubit
    turbo-turtle export --input-file axisymmetric.cub --part-name axisymmetric
+
+****************
+SCons extensions
+****************
+
+|PROJECT| includes extensions to the `SCons`_ :cite:`scons,scons-user` build system in the :ref:`external_api`
+:ref:`scons_extensions` module. These may be used when importing |PROJECT| as a Python package in an `SCons`_
+configuration file. For example:
+
+.. code-block::
+   :caption: SConstruct
+
+   import turbo_turtle
+   env = Environment()
+   env.Append(BUILDERS={
+       "TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
+           options="--model-name ${model_name} --part-name ${part_name}"
+       )
+   })
+   env.TurboTurtleGeometry(
+       target=["sphere_partition.cae"],
+       source=["sphere_geometry.cae"],
+       model_name="sphere",
+       part_name="sphere"
+   )

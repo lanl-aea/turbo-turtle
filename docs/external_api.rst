@@ -4,6 +4,8 @@
 External API
 ############
 
+.. _scons_extensions:
+
 scons_extensions
 ================
 
