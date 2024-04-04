@@ -12,8 +12,16 @@ Quick Start
 ***********
 
 .. include:: README.txt
-    :start-after: user-start-do-not-remove
-    :end-before: user-end-do-not-remove
+   :start-after: user-start-do-not-remove
+   :end-before: user-end-do-not-remove
+
+************
+Installation
+************
+
+.. include:: README.txt
+   :start-after: installation-start-do-not-remove
+   :end-before: installation-end-do-not-remove
 
 ****************
 Examples: Abaqus

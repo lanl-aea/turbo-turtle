@@ -1,10 +1,14 @@
 .. target-start-do-not-remove
 
-.. _turbo-turtle: https://re-git.lanl.gov/tproberts/turbo-turtle
-.. _AEA Gitlab Group: https://re-git.lanl.gov/aea
-.. _Gitlab CI/CD: https://docs.gitlab.com/ee/ci/
-.. _AEA Compute Environment: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
-.. _Bash rsync: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
+.. _`turbo-turtle`: https://re-git.lanl.gov/tproberts/turbo-turtle
+.. _`AEA Gitlab Group`: https://re-git.lanl.gov/aea
+.. _`Gitlab CI/CD`: https://docs.gitlab.com/ee/ci/
+.. _`AEA Compute Environment`: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
+.. _`AEA Conda channel`: https://aea.re-pages.lanl.gov/developer-operations/aea_compute_environment/aea_compute_environment.html#aea-conda-channel
+.. _`Bash rsync`: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
+.. _Conda: https://docs.conda.io/en/latest/
+.. _Conda installation: https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html
+.. _Conda environment management: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
 
 .. _`Kyle Brindley`: kbrindley@lanl.gov
 .. _`Thomas Roberts`: tproberts@lanl.gov
@@ -67,6 +71,8 @@ Quick Start
 
 .. user-start-do-not-remove
 
+Currently, this project is only available on the `AEA Conda channel`_ and in an `AEA Compute Environment`_.
+
 1. Load the AEA compute environment
 
    .. code-block::
@@ -90,6 +96,23 @@ Quick Start
       $ turbo-turtle export -h
 
 .. user-end-do-not-remove
+
+************
+Installation
+************
+
+.. installation-start-do-not-remove
+
+Currently, this project is only available on the `AEA Conda channel`_ and in an `AEA Compute Environment`_.
+
+Turbo-Turtle can be installed in a `Conda`_ environment with the `Conda`_ package manager. See the `Conda installation`_
+and `Conda environment management`_ documentation for more details about using `Conda`_.
+
+.. code-block::
+
+   $ conda install --channel /projects/aea_compute/aea-conda --channel conda-forge waves
+
+.. installation-end-do-not-remove
 
 **********************
 Developer Instructions
