@@ -4,6 +4,10 @@
 
 .. include:: project_brief.txt
 
+.. raw:: latex
+
+   \part{User Manual}
+
 .. toctree::
    :maxdepth: 2
    :caption: User Manual
@@ -13,6 +17,10 @@
    cli
    gui
 
+.. raw:: latex
+
+   \part{Developer Manual}
+
 .. toctree::
    :maxdepth: 1
    :caption: Developer Manual
@@ -20,12 +28,17 @@
    internal_api
    devops
 
+.. raw:: latex
+
+   \part{Reference}
+
 .. toctree::
    :maxdepth: 1
    :caption: Reference
 
-   changelog
    release_philosophy
+   changelog
+   zreferences
    README
 
 .. only:: html
