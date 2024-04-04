@@ -33,7 +33,6 @@ def _get_parser() -> argparse.ArgumentParser:
 
 def geometry_xyplot(
     coordinates_list: list,
-    part_name: list[None | str] = parsers.geometry_xyplot_defaults["part_name"],
     unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],
     euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
     y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],
@@ -47,7 +46,6 @@ def geometry_xyplot(
     subcommands
 
     :param coordinates_list: List of 2D numpy arrays of (X, Y) coordinates
-    :param part_name: name(s) of the part(s) being created
     :param unit_conversion: multiplication factor applies to all coordinates
     :param euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
         Distance should be provided in units *after* the unit conversion
@@ -71,9 +69,8 @@ def geometry_xyplot(
         spline_kwargs = {"marker": "+"}
 
     figure = matplotlib.pyplot.figure()
-    part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
-    if len(part_name) > 1:
-        colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(part_name)))  # NOT part of refactor
+    if len(coordinates_list) > 1:
+        colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(coordinates_list)))
     else:
         colors = ["black"]
     for coordinates, color in zip(coordinates_list, colors):
@@ -135,7 +132,7 @@ def _main(
 
     :returns: writes ``{output_file}`` matplotlib image
     """
-
+    part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     coordinates_list = [_mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                    expected_dimensions=2, expected_columns=2)
                         for file_name in input_file]
