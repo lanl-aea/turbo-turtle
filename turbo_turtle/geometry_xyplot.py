@@ -8,6 +8,9 @@ from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
 
 
+_exclude_from_namespace = set(globals().keys())
+
+
 def _get_parser() -> argparse.ArgumentParser:
     """Return a partial parser for the geometry-xyplot subcommand options appended to the geometry subcommand options
 
@@ -149,3 +152,7 @@ def _main(
     )
 
     figure.savefig(output_file)
+
+
+_module_objects = set(globals().keys()) - _exclude_from_namespace
+__all__ = [name for name in _module_objects if not name.startswith("_")]

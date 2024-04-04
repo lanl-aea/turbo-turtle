@@ -13,6 +13,9 @@ from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
+_exclude_from_namespace = set(globals().keys())
+
+
 def _get_defaults_dictionary(subcommand):
     defaults_dictionary = f"{subcommand}_defaults".replace("-", "_")
     return getattr(parsers, defaults_dictionary)
@@ -818,3 +821,7 @@ def turbo_turtle_partition(
         backend = "abaqus"
     return cli_builder(program=program, subcommand=subcommand, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+
+
+_module_objects = set(globals().keys()) - _exclude_from_namespace
+__all__ = [name for name in _module_objects if not name.startswith("_")]
