@@ -1,6 +1,11 @@
 import argparse
 
+import numpy
+import matplotlib.pyplot
+
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
 
 
 def _get_parser() -> argparse.ArgumentParser:
@@ -29,7 +34,7 @@ def _get_parser() -> argparse.ArgumentParser:
 def geometry_xyplot(
     coordinates_list: list,
     part_name: list[None | str] = parsers.geometry_xyplot_defaults["part_name"],
-    unit_conversion float = parsers.geometry_xyplot_defaults["unit_conversion"],
+    unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],
     euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
     y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],
     rtol: None | float = parsers.geometry_defaults["rtol"],
@@ -37,7 +42,7 @@ def geometry_xyplot(
     no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
     annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
     scale: bool = parsers.geometry_xyplot_defaults["scale"]
-) -> matplotlib.Figure:
+) -> matplotlib.pyplot.Figure:
     """Return a matplotlib figure with the coordinates plotted consistently with geometry and geometry-xyplot
     subcommands
 
@@ -93,7 +98,7 @@ def geometry_xyplot(
 def _main(
     input_file: list, output_file: str,
     part_name: list[None | str] = parsers.geometry_xyplot_defaults["part_name"],
-    unit_conversion float = parsers.geometry_xyplot_defaults["unit_conversion"],
+    unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],
     euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
     delimiter: str = parsers.geometry_xyplot_defaults["delimiter"],
     header_lines: int = parsers.geometry_xyplot_defaults["header_lines"],
@@ -111,18 +116,18 @@ def _main(
     :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.main`, or
     :meth:`turbo_turtle._cubit_python.geometry` interfaces for a description of the input arguments.
 
-    :param str input_file: input text file(s) with coordinates to draw
-    :param str output_file: Abaqus CAE database to save the part(s)
-    :param list part_name: name(s) of the part(s) being created
-    :param float unit_conversion: multiplication factor applies to all coordinates
-    :param float euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
+    :param input_file: input text file(s) with coordinates to draw
+    :param output_file: Abaqus CAE database to save the part(s)
+    :param part_name: name(s) of the part(s) being created
+    :param unit_conversion: multiplication factor applies to all coordinates
+    :param euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
         Distance should be provided in units *after* the unit conversion
-    :param str delimiter: character to use as a delimiter when reading the input file
-    :param int header_lines: number of lines in the header to skip when reading the input file
-    :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
+    :param delimiter: character to use as a delimiter when reading the input file
+    :param header_lines: number of lines in the header to skip when reading the input file
+    :param y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
         conversion.
-    :param float rtol: relative tolerance for vertical/horizontal line checks
-    :param float atol: absolute tolerance for vertical/horizontal line checks
+    :param rtol: relative tolerance for vertical/horizontal line checks
+    :param atol: absolute tolerance for vertical/horizontal line checks
 
     :param no_markers: Exclude vertex markers and only plot lines.
     :param annotate: Annotate the vertex coordinates with their index from the source CSV file.
@@ -130,15 +135,10 @@ def _main(
 
     :returns: writes ``{output_file}`` matplotlib image
     """
-    import numpy
-    import matplotlib.pyplot
 
-    from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
-    from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
-
-    coordinates_list [_mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
-                                                                 expected_dimensions=2, expected_columns=2)
-                      for file_name in input_file]
+    coordinates_list = [_mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
+                                                                   expected_dimensions=2, expected_columns=2)
+                        for file_name in input_file]
     figure = geometry_xyplot(
         coordinates_list,
         part_name=part_name,
