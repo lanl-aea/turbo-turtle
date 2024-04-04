@@ -61,14 +61,11 @@ Author Info
 * `Kyle Brindley`_
 * `Thomas Roberts`_
 
-.. user-start-do-not-remove
-
 ***********
 Quick Start
 ***********
 
-This project is now packaged with a thin Python 3 wrapper. It is no longer necessary to clone the project when working
-on AEA RHEL (linux) servers.
+.. user-start-do-not-remove
 
 1. Load the AEA compute environment
 
