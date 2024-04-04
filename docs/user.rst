@@ -171,6 +171,8 @@ configuration file. For example:
    env.TurboTurtleSphere(
        target=["sphere_geometry.cae"],
        source=["SConstruct"],
+       inner_radius=1.,
+       outer_radius=2.,
        model_name="sphere",
        part_name="sphere"
    )
@@ -183,6 +185,8 @@ configuration file. For example:
    env.TurboTurtleMesh(
        target=["sphere_mesh.cae"],
        source=["sphere_partition.cae"],
+       element_type="C3D8",
+       global_seed=0.15,
        model_name="sphere",
        part_name="sphere"
    )
