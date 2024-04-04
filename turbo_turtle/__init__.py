@@ -12,6 +12,7 @@ copies to the public, perform publicly and display publicly, and to permit other
 from importlib.metadata import version, PackageNotFoundError
 
 from turbo_turtle import scons_extensions
+from turbo_turtle import geometry_xyplot
 
 try:
     __version__ = version("turbo_turtle")
