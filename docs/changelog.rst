@@ -8,13 +8,18 @@ Changelog
 v0.11.3 (unreleased)
 ********************
 
+Bug fixes
+=========
+- Match the coordinate transformations of ``geometry`` subcommand in the ``geometry-xyplot`` subcommand (:issue:`156`,
+  :merge:`134`). By `Kyle Brindley`_.
+
 ********************
 v0.11.2 (2024-03-29)
 ********************
 
 Documentation
 =============
-- Update the GUI documentation describing how to run and get more information about a plug-in (:issue:`149`, 
+- Update the GUI documentation describing how to run and get more information about a plug-in (:issue:`149`,
   :merge:`131`). By `Thomas Roberts`_.
 - Use built-in Abaqus/CAE plug-in documentation features to display GUI plug-in help messages and link to documentation
   in the Abaqus/CAE GUI (:issue:`142`, :merge:`129`). By `Thomas Roberts`_.
