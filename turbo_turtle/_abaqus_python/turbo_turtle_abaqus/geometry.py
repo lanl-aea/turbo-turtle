@@ -106,8 +106,8 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
-        lines, splines = vertices.modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
-                                                             rtol=rtol, atol=atol)
+        coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         try:
             draw_part_from_splines(lines, splines, planar=planar, model_name=model_name, part_name=new_part,
                                    euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,
@@ -275,7 +275,7 @@ def _gui_get_inputs():
         else:  # Catch an if the user fails to specify input files
             error_message = 'Error: You must specify at least one input file'
             raise RuntimeError(error_message)
-            
+
         if part_name_strings == 'None' or part_name_strings == default_part_names or not part_name_strings:
             part_name = [None]
         else:

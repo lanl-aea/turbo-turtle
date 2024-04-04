@@ -93,8 +93,8 @@ def geometry(input_file, output_file,
     for file_name, new_part in zip(input_file, part_name):
         coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
                                                                  expected_dimensions=2, expected_columns=2)
-        lines, splines = vertices.modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion, y_offset,
-                                                             rtol=rtol, atol=atol)
+        coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         surfaces.append(_draw_surface(lines, splines))
 
     for surface, new_part in zip(surfaces, part_name):
