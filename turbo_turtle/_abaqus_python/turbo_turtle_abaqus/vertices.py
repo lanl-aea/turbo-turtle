@@ -130,27 +130,6 @@ def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
     return lines, splines
 
 
-def modified_lines_and_splines(coordinates, euclidean_distance, unit_conversion=1., y_offset=0., rtol=None, atol=None):
-    """Combine :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` with
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.scale_and_offset_coordinates` for common re-use in geometry subcommand
-    implementations.
-
-    :param numpy.array coordinates: [N, 2] array of XY coordinates.
-    :param float euclidean_distance: If the distance between two points is greater than this, draw a straight line.
-    :param float unit_conversion: multiplication factor applies to all coordinates
-    :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
-        conversion.
-    :param float rtol: relative tolerance used by ``numpy.isclose``. If None, use the numpy default.
-    :param float atol: absolute tolerance used by ``numpy.isclose``. If None, use the numpy default.
-
-    :returns: list of line pairs and list of spline arrays
-    :rtype: tuple
-    """
-    coordinates = scale_and_offset_coordinates(coordinates, unit_conversion, y_offset=y_offset)
-    lines, splines = lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
-    return lines, splines
-
-
 def _break_coordinates(coordinates, euclidean_distance, rtol=None, atol=None):
     """Accept a [N, 2] numpy array and break into a list of [M, 2] arrays
 
