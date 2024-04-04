@@ -138,7 +138,6 @@ def _main(
                         for file_name in input_file]
     figure = geometry_xyplot(
         coordinates_list,
-        part_name=part_name,
         unit_conversion=unit_conversion,
         euclidean_distance=euclidean_distance,
         y_offset=y_offset,
