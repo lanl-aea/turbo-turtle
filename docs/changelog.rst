@@ -8,6 +8,11 @@ Changelog
 v0.11.3 (unreleased)
 ********************
 
+New Features
+============
+- Expose the ``geometry-xyplot`` matplotlib figure generation function to the public API (:issue:`148`, :merge:`139`).
+  By `Kyle Brindley`_.
+
 Bug fixes
 =========
 - Match the coordinate transformations of ``geometry`` subcommand in the ``geometry-xyplot`` subcommand (:issue:`156`,
