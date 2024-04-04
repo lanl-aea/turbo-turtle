@@ -16,6 +16,17 @@ def test_geometry_xyplot():
     figure = geometry_xyplot.geometry_xyplot(coordinates_list, **kwargs)
     assert isinstance(figure, matplotlib.pyplot.Figure)
 
+    kwargs = {"annotate": True}
+    with patch("matplotlib.pyplot.annotate") as mock_annotate:
+        figure = geometry_xyplot.geometry_xyplot(coordinates_list, **kwargs)
+    mock_annotate.assert_called()
+
+    kwargs = {"scale": True}
+    with patch("matplotlib.axes.Axes.set_aspect") as mock_set_aspect:
+        figure = geometry_xyplot.geometry_xyplot(coordinates_list, **kwargs)
+    mock_set_aspect.assert_called_once_with("equal", adjustable="box")
+
+
 
 def test_main():
     kwargs = {}

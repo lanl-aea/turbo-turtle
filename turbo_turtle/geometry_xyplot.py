@@ -87,7 +87,7 @@ def geometry_xyplot(
                 matplotlib.pyplot.annotate(str(index), coordinate, color=color)
 
     if scale:
-        figure.axes.set_aspect("equal", adjustable="box")
+        figure.axes[0].set_aspect("equal", adjustable="box")
 
     return figure
 
