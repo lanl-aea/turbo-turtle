@@ -13,6 +13,10 @@ Bug fixes
 - Match the coordinate transformations of ``geometry`` subcommand in the ``geometry-xyplot`` subcommand (:issue:`156`,
   :merge:`134`). By `Kyle Brindley`_.
 
+Internal Changes
+================
+- Improved unit tests for the CLI builders (:issue:`151`, :merge:`135`). By `Kyle Brindley`_.
+
 ********************
 v0.11.2 (2024-03-29)
 ********************
