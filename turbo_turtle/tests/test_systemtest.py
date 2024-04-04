@@ -8,7 +8,7 @@ import pytest
 import numpy
 
 from turbo_turtle import _settings
-from turbo_turtle.main import get_parser
+from turbo_turtle._main import get_parser
 from turbo_turtle.conftest import missing_display
 
 
@@ -30,7 +30,7 @@ except PackageNotFoundError:
 
 # If executing in repository, add package to PYTHONPATH and change the root command
 if not installed:
-    turbo_turtle_command = "python -m turbo_turtle.main"
+    turbo_turtle_command = "python -m turbo_turtle._main"
     package_parent_path = _settings._project_root_abspath.parent
     key = "PYTHONPATH"
     if key in env:
