@@ -61,7 +61,7 @@ templates_path = ["_templates"]
 source_suffix = [".rst"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 rst_prolog = f".. |project| replace:: {project.lower()}\n" \
-             f".. |PROJECT| replace:: {project.upper()}\n" \
+             f".. |PROJECT| replace:: {_project_name}\n" \
              f".. include:: targets.txt"
 
 if tags.has("man"):
