@@ -18,10 +18,10 @@ scons_extensions
    :members:
    :private-members:
 
-main
-====
+_main
+=====
 
-.. automodule:: turbo_turtle.main
+.. automodule:: turbo_turtle._main
    :members:
    :private-members:
 

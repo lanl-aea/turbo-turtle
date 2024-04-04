@@ -5,7 +5,7 @@ Command Line Utilities
 ######################
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :nosubcommands:
 
@@ -18,7 +18,7 @@ docs
 ----
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: docs
 
@@ -28,7 +28,7 @@ print-abaqus-path
 -----------------
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: print-abaqus-path
 
@@ -38,7 +38,7 @@ geometry
 --------
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: geometry
 
@@ -48,7 +48,7 @@ geometry-xyplot
 ---------------
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: geometry-xyplot
 
@@ -58,7 +58,7 @@ cylinder
 --------
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: cylinder
 
@@ -68,7 +68,7 @@ sphere
 ------
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: sphere
 
@@ -78,7 +78,7 @@ partition
 ---------
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: partition
 
@@ -88,7 +88,7 @@ mesh
 ----
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: mesh
 
@@ -98,7 +98,7 @@ image
 -----
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: image
 
@@ -108,7 +108,7 @@ merge
 -----
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: merge
 
@@ -118,6 +118,6 @@ export
 ------
 
 .. argparse::
-   :ref: turbo_turtle.main.get_parser
+   :ref: turbo_turtle._main.get_parser
    :nodefault:
    :path: export
