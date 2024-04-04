@@ -26,3 +26,8 @@ except PackageNotFoundError:
         warnings.filterwarnings(action='ignore', message='tag', category=UserWarning, module='setuptools_scm')
         import setuptools_scm
         __version__ = setuptools_scm.get_version(root=pathlib.Path(__file__).parent.parent)
+        # Remove third-party packages from the project namespace
+        del warnings, pathlib, setuptools_scm
+
+# Remove third-party packages from the project namespace
+del version, PackageNotFoundError
