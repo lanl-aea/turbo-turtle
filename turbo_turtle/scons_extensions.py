@@ -59,15 +59,21 @@ def _action(target, source, env):
     # TODO: Move to a common function shared with main module. Move to _utilities?
     _wrappers, command = _utilities.set_wrappers_and_command(args)
     if args.subcommand == "geometry-xyplot":
-        from turbo_turtle._main import _geometry_xyplot
-        _geometry_xyplot(args.input_file, args.output_file,
-                         part_name=args.part_name,
-                         unit_conversion=args.unit_conversion,
-                         euclidean_distance=args.euclidean_distance,
-                         delimiter=args.delimiter,
-                         header_lines=args.header_lines,
-                         y_offset=args.y_offset,
-                         no_markers=args.no_markers)
+        from turbo_turtle._main import geometry_xyplot
+        geometry_xyplot._main(
+            args.input_file, args.output_file,
+            part_name=args.part_name,
+            unit_conversion=args.unit_conversion,
+            euclidean_distance=args.euclidean_distance,
+            delimiter=args.delimiter,
+            header_lines=args.header_lines,
+            y_offset=args.y_offset,
+            rtol=args.rtol,
+            atol=args.atol,
+            no_markers=args.no_markers,
+            annotate=args.annotate,
+            scale=args.scale
+        )
     else:
         wrapper_command = getattr(_wrappers, args.subcommand)
         wrapper_command(args, command)
