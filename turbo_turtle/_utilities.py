@@ -111,7 +111,7 @@ def run_command(command):
 def set_wrappers_and_command(args):
     """Read an argument namespace and set the wrappers and command appropriately
 
-    :param argparse.Namespace args: namespace of parsed arguments from :meth:`turbo_turtle.main.get_parser`
+    :param argparse.Namespace args: namespace of parsed arguments from :meth:`turbo_turtle._main.get_parser`
 
     :return: _wrappers, command. Wrapper module, executable command string.
     :rtype: tuple

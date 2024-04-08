@@ -29,7 +29,7 @@ packages = ["turbo_turtle", "turbo_turtle.tests", "turbo_turtle._abaqus_python.t
 zip-safe = false
 
 [project.scripts]
-turbo-turtle = "turbo_turtle.main:main"
+turbo-turtle = "turbo_turtle._main:main"
 
 [project.urls]
 homepage = "https://re-git.lanl.gov/aea/python-projects/turbo-turtle"

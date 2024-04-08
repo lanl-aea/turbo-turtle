@@ -59,7 +59,7 @@ def _action(target, source, env):
     # TODO: Move to a common function shared with main module. Move to _utilities?
     _wrappers, command = _utilities.set_wrappers_and_command(args)
     if args.subcommand == "geometry-xyplot":
-        from turbo_turtle.main import _geometry_xyplot
+        from turbo_turtle._main import _geometry_xyplot
         _geometry_xyplot(args.input_file, args.output_file,
                          part_name=args.part_name,
                          unit_conversion=args.unit_conversion,
@@ -89,13 +89,13 @@ def _api_builder(subcommand):
 
     * geometry
 
-      * Abaqus: :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry.main`
+      * Abaqus: :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.geometry._main`
       * Cubit: :meth:`turbo_turtle._cubit_python.geometry`
 
-    * geometry-xyplot: :meth:`turbo_turtle.main._geometry_xyplot`
+    * geometry-xyplot: :meth:`turbo_turtle._main._geometry_xyplot`
     * merge
 
-      * Abaqus: :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.merge.main`
+      * Abaqus: :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.merge._main`
       * Cubit: :meth:`turbo_turtle._cubit_python.merge`
 
     .. warning::
