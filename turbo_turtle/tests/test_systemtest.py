@@ -284,7 +284,7 @@ for part_name in ("washer vase merge-sphere", ""):
 
 # SCons extensions tests
 sconstruct_files = [
-    _settings._project_root_abspath / "tests/SConstruct"
+    _settings._project_root_abspath / "tests/SConstruct",
     _settings._project_root_abspath / "tutorials/SConstruct"
 ]
 for sconstruct in sconstruct_files:
