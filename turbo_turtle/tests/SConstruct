@@ -8,12 +8,14 @@ import waves
 import turbo_turtle
 
 AddOption(
-    "--uninstalled",
-    dest="uninstalled",
-    default=False,
-    action="store_true",
-    help="Boolean to use the uninstalled, repository Turbo-Turtle command 'python -m turbo_turtle._main'. " \
-         "(default: '%default')"
+    "--turbo-turtle-command",
+    dest="turbo_turtle_command",
+    default="turbo-turtle",
+    nargs=1,
+    type="string",
+    action="store",
+    metavar="DIR",
+    help="Override for the Turbo-Turtle command (default: '%default')"
 )
 
 project_configuration = pathlib.Path(inspect.getfile(lambda: None))
@@ -21,11 +23,11 @@ project_directory = project_configuration.parent
 
 env = Environment(
     ENV=os.environ.copy(),
-    uninstalled=GetOption("uninstalled"),
+    turbo_turtle_command=GetOption("turbo_turtle_command"),
 )
 env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
 env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cubit"], env)
-env["turbo_turtle"] = "python -m turbo_turtle._main" if env["uninstalled"] else "turbo-turtle"
+env["turbo_turtle"] = env["turbo_turtle_command"]
 env.Append(BUILDERS={
     # API Builders
     "geometry_api": turbo_turtle.scons_extensions._api_builder("geometry"),
