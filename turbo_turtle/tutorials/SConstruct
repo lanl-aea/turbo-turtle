@@ -51,7 +51,7 @@ env.Append(BUILDERS={
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
     ),
-    "TurboTurtleImage": turbo_turtle.scons_extensions.export(
+    "TurboTurtleExport": turbo_turtle.scons_extensions.export(
         program=env["turbo_turtle_command"],
         options="--model-name ${model_name} --part-name ${part_name}",
         abaqus_command=[env['abaqus']],
@@ -98,3 +98,6 @@ env.TurboTurtleExport(
     model_name="sphere",
     part_name="sphere"
 )
+
+env.Default()
+waves.scons_extensions.project_help_message()
