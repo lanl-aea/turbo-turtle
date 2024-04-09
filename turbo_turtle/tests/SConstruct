@@ -116,7 +116,7 @@ for backend, extension in backend_options:
         part_name = [f"scons-{interface}-vase"]
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-vase.{extension}"],
-            source=[str(project_directory / "vase.csv")],
+            source=[project_directory / "vase.csv"],
             backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-vase",
@@ -125,7 +125,7 @@ for backend, extension in backend_options:
         part_name = [f"scons-{interface}-washer"]
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-washer.{extension}"],
-            source=[str(project_directory / "washer.csv")],
+            source=[project_directory / "washer.csv"],
             backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-washer",
@@ -135,8 +135,8 @@ for backend, extension in backend_options:
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-multi-part.{extension}"],
             source=[
-                str(project_directory / "vase.csv"),
-                str(project_directory / "washer.csv")
+                project_directory / "vase.csv",
+                project_directory / "washer.csv"
             ],
             backend=backend,
             output_file="${TARGET.abspath}",
@@ -149,7 +149,7 @@ for backend, extension in backend_options:
         part_name = [f"scons-{interface}-vase"]
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-vase.{extension}.png"],
-            source=[str(project_directory / "vase.csv")],
+            source=[project_directory / "vase.csv"],
             backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-vase",
@@ -158,7 +158,7 @@ for backend, extension in backend_options:
         part_name = [f"scons-{interface}-washer"]
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-washer.{extension}.png"],
-            source=[str(project_directory / "washer.csv")],
+            source=[project_directory / "washer.csv"],
             backend=backend,
             output_file="${TARGET.abspath}",
             model_name=f"scons-{interface}-washer",
@@ -168,8 +168,8 @@ for backend, extension in backend_options:
         env["BUILDERS"][builder](env,
             target=[f"scons-{interface}-multi-part.{extension}.png"],
             source=[
-                str(project_directory / "vase.csv"),
-                str(project_directory / "washer.csv")
+                project_directory / "vase.csv",
+                project_directory / "washer.csv"
             ],
             backend=backend,
             output_file="${TARGET.abspath}",
@@ -198,7 +198,7 @@ for backend, extension in backend_options:
     builder = f"cylinder_{interface}"
     env["BUILDERS"][builder](env,
         target=[f"scons-{interface}-cylinder.{extension}"],
-        source=[str(project_configuration)],
+        source=[project_configuration],
         backend=backend,
         inner_radius=1.,
         outer_radius=2.,
@@ -211,7 +211,7 @@ for backend, extension in backend_options:
     builder = f"sphere_{interface}"
     env["BUILDERS"][builder](env,
         target=[f"scons-{interface}-sphere.{extension}"],
-        source=[str(project_configuration)],
+        source=[project_configuration],
         backend=backend,
         inner_radius=1.,
         outer_radius=2.,
@@ -272,7 +272,7 @@ for backend, extension in backend_options:
 # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/127
 env.TurboTurtleSphere(
     target=["scons-deprecated-sphere.cae"],
-    source=[str(project_configuration)],
+    source=[project_configuration],
     inner_radius=1.,
     outer_radius=2.,
     model_name="sphere",
@@ -286,7 +286,7 @@ env.TurboTurtlePartition(
 )
 env.TurboTurtleSphereCubit(
     target=["scons-deprecated-sphere.cub"],
-    source=[str(project_configuration)],
+    source=[project_configuration],
     inner_radius=1.,
     outer_radius=2.,
     model_name="sphere",
