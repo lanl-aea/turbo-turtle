@@ -1,4 +1,5 @@
 import os
+import shlex
 import pathlib
 import tempfile
 import subprocess
@@ -312,5 +313,5 @@ def test_shell_commands(commands):
 
 def run_commands(commands, build_directory):
     for command in commands:
-        command = command.split(" ")
+        command = shlex.split(command)
         result = subprocess.check_output(command, env=env, cwd=build_directory).decode('utf-8')
