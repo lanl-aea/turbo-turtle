@@ -157,5 +157,5 @@ SCons extensions
 configuration file. For example:
 
 .. literalinclude:: tutorials_SConstruct
-   :caption: SConstruct
-   :lineno:
+   :language: Python
+   :lineno-match:
