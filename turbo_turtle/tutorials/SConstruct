@@ -1,29 +1,68 @@
+#! /usr/bin/env python
+import os
+import inspect
+import pathlib
+
+import waves
 import turbo_turtle
 
 
-env = Environment()
+AddOption(
+    "--turbo-turtle-command",
+    dest="turbo_turtle_command",
+    default="turbo-turtle",
+    nargs=1,
+    type="string",
+    action="store",
+    metavar="DIR",
+    help="Override for the Turbo-Turtle command (default: '%default')"
+)
+
+env = Environment(
+    ENV=os.environ.copy(),
+    turbo_turtle_command=GetOption("turbo_turtle_command"),
+)
+
+env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
+env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cubit"], env)
 
 env.Append(BUILDERS={
     "TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
-        options="--model-name ${model_name} --part-name ${part_name}"
+        program=env["turbo_turtle_command"],
+        options="--model-name ${model_name} --part-name ${part_name}",
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
     ),
     "TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
-        options="--model-name ${model_name} --part-name ${part_name}"
+        program=env["turbo_turtle_command"],
+        options="--model-name ${model_name} --part-name ${part_name}",
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
     ),
     "TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
-        options="--model-name ${model_name} --part-name ${part_name}"
+        program=env["turbo_turtle_command"],
+        options="--model-name ${model_name} --part-name ${part_name}",
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
     ),
     "TurboTurtleImage": turbo_turtle.scons_extensions.image(
-        options="--model-name ${model_name} --part-name ${part_name}"
+        program=env["turbo_turtle_command"],
+        options="--model-name ${model_name} --part-name ${part_name}",
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
     ),
     "TurboTurtleImage": turbo_turtle.scons_extensions.export(
-        options="--model-name ${model_name} --part-name ${part_name}"
+        program=env["turbo_turtle_command"],
+        options="--model-name ${model_name} --part-name ${part_name}",
+        abaqus_command=[env['abaqus']],
+        cubit_command=[env['cubit']],
     )
 })
 
+project_configuration = pathlib.Path(inspect.getfile(lambda: None))
 env.TurboTurtleSphere(
     target=["sphere_geometry.cae"],
-    source=["SConstruct"],
+    source=[project_configuration],
     inner_radius=1.,
     outer_radius=2.,
     model_name="sphere",
