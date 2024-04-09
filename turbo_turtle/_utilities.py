@@ -1,5 +1,6 @@
 import os
 import sys
+import shlex
 import shutil
 import pathlib
 import inspect
@@ -101,7 +102,7 @@ def run_command(command):
 
     :param str command: String to run on the shell
     """
-    command = command.split()
+    command = shlex.split(command)
     try:
         stdout = subprocess.check_output(command)
     except subprocess.CalledProcessError as err:
