@@ -69,7 +69,7 @@ for file_path in tutorial_files_list:
     target = f'{file_path.parts[-2]}_{file_path.name}'
     Command(
         target=target,
-        source=str(file_path),
+        source=file_path,
         action=Copy("$TARGET", "$SOURCE")
     )
     copied_file_list.append(target)
