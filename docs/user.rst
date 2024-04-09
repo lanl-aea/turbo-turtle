@@ -156,59 +156,6 @@ SCons extensions
 :ref:`scons_extensions` module. These may be used when importing |PROJECT| as a Python package in an `SCons`_
 configuration file. For example:
 
-.. code-block::
+.. literalinclude:: tutorials_SConstruct
    :caption: SConstruct
-
-   import turbo_turtle
-   env = Environment()
-   env.Append(BUILDERS={
-       "TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
-           options="--model-name ${model_name} --part-name ${part_name}"
-       ),
-       "TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
-           options="--model-name ${model_name} --part-name ${part_name}"
-       ),
-       "TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
-           options="--model-name ${model_name} --part-name ${part_name}"
-       ),
-       "TurboTurtleImage": turbo_turtle.scons_extensions.image(
-           options="--model-name ${model_name} --part-name ${part_name}"
-       ),
-       "TurboTurtleImage": turbo_turtle.scons_extensions.export(
-           options="--model-name ${model_name} --part-name ${part_name}"
-       )
-   })
-   env.TurboTurtleSphere(
-       target=["sphere_geometry.cae"],
-       source=["SConstruct"],
-       inner_radius=1.,
-       outer_radius=2.,
-       model_name="sphere",
-       part_name="sphere"
-   )
-   env.TurboTurtlePartition(
-       target=["sphere_partition.cae"],
-       source=["sphere_geometry.cae"],
-       model_name="sphere",
-       part_name="sphere"
-   )
-   env.TurboTurtleMesh(
-       target=["sphere_mesh.cae"],
-       source=["sphere_partition.cae"],
-       element_type="C3D8",
-       global_seed=0.15,
-       model_name="sphere",
-       part_name="sphere"
-   )
-   env.TurboTurtleImage(
-       target=["sphere_mesh.png"],
-       source=["sphere_mesh.cae"],
-       model_name="sphere",
-       part_name="sphere"
-   )
-   env.TurboTurtleExport(
-       target=["sphere.inp"],
-       source=["sphere_mesh.cae"],
-       model_name="sphere",
-       part_name="sphere"
-   )
+   :lineno:

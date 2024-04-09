@@ -60,8 +60,23 @@ sphinx_source_files = [
     "zreferences.rst"
 ]
 
+# Copy tutorial files to the build/docs directory
+tutorials_dir = project_dir / pathlib.Path(env['tutorials_dir'])
+tutorial_files_list = [
+    "#/turbo_turtle/tutorials/SConstruct"
+]
+copied_file_list = []
+for file_path in tutorial_files_list:
+    target = f'{file_path.parts[-2]}_{file_path.name}'
+    Command(
+        target=target,
+        source=str(file_path),
+        action=Copy("$TARGET", "$SOURCE")
+    )
+    copied_file_list.append(target)
+
 targets = [f"html/{pathlib.Path(source).with_suffix('.html')}" for source in sphinx_source_files if ".rst" in source]
-sources = sphinx_configuration_files + sphinx_source_files
+sources = sphinx_configuration_files + sphinx_source_files + copies_file_list
 html = env.SphinxBuild(
     target=targets,
     source=sources,
