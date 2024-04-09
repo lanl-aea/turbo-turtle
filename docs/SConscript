@@ -62,7 +62,7 @@ sphinx_source_files = [
 
 # Copy tutorial files to the build/docs directory
 tutorial_files_list = [
-    "#/turbo_turtle/tutorials/SConstruct"
+    pathlib.Path("#/turbo_turtle/tutorials/SConstruct")
 ]
 copied_file_list = []
 for file_path in tutorial_files_list:
@@ -75,7 +75,7 @@ for file_path in tutorial_files_list:
     copied_file_list.append(target)
 
 targets = [f"html/{pathlib.Path(source).with_suffix('.html')}" for source in sphinx_source_files if ".rst" in source]
-sources = sphinx_configuration_files + sphinx_source_files + copies_file_list
+sources = sphinx_configuration_files + sphinx_source_files + copied_file_list
 html = env.SphinxBuild(
     target=targets,
     source=sources,
