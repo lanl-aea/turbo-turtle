@@ -156,6 +156,14 @@ SCons extensions
 :ref:`scons_extensions` module. These may be used when importing |PROJECT| as a Python package in an `SCons`_
 configuration file. For example:
 
-.. literalinclude:: tutorials_SConstruct
-   :language: Python
-   :lineno-match:
+.. admonition:: SConstruct
+
+    .. literalinclude:: tutorials_SConstruct
+       :language: Python
+       :lineno-match:
+
+.. admonition:: SConscript
+
+   .. literalinclude:: tutorials_SConscript
+      :language: Python
+      :lineno-match:
