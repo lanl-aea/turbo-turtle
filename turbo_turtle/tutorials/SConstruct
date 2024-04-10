@@ -56,7 +56,7 @@ env.Append(BUILDERS={
     ),
     "TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
         program=env["turbo_turtle_command"],
-        options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
+        options="--model-name ${model_name} --part-name ${part_name} --backend ${backend} --global-seed ${global_seed}",
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
     ),
