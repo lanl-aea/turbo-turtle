@@ -21,6 +21,8 @@ Bug fixes
 Documentation
 =============
 - Add a bibiliography and references section (:issue:`139`, :merge:`136`). By `Kyle Brindley`_.
+- Update SCons example in user manual to build both available backends: Abaqus and Cubit (:issue:`158`, :merge:`142`).
+  By `Kyle Brindley`_.
 
 Internal Changes
 ================
