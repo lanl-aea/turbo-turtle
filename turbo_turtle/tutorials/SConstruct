@@ -7,6 +7,17 @@ import waves
 import turbo_turtle
 
 
+# Accept command line options with fall back default values
+AddOption(
+    "--build-dir",
+    dest="variant_dir_base",
+    default="build",
+    nargs=1,
+    type="string",
+    action="store",
+    metavar="DIR",
+    help="SCons build (variant) root directory. Relative or absolute path. (default: '%default')"
+)
 AddOption(
     "--turbo-turtle-command",
     dest="turbo_turtle_command",
@@ -20,8 +31,12 @@ AddOption(
 
 env = Environment(
     ENV=os.environ.copy(),
+    variant_dir_base=GetOption("variant_dir_base"),
     turbo_turtle_command=GetOption("turbo_turtle_command"),
 )
+
+# Build path object for extension and re-use
+variant_dir_base = pathlib.Path(env["variant_dir_base"])
 
 env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
 env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cubit"], env)
@@ -59,51 +74,9 @@ env.Append(BUILDERS={
     )
 })
 
-project_configuration = pathlib.Path(inspect.getfile(lambda: None))
 for backend, extension in [("abaqus", "cae"), ("cubit", "cub")]:
-    env.TurboTurtleSphere(
-        target=[f"sphere_geometry.{extension}"],
-        source=[project_configuration],
-        inner_radius=1.,
-        outer_radius=2.,
-        model_name="sphere",
-        part_name="sphere",
-        backend=backend
-    )
-
-    env.TurboTurtlePartition(
-        target=[f"sphere_partition.{extension}"],
-        source=[f"sphere_geometry.{extension}"],
-        model_name="sphere",
-        part_name="sphere",
-        backend=backend
-    )
-
-    env.TurboTurtleMesh(
-        target=[f"sphere_mesh.{extension}"],
-        source=[f"sphere_partition.{extension}"],
-        element_type="C3D8",
-        global_seed=0.15,
-        model_name="sphere",
-        part_name="sphere",
-        backend=backend
-    )
-
-    env.TurboTurtleImage(
-        target=[f"sphere_mesh.{extension}.png"],
-        source=[f"sphere_mesh.{extension}"],
-        model_name="sphere",
-        part_name="sphere",
-        backend=backend
-    )
-
-    env.TurboTurtleExport(
-        target=[f"sphere.{extension}.inp"],
-        source=[f"sphere_mesh.{extension}"],
-        model_name="sphere",
-        part_name="sphere",
-        backend=backend
-    )
+    build_dir = variant_dir_base / backend
+    SConscript("SConscript", variant_dir=build_dir, exports=["env", "backend", "extension"], duplicate=False)
 
 env.Default()
 waves.scons_extensions.project_help_message()

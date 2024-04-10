@@ -1,0 +1,46 @@
+#! /usr/bin/env python
+Import("env", "backend", "extension")
+
+env.TurboTurtleSphere(
+    target=[f"sphere_geometry.{extension}"],
+    source=["SConscript"],
+    inner_radius=1.,
+    outer_radius=2.,
+    model_name="sphere",
+    part_name="sphere",
+    backend=backend
+)
+
+env.TurboTurtlePartition(
+    target=[f"sphere_partition.{extension}"],
+    source=[f"sphere_geometry.{extension}"],
+    model_name="sphere",
+    part_name="sphere",
+    backend=backend
+)
+
+env.TurboTurtleMesh(
+    target=[f"sphere_mesh.{extension}"],
+    source=[f"sphere_partition.{extension}"],
+    element_type="C3D8",
+    global_seed=0.15,
+    model_name="sphere",
+    part_name="sphere",
+    backend=backend
+)
+
+env.TurboTurtleImage(
+    target=[f"sphere_mesh.png"],
+    source=[f"sphere_mesh.{extension}"],
+    model_name="sphere",
+    part_name="sphere",
+    backend=backend
+)
+
+env.TurboTurtleExport(
+    target=[f"sphere.inp"],
+    source=[f"sphere_mesh.{extension}"],
+    model_name="sphere",
+    part_name="sphere",
+    backend=backend
+)
