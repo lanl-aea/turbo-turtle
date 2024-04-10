@@ -62,7 +62,7 @@ sphinx_source_files = [
 
 # Copy tutorial files to the build/docs directory
 tutorial_files_list = [
-    pathlib.Path("#/turbo_turtle/tutorials/SConstruct")
+    pathlib.Path("#/turbo_turtle/tutorials/SConstruct"),
     pathlib.Path("#/turbo_turtle/tutorials/SConscript")
 ]
 copied_file_list = []
