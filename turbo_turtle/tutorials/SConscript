@@ -1,7 +1,9 @@
 #! /usr/bin/env python
 Import("env", "backend", "extension")
 
-env.TurboTurtleSphere(
+workflow = []
+
+workflow.extend(env.TurboTurtleSphere(
     target=[f"sphere_geometry.{extension}"],
     source=["SConscript"],
     inner_radius=1.,
@@ -9,17 +11,17 @@ env.TurboTurtleSphere(
     model_name="sphere",
     part_name="sphere",
     backend=backend
-)
+))
 
-env.TurboTurtlePartition(
+workflow.extend(env.TurboTurtlePartition(
     target=[f"sphere_partition.{extension}"],
     source=[f"sphere_geometry.{extension}"],
     model_name="sphere",
     part_name="sphere",
     backend=backend
-)
+))
 
-env.TurboTurtleMesh(
+workflow.extend(env.TurboTurtleMesh(
     target=[f"sphere_mesh.{extension}"],
     source=[f"sphere_partition.{extension}"],
     element_type="C3D8",
@@ -27,20 +29,22 @@ env.TurboTurtleMesh(
     model_name="sphere",
     part_name="sphere",
     backend=backend
-)
+))
 
-env.TurboTurtleImage(
+workflow.extend(env.TurboTurtleImage(
     target=[f"sphere_mesh.png"],
     source=[f"sphere_mesh.{extension}"],
     model_name="sphere",
     part_name="sphere",
     backend=backend
-)
+))
 
-env.TurboTurtleExport(
+workflow.extend(env.TurboTurtleExport(
     target=[f"sphere.inp"],
     source=[f"sphere_mesh.{extension}"],
     model_name="sphere",
     part_name="sphere",
     backend=backend
-)
+))
+
+env.Alias(backend, workflow)
