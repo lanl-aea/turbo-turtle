@@ -29,75 +29,81 @@ env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cub
 env.Append(BUILDERS={
     "TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
         program=env["turbo_turtle_command"],
-        options="--model-name ${model_name} --part-name ${part_name}",
+        options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
     ),
     "TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
         program=env["turbo_turtle_command"],
-        options="--model-name ${model_name} --part-name ${part_name}",
+        options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
     ),
     "TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
         program=env["turbo_turtle_command"],
-        options="--model-name ${model_name} --part-name ${part_name}",
+        options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
     ),
     "TurboTurtleImage": turbo_turtle.scons_extensions.image(
         program=env["turbo_turtle_command"],
-        options="--model-name ${model_name} --part-name ${part_name}",
+        options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
     ),
     "TurboTurtleExport": turbo_turtle.scons_extensions.export(
         program=env["turbo_turtle_command"],
-        options="--model-name ${model_name} --part-name ${part_name}",
+        options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
     )
 })
 
 project_configuration = pathlib.Path(inspect.getfile(lambda: None))
-env.TurboTurtleSphere(
-    target=["sphere_geometry.cae"],
-    source=[project_configuration],
-    inner_radius=1.,
-    outer_radius=2.,
-    model_name="sphere",
-    part_name="sphere"
-)
+for backend, extension in [("abaqus", "cae"), ("cubit", "cub")]:
+    env.TurboTurtleSphere(
+        target=[f"sphere_geometry.{extension}"],
+        source=[project_configuration],
+        inner_radius=1.,
+        outer_radius=2.,
+        model_name="sphere",
+        part_name="sphere",
+        backend=backend
+    )
 
-env.TurboTurtlePartition(
-    target=["sphere_partition.cae"],
-    source=["sphere_geometry.cae"],
-    model_name="sphere",
-    part_name="sphere"
-)
+    env.TurboTurtlePartition(
+        target=[f"sphere_partition.{extension}"],
+        source=[f"sphere_geometry.{extension}"],
+        model_name="sphere",
+        part_name="sphere",
+        backend=backend
+    )
 
-env.TurboTurtleMesh(
-    target=["sphere_mesh.cae"],
-    source=["sphere_partition.cae"],
-    element_type="C3D8",
-    global_seed=0.15,
-    model_name="sphere",
-    part_name="sphere"
-)
+    env.TurboTurtleMesh(
+        target=[f"sphere_mesh.{extension}"],
+        source=[f"sphere_partition.{extension}"],
+        element_type="C3D8",
+        global_seed=0.15,
+        model_name="sphere",
+        part_name="sphere",
+        backend=backend
+    )
 
-env.TurboTurtleImage(
-    target=["sphere_mesh.png"],
-    source=["sphere_mesh.cae"],
-    model_name="sphere",
-    part_name="sphere"
-)
+    env.TurboTurtleImage(
+        target=[f"sphere_mesh.{extension}.png"],
+        source=[f"sphere_mesh.{extension}"],
+        model_name="sphere",
+        part_name="sphere",
+        backend=backend
+    )
 
-env.TurboTurtleExport(
-    target=["sphere.inp"],
-    source=["sphere_mesh.cae"],
-    model_name="sphere",
-    part_name="sphere"
-)
+    env.TurboTurtleExport(
+        target=[f"sphere.{extension}.inp"],
+        source=[f"sphere_mesh.{extension}"],
+        model_name="sphere",
+        part_name="sphere",
+        backend=backend
+    )
 
 env.Default()
 waves.scons_extensions.project_help_message()
