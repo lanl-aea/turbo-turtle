@@ -308,12 +308,13 @@ for files in sconstruct_files:
 
 
 @pytest.mark.systemtest
-@pytest.mark.parametrize("commands", commands_list)
-def test_shell_commands(commands):
+@pytest.mark.parametrize("number, commands", enumerate(commands_list))
+def test_shell_commands(number, commands):
     """Run the system tests.
 
     Executes with a temporary directory that is cleaned up after each test execution.
 
+    :param int number: the command number. Used during local testing to separate command directories.
     :param str command: the full command string for the system test
     """
     if isinstance(commands, str):
@@ -322,7 +323,9 @@ def test_shell_commands(commands):
         with tempfile.TemporaryDirectory() as temp_directory:
             run_commands(commands, temp_directory)
     else:
-        run_commands(commands, build_directory)
+        command_directory = build_directory / f"commands{number}"
+        command_directory.mkdir(parents=True, exist_ok=True)
+        run_commands(commands, command_directory)
 
 
 def run_commands(commands, build_directory):
