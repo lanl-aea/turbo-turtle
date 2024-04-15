@@ -285,12 +285,20 @@ for part_name in ("washer vase merge-sphere", ""):
 
 # SCons extensions tests
 sconstruct_files = [
-    _settings._project_root_abspath / "tests/SConstruct",
-    _settings._project_root_abspath / "tutorials/SConstruct"
+    [_settings._project_root_abspath / "tests/SConstruct"],
+    [_settings._project_root_abspath / "tutorials/SConstruct",
+     _settings._project_root_abspath / "tutorials/SConscript"]
 ]
-for sconstruct in sconstruct_files:
-    scons_test_command = f"scons . --sconstruct {sconstruct} --turbo-turtle-command='{turbo_turtle_command}'"
-    commands_list.append(scons_test_command)
+for files in sconstruct_files:
+    sconstruct = files[0]
+    space_delimited_files = ' '.join([str(path) for path in files])
+    scons_test_commands = [
+        # TODO: Replace with a turbo-turtle fetch command
+        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/145
+        f"cp {space_delimited_files} .",
+        f"scons . --sconstruct {sconstruct} --turbo-turtle-command='{turbo_turtle_command}'"
+    ]
+    commands_list.append(scons_test_commands)
 
 
 @pytest.mark.systemtest
