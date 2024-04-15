@@ -176,8 +176,10 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
     return commands
 
 # Help/Usage sign-of-life
-commands_list = [f"{turbo_turtle_command} -h"]
-commands_list.extend([f"{turbo_turtle_command} {subcommand} -h" for subcommand in subcommand_list])
+commands_list = []
+commands_list.append(
+    [f"{turbo_turtle_command} -h"] + [f"{turbo_turtle_command} {subcommand} -h" for subcommand in subcommand_list]
+)
 
 # Legacy geometry system tests requires a series of commands before the temp directory is removed
 # TODO: Decide if we should package or drop the legacy geometry tests
