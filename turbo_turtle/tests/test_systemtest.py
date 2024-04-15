@@ -302,8 +302,7 @@ for files in sconstruct_files:
         f"{turbo_turtle_command} fetch SConstruct SConscript",
         f"scons . --turbo-turtle-command='{turbo_turtle_command}'"
     ]
-    # FIXME: These commands don't run correctly on the CI server
-    #commands_list.append(scons_test_commands)
+    commands_list.append(scons_test_commands)
 
 
 @pytest.mark.systemtest
