@@ -13,6 +13,9 @@ _default_abaqus_options = ["abaqus", "abq2023"]
 _default_cubit_options = ["cubit"]
 _backend_choices = ["abaqus", "cubit"]
 _default_backend = _backend_choices[0]
+_tutorials_directory = _project_root_abspath / "tutorials"
+_fetch_exclude_patterns = ["__pycache__", ".pyc", ".sconf_temp", ".sconsign.dblite", "config.log"]
+_fetch_subdirectories = ["tutorials"]
 
 # Copy from WAVES because some settings aren't available on conda-forge yet.
 _cd_action_prefix = 'cd ${TARGET.dir.abspath} &&'

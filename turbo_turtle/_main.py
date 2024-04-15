@@ -4,6 +4,7 @@ import argparse
 from turbo_turtle import __version__
 from turbo_turtle import _settings
 from turbo_turtle import _utilities
+from turbo_turtle import _fetch
 from turbo_turtle import geometry_xyplot
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
@@ -135,6 +136,17 @@ def get_parser():
         parents=[_docs_parser()])
 
     subparsers.add_parser(
+        "fetch",
+        help=f"Fetch and copy {_settings._project_name} modsim template files and directories",
+        description=f"Fetch and copy {_settings._project_name} modsim template files and directories. If no ``FILE`` " \
+            "is specified, all available files will be created. Directories are recursively copied. ``pathlib.Path`` " \
+            "recursive pattern matching is possible. The source path is truncated to use the shortest common file " \
+            "prefix, e.g. requesting two files ``common/source/file.1`` and ``common/source/file.2`` will create " \
+            "``/destination/file.1`` and ``/destination/file.2``, respectively.",
+        parents=[_fetch.get_parser()]
+    )
+
+    subparsers.add_parser(
         "print-abaqus-path",
         help="Print the absolute path to Turbo-Turtle's Abaqus Python compatible package.",
         description="***NOTE: this is an alpha feature for early adopters and developer testing of possible GUI " \
@@ -241,6 +253,14 @@ def main():
         parser.print_help()
     elif args.subcommand == "docs":
         _docs(print_local_path=args.print_local_path)
+    elif args.subcommand == "fetch":
+        root_directory = _settings._tutorials_directory.parent
+        relative_paths = _settings._fetch_subdirectories
+        _fetch.main(
+            args.subcommand, root_directory, relative_paths, args.destination,
+            requested_paths=args.FILE, overwrite=args.overwrite,
+            dry_run=args.dry_run, print_available=args.print_available
+        )
     elif args.subcommand == "print-abaqus-path":
         _print_abaqus_path_location()
     elif args.subcommand == "geometry-xyplot":
