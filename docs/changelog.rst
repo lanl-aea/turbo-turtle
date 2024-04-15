@@ -12,6 +12,8 @@ New Features
 ============
 - Expose the ``geometry-xyplot`` matplotlib figure generation function to the public API (:issue:`148`, :merge:`139`).
   By `Kyle Brindley`_.
+- Add a ``fetch`` subcommand to retrieve user manual and tutorial files (:issue:`145`, :merge:`143`). By `Kyle
+  Brindley`_.
 
 Bug fixes
 =========
