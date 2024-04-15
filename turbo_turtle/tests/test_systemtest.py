@@ -284,14 +284,13 @@ for part_name in ("washer vase merge-sphere", ""):
     commands_list.append(setup_merge_commands(part_name, cubit=True))
 
 # SCons extensions tests
+# TODO: Use a turbo-turtle fetch command
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/145
+# System tests as SCons tasks
+sconstruct = _settings._project_root_abspath / "tests/SConstruct"
+commands_list.append(f"scons . --sconstruct {sconstruct} --turbo-turtle-command='{turbo_turtle_command}'")
+# User manual example SCons tasks
 sconstruct_files = [
-    # System tests as SCons tasks
-    [
-        _settings._project_root_abspath / "tests/SConstruct",
-        _settings._project_root_abspath / "tests/washer.csv",
-        _settings._project_root_abspath / "tests/vase.csv"
-    ],
-    # User manual example SCons tasks
     [
         _settings._project_root_abspath / "tutorials/SConstruct",
         _settings._project_root_abspath / "tutorials/SConscript"
@@ -300,8 +299,6 @@ sconstruct_files = [
 for files in sconstruct_files:
     space_delimited_files = ' '.join([str(path) for path in files])
     scons_test_commands = [
-        # TODO: Replace with a turbo-turtle fetch command
-        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/145
         f"cp {space_delimited_files} .",
         f"scons . --turbo-turtle-command='{turbo_turtle_command}'"
     ]
