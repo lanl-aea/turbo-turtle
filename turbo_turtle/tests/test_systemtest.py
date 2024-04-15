@@ -299,7 +299,7 @@ sconstruct_files = [
 for files in sconstruct_files:
     space_delimited_files = ' '.join([str(path) for path in files])
     scons_test_commands = [
-        f"cp {space_delimited_files} .",
+        f"{turbo_turtle_command} fetch SConstruct SConscript",
         f"scons . --turbo-turtle-command='{turbo_turtle_command}'"
     ]
     # FIXME: These commands don't run correctly on the CI server
