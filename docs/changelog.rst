@@ -33,6 +33,7 @@ Internal Changes
 - Use the full Abaqus session object namespace (:issue:`140`, :merge:`144`). By `Kyle Brindley`_.
 - Add PEP-8 partial style guide checks to CI jobs (:issue:`160`, :merge:`145`). By `Kyle Brindley`_.
 
+Enhancements
 ============
 - Add an option to use equally scaled X and Y axes in ``geometry-xyplot`` subcommand (:issue:`157`, :merge:`138`). By
   `Kyle Brindley`_.
