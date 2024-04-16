@@ -68,7 +68,8 @@ def sphere(inner_radius, outer_radius,
            revolution_angle=parsers.sphere_defaults["revolution_angle"],
            model_name=parsers.sphere_defaults["model_name"],
            part_name=parsers.sphere_defaults["part_name"]):
-    """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both quadrants.
+    """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both
+    quadrants.
 
     .. warning::
 

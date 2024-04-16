@@ -36,8 +36,10 @@ def main(input_file,
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
     :param list zvector: Local z-axis vector defined in global coordinates
-    :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
-    :param list part_name: list of parts to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
+    :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae
+        -nogui``)
+    :param list part_name: list of parts to query in the specified Abaqus model (only applies when used with ``abaqus
+        cae -nogui``)
     :param float big_number: Number larger than the outer radius of the part to partition.
 
     :returns: Abaqus CAE database named ``{output_file}.cae``
@@ -87,8 +89,8 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     """Partition the model/part with the turtle shell method, also know as the soccer ball method.
 
     If the body is modeled with fractional symmetry (e.g. quater or half symmetry), this code will attempt all
-    partitioning and face removal actions anyways. If certain aspects of the code fail, the code will move on and give no
-    errors.
+    partitioning and face removal actions anyways. If certain aspects of the code fail, the code will move on and give
+    no errors.
 
     **Note:** It is possible to create strange looking partitions if inputs are not defined properly. Always check your
     partitions visually after using this tool.
@@ -96,8 +98,10 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
     :param list zvector: Local z-axis vector defined in global coordinates
-    :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae -nogui``)
-    :param list part_name: list of parts to query in the specified Abaqus model (only applies when used with ``abaqus cae -nogui``)
+    :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae
+        -nogui``)
+    :param list part_name: list of parts to query in the specified Abaqus model (only applies when used with ``abaqus
+        cae -nogui``)
     :param float big_number: Number larger than the outer radius of the part to partition.
     """
     import abaqus
@@ -113,8 +117,9 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
 
     angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0 / 3.0))
     big_number_coordinates = vertices.rectalinear_coordinates([big_number], [angle])[0]
-    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.datum_planes` tuple order. Find a way to
-    # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
+    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.datum_planes` tuple
+    # order. Find a way to programmatically calculate (or return) the paired positive sketch edge instead of hardcoding
+    # the matching order.
     positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
     sketch_vertex_pairs = (
         ((-big_number_coordinates[0],  big_number_coordinates[1]),   # noqa: E201,E241
