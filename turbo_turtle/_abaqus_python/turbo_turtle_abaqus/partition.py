@@ -117,10 +117,10 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
     positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
     sketch_vertex_pairs = (
-        ((-big_number_coordinates[0],  big_number_coordinates[1]),
-         ( big_number_coordinates[0],  big_number_coordinates[1])),
-        ((-big_number_coordinates[0], -big_number_coordinates[1]),
-         ( big_number_coordinates[0], -big_number_coordinates[1]))
+        ((-big_number_coordinates[0],  big_number_coordinates[1]),   # noqa: E201,E241
+         ( big_number_coordinates[0],  big_number_coordinates[1])),  # noqa: E201,E241
+        ((-big_number_coordinates[0], -big_number_coordinates[1]),   # noqa: E201,E241
+         ( big_number_coordinates[0], -big_number_coordinates[1]))   # noqa: E201,E241
     )
 
     model = abaqus.mdb.models[model_name]

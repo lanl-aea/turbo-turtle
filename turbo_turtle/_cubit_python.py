@@ -534,12 +534,12 @@ def create_pyramid_volumes(center, xvector, zvector, size):
 
     # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
     pyramid_volume_surfaces = [
-        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y
-        _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y
-        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X
-        _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X
-        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z
-        _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z
+        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y  # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y  # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X  # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X  # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z  # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z  # noqa: E241
     ]
     pyramid_volumes = [_create_volume_from_surfaces(surface_list) for surface_list in pyramid_volume_surfaces]
 
