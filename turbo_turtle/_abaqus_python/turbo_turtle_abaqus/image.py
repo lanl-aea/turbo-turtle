@@ -27,9 +27,12 @@ def main(input_file, output_file,
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
-    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
-    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
-    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
+    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
@@ -72,9 +75,12 @@ def image(output_file,
     instances.
 
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
-    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
-    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
-    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
+    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
@@ -102,7 +108,9 @@ def image(output_file,
         part_object = abaqus.mdb.models[model_name].parts[part_name]
         abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
 
-    abaqus.session.viewports['Viewport: 1'].view.rotate(xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL)
+    abaqus.session.viewports['Viewport: 1'].view.rotate(
+        xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL
+    )
     abaqus.session.viewports['Viewport: 1'].view.fitView()
     abaqus.session.viewports['Viewport: 1'].enableMultipleColors()
     abaqus.session.viewports['Viewport: 1'].setColor(initialColor='#BDBDBD')
