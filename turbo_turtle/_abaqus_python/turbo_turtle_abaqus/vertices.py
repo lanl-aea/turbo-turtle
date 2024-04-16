@@ -20,7 +20,8 @@ def rectalinear_coordinates(radius_list, angle_list):
 
 
 def cylinder(inner_radius, outer_radius, height, y_offset=0.):
-    """Return a :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` compatible vertex array
+    """Return a :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` compatible vertex
+    array
 
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
@@ -159,10 +160,10 @@ def _break_coordinates(coordinates, euclidean_distance, rtol=None, atol=None):
 def _compare_euclidean_distance(coordinates, euclidean_distance):
     """Compare the distance between coordinates in a 2D numpy array of XY data to a provided euclidean distance
 
-    The distance comparison is performed as ``numpy_array_distance > euclidean_distance``. The distance between coordinates
-    in the numpy array is computed such that the "current point" is compared to the previous point in the list. As such,
-    a single ``False`` is always prepended to the beginning of the output ``euclidean_distance_bools`` list, because
-    there is no such distance between the first point and one that comes before it.
+    The distance comparison is performed as ``numpy_array_distance > euclidean_distance``. The distance between
+    coordinates in the numpy array is computed such that the "current point" is compared to the previous point in the
+    list. As such, a single ``False`` is always prepended to the beginning of the output ``euclidean_distance_bools``
+    list, because there is no such distance between the first point and one that comes before it.
 
     :param numpy.array coordinates: [N, 2] array of XY coordinates.
     :param float euclidean_distance: distance value to compare against
@@ -179,10 +180,10 @@ def _compare_euclidean_distance(coordinates, euclidean_distance):
 def _compare_xy_values(coordinates, rtol=None, atol=None):
     """Check neighboring XY values in an [N, 2] array of coordinates for vertical or horizontal relationships
 
-    This function loops through lists of coordinates checking to see if a "current point" and the previous point in the numpy
-    array are vertical or hozitonal from one another. As such, a single ``False`` is always prepended to the beginning
-    of the output ``vertical_horizontal_bools`` list, because there is no such vertical/horizontal relationship between
-    the first point and one that comes before it.
+    This function loops through lists of coordinates checking to see if a "current point" and the previous point in the
+    numpy array are vertical or hozitonal from one another. As such, a single ``False`` is always prepended to the
+    beginning of the output ``vertical_horizontal_bools`` list, because there is no such vertical/horizontal
+    relationship between the first point and one that comes before it.
 
     :param numpy.array coordinates: [N, 2] array of XY coordinates.
     :param float rtol: relative tolerance used by ``numpy.isclose``. If None, use the numpy default.
@@ -399,10 +400,10 @@ def pyramid_surfaces(center, xvector, zvector, big_number):
         numpy.array(fortyfive_vertices[0:4]),  # 12: +Y
         numpy.array(fortyfive_vertices[4:]),   # 13: -Y
         # +/- normal to X
-        numpy.array([fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]),  # 14: +X
-        numpy.array([fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]),  # 15: -X
+        numpy.array([fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]),  # 14: +X  # noqa: E501
+        numpy.array([fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]),  # 15: -X  # noqa: E501
         # +/- normal to Z
-        numpy.array([fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]),  # 16: +Z
-        numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),  # 17: -Z
+        numpy.array([fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]),  # 16: +Z  # noqa: E501
+        numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),  # 17: -Z  # noqa: E501
     ]
     return surface_coordinates
