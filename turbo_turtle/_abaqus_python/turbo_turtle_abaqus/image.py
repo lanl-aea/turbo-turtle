@@ -66,15 +66,15 @@ def image(output_file,
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
 
-    If ``part_name`` is specified, an image of that part will be exported. If no ``part_name`` is specified, the model's 
-    root assembly will be queried and if empty, all parts in the model will be instanced into the root assembly. Then, 
-    an image of the root assembly will be exported. The ``input_file`` is not modified to include any generated 
+    If ``part_name`` is specified, an image of that part will be exported. If no ``part_name`` is specified, the model's
+    root assembly will be queried and if empty, all parts in the model will be instanced into the root assembly. Then,
+    an image of the root assembly will be exported. The ``input_file`` is not modified to include any generated
     instances.
 
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
-    :param float x_angle: Rotation about X-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
-    :param float y_angle: Rotation about Y-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
-    :param float z_angle: Rotation about Z-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
+    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
+    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
+    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
@@ -93,31 +93,34 @@ def image(output_file,
             for new_instance in model.parts.keys():
                 part = model.parts[new_instance]
                 assembly.Instance(name=new_instance, part=part, dependent=abaqusConstants.ON)
-        session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+        abaqus.session.viewports['Viewport: 1'].assemblyDisplay.setValues(
             optimizationTasks=abaqusConstants.OFF,
             geometricRestrictions=abaqusConstants.OFF,
             stopConditions=abaqusConstants.OFF)
-        session.viewports['Viewport: 1'].setValues(displayedObject=assembly)
+        abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=assembly)
     else:
         part_object = abaqus.mdb.models[model_name].parts[part_name]
-        session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
+        abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
 
-    session.viewports['Viewport: 1'].view.rotate(xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL)
-    session.viewports['Viewport: 1'].view.fitView()
-    session.viewports['Viewport: 1'].enableMultipleColors()
-    session.viewports['Viewport: 1'].setColor(initialColor='#BDBDBD')
-    cmap=session.viewports['Viewport: 1'].colorMappings[color_map]
-    session.viewports['Viewport: 1'].setColor(colorMapping=cmap)
-    session.viewports['Viewport: 1'].disableMultipleColors()
-    session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
-    session.pngOptions.setValues(imageSize=image_size)
+    abaqus.session.viewports['Viewport: 1'].view.rotate(xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL)
+    abaqus.session.viewports['Viewport: 1'].view.fitView()
+    abaqus.session.viewports['Viewport: 1'].enableMultipleColors()
+    abaqus.session.viewports['Viewport: 1'].setColor(initialColor='#BDBDBD')
+    cmap = abaqus.session.viewports['Viewport: 1'].colorMappings[color_map]
+    abaqus.session.viewports['Viewport: 1'].setColor(colorMapping=cmap)
+    abaqus.session.viewports['Viewport: 1'].disableMultipleColors()
+    abaqus.session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
+    abaqus.session.pngOptions.setValues(imageSize=image_size)
 
     output_format = _abaqus_utilities.return_abaqus_constant_or_exit(output_file_extension)
     if output_format is None:
         _mixed_utilities.sys_exit("Abaqus does not recognize the output extension '{}'".format(output_file_extension))
 
-    session.printToFile(fileName=output_file_stem, format=output_format,
-        canvasObjects=(session.viewports['Viewport: 1'], ))
+    abaqus.session.printToFile(
+        fileName=output_file_stem,
+        format=output_format,
+        canvasObjects=(abaqus.session.viewports['Viewport: 1'], )
+    )
 
 
 if __name__ == "__main__":

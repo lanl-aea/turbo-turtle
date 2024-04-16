@@ -482,7 +482,7 @@ image_defaults = {
 }
 image_cli_help = "Save an image of an Abaqus model"
 image_cli_description = "Save a part or assembly view image for a given Abaqus input file"
-# One time dump from session.viewports['Viewport: 1'].colorMappings.keys()) to stay Python 3 compatible
+# One time dump from abaqus.session.viewports['Viewport: 1'].colorMappings.keys()) to stay Python 3 compatible
 image_color_map_choices = [
     'Material', 'Section', 'Composite layup', 'Composite ply', 'Part', 'Part instance',
     'Element set', 'Averaging region', 'Element type', 'Default', 'Assembly', 'Part geometry', 'Load', 'Boundary condition',
