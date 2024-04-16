@@ -179,7 +179,8 @@ def create_arc_from_coordinates(center, point1, point2):
         vertex2 = cubit.create_vertex(*tuple(point1))
 
     # TODO: Find a suitable Cubit Python function for creating arcs that returns the curve object
-    cubit_command_or_exit(f"create curve arc center vertex {center_vertex.id()} {vertex1.id()} {vertex2.id()} normal 0 0 1")
+    command = f"create curve arc center vertex {center_vertex.id()} {vertex1.id()} {vertex2.id()} normal 0 0 1"
+    cubit_command_or_exit(command)
     curve = vertex1.curves()[0]
     cubit_command_or_exit(f"delete vertex {center_vertex.id()}")
     return curve
@@ -261,7 +262,8 @@ def _surfaces_by_vector(surfaces, principal_vector, center=numpy.zeros(3)):
     surface_centroids = _surface_centroids(surfaces)
     direction_vectors = [numpy.subtract(centroid, center) for centroid in surface_centroids]
 
-    vector_dot = numpy.array(([numpy.dot(direction_vector, principal_vector) for direction_vector in direction_vectors]))
+    vector_dot = \
+        numpy.array(([numpy.dot(direction_vector, principal_vector) for direction_vector in direction_vectors]))
     # Account for numerical errors in significant digits
     vector_dot[numpy.isclose(vector_dot, 0.)] = 0.
     return numpy.array(surfaces)[numpy.where(vector_dot > 0.)]
@@ -765,7 +767,8 @@ def export(input_file,
     """
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
-    element_type = _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
+    element_type = \
+        _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     destination = pathlib.Path(destination)
 
