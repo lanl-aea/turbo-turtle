@@ -191,8 +191,8 @@ def _gui_get_inputs():
 
         _validate_sphere_quadrant(quadrant, parsers.sphere_quadrant_options)
 
-        user_inputs = {'inner_radius': float(inner_radius), 'outer_radius': float(outer_radius), 'center': center, 
-                       'quadrant': quadrant, 'revolution_angle': float(revolution_angle), 'model_name': model_name, 
+        user_inputs = {'inner_radius': float(inner_radius), 'outer_radius': float(outer_radius), 'center': center,
+                       'quadrant': quadrant, 'revolution_angle': float(revolution_angle), 'model_name': model_name,
                        'part_name': part_name}
     else:
         user_inputs = {}

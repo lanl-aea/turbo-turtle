@@ -47,7 +47,7 @@ def main(inner_radius, outer_radius, height, output_file,
 def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name, revolution_angle):
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 
-    This function drives the geometry creation of a cylinder whose axis of symmetry is located on the global coordinate 
+    This function drives the geometry creation of a cylinder whose axis of symmetry is located on the global coordinate
     origin by default, and always on the global Y-axis.
 
     :param float inner_radius: Radius of the hollow center
