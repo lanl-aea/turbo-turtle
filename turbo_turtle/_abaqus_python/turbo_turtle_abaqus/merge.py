@@ -70,7 +70,7 @@ def main(input_file, output_file,
     abaqus.mdb.saveAs(pathName=output_file)
 
     merged_part_count = len(merged_model.parts.keys())
-    if  merged_part_count == 0:
+    if merged_part_count == 0:
         message = "No parts were merged. Check the input file, model and part name lists."
         _mixed_utilities.sys_exit(message)
     elif part_name[0] is not None and merged_part_count != requested_part_count:

@@ -123,7 +123,7 @@ def export(output_file,
     model.keywordBlock.synchVersions()
     block = model.keywordBlock.sieBlocks
     block_string = '\n'.join(block)
-    orphan_mesh = re.findall(".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name),
+    orphan_mesh = re.findall(r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name),
                              block_string, re.DOTALL | re.I | re.M)
     part_definition = orphan_mesh[0]
     with open(output_file, 'w') as output:

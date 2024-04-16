@@ -241,7 +241,6 @@ def _gui_get_inputs():
     """
     import abaqus
 
-
     default_input_files = 'File1.csv,File2.csv OR *.csv'
     default_part_names = 'Part-1,Part-2, OR None OR blank'
 

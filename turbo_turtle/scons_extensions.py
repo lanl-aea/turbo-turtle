@@ -145,7 +145,7 @@ def _api_builder(subcommand):
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
     varlist = list(kwargs.keys()) + ["abaqus_command", "cubit_command", "cubit", "backend"]
     internal_builder = SCons.Builder.Builder(
-        action = [
+        action=[
             SCons.Action.Action(_action, varlist=varlist)
         ],
         subcommand=subcommand

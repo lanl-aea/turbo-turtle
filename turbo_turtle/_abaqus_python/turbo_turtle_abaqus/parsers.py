@@ -82,6 +82,7 @@ geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of r
                            "sketching lines and splines in the XY plane. Line and spline definitions are formed by " \
                            "parsing an input file with [N, 2] array of XY coordinates."
 
+
 def geometry_parser(basename="geometry.py", add_help=True, description=geometry_cli_description, cubit=False):
     """Return the geometry subcommand parser
 
