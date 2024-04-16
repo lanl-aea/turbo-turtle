@@ -82,7 +82,7 @@ test:
     reports:
       coverage_report:
         coverage_format: cobertura
-        path: build/unittests/coverage.xml
+        path: build/pytest/coverage.xml
   tags:
     - shell-aea
 
