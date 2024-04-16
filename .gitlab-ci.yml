@@ -45,7 +45,7 @@ environment:
     # Don't rebuild environment for merge request pipelines unless the environment is missing
     - if [[ -d "${environment_path}" ]]; then exists=true; else exists=false; fi
     - if [[ $CI_PIPELINE_SOURCE == "merge_request_event" ]] && ${exists}; then exit 0; fi
-    # Don't rebuild environment for main/dev unless the environment file has changed or the environment doesn't exist
+    # Don't rebuild environment for main unless the environment file has changed or the environment doesn't exist
     - files=$(git diff --name-only ${CI_COMMIT_SHA} ${CI_COMMIT_BEFORE_SHA}) || true
     - if [[ $CI_COMMIT_BRANCH == "main" ]]; then production=true; else production=false; fi
     - if [[ "${files}" == *"environment.yml"* ]]; then modified=true; else modified=false; fi
@@ -86,6 +86,18 @@ test:
   tags:
     - shell-aea
 
+pycodestyle:
+  stage: test
+  variables:
+    GIT_STRATEGY: clone
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - pycodestyle --max-line-length=120 turbo_turtle/ --exclude=build --select=W,E2,E3,E7
+  tags:
+    - shell-aea
+
 conda-build:
   stage: test
   variables:
@@ -95,7 +107,6 @@ conda-build:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "dev"
   script:
     # Set the LANL internal proxies
     - export ALL_PROXY="proxyout.lanl.gov:8080"
@@ -125,7 +136,6 @@ deploy:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
     - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "dev"
   script:
     # Override default permissions. Set group to rx with no write permissions.
     - umask 0022
