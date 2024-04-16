@@ -179,6 +179,14 @@ unit tests, and the system tests.
     /home/roppenheimer/repos/turbo-turtle
     $ scons regression
 
+There is also a separate style guide check run as
+
+.. code-block::
+
+    $ scons flake8
+
+The full list of available aliases can be found as ``scons -h``.
+
 .. testing-end-do-not-remove
 
 *******************
