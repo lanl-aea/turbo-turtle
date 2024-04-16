@@ -56,7 +56,8 @@ def main(input_file, output_file,
             for this_part in current_parts:
                 try:
                     merged_model.Part(this_part, abaqus.mdb.models[tmp_model].parts[this_part])
-                    success_message = "SUCCESS: merged part '{}' from model '{}' from '{}' into merged model '{}'\n".format(
+                    success_message = \
+                        "SUCCESS: merged part '{}' from model '{}' from '{}' into merged model '{}'\n".format(
                         this_part, this_model, cae_file, merged_model_name)
                     sys.stdout.write(success_message)
                 except abaqus.AbaqusException as err:
