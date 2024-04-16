@@ -31,8 +31,8 @@ Internal Changes
 - Improved unit tests for the CLI builders (:issue:`151`, :merge:`135`). By `Kyle Brindley`_.
 - Add the user manual SCons demo to the system tests (:issue:`144`, :merge:`141`). By `Kyle Brindley`_.
 - Use the full Abaqus session object namespace (:issue:`140`, :merge:`144`). By `Kyle Brindley`_.
+- Add PEP-8 partial style guide checks to CI jobs (:issue:`160`, :merge:`145`). By `Kyle Brindley`_.
 
-Enhancements
 ============
 - Add an option to use equally scaled X and Y axes in ``geometry-xyplot`` subcommand (:issue:`157`, :merge:`138`). By
   `Kyle Brindley`_.
