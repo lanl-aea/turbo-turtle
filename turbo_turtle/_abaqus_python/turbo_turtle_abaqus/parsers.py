@@ -78,9 +78,9 @@ geometry_defaults = {
     'atol': None,
 }
 geometry_cli_help = "Create 2D or 3D part(s) from XY coordinate list input file(s)"
-geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) by " \
-                           "sketching lines and splines in the XY plane. Line and spline definitions are formed by " \
-                           "parsing an input file with [N, 2] array of XY coordinates."
+geometry_cli_description = "Create a 2D planar, 2D axisymmetric, or 3D body of revolution (about the global Y-Axis) " \
+                           "by sketching lines and splines in the XY plane. Line and spline definitions are formed " \
+                           "by parsing an input file with [N, 2] array of XY coordinates."
 
 
 def geometry_parser(basename="geometry.py", add_help=True, description=geometry_cli_description, cubit=False):
@@ -127,8 +127,10 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                           help="Number of header lines to skip when parsing the points files(s) (default: %(default)s)")
     optional.add_argument("--revolution-angle", type=float, default=geometry_defaults["revolution_angle"],
                           help="Revolution angle for a 3D part in degrees (default: %(default)s)")
-    optional.add_argument("--y-offset", type=float, default=geometry_defaults["y_offset"],
-                          help="Offset along the global Y-axis in units *after* the unit conversion (default: %(default)s)")
+    optional.add_argument(
+        "--y-offset", type=float, default=geometry_defaults["y_offset"],
+        help="Offset along the global Y-axis in units *after* the unit conversion (default: %(default)s)"
+    )
     optional.add_argument("--rtol", type=positive_float, default=geometry_defaults["rtol"],
                           help="relative tolerance used by ``numpy.isclose``. If not provided, use numpy defaults " \
                                "(default: %(default)s)")
@@ -394,7 +396,8 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = ". Unused by Cubit implementation. "
-    part_name_help = "Abaqus part name(s) to search for within model(s){} (default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = \
+        "Abaqus part name(s) to search for within model(s){} (default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -447,28 +450,43 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     required = parser.add_argument_group('required arguments')
-    required.add_argument("--input-file", type=str, required=True,
-                          help="Abaqus CAE input file")
+    required.add_argument(
+        "--input-file", type=str, required=True,
+        help="Abaqus CAE input file"
+    )
 
     optional = parser.add_argument_group('optional arguments')
-    optional.add_argument("--model-name", type=str, default=export_defaults["model_name"],
-                          help="Abaqus model name (default: %(default)s)")
-    optional.add_argument("--part-name", type=str, nargs='+', default=export_defaults["part_name"],
-                          help=part_name_help)
-    optional.add_argument("--element-type", type=str, nargs='+', default=export_defaults["element_type"],
-                          help="List of element types, one per part name or one global replacement for every part name " \
-                               "(default: %(default)s)")
-    optional.add_argument("--destination", type=str, default=export_defaults["destination"],
-                          help="Write orphan mesh files to this output directory (default: PWD)")
-    optional.add_argument("--assembly", type=str, default=export_defaults["assembly"],
-                          help="Assembly file for exporting the assembly keyword block. If a file is provided, but no " \
-                               "assembly instances are found, instance all provided part names and export assembly " \
-                               "block (default: %(default)s)")
+    optional.add_argument(
+        "--model-name", type=str, default=export_defaults["model_name"],
+        help="Abaqus model name (default: %(default)s)"
+    )
+    optional.add_argument(
+        "--part-name", type=str, nargs='+', default=export_defaults["part_name"],
+        help=part_name_help
+    )
+    optional.add_argument(
+        "--element-type", type=str, nargs='+', default=export_defaults["element_type"],
+        help="List of element types, one per part name or one global replacement for every part name " \
+             "(default: %(default)s)"
+    )
+    optional.add_argument(
+        "--destination", type=str, default=export_defaults["destination"],
+        help="Write orphan mesh files to this output directory (default: PWD)"
+    )
+    optional.add_argument(
+        "--assembly", type=str, default=export_defaults["assembly"],
+        help="Assembly file for exporting the assembly keyword block. If a file is provided, but no " \
+             "assembly instances are found, instance all provided part names and export assembly " \
+             "block (default: %(default)s)"
+    )
     if cubit:
-        optional.add_argument("--output-type", choices=export_output_type_choices, default=export_defaults["output_type"],
-                              help="Cubit output type. When 'abaqus' is selected, each part name is exported as an  " \
-                                   "orphan mesh to a ``part_name``.inp file. When 'genesis' is selected all blocks " \
-                                   "are output to a single file ``input_file``.g (default: %(default)s)")
+        optional.add_argument(
+            "--output-type",
+            choices=export_output_type_choices,
+            default=export_defaults["output_type"],
+            help="Cubit output type. When 'abaqus' is selected, each part name is exported as an  " \
+                 "orphan mesh to a ``part_name``.inp file. When 'genesis' is selected all blocks " \
+                 "are output to a single file ``input_file``.g (default: %(default)s)")
 
     return parser
 
@@ -485,8 +503,8 @@ image_cli_help = "Save an image of an Abaqus model"
 image_cli_description = "Save a part or assembly view image for a given Abaqus input file"
 # One time dump from abaqus.session.viewports['Viewport: 1'].colorMappings.keys()) to stay Python 3 compatible
 image_color_map_choices = [
-    'Material', 'Section', 'Composite layup', 'Composite ply', 'Part', 'Part instance',
-    'Element set', 'Averaging region', 'Element type', 'Default', 'Assembly', 'Part geometry', 'Load', 'Boundary condition',
+    'Material', 'Section', 'Composite layup', 'Composite ply', 'Part', 'Part instance', 'Element set',
+    'Averaging region', 'Element type', 'Default', 'Assembly', 'Part geometry', 'Load', 'Boundary condition',
     'Interaction', 'Constraint', 'Property', 'Meshability', 'Instance type', 'Set', 'Surface', 'Internal set',
     'Internal surface', 'Display group', 'Selection group', 'Skin', 'Stringer', 'Cell', 'Face'
 ]
