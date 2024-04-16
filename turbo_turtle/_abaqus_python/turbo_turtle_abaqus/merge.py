@@ -59,9 +59,9 @@ def main(input_file, output_file,
                     success_message = "SUCCESS: merged part '{}' from model '{}' from '{}' into merged model '{}'\n".format(
                         this_part, this_model, cae_file, merged_model_name)
                     sys.stdout.write(success_message)
-                except:
-                    message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n".format(
-                              this_part, this_model, cae_file)
+                except abaqus.AbaqusException as err:
+                    message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n{}".format(
+                              this_part, this_model, cae_file, err)
                     _mixed_utilities.sys_exit(message)
             # If the current model was found in the current cae_file, clean it before ending the loop
             if tmp_model is not None:
