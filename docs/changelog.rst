@@ -32,6 +32,8 @@ Internal Changes
 - Add the user manual SCons demo to the system tests (:issue:`144`, :merge:`141`). By `Kyle Brindley`_.
 - Use the full Abaqus session object namespace (:issue:`140`, :merge:`144`). By `Kyle Brindley`_.
 - Add PEP-8 partial style guide checks to CI jobs (:issue:`160`, :merge:`145`). By `Kyle Brindley`_.
+- Add flake8 configuration file for easier consistency between developer checks and CI checks (:issue:`161`,
+  :merge:`146`). By `Kyle Brindley`_.
 
 Enhancements
 ============
