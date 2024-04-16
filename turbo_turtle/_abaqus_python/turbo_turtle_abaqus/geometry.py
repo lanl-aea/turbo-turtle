@@ -206,8 +206,8 @@ def _gui_get_inputs():
     GUI-INPUTS
     ==========
     * Input File(s) - glob statement or comma separated list of files (NO SPACES) with points in x-y coordinates
-    * Part Name(s) - part names for the parts being created. If ``None``, then part name is determined by the input files.
-      This must either ``None``, a single part name, or a comma separated list of part names (NO SPACES)
+    * Part Name(s) - part names for the parts being created. If ``None``, then part name is determined by the input
+        files. This must either ``None``, a single part name, or a comma separated list of part names (NO SPACES)
     * Model Name - parts will be created in a new model with this name
     * Unit Conversion - unit conversion multiplication factor
     * Euclidean Distance - connect points with a straight line if the distance between them is larger than this

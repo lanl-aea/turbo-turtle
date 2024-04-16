@@ -90,7 +90,8 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
     try:
         user_inputs = inputs_function()  # dict of user inputs. If the user hits 'Cancel/esc', user_inputs={}
         if user_inputs:
-            subcommand_function(**user_inputs)  # Assumes inputs_function returns same arguments expected by subcommand_function
+            # Assumes inputs_function returns same arguments expected by subcommand_function
+            subcommand_function(**user_inputs)
             if post_action_function is not None:
                 post_action_function(**user_inputs)
         else:
