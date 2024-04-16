@@ -218,7 +218,7 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
 
     :returns: SCons Turbo-Turtle CLI builder
     :rtype: SCons.Builder.Builder
-    """
+    """  # noqa: E501
     action = ["${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
                   "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
                   "--backend ${backend} ${redirect_action_postfix}"]
@@ -284,7 +284,7 @@ def geometry(program="turbo-turtle", subcommand="geometry",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
@@ -292,7 +292,9 @@ def geometry(program="turbo-turtle", subcommand="geometry",
 def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
                     required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
                     options="",
-                    abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+                    abaqus_command=_default_abaqus_options,
+                    cubit_command=_default_cubit_options,
+                    backend=_default_backend):
     """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder
 
     See the :ref:`geometry_xyplot_cli` CLI documentation for detailed subcommand usage and options.
@@ -335,7 +337,7 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
@@ -394,7 +396,7 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
@@ -450,7 +452,7 @@ def sphere(program="turbo-turtle", subcommand="sphere",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
@@ -499,7 +501,7 @@ def partition(program="turbo-turtle", subcommand="partition",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
@@ -553,7 +555,7 @@ def mesh(program="turbo-turtle", subcommand="mesh",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
@@ -602,7 +604,7 @@ def image(program="turbo-turtle", subcommand="image",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
@@ -651,7 +653,7 @@ def merge(program="turbo-turtle", subcommand="merge",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
@@ -700,7 +702,7 @@ def export(program="turbo-turtle", subcommand="export",
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param bool backend: The backend software
-    """
+    """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
