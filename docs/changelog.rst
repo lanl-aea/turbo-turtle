@@ -30,6 +30,7 @@ Internal Changes
 ================
 - Improved unit tests for the CLI builders (:issue:`151`, :merge:`135`). By `Kyle Brindley`_.
 - Add the user manual SCons demo to the system tests (:issue:`144`, :merge:`141`). By `Kyle Brindley`_.
+- Use the full Abaqus session object namespace (:issue:`140`, :merge:`144`). By `Kyle Brindley`_.
 
 Enhancements
 ============
