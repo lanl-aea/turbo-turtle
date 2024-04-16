@@ -86,7 +86,7 @@ test:
   tags:
     - shell-aea
 
-pycodestyle:
+flake8:
   stage: test
   variables:
     GIT_STRATEGY: clone
