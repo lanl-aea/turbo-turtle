@@ -27,9 +27,9 @@ def main(input_file, output_file,
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
-    :param float x_angle: Rotation about X-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
-    :param float y_angle: Rotation about Y-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
-    :param float z_angle: Rotation about Z-axis in degrees for ``session.viewports[].view.rotate`` Abaqus Python method
+    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
+    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
+    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python method
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
