@@ -30,8 +30,8 @@ def cylinder(inner_radius, outer_radius, height, y_offset=0.):
     :rtype: numpy.array
     """
     coordinates = (
-        (inner_radius,  height / 2. + y_offset),
-        (outer_radius,  height / 2. + y_offset),
+        (inner_radius,  height / 2. + y_offset),  # noqa: E241
+        (outer_radius,  height / 2. + y_offset),  # noqa: E241
         (outer_radius, -height / 2. + y_offset),
         (inner_radius, -height / 2. + y_offset)
     )
@@ -196,7 +196,7 @@ def _compare_xy_values(coordinates, rtol=None, atol=None):
         isclose_kwargs.update({"rtol": rtol})
     if atol is not None:
         isclose_kwargs.update({"atol": atol})
-    vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0], **isclose_kwargs) or
+    vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0], **isclose_kwargs) or  # noqa: W504
                                            numpy.isclose(coords1[1], coords2[1], **isclose_kwargs) for
                                            coords1, coords2 in zip(coordinates[1:, :], coordinates[0:-1, :])]
     return vertical_horizontal_bools
@@ -328,12 +328,12 @@ def datum_planes(xvector, zvector):
     primary_planes = [xy_plane, yz_plane, zx_plane]
 
     midpoints = [
-        midpoint_vector(xvector,  yvector),
-        midpoint_vector(xvector, -yvector),
-        midpoint_vector(yvector,  zvector),
-        midpoint_vector(yvector, -zvector),
-        midpoint_vector(zvector,  xvector),
-        midpoint_vector(zvector, -xvector)
+        midpoint_vector(xvector,  yvector),  # noqa: E201,E241
+        midpoint_vector(xvector, -yvector),  # noqa: E201,E241
+        midpoint_vector(yvector,  zvector),  # noqa: E201,E241
+        midpoint_vector(yvector, -zvector),  # noqa: E201,E241
+        midpoint_vector(zvector,  xvector),  # noqa: E201,E241
+        midpoint_vector(zvector, -xvector)   # noqa: E201,E241
     ]
     midpoints = [normalize_vector(midpoint) for midpoint in midpoints]
 
@@ -352,14 +352,14 @@ def fortyfive_vectors(xvector, zvector):
     yvector = numpy.cross(zvector, xvector)
 
     fortyfives = [
-        midpoint_vector( xvector,  yvector,  zvector),  # 0
-        midpoint_vector(-xvector,  yvector,  zvector),  # 1
-        midpoint_vector(-xvector,  yvector, -zvector),  # 2
-        midpoint_vector( xvector,  yvector, -zvector),  # 3
-        midpoint_vector( xvector, -yvector,  zvector),  # 4
-        midpoint_vector(-xvector, -yvector,  zvector),  # 5
-        midpoint_vector(-xvector, -yvector, -zvector),  # 6
-        midpoint_vector( xvector, -yvector, -zvector),  # 7
+        midpoint_vector( xvector,  yvector,  zvector),  # 0  # noqa: E201,E241
+        midpoint_vector(-xvector,  yvector,  zvector),  # 1  # noqa: E201,E241
+        midpoint_vector(-xvector,  yvector, -zvector),  # 2  # noqa: E201,E241
+        midpoint_vector( xvector,  yvector, -zvector),  # 3  # noqa: E201,E241
+        midpoint_vector( xvector, -yvector,  zvector),  # 4  # noqa: E201,E241
+        midpoint_vector(-xvector, -yvector,  zvector),  # 5  # noqa: E201,E241
+        midpoint_vector(-xvector, -yvector, -zvector),  # 6  # noqa: E201,E241
+        midpoint_vector( xvector, -yvector, -zvector),  # 7  # noqa: E201,E241
     ]
     fortyfives = [normalize_vector(vector) for vector in fortyfives]
 
@@ -380,18 +380,18 @@ def pyramid_surfaces(center, xvector, zvector, big_number):
     # TODO: Figure out how to cleanup these coordinate pairs such that they are independent from the fortyfives indices
     surface_coordinates = [
         # +Y surfaces
-        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),  #  0:    +Y +Z
-        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),  #  1: -X +Y
-        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),  #  2:    +Y -Z
-        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),  #  3: +X +Y
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),   # 0:    +Y +Z
+        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),   # 1: -X +Y
+        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),   # 2:    +Y -Z
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),   # 3: +X +Y
         # -Y surfaces
-        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),  #  4:    -Y +Z
-        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),  #  5: -X -Y
-        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),  #  6:    -Y -Z
-        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),  #  7: +X -Y
+        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),   # 4:    -Y +Z
+        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),   # 5: -X -Y
+        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),   # 6:    -Y -Z
+        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),   # 7: +X -Y
         # +X surfaces
-        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),  #  8: +X    +Z
-        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),  #  9: +X    -Z
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),   # 8: +X    +Z
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),   # 9: +X    -Z
         # -X surfaces
         numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),  # 10: -X    +Z
         numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),  # 11: -X    -Z
