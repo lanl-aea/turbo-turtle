@@ -111,7 +111,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     center = numpy.array(center)
     plane_normals = vertices.datum_planes(xvector, zvector)
 
-    angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0/3.0))
+    angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0 / 3.0))
     big_number_coordinates = vertices.rectalinear_coordinates([big_number], [angle])[0]
     # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.datum_planes` tuple order. Find a way to
     # programmatically calculate (or return) the paired positive sketch edge instead of hardcoding the matching order.
@@ -134,7 +134,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         for plane in partition_planes[0:3]:
             try:
                 part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
-            except:
+            except abaqus.AbaqusException as err:
                 pass
 
         # Partition by sketch on the six (6) 45 degree planes
