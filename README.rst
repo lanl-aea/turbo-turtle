@@ -42,12 +42,13 @@ Description
 A collection of solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models. It also contains
 general purpose meshing and image generation utilities appropriate for any model, not just those created with this
 package. Implemented for Abaqus and Cubit as backend modeling and meshing software. Orginal implementation targeted
-Abaqus so most options and descriptions use Abaqus modeling concepts and names.
+Abaqus so most options and descriptions use Abaqus modeling concepts and language.
 
-As much as possible, the work for each subcommand is performed in Python 3 to minimize solution approach duplication in
-third-party tools. As much as possible, the third-party scripting interface is only accessed when creating the final
-tool specific objects and output. The tools contained in this project can be expanded to drive other meshing utilities
-in the future, as needed by the user community.
+Turbo-Turtle makes a best effort to maintain common behaviors and features across each third-party software's modeling
+concepts. As much as possible, the work for each subcommand is performed in Python 3 to minimize solution approach
+duplication in third-party tools. The third-party scripting interface is only accessed when creating the final tool
+specific objects and output. The tools contained in this project can be expanded to drive other meshing utilities in the
+future, as needed by the user community.
 
 This project derives its name from the origins as a sphere partitioning utility following the turtle shell (or soccer
 ball) pattern.
