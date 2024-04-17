@@ -43,6 +43,20 @@ fetch
    :nodefault:
    :path: fetch
 
+.. _print_abaqus_path_cli:
+
+*********************
+|PROJECT| Subcommands
+*********************
+*****************
+print-abaqus-path
+*****************
+
+.. argparse::
+   :ref: turbo_turtle._main.get_parser
+   :nodefault:
+   :path: print-abaqus-path
+
 .. _geometry_cli:
 
 *********************

@@ -22,6 +22,14 @@ docs
    :nodefault:
    :path: docs
 
+fetch
+-----
+
+.. argparse::
+   :ref: turbo_turtle._main.get_parser
+   :nodefault:
+   :path: fetch
+
 .. _print_abaqus_path_cli:
 
 print-abaqus-path
