@@ -71,7 +71,7 @@ PYTHONPATH Modifications
    Modifying your local Python environment can have unexpected consequences. Proceed with caution.
 
 In order for the Turbo-Turtle Abaqus Python API to be importable, the package parent directory must be on your
-``PYTHONPATH``. You can use the following command to add to your ``PYTHONPATH`` enviornment variable prior to executing
+``PYTHONPATH``. You can use the following command to add to your ``PYTHONPATH`` environment variable prior to executing
 Abaqus CAE:
 
    .. code-block::
