@@ -216,7 +216,7 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
 
     :returns: SCons Turbo-Turtle CLI builder
     :rtype: SCons.Builder.Builder
@@ -287,7 +287,7 @@ def geometry(program="turbo-turtle", subcommand="geometry",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -342,7 +342,7 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -403,7 +403,7 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -461,7 +461,7 @@ def sphere(program="turbo-turtle", subcommand="sphere",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -512,7 +512,7 @@ def partition(program="turbo-turtle", subcommand="partition",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -568,7 +568,7 @@ def mesh(program="turbo-turtle", subcommand="mesh",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -619,7 +619,7 @@ def image(program="turbo-turtle", subcommand="image",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -670,7 +670,7 @@ def merge(program="turbo-turtle", subcommand="merge",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
@@ -721,7 +721,7 @@ def export(program="turbo-turtle", subcommand="export",
     :param str options: A space delimited string of subcommand optional arguments
     :param list abaqus_command: The Abaqus command line executable absolute or relative path options
     :param list cubit_command: The Cubit command line executable absolute or relative path options
-    :param bool backend: The backend software
+    :param str backend: The backend software
     """  # noqa: E501
     return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
