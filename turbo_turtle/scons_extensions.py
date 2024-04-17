@@ -179,10 +179,10 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     * ``required``: A space delimited string of subcommand required arguments
     * ``options``: A space delimited string of subcommand optional arguments
     * ``abaqus_command``: The Abaqus command line executable absolute or relative path. When provided as a task
-          keyword argument, this must be a space delimited string, not a list.
+      keyword argument, this must be a space delimited string, not a list.
     * ``cubit_command``: The Cubit command line executable absolute or relative path. When provided as a task keyword
-          argument, this must be a space delimited string, not a list.
-    * ``backend``: The backed software.
+      argument, this must be a space delimited string, not a list.
+    * ``backend``: The backend software, e.g. Abaqus or Cubit.
     * ``cd_action_prefix``: Advanced behavior. Most users should accept the defaults.
     * ``redirect_action_postfix``: Advanced behavior. Most users should accept the defaults.
 
