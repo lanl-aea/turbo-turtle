@@ -30,7 +30,7 @@ Examples: Abaqus
 ****************
 
 |PROJECT| was originally written using Abaqus as the backend modeling and meshing software. Most of the interface
-options and descriptions use the Abaqus modeling concepts and jargon. See the :ref:`turbo_turtle_cli` documentation for
+options and descriptions use Abaqus modeling concepts and language. See the :ref:`turbo_turtle_cli` documentation for
 additional subcommands and options.
 
 Three-dimensional sphere
@@ -110,7 +110,7 @@ Examples: Cubit
 These examples are (nearly) identical to the Abaqus examples above, but appended with the ``--backend cubit`` option.
 Because the commands are (nearly) identical, they will be included as a single command block. See the
 :ref:`turbo_turtle_cli` documentation for caveats in behavior for the Cubit implementation and translation of Abaqus
-jargon to Cubit jargon. The list of commands will be expanded as they are implemented.
+language to Cubit language. The list of commands will be expanded as they are implemented.
 
 .. note::
 

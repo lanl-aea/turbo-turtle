@@ -41,8 +41,8 @@ Description
 
 A collection of solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models. It also contains
 general purpose meshing and image generation utilities appropriate for any model, not just those created with this
-package. The initial implementation focuses and relies on Abaqus for all subcommands. Cubit subcommand implementations
-are also available.
+package. Implemented for Abaqus and Cubit as backend modeling and meshing software. Orginal implementation targeted
+Abaqus so most options and descriptions use Abaqus modeling concepts and names.
 
 As much as possible, the work for each subcommand is performed in Python 3 to minimize solution approach duplication in
 third-party tools. As much as possible, the third-party scripting interface is only accessed when creating the final

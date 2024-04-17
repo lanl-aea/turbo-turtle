@@ -115,7 +115,10 @@ def get_parser():
     :rtype: ArgumentParser
     """
     main_description = \
-        "Common geometry, partition, and meshing utilities. Currently a thin Python 3 driver for Abaqus CAE utilities."
+        "A collection of solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models. " \
+        "Most of the interface options and descriptions use Abaqus modeling concepts and language. " \
+        "Turbo-Turtle makes a best effort to maintain common behaviors and features across each third-party " \
+        "software's modeling concepts."
     main_parser = argparse.ArgumentParser(
         description=main_description,
         prog=_settings._project_name_short
@@ -126,7 +129,11 @@ def get_parser():
         version=f"{_settings._project_name_short} {__version__}"
     )
 
-    subparsers = main_parser.add_subparsers(dest="subcommand")
+    subparsers = main_parser.add_subparsers(
+        title="subcommands",
+        metavar="{subcommand}",
+        dest="subcommand"
+    )
 
     subparsers.add_parser(
         "docs",
