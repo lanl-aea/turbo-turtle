@@ -198,10 +198,12 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleCLIBuilder": turbo_turtle.scons_extensions.cli_builder(
-            program=env["turbo_turtle],
-            subcommand="geometry",
-            required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}"
+       env.Append(BUILDERS={
+           "TurboTurtleCLIBuilder": turbo_turtle.scons_extensions.cli_builder(
+               program=env["turbo_turtle],
+               subcommand="geometry",
+               required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}"
+           )
        })
        env.TurboTurtleCLIBuilder(
            target=["target.cae"],
@@ -267,9 +269,11 @@ def geometry(program="turbo-turtle", subcommand="geometry",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleGeometry": turbo_turtle.scons_extensions.geometry(
-            program=env["turbo_turtle],
-            options="--part-name ${part_name}"
+       env.Append(BUILDERS={
+           "TurboTurtleGeometry": turbo_turtle.scons_extensions.geometry(
+               program=env["turbo_turtle],
+               options="--part-name ${part_name}"
+           )
        })
        env.TurboTurtleGeometry(
            target=["target.cae"],
@@ -320,9 +324,11 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleGeometryXYPlot": turbo_turtle.scons_extensions.geometry_xyplot(
-            program=env["turbo_turtle],
-            options="--part-name ${part_name}"
+       env.Append(BUILDERS={
+           "TurboTurtleGeometryXYPlot": turbo_turtle.scons_extensions.geometry_xyplot(
+               program=env["turbo_turtle],
+               options="--part-name ${part_name}"
+           )
        })
        env.TurboTurtleGeometryXYPlot(
            target=["target.png"],
@@ -378,8 +384,10 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleCylinder": turbo_turtle.scons_extensions.cylinder(
-            program=env["turbo_turtle]
+       env.Append(BUILDERS={
+           "TurboTurtleCylinder": turbo_turtle.scons_extensions.cylinder(
+               program=env["turbo_turtle]
+           )
        })
        env.TurboTurtleCylinder(
            target=["target.cae"],
@@ -435,8 +443,10 @@ def sphere(program="turbo-turtle", subcommand="sphere",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
-            program=env["turbo_turtle]
+       env.Append(BUILDERS={
+           "TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
+               program=env["turbo_turtle]
+           )
        })
        env.TurboTurtleSphere(
            target=["target.cae"],
@@ -486,8 +496,10 @@ def partition(program="turbo-turtle", subcommand="partition",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
-            program=env["turbo_turtle]
+       env.Append(BUILDERS={
+           "TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
+               program=env["turbo_turtle]
+           )
        })
        env.TurboTurtlePartition(
            target=["target.cae"],
@@ -539,8 +551,10 @@ def mesh(program="turbo-turtle", subcommand="mesh",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
-            program=env["turbo_turtle]
+       env.Append(BUILDERS={
+           "TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
+               program=env["turbo_turtle]
+           )
        })
        env.TurboTurtleMesh(
            target=["target.cae"],
@@ -589,8 +603,10 @@ def image(program="turbo-turtle", subcommand="image",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleImage": turbo_turtle.scons_extensions.image(
-            program=env["turbo_turtle]
+       env.Append(BUILDERS={
+           "TurboTurtleImage": turbo_turtle.scons_extensions.image(
+               program=env["turbo_turtle]
+           )
        })
        env.TurboTurtleImage(
            target=["target.png"],
@@ -638,8 +654,10 @@ def merge(program="turbo-turtle", subcommand="merge",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleMerge": turbo_turtle.scons_extensions.merge(
-            program=env["turbo_turtle]
+       env.Append(BUILDERS={
+           "TurboTurtleMerge": turbo_turtle.scons_extensions.merge(
+               program=env["turbo_turtle]
+           )
        })
        env.TurboTurtleMerge(
            target=["target.cae"],
@@ -687,8 +705,10 @@ def export(program="turbo-turtle", subcommand="export",
        import turbo_turtle
        env = Environment()
        env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
-       env.Append(BUILDERS={"TurboTurtleExport": turbo_turtle.scons_extensions.export(
-            program=env["turbo_turtle]
+       env.Append(BUILDERS={
+           "TurboTurtleExport": turbo_turtle.scons_extensions.export(
+               program=env["turbo_turtle]
+           )
        })
        env.TurboTurtleExport(
            target=["target.inp"],
