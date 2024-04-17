@@ -116,6 +116,7 @@ def get_parser():
     """
     main_description = \
         "A collection of solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models. " \
+        "Implemented for Abaqus and Cubit as backend modeling and meshing software. " \
         "Most of the interface options and descriptions use Abaqus modeling concepts and language. " \
         "Turbo-Turtle makes a best effort to maintain common behaviors and features across each third-party " \
         "software's modeling concepts."
