@@ -55,3 +55,13 @@ toolset.registerKernelMenuButton(
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._partition_gui_help_string)
+
+# Partition Gui Plugin
+toolset.registerKernelMenuButton(
+    buttonText='Turbo-Turtle|Mesh',
+    moduleName='turbo_turtle_abaqus.mesh', functionName='_gui()',
+    applicableModules=('Mesh', ),
+    icon=afxCreateIcon('turboTurtleIcon.png'),
+    helpUrl=_mixed_settings._gui_docs_file,
+    author=_mixed_settings._author,
+    description=_mixed_settings._mesh_gui_help_string)
