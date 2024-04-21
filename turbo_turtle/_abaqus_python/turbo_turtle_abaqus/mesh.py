@@ -30,15 +30,18 @@ def main(input_file, element_type,
     """
     import abaqus
 
-    if output_file is None:
-        output_file = input_file
-    input_file = os.path.splitext(input_file)[0] + ".cae"
-    output_file = os.path.splitext(output_file)[0] + ".cae"
-    with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
-        shutil.copyfile(input_file, copy_file.name)
-        abaqus.openMdb(pathName=copy_file.name)
-        mesh(element_type, model_name=model_name, part_name=part_name, global_seed=global_seed)
-        abaqus.mdb.saveAs(pathName=output_file)
+    try:
+        if output_file is None:
+            output_file = input_file
+        input_file = os.path.splitext(input_file)[0] + ".cae"
+        output_file = os.path.splitext(output_file)[0] + ".cae"
+        with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
+            shutil.copyfile(input_file, copy_file.name)
+            abaqus.openMdb(pathName=copy_file.name)
+            mesh(element_type, model_name=model_name, part_name=part_name, global_seed=global_seed)
+    except RuntimeError as err:
+        _mixed_utilities.sys_exit(err.message)
+    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def mesh(element_type,
@@ -81,13 +84,81 @@ def mesh(element_type,
     part.generateMesh()
 
 
-if __name__ == "__main__":
+def _gui_get_inputs():
+    """Mesh Interactive Inputs
 
-    parser = parsers.mesh_parser(basename=basename)
+    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
+    GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
+    below, also update ``_mixed_settings._mesh_gui_help_string`` that gets used as the GUI ``label``.
+
+    GUI-INPUTS
+    ==========
+    * Part Name - part name to mesh
+    * Element Type - a valid Abaqus element type for meshing the part
+    * Global Seed - global seed value in the model's units
+
+    **IMPORTANT** - this function must return key-value pairs that will successfully unpack as ``**kwargs`` in
+    ``mesh``
+
+    :return: ``user_inputs`` - a dictionary of the following key-value pair types:
+
+    * ``element_type``: ``str`` type, valid Abaqus element type
+    * ``model_name``: ``str`` type, name of the model in the current viewport
+    * ``part_name``: ``list`` type, name of the part to mesh
+    * ``global_seed``: ``float`` type, global element seed
+
+    :raises RuntimeError: if a global mesh seed is not specified.
+    """
+    import abaqus
+
     try:
-        args, unknown = parser.parse_known_args()
-    except SystemExit as err:
-        sys.exit(err.code)
+        default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
+    except AttributeError:
+        print('Warning: could not determine a default part name using the current viewport')
+        default_part_name = parsers.mesh_defaults['part_name'][0]  # part_name defaults to list of length 1
+
+    fields = (
+        ('Part Name:', default_part_name),
+        ('Element Type:', ''),
+        ('Global Seed:', str(parsers.mesh_defaults['global_seed']))
+    )
+
+    part_name, element_type, global_seed = abaqus.getInputs(
+        dialogTitle='Turbo Turtle Mesh',
+        label=_mixed_settings_mesh_gui_help_string,
+        fields=fields
+    )
+
+    if part_name is not None:  # Will be None if the user hits the "cancel/esc" button
+        if not global_seed:
+            error_message = 'Error: You must specify a global seed for meshing'
+            raise RuntimeError(error_message)
+
+        model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
+
+        user_inputs = {'element_type': element_type, 'model_name': model_name, 'part_name': part_name,
+                       'global_seed': float(global_seed)}
+    else:
+        user_inputs = {}
+    return user_inputs
+
+
+def _gui():
+    """Function with no inputs that drives the plug-in"""
+    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
+                                  subcommand_function=mesh,
+                                  post_action_function=_abaqus_utilities._view_part)
+
+
+if __name__ == "__main__":
+    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+        _gui()
+    else:
+        parser = parsers.partition_parser(basename=basename)
+        try:
+            args, unknown = parser.parse_known_args()
+        except SystemExit as err:
+            sys.exit(err.code)
 
     sys.exit(main(
         args.input_file,
