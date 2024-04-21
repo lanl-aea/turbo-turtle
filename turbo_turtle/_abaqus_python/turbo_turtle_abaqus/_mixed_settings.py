@@ -65,3 +65,11 @@ GUI-INPUTS
 * Copy and Paste Parameters - copy and paste the parameters printed to the Abaqus Python terminal to make
   re-use of previous partition parameters easier
 """
+
+_mesh_gui_help_string = """
+GUI-INPUTS
+==========
+* Part Name - part name to mesh
+* Element Type - a valid Abaqus element type for meshing the part
+* Global Seed - global seed value in the model's units
+"""
