@@ -33,6 +33,7 @@ Documentation
 
 Internal Changes
 ================
+- Work-in-progress support for Abaqus CAE GUI meshing capability (:issue:`153`, :merge:`140`). By `Thomas Roberts`_.
 - Work-in-progress support for Abaqus CAE GUI sphere capability (:issue:`152`, :merge:`133`). By `Thomas Roberts`_.
 - Improved unit tests for the CLI builders (:issue:`151`, :merge:`135`). By `Kyle Brindley`_.
 - Work-in-progress support for Abaqus CAE GUI cylinder capability (:issue:`150`, :merge:`132`). By `Thomas Roberts`_.
