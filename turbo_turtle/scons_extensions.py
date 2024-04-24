@@ -22,13 +22,13 @@ def _get_defaults_dictionary(subcommand: str) -> typing.Dict:
     return getattr(parsers, defaults_dictionary)
 
 
-def _action(target, source, env):
+def _action(target: list, source: list, env):
     """Define the builder action when calling internal package and not the cli
 
     Requires the ``subcommand`` keyword argument in the SCons task construction environment ``env``.
 
-    :param list target: The target file list of strings
-    :param list source: The source file list of SCons.Node.FS.File objects
+    :param target: The target file list of strings
+    :param source: The source file list of SCons.Node.FS.File objects
     :param SCons.Script.SConscript.SConsEnvironment env: The builder's SCons construction environment object
     """
     # Set default kwargs to match parsers.subcommand defaults dictionary
