@@ -1,3 +1,4 @@
+import typing
 import argparse
 
 import SCons.Builder
@@ -16,7 +17,7 @@ from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 _exclude_from_namespace = set(globals().keys())
 
 
-def _get_defaults_dictionary(subcommand):
+def _get_defaults_dictionary(subcommand: str) -> typing.Dict:
     defaults_dictionary = f"{subcommand}_defaults".replace("-", "_")
     return getattr(parsers, defaults_dictionary)
 
@@ -79,7 +80,7 @@ def _action(target, source, env):
         wrapper_command(args, command)
 
 
-def _api_builder(subcommand):
+def _api_builder(subcommand: str):
     """Turbo-Turtle subcommand builder
 
     .. warning::
@@ -153,8 +154,15 @@ def _api_builder(subcommand):
     return internal_builder
 
 
-def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
-                abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def cli_builder(
+    program: str = "turbo-turtle",
+    subcommand: str = "",
+    required: str = "",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a generic Turbo-Turtle CLI builder.
 
     This builder provides a template action for the Turbo-Turtle CLI. The default behavior will not do anything unless
@@ -240,10 +248,15 @@ def cli_builder(program="turbo-turtle", subcommand="", required="", options="",
     return builder
 
 
-def geometry(program="turbo-turtle", subcommand="geometry",
-             required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
-             options="",
-             abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def geometry(
+    program: str = "turbo-turtle",
+    subcommand: str = "geometry",
+    required: str = "--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle geometry subcommand CLI builder
 
     See the :ref:`geometry_cli` CLI documentation for detailed subcommand usage and options.
@@ -293,12 +306,15 @@ def geometry(program="turbo-turtle", subcommand="geometry",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
-def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
-                    required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
-                    options="",
-                    abaqus_command=_default_abaqus_options,
-                    cubit_command=_default_cubit_options,
-                    backend=_default_backend):
+def geometry_xyplot(
+    program: str = "turbo-turtle",
+    subcommand: str = "geometry-xyplot",
+    required: str = "--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder
 
     See the :ref:`geometry_xyplot_cli` CLI documentation for detailed subcommand usage and options.
@@ -348,11 +364,16 @@ def geometry_xyplot(program="turbo-turtle", subcommand="geometry-xyplot",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
-def cylinder(program="turbo-turtle", subcommand="cylinder",
-             required="--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
-                      "--height ${height}",
-             options="",
-             abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def cylinder(
+    program: str = "turbo-turtle",
+    subcommand: str = "cylinder",
+    required: str = "--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
+                    "--height ${height}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle cylinder subcommand CLI builder
 
     See the :ref:`cylinder_cli` CLI documentation for detailed subcommand usage and options.
@@ -409,10 +430,15 @@ def cylinder(program="turbo-turtle", subcommand="cylinder",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
-def sphere(program="turbo-turtle", subcommand="sphere",
-           required="--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius}",
-           options="",
-           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def sphere(
+    program: str = "turbo-turtle",
+    subcommand: str = "sphere",
+    required: str = "--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle sphere subcommand CLI builder
 
     See the :ref:`sphere_cli` CLI documentation for detailed subcommand usage and options.
@@ -467,10 +493,15 @@ def sphere(program="turbo-turtle", subcommand="sphere",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
-def partition(program="turbo-turtle", subcommand="partition",
-              required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
-              options="",
-              abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def partition(
+    program: str = "turbo-turtle",
+    subcommand: str = "partition",
+    required: str = "--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle partition subcommand CLI builder
 
     See the :ref:`partition_cli` CLI documentation for detailed subcommand usage and options.
@@ -518,10 +549,15 @@ def partition(program="turbo-turtle", subcommand="partition",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
-def mesh(program="turbo-turtle", subcommand="mesh",
-         required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} --element-type ${element_type}",
-         options="",
-         abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def mesh(
+    program: str = "turbo-turtle",
+    subcommand: str = "mesh",
+    required: str = "--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} --element-type ${element_type}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle mesh subcommand CLI builder
 
     See the :ref:`mesh_cli` CLI documentation for detailed subcommand usage and options.
@@ -574,10 +610,15 @@ def mesh(program="turbo-turtle", subcommand="mesh",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
-def image(program="turbo-turtle", subcommand="image",
-          required="--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
-          options="",
-          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def image(
+    program: str = "turbo-turtle",
+    subcommand: str = "image",
+    required: str = "--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle image subcommand CLI builder
 
     See the :ref:`image_cli` CLI documentation for detailed subcommand usage and options.
@@ -625,10 +666,15 @@ def image(program="turbo-turtle", subcommand="image",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
-def merge(program="turbo-turtle", subcommand="merge",
-          required="--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
-          options="",
-          abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def merge(
+    program: str = "turbo-turtle",
+    subcommand: str = "merge",
+    required: str = "--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle merge subcommand CLI builder
 
     See the :ref:`merge_cli` CLI documentation for detailed subcommand usage and options.
@@ -676,10 +722,15 @@ def merge(program="turbo-turtle", subcommand="merge",
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
-def export(program="turbo-turtle", subcommand="export",
-           required="--input-file ${SOURCE.abspath}",
-           options="",
-           abaqus_command=_default_abaqus_options, cubit_command=_default_cubit_options, backend=_default_backend):
+def export(
+    program: str = "turbo-turtle",
+    subcommand: str = "export",
+    required: str = "--input-file ${SOURCE.abspath}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle export subcommand CLI builder
 
     See the :ref:`export_cli` CLI documentation for detailed subcommand usage and options.
@@ -728,12 +779,15 @@ def export(program="turbo-turtle", subcommand="export",
 
 
 def turbo_turtle_sphere(
-    program="turbo-turtle", subcommand="sphere",
-    options="--output-file ${TARGETS[0].abspath} " \
-            "--inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
-            "--model-name ${model_name} --part-name ${part_name}",
-    abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
-):
+    program: str = "turbo-turtle",
+    subcommand: str = "sphere",
+    options: str = "--output-file ${TARGETS[0].abspath} " \
+                   "--inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
+                   "--model-name ${model_name} --part-name ${part_name}",
+    abaqus_command: typing.List[str] = ["abaqus"],
+    cubit_command: typing.List[str] = ["cubit"],
+    cubit: bool = False
+) -> SCons.Builder.Builder:
     """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions.cli_builder`
 
     .. warning::
@@ -793,11 +847,14 @@ def turbo_turtle_sphere(
 
 
 def turbo_turtle_partition(
-    program="turbo-turtle", subcommand="partition",
-    options="--input-file ${SOURCES[0].abspath} --output-file ${TARGETS[0].abspath} " \
-            "--model-name ${model_name} --part-name ${part_name}",
-    abaqus_command=["abaqus"], cubit_command=["cubit"], cubit=False
-):
+    program: str = "turbo-turtle",
+    subcommand: str = "partition",
+    options: str = "--input-file ${SOURCES[0].abspath} --output-file ${TARGETS[0].abspath} " \
+                   "--model-name ${model_name} --part-name ${part_name}",
+    abaqus_command: typing.List[str] = ["abaqus"],
+    cubit_command: typing.List[str] = ["cubit"],
+    cubit: bool = False
+) -> SCons.Builder.Builder:
     """Turbo-Turtle sphere subcommand builder from template :meth:`turbo_turtle.scons_extensions.cli_builder`
 
     .. warning::
