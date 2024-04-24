@@ -38,7 +38,7 @@ build_dir = variant_dir_base / "docs"
 SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_variables"])
 
 # Add pytests, style checks, and static type checking
-workflow_configurations = ["pytest", "flake8", "mypy"]
+workflow_configurations = ["pytest", "flake8", "mypy", "cProfile"]
 for workflow in workflow_configurations:
     build_dir = variant_dir_base / workflow
     SConscript(build_dir.name, variant_dir=build_dir, exports='env', duplicate=False)

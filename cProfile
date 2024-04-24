@@ -1,0 +1,20 @@
+#! /usr/bin/env python
+import pathlib
+
+
+# Inherit the parent construction environment
+Import("env")
+
+cprofile_target = pathlib.Path("turbo_turtle").with_suffix(".cprofile")
+target = env.Command(
+    target=[cprofile_target, "vase.cae"],
+    source=["turbo_turtle/tests/vase.csv"],
+    action=[
+        "python -m cProfile -o ${TARGET.abspath} -m turbo_turtle._main geometry --input-file ${SOURCE.abspath} " \
+            "--output-file ${TARGETS[1].abspath} >/dev/null",
+        "python -c \"import pstats; p = pstats.Stats('${TARGET.abspath}'); " \
+            "p.sort_stats(pstats.SortKey.CUMULATIVE).print_stats('projects', 30)\""
+    ]
+)
+env.AlwaysBuild(target)
+env.Alias("cProfile", target)
