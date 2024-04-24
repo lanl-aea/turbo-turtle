@@ -37,6 +37,7 @@ Internal Changes
 - Add flake8 configuration file for easier consistency between developer checks and CI checks (:issue:`161`,
   :merge:`146`). By `Kyle Brindley`_.
 - Use SCons task for flake8 style guide checks (:merge:`147`). By `Kyle Brindley`_.
+- Add a draft SCons task for project profiling (:merge:`150`). By `Kyle Brindley`_.
 
 Enhancements
 ============
