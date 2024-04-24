@@ -49,3 +49,14 @@ write_to = "turbo_turtle/_version.py"
 [tool.pytest.ini_options]
 markers = ["systemtest"]
 addopts = "--ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers"
+
+[tool.mypy]
+disable_error_code = [
+    "import-untyped",
+    "import-not-found"
+]
+exclude = [
+    "tests",
+    "_abaqus_python"
+]
+packages = ["turbo_turtle"]

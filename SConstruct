@@ -37,10 +37,10 @@ variant_dir_base = pathlib.Path(env["variant_dir_base"])
 build_dir = variant_dir_base / "docs"
 SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_variables"])
 
-build_dir = variant_dir_base / "pytest"
-SConscript(build_dir.name, variant_dir=build_dir, exports="env", duplicate=False)
-
-build_dir = variant_dir_base / "flake8"
-SConscript(build_dir.name, variant_dir=build_dir, exports="env", duplicate=False)
+# Add pytests, style checks, and static type checking
+workflow_configurations = ["pytest", "flake8", "mypy"]
+for workflow in workflow_configurations:
+    build_dir = variant_dir_base / workflow
+    SConscript(build_dir.name, variant_dir=build_dir, exports='env', duplicate=False)
 
 waves.scons_extensions.project_help_message()
