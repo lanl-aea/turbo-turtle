@@ -12,7 +12,7 @@ import subprocess
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities import print_exception_message
 
 
-def search_commands(options: typing.List[str]) -> typing.Union[str, None]:
+def search_commands(options: typing.Iterable[str]) -> typing.Union[str, None]:
     """Return the first found command in the list of options. Return None if none are found.
 
     :param options: executable path(s) to test
@@ -24,7 +24,7 @@ def search_commands(options: typing.List[str]) -> typing.Union[str, None]:
     return command_abspath
 
 
-def find_command(options: typing.List[str]) -> str:
+def find_command(options: typing.Iterable[str]) -> str:
     """Return first found command in list of options.
 
     :param options: alternate command options
@@ -100,9 +100,9 @@ def run_command(command: str) -> None:
 
     :param command: String to run on the shell
     """
-    command = shlex.split(command)
+    command_list = shlex.split(command)
     try:
-        stdout = subprocess.check_output(command)
+        stdout = subprocess.check_output(command_list)
     except subprocess.CalledProcessError as err:
         sys.exit(err.output.decode())
 
