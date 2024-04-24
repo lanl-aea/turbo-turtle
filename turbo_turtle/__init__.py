@@ -11,8 +11,14 @@ copies to the public, perform publicly and display publicly, and to permit other
 
 from importlib.metadata import version, PackageNotFoundError
 
-from turbo_turtle import scons_extensions
-from turbo_turtle import geometry_xyplot
+import lazy_loader
+
+
+submodules = [
+    "scons_extensions",
+    "geometry_xyplot"
+]
+__getattr__, __dir__, __all__ = lazy_loader.attach(__name__, submodules=submodules)
 
 try:
     __version__ = version("turbo_turtle")
@@ -31,4 +37,4 @@ except PackageNotFoundError:
         del warnings, pathlib, setuptools_scm
 
 # Remove third-party packages from the project namespace
-del version, PackageNotFoundError
+del version, PackageNotFoundError, lazy_loader
