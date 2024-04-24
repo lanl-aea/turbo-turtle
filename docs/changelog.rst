@@ -19,6 +19,7 @@ Bug fixes
 =========
 - Match the coordinate transformations of ``geometry`` subcommand in the ``geometry-xyplot`` subcommand (:issue:`156`,
   :merge:`134`). By `Kyle Brindley`_.
+- Python 3.8 compatible type annotations (:issue:`162`, :merge:`149`). By `Kyle Brindley`_.
 
 Documentation
 =============
