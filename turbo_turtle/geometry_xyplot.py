@@ -1,3 +1,4 @@
+import typing
 import argparse
 
 import numpy
@@ -39,8 +40,8 @@ def geometry_xyplot(
     unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],
     euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
     y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],
-    rtol: None | float = parsers.geometry_defaults["rtol"],
-    atol: None | float = parsers.geometry_defaults["atol"],
+    rtol: typing.Optional[float] = parsers.geometry_defaults["rtol"],
+    atol: typing.Optional[float] = parsers.geometry_defaults["atol"],
     no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
     annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
     scale: bool = parsers.geometry_xyplot_defaults["scale"]
@@ -97,14 +98,14 @@ def geometry_xyplot(
 
 def _main(
     input_file: list, output_file: str,
-    part_name: list[None | str] = parsers.geometry_xyplot_defaults["part_name"],
+    part_name: typing.List[typing.Union[str, None]] = parsers.geometry_xyplot_defaults["part_name"],
     unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],
     euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
     delimiter: str = parsers.geometry_xyplot_defaults["delimiter"],
     header_lines: int = parsers.geometry_xyplot_defaults["header_lines"],
     y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],
-    rtol: None | float = parsers.geometry_defaults["rtol"],
-    atol: None | float = parsers.geometry_defaults["atol"],
+    rtol: typing.Optional[float] = parsers.geometry_defaults["rtol"],
+    atol: typing.Optional[float] = parsers.geometry_defaults["atol"],
     no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
     annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
     scale: bool = parsers.geometry_xyplot_defaults["scale"]

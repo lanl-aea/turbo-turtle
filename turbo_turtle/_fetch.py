@@ -24,30 +24,47 @@ def get_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(add_help=False)
 
-    parser.add_argument("FILE", nargs="*",
-                              help=f"modsim template file or directory")
-    parser.add_argument("--destination",
+    parser.add_argument(
+        "FILE",
+        nargs="*",
+        help=f"modsim template file or directory"
+    )
+    parser.add_argument(
+        "--destination",
         help="Destination directory. Unless ``--overwrite`` is specified, conflicting file names in the " \
              "destination will not be copied. (default: PWD)",
         type=pathlib.Path,
-        default=pathlib.Path().cwd())
-    parser.add_argument("--overwrite",
+        default=pathlib.Path().cwd()
+    )
+    parser.add_argument(
+        "--overwrite",
         action="store_true",
-        help="Overwrite any existing files (default: %(default)s)")
-    parser.add_argument("--dry-run",
+        help="Overwrite any existing files (default: %(default)s)"
+    )
+    parser.add_argument(
+        "--dry-run",
         action="store_true",
-        help="Print the destination tree and exit (default: %(default)s)")
-    parser.add_argument("--print-available",
+        help="Print the destination tree and exit (default: %(default)s)"
+    )
+    parser.add_argument(
+        "--print-available",
         action="store_true",
-        help="Print available modsim template files and exit (default: %(default)s)")
+        help="Print available modsim template files and exit (default: %(default)s)"
+    )
 
     return parser
 
 
-def main(subcommand: str, root_directory: str | pathlib.Path, relative_paths: list[str | pathlib.Path],
-         destination: str | pathlib.Path, requested_paths: list[str | pathlib.Path] | None = None,
-         overwrite: bool = False, dry_run: bool = False,
-         print_available: bool = False) -> None:
+def main(
+    subcommand: str,
+    root_directory: typing.Union[str, pathlib.Path],
+    relative_paths: typing.Iterable[typing.Union[str, pathlib.Path]],
+    destination: typing.Union[str, pathlib.Path],
+    requested_paths: typing.List[pathlib.Path] = [],
+    overwrite: bool = False,
+    dry_run: bool = False,
+    print_available: bool = False
+) -> None:
     """Thin wrapper on :meth:`waves.fetch.recursive_copy` to provide subcommand specific behavior and STDOUT/STDERR
 
     Recursively copy requested paths from root_directory/relative_paths directories into destination directory using
@@ -58,14 +75,13 @@ def main(subcommand: str, root_directory: str | pathlib.Path, relative_paths: li
     :param relative_paths: List of string or pathlike objects describing relative paths to search for in
         root_directory
     :param destination: String or pathlike object for the destination directory
-    :param requested_paths: list of relative path-like objects that subset the files found in the
+    :param requested_paths: list of Path objects that subset the files found in the
         ``root_directory`` ``relative_paths``
     :param overwrite: Boolean to overwrite any existing files in destination directory
     :param dry_run: Print the destination tree and exit. Short circuited by ``print_available``
     :param print_available: Print the available source files and exit. Short circuits ``dry_run``
     """
-    if not requested_paths:
-        requested_paths = []
+    root_directory = pathlib.Path(root_directory)
     if not root_directory.is_dir():
         # During "waves fetch" sub-command, this should only be reached if the package installation
         # structure doesn't match the assumptions in _settings.py. It is used by the Conda build tests as a
@@ -79,8 +95,10 @@ def main(subcommand: str, root_directory: str | pathlib.Path, relative_paths: li
                    print_available=print_available)
 
 
-def available_files(root_directory: pathlib.Path | str,
-                    relative_paths: list[str]) -> tuple[list[pathlib.Path], list[str]]:
+def available_files(
+    root_directory: typing.Union[str, pathlib.Path],
+    relative_paths: typing.Iterable[typing.Union[str, pathlib.Path]]
+) -> typing.Tuple[typing.List[pathlib.Path], typing.List[typing.Union[str, pathlib.Path]]]:
     """Build a list of files at ``relative_paths`` with respect to the root ``root_directory`` directory
 
     Returns a list of absolute paths and a list of any relative paths that were not found. Falls back to a full
@@ -106,7 +124,7 @@ def available_files(root_directory: pathlib.Path | str,
         elif absolute_path.is_dir():
             file_list = [path for path in absolute_path.rglob("*") if path.is_file()]
         else:
-            file_list = [path for path in root_directory.rglob(relative_path) if path.is_file()]
+            file_list = [path for path in root_directory.rglob(str(relative_path)) if path.is_file()]
         if file_list:
             available_files.extend(file_list)
         else:
@@ -117,10 +135,10 @@ def available_files(root_directory: pathlib.Path | str,
 
 
 def build_source_files(
-    root_directory: str,
-    relative_paths: list[str],
-    exclude_patterns: list[str] = _settings._fetch_exclude_patterns
-) -> tuple[list[pathlib.Path], list[str]]:
+    root_directory: typing.Union[str, pathlib.Path],
+    relative_paths: typing.Iterable[typing.Union[str, pathlib.Path]],
+    exclude_patterns: typing.Iterable[str] = _settings._fetch_exclude_patterns
+) -> typing.Tuple[typing.List[pathlib.Path], typing.List[typing.Union[str, pathlib.Path]]]:
     """Wrap :meth:`available_files` and trim list based on exclude patterns
 
     If no source files are found, an empty list is returned.
@@ -140,7 +158,7 @@ def build_source_files(
     return source_files, not_found
 
 
-def longest_common_path_prefix(file_list: str | pathlib.Path | list[str | pathlib.Path]) -> pathlib.Path:
+def longest_common_path_prefix(file_list: typing.List[pathlib.Path]) -> pathlib.Path:
     """Return the longest common file path prefix.
 
     The edge case of a single path is handled by returning the parent directory
@@ -151,9 +169,6 @@ def longest_common_path_prefix(file_list: str | pathlib.Path | list[str | pathli
 
     :raises RuntimeError: When file list is empty
     """
-    if isinstance(file_list, str) or isinstance(file_list, pathlib.Path):
-        file_list = [file_list]
-    file_list = [pathlib.Path(path) for path in file_list]
     number_of_files = len(file_list)
     if number_of_files < 1:
         raise RuntimeError("No files in 'file_list'")
@@ -164,12 +179,14 @@ def longest_common_path_prefix(file_list: str | pathlib.Path | list[str | pathli
     return longest_common_path
 
 
-def build_destination_files(destination: str | pathlib.Path,
-                            requested_paths: list[str | pathlib.Path]) -> tuple[list, list]:
+def build_destination_files(
+    destination: typing.Union[str, pathlib.Path],
+    requested_paths: typing.List[pathlib.Path]
+) -> typing.Tuple[typing.List[pathlib.Path], typing.List[pathlib.Path]]:
     """Build destination file paths from the requested paths, truncating the longest possible source prefix path
 
     :param destination: String or pathlike object for the destination directory
-    :param requested_paths: List of requested file paths
+    :param requested_paths: List of requested files as path-objects
 
     :returns: destination files, existing files
     """
@@ -180,23 +197,27 @@ def build_destination_files(destination: str | pathlib.Path,
     return destination_files, existing_files
 
 
-def build_copy_tuples(destination: str | pathlib.Path, requested_paths_resolved: list,
-                      overwrite: bool = False) -> tuple[tuple]:
+def build_copy_tuples(
+    destination: typing.Union[str, pathlib.Path],
+    requested_paths_resolved: typing.List[pathlib.Path],
+    overwrite: bool = False
+) -> typing.List[typing.Tuple[pathlib.Path, pathlib.Path]]:
     """
     :param destination: String or pathlike object for the destination directory
-    :param requested_paths_resolved: List of absolute requested file paths
+    :param requested_paths_resolved: List of absolute requested files as path-objects
 
     :returns: requested and destination file path pairs
     """
     destination_files, existing_files = build_destination_files(destination, requested_paths_resolved)
-    copy_tuples = tuple(zip(requested_paths_resolved, destination_files))
+    copy_tuples = [(requested_path, destination_file) for requested_path, destination_file in
+                   zip(requested_paths_resolved, destination_files)]
     if not overwrite and existing_files:
-        copy_tuples = tuple((requested_path, destination_file) for requested_path, destination_file in copy_tuples if
-                            destination_file not in existing_files)
+        copy_tuples = [(requested_path, destination_file) for requested_path, destination_file in
+                       copy_tuples if destination_file not in existing_files]
     return copy_tuples
 
 
-def conditional_copy(copy_tuples: tuple[tuple]) -> None:
+def conditional_copy(copy_tuples: typing.List[typing.Tuple[pathlib.Path, pathlib.Path]]) -> None:
     """Copy when destination file doesn't exist or doesn't match source file content
 
     Uses Python ``shutil.copyfile``, so meta data isn't preserved. Creates intermediate parent directories prior to
@@ -222,10 +243,15 @@ def print_list(things_to_print: list, prefix: str = "\t", stream=sys.stdout) -> 
         print(f"{prefix}{item}", file=stream)
 
 
-def recursive_copy(root_directory: str | pathlib.Path, relative_paths: list[str | pathlib.Path],
-                   destination: str | pathlib.Path, requested_paths: list[str | pathlib.Path] | None = None,
-                   overwrite: bool = False, dry_run: bool = False,
-                   print_available: bool = False) -> None:
+def recursive_copy(
+    root_directory: typing.Union[str, pathlib.Path],
+    relative_paths: typing.Iterable[typing.Union[str, pathlib.Path]],
+    destination: typing.Union[str, pathlib.Path],
+    requested_paths: typing.List[pathlib.Path] = [],
+    overwrite: bool = False,
+    dry_run: bool = False,
+    print_available: bool = False
+) -> None:
     """Recursively copy requested paths from root_directory/relative_paths directories into destination directory using
     the shortest possible shared source prefix.
 
@@ -235,7 +261,7 @@ def recursive_copy(root_directory: str | pathlib.Path, relative_paths: list[str 
     :param relative_paths: List of string or pathlike objects describing relative paths to search for in
         root_directory
     :param destination: String or pathlike object for the destination directory
-    :param requested_paths: list of relative path-like objects that subset the files found in the
+    :param requested_paths: list of relative path-objects that subset the files found in the
         ``root_directory`` ``relative_paths``
     :param overwrite: Boolean to overwrite any existing files in destination directory
     :param dry_run: Print the destination tree and exit. Short circuited by ``print_available``
@@ -243,8 +269,6 @@ def recursive_copy(root_directory: str | pathlib.Path, relative_paths: list[str 
 
     :raises RuntimeError: If the no requested files exist in the longest common source path
     """
-    if not requested_paths:
-        requested_paths = []
 
     # Build source tree
     source_files, missing_relative_paths = build_source_files(root_directory, relative_paths)
@@ -254,7 +278,7 @@ def recursive_copy(root_directory: str | pathlib.Path, relative_paths: list[str 
         print_list([path.relative_to(longest_common_source_path) for path in source_files])
 
     # Down select to requested file list
-    if requested_paths:
+    if len(requested_paths) > 0:
         requested_paths_resolved, missing_requested_paths = \
             build_source_files(longest_common_source_path, requested_paths)
     else:
