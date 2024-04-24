@@ -22,7 +22,7 @@ def _get_defaults_dictionary(subcommand: str) -> typing.Dict:
     return getattr(parsers, defaults_dictionary)
 
 
-def _action(target: list, source: list, env):
+def _action(target: list, source: list, env) -> None:
     """Define the builder action when calling internal package and not the cli
 
     Requires the ``subcommand`` keyword argument in the SCons task construction environment ``env``.
@@ -80,7 +80,7 @@ def _action(target: list, source: list, env):
         wrapper_command(args, command)
 
 
-def _api_builder(subcommand: str):
+def _api_builder(subcommand: str) -> SCons.Builder.Builder:
     """Turbo-Turtle subcommand builder
 
     .. warning::
@@ -139,7 +139,6 @@ def _api_builder(subcommand: str):
     :param str subcommand: The Turbo-Turtle subcommand to build
 
     :return: Turbo-Turtle API builder
-    :rtype: SCons.Builder.Builder
     """
     kwargs = _get_defaults_dictionary(subcommand)
     # TODO: remove deprecated cubit flag
@@ -227,7 +226,6 @@ def cli_builder(
     :param str backend: The backend software
 
     :returns: SCons Turbo-Turtle CLI builder
-    :rtype: SCons.Builder.Builder
     """  # noqa: E501
     action = ["${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
                   "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
@@ -829,7 +827,6 @@ def turbo_turtle_sphere(
     :param bool cubit: Boolean to use Cubit instead of Abaqus
 
     :returns: SCons Turbo-Turtle sphere builder
-    :rtype: SCons.Builder.Builder
     """
     # TODO: Remove these builders for version 1.0
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/127
@@ -891,7 +888,6 @@ def turbo_turtle_partition(
     :param bool cubit: Boolean to use Cubit instead of Abaqus
 
     :returns: SCons Turbo-Turtle sphere builder
-    :rtype: SCons.Builder.Builder
     """
     # TODO: Remove these builders for version 1.0
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/127

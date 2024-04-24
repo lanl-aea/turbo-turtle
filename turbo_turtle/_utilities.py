@@ -2,6 +2,7 @@ import os
 import sys
 import shlex
 import shutil
+import typing
 import pathlib
 import inspect
 import platform
@@ -11,28 +12,26 @@ import subprocess
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities import print_exception_message
 
 
-def search_commands(options):
+def search_commands(options: typing.List[str]) -> typing.Union[str, None]:
     """Return the first found command in the list of options. Return None if none are found.
 
-    :param list options: executable path(s) to test
+    :param options: executable path(s) to test
 
     :returns: command absolute path
-    :rtype: str
     """
     command_search = (shutil.which(command) for command in options)
     command_abspath = next((command for command in command_search if command is not None), None)
     return command_abspath
 
 
-def find_command(options):
+def find_command(options: typing.List[str]) -> str:
     """Return first found command in list of options.
 
-    Raise a FileNotFoundError if none is found.
-
-    :param list options: alternate command options
+    :param options: alternate command options
 
     :returns: command absolute path
-    :rtype: str
+
+    :raises: FileNotFoundError if no command is found
     """
     command_abspath = search_commands(options)
     if command_abspath is None:
@@ -45,14 +44,13 @@ def find_command_or_exit(*args, **kwargs):
     return find_command(*args, **kwargs)
 
 
-def cubit_os_bin():
+def cubit_os_bin() -> str:
     """Return the OS specific Cubit bin directory name
 
     Making Cubit importable requires putting the Cubit bin directory on PYTHONPATH. On MacOS, the directory is "MacOS".
     On other systems it is "bin".
 
     :returns: bin directory name, e.g. "bin" or "MacOS"
-    :rtype:
     """
     system = platform.system().lower()
     if system == "darwin":
@@ -63,19 +61,18 @@ def cubit_os_bin():
     return bin_directory
 
 
-def find_cubit_bin(options, bin_directory=None):
+def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional[str] = None) -> pathlib.Path:
     """Provided a few options for the Cubit executable, search for the bin directory.
 
     Recommend first checking to see if cubit will import.
 
     If the Cubit command or bin directory is not found, raise a FileNotFoundError.
 
-    :param list options: Cubit command options
-    :param str bin_directory: Cubit's bin directory name. Override the bin directory returned by
+    :param options: Cubit command options
+    :param bin_directory: Cubit's bin directory name. Override the bin directory returned by
         :meth:`turbo_turtle._utilities.cubit_os_bin`.
 
     :returns: Cubit bin directory absolute path
-    :rtype: pathlib.Path
     """
     if bin_directory is None:
         bin_directory = cubit_os_bin()
@@ -91,16 +88,17 @@ def find_cubit_bin(options, bin_directory=None):
             cubit_bin = cubit_bin.parent
     else:
         search = cubit_bin.glob(f"**/{bin_directory}")
-        cubit_bin = next((path for path in search if path.name == bin_directory), None)
-    if cubit_bin is None:
-        raise FileNotFoundError(message)
+        try:
+            cubit_bin = next((path for path in search if path.name == bin_directory))
+        except StopIteration:
+            raise FileNotFoundError(message)
     return cubit_bin
 
 
-def run_command(command):
+def run_command(command: str) -> None:
     """Split command on whitespace, execute shell command, call sys.exit with any error message
 
-    :param str command: String to run on the shell
+    :param command: String to run on the shell
     """
     command = shlex.split(command)
     try:
@@ -109,13 +107,12 @@ def run_command(command):
         sys.exit(err.output.decode())
 
 
-def set_wrappers_and_command(args):
+def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
     """Read an argument namespace and set the wrappers and command appropriately
 
-    :param argparse.Namespace args: namespace of parsed arguments from :meth:`turbo_turtle._main.get_parser`
+    :param args: namespace of parsed arguments from :meth:`turbo_turtle._main.get_parser`
 
     :return: _wrappers, command. Wrapper module, executable command string.
-    :rtype: tuple
     """
     keys = vars(args).keys()
     # TODO: remove deprecated cubit flag
