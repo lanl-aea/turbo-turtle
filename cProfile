@@ -13,7 +13,7 @@ target = env.Command(
         "python -m cProfile -o ${TARGET.abspath} -m turbo_turtle._main geometry-xyplot --input-file ${SOURCE.abspath} " \
             "--output-file ${TARGETS[1].abspath} >/dev/null",
         "python -c \"import pstats; p = pstats.Stats('${TARGET.abspath}'); " \
-            "p.sort_stats(pstats.SortKey.CUMULATIVE).print_stats('projects', 30)\""
+            "p.sort_stats(pstats.SortKey.CUMULATIVE).print_stats('turbo-turtle', 30)\""
     ]
 )
 env.AlwaysBuild(target)
