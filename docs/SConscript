@@ -4,7 +4,7 @@ import pathlib
 import waves
 
 
-Import(["env", "project_variables"])
+Import(["env", "project_variables_substitution"])
 
 
 # VVV Sphinx Builder prototype
@@ -23,7 +23,7 @@ def sphinx_build(program="sphinx-build", options="", builder="html", tags=""):
 env.Append(SCANNERS=waves.scons_extensions.sphinx_scanner())
 env.Append(BUILDERS={"SphinxBuild": sphinx_build(options="-W")})
 
-env.Substfile("conf.py.in", SUBST_DICT=project_variables)
+env.Substfile("conf.py.in", SUBST_DICT=project_variables_substitution)
 
 copy_files = (
     ("README.txt", "#/README.rst"),
@@ -96,7 +96,7 @@ man = env.SphinxBuild(
 env.Clean(man, [Dir("man")] + sources)
 env.Alias("man", man)
 
-targets = f"latex/turbo-turtle-{project_variables['@version@']}.pdf"
+targets = f"latex/turbo-turtle-{env['version']}.pdf"
 sources = sphinx_configuration_files + sphinx_source_files
 latexpdf = env.Command(
     target=targets,

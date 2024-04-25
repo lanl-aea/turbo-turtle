@@ -24,12 +24,13 @@ def cprofile(
     :returns: SCons cProfile Builder
     """
     action = [
-        "${program} ${required} ${options} >/dev/null",
+        "cd ${TARGET.dir} && PYTHONPATH=${project_dir} ${program} ${required} ${options} >/dev/null",
         "python -c \"import pstats; p = pstats.Stats('${TARGET.abspath}'); " \
             "p.sort_stats(pstats.SortKey.CUMULATIVE).print_stats('${selection}', ${rows})\""
     ]
     builder = SCons.Builder.Builder(
         action=action,
+        project_dir=env["project_dir"],
         program=program,
         required=required,
         options=options,

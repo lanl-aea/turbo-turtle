@@ -14,7 +14,7 @@ project_variables = {
     "project_dir": Dir(".").abspath,
     "version": setuptools_scm.get_version(),
 }
-project_variables = waves.scons_extensions.substitution_syntax(project_variables)
+project_variables_substitution = waves.scons_extensions.substitution_syntax(project_variables)
 
 AddOption(
     "--build-dir",
@@ -31,11 +31,13 @@ env = Environment(
     ENV=os.environ.copy(),
     variant_dir_base=GetOption("variant_dir_base")
 )
+for key, value in project_variables.items():
+    env[key] = value
 env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
 
 variant_dir_base = pathlib.Path(env["variant_dir_base"])
 build_dir = variant_dir_base / "docs"
-SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_variables"])
+SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_variables_substitution"])
 
 # Add pytests, style checks, and static type checking
 workflow_configurations = ["pytest", "flake8", "mypy", "cProfile"]
