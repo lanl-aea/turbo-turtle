@@ -22,6 +22,9 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
+    "lazy_loader >=0.4",
+    "waves >=0.7",
+    "scons >=4"
 ]
 
 [tool.setuptools]

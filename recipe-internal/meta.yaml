@@ -48,8 +48,9 @@ requirements:
     - setuptools_scm[toml] >=6.2,<8
   run:
     - python >=3.8
+    - lazy_loader >=0.4
     - waves >=0.7
-    - scons
+    - scons >=4
 
 test:
   requires:
