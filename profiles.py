@@ -120,7 +120,7 @@ def main() -> None:
         }
     )
     dataset["total time"].attrs["units"] = "s"
-    dataset.sortby(lambda x: x["file"])
+    dataset = dataset.sortby(lambda x: x["file"])
 
     plot(dataset, figsize=tuple(args.figsize), output=args.output,
          x="file", y="total time", hue="disposition", add_legend=True, add_colorbar=False)
