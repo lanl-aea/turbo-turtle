@@ -86,6 +86,7 @@ def plot(
     """
     figure = matplotlib.pyplot.figure(figsize=figsize)
     dataset.plot.scatter(**kwargs)
+    figure.axes[0].set_xticklabels(labels=dataset["file"].values, rotation=6)
     if output is not None:
         figure.savefig(output)
     else:
