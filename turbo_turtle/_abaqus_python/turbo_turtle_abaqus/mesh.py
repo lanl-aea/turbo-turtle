@@ -109,7 +109,7 @@ def _gui_get_inputs():
     * ``part_name``: ``list`` type, name of the part to mesh
     * ``global_seed``: ``float`` type, global element seed
 
-    :raises RuntimeError: if a global mesh seed is not specified.
+    :raises RuntimeError: if a element type or global mesh seed are not specified.
     """
     import abaqus
 
@@ -134,6 +134,10 @@ def _gui_get_inputs():
     if part_name is not None:  # Will be None if the user hits the "cancel/esc" button
         if not global_seed:
             error_message = 'Error: You must specify a global seed for meshing'
+            raise RuntimeError(error_message)
+
+        if not element_type:
+            error_message = 'Error: You must specify an element type for meshing'
             raise RuntimeError(error_message)
 
         model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
