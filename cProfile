@@ -43,7 +43,10 @@ def cprofile(
     return builder
 
 
-env.Append(BUILDERS={"CProfile": cprofile()})
+env.Append(BUILDERS={
+    "CProfile": cprofile(),
+    "CProfileEagerImport": cprofile(program="EAGER_IMPORT=eager python -m cProfile", rows=0)
+})
 
 # Collector alias
 target = []
@@ -53,6 +56,11 @@ target.extend(env.CProfile(
     target=["turbo_turtle_import.cprofile"],
     source=["profile_package.py"],
     required="-o ${TARGET.abspath} ${SOURCE.abspath}"
+))
+target.extend(env.CProfileEagerImport(
+    target=["turbo_turtle_import.cprofile.eager"],
+    source=["profile_package.py"],
+    required="-o ${TARGET.abspath} ${SOURCE.abspath}",
 ))
 
 # Help/usage
