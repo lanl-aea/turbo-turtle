@@ -160,7 +160,7 @@ if __name__ == "__main__":
     if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         _gui()
     else:
-        parser = parsers.partition_parser(basename=basename)
+        parser = parsers.mesh_parser(basename=basename)
         try:
             args, unknown = parser.parse_known_args()
         except SystemExit as err:
