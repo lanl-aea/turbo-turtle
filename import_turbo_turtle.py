@@ -2,7 +2,7 @@ import argparse
 import importlib
 
 
-def get_parser() -> argparse.Namspace:
+def get_parser() -> argparse.Namespace:
     parser = argparse.ArgumentParser("Import modules of turbo turtle. Always performs package import")
     parser.add_argument(
         "MODULE",
