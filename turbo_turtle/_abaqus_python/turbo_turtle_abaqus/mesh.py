@@ -12,6 +12,7 @@ parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
 import parsers
 import _abaqus_utilities
+import _mixed_settings
 
 
 def main(input_file, element_type,
@@ -66,6 +67,7 @@ def mesh(element_type,
     part.seedPart(size=global_seed, deviationFactor=0.1, minSizeFactor=0.1)
 
     element_type_object = _abaqus_utilities.return_abaqus_constant_or_exit(element_type)
+
     # TODO: enable STANDARD/EXPLICIT switch?
     mesh_element_type = mesh.ElemType(elemCode=element_type_object, elemLibrary=abaqusConstants.STANDARD)
 
@@ -125,7 +127,7 @@ def _gui_get_inputs():
 
     part_name, element_type, global_seed = abaqus.getInputs(
         dialogTitle='Turbo Turtle Mesh',
-        label=_mixed_settings_mesh_gui_help_string,
+        label=_mixed_settings._mesh_gui_help_string,
         fields=fields
     )
 
