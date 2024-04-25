@@ -14,6 +14,7 @@ New Features
   By `Kyle Brindley`_.
 - Add a ``fetch`` subcommand to retrieve user manual and tutorial files (:issue:`145`, :merge:`143`). By `Kyle
   Brindley`_.
+- Lazy import of submodules (:merge:`152`). By `Kyle Brindley`_.
 
 Bug fixes
 =========
@@ -39,6 +40,7 @@ Internal Changes
 - Use SCons task for flake8 style guide checks (:merge:`147`). By `Kyle Brindley`_.
 - Add a draft SCons task for project profiling (:merge:`150`). By `Kyle Brindley`_.
 - Add lazy loader package to CI environment (:issue:`163`, :merge:`151`). By `Kyle Brindley`_.
+- Add partial submodule imports to cProfile SCons task (:merge:`153`). By `Kyle Brindley`_.
 
 Enhancements
 ============
