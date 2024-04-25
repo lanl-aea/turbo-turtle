@@ -51,7 +51,7 @@ target = []
 # Package import
 target.extend(env.CProfile(
     target=["turbo_turtle_import.cprofile"],
-    source=["cProfile.py"],
+    source=["profile_package.py"],
     required="-o ${TARGET.abspath} ${SOURCE.abspath}"
 ))
 
