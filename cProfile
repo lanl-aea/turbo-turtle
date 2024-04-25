@@ -51,11 +51,11 @@ env.Append(BUILDERS={
 # Collector alias
 target = []
 
-for builder, extension in [(env.CProfile, ".cprofile"), (env.CProfileEager, ".cprofile.eager")]:
+for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager, ".cprofile.eager")]:
     # Package import
     target.extend(builder(
         target=["turbo_turtle_import${extension}"],
-        source=["profile_package.py"],
+        source=["import_turbo_turtle.py"],
         required="-o ${TARGET.abspath} ${SOURCE.abspath}",
         extension=extension
     ))
