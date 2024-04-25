@@ -53,7 +53,7 @@ workflow = []
 for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager, ".cprofile.eager")]:
     # Package import
     workflow.extend(builder(
-        target=["package_import${extension}"],
+        target=["import_package${extension}"],
         source=["import_turbo_turtle.py"],
         required="-o ${TARGET.abspath} ${SOURCE.abspath}",
         options="",
@@ -62,7 +62,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
 
     # SCons extensions import
     workflow.extend(builder(
-        target=["scons_extensions_import${extension}"],
+        target=["import_scons_extensions${extension}"],
         source=["import_turbo_turtle.py"],
         required="-o ${TARGET.abspath} ${SOURCE.abspath}",
         options="scons_extensions",
@@ -71,7 +71,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
 
     # SCons extensions import
     workflow.extend(builder(
-        target=["geometry_xyplot_import${extension}"],
+        target=["import_geometry_xyplot${extension}"],
         source=["import_turbo_turtle.py"],
         required="-o ${TARGET.abspath} ${SOURCE.abspath}",
         options="geometry_xyplot",
@@ -80,7 +80,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
 
     # Help/usage
     workflow.extend(builder(
-        target=["turbo_turtle_help${extension}"],
+        target=["cli_help${extension}"],
         source=["cProfile"],
         options="--help",
         extension=extension
@@ -88,7 +88,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
 
     # Geometry-XYPlot
     workflow.extend(builder(
-        target=["turbo_turtle_geometryxyplot${extension}", "vase${extension}.png"],
+        target=["cli_geometryxyplot${extension}", "vase${extension}.png"],
         source=["turbo_turtle/tests/vase.csv"],
         options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
         extension=extension
@@ -96,7 +96,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
 
     # Geometry
     workflow.extend(builder(
-        target=["turbo_turtle_geometry${extension}", "vase${extension}.cae"],
+        target=["cli_geometry${extension}", "vase${extension}.cae"],
         source=["turbo_turtle/tests/vase.csv"],
         options="geometry --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
         extension=extension
