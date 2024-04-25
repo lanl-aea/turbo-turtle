@@ -15,7 +15,7 @@ filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-import parsers
+from turbo_turtle_abaqus import parsers
 import vertices
 import _abaqus_utilities
 import _mixed_settings

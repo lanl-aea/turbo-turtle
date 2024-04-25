@@ -11,9 +11,9 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers
-from turbo_turtle_abaqus import _abaqus_utilities
-from turbo_turtle_abaqus import _mixed_settings
+from turbo_turtle_abaqus import parsers from turbo_turtle_abaqus import parsers
+from turbo_turtle_abaqus import parsers import _abaqus_utilities
+from turbo_turtle_abaqus import parsers import _mixed_settings
 
 
 def main(input_file, element_type,
