@@ -27,6 +27,10 @@ default_output = None
 
 
 def get_parser() -> argparse.Namespace():
+    """Get CLI parser
+
+    :returns: profiler.py CLI parser
+    """
     parser = argparse.ArgumentParser(
         description="Read multiple cProfile files and plot. Files *must* use extensions ``.cprofile.{lazy,eager}``"
     )
@@ -51,6 +55,16 @@ def get_parser() -> argparse.Namespace():
 
 
 def smallest_stem(path: pathlib.Path) -> str:
+    """Return the smallest stem from a pathlib Path object by removing all suffixes
+
+    .. warning::
+
+       requires Python >=3.9
+
+    :param path: pathlib Path object to process
+
+    :returns: shortest stem (all suffixes removed)
+    """
     # Python >=3.9 for the ``.removesuffix`` method
     return str(path.name).removesuffix("".join(path.suffixes))
 
@@ -66,13 +80,12 @@ def plot(
     If no output file is specified, open a matplotlib figure window
 
     :param dataset: Xarray dataset to plot
+    :param figsize: Matplotlib figure size argument (width, height) in inches
     :param output: Output file to save. Optional.
     :param **kwargs: ``dataset.plot.scatter`` keyword arguments
     """
-
     figure = matplotlib.pyplot.figure(figsize=figsize)
     dataset.plot.scatter(**kwargs)
-
     if output is not None:
         figure.savefig(output)
     else:
@@ -80,6 +93,7 @@ def plot(
 
 
 def main():
+    """Read cProfile files and plot"""
     parser = get_parser()
     args = parser.parse_args()
 
