@@ -8,7 +8,7 @@ dependencies:
   - conda-build ==3.28
   - flake8
   - ipython
-  - lazy_loader
+  - lazy_loader >=0.4
   - mypy
   - numpy
   - pandas

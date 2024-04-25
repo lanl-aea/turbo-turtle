@@ -23,7 +23,7 @@ classifiers = [
 dynamic = ["version"]
 dependencies = [
     "lazy_loader >=0.4",
-    "waves >=0.7",
+    "waves >=0.7.2",
     "scons >=4"
 ]
 
