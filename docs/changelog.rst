@@ -38,6 +38,7 @@ Internal Changes
   :merge:`146`). By `Kyle Brindley`_.
 - Use SCons task for flake8 style guide checks (:merge:`147`). By `Kyle Brindley`_.
 - Add a draft SCons task for project profiling (:merge:`150`). By `Kyle Brindley`_.
+- Add lazy loader package to CI environment (:issue:`163`, :merge:`151`). By `Kyle Brindley`_.
 
 Enhancements
 ============
