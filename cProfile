@@ -49,11 +49,11 @@ env.Append(BUILDERS={
 })
 
 # Collector alias
-target = []
+workflow = []
 
 for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager, ".cprofile.eager")]:
     # Package import
-    target.extend(builder(
+    workflow.extend(builder(
         target=["turbo_turtle_import${extension}"],
         source=["import_turbo_turtle.py"],
         required="-o ${TARGET.abspath} ${SOURCE.abspath}",
@@ -61,7 +61,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
     ))
 
     # Help/usage
-    target.extend(builder(
+    workflow.extend(builder(
         target=["turbo_turtle_help${extension}"],
         source=["cProfile"],
         options="--help",
@@ -69,12 +69,19 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
     ))
 
     # Geometry-XYPlot
-    target.extend(builder(
+    workflow.extend(builder(
         target=["turbo_turtle_geometryxyplot${extension}", "vase${extension}.png"],
         source=["turbo_turtle/tests/vase.csv"],
         options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
         extension=extension
     ))
 
-env.AlwaysBuild(target)
-env.Alias("cProfile", target)
+profiles = [node for node in workflow if str(node).endswith(".cprofile.lazy") or str(node).endswith(".cprofile.eager")]
+workflow.extend(env.Command(
+    target=["profiles.png"],
+    source=profiles,
+    action=["python profiles.py ${SOURCES.abspath} -o ${TARGET.abspath}"]
+))
+
+env.AlwaysBuild(workflow)
+env.Alias("cProfile", workflow)

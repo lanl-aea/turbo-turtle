@@ -2,6 +2,10 @@
 
 Files *must* use extensions ``*.cprofile.{lazy,eager}``
 
+.. warning::
+
+   requires Python >=3.9
+
 .. code-block::
 
    $ python -m cProfile -m profiler.cprofile.lazy -m turbo_turtle._main
@@ -35,6 +39,7 @@ def get_parser() -> argparse.Namespace():
 
 
 def smallest_stem(path):
+    # Python >=3.9 for the ``.removesuffix`` method
     return str(path.name).removesuffix("".join(path.suffixes))
 
 
