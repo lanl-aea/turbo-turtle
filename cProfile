@@ -45,37 +45,36 @@ def cprofile(
 
 env.Append(BUILDERS={
     "CProfile": cprofile(),
-    "CProfileEagerImport": cprofile(program="EAGER_IMPORT=eager python -m cProfile", rows=0)
+    "CProfileEager": cprofile(program="EAGER_IMPORT=eager python -m cProfile", rows=0)
 })
 
 # Collector alias
 target = []
 
-# Package import
-target.extend(env.CProfile(
-    target=["turbo_turtle_import.cprofile"],
-    source=["profile_package.py"],
-    required="-o ${TARGET.abspath} ${SOURCE.abspath}"
-))
-target.extend(env.CProfileEagerImport(
-    target=["turbo_turtle_import.cprofile.eager"],
-    source=["profile_package.py"],
-    required="-o ${TARGET.abspath} ${SOURCE.abspath}",
-))
+for builder, extension in [(env.CProfile, ".cprofile"), (env.CProfileEager, ".cprofile.eager")]:
+    # Package import
+    target.extend(builder(
+        target=["turbo_turtle_import${extension}"],
+        source=["profile_package.py"],
+        required="-o ${TARGET.abspath} ${SOURCE.abspath}",
+        extension=extension
+    ))
 
-# Help/usage
-target.extend(env.CProfile(
-    target=["turbo_turtle_help.cprofile"],
-    source=["cProfile"],
-    options="--help"
-))
+    # Help/usage
+    target.extend(builder(
+        target=["turbo_turtle_help${extension}"],
+        source=["cProfile"],
+        options="--help",
+        extension=extension
+    ))
 
-# Geometry-XYPlot
-target.extend(env.CProfile(
-    target=["turbo_turtle_geometryxyplot.cprofile", "vase.png"],
-    source=["turbo_turtle/tests/vase.csv"],
-    options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}"
-))
+    # Geometry-XYPlot
+    target.extend(builder(
+        target=["turbo_turtle_geometryxyplot${extension}", "vase${extension}.png"],
+        source=["turbo_turtle/tests/vase.csv"],
+        options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
+        extension=extension
+    ))
 
 env.AlwaysBuild(target)
 env.Alias("cProfile", target)
