@@ -1,6 +1,4 @@
 #! /usr/bin/env python
-import pathlib
-
 import SCons.Builder
 
 
@@ -47,22 +45,29 @@ def cprofile(
 
 env.Append(BUILDERS={"CProfile": cprofile()})
 
-# Help/Usage
-cprofile_target = pathlib.Path("turbo_turtle_help").with_suffix(".cprofile")
-target = env.CProfile(
-    target=[cprofile_target],
+# Collector alias
+target = []
+
+# Package import
+target.extend(env.CProfile(
+    target=["turbo_turtle_import.cprofile"],
+    source=["cProfile.py"],
+    required="-o ${TARGET.abspath} ${SOURCE.abspath}"
+))
+
+# Help/usage
+target.extend(env.CProfile(
+    target=["turbo_turtle_help.cprofile"],
     source=["cProfile"],
     options="--help"
-)
-env.AlwaysBuild(target)
-env.Alias("cProfile", target)
+))
 
 # Geometry-XYPlot
-cprofile_target = pathlib.Path("turbo_turtle_geometryxyplot").with_suffix(".cprofile")
-target = env.CProfile(
-    target=[cprofile_target, "vase.png"],
+target.extend(env.CProfile(
+    target=["turbo_turtle_geometryxyplot.cprofile", "vase.png"],
     source=["turbo_turtle/tests/vase.csv"],
     options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}"
-)
+))
+
 env.AlwaysBuild(target)
 env.Alias("cProfile", target)
