@@ -54,27 +54,27 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
     # Package import
     workflow.extend(builder(
         target=["import_package${extension}"],
-        source=["import_turbo_turtle.py"],
+        source=["import_package.py"],
         required="-o ${TARGET.abspath} ${SOURCE.abspath}",
-        options="",
+        options="--package turbo_turtle",
         extension=extension
     ))
 
     # SCons extensions import
     workflow.extend(builder(
         target=["import_scons_extensions${extension}"],
-        source=["import_turbo_turtle.py"],
+        source=["import_package.py"],
         required="-o ${TARGET.abspath} ${SOURCE.abspath}",
-        options="scons_extensions",
+        options="--package turbo_turtle --module scons_extensions",
         extension=extension
     ))
 
     # SCons extensions import
     workflow.extend(builder(
         target=["import_geometry_xyplot${extension}"],
-        source=["import_turbo_turtle.py"],
+        source=["import_package.py"],
         required="-o ${TARGET.abspath} ${SOURCE.abspath}",
-        options="geometry_xyplot",
+        options="--package turbo_turtle --module geometry_xyplot",
         extension=extension
     ))
 
