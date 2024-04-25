@@ -74,6 +74,14 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
         extension=extension
     ))
 
+    # Geometry
+    workflow.extend(builder(
+        target=["turbo_turtle_geometry${extension}", "vase${extension}.cae"],
+        source=["turbo_turtle/tests/vase.csv"],
+        options="geometry --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
+        extension=extension
+    ))
+
 # Summary total time image
 profiles = [node for node in workflow if str(node).endswith(".cprofile.lazy") or str(node).endswith(".cprofile.eager")]
 workflow.extend(env.Command(
