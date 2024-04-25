@@ -12,7 +12,7 @@ def get_parser() -> argparse.Namspace:
     return parser
 
 
-def main():
+def main() -> None:
     parser = get_parser()
     args = parser.parse_args()
 

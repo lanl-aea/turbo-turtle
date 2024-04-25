@@ -93,7 +93,7 @@ def plot(
         matplotlib.pyplot.show()
 
 
-def main():
+def main() -> None:
     """Read cProfile files and plot"""
     parser = get_parser()
     args = parser.parse_args()
