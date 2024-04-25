@@ -69,7 +69,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
 
     # SCons extensions import
     workflow.extend(builder(
-        target=["scons_extensions_import${extension}"],
+        target=["geometry_xyplot_import${extension}"],
         source=["import_turbo_turtle.py"],
         options="geometry_xyplot",
         extension=extension
