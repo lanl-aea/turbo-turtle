@@ -1,20 +1,68 @@
 #! /usr/bin/env python
 import pathlib
 
+import SCons.Builder
+
 
 # Inherit the parent construction environment
 Import("env")
 
-cprofile_target = pathlib.Path("turbo_turtle").with_suffix(".cprofile")
-target = env.Command(
+
+def cprofile(
+    program: str = "python -m cProfile",
+    required: str = "-o ${TARGET.abspath} -m turbo_turtle._main",
+    options: str = "",
+    selection: str = "turbo-turtle",
+    rows: int = 10
+) -> SCons.Builder.Builder:
+    """cProfile Builder
+
+    .. code-block::
+       :caption: action construction
+
+       ${program} ${required} ${options} >/dev/null
+       python -c \"import pstats; p = pstats.Stats('${TARGET.abspath}'); p.sort_stats(pstats.SortKey.CUMULATIVE).print_stats('${selection}', ${rows})\""
+
+    :param program: cProfile command line executable
+    :param required: cProfile required options
+    :param options: Options for the profiled script
+
+    :returns: SCons cProfile Builder
+    """
+    action = [
+        "${program} ${required} ${options} >/dev/null",
+        "python -c \"import pstats; p = pstats.Stats('${TARGET.abspath}'); " \
+            "p.sort_stats(pstats.SortKey.CUMULATIVE).print_stats('${selection}', ${rows})\""
+    ]
+    builder = SCons.Builder.Builder(
+        action=action,
+        program=program,
+        required=required,
+        options=options,
+        selection=selection,
+        rows=rows
+    )
+    return builder
+
+
+env.Append(BUILDERS={"CProfile": cprofile()})
+
+# Help/Usage
+cprofile_target = pathlib.Path("turbo_turtle_help").with_suffix(".cprofile")
+target = env.CProfile(
+    target=[cprofile_target],
+    source=["cProfile"],
+    options="--help"
+)
+env.AlwaysBuild(target)
+env.Alias("cProfile", target)
+
+# Geometry-XYPlot
+cprofile_target = pathlib.Path("turbo_turtle_geometryxyplot").with_suffix(".cprofile")
+target = env.CProfile(
     target=[cprofile_target, "vase.png"],
     source=["turbo_turtle/tests/vase.csv"],
-    action=[
-        "python -m cProfile -o ${TARGET.abspath} -m turbo_turtle._main geometry-xyplot --input-file ${SOURCE.abspath} " \
-            "--output-file ${TARGETS[1].abspath} >/dev/null",
-        "python -c \"import pstats; p = pstats.Stats('${TARGET.abspath}'); " \
-            "p.sort_stats(pstats.SortKey.CUMULATIVE).print_stats('turbo-turtle', 30)\""
-    ]
+    options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}"
 )
 env.AlwaysBuild(target)
 env.Alias("cProfile", target)
