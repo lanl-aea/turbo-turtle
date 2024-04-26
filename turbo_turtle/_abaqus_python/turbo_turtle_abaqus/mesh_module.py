@@ -87,6 +87,36 @@ def mesh(element_type,
     part.generateMesh()
 
 
+def _gui_get_default_elem_type(model_name, part_name):
+    """Set default element types for the _gui_get_inputs_function
+
+    Use a one-time dump of the Abaqus default element types for known part dimensionality
+
+    :param str model_name: model to query in the Abaqus model database
+    :param str part_name: part to query in the specified Abaqus model
+
+    :return: element type from a hard-coded mapping of Abaqus default element types
+    :rtype: str
+    """
+    import abaqus
+
+    known_dimensions = {  # Abaqus 2023.HF5 default element types for Abaqus Standard/Explicit dimensions
+        'Axisymmetric': 'CAX4R',
+        '3D': 'C3D8R',
+        '2D Planar': 'CPS4R'
+    }
+
+    part = abaqus.mdb.models[model_name].parts[part_name]
+    geometry_properties = part.queryGeometry(printResults=False)
+    dimensionality = geometry_properties['space']
+
+    elem_type = known_dimensions.get(dimensionality)  # Returns None if dimensionality is not a key in known_dimensions
+    if elem_type is None:
+        elem_type = ''  # Will also show up as a blank string in the Abaqus/CAE GUI inputs dialog box
+
+    return elem_type
+
+
 def _gui_get_inputs():
     """Mesh Interactive Inputs
 
@@ -114,6 +144,8 @@ def _gui_get_inputs():
     """
     import abaqus
 
+    model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
+
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
     except AttributeError:
@@ -122,7 +154,7 @@ def _gui_get_inputs():
 
     fields = (
         ('Part Name:', default_part_name),
-        ('Element Type:', ''),
+        ('Element Type:', _gui_get_default_elem_type(model_name, default_part_name)),
         ('Global Seed:', str(parsers.mesh_defaults['global_seed']))
     )
 
@@ -140,8 +172,6 @@ def _gui_get_inputs():
         if not element_type:
             error_message = 'Error: You must specify an element type for meshing'
             raise RuntimeError(error_message)
-
-        model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
 
         user_inputs = {'element_type': element_type, 'model_name': model_name, 'part_name': part_name,
                        'global_seed': float(global_seed)}
