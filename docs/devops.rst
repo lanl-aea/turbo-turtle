@@ -51,7 +51,7 @@ The Turbo-Turtle Abaqus Python package is organized in the directory structure a
    │   ├── image.py
    │   ├── __init__.py
    │   ├── merge.py
-   │   ├── mesh.py
+   │   ├── mesh_module.py
    │   ├── _mixed_utilities.py
    │   ├── parsers.py
    │   ├── partition.py

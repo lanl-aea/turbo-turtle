@@ -172,7 +172,7 @@ partition
 mesh
 ====
 
-.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.mesh
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.mesh_module
    :members:
    :private-members:
 

@@ -101,7 +101,7 @@ def mesh(args, command):
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
     """
-    script = _settings._abaqus_python_abspath / "mesh.py"
+    script = _settings._abaqus_python_abspath / "mesh_module.py"
 
     command = f"{command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "

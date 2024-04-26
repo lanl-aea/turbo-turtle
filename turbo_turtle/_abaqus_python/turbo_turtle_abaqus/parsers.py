@@ -328,7 +328,7 @@ mesh_cli_help = "Mesh an Abaqus part from a global seed"
 mesh_cli_description = "Mesh an Abaqus part from a global seed"
 
 
-def mesh_parser(basename="mesh.py", add_help=True, description=mesh_cli_description, cubit=False):
+def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_description, cubit=False):
     """Return the mesh subcommand parser
 
     :param str basename: Explicit script basename for the usage.
