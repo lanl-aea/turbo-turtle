@@ -59,7 +59,7 @@ toolset.registerKernelMenuButton(
 # Partition Gui Plugin
 toolset.registerKernelMenuButton(
     buttonText='Turbo-Turtle|Mesh',
-    moduleName='turbo_turtle_abaqus.mesh', functionName='_gui()',
+    moduleName='turbo_turtle_abaqus.mesh_module', functionName='_gui()',
     applicableModules=('Mesh', ),
     icon=afxCreateIcon('turboTurtleIcon.png'),
     helpUrl=_mixed_settings._gui_docs_file,
