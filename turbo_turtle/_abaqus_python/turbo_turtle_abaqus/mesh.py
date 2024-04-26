@@ -14,8 +14,8 @@ sys.path.insert(0, grandparent)
 from turbo_turtle_abaqus import parsers
 from turbo_turtle_abaqus import _abaqus_utilities
 from turbo_turtle_abaqus import _mixed_settings
-print(grandparent)
-print(sys.path)
+
+
 def main(input_file, element_type,
          output_file=parsers.mesh_defaults["output_file"],
          model_name=parsers.mesh_defaults["model_name"],
@@ -60,8 +60,6 @@ def mesh(element_type,
     import mesh
     import abaqus
     import abaqusConstants
-
-    print(inspect.getmembers(mesh, inspect.isfunction))
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
