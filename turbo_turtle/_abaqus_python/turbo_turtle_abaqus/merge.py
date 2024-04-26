@@ -7,9 +7,10 @@ import inspect
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
-sys.path.insert(0, parent)
+grandparent = os.path.dirname(parent)
+sys.path.insert(0, grandparent)
 from turbo_turtle_abaqus import parsers
-import _mixed_utilities
+from turbo_turtle_abaqus import _mixed_utilities
 
 
 def main(input_file, output_file,

@@ -11,8 +11,9 @@ import unittest
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
-sys.path.insert(0, parent)
-import _mixed_utilities
+grandparent = os.path.dirname(parent)
+sys.path.insert(0, grandparent)
+from turbo_turtle_abaqus import _mixed_utilities
 
 
 class TestMixedUtilities(unittest.TestCase):

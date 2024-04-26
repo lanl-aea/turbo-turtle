@@ -14,8 +14,9 @@ import numpy
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
-sys.path.insert(0, parent)
-import vertices
+grandparent = os.path.dirname(parent)
+sys.path.insert(0, grandparent)
+from turbo_turtle_abaqus import vertices
 
 
 class TestVertices(unittest.TestCase):

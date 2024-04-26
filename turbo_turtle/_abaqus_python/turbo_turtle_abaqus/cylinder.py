@@ -7,12 +7,13 @@ import numpy
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
-sys.path.insert(0, parent)
+grandparent = os.path.dirname(parent)
+sys.path.insert(0, grandparent)
 from turbo_turtle_abaqus import parsers
-import vertices
-import geometry
-import _abaqus_utilities
-import _mixed_settings
+from turbo_turtle_abaqus import vertices
+from turbo_turtle_abaqus import geometry
+from turbo_turtle_abaqus import _abaqus_utilities
+from turbo_turtle_abaqus import _mixed_settings
 
 
 def main(inner_radius, outer_radius, height, output_file,
