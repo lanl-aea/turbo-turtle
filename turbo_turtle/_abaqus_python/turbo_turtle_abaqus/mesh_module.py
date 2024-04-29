@@ -149,7 +149,8 @@ def _gui_get_inputs():
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
     except AttributeError:
-        print('Warning: could not determine a default part name using the current viewport')
+        print("Warning: could not determine a default part name using the current viewport. " \
+            "Using default '{}'".format(parsers.mesh_defaults['part_name'][0]))
         default_part_name = parsers.mesh_defaults['part_name'][0]  # part_name defaults to list of length 1
 
     fields = (
