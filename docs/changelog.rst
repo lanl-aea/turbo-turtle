@@ -28,10 +28,14 @@ Documentation
 - Update SCons example in user manual to build both available backends: Abaqus and Cubit (:issue:`158`, :merge:`142`).
   By `Kyle Brindley`_.
 - Update man page and documentation to include full subcommand and API (:merge:`148`). By `Kyle Brindley`_.
+- Update the GUI documentation describing how to run and get more information about a plug-in (:issue:`149`,
+  :merge:`131`). By `Thomas Roberts`_.
 
 Internal Changes
 ================
+- Work-in-progress support for Abaqus CAE GUI sphere capability (:issue:`152`, :merge:`133`). By `Thomas Roberts`_.
 - Improved unit tests for the CLI builders (:issue:`151`, :merge:`135`). By `Kyle Brindley`_.
+- Work-in-progress support for Abaqus CAE GUI cylinder capability (:issue:`150`, :merge:`132`). By `Thomas Roberts`_.
 - Add the user manual SCons demo to the system tests (:issue:`144`, :merge:`141`). By `Kyle Brindley`_.
 - Use the full Abaqus session object namespace (:issue:`140`, :merge:`144`). By `Kyle Brindley`_.
 - Add PEP-8 partial style guide checks to CI jobs (:issue:`160`, :merge:`145`). By `Kyle Brindley`_.
@@ -53,16 +57,12 @@ v0.11.2 (2024-03-29)
 
 Documentation
 =============
-- Update the GUI documentation describing how to run and get more information about a plug-in (:issue:`149`,
-  :merge:`131`). By `Thomas Roberts`_.
 - Use built-in Abaqus/CAE plug-in documentation features to display GUI plug-in help messages and link to documentation
   in the Abaqus/CAE GUI (:issue:`142`, :merge:`129`). By `Thomas Roberts`_.
 - Improve Abaqus geometry error message (:merge:`124`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
-- Work-in-progress support for Abaqus CAE GUI sphere capability (:issue:`152`, :merge:`133`). By `Thomas Roberts`_.
-- Work-in-progress support for Abaqus CAE GUI cylinder capability (:issue:`150`, :merge:`132`). By `Thomas Roberts`_.
 - Reduce duplicate logic in geometry and cylinder subcommand implementations (:issue:`123`, :merge:`126`). By `Kyle
   Brindley`_.
 - Make the Abaqus python package importable and change the GUI behavior to be a plug-in rather than direct execution on
