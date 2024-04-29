@@ -198,11 +198,11 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-    sys.exit(main(
-        args.input_file,
-        args.element_type,
-        output_file=args.output_file,
-        model_name=args.model_name,
-        part_name=args.part_name,
-        global_seed=args.global_seed
-    ))
+        sys.exit(main(
+            args.input_file,
+            args.element_type,
+            output_file=args.output_file,
+            model_name=args.model_name,
+            part_name=args.part_name,
+            global_seed=args.global_seed
+        ))
