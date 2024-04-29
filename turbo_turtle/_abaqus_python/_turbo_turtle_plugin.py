@@ -56,7 +56,7 @@ toolset.registerKernelMenuButton(
     author=_mixed_settings._author,
     description=_mixed_settings._partition_gui_help_string)
 
-# Partition Gui Plugin
+# Mesh Gui Plugin
 toolset.registerKernelMenuButton(
     buttonText='Turbo-Turtle|Mesh',
     moduleName='turbo_turtle_abaqus.mesh_module', functionName='_gui()',
