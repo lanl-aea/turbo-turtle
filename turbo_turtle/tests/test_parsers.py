@@ -82,6 +82,11 @@ subcommand_parser = {
         ["--input-file", "input_file"],
         []
     ),
+    "sets": (
+        "sets",
+        ["--input-file", "input_file"],
+        []
+    ),
     "mesh": (
         "mesh",
         ["--input-file", "input_file", "--element-type", "C3D8"],
