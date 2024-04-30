@@ -36,6 +36,72 @@ def return_abaqus_constant_or_exit(*args, **kwargs):
     return return_abaqus_constant(*args, **kwargs)
 
 
+def _validate_names_masks(names, masks):
+    """Convert strings to lists and check matching lengths
+
+    :param list[str] names: List of set names to create
+    :param list[str] masks: List of mask strings
+
+    :raises ValueError: When the lengths of name and mask do not match
+    """
+    if isinstance(names, str):
+        names = [names]
+    if isinstance(masks, str):
+        masks = [masks]
+
+    names_length = len(names)
+    masks_length = len(masks)
+    if names_length != masks_length:
+        raise ValueError("The number of names ({}) and masks ({}) must match".format(name_length, mask_length))
+
+    return names, masks
+
+
+def set_from_mask(part, feature, names, masks):
+    """Create named set(s) from the geometric feature and mask(s)
+
+    :param abaqus.models[model].parts[part] part: Abaqus part object
+    :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges', 'vertices'
+    :param list[str] names: List of set names to create
+    :param list[str] masks: List of mask strings
+
+    :raises ValueError: When the lengths of name and mask do not match
+    """
+    names, masks = _validate_names_masks(names, masks)
+
+    attribute = getattr(part, feature)
+    for name, mask in zip(names, masks):
+        objects = attribute.getSequenceFromMask(mask=(mask, ))
+        part.Set(**{feature: objects, "name": name})
+
+
+def surface_from_mask(part, feature, names, masks):
+    """Create named surface(s) from the geometric feature and mask(s)
+
+    :param abaqus.models[model].parts[part] part: Abaqus part object
+    :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges'
+    :param list[str] names: List of set names to create
+    :param list[str] masks: List of mask strings
+
+    :raises ValueError: When the lengths of name and mask do not match
+    """
+    names, masks = _validate_names_masks(names, masks)
+
+    attribute = getattr(part, feature)
+    for name, mask in zip(names, masks):
+        objects = attribute.getSequenceFromMask(mask=(mask, ))
+
+        kwargs = {"name", name}
+        if feature == "faces":
+            kwargs.update({"side1Faces": objects))
+        elif feature == "edges":
+            kwargs.update({"side1Edges": objects))
+        else:
+            raise ValueError("Feature must be one of: faces, edges")
+
+        part.Surface(**kwargs)
+
+
 def _view_part(model_name, part_name, **kwargs):
     """Place a part in the current viewport as a GUI post-action
 
