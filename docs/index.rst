@@ -12,6 +12,7 @@
    :maxdepth: 2
    :caption: User Manual
 
+   installation
    user
    external_api
    cli
