@@ -36,59 +36,46 @@ def return_abaqus_constant_or_exit(*args, **kwargs):
     return return_abaqus_constant(*args, **kwargs)
 
 
-def _validate_names_masks(names, masks):
-    """Convert strings to lists and check matching lengths
+def part_dimensionality(part):
+    """Return part dimensionality as an int
 
-    :param list[str] names: List of set names to create
-    :param list[str] masks: List of mask strings
+    :param abaqus.models[model].parts[part] part: Abaqus part object
 
-    :raises ValueError: When the lengths of name and mask do not match
+    :returns: integer number of part dimensions
+    :rtype: int
     """
-    if isinstance(names, str):
-        names = [names]
-    if isinstance(masks, str):
-        masks = [masks]
-
-    names_length = len(names)
-    masks_length = len(masks)
-    if names_length != masks_length:
-        raise ValueError("The number of names ({}) and masks ({}) must match".format(name_length, mask_length))
-
-    return names, masks
+    known_geometries = {
+        'Axisymmetric': 2,
+        '2D Planar': 2,
+        '3D': 3
+    }
+    geometry_key = part.queryGeometry(printResults=False)["space"]
+    return known_geometries[geometry_key]
 
 
-def set_from_mask(part, feature, names, masks):
+def set_from_mask(part, feature, name_mask):
     """Create named set(s) from the geometric feature and mask(s)
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges', 'vertices'
-    :param list[str] names: List of set names to create
-    :param list[str] masks: List of mask strings
-
-    :raises ValueError: When the lengths of name and mask do not match
+    :param list[tuple[str, str]] name_mask: List of set name/mask tuples to create
     """
-    names, masks = _validate_names_masks(names, masks)
-
     attribute = getattr(part, feature)
-    for name, mask in zip(names, masks):
+    for name, mask in name_mask:
         objects = attribute.getSequenceFromMask(mask=(mask, ))
         part.Set(**{feature: objects, "name": name})
 
 
-def surface_from_mask(part, feature, names, masks):
+def surface_from_mask(part, feature, name_mask):
     """Create named surface(s) from the geometric feature and mask(s)
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges'
     :param list[str] names: List of set names to create
-    :param list[str] masks: List of mask strings
-
-    :raises ValueError: When the lengths of name and mask do not match
+    :param list[tuple[str, str]] name_mask: List of set name/mask tuples to create
     """
-    names, masks = _validate_names_masks(names, masks)
-
     attribute = getattr(part, feature)
-    for name, mask in zip(names, masks):
+    for name, mask in name_mask:
         objects = attribute.getSequenceFromMask(mask=(mask, ))
 
         kwargs = {"name", name}
