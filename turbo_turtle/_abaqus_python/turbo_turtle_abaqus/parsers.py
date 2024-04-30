@@ -325,11 +325,11 @@ sets_defaults = {
     "model_name": "Model-1",
     "part_name": "Part-1",
 }
-mesh_cli_help = "Create geometric sets from mask strings"
-mesh_cli_description = "Create geometric sets from mask strings"
+sets_cli_help = "Create geometric sets from mask strings"
+sets_cli_description = "Create geometric sets from mask strings"
 
 
-def sets_parser(basename="sets.py", add_help=True, description=mesh_cli_description, cubit=False):
+def sets_parser(basename="sets.py", add_help=True, description=sets_cli_description, cubit=False):
     """Return the sets subcommand parser
 
     :param str basename: Explicit script basename for the usage.
@@ -363,7 +363,7 @@ def sets_parser(basename="sets.py", add_help=True, description=mesh_cli_descript
         dest="face_sets",
         action="append",
         nargs=2,
-        meta_var=("name", "mask"),
+        metavar=("name", "mask"),
         default=sets_defaults["face_sets"],
         help="Face (surface) set (name, mask) pairs. Repeat once per set (default %(default)s)"
     )
@@ -372,7 +372,7 @@ def sets_parser(basename="sets.py", add_help=True, description=mesh_cli_descript
         dest="edge_sets",
         action="append",
         nargs=2,
-        meta_var=("name", "mask"),
+        metavar=("name", "mask"),
         default=sets_defaults["face_sets"],
         help="Edge set (name, mask) pairs. Repeat once per set (default %(default)s)"
     )
@@ -381,7 +381,7 @@ def sets_parser(basename="sets.py", add_help=True, description=mesh_cli_descript
         dest="vertex_sets",
         action="append",
         nargs=2,
-        meta_var=("name", "mask"),
+        metavar=("name", "mask"),
         default=sets_defaults["face_sets"],
         help="Vertex set (name, mask) pairs. Repeat once per set (default %(default)s)"
     )

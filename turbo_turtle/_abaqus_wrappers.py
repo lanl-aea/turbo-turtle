@@ -94,6 +94,29 @@ def partition(args, command):
     _utilities.run_command(command)
 
 
+def sets(args, command):
+    """Python 3 wrapper around the Abaqus Python
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sets_parser` CLI
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    :param str command: abaqus executable path
+    """
+    script = _settings._abaqus_python_abspath / "sets.py"
+
+    command = f"{command} cae -noGui {script} -- "
+    command += f"--input-file {args.input_file} "
+    if args.output_file is not None:
+        command += f"--output-file {args.output_file} "
+    command += f"--model-name {args.model_name} --part-name {args.part_name} "
+    if args.face_sets is not None:
+        command += _utilities.construct_append_options('--face-set', args.face_sets)} + " "
+    if args.edge_sets is not None:
+        command += _utilities.construct_append_options('--edge-set', args.edge_sets)} + " "
+    if args.vertex_sets is not None:
+        command += _utilities.construct_append_options('--vertex-set', args.vertex_sets)}
+    _utilities.run_command(command)
+
+
 def mesh(args, command):
     """Python 3 wrapper around the Abaqus Python
     :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.mesh_parser` CLI
