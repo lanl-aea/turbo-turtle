@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Brindley"
+  given-names: "Kyle"
+  orcid: "https://orcid.org/0000-0002-9637-4706"
+- family-names: "Roberts"
+  given-names: "Thomas"
+  orcid: "https://orcid.org/0000-0001-7121-1823"
+title: "turbo-turtle"
+url: "https://github.com/lanl/turbo-turtle"
+license: BSD-3-Clause
+date-released: 2024-04-30

@@ -37,6 +37,7 @@
    :caption: Reference
 
    license
+   citation
    release_philosophy
    changelog
    zreferences

@@ -27,6 +27,7 @@ env.Substfile("conf.py.in", SUBST_DICT=project_variables_substitution)
 
 copy_files = (
     ("README.txt", "#/README.rst"),
+    ("CITATION.bib", "#/CITATION.bib"),
     ("LICENSE.txt", "#/LICENSE.txt"),
 )
 for target, source in copy_files:
@@ -49,13 +50,14 @@ sphinx_configuration_files = [
 sphinx_source_files = [
     "README.rst",
     "SConscript",
-    "internal_api.rst",
-    "external_api.rst",
     "changelog.rst",
+    "citation.rst",
     "cli.rst",
     "devops.rst",
+    "external_api.rst",
     "gui.rst",
     "index.rst",
+    "internal_api.rst",
     "license.rst",
     "release_philosophy.rst",
     "user.rst",
