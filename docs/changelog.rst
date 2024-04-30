@@ -12,6 +12,10 @@ Documentation
 =============
 - Add BSD-3 license text and files. Add placeholder citation files (:issue:`166`, :merge:`159`). By `Kyle Brindley`_.
 
+Internal Changes
+================
+- Add GitHub actions and external conda package build recipe (:issue:`169`, :merge:`160`). By `Kyle Brindley`_.
+
 ********************
 v0.12.0 (2024-04-30)
 ********************
