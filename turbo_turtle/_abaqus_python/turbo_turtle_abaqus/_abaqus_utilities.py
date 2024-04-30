@@ -81,9 +81,9 @@ def surface_from_mask(part, feature, name_mask):
 
         kwargs = {"name", name}
         if feature == "faces":
-            kwargs.update({"side1Faces": objects))
+            kwargs.update({"side1Faces": objects})
         elif feature == "edges":
-            kwargs.update({"side1Edges": objects))
+            kwargs.update({"side1Edges": objects})
         else:
             raise ValueError("Feature must be one of: faces, edges")
 
