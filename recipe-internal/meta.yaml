@@ -5,9 +5,11 @@ package:
 
 about:
   home: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
-  summary: 'Partition hollow, spherical bodies using a turtle shell'
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  summary: 'Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models'
   description: |
-    Partition hollow, spherical bodies using a turtle shell
+    Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models
   doc_url: https://aea.re-pages.lanl.gov/python-projects/turbo_turtle/main/index.html
   dev_url: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
 

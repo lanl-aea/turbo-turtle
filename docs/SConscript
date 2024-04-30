@@ -27,6 +27,7 @@ env.Substfile("conf.py.in", SUBST_DICT=project_variables_substitution)
 
 copy_files = (
     ("README.txt", "#/README.rst"),
+    ("LICENSE.txt", "#/LICENSE.txt"),
 )
 for target, source in copy_files:
     Command(
@@ -38,7 +39,7 @@ for target, source in copy_files:
 # Things required for Sphinx configuration or missed by scanning *.rst and *.txt files
 sphinx_configuration_files = [
     "conf.py",
-    'references.bib',  # Found in conf.py, which is not currently scanned
+    "references.bib",  # Found in conf.py, which is not currently scanned
     "targets.txt",  # Found in conf.py, which is not currently scanned
     "turboTurtleLogo.png",
     "_static/custom.css",
@@ -55,6 +56,7 @@ sphinx_source_files = [
     "devops.rst",
     "gui.rst",
     "index.rst",
+    "license.rst",
     "release_philosophy.rst",
     "user.rst",
     "zreferences.rst"
@@ -67,7 +69,7 @@ tutorial_files_list = [
 ]
 copied_file_list = []
 for file_path in tutorial_files_list:
-    target = f'{file_path.parts[-2]}_{file_path.name}'
+    target = f"{file_path.parts[-2]}_{file_path.name}"
     Command(
         target=target,
         source=file_path,

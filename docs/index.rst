@@ -36,6 +36,7 @@
    :maxdepth: 1
    :caption: Reference
 
+   license
    release_philosophy
    changelog
    zreferences
