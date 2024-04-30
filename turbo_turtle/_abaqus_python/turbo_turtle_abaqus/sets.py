@@ -60,6 +60,12 @@ def main(
 
 
 def sets(
+    face_sets=parsers.sets_defaults["default_face_sets"],
+    edge_sets=parsers.sets_defaults["default_edge_sets"],
+    vertex_sets=parsers.sets_defaults["default_vertex_sets"],
+    model_name=parsers.sets_defaults["model_name"],
+    part_name=parsers.sets_defaults["part_name"]
+):
     """Create sets from masks
 
     :param list[tuple[str, str]] face_sets: Face set tuples (name, mask)
@@ -68,12 +74,6 @@ def sets(
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     """
-    face_sets=parsers.sets_defaults["default_face_sets"],
-    edge_sets=parsers.sets_defaults["default_edge_sets"],
-    vertex_sets=parsers.sets_defaults["default_vertex_sets"],
-    model_name=parsers.sets_defaults["model_name"],
-    part_name=parsers.sets_defaults["part_name"]
-):
     import abaqus
 
     model = abaqus.mdb.models[model_name]
