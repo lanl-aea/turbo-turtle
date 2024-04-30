@@ -8,6 +8,11 @@ Changelog
 v0.12.2 (unreleased)
 ********************
 
+New Features
+============
+- Abaqus implementation of a ``sets`` subcommand for programmatic set creation (:issue:`164`, :merge:`161`). By `Kyle
+  Brindley`_.
+
 ********************
 v0.12.1 (2024-04-30)
 ********************

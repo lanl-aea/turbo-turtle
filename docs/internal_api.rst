@@ -169,8 +169,15 @@ partition
    :members:
    :private-members:
 
-mesh
+sets
 ====
+
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.sets
+   :members:
+   :private-members:
+
+mesh_module
+===========
 
 .. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.mesh_module
    :members:

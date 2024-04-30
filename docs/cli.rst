@@ -90,6 +90,16 @@ partition
    :nodefault:
    :path: partition
 
+.. _sets_cli:
+
+sets
+----
+
+.. argparse::
+   :ref: turbo_turtle._main.get_parser
+   :nodefault:
+   :path: sets
+
 .. _mesh_cli:
 
 mesh

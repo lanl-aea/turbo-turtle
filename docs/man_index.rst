@@ -127,6 +127,20 @@ partition
    :nodefault:
    :path: partition
 
+.. _sets_cli:
+
+*********************
+|PROJECT| Subcommands
+*********************
+****
+sets
+****
+
+.. argparse::
+   :ref: turbo_turtle._main.get_parser
+   :nodefault:
+   :path: sets
+
 .. _mesh_cli:
 
 *********************
