@@ -71,7 +71,6 @@ def surface_from_mask(part, feature, name_mask):
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges'
-    :param list[str] names: List of set names to create
     :param list[tuple[str, str]] name_mask: List of set name/mask tuples to create
 
     :raises ValueError: If feature is not one of 'faces' or 'edges'
