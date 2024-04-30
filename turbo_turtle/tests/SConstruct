@@ -87,22 +87,7 @@ env.Append(BUILDERS={
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
         options="--model-name ${model_name} --part-name ${part_name}"
-    ),
-    # Deprecated CLI builders
-    # TODO: Remove these builders for version 1.0
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/127
-    "TurboTurtleSphere":
-        turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
-                                                          abaqus_command=[env['abaqus']]),
-    "TurboTurtlePartition":
-        turbo_turtle.scons_extensions.turbo_turtle_partition(program=env["turbo_turtle"],
-                                                             abaqus_command=[env['abaqus']]),
-    "TurboTurtleSphereCubit":
-        turbo_turtle.scons_extensions.turbo_turtle_sphere(program=env["turbo_turtle"],
-                                                          cubit_command=[env['cubit']], cubit=True),
-    "TurboTurtlePartitionCubit":
-        turbo_turtle.scons_extensions.turbo_turtle_partition(program=env["turbo_turtle"],
-                                                             cubit_command=[env['cubit']], cubit=True),
+    )
 })
 
 # API builders
@@ -268,37 +253,5 @@ for backend, extension in backend_options:
         model_name=f"scons-{interface}-sphere-{extension}",
         part_name=f"scons-{interface}-sphere-{extension}"
     )
-
-# Deprecated CLI builders
-# TODO: Remove these builders for version 1.0
-# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/127
-env.TurboTurtleSphere(
-    target=["scons-deprecated-sphere.cae"],
-    source=[project_configuration],
-    inner_radius=1.,
-    outer_radius=2.,
-    model_name="sphere",
-    part_name="sphere"
-)
-env.TurboTurtlePartition(
-    target=["scons-deprecated-partition.cae"],
-    source=["scons-deprecated-sphere.cae"],
-    model_name="sphere",
-    part_name="sphere"
-)
-env.TurboTurtleSphereCubit(
-    target=["scons-deprecated-sphere.cub"],
-    source=[project_configuration],
-    inner_radius=1.,
-    outer_radius=2.,
-    model_name="sphere",
-    part_name="sphere"
-)
-env.TurboTurtlePartitionCubit(
-    target=["scons-deprecated-partition.cub"],
-    source=["scons-deprecated-sphere.cub"],
-    model_name="sphere",
-    part_name="sphere"
-)
 
 waves.scons_extensions.project_help_message()

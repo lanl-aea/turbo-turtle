@@ -5,8 +5,13 @@ Changelog
 #########
 
 ********************
-v0.11.4 (unreleased)
+v0.12.0 (unreleased)
 ********************
+
+Breaking changes
+================
+- Remove the deprecated CLI builders prefixed with ``turbo_turtle_``. Replaced by more general builders in :ref:`0.11.0`
+  (:issue:`127`, :merge:`156`). By `Kyle Brindley`_.
 
 ********************
 v0.11.3 (2024-04-29)
@@ -110,6 +115,8 @@ Enhancements
 ============
 - Enforce positive floats and integers for CLI options requiring a positive value (:issue:`55`, :merge:`115`). By `Kyle
   Brindley`_.
+
+.. _0.11.0:
 
 ********************
 v0.11.0 (2024-02-15)
