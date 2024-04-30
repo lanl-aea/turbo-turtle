@@ -317,6 +317,78 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     return parser
 
 
+sets_defaults = {
+    "face_sets": None,
+    "edge_sets": None,
+    "vertex_sets": None,
+    "output_file": None,
+    "model_name": "Model-1",
+    "part_name": "Part-1",
+}
+mesh_cli_help = "Create geometric sets from mask strings"
+mesh_cli_description = "Create geometric sets from mask strings"
+
+
+def sets_parser(basename="sets.py", add_help=True, description=mesh_cli_description, cubit=False):
+    """Return the sets subcommand parser
+
+    :param str basename: Explicit script basename for the usage.
+    :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
+    :param str description: The ``description`` argument value for the ``argparse.ArgumentParser`` class interface
+
+    :returns: argparse parser
+    :rtype: argparse.ArgumentParser
+    """
+    part_name_help_cubit = ""
+    if cubit:
+        part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
+                               "ACIS compatibility. "
+    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
+
+    parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
+
+    required = parser.add_argument_group('required arguments')
+    required.add_argument("--input-file", type=str, required=True,
+                          help="Abaqus CAE input file")
+
+    optional = parser.add_argument_group('optional arguments')
+    optional.add_argument("--output-file", type=str, default=mesh_defaults["output_file"],
+                          help="Abaqus CAE output file (default: %(default)s)")
+    optional.add_argument("--model-name", type=str, default=mesh_defaults["model_name"],
+                          help="Abaqus model name (default: %(default)s)")
+    optional.add_argument("--part-name", type=str, default=mesh_defaults["part_name"],
+                          help=part_name_help)
+    optional.add_argument(
+        "--face-set",
+        dest="face_sets",
+        action="append",
+        nargs=2,
+        meta_var=("name", "mask"),
+        default=sets_defaults["face_sets"],
+        help="Face (surface) set (name, mask) pairs. Repeat once per set (default %(default)s)"
+    )
+    optional.add_argument(
+        "--edge-set",
+        dest="edge_sets",
+        action="append",
+        nargs=2,
+        meta_var=("name", "mask"),
+        default=sets_defaults["face_sets"],
+        help="Edge set (name, mask) pairs. Repeat once per set (default %(default)s)"
+    )
+    optional.add_argument(
+        "--vertex-set",
+        dest="vertex_sets",
+        action="append",
+        nargs=2,
+        meta_var=("name", "mask"),
+        default=sets_defaults["face_sets"],
+        help="Vertex set (name, mask) pairs. Repeat once per set (default %(default)s)"
+    )
+
+    return parser
+
+
 mesh_defaults = {
     "output_file": None,
     "model_name": "Model-1",
