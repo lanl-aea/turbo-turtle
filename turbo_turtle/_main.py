@@ -161,6 +161,7 @@ def get_parser():
     cylinder_parser = parsers.cylinder_parser(add_help=False, cubit=True)
     sphere_parser = parsers.sphere_parser(add_help=False, cubit=True)
     partition_parser = parsers.partition_parser(add_help=False, cubit=True)
+    sets_parser = parsers.sets_parser(add_help=False, cubit=True)
     mesh_parser = parsers.mesh_parser(add_help=False, cubit=True)
     image_parser = parsers.image_parser(add_help=False, cubit=True)
     merge_parser = parsers.merge_parser(add_help=False, cubit=True)
@@ -213,6 +214,13 @@ def get_parser():
         help=append_cubit_help(parsers.partition_cli_help),
         description=append_cubit_description(parsers.partition_cli_description),
         parents=[partition_parser]
+    )
+
+    subparsers.add_parser(
+        "sets",
+        help=append_cubit_help(parsers.sets_cli_help),
+        description=append_cubit_description(parsers.sets_cli_description),
+        parents=[sets_parser]
     )
 
     subparsers.add_parser(
