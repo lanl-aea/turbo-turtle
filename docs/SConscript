@@ -57,6 +57,7 @@ sphinx_source_files = [
     "external_api.rst",
     "gui.rst",
     "index.rst",
+    "installation.rst",
     "internal_api.rst",
     "license.rst",
     "release_philosophy.rst",
