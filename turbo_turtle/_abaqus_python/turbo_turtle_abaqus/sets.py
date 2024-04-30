@@ -17,9 +17,9 @@ from turbo_turtle_abaqus import _abaqus_utilities
 
 def main(
     input_file,
-    face_sets=parsers.sets_defaults["default_face_sets"],
-    edge_sets=parsers.sets_defaults["default_edge_sets"],
-    vertex_sets=parsers.sets_defaults["default_vertex_sets"],
+    face_sets=parsers.sets_defaults["face_sets"],
+    edge_sets=parsers.sets_defaults["edge_sets"],
+    vertex_sets=parsers.sets_defaults["vertex_sets"],
     output_file=parsers.sets_defaults["output_file"],
     model_name=parsers.sets_defaults["model_name"],
     part_name=parsers.sets_defaults["part_name"]
@@ -60,9 +60,9 @@ def main(
 
 
 def sets(
-    face_sets=parsers.sets_defaults["default_face_sets"],
-    edge_sets=parsers.sets_defaults["default_edge_sets"],
-    vertex_sets=parsers.sets_defaults["default_vertex_sets"],
+    face_sets=parsers.sets_defaults["face_sets"],
+    edge_sets=parsers.sets_defaults["edge_sets"],
+    vertex_sets=parsers.sets_defaults["vertex_sets"],
     model_name=parsers.sets_defaults["model_name"],
     part_name=parsers.sets_defaults["part_name"]
 ):
