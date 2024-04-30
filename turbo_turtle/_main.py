@@ -218,8 +218,11 @@ def get_parser():
 
     subparsers.add_parser(
         "sets",
-        help=append_cubit_help(parsers.sets_cli_help),
-        description=append_cubit_description(parsers.sets_cli_description),
+        # TODO: implement Cubit sets subcommand and remove the ``append=`` arguments
+        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
+        help=append_cubit_help(parsers.sets_cli_help, append="with Abaqus"),
+        description=append_cubit_description(parsers.sets_cli_description,
+                                             append="with Abaqus. Cubit implementation pending."),
         parents=[sets_parser]
     )
 
