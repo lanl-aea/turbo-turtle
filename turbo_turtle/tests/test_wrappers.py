@@ -117,6 +117,35 @@ partition_expected_options_sparse = [
 ]
 partition_unexpected_options_sparse = ["--output-file"]
 
+sets_namespace_sparse = {
+    "input_file": "input_file",
+    "output_file": None,
+    "model_name": "model_name",
+    "part_name": "part_name",
+    "face_sets": None,
+    "edge_sets": None,
+    "vertex_sets": None
+}
+sets_namespace_full = copy.deepcopy(sets_namespace_sparse)
+sets_namespace_full.update({
+    "output_file": "output_file",
+    "face_sets": [[1, 2]],
+    "edge_sets": [[3, 4]],
+    "vertex_sets": [[5, 6]],
+})
+sets_expected_options_sparse = [
+    command,
+    "--input-file",
+    "--model-name",
+    "--part-name"
+]
+sets_unexpected_options_sparse = [
+    "--output-file",
+    "--face-set",
+    "--edge-set",
+    "--vertex-set"
+]
+
 mesh_namespace_sparse = {
     "input_file": "input_file",
     "element_type": "element_type",
@@ -244,6 +273,18 @@ wrapper_tests = {
         "partition",
         partition_namespace_full,
         partition_expected_options_sparse + partition_unexpected_options_sparse,
+        []
+    ),
+    "sets: sparse": (
+        "sets",
+        sets_namespace_sparse,
+        sets_expected_options_sparse,
+        sets_unexpected_options_sparse
+    ),
+    "sets: full": (
+        "sets",
+        sets_namespace_full,
+        sets_expected_options_sparse + sets_unexpected_options_sparse,
         []
     ),
     "mesh: sparse": (
