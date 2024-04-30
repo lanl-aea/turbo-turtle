@@ -12,6 +12,8 @@ Breaking changes
 ================
 - Remove the deprecated CLI builders prefixed with ``turbo_turtle_``. Replaced by more general builders in :ref:`0.11.0`
   (:issue:`127`, :merge:`156`). By `Kyle Brindley`_.
+- Remove the deprecated ``--cubit`` CLI option. Replaced by ``--backend`` in :ref:`0.11.0` (:issue:`130`, :merge:`157`).
+  By `Kyle Brindley`_.
 
 ********************
 v0.11.3 (2024-04-29)

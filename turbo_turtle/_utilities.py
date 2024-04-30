@@ -116,10 +116,7 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
     :return: _wrappers, command. Wrapper module, executable command string.
     """
     keys = vars(args).keys()
-    # TODO: remove deprecated cubit flag
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
-    if ("backend" in keys and args.backend == "cubit") or \
-       ("cubit" in keys and args.cubit is True):
+    if ("backend" in keys and args.backend == "cubit"):
         command = find_command_or_exit(args.cubit_command)
         cubit_bin = find_cubit_bin([command])
         cubitx = cubit_bin / "cubitx"

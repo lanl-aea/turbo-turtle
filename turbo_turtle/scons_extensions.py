@@ -39,9 +39,6 @@ def _action(target: list, source: list, env) -> None:
     kwargs.update({
         "abaqus_command": _default_abaqus_options,
         "cubit_command": _default_cubit_options,
-        # TODO: remove deprecated cubit flag
-        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
-        "cubit": False,
         "backend": _default_backend
     })
 
@@ -141,9 +138,7 @@ def _api_builder(subcommand: str) -> SCons.Builder.Builder:
     :return: Turbo-Turtle API builder
     """
     kwargs = _get_defaults_dictionary(subcommand)
-    # TODO: remove deprecated cubit flag
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/130
-    varlist = list(kwargs.keys()) + ["abaqus_command", "cubit_command", "cubit", "backend"]
+    varlist = list(kwargs.keys()) + ["abaqus_command", "cubit_command", "backend"]
     internal_builder = SCons.Builder.Builder(
         action=[
             SCons.Action.Action(_action, varlist=varlist)
