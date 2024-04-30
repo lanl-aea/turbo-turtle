@@ -10,7 +10,7 @@ v0.12.1 (unreleased)
 
 Documentation
 =============
-- Add BSD-3 license text and files (:issue:`166`, :merge:`159`). By `Kyle Brindley`_.
+- Add BSD-3 license text and files. Add placeholder citation files (:issue:`166`, :merge:`159`). By `Kyle Brindley`_.
 
 ********************
 v0.12.0 (2024-04-30)
