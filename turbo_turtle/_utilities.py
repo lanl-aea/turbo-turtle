@@ -131,3 +131,33 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
         from turbo_turtle import _abaqus_wrappers as _wrappers
 
     return _wrappers, command
+
+
+def construct_append_options(
+    option: str,
+    array: typing.Iterable[typing.Tuple]
+) -> str:
+    """Construct a command string to match the argparse append action
+
+    Build the repeated option string for argparse appending options that accept more than one value
+
+    .. code-block::
+
+       python script.py --option 1 2 --option 3 4
+
+    .. code-block::
+
+       >>> option = "--option"
+       >>> array = [[1, 2], [3, 4]]
+       >>> construct_append_options(option, array)
+       "--option 1 2 --option 3 4"
+
+    :param option: Text for the option, e.g. ``--option``
+    :param array: 2D iterable of tuple arguments
+    """
+    command_string = ""
+    for row in array:
+        if row:
+            command_string += f" {option} " + " ".join(map(str, row))
+    command_string = command_string.strip()
+    return command_string
