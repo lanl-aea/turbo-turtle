@@ -36,6 +36,9 @@ def main(
     """
     import abaqus
 
+    if not any([face_sets, edge_sets, vertex_sets]):
+        _mixed_utilities.sys_exit("Must specify at least one of: face_sets, edge_sets, vertex_sets")
+
     try:
         if output_file is None:
             output_file = input_file
@@ -44,7 +47,13 @@ def main(
         with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
             shutil.copyfile(input_file, copy_file.name)
             abaqus.openMdb(pathName=copy_file.name)
-            mesh(element_type, model_name=model_name, part_name=part_name, global_seed=global_seed)
+            sets(
+                face_sets=face_sets,
+                edge_sets=edge_sets,
+                vertex_sets=vertex_sets,
+                model_name=model_name,
+                part_name=part_name
+            )
     except RuntimeError as err:
         _mixed_utilities.sys_exit(err.message)
     abaqus.mdb.saveAs(pathName=output_file)
@@ -95,6 +104,9 @@ if __name__ == "__main__":
 
         sys.exit(main(
             args.input_file,
+            face_sets=args.face_sets,
+            edge_sets=args.edge_sets,
+            vertex_sets=args.vertex_sets,
             output_file=args.output_file,
             model_name=args.model_name,
             part_name=args.part_name,
