@@ -365,7 +365,7 @@ def sets_parser(basename="sets.py", add_help=True, description=sets_cli_descript
         nargs=2,
         metavar=("name", "mask"),
         default=sets_defaults["face_sets"],
-        help="Face (surface) set (name, mask) pairs. Repeat once per set (default %(default)s)"
+        help="Face (surface) set (name, mask) pairs. Repeat once per set (default: %(default)s)"
     )
     optional.add_argument(
         "--edge-set",
@@ -374,7 +374,7 @@ def sets_parser(basename="sets.py", add_help=True, description=sets_cli_descript
         nargs=2,
         metavar=("name", "mask"),
         default=sets_defaults["face_sets"],
-        help="Edge set (name, mask) pairs. Repeat once per set (default %(default)s)"
+        help="Edge set (name, mask) pairs. Repeat once per set (default: %(default)s)"
     )
     optional.add_argument(
         "--vertex-set",
@@ -383,7 +383,7 @@ def sets_parser(basename="sets.py", add_help=True, description=sets_cli_descript
         nargs=2,
         metavar=("name", "mask"),
         default=sets_defaults["face_sets"],
-        help="Vertex set (name, mask) pairs. Repeat once per set (default %(default)s)"
+        help="Vertex set (name, mask) pairs. Repeat once per set (default: %(default)s)"
     )
 
     return parser
