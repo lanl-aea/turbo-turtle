@@ -655,8 +655,8 @@ def sets(
     input_file: str,
     output_file: typing.Optional[str] = parsers.sets_defaults["output_file"],
     part_name: typing.Optional[str] = parsers.sets_defaults["part_name"],
-    face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"]
-    edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"]
+    face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
+    edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
     vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name
