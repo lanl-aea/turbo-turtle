@@ -61,23 +61,14 @@ def _print_abaqus_path_location():
         print(_settings._abaqus_python_parent_abspath)
 
 
-def add_abaqus(parsers):
-    """Add the Abaqus command argument to each parser in the parsers list
-
-    :param list parsers: List of parsers to run ``add_argument`` for the abaqus command
-    """
-    for parser in parsers:
-        parser.add_argument("--abaqus-command", nargs="+", default=_settings._default_abaqus_options,
-                            help="Abaqus executable options (default: %(default)s)")
-
-
 def add_abaqus_and_cubit(parsers):
     """Add the Abaqus and Cubit command arguments to each parser in the parsers list
 
     :param list parsers: List of parsers to run ``add_argument`` for the command options
     """
-    add_abaqus(parsers)
     for parser in parsers:
+        parser.add_argument("--abaqus-command", nargs="+", default=_settings._default_abaqus_options,
+                            help="Abaqus executable options (default: %(default)s)")
         parser.add_argument("--cubit-command", nargs="+", default=_settings._default_cubit_options,
                             help="Cubit executable options (default: %(default)s)")
         parser.add_argument("--backend", choices=_settings._backend_choices, default=_settings._default_backend,
@@ -181,14 +172,12 @@ def get_parser():
         cylinder_parser,
         sphere_parser,
         partition_parser,
+        sets_parser,
         mesh_parser,
         image_parser,
         merge_parser,
         export_parser,
     ])
-    # TODO: Move to ``add_abaqus_and_cubit`` when Cubit implementation is created
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
-    add_abaqus([sets_parser])
 
     subparsers.add_parser(
         "geometry",
