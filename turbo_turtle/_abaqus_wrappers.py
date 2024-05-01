@@ -133,7 +133,7 @@ def mesh(args, command):
         command += f"--output-file {args.output_file} "
     command += f"--model-name {args.model_name} --part-name {args.part_name} "
     command += f"--global-seed {args.global_seed} "
-    if edge_seeds is not None:
+    if args.edge_seeds is not None:
         command += _utilities.construct_append_options('--edge-seed', args.edge_seeds)
     _utilities.run_command(command)
 
