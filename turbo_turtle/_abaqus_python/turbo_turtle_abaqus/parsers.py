@@ -405,7 +405,7 @@ mesh_cli_help = "Mesh an Abaqus part from a global seed and optional edge seeds"
 # TODO: Write a more descriptive behavior message
 mesh_cli_description = \
     "Mesh an Abaqus part from a global seed and optional edge seeds. The edge seeds must be positive numbers. If " \
-    "the seed is an integer, the edge with be seeded by number. If it is a float, the edge will be seeded by size."
+    "the seed is an integer, the edge will be seeded by number. If it is a float, the edge will be seeded by size."
 
 
 def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_description, cubit=False):
