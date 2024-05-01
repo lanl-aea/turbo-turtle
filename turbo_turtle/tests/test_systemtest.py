@@ -114,7 +114,7 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit
     return commands
 
 
-def setup_sets_commands(model, input_file, revolution_angle, face_sets, cubit,
+def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_sets, cubit,
                         turbo_turtle_command=turbo_turtle_command):
     model = pathlib.Path(model).with_suffix(".cae")
     if cubit:
@@ -124,10 +124,17 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, cubit,
         model, input_file, revolution_angle, 0., cubit,
         turbo_turtle_command=turbo_turtle_command
     )
-    face_sets = _utilities.construct_append_options("--face-set", face_sets)
+    if face_sets is not None:
+        face_sets = _utilities.construct_append_options("--face-set", face_sets)
+    else:
+        face_sets = ""
+    if edge_sets is not None:
+        edge_sets = _utilities.construct_append_options("--edge-set", edge_sets)
+    else:
+        edge_sets = ""
     sets_commands = [
         f"{turbo_turtle_command} sets --input-file {model} --model-name {model.stem} " \
-            f"--part-name {part_name} --output-file {model} {face_sets}"
+            f"--part-name {part_name} --output-file {model} {face_sets} {edge_sets}"
     ]
     if cubit:
         sets_commands = [f"{command} --backend cubit" for command in sets_commands]
@@ -284,10 +291,10 @@ for test in system_tests:
 
 # Sets tests
 system_tests = (
-    # model/part,                                                           input_file, angle,                                    face_sets, cubit
+    # model/part,                                                           input_file, angle,                               face_sets, edge_sets, cubit
     # Abaqus
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], False),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], False),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None, False),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], False),
 )
 for test in system_tests:
     commands_list.append(setup_sets_commands(*test))
