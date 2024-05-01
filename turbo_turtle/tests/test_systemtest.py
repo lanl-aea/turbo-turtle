@@ -283,9 +283,9 @@ for test in system_tests:
 
 # Sets tests
 system_tests = (
-    # model/part,                                                           input_file, angle,                                face_sets, cubit
+    # model/part,                                                           input_file, angle,                                    face_sets, cubit
     # Abaqus
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "[#4 ]"], ["bottom", "[#40 ]"]], False),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], False),
 )
 for test in system_tests:
     commands_list.append(setup_sets_commands(*test))
