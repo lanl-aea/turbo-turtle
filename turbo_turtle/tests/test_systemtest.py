@@ -114,8 +114,8 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit
     return commands
 
 
-def setup_sets_command(model, input_file, revolution_angle, face_sets, cubit,
-                       turbo_turtle_command=turbo_turtle_command):
+def setup_sets_commands(model, input_file, revolution_angle, face_sets, cubit,
+                        turbo_turtle_command=turbo_turtle_command):
     model = pathlib.Path(model).with_suffix(".cae")
     if cubit:
         model = model.with_suffix(".cub")
@@ -124,9 +124,14 @@ def setup_sets_command(model, input_file, revolution_angle, face_sets, cubit,
         turbo_turtle_command=turbo_turtle_command
     )
     face_sets = _utilities.construct_append_options("--face-set", face_sets)
-    sets_command = f"{turbo_turtle_command} sets --input-file {model} --model-name ${model.stem} " \
-                   f"--part-name {model.stem} --output-file {model} {face_sets}"
-    commands.append(sets_command)
+    sets_commands = [
+        f"{turbo_turtle_command} sets --input-file {model} --model-name ${model.stem} " \
+            f"--part-name {model.stem} --output-file {model} {face_sets}"
+    ]
+    if cubit:
+        sets_commands = [f"{command} --backend cubit" for command in sets_commands]
+    commands.extend(sets_commands)
+    return commands
 
 
 def setup_cylinder_commands(model, revolution_angle, cubit,
@@ -282,6 +287,8 @@ system_tests = (
     # Abaqus
     ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "[#4 ]"], ["bottom", "[#40 ]"]], False),
 )
+for test in system_tests:
+    commands_list.append(setup_sets_commands(*test))
 
 # Cylinder tests
 system_tests = (
