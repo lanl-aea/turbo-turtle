@@ -649,10 +649,14 @@ def _partition(center=parsers.partition_defaults["center"],
         imprint_and_merge([current_part_name])
 
 
-def mesh(input_file, element_type,
-         output_file=parsers.mesh_defaults["output_file"],
-         part_name=parsers.mesh_defaults["part_name"],
-         global_seed=parsers.mesh_defaults["global_seed"]):
+def mesh(
+    input_file: str,
+    element_type: str,
+    output_file: typing.Optional[str] = parsers.mesh_defaults["output_file"],
+    part_name: typing.Optional[str] = parsers.mesh_defaults["part_name"],
+    global_seed: typing.Optional[int] = parsers.mesh_defaults["global_seed"],
+    edge_seeds: typing.Optional[typing.List] = parser.mesh_defaults["edge_seeds"]
+) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
@@ -671,7 +675,7 @@ def mesh(input_file, element_type,
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exit(f"open '{copy_file.name}'")
-        _mesh(element_type, part_name, global_seed)
+        _mesh(element_type, part_name, global_seed, edge_seeds)
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
@@ -727,7 +731,7 @@ def _mesh_multiple_volumes(volumes, global_seed, element_type=None):
             _mesh_volume(volume, global_seed, element_type=element_type)
 
 
-def _mesh(element_type, part_name, global_seed):
+def _mesh(element_type, part_name, global_seed, edge_seeds):
     """Mesh Cubit volumes and sheet bodies by part/volume name
 
     :param str element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
@@ -736,6 +740,8 @@ def _mesh(element_type, part_name, global_seed):
     """
     parts = _get_volumes_from_name_or_exit(part_name)
     element_type = element_type.lower()
+    # TODO: implement edge seeds
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
 
 
