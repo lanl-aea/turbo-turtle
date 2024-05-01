@@ -5,6 +5,7 @@ Which requires that Cubit's bin directory is found on PYTHONPATH, either directl
 perform ``sys.path`` manipulation, so the importing/calling module/script *must* verify that Cubit will import correctly
 first.
 """
+import sys
 import shutil
 import typing
 import pathlib
@@ -650,6 +651,42 @@ def _partition(center=parsers.partition_defaults["center"],
         imprint_and_merge([current_part_name])
 
 
+def sets(
+    input_file: str,
+    output_file: typing.Optional[str] = parsers.sets_defaults["output_file"],
+    part_name: typing.Optional[str] = parsers.sets_defaults["part_name"],
+    face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"]
+    edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"]
+    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
+) -> None:
+    """Mesh Cubit volumes and sheet bodies by part/volume name
+
+    :param input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
+    :param output_file: Cubit ``*.cub`` file to write
+    :param part_name: part/volume name prefix
+    :param face_sets: Face set tuples (name, mask)
+    :param edge_sets: Edge set tuples (name, mask)
+    :param vertex_sets: Vertex set tuples (name, mask)
+    """
+    # TODO: Raise a RuntimeError and let main handle system exit
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/175
+    sys.exit("Cubit sets subcommand is not yet implemented")
+
+    cubit.init(["cubit"])
+    part_name = _mixed_utilities.cubit_part_names(part_name)
+
+    if output_file is None:
+        output_file = input_file
+    input_file = pathlib.Path(input_file).with_suffix(".cub")
+    output_file = pathlib.Path(output_file).with_suffix(".cub")
+    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+        shutil.copyfile(input_file, copy_file.name)
+        cubit_command_or_exit(f"open '{copy_file.name}'")
+        # TODO: Complete implementation
+        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
+        cubit_command_or_exit(f"save as '{output_file}' overwrite")
+
+
 def mesh(
     input_file: str,
     element_type: str,
@@ -660,11 +697,11 @@ def mesh(
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name
 
-    :param str input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
-    :param str element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
-    :param str output_file: Cubit ``*.cub`` file to write
-    :param str part_name: part/volume name prefix
-    :param float global_seed: The global mesh seed size
+    :param input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
+    :param element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
+    :param output_file: Cubit ``*.cub`` file to write
+    :param part_name: part/volume name prefix
+    :param global_seed: The global mesh seed size
     """
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
