@@ -158,7 +158,7 @@ def construct_append_options(
     command_string = ""
     for row in array:
         if row:
-            command_string += f" {option} " + " ".join(map(str, row))
+            command_string += f" {option} " + character_delimited_list(row)
     command_string = command_string.strip()
     return command_string
 

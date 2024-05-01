@@ -569,7 +569,7 @@ def create_pyramid_partitions(center, xvector, zvector, size, names):
     # Create pyramid partitioning (intersecting) volumes
     pyramid_volumes = create_pyramid_volumes(center, xvector, zvector, size)
     pyramid_volume_numbers = [pyramid.id() for pyramid in pyramid_volumes]
-    pyramid_volume_string = " ". join(map(str, pyramid_volume_numbers))
+    pyramid_volume_string = _utilities.character_delimited_list(pyramid_volume_numbers)
 
     # Create pyramidal intersections/partitions
     parts = _get_volumes_from_name(names)
