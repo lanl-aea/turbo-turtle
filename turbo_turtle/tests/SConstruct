@@ -64,11 +64,11 @@ env.Append(BUILDERS={
         cubit_command=[env['cubit']],
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
-    "sets_cli": turbo_turtle.scons_extensions.mesh(
+    "sets_cli": turbo_turtle.scons_extensions.sets(
         program=env["turbo_turtle"],
         abaqus_command=[env['abaqus']],
         cubit_command=[env['cubit']],
-        options="${face_sets}"
+        options="--model-name ${model_name} --part-name ${part_name} ${face_sets}"
     ),
     "mesh_cli": turbo_turtle.scons_extensions.mesh(
         program=env["turbo_turtle"],
@@ -270,13 +270,13 @@ interface ="cli"
 # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
 # TODO: Test mesh edge seeds
 # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
-builder = f"scons_{interface}"
+builder = f"sets_{interface}"
 env["BUILDERS"][builder](env,
     target=[f"scons-{interface}-vase-sets.{extension}"],
     source=[f"scons-{interface}-vase.{extension}"],
     backend=backend,
     model_name=f"scons-{interface}-vase",
-    part_name=f"scons-{interface}-vase"
+    part_name=f"scons-{interface}-vase",
     face_sets="--face-set top '[#10 ]' --face-set bottom '[#1 ]'"
 )
 
