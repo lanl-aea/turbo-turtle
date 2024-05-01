@@ -129,9 +129,9 @@ sets_namespace_sparse = {
 sets_namespace_full = copy.deepcopy(sets_namespace_sparse)
 sets_namespace_full.update({
     "output_file": "output_file",
-    "face_sets": [[1, 2]],
-    "edge_sets": [[3, 4]],
-    "vertex_sets": [[5, 6]],
+    "face_sets": [["name1", "2"]],
+    "edge_sets": [["name2", "4"]],
+    "vertex_sets": [["name3", "6"]],
 })
 sets_expected_options_sparse = [
     command,
@@ -152,10 +152,14 @@ mesh_namespace_sparse = {
     "output_file": None,
     "model_name": "model_name",
     "part_name": "part_name",
-    "global_seed": "global_seed"
+    "global_seed": "global_seed",
+    "edge_seeds": None
 }
 mesh_namespace_full = copy.deepcopy(mesh_namespace_sparse)
-mesh_namespace_full.update({"output_file": "output_file"}),
+mesh_namespace_full.update({
+    "output_file": "output_file",
+    "edge_seeds": [["name", "1"]]
+}),
 mesh_expected_options_sparse = [
     command,
     "--input-file",
@@ -164,7 +168,7 @@ mesh_expected_options_sparse = [
     "--part-name",
     "--global-seed"
 ]
-mesh_unexpected_options_sparse = ["--output-file"]
+mesh_unexpected_options_sparse = ["--output-file", "--edge-seed"]
 
 merge_namespace_sparse = {
     "input_file": ["input_file"],

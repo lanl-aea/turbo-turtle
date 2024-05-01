@@ -6,6 +6,7 @@ perform ``sys.path`` manipulation, so the importing/calling module/script *must*
 first.
 """
 import shutil
+import typing
 import pathlib
 import tempfile
 
@@ -655,7 +656,7 @@ def mesh(
     output_file: typing.Optional[str] = parsers.mesh_defaults["output_file"],
     part_name: typing.Optional[str] = parsers.mesh_defaults["part_name"],
     global_seed: typing.Optional[int] = parsers.mesh_defaults["global_seed"],
-    edge_seeds: typing.Optional[typing.List] = parser.mesh_defaults["edge_seeds"]
+    edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"]
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name
 
