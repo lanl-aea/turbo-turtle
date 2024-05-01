@@ -542,6 +542,72 @@ def partition(
                        abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
 
 
+def sets(
+    program: str = "turbo-turtle",
+    subcommand: str = "sets",
+    required: str = "--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
+    options: str = "",
+    abaqus_command: typing.List[str] = _default_abaqus_options,
+    cubit_command: typing.List[str] = _default_cubit_options,
+    backend: str = _default_backend
+) -> SCons.Builder.Builder:
+    """Return a Turbo-Turtle sets subcommand CLI builder
+
+    See the :ref:`sets_cli` CLI documentation for detailed subcommand usage and options.
+    Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
+
+    At least one target must be specified. The first target determines the working directory for the builder's action.
+    The action changes the working directory to the first target's parent directory prior to execution.
+
+    The emitter will assume all emitted targets build in the current build directory. If the target(s) must be built in
+    a build subdirectory, e.g. in a parameterized target build, then the first target must be provided with the build
+    subdirectory, e.g. ``parameter_set1/my_target.ext``. When in doubt, provide a STDOUT redirect file as a target, e.g.
+    ``target.stdout``.
+
+    One of the following options must be added to the ``options`` string or the subcommand will return an error:
+
+    * ``--face-set``
+    * ``--edge-set``
+    * ``--vertex-set``
+
+    .. code-block::
+       :caption: action string construction
+
+       ${cd_action_prefix} ${program} ${subcommand} ${required} ${options} --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} --backend ${backend} ${redirect_action_postfix}
+
+    .. code-block::
+       :caption: SConstruct
+
+       import waves
+       import turbo_turtle
+       env = Environment()
+       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env.Append(BUILDERS={
+           "TurboTurtleSets": turbo_turtle.scons_extensions.sets(
+               program=env["turbo_turtle],
+               options="${face_sets} ${edge_sets} ${vertex_sets}",
+           )
+       })
+       env.TurboTurtleSets(
+           target=["target.cae"],
+           source=["source.cae"],
+           face_sets="--face-set top '[#1 ]' --face-set bottom '[#2 ]'",
+           edge_sets="",
+           vertex_sets="--vertex-set origin '[#1 ]'"
+       )
+
+    :param str program: The Turbo-Turtle command line executable absolute or relative path
+    :param str subcommand: A Turbo-Turtle subcommand
+    :param str required: A space delimited string of subcommand required arguments
+    :param str options: A space delimited string of subcommand optional arguments
+    :param list abaqus_command: The Abaqus command line executable absolute or relative path options
+    :param list cubit_command: The Cubit command line executable absolute or relative path options
+    :param str backend: The backend software
+    """  # noqa: E501
+    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
+                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+
+
 def mesh(
     program: str = "turbo-turtle",
     subcommand: str = "mesh",
