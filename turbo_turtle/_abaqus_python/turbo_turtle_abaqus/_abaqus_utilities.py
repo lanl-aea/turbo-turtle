@@ -87,7 +87,7 @@ def surface_from_mask(part, feature, name_mask):
         part.Surface(**{"name": name, surface_keyword: objects})
 
 
-def edge_seed(part, name_number):
+def edge_seeds(part, name_number):
     """Seed edges by number (if passed integer) or size (if passed float)
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
