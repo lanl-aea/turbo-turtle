@@ -16,6 +16,7 @@ New Features
 Internal Changes
 ================
 - Internal utility for constructing string delimited lists (:merge:`162`). By `Kyle Brindley`_.
+- Add system tests for Abaqus implementation of sets subcommand (:issue:`172`, :merge:`163`). By `Kyle Brindley`_.
 
 ********************
 v0.12.1 (2024-04-30)
