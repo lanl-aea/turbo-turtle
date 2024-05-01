@@ -277,7 +277,7 @@ env["BUILDERS"][builder](env,
     backend=backend,
     model_name=f"scons-{interface}-vase",
     part_name=f"scons-{interface}-vase",
-    face_sets="--face-set top '[#10 ]' --face-set bottom '[#1 ]'"
+    face_sets="--face-set top '[#4 ]' --face-set bottom '[#40 ]'"
 )
 
 
