@@ -79,7 +79,7 @@ def surface_from_mask(part, feature, name_mask):
     for name, mask in name_mask:
         objects = attribute.getSequenceFromMask(mask=(mask, ))
 
-        kwargs = {"name", name}
+        kwargs = {"name": name}
         if feature == "faces":
             kwargs.update({"side1Faces": objects})
         elif feature == "edges":
