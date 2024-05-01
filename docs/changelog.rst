@@ -12,6 +12,8 @@ New Features
 ============
 - Abaqus implementation of a ``sets`` subcommand for programmatic set creation (:issue:`164`, :merge:`161`). By `Kyle
   Brindley`_.
+- Abaqus implementation of an edge seed option in the ``mesh`` subcommand (:issue:`173`, :merge:`164`). By `Kyle
+  Brindley`_.
 
 Internal Changes
 ================
