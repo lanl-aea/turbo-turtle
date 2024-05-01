@@ -12,7 +12,7 @@ def geometry(args, command):
     script = _settings._abaqus_python_abspath / "geometry.py"
 
     command = f"{command} cae -noGui {script} -- "
-    command += f"--input-file {' '.join(map(str, args.input_file))} "
+    command += f"--input-file {_utilities.character_delimited_list(args.input_file)} "
     command += f"--output-file {args.output_file} "
     command += f"--unit-conversion {args.unit_conversion} "
     command += f"--euclidean-distance {args.euclidean_distance} "
@@ -20,7 +20,7 @@ def geometry(args, command):
         command += f"--planar "
     command += f"--model-name {args.model_name} "
     if args.part_name[0] is not None:
-        command += f"--part-name {' '.join(map(str, args.part_name))} "
+        command += f"--part-name {_utilities.character_delimited_list(args.part_name)} "
     command += f"--delimiter {args.delimiter} "
     command += f"--header-lines {args.header_lines} "
     command += f"--revolution-angle {args.revolution_angle} "
@@ -86,10 +86,10 @@ def partition(args, command):
     command += f"--input-file {args.input_file} "
     if args.output_file is not None:
         command += f"--output-file {args.output_file} "
-    command += f"--center {' '.join(map(str, args.center))} "
-    command += f"--xvector {' '.join(map(str, args.xvector))} "
-    command += f"--zvector {' '.join(map(str, args.zvector))} "
-    command += f"--model-name {args.model_name} --part-name {' '.join(map(str, args.part_name))} "
+    command += f"--center {_utilities.character_delimited_list(args.center)} "
+    command += f"--xvector {_utilities.character_delimited_list(args.xvector)} "
+    command += f"--zvector {_utilities.character_delimited_list(args.zvector)} "
+    command += f"--model-name {args.model_name} --part-name {_utilities.character_delimited_list(args.part_name)} "
     command += f"--big-number {args.big_number}"
     _utilities.run_command(command)
 
@@ -146,13 +146,13 @@ def merge(args, command):
     script = _settings._abaqus_python_abspath / "merge.py"
 
     command = f"{command} cae -noGui {script} -- "
-    command += f"--input-file {' '.join(map(str, args.input_file))} "
+    command += f"--input-file {_utilities.character_delimited_list(args.input_file)} "
     command += f"--output-file {args.output_file} "
     command += f"--merged-model-name {args.merged_model_name} "
     if args.model_name[0] is not None:
-        command += f"--model-name {' '.join(map(str, args.model_name))} "
+        command += f"--model-name {_utilities.character_delimited_list(args.model_name)} "
     if args.part_name[0] is not None:
-        command += f"--part-name {' '.join(map(str, args.part_name))}"
+        command += f"--part-name {_utilities.character_delimited_list(args.part_name)}"
     _utilities.run_command(command)
 
 
@@ -167,9 +167,9 @@ def export(args, command):
 
     command = f"{command} cae -noGui {script} -- "
     command += f"--input-file {args.input_file} "
-    command += f"--model-name {args.model_name} --part-name {' '.join(map(str, args.part_name))} "
+    command += f"--model-name {args.model_name} --part-name {_utilities.character_delimited_list(args.part_name)} "
     if args.element_type[0] is not None:
-        command += f"--element-type {' '.join(map(str, args.element_type))} "
+        command += f"--element-type {_utilities.character_delimited_list(args.element_type)} "
     command += f"--destination {args.destination} "
     if args.assembly is not None:
         command += f"--assembly {args.assembly}"
@@ -191,7 +191,7 @@ def image(args, command):
     command += f"--x-angle {args.x_angle} "
     command += f"--y-angle {args.y_angle} "
     command += f"--z-angle {args.z_angle} "
-    command += f"--image-size {' '.join(map(str, args.image_size))} "
+    command += f"--image-size {_utilities.character_delimited_list(args.image_size)} "
     command += f"--model-name {args.model_name} "
     if args.part_name is not None:
         command += f"--part-name {args.part_name} "

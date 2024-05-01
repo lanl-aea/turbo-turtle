@@ -155,7 +155,7 @@ def create_spline_from_coordinates(coordinates):
     for point in coordinates:
         points.append(cubit.create_vertex(*tuple(point)))
     vertex_ids = [point.id() for point in points]
-    vertex_ids_text = " ".join(map(str, vertex_ids))
+    vertex_ids_text = _utilities.character_delimited_list(vertex_ids)
     # TODO: Find a suitable Cubit Python function for creating splines that returns the curve object
     cubit_command_or_exit(f"create curve spline vertex {vertex_ids_text} delete")
     curve = points[0].curves()[0]
@@ -280,7 +280,7 @@ def _create_volume_from_surfaces(surfaces, keep=True):
     """
     volumes_before = cubit.get_entities("volume")
     surface_numbers = _surface_numbers(surfaces)
-    surface_string = " ".join(map(str, surface_numbers))
+    surface_string = _utilities.character_delimited_list(surface_numbers)
     command = f"create volume surface {surface_string} heal"
     if keep:
         command = f"{command} keep"
@@ -309,9 +309,9 @@ def _rename_and_sweep(surface, part_name,
     :rtype: cubit.Volume
     """
     center = numpy.array(center)
-    center_string = " ".join(map(str, center))
+    center_string = _utilities.character_delimited_list(center)
     revolution_axis = numpy.array([0., 1., 0.])
-    revolution_string = " ".join(map(str, revolution_axis))
+    revolution_string = _utilities.character_delimited_list(revolution_axis)
     body_number = surface.id()
     surface_number = _surface_numbers([surface])[0]
     part_name = part_name.replace("-", "_")
@@ -469,7 +469,7 @@ def imprint_and_merge(names):
     """
     parts = _get_volumes_from_name(names)
     part_ids = [part.id() for part in parts]
-    part_string = " ".join(map(str, part_ids))
+    part_string = _utilities.character_delimited_list(part_ids)
 
     cubit_command_or_exit(f"imprint volume {part_string}")
     cubit_command_or_exit(f"merge volume {part_string}")
@@ -498,13 +498,13 @@ def webcut_local_coordinate_primary_planes(center, xvector, zvector, names):
     ]
     primary_surfaces = [create_surface_from_coordinates(coordinates) for coordinates in surface_coordinates]
     primary_surface_numbers = _surface_numbers(primary_surfaces)
-    primary_surface_string = " ".join(map(str, primary_surface_numbers))
+    primary_surface_string = _utilities.character_delimited_list(primary_surface_numbers)
 
     # Webcut with local coordinate system primary planes
     for number in primary_surface_numbers:
         parts = _get_volumes_from_name(names)
         part_ids = [part.id() for part in parts]
-        part_string = " ".join(map(str, part_ids))
+        part_string = _utilities.character_delimited_list(part_ids)
         cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
 
     # Clean up primary surfaces
@@ -547,7 +547,7 @@ def create_pyramid_volumes(center, xvector, zvector, size):
 
     # Remove pyramidal construction surfaces
     surface_numbers = _surface_numbers(pyramid_surfaces)
-    surface_string = " ".join(map(str, surface_numbers))
+    surface_string = _utilities.character_delimited_list(surface_numbers)
     cubit_command_or_exit(f"delete surface {surface_string}")
     # TODO: ^^ Move pyramid volume creation to a dedicated function ^^
 
@@ -688,7 +688,7 @@ def _mesh_sheet_body(volume, global_seed, element_type=None):
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/80
     surface_objects = volume.surfaces()
     surfaces = [surface.id() for surface in surface_objects]
-    surface_string = " ".join(map(str, surfaces))
+    surface_string = _utilities.character_delimited_list(surfaces)
     if element_type == "trimesh":
         cubit_command_or_exit(f"surface {surface_string} scheme {element_type}")
     cubit_command_or_exit(f"surface {surface_string} size {global_seed}")
@@ -795,10 +795,10 @@ def _create_new_block(volumes):
     """
     new_block_id = cubit.get_next_block_id()
     volume_ids = [volume.id() for volume in volumes]
-    volume_string = " ".join(map(str, volume_ids))
+    volume_string = _utilities.character_delimited_list(volume_ids)
     if any([cubit.is_sheet_body(volume_id) for volume_id in volume_ids]):
         surfaces = _surface_numbers(_surfaces_for_volumes(volumes))
-        surface_string = " ".join(map(str, surfaces))
+        surface_string = _utilities.character_delimited_list(surfaces)
         cubit_command_or_exit(f"block {new_block_id} add surface {surface_string}")
     else:
         cubit_command_or_exit(f"block {new_block_id} add volume {volume_string}")
@@ -856,7 +856,7 @@ def _export_genesis(output_file, part_name, element_type, output_type="genesis")
         if element_type is not None:
             cubit_command_or_exit(f"block {block_ids[-1]} element type {element}")
     _set_genesis_output_type_or_exit(output_type)
-    block_string = " ".join(map(str, block_ids))
+    block_string = _utilities.character_delimited_list(block_ids)
     cubit_command_or_exit(f"export mesh '{output_file}' block {block_string} overwrite")
 
 
