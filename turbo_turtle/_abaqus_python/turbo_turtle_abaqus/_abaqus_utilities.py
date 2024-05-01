@@ -76,18 +76,36 @@ def surface_from_mask(part, feature, name_mask):
     :raises ValueError: If feature is not one of 'faces' or 'edges'
     """
     attribute = getattr(part, feature)
+    if feature == "faces":
+        surface_keyword = "side1Faces"
+    elif feature == "edges":
+        surface_keyword = "side1Edges"
+    else:
+        raise ValueError("Feature must be one of: faces, edges")
     for name, mask in name_mask:
         objects = attribute.getSequenceFromMask(mask=(mask, ))
+        part.Surface(**{"name": name, surface_keyword: objects})
 
-        kwargs = {"name": name}
-        if feature == "faces":
-            kwargs.update({"side1Faces": objects})
-        elif feature == "edges":
-            kwargs.update({"side1Edges": objects})
+
+def edge_seed(part, name_number):
+    """Seed edges by number (if passed integer) or size (if passed float)
+
+    :param abaqus.models[model].parts[part] part: Abaqus part object
+    :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges'
+
+    :raises ValueError: If any number is negative
+    """
+    names, numbers = zip(*name_number)
+    numbers = [float(number) for number in numbers]
+    positive_numbers = [number > 0. for number in numbers]
+    if not all(positive_numbers):
+        raise ValueError("Edge seeds must be positive numbers")
+    for name, number in zip(names, numbers):
+        edges = part.sets[name].edges
+        if number.is_integer():
+            part.seedEdgeByNumber(edges=edges, number=int(number))
         else:
-            raise ValueError("Feature must be one of: faces, edges")
-
-        part.Surface(**kwargs)
+            part.seedEdgeBySize(edges=edges, size=number)
 
 
 def _view_part(model_name, part_name, **kwargs):
