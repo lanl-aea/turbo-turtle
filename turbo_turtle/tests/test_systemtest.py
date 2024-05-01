@@ -133,12 +133,12 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_set
     else:
         edge_sets = ""
     if edge_seeds is not None:
-        edge_seeds = _utilities.construct_append_options("--edge-seeds", edge_seeds)
+        edge_seeds = _utilities.construct_append_options("--edge-seed", edge_seeds)
     else:
         edge_seeds = ""
     sets_commands = [
         f"{turbo_turtle_command} sets --input-file {model} --model-name {model.stem} " \
-            f"--part-name {part_name} --output-file {model} {face_sets} {edge_sets}"
+            f"--part-name {part_name} --output-file {model} {face_sets} {edge_sets}",
         f"{turbo_turtle_command} mesh --input-file {model} --model-name {model.stem} " \
             f"--part-name {part_name} --output-file {model} --global-seed 1. {edge_seeds}"
     ]
