@@ -96,3 +96,40 @@ construct_append_options = {
 def test_construct_append_options(option, array, expected):
     option_string = _utilities.construct_append_options(option, array)
     assert option_string == expected
+
+
+character_delimited_list = {
+    "int": (
+        [1, 2, 3],
+        " ",
+        "1 2 3"
+    ),
+    "int: comma": (
+        [1, 2, 3],
+        ",",
+        "1,2,3"
+    ),
+    "float": (
+        [1., 2., 3., 4., 5.],
+        " ",
+        "1.0 2.0 3.0 4.0 5.0"
+    ),
+    "string": (
+        ["one", "two"],
+        " ",
+        "one two"
+    ),
+    "string: one": (
+        ["one"],
+        " ",
+        "one"
+    )
+}
+
+
+@pytest.mark.parametrize("sequence, character, expected",
+                         character_delimited_list.values(),
+                         ids=character_delimited_list.keys())
+def test_character_delimited_list(sequence, character, expected):
+    string = _utilities.character_delimited_list(sequence, character=character)
+    assert string == expected

@@ -161,3 +161,14 @@ def construct_append_options(
             command_string += f" {option} " + " ".join(map(str, row))
     command_string = command_string.strip()
     return command_string
+
+
+def character_delimited_list(sequence: typing.Iterable, character: str = " ") -> str:
+    """Map a list of non-strings to a character delimited string
+
+    :param sequence: Sequence to turn into a character delimited string
+    :param character: Character(s) to use when joining sequence elements
+
+    :returns: string delimited by specified character
+    """
+    return character.join(map(str, sequence))
