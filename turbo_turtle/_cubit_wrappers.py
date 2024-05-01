@@ -85,6 +85,24 @@ def partition(args, command):
     )
 
 
+def sets(args, command):
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.sets`
+
+    Unpack the argument namespace into the full function interface
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    :param str command: cubit executable path
+    """
+    _cubit_python.sets(
+        args.input_file,
+        output_file=args.output_file,
+        part_name=args.part_name,
+        face_sets=args.face_sets,
+        edge_sets=args.edge_sets,
+        vertex_sets=args.vertex_sets
+    )
+
+
 def mesh(args, command):
     """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.mesh`
 
