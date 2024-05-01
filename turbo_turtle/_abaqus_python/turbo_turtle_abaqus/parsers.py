@@ -357,11 +357,11 @@ def sets_parser(basename="sets.py", add_help=True, description=sets_cli_descript
                           help="Abaqus CAE input file")
 
     optional = parser.add_argument_group('optional arguments')
-    optional.add_argument("--output-file", type=str, default=mesh_defaults["output_file"],
+    optional.add_argument("--output-file", type=str, default=sets_defaults["output_file"],
                           help="Abaqus CAE output file (default: %(default)s)")
-    optional.add_argument("--model-name", type=str, default=mesh_defaults["model_name"],
+    optional.add_argument("--model-name", type=str, default=sets_defaults["model_name"],
                           help="Abaqus model name (default: %(default)s)")
-    optional.add_argument("--part-name", type=str, default=mesh_defaults["part_name"],
+    optional.add_argument("--part-name", type=str, default=sets_defaults["part_name"],
                           help=part_name_help)
     optional.add_argument(
         "--face-set",
@@ -378,7 +378,7 @@ def sets_parser(basename="sets.py", add_help=True, description=sets_cli_descript
         action="append",
         nargs=2,
         metavar=("name", "mask"),
-        default=sets_defaults["face_sets"],
+        default=sets_defaults["edge_sets"],
         help="Edge set (name, mask) pairs. Repeat once per set (default: %(default)s)"
     )
     optional.add_argument(
@@ -387,7 +387,7 @@ def sets_parser(basename="sets.py", add_help=True, description=sets_cli_descript
         action="append",
         nargs=2,
         metavar=("name", "mask"),
-        default=sets_defaults["face_sets"],
+        default=sets_defaults["vertex_sets"],
         help="Vertex set (name, mask) pairs. Repeat once per set (default: %(default)s)"
     )
 
@@ -398,11 +398,14 @@ mesh_defaults = {
     "output_file": None,
     "model_name": "Model-1",
     "part_name": "Part-1",
-    "global_seed": 1.0
+    "global_seed": 1.0,
+    "edge_seeds": None
 }
-mesh_cli_help = "Mesh an Abaqus part from a global seed"
+mesh_cli_help = "Mesh an Abaqus part from a global seed and optional edge seeds"
 # TODO: Write a more descriptive behavior message
-mesh_cli_description = "Mesh an Abaqus part from a global seed"
+mesh_cli_description = \
+    "Mesh an Abaqus part from a global seed and optional edge seeds. The edge seeds must be positive numbers. If " \
+    "the seed is an integer, the edge with be seeded by number. If it is a float, the edge will be seeded by size."
 
 
 def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_description, cubit=False):
@@ -445,6 +448,15 @@ def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_d
                           help=part_name_help)
     optional.add_argument("--global-seed", type=positive_float, default=mesh_defaults["global_seed"],
                           help="The global mesh seed size. Positive float.")
+    optional.add_argument(
+        "--edge-seed",
+        dest="edge_seeds",
+        action="append",
+        nargs=2,
+        metavar=("name", "number"),
+        default=mesh_defaults["edge_seeds"],
+        help="Edge seed (name, number) pairs. Repeat once per edge set (default: %(default)s)"
+    )
 
     return parser
 
