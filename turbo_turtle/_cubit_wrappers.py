@@ -75,13 +75,13 @@ def partition(args, command):
     :param str command: cubit executable path
     """
     _cubit_python.partition(
-         args.input_file,
-         output_file=args.output_file,
-         center=args.center,
-         xvector=args.xvector,
-         zvector=args.zvector,
-         part_name=args.part_name,
-         big_number=args.big_number
+        args.input_file,
+        output_file=args.output_file,
+        center=args.center,
+        xvector=args.xvector,
+        zvector=args.zvector,
+        part_name=args.part_name,
+        big_number=args.big_number
     )
 
 
@@ -94,11 +94,12 @@ def mesh(args, command):
     :param str command: cubit executable path
     """
     _cubit_python.mesh(
-         args.input_file,
-         args.element_type,
-         output_file=args.output_file,
-         part_name=args.part_name,
-         global_seed=args.global_seed
+        args.input_file,
+        args.element_type,
+        output_file=args.output_file,
+        part_name=args.part_name,
+        global_seed=args.global_seed,
+        edge_seeds=args.edge_seeds
     )
 
 
@@ -142,11 +143,11 @@ def image(args, command):
     :param str command: cubit executable path
     """
     _cubit_python.image(
-         args.input_file,
-         args.output_file,
-         command,
-         x_angle=args.x_angle,
-         y_angle=args.y_angle,
-         z_angle=args.z_angle,
-         image_size=args.image_size
+        args.input_file,
+        args.output_file,
+        command,
+        x_angle=args.x_angle,
+        y_angle=args.y_angle,
+        z_angle=args.z_angle,
+        image_size=args.image_size
     )
