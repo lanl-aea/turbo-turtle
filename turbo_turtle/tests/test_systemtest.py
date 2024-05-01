@@ -125,7 +125,7 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, cubit,
     )
     face_sets = _utilities.construct_append_options("--face-set", face_sets)
     sets_commands = [
-        f"{turbo_turtle_command} sets --input-file {model} --model-name ${model.stem} " \
+        f"{turbo_turtle_command} sets --input-file {model} --model-name {model.stem} " \
             f"--part-name {model.stem} --output-file {model} {face_sets}"
     ]
     if cubit:
@@ -286,6 +286,7 @@ system_tests = (
     # model/part,                                                           input_file, angle,                                    face_sets, cubit
     # Abaqus
     ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], False),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], False),
 )
 for test in system_tests:
     commands_list.append(setup_sets_commands(*test))
