@@ -9,6 +9,7 @@ import pytest
 import numpy
 
 from turbo_turtle import _settings
+from turbo_turtle._utilities import character_delimited_list
 from turbo_turtle._main import get_parser
 from turbo_turtle.conftest import missing_display
 
@@ -38,15 +39,6 @@ if not installed:
         env[key] = f"{package_parent_path}:{env[key]}"
     else:
         env[key] = f"{package_parent_path}"
-
-
-def character_delimited_list(non_string_list, character=" "):
-    """Map a list of non-strings to a character delimited string
-
-    :returns: string delimited by specified character
-    :rtype: str
-    """
-    return character.join(map(str, non_string_list))
 
 
 def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, quadrant, element_type, element_replacement, cubit, output_type,
