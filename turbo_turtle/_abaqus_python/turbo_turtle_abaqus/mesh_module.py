@@ -16,11 +16,15 @@ from turbo_turtle_abaqus import _abaqus_utilities
 from turbo_turtle_abaqus import _mixed_settings
 
 
-def main(input_file, element_type,
-         output_file=parsers.mesh_defaults["output_file"],
-         model_name=parsers.mesh_defaults["model_name"],
-         part_name=parsers.mesh_defaults["part_name"],
-         global_seed=parsers.mesh_defaults["global_seed"]):
+def main(
+    input_file,
+    element_type,
+    output_file=parsers.mesh_defaults["output_file"],
+    model_name=parsers.mesh_defaults["model_name"],
+    part_name=parsers.mesh_defaults["part_name"],
+    global_seed=parsers.mesh_defaults["global_seed"],
+    edge_seeds=parsers.mesh_defaults["edge_seeds"]
+):
     """Wrap mesh function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
@@ -29,6 +33,7 @@ def main(input_file, element_type,
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param float global_seed: The global mesh seed size
+    :param list[tuple[str, number]] edge_seeds: List of edge seed (name, number) pairs
     """
     import abaqus
 
@@ -46,16 +51,25 @@ def main(input_file, element_type,
     abaqus.mdb.saveAs(pathName=output_file)
 
 
-def mesh(element_type,
-         model_name=parsers.mesh_defaults["model_name"],
-         part_name=parsers.mesh_defaults["part_name"],
-         global_seed=parsers.mesh_defaults["global_seed"]):
-    """Apply a global seed and mesh the specified part
+def mesh(
+    element_type,
+    model_name=parsers.mesh_defaults["model_name"],
+    part_name=parsers.mesh_defaults["part_name"],
+    global_seed=parsers.mesh_defaults["global_seed"],
+    edge_seeds=parsers.mesh_defaults["edge_seeds"]
+):
+    """Apply a global seed, optional edge seed(s), and mesh the specified part
+
+    Always creates sets
+
+    * ``ELEMENTS``: All elements
+    * ``NODES``: All nodes
 
     :param str element_type: Abaqus element type
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param float global_seed: The global mesh seed size
+    :param list[tuple[str, number]] edge_seeds: List of edge seed (name, number) pairs
     """
     import mesh
     import abaqus
@@ -64,6 +78,8 @@ def mesh(element_type,
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
 
+    if edge_seeds is not None:
+        _abaqus_utilities.edge_seeds(part, edge_seeds)
     # TODO: make the deviation and size factor options
     part.seedPart(size=global_seed, deviationFactor=0.1, minSizeFactor=0.1)
 
