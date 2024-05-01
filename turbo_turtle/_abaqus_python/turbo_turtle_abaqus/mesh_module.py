@@ -45,7 +45,13 @@ def main(
         with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
             shutil.copyfile(input_file, copy_file.name)
             abaqus.openMdb(pathName=copy_file.name)
-            mesh(element_type, model_name=model_name, part_name=part_name, global_seed=global_seed)
+            mesh(
+                element_type,
+                model_name=model_name,
+                part_name=part_name,
+                global_seed=global_seed,
+                edge_seeds=edge_seeds
+            )
     except RuntimeError as err:
         _mixed_utilities.sys_exit(err.message)
     abaqus.mdb.saveAs(pathName=output_file)
@@ -220,5 +226,6 @@ if __name__ == "__main__":
             output_file=args.output_file,
             model_name=args.model_name,
             part_name=args.part_name,
-            global_seed=args.global_seed
+            global_seed=args.global_seed,
+            edge_seeds=args.edge_seeds
         ))
