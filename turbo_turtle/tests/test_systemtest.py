@@ -9,7 +9,7 @@ import pytest
 import numpy
 
 from turbo_turtle import _settings
-from turbo_turtle._utilities import character_delimited_list
+from turbo_turtle import _utilities
 from turbo_turtle._main import get_parser
 from turbo_turtle.conftest import missing_display
 
@@ -55,8 +55,8 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
         image = image.parent / f"{image.stem}-cubit{image.suffix}"
     assembly = model.stem + "_assembly.inp"
     center=f"0. {y_offset} 0."
-    xvector=character_delimited_list([1., 0., 0.])
-    zvector=character_delimited_list([0., 0., 1.])
+    xvector=_utilities.character_delimited_list([1., 0., 0.])
+    zvector=_utilities.character_delimited_list([0., 0., 1.])
     commands = [
         f"{turbo_turtle_command} sphere --inner-radius {inner_radius} --outer-radius {outer_radius} --output-file {model} " \
             f"--model-name {model.stem} --part-name {model.stem} --quadrant {quadrant} " \
@@ -88,8 +88,8 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
 
 
 def setup_geometry_xyplot_commands(model, input_file):
-    part_name = character_delimited_list(csv.stem for csv in input_file)
-    input_file = character_delimited_list(input_file)
+    part_name = _utilities.character_delimited_list(csv.stem for csv in input_file)
+    input_file = _utilities.character_delimited_list(input_file)
     commands =[
         f"{turbo_turtle_command} geometry-xyplot --input-file {input_file} --output-file {model}.png " \
         f"--part-name {part_name}"
@@ -103,7 +103,7 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit
     if cubit:
         model = model.with_suffix(".cub")
     part_name = " ".join(csv.stem for csv in input_file)
-    input_file = character_delimited_list(input_file)
+    input_file = _utilities.character_delimited_list(input_file)
     commands = [
         f"{turbo_turtle_command} geometry --input-file {input_file} --model-name {model.stem} " \
             f"--part-name {part_name} --output-file {model} --revolution-angle {revolution_angle} " \
@@ -112,6 +112,21 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit
     if cubit:
         commands = [f"{command} --backend cubit" for command in commands]
     return commands
+
+
+def setup_sets_command(model, input_file, revolution_angle, face_sets, cubit,
+                       turbo_turtle_command=turbo_turtle_command):
+    model = pathlib.Path(model).with_suffix(".cae")
+    if cubit:
+        model = model.with_suffix(".cub")
+    commands = setup_geometry_commands(
+        model, input_file, revolution_angle, 0., cubit,
+        turbo_turtle_command=turbo_turtle_command
+    )
+    face_sets = _utilities.construct_append_options("--face-set", face_sets)
+    sets_command = f"{turbo_turtle_command} sets --input-file {model} --model-name ${model.stem} " \
+                   f"--part-name {model.stem} --output-file {model} {face_sets}"
+    commands.append(sets_command)
 
 
 def setup_cylinder_commands(model, revolution_angle, cubit,
@@ -260,6 +275,13 @@ system_tests = (
 )
 for test in system_tests:
     commands_list.append(setup_geometry_commands(*test))
+
+# Sets tests
+system_tests = (
+    # model/part,                                                           input_file, angle,                                face_sets, cubit
+    # Abaqus
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "[#4 ]"], ["bottom", "[#40 ]"]], False),
+)
 
 # Cylinder tests
 system_tests = (
