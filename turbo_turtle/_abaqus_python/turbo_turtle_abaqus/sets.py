@@ -86,7 +86,7 @@ def sets(
     if edge_sets is not None:
         _abaqus_utilities.set_from_mask(part, "edges", edge_sets)
         if _abaqus_utilities.part_dimensionality(part) == 2:
-            _abaqus_utlities.surface_from_mask(part, "edges", edge_sets)
+            _abaqus_utilities.surface_from_mask(part, "edges", edge_sets)
 
     if vertex_sets is not None:
         _abaqus_utilities.set_from_mask(part, "vertices", vertex_sets)
