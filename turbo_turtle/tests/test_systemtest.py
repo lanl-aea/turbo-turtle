@@ -297,10 +297,10 @@ for test in system_tests:
 
 # Sets/mesh tests
 system_tests = (
-    # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                       edge seeds, cubit
+    # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                        edge seeds, cubit
     # Abaqus
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                             None, False),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"], False),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                              None, False),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]], False),
     # Cubit
     # TODO: Duplicate Abaqus tests when sets/edge-seeds implemented in Cubit
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
