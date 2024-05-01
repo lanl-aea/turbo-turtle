@@ -119,6 +119,7 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, cubit,
     model = pathlib.Path(model).with_suffix(".cae")
     if cubit:
         model = model.with_suffix(".cub")
+    part_name = " ".join(csv.stem for csv in input_file)
     commands = setup_geometry_commands(
         model, input_file, revolution_angle, 0., cubit,
         turbo_turtle_command=turbo_turtle_command
@@ -126,7 +127,7 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, cubit,
     face_sets = _utilities.construct_append_options("--face-set", face_sets)
     sets_commands = [
         f"{turbo_turtle_command} sets --input-file {model} --model-name {model.stem} " \
-            f"--part-name {model.stem} --output-file {model} {face_sets}"
+            f"--part-name {part_name} --output-file {model} {face_sets}"
     ]
     if cubit:
         sets_commands = [f"{command} --backend cubit" for command in sets_commands]
