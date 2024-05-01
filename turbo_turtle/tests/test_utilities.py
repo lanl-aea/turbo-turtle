@@ -114,6 +114,11 @@ character_delimited_list = {
         " ",
         "1.0 2.0 3.0 4.0 5.0"
     ),
+    "float: multi-character": (
+        [1., 2., 3., 4., 5.],
+        "\n\t",
+        "1.0\n\t2.0\n\t3.0\n\t4.0\n\t5.0"
+    ),
     "string": (
         ["one", "two"],
         " ",
