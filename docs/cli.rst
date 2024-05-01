@@ -95,6 +95,11 @@ partition
 sets
 ----
 
+.. warning::
+
+   Abaqus masks are fragile with respect to geometry creation order. If previously working masks no longer produce the
+   expected result, open the model file and verify that the masks still correspond to the expected geometry.
+
 .. argparse::
    :ref: turbo_turtle._main.get_parser
    :nodefault:

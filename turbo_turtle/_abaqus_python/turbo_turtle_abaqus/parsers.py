@@ -326,7 +326,12 @@ sets_defaults = {
     "part_name": "Part-1",
 }
 sets_cli_help = "Create geometric sets from mask strings"
-sets_cli_description = "Create geometric sets from mask strings"
+sets_cli_description = \
+    "Create geometric sets from mask strings. Primarly intended for use in scripted workflows with stable geometry " \
+    "creation order and features because masks are fragile with respect to geometric changes. The recommended " \
+    "workflow is to perform manual set creation on a nominal geometry model, record the set masks reported by the " \
+    "third-party software, and write the CLI options into a scripted workflow file. Abaqus reports CAE operations in " \
+    "the ``abaqus.rpy`` replay file, e.g. ``grep -A 1 'mask=' abaqus.rpy``."
 
 
 def sets_parser(basename="sets.py", add_help=True, description=sets_cli_description, cubit=False):
