@@ -114,7 +114,7 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit
     return commands
 
 
-def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_sets, cubit,
+def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_sets, edge_seeds, cubit,
                         turbo_turtle_command=turbo_turtle_command):
     model = pathlib.Path(model).with_suffix(".cae")
     if cubit:
@@ -132,9 +132,15 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_set
         edge_sets = _utilities.construct_append_options("--edge-set", edge_sets)
     else:
         edge_sets = ""
+    if edge_seeds is not None:
+        edge_seeds = _utilities.construct_append_options("--edge-seeds", edge_seeds)
+    else:
+        edge_seeds = ""
     sets_commands = [
         f"{turbo_turtle_command} sets --input-file {model} --model-name {model.stem} " \
             f"--part-name {part_name} --output-file {model} {face_sets} {edge_sets}"
+        f"{turbo_turtle_command} mesh --input-file {model} --model-name {model.stem} " \
+            f"--part-name {part_name} --output-file {model} --global-seed 1. {edge_seeds}"
     ]
     if cubit:
         sets_commands = [f"{command} --backend cubit" for command in sets_commands]
@@ -289,12 +295,16 @@ system_tests = (
 for test in system_tests:
     commands_list.append(setup_geometry_commands(*test))
 
-# Sets tests
+# Sets/mesh tests
 system_tests = (
-    # model/part,                                                           input_file, angle,                               face_sets, edge_sets, cubit
+    # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                       edge seeds, cubit
     # Abaqus
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None, False),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], False),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                             None, False),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"], False),
+    # Cubit
+    # TODO: Duplicate Abaqus tests when sets/edge-seeds implemented in Cubit
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
 )
 for test in system_tests:
     commands_list.append(setup_sets_commands(*test))
