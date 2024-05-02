@@ -634,16 +634,16 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
     feature = feature.lower()
 
     for name, mask in name_mask:
-        cubit.cmd(f"{feature} {mask} name \"{name}\"")
+        cubit_command_or_exception(f"{feature} {mask} name \"{name}\"")
 
         nodeset_id = cubit.get_next_nodeset_id()
-        cubit.cmd(f"nodeset {nodeset_id} ADD {feature} {mask}")
-        cubit.cmd(f"nodeset {nodeset_id} name \"{name}\"")
+        cubit_command_or_exception(f"nodeset {nodeset_id} ADD {feature} {mask}")
+        cubit_command_or_exception(f"nodeset {nodeset_id} name \"{name}\"")
 
         if feature not in ("vertex", "node"):
             sideset_id = cubit.get_next_sideset_id()
-            cubit.cmd(f"sideset {sideset_id} ADD {feature} {mask}")
-            cubit.cmd(f"sideset {sideset_id} name \"{name}\"")
+            cubit_command_or_exception(f"sideset {sideset_id} ADD {feature} {mask}")
+            cubit_command_or_exception(f"sideset {sideset_id} name \"{name}\"")
 
 
 def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
@@ -662,9 +662,9 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
     for name, number in zip(names, numbers):
         feature_ids = _utilities.character_delimited_list(cubit.get_all_ids_from_name(feature, name))
         if number.is_integer():
-            cubit.cmd(f"{feature} {feature_ids} interval {int(number)}")
+            cubit_command_or_exception(f"{feature} {feature_ids} interval {int(number)}")
         else:
-            cubit.cmd(f"{feature} {feature_ids} size {number}")
+            cubit_command_or_exception(f"{feature} {feature_ids} size {number}")
 
 
 def _sets(
