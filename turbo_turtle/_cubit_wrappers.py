@@ -1,6 +1,4 @@
 """Thin unpacking of the command line argparse namespace into full function interfaces"""
-import sys
-
 from turbo_turtle import _cubit_python
 
 
