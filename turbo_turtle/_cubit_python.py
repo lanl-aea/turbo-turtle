@@ -652,6 +652,11 @@ def _partition(center=parsers.partition_defaults["center"],
 
 
 def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
+    """Create named features, with associated node and sidesets, by feature ID
+
+    :param feature: Cubit feature name
+    :param name_mask: Feature set tuples (name, ID string)
+    """
     feature = feature.lower()
 
     for name, mask in name_mask:
@@ -668,6 +673,13 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
 
 
 def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
+    """Create mesh seeds on features by name
+
+    If the number is an integer, seed by interval. If the number is a float, seed by size
+
+    :param feature: Cubit feature name
+    :param name_number: Feature seed tuples (name, number)
+    """
     names, numbers = zip(*name_number)
     numbers = [float(number) for number in numbers]
     positive_numbers = [number > 0. for number in numbers]
@@ -682,6 +694,12 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
 
 
 def _sets(
+    """Create named features, with associated node and sidesets, by feature ID
+
+    :param face_sets: Face set tuples (name, mask)
+    :param edge_sets: Edge set tuples (name, mask)
+    :param vertex_sets: Vertex set tuples (name, mask)
+    """
     face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
     edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
     vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
