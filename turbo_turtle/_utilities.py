@@ -97,7 +97,7 @@ def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional
 
 
 def run_command(command: str) -> None:
-    """Split command on whitespace, execute shell command, call sys.exit with any error message
+    """Split command on whitespace, execute shell command, raise RuntimeError with any error message
 
     :param command: String to run on the shell
     """
@@ -105,7 +105,7 @@ def run_command(command: str) -> None:
     try:
         stdout = subprocess.check_output(command_list)
     except subprocess.CalledProcessError as err:
-        sys.exit(err.output.decode())
+        raise RuntimeError(err.output.decode())
 
 
 def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
