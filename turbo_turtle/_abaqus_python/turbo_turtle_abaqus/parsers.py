@@ -347,8 +347,7 @@ def sets_parser(basename="sets.py", add_help=True, description=sets_cli_descript
     """
     part_name_help_cubit = ""
     if cubit:
-        part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
-                               "ACIS compatibility. "
+        part_name_help_cubit = "unused by Cubit implementation."
     part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
