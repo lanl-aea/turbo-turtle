@@ -651,6 +651,41 @@ def _partition(center=parsers.partition_defaults["center"],
         imprint_and_merge([current_part_name])
 
 
+def _sets(
+    face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
+    edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
+    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
+) -> None:
+
+    if face_sets is not None:
+        for name, mask in face_sets:
+            cubit.cmd(f"Surface {mask} \"{name}\"")
+
+            nodeset_id = get_next_nodeset_id()
+            cubit.cmd(f"Nodeset {nodeset_id} ADD Surface {mask}")
+            cubit.cmd(f"Nodeset {nodeset_id} Name \"{name}\"")
+
+            sideset_id = get_next_sideset_id()
+            cubit.cmd(f"Sideset {sideset_id} ADD Surface {mask}")
+            cubit.cmd(f"Sideset {sideset_id} Name \"{name}\"")
+
+    if edge_sets is not None:
+        for name, mask in edge_sets:
+            nodeset_id = get_next_nodeset_id()
+            cubit.cmd(f"Nodeset {nodeset_id} ADD Curve {mask}")
+            cubit.cmd(f"Nodeset {nodeset_id} Name \"{name}\"")
+
+            sideset_id = get_next_sideset_id()
+            cubit.cmd(f"Sideset {sideset_id} ADD Curve {mask}")
+            cubit.cmd(f"Sideset {sideset_id} Name \"{name}\"")
+
+    if vertex_sets is not None:
+        for name, mask in vertex_sets:
+            nodeset_id = get_next_nodeset_id()
+            cubit.cmd(f"Nodeset {nodeset_id} ADD Vertex {mask}")
+            cubit.cmd(f"Nodeset {nodeset_id} Name \"{name}\"")
+
+
 def sets(
     input_file: str,
     output_file: typing.Optional[str] = parsers.sets_defaults["output_file"],
@@ -659,7 +694,7 @@ def sets(
     edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
     vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
 ) -> None:
-    """Mesh Cubit volumes and sheet bodies by part/volume name
+    """Create Cubit sidesets and nodesets from feature numbers
 
     :param input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
     :param output_file: Cubit ``*.cub`` file to write
@@ -668,12 +703,13 @@ def sets(
     :param edge_sets: Edge set tuples (name, mask)
     :param vertex_sets: Vertex set tuples (name, mask)
     """
-    # TODO: Raise a RuntimeError and let main handle system exit
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/175
-    sys.exit("Cubit sets subcommand is not yet implemented")
-
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
+
+    # TODO: Raise a RuntimeError and let main handle system exit
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/175
+    if not any([face_sets, edge_sets, vertex_sets]):
+        sys.exit("Must specify at least one of: face_sets, edge_sets, vertex_sets")
 
     if output_file is None:
         output_file = input_file
