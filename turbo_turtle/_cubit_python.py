@@ -667,6 +667,20 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
             cubit.cmd(f"sideset {sideset_id} name \"{name}\"")
 
 
+def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
+    names, numbers = zip(*name_number)
+    numbers = [float(number) for number in numbers]
+    positive_numbers = [number > 0. for number in numbers]
+    if not all(positive_numbers):
+        raise ValueError("Feature seeds must be positive numbers")
+    for name, number in zip(names, numbers):
+        feature_ids = " ".join(cubit.get_all_ids_from_name(feature, name))
+        if number.is_integer():
+            cubit.cmd(f"{feature} {feature_ids} interval {int(number)}")
+        else:
+            cubit.cmd(f"{feature} {feature_ids} size {number}")
+
+
 def _sets(
     face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
     edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
@@ -734,6 +748,7 @@ def mesh(
     :param output_file: Cubit ``*.cub`` file to write
     :param part_name: part/volume name prefix
     :param global_seed: The global mesh seed size
+    :param edge_seeds: Edge seed tuples (name, number)
     """
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
@@ -807,12 +822,16 @@ def _mesh(element_type, part_name, global_seed, edge_seeds):
     :param str element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
     :param str part_name: part/volume name prefix
     :param float global_seed: The global mesh seed size
+    :param edge_seeds: Edge seed tuples (name, number)
     """
     parts = _get_volumes_from_name_or_exit(part_name)
     element_type = element_type.lower()
     # TODO: implement edge seeds
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
+    # TODO: Cubit can support more than just edge seeds
+    if edge_seeds is not None:
+        _feature_seeds("curve", edge_seeds)
 
 
 def merge(input_file, output_file):
