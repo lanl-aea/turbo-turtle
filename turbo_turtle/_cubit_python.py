@@ -694,17 +694,16 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
 
 
 def _sets(
+    face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
+    edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
+    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
+) -> None:
     """Create named features, with associated node and sidesets, by feature ID
 
     :param face_sets: Face set tuples (name, mask)
     :param edge_sets: Edge set tuples (name, mask)
     :param vertex_sets: Vertex set tuples (name, mask)
     """
-    face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
-    edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
-    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
-) -> None:
-
     if face_sets is not None:
         _set_from_mask("surface", face_sets)
 
