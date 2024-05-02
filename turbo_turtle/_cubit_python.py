@@ -655,14 +655,14 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
     feature = feature.lower()
 
     for name, mask in name_mask:
-        cubit.cmd(f"{feature} {mask} \"{name}\"")
+        cubit.cmd(f"{feature} {mask} name \"{name}\"")
 
-        nodeset_id = get_next_nodeset_id()
+        nodeset_id = cubit.get_next_nodeset_id()
         cubit.cmd(f"nodeset {nodeset_id} ADD {feature} {mask}")
         cubit.cmd(f"nodeset {nodeset_id} name \"{name}\"")
 
         if feature not in ("vertex", "node"):
-            sideset_id = get_next_sideset_id()
+            sideset_id = cubit.get_next_sideset_id()
             cubit.cmd(f"sideset {sideset_id} ADD {feature} {mask}")
             cubit.cmd(f"sideset {sideset_id} name \"{name}\"")
 
@@ -715,8 +715,7 @@ def sets(
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exit(f"open '{copy_file.name}'")
-        # TODO: Complete implementation
-        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
+        _sets(face_sets, edge_sets, vertex_sets)
         cubit_command_or_exit(f"save as '{output_file}' overwrite")
 
 
