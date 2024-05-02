@@ -300,6 +300,7 @@ for test in system_tests:
 system_tests = (
     # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                        edge seeds, element_type, cubit
     # Abaqus
+    # TODO: Pick some Abaqus edge sets for the system tests
     ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                              None, "C3D8R", False),
     ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]],  "CAX4", False),
     # Cubit

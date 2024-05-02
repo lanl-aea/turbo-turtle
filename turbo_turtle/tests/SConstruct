@@ -187,6 +187,28 @@ for backend, extension in backend_options:
     # Subcommands not implemented in API builder
     interface = "cli"
 
+    # Vase sets
+    if backend == "abaqus":
+        face_sets = "--face-set top '[#4 ]' --face-set bottom '[#40 ]'"
+        # TODO: Pick some Abaqus edge sets for the system tests
+        edge_sets = ""
+    elif backend == "cubit":
+        face_sets = "--face-set top 4 --face-set bottom 7 --outer '2 3 8'"
+        edge_sets = "--top_outer 13"
+    builder = f"sets_{interface}"
+    env["BUILDERS"][builder](env,
+        target=[f"scons-{interface}-vase-sets.{extension}"],
+        source=[f"scons-{interface}-vase.{extension}"],
+        backend=backend,
+        model_name=f"scons-{interface}-vase",
+        part_name=f"scons-{interface}-vase",
+        face_sets=face_sets,
+        edge_sets=edge_sets
+    )
+
+    # TODO: Implement vase mesh edge seeds system tests
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
+
     # Cylinder
     builder = f"cylinder_{interface}"
     env["BUILDERS"][builder](env,
@@ -259,26 +281,6 @@ for backend, extension in backend_options:
         model_name=f"scons-{interface}-sphere-{extension}",
         part_name=f"scons-{interface}-sphere-{extension}"
     )
-
-# Commands not implemented in Cubit
-backend = "abaqus"
-extension = "cae"
-interface ="cli"
-
-# Sets
-# TODO: Implement Cubit switch and masks
-# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
-# TODO: Test mesh edge seeds
-# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
-builder = f"sets_{interface}"
-env["BUILDERS"][builder](env,
-    target=[f"scons-{interface}-vase-sets.{extension}"],
-    source=[f"scons-{interface}-vase.{extension}"],
-    backend=backend,
-    model_name=f"scons-{interface}-vase",
-    part_name=f"scons-{interface}-vase",
-    face_sets="--face-set top '[#4 ]' --face-set bottom '[#40 ]'"
-)
 
 
 waves.scons_extensions.project_help_message()
