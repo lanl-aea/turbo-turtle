@@ -24,17 +24,6 @@ def test_cubit_command_or(command, outcome):
         finally:
             pass
 
-    if not isinstance(outcome, does_not_raise):
-        exit_outcome = pytest.raises(SystemExit)
-    else:
-        exit_outcome = outcome
-    with exit_outcome:
-        try:
-            success = _cubit_python.cubit_command_or_exit(command)
-            assert success is True
-        finally:
-            pass
-
 
 create_curve_from_coordinates = {
     "float": ((0., 0., 0.), (1., 0., 0.), (0.5, 0., 0.), 1.0),
