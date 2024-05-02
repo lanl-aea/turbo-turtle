@@ -15,6 +15,8 @@ New Features
 - Abaqus implementation of an edge seed option in the ``mesh`` subcommand (:issue:`173`, :merge:`164`). By `Kyle
   Brindley`_.
 - Add ``sets`` subcommand CLI builder (:issue:`171`, :merge:`165`). By `Kyle Brindley`_.
+- Cubit implementation of a ``sets`` subcommand and ``--edge-sets`` ``mesh`` option (:issue:`170`, :merge:`166`). `Kyle
+  Brindley`_.
 
 Internal Changes
 ================
