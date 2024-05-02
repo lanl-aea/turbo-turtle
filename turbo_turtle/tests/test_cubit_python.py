@@ -16,7 +16,7 @@ cubit_command_or_exception = {
 @pytest.mark.parametrize("command, outcome",
                          cubit_command_or_exception.values(),
                          ids=cubit_command_or_exception.keys())
-def test_cubit_command_or(command, outcome):
+def test_cubit_command_or_exception(command, outcome):
     with outcome:
         try:
             success = _cubit_python.cubit_command_or_exception(command)
