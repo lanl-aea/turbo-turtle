@@ -1,4 +1,5 @@
 import sys
+import typing
 import argparse
 
 from turbo_turtle import __version__
@@ -9,7 +10,7 @@ from turbo_turtle import geometry_xyplot
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
-def _docs_parser():
+def _docs_parser() -> argparse.ArgumentParser:
     """Get parser object for docs subcommand command line options
 
     :return: parser
@@ -24,7 +25,7 @@ def _docs_parser():
     return parser
 
 
-def _docs(print_local_path=False):
+def _docs(print_local_path: bool = False) -> None:
     """Open or print the package's installed documentation
 
     Exits with a non-zero exit code if the installed index file is not found.
@@ -44,13 +45,13 @@ def _docs(print_local_path=False):
         webbrowser.open(str(_settings._installed_docs_index))
 
 
-def _print_abaqus_path_parser():
+def _print_abaqus_path_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(add_help=False)
     # This parser has no arguments. Current implementation acts like a flag
     return parser
 
 
-def _print_abaqus_path_location():
+def _print_abaqus_path_location() -> None:
     """Print the absolute path to the Turbo Turtle Abaqus Python package directory
 
     Exits with a non-zero exit code if the settings variable ``_abaqus_python_parent_abspath`` does not exist.
@@ -61,7 +62,7 @@ def _print_abaqus_path_location():
         print(_settings._abaqus_python_parent_abspath)
 
 
-def add_abaqus_and_cubit(parsers):
+def add_abaqus_and_cubit(parsers: typing.List[argparse.ArgumentParser]) -> None:
     """Add the Abaqus and Cubit command arguments to each parser in the parsers list
 
     :param list parsers: List of parsers to run ``add_argument`` for the command options
@@ -75,7 +76,7 @@ def add_abaqus_and_cubit(parsers):
                             help="Back end software (default: %(default)s)")
 
 
-def append_cubit_help(text, append="with Abaqus or Cubit"):
+def append_cubit_help(text: str, append: str = "with Abaqus or Cubit") -> str:
     """Append common short help with optional Cubit text
 
     :param str text: original text
@@ -87,10 +88,12 @@ def append_cubit_help(text, append="with Abaqus or Cubit"):
     return f"{text} {append}"
 
 
-def append_cubit_description(text,
-                             append="Defaults to Abaqus, but can optionally run Cubit. Cubit implementation "
-                                    "replaces hyphens with underscores in part name(s) and ignores model/assembly name "
-                                    "arguments."):
+def append_cubit_description(
+    text: str,
+    append: str = "Defaults to Abaqus, but can optionally run Cubit. Cubit implementation "
+                  "replaces hyphens with underscores in part name(s) and ignores model/assembly name "
+                  "arguments."
+) -> str:
     """Append common long description with optional Cubit text
 
     :param str text: original text
@@ -102,7 +105,7 @@ def append_cubit_description(text,
     return f"{text} {append}"
 
 
-def get_parser():
+def get_parser() -> argparse.ArgumentParser:
     """Get parser object for command line options
 
     :return: parser
@@ -255,7 +258,7 @@ def get_parser():
     return main_parser
 
 
-def main():
+def main() -> None:
     parser = get_parser()
     subcommand_list = parser._subparsers._group_actions[0].choices.keys()
     args = parser.parse_args()
@@ -299,4 +302,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    main()  # pragma: no cover
