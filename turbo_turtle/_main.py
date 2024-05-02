@@ -260,39 +260,42 @@ def main():
     subcommand_list = parser._subparsers._group_actions[0].choices.keys()
     args = parser.parse_args()
 
-    if args.subcommand not in subcommand_list:
-        parser.print_help()
-    elif args.subcommand == "docs":
-        _docs(print_local_path=args.print_local_path)
-    elif args.subcommand == "fetch":
-        root_directory = _settings._tutorials_directory.parent
-        relative_paths = _settings._fetch_subdirectories
-        _fetch.main(
-            args.subcommand, root_directory, relative_paths, args.destination,
-            requested_paths=args.FILE, overwrite=args.overwrite,
-            dry_run=args.dry_run, print_available=args.print_available
-        )
-    elif args.subcommand == "print-abaqus-path":
-        _print_abaqus_path_location()
-    elif args.subcommand == "geometry-xyplot":
-        geometry_xyplot._main(
-            args.input_file, args.output_file,
-            part_name=args.part_name,
-            unit_conversion=args.unit_conversion,
-            euclidean_distance=args.euclidean_distance,
-            delimiter=args.delimiter,
-            header_lines=args.header_lines,
-            y_offset=args.y_offset,
-            rtol=args.rtol,
-            atol=args.atol,
-            no_markers=args.no_markers,
-            annotate=args.annotate,
-            scale=args.scale
-        )
-    else:
-        _wrappers, command = _utilities.set_wrappers_and_command(args)
-        wrapper_command = getattr(_wrappers, args.subcommand)
-        wrapper_command(args, command)
+    try:
+        if args.subcommand not in subcommand_list:
+            parser.print_help()
+        elif args.subcommand == "docs":
+            _docs(print_local_path=args.print_local_path)
+        elif args.subcommand == "fetch":
+            root_directory = _settings._tutorials_directory.parent
+            relative_paths = _settings._fetch_subdirectories
+            _fetch.main(
+                args.subcommand, root_directory, relative_paths, args.destination,
+                requested_paths=args.FILE, overwrite=args.overwrite,
+                dry_run=args.dry_run, print_available=args.print_available
+            )
+        elif args.subcommand == "print-abaqus-path":
+            _print_abaqus_path_location()
+        elif args.subcommand == "geometry-xyplot":
+            geometry_xyplot._main(
+                args.input_file, args.output_file,
+                part_name=args.part_name,
+                unit_conversion=args.unit_conversion,
+                euclidean_distance=args.euclidean_distance,
+                delimiter=args.delimiter,
+                header_lines=args.header_lines,
+                y_offset=args.y_offset,
+                rtol=args.rtol,
+                atol=args.atol,
+                no_markers=args.no_markers,
+                annotate=args.annotate,
+                scale=args.scale
+            )
+        else:
+            _wrappers, command = _utilities.set_wrappers_and_command(args)
+            wrapper_command = getattr(_wrappers, args.subcommand)
+            wrapper_command(args, command)
+    except RuntimeError as err:
+        sys.exit(str(err))
 
 
 if __name__ == "__main__":

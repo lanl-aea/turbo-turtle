@@ -5,7 +5,6 @@ Which requires that Cubit's bin directory is found on PYTHONPATH, either directl
 perform ``sys.path`` manipulation, so the importing/calling module/script *must* verify that Cubit will import correctly
 first.
 """
-import sys
 import shutil
 import typing
 import pathlib
@@ -32,21 +31,6 @@ def cubit_command_or_exception(command):
     if not success:
         raise RuntimeError(f"Command '{command}' returned an error. Please see the Cubit log for details.")
     return success
-
-
-@_mixed_utilities.print_exception_message
-def cubit_command_or_exit(*args, **kwargs):
-    """Thin wrapper around ``cubit.cmd`` to call ``sys.exit`` when returning False
-
-    Wrapper of :meth:`turbo_turtle._cubit_python.cubit_command_or_exception` with
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._print_exception_message`.
-
-    Cubit returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
-    SystemExit with ``sys.exit`` when the command returns False.
-
-    :param str command: Cubit APREPRO command to execute
-    """
-    return cubit_command_or_exception(*args, **kwargs)
 
 
 def geometry(input_file, output_file,
@@ -88,13 +72,13 @@ def geometry(input_file, output_file,
     # TODO: Figure out how to log the Cubit operations without printing to console
     # TODO: Figure out how to get a better log of the non-APREPRO actions
     cubit.init(["cubit"])
-    part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
+    part_name = _mixed_utilities.validate_part_name(input_file, part_name)
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     surfaces = []
     for file_name, new_part in zip(input_file, part_name):
-        coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
-                                                                 expected_dimensions=2, expected_columns=2)
+        coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
+                                                         expected_dimensions=2, expected_columns=2)
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         surfaces.append(_draw_surface(lines, splines))
@@ -102,7 +86,7 @@ def geometry(input_file, output_file,
     for surface, new_part in zip(surfaces, part_name):
         _rename_and_sweep(surface, new_part, planar=planar, revolution_angle=revolution_angle)
 
-    cubit_command_or_exit(f"save as '{output_file}' overwrite")
+    cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
 def _draw_surface(lines, splines):
@@ -159,7 +143,7 @@ def create_spline_from_coordinates(coordinates):
     vertex_ids = [point.id() for point in points]
     vertex_ids_text = _utilities.character_delimited_list(vertex_ids)
     # TODO: Find a suitable Cubit Python function for creating splines that returns the curve object
-    cubit_command_or_exit(f"create curve spline vertex {vertex_ids_text} delete")
+    cubit_command_or_exception(f"create curve spline vertex {vertex_ids_text} delete")
     curve = points[0].curves()[0]
     return curve
 
@@ -182,9 +166,9 @@ def create_arc_from_coordinates(center, point1, point2):
 
     # TODO: Find a suitable Cubit Python function for creating arcs that returns the curve object
     command = f"create curve arc center vertex {center_vertex.id()} {vertex1.id()} {vertex2.id()} normal 0 0 1"
-    cubit_command_or_exit(command)
+    cubit_command_or_exception(command)
     curve = vertex1.curves()[0]
-    cubit_command_or_exit(f"delete vertex {center_vertex.id()}")
+    cubit_command_or_exception(f"delete vertex {center_vertex.id()}")
     return curve
 
 
@@ -287,7 +271,7 @@ def _create_volume_from_surfaces(surfaces, keep=True):
     if keep:
         command = f"{command} keep"
     # TODO: Recover volume object directly when creation is possible with Cubit Python API
-    cubit_command_or_exit(command)
+    cubit_command_or_exception(command)
     volumes_after = cubit.get_entities("volume")
     volume_id = list(set(volumes_after) - set(volumes_before))
     volume_id = volume_id[0]
@@ -322,11 +306,11 @@ def _rename_and_sweep(surface, part_name,
     elif numpy.isclose(revolution_angle, 0.0):
         return_object = surface.volumes()[0]
     else:
-        cubit_command_or_exit(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
+        cubit_command_or_exception(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
                               f"angle {revolution_angle} merge")
         return_object = surface.volumes()[0]
         volume_id = return_object.id()
-        cubit_command_or_exit(f"regularize volume {volume_id}")
+        cubit_command_or_exception(f"regularize volume {volume_id}")
 
     return_object.set_entity_name(part_name)
     return return_object
@@ -348,16 +332,6 @@ def _get_volumes_from_name(names):
     if len(parts) < 1:
         raise RuntimeError(f"Could not find any volumes with prefix '{name}'")
     return parts
-
-
-@_mixed_utilities.print_exception_message
-def _get_volumes_from_name_or_exit(*args, **kwargs):
-    """Thin wrapper around :meth:`turbo_turtle._cubit_python._get_volumes_from_name` to call ``sys.exit`` on exceptions
-
-    Wrapper of :meth:`turbo_turtle._cubit_python._get_volumes_from_name` with
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._print_exception_message`.
-    """
-    return _get_volumes_from_name(*args, **kwargs)
 
 
 def cylinder(inner_radius, outer_radius, height, output_file,
@@ -384,7 +358,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     surface = _draw_surface(lines, [])
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle)
 
-    cubit_command_or_exit(f"save as '{output_file}' overwrite")
+    cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
 def sphere(inner_radius, outer_radius, output_file,
@@ -417,15 +391,15 @@ def sphere(inner_radius, outer_radius, output_file,
         with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
             shutil.copyfile(input_file, copy_file.name)
             # TODO: look for a Cubit Python interface proper open/close/save command(s)
-            cubit_command_or_exit(f"open '{copy_file.name}'")
+            cubit_command_or_exception(f"open '{copy_file.name}'")
             _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                     part_name=part_name)
-            cubit_command_or_exit(f"save as '{output_file}' overwrite")
+            cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
     else:
         _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                 part_name=part_name)
-        cubit_command_or_exit(f"save as '{output_file}' overwrite")
+        cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
 def _sphere(inner_radius, outer_radius,
@@ -473,8 +447,8 @@ def imprint_and_merge(names):
     part_ids = [part.id() for part in parts]
     part_string = _utilities.character_delimited_list(part_ids)
 
-    cubit_command_or_exit(f"imprint volume {part_string}")
-    cubit_command_or_exit(f"merge volume {part_string}")
+    cubit_command_or_exception(f"imprint volume {part_string}")
+    cubit_command_or_exception(f"merge volume {part_string}")
 
 
 def webcut_local_coordinate_primary_planes(center, xvector, zvector, names):
@@ -507,10 +481,10 @@ def webcut_local_coordinate_primary_planes(center, xvector, zvector, names):
         parts = _get_volumes_from_name(names)
         part_ids = [part.id() for part in parts]
         part_string = _utilities.character_delimited_list(part_ids)
-        cubit_command_or_exit(f"webcut volume {part_string} with plane from surface {number}")
+        cubit_command_or_exception(f"webcut volume {part_string} with plane from surface {number}")
 
     # Clean up primary surfaces
-    cubit_command_or_exit(f"delete surface {primary_surface_string}")
+    cubit_command_or_exception(f"delete surface {primary_surface_string}")
 
     return _get_volumes_from_name(names)
 
@@ -550,7 +524,7 @@ def create_pyramid_volumes(center, xvector, zvector, size):
     # Remove pyramidal construction surfaces
     surface_numbers = _surface_numbers(pyramid_surfaces)
     surface_string = _utilities.character_delimited_list(surface_numbers)
-    cubit_command_or_exit(f"delete surface {surface_string}")
+    cubit_command_or_exception(f"delete surface {surface_string}")
     # TODO: ^^ Move pyramid volume creation to a dedicated function ^^
 
     return pyramid_volumes
@@ -578,12 +552,12 @@ def create_pyramid_partitions(center, xvector, zvector, size, names):
     for volume in pyramid_volumes:
         volume_id = volume.id()
         for part in parts:
-            cubit_command_or_exit(f"intersect volume {volume_id} with volume {part.id()} keep")
+            cubit_command_or_exception(f"intersect volume {volume_id} with volume {part.id()} keep")
     for part in parts:
-        cubit_command_or_exit(f"delete volume {part.id()}")
+        cubit_command_or_exception(f"delete volume {part.id()}")
 
     # Clean up pyramid volumes
-    cubit_command_or_exit(f"delete volume {pyramid_volume_string}")
+    cubit_command_or_exception(f"delete volume {pyramid_volume_string}")
 
     return _get_volumes_from_name(names)
 
@@ -615,9 +589,9 @@ def partition(input_file,
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
-        cubit_command_or_exit(f"open '{copy_file.name}'")
+        cubit_command_or_exception(f"open '{copy_file.name}'")
         _partition(center, xvector, zvector, part_name, big_number)
-        cubit_command_or_exit(f"save as '{output_file}' overwrite")
+        cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
 def _partition(center=parsers.partition_defaults["center"],
@@ -734,10 +708,8 @@ def sets(
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
 
-    # TODO: Raise a RuntimeError and let main handle system exit
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/175
     if not any([face_sets, edge_sets, vertex_sets]):
-        sys.exit("Must specify at least one of: face_sets, edge_sets, vertex_sets")
+        raise RuntimeError("Must specify at least one of: face_sets, edge_sets, vertex_sets")
 
     if output_file is None:
         output_file = input_file
@@ -745,9 +717,9 @@ def sets(
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
-        cubit_command_or_exit(f"open '{copy_file.name}'")
+        cubit_command_or_exception(f"open '{copy_file.name}'")
         _sets(face_sets, edge_sets, vertex_sets)
-        cubit_command_or_exit(f"save as '{output_file}' overwrite")
+        cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
 def mesh(
@@ -776,9 +748,9 @@ def mesh(
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
-        cubit_command_or_exit(f"open '{copy_file.name}'")
+        cubit_command_or_exception(f"open '{copy_file.name}'")
         _mesh(element_type, part_name, global_seed, edge_seeds)
-        cubit_command_or_exit(f"save as '{output_file}' overwrite")
+        cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
 def _mesh_sheet_body(volume, global_seed, element_type=None):
@@ -796,8 +768,8 @@ def _mesh_sheet_body(volume, global_seed, element_type=None):
     surfaces = [surface.id() for surface in surface_objects]
     surface_string = _utilities.character_delimited_list(surfaces)
     if element_type == "trimesh":
-        cubit_command_or_exit(f"surface {surface_string} scheme {element_type}")
-    cubit_command_or_exit(f"surface {surface_string} size {global_seed}")
+        cubit_command_or_exception(f"surface {surface_string} scheme {element_type}")
+    cubit_command_or_exception(f"surface {surface_string} size {global_seed}")
     for surface in surface_objects:
         surface.mesh()
 
@@ -813,8 +785,8 @@ def _mesh_volume(volume, global_seed, element_type=None):
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/80
     volume_id = volume.id()
     if element_type == "tetmesh":
-        cubit_command_or_exit(f"volume {volume_id} scheme {element_type}")
-    cubit_command_or_exit(f"volume {volume_id} size {global_seed}")
+        cubit_command_or_exception(f"volume {volume_id} scheme {element_type}")
+    cubit_command_or_exception(f"volume {volume_id} size {global_seed}")
     volume.mesh()
 
 
@@ -841,7 +813,7 @@ def _mesh(element_type, part_name, global_seed, edge_seeds):
     :param float global_seed: The global mesh seed size
     :param edge_seeds: Edge seed tuples (name, number)
     """
-    parts = _get_volumes_from_name_or_exit(part_name)
+    parts = _get_volumes_from_name(part_name)
     element_type = element_type.lower()
     # TODO: Cubit can support more than just edge seeds
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
@@ -860,8 +832,8 @@ def merge(input_file, output_file):
     input_file = [pathlib.Path(path).with_suffix(".cub") for path in input_file]
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     for path in input_file:
-        cubit_command_or_exit(f"import cubit '{path}' unique_genesis_ids")
-    cubit_command_or_exit(f"save as '{output_file}' overwrite")
+        cubit_command_or_exception(f"import cubit '{path}' unique_genesis_ids")
+    cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
 def export(input_file,
@@ -879,11 +851,11 @@ def export(input_file,
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
     element_type = \
-        _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
+        _mixed_utilities.validate_element_type(length_part_name=len(part_name), element_type=element_type)
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     destination = pathlib.Path(destination)
 
-    cubit_command_or_exit(f"open '{input_file}'")
+    cubit_command_or_exception(f"open '{input_file}'")
 
     if output_type.lower() == "abaqus":
         _export_abaqus_list(part_name, element_type, destination)
@@ -891,7 +863,7 @@ def export(input_file,
         output_file = destination / input_file.with_suffix(".g").name
         _export_genesis(output_file, part_name, element_type, output_type)
     else:
-        sys.exit(f"Uknown output type request '{output_type}'")
+        raise RuntimeError(f"Uknown output type request '{output_type}'")
 
 
 def _create_new_block(volumes):
@@ -910,9 +882,9 @@ def _create_new_block(volumes):
     if any([cubit.is_sheet_body(volume_id) for volume_id in volume_ids]):
         surfaces = _surface_numbers(_surfaces_for_volumes(volumes))
         surface_string = _utilities.character_delimited_list(surfaces)
-        cubit_command_or_exit(f"block {new_block_id} add surface {surface_string}")
+        cubit_command_or_exception(f"block {new_block_id} add surface {surface_string}")
     else:
-        cubit_command_or_exit(f"block {new_block_id} add volume {volume_string}")
+        cubit_command_or_exception(f"block {new_block_id} add volume {volume_string}")
     return new_block_id
 
 
@@ -926,7 +898,7 @@ def _create_volume_name_block(name):
     """
     volumes = _get_volumes_from_name(name)
     new_block_id = _create_new_block(volumes)
-    cubit_command_or_exit(f"block {new_block_id} name '{name}'")
+    cubit_command_or_exception(f"block {new_block_id} name '{name}'")
     return new_block_id
 
 
@@ -936,19 +908,13 @@ def _set_genesis_output_type(output_type):
     :param str output_type: String identifying genesis output type: genesis (large format), genesis-normal, genesis-hdf5
     """
     if output_type.lower() == "genesis":
-        cubit_command_or_exit(f"set large exodus file on")
+        cubit_command_or_exception(f"set large exodus file on")
     elif output_type.lower() == "genesis-normal":
-        cubit_command_or_exit(f"set large exodus file off")
+        cubit_command_or_exception(f"set large exodus file off")
     elif output_type.lower() == "genesis-hdf5":
-        cubit_command_or_exit(f"set exodus netcdf4 on")
+        cubit_command_or_exception(f"set exodus netcdf4 on")
     else:
         raise RuntimeError("Unknown genesis output type '{output_type}'")
-
-
-@_mixed_utilities.print_exception_message
-def _set_genesis_output_type_or_exit(*args, **kwargs):
-    """Thin wrapper around :meth:`turbo_turtle._cubit_python._set_genesis_output_type` to call sys exit on exceptions"""
-    return _set_genesis_output_type(*args, **kwargs)
 
 
 def _export_genesis(output_file, part_name, element_type, output_type="genesis"):
@@ -965,10 +931,10 @@ def _export_genesis(output_file, part_name, element_type, output_type="genesis")
     for name, element in zip(part_name, element_type):
         block_ids.append(_create_volume_name_block(name))
         if element_type is not None:
-            cubit_command_or_exit(f"block {block_ids[-1]} element type {element}")
-    _set_genesis_output_type_or_exit(output_type)
+            cubit_command_or_exception(f"block {block_ids[-1]} element type {element}")
+    _set_genesis_output_type(output_type)
     block_string = _utilities.character_delimited_list(block_ids)
-    cubit_command_or_exit(f"export mesh '{output_file}' block {block_string} overwrite")
+    cubit_command_or_exception(f"export mesh '{output_file}' block {block_string} overwrite")
 
 
 def _export_abaqus_list(part_name, element_type, destination):
@@ -993,7 +959,7 @@ def _export_abaqus(output_file, part_name):
     :param str part_name: part/volume name to create as blocks from all volumes with a matching prefix
     """
     new_block_id = _create_volume_name_block(part_name)
-    cubit_command_or_exit(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
+    cubit_command_or_exception(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
 
 def image(input_file, output_file, cubit_command,
