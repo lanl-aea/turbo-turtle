@@ -651,6 +651,22 @@ def _partition(center=parsers.partition_defaults["center"],
         imprint_and_merge([current_part_name])
 
 
+def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
+    feature = feature.lower()
+
+    for name, mask in name_mask:
+        cubit.cmd(f"{feature} {mask} \"{name}\"")
+
+        nodeset_id = get_next_nodeset_id()
+        cubit.cmd(f"nodeset {nodeset_id} ADD {feature} {mask}")
+        cubit.cmd(f"nodeset {nodeset_id} name \"{name}\"")
+
+        if feature not in ("vertex", "node"):
+            sideset_id = get_next_sideset_id()
+            cubit.cmd(f"sideset {sideset_id} ADD {feature} {mask}")
+            cubit.cmd(f"sideset {sideset_id} name \"{name}\"")
+
+
 def _sets(
     face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
     edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
@@ -658,32 +674,13 @@ def _sets(
 ) -> None:
 
     if face_sets is not None:
-        for name, mask in face_sets:
-            cubit.cmd(f"Surface {mask} \"{name}\"")
-
-            nodeset_id = get_next_nodeset_id()
-            cubit.cmd(f"Nodeset {nodeset_id} ADD Surface {mask}")
-            cubit.cmd(f"Nodeset {nodeset_id} Name \"{name}\"")
-
-            sideset_id = get_next_sideset_id()
-            cubit.cmd(f"Sideset {sideset_id} ADD Surface {mask}")
-            cubit.cmd(f"Sideset {sideset_id} Name \"{name}\"")
+        _set_from_mask("surface", face_sets)
 
     if edge_sets is not None:
-        for name, mask in edge_sets:
-            nodeset_id = get_next_nodeset_id()
-            cubit.cmd(f"Nodeset {nodeset_id} ADD Curve {mask}")
-            cubit.cmd(f"Nodeset {nodeset_id} Name \"{name}\"")
-
-            sideset_id = get_next_sideset_id()
-            cubit.cmd(f"Sideset {sideset_id} ADD Curve {mask}")
-            cubit.cmd(f"Sideset {sideset_id} Name \"{name}\"")
+        _set_from_mask("curve", edge_sets)
 
     if vertex_sets is not None:
-        for name, mask in vertex_sets:
-            nodeset_id = get_next_nodeset_id()
-            cubit.cmd(f"Nodeset {nodeset_id} ADD Vertex {mask}")
-            cubit.cmd(f"Nodeset {nodeset_id} Name \"{name}\"")
+        _set_from_mask("vertex", vertex_sets)
 
 
 def sets(
