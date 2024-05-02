@@ -300,12 +300,10 @@ for test in system_tests:
 system_tests = (
     # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                        edge seeds, element_type, cubit
     # Abaqus
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                              None, "C3D8R", False),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]],  "CAX4", False),
+    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                              None, "C3D8R", False),
+    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]],  "CAX4", False),
     # Cubit
-    # TODO: Duplicate Abaqus tests when sets/edge-seeds implemented in Cubit
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/170
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
+    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, [["top", "4"], ["bottom", "7"], ["outer", "2 3 8"]], [["top_outer", "13"]], [["top_outer", "1.000001"]], "C3D8R", True),
 )
 for test in system_tests:
     commands_list.append(setup_sets_commands(*test))
