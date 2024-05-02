@@ -193,7 +193,7 @@ for backend, extension in backend_options:
         # TODO: Pick some Abaqus edge sets for the system tests
         edge_sets = ""
     elif backend == "cubit":
-        face_sets = "--face-set top 4 --face-set bottom 7 --outer '2 3 8'"
+        face_sets = "--face-set top 4 --face-set bottom 7 --face-set outer '2 3 8'"
         edge_sets = "--top_outer 13"
     builder = f"sets_{interface}"
     env["BUILDERS"][builder](env,
