@@ -8,8 +8,6 @@ conflict waves-env
 
 # Set AEA standard software version and environment names
 set cubit_version "Cubit-16.12"
-set anaconda_version "2023.07-2"
-set python_version "3.11.4"
 set environment "turbo-turtle-dev"
 
 # Get current hostname
@@ -25,7 +23,6 @@ set anaconda_path ""
 if { [ string match "*.localdomain" $hostname ] ||
      [ string match "??-rfe?.lanl.gov" $hostname ] ||
      [ string match "??-fe?.lanl.gov" $hostname ] } {
-    set software_prefix "/usr/projects/hpcsoft/common/x86_64"
     set projects "/usr/projects/ea"
     set cubit_path "$projects/Cubit/$cubit_version"
     set abaqus_path "$projects/abaqus/Commands"
@@ -39,17 +36,15 @@ if { [ string match "*.localdomain" $hostname ] ||
 } else {
     error "Unknown or unsupported host"
 }
-set anaconda_path "$software_prefix/anaconda/$anaconda_version-python-$python_version"
-set anaconda_source "$anaconda_path/etc/profile.d/conda.sh"
-set anaconda_bin "$anaconda_path/bin"
 set environment_path "$projects/aea_compute/$environment"
+set anaconda_source "$environment_path/etc/profile.d/conda.sh"
 set environment_bin "$environment_path/bin"
 set environment_man "$environment_path/share/man"
 set cubit_bin "$cubit_path/bin"
 
 # Set the bash environment variables similarly to HPC anaconda module
 # Reference - sn-rfe.lanl.gov:/usr/projects/hpcsoft/modulefiles/toss3/snow/tools/python/3.10-anaconda-2023.03
-prepend-path PATH "$environment_bin:$anaconda_bin"
+prepend-path PATH "$environment_bin"
 prepend-path MANPATH "$environment_man"
 
 # Set the bash environment variables for commonly used AEA software
@@ -86,10 +81,7 @@ proc ModulesHelp {} {
     global environment
     global software_prefix
     global projects
-    global anaconda_version
-    global python_version
     global anaconda_path
-    global anaconda_bin
     global environment_path
     global environment_bin
     global environment_man
@@ -103,15 +95,13 @@ proc ModulesHelp {} {
     puts stderr "environment: $environment"
     puts stderr "software_prefix: $software_prefix"
     puts stderr "projects: $projects"
-    puts stderr "anaconda_version: $anaconda_version"
-    puts stderr "python_version: $python_version"
     puts stderr "anaconda_path: $anaconda_path"
     puts stderr "environment_path: $environment_path"
     puts stderr "cubit_version: $cubit_version"
     puts stderr "abaqus_path: $abaqus_path"
 
     puts stderr "\n\nModifies environment variables"
-    puts stderr "PATH prepended with: $environment_bin:$anaconda_bin"
+    puts stderr "PATH prepended with: $environment_bin"
     puts stderr "PATH appended with: $abaqus_path:$cubit_path"
     puts stderr "PYTHONPATH appended with: $cubit_bin"
     puts stderr "MANPATH prepended with: $environment_man"
