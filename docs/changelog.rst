@@ -24,6 +24,8 @@ Internal Changes
 - Add system tests for Abaqus implementation of sets subcommand (:issue:`172`, :merge:`163`). By `Kyle Brindley`_.
 - Begin converting internal API error handling to exceptions. Limit conversion to system exit and error codes to the
   main implementation (:issue:`175`, :merge:`167`). By `Kyle Brindley`_.
+- Activate project CI environment directly. Fixes errors related to conda-build/boa/mambabuild during packaging
+  (:merge:`168`). By `Kyle Brindley`_.
 
 ********************
 v0.12.1 (2024-04-30)
