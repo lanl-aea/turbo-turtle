@@ -18,6 +18,11 @@ New Features
 - Cubit implementation of a ``sets`` subcommand and ``--edge-sets`` ``mesh`` option (:issue:`170`, :merge:`166`). `Kyle
   Brindley`_.
 
+Bug fixes
+=========
+- Sphere module was missing an ``if`` statement that protected GUI execution from hitting the ``sys.exit(main(...))`` 
+  statement and crashing the GUI session (:issue:`176`, :merge:`169`). By `Thomas Roberts`_.
+
 Internal Changes
 ================
 - Internal utility for constructing string delimited lists (:merge:`162`). By `Kyle Brindley`_.
