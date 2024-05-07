@@ -65,3 +65,13 @@ toolset.registerKernelMenuButton(
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._mesh_gui_help_string)
+
+# Image Gui Plugin
+toolset.registerKernelMenuButton(
+    buttonText='Turbo-Turtle|Image',
+    moduleName='turbo_turtle_abaqus.image', functionName='_gui()',
+    applicableModules=('Part', 'Assembly', ),
+    icon=afxCreateIcon('turboTurtleIcon.png'),
+    helpUrl=_mixed_settings._gui_docs_file,
+    author=_mixed_settings._author,
+    description=_mixed_settings._image_gui_help_string)
