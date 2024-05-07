@@ -209,21 +209,23 @@ def _gui():
 
 
 if __name__ == "__main__":
+    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+        _gui()
+    else:
+        parser = parsers.sphere_parser(basename=basename)
+        try:
+            args, unknown = parser.parse_known_args()
+        except SystemExit as err:
+            sys.exit(err.code)
 
-    parser = parsers.sphere_parser(basename=basename)
-    try:
-        args, unknown = parser.parse_known_args()
-    except SystemExit as err:
-        sys.exit(err.code)
-
-    sys.exit(main(
-        args.inner_radius,
-        args.outer_radius,
-        args.output_file,
-        input_file=args.input_file,
-        quadrant=args.quadrant,
-        revolution_angle=args.revolution_angle,
-        y_offset=args.y_offset,
-        model_name=args.model_name,
-        part_name=args.part_name
-    ))
+        sys.exit(main(
+            args.inner_radius,
+            args.outer_radius,
+            args.output_file,
+            input_file=args.input_file,
+            quadrant=args.quadrant,
+            revolution_angle=args.revolution_angle,
+            y_offset=args.y_offset,
+            model_name=args.model_name,
+            part_name=args.part_name
+        ))
