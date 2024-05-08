@@ -5,6 +5,7 @@ import shutil
 import inspect
 import argparse
 import tempfile
+import fnmatch
 
 
 filename = inspect.getfile(lambda: None)
@@ -148,6 +149,82 @@ def export_mesh_file(output_file,
     part_definition = orphan_mesh[0]
     with open(output_file, 'w') as output:
         output.write(part_definition[1].strip())
+
+
+def _gui_get_inputs():
+    """Interactive Inputs
+
+    Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
+    GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
+    below, also update ``_mixed_settings._export_gui_help_string`` that gets used as the GUI ``label``.
+
+    GUI-INPUTS
+    ==========
+    * Model Name - model to query
+    * Part Name - list of part names to query. Comma separated, no spaces (part-1 or part-1,part-2).
+    * Element Type - list of element types, one per part, or one global replacement for every part. If blank, element
+      type in the part will not be changed. Comma separated, no spaces (c3d8r or c3d8r,c3d8).
+    * Destination - destination directory for orphan mesh files
+    * Assembly File - file with assembly block keywords. If provided, and no instances are found, all part names are
+      instanced before exporting the file.
+
+    **IMPORTANT** - this function must return key-value pairs that will successfully unpack as ``**kwargs`` in
+    ``export``
+
+    :return: ``user_inputs`` - a dictionary of the following key-value pair types:
+
+    * ``model_name``: ``str`` type, model to query
+    * ``part_name``: ``list`` type, part names to query
+    * ``element_type``: ``list`` type, element types one for each part or  one global replacement
+    * ``destination``: ``str`` type, destination directory for orphan mesh files
+    * ``assembly``: ``str`` type, assembly keword block file. If provided and no instances are found, all part names are 
+      instanced before exporting the file.
+    """
+    import abaqus
+
+    model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
+
+    try:
+        default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
+    except AttributeError:
+        print('Warning: could not determine a default part name using the current viewport')
+        default_part_name = parsers.export_defaults['part_name'][0]  # part_name defaults to list of length 1
+
+    fields = (
+        ('Model Name:', model_name),
+        ('Part Name:', default_part_name),
+        ('Element Type:', ''),
+        ('Destination:', parsers.export_defaults['destination']),
+        ('Assembly File:', '')
+    )
+
+    model_name, part_name_strings, element_type_strings, destination, assembly = abaqus.getInputs(
+        dialogTitle='Turbo Turtle Export',
+        label=_mixed_settings._export_gui_help_string,
+        fields=fields
+    )
+
+    if model_name is not None:  # Model name will be None if the user hits the "cancel/esc" button
+        part_name = []
+        for this_part_name_string in part_name_strings.split(','):
+            part_name += fnmatch.filter(abaqus.mdb.models[model_name].parts.keys(), this_part_name_string)
+
+        element_type = element_type_strings.split(',')
+        if len(element_type) == 1 and not element_type[0]:
+            element_type = [None]
+
+        user_inputs = {'model_name': model_name, 'part_name': part_name, 'element_type': element_type,
+                       'destination': destination, 'assembly': assembly}
+    else:
+        user_inputs = {}
+    return user_inputs
+
+
+def _gui():
+    """Function with no inputs that drives the plug-in"""
+    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
+                                  subcommand_function=export,
+                                  post_action_function=None)
 
 
 if __name__ == "__main__":

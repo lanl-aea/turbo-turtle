@@ -90,3 +90,15 @@ GUI-INPUTS
 * Y-Angle - rotation about y-axis in degrees
 * Z-Angle - rotation about z-axis in degrees
 """
+
+_export_gui_help_string = """
+GUI-INPUTS
+==========
+* Model Name - model to query
+* Part Name - list of part names to query. Comma separated, no spaces (part-1 or part-1,part-2).
+* Element Type - list of element types, one per part, or one global replacement for every part. If blank, element
+  type in the part will not be changed. Comma separated, no spaces (c3d8r or c3d8r,c3d8).
+* Destination - destination directory for orphan mesh files
+* Assembly File - file with assembly block keywords. If provided, and no instances are found, all part names are
+  instanced before exporting the file.
+"""
