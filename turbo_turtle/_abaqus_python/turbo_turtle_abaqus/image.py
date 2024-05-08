@@ -141,7 +141,7 @@ def image(output_file,
 
 
 def _validate_color_map(color_map, valid_color_maps):
-    """Validate the user-provided color map against a provided list of vald color maps
+    """Validate the user-provided color map against a provided list of valid color maps
 
     :param str color_map: user provided color map
     :param list valid_color_maps: valid color maps to check against
@@ -198,14 +198,14 @@ def _gui_get_inputs():
 
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
-        if default_part_name == 'rootAssembly':
+        if default_part_name == "rootAssembly":
             default_color_map = "Assembly"
             default_part_name = ''  # Need to reset to blank string for proper handling in the image() function
         else:
             default_color_map = "Part geometry"
     except AttributeError:
-        default_part_name = ''
         deault_color_map = "Assembly"
+        default_part_name = ''
 
     fields = (
         ('Output File', ''),
