@@ -233,17 +233,20 @@ def _gui():
 
 
 if __name__ == "__main__":
-    parser = parsers.export_parser()
-    try:
-        args, unknown = parser.parse_known_args()
-    except SystemExit as err:
-        sys.exit(err.code)
+    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+        _gui()
+    else:
+        parser = parsers.export_parser()
+        try:
+            args, unknown = parser.parse_known_args()
+        except SystemExit as err:
+            sys.exit(err.code)
 
-    sys.exit(main(
-        args.input_file,
-        model_name=args.model_name,
-        part_name=args.part_name,
-        element_type=args.element_type,
-        destination=args.destination,
-        assembly=args.assembly
-    ))
+        sys.exit(main(
+            args.input_file,
+            model_name=args.model_name,
+            part_name=args.part_name,
+            element_type=args.element_type,
+            destination=args.destination,
+            assembly=args.assembly
+        ))
