@@ -31,21 +31,37 @@ def main(input_file,
     :param list part_name: list of parts to query in the specified Abaqus model
     :param list element_type: list of element types, one per part name or one global replacement for every part name
     :param str destination: write output orphan mesh files to this output directory
-    :param bool assembly: Assembly file for exporting the assembly keyword block. If provided and no instances are
+    :param str assembly: Assembly file for exporting the assembly keyword block. If provided and no instances are
         found, instance all part names before export.
     """
     import abaqus
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    element_type = \
-        _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
     with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
-        export_multiple_parts(model_name=model_name, part_name=part_name, element_type=element_type,
-                              destination=destination)
-        if assembly is not None:
-            assembly = os.path.splitext(assembly)[0] + ".inp"
-            _export_assembly(assembly, model_name, part_name)
+
+    export(model_name=model_name, part_name=part_name, element_type=element_type, destination=destination, 
+           assembly=assembly)
+
+
+def export(model_name, part_name, element_type, destination, assembly):
+    """Driver function for exporting part and assembly files
+
+    :param str model_name: model to query in the Abaqus model database
+    :param list part_name: list of parts to query in the specified Abaqus model
+    :param list element_type: list of element types, one per part name or one global replacement for every part name
+    :param str destination: write output orphan mesh files to this output directory
+    :param str assembly: Assembly file for exporting the assembly keyword block. If provided and no instances are
+        found, instance all part names before export.
+    """
+    element_type = \
+        _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
+
+    export_multiple_parts(model_name=model_name, part_name=part_name, element_type=element_type,
+                          destination=destination)
+    if assembly is not None:
+        assembly = os.path.splitext(assembly)[0] + ".inp"
+        _export_assembly(assembly, model_name, part_name)
 
 
 def _export_assembly(assembly_file, model_name, part_name):
@@ -99,12 +115,12 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
         # Copy current part to tmp model
         abaqus.mdb.models[tmp_name].Part(new_part, abaqus.mdb.models[model_name].parts[new_part])
         mesh_output_file = os.path.join(destination, new_part) + ".inp"
-        export(output_file=mesh_output_file, model_name=tmp_name, part_name=new_part)
+        export_mesh_file(output_file=mesh_output_file, model_name=tmp_name, part_name=new_part)
         if new_element is not None:
             _mixed_utilities.substitute_element_type(mesh_output_file, new_element)
 
 
-def export(output_file,
+def export_mesh_file(output_file,
            model_name=parsers.export_defaults["model_name"],
            part_name=parsers.export_defaults["part_name"][0]):
     """Export an orphan mesh from a single part
