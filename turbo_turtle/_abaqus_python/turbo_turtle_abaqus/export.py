@@ -14,6 +14,8 @@ grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
 from turbo_turtle_abaqus import parsers
 from turbo_turtle_abaqus import _mixed_utilities
+from turbo_turtle_abaqus import _abaqus_utilities
+from turbo_turtle_abaqus import _mixed_settings
 
 
 def main(input_file,
