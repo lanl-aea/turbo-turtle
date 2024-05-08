@@ -41,7 +41,7 @@ def main(input_file,
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
 
-    export(model_name=model_name, part_name=part_name, element_type=element_type, destination=destination, 
+    export(model_name=model_name, part_name=part_name, element_type=element_type, destination=destination,
            assembly=assembly)
 
 
@@ -177,7 +177,7 @@ def _gui_get_inputs():
     * ``part_name``: ``list`` type, part names to query
     * ``element_type``: ``list`` type, element types one for each part or  one global replacement
     * ``destination``: ``str`` type, destination directory for orphan mesh files
-    * ``assembly``: ``str`` type, assembly keword block file. If provided and no instances are found, all part names are 
+    * ``assembly``: ``str`` type, assembly keword block file. If provided and no instances are found, all part names are
       instanced before exporting the file.
     """
     import abaqus
