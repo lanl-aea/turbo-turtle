@@ -41,8 +41,8 @@ def main(input_file,
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
 
-    export(model_name=model_name, part_name=part_name, element_type=element_type, destination=destination,
-           assembly=assembly)
+        export(model_name=model_name, part_name=part_name, element_type=element_type, destination=destination,
+               assembly=assembly)
 
 
 def export(model_name, part_name, element_type, destination, assembly):
