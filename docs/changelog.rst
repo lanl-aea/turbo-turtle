@@ -25,6 +25,7 @@ Bug fixes
 
 Internal Changes
 ================
+- Work-in-progress support for Abaqus CAE GUI export capability (:issue:`154`, :merge:`171`). By `Thomas Roberts`_.
 - Work-in-progress support for Abaqus CAE GUI image capability (:issue:`155`, :merge:`170`). By `Thomas Roberts`_.
 - Internal utility for constructing string delimited lists (:merge:`162`). By `Kyle Brindley`_.
 - Add system tests for Abaqus implementation of sets subcommand (:issue:`172`, :merge:`163`). By `Kyle Brindley`_.
