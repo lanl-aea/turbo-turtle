@@ -205,9 +205,14 @@ def _gui_get_inputs():
     )
 
     if model_name is not None:  # Model name will be None if the user hits the "cancel/esc" button
-        part_name = []
-        for this_part_name_string in part_name_strings.split(','):
-            part_name += fnmatch.filter(abaqus.mdb.models[model_name].parts.keys(), this_part_name_string)
+        if part_name_strings == "rootAssembly":
+            part_name = []
+        elif not part_name_strings:
+            part_name = []
+        else:
+            part_name = []
+            for this_part_name_string in part_name_strings.split(','):
+                part_name += fnmatch.filter(abaqus.mdb.models[model_name].parts.keys(), this_part_name_string)
 
         element_type = element_type_strings.split(',')
         if len(element_type) == 1 and not element_type[0]:
