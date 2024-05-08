@@ -80,10 +80,10 @@ GUI-INPUTS
 * Output File - output image file name (with '.png' or '.svg' extension)
 * Model Name - model to query
 * Part Name - part to query. If blank, assembly view will be queried
-* Color Map - valid Abaqus color map. Choose from: 'Material', 'Section', 'Composite layup', 'Composite ply', 
+* Color Map - valid Abaqus color map. Choose from: 'Material', 'Section', 'Composite layup', 'Composite ply',
   'Part', 'Part instance', 'Element set', 'Averaging region', 'Element type', 'Default', 'Assembly',
   'Part geometry', 'Load', 'Boundary condition', 'Interaction', 'Constraint', 'Property', 'Meshability',
-  'Instance type', 'Set', 'Surface', 'Internal set', 'Internal surface', 'Display group', 'Selection group', 'Skin', 
+  'Instance type', 'Set', 'Surface', 'Internal set', 'Internal surface', 'Display group', 'Selection group', 'Skin',
   'Stringer', 'Cell', 'Face'
 * Image Size - size in pixels. Width, Height
 * X-Angle - rotation about x-axis in degrees

@@ -165,16 +165,16 @@ def _gui_get_inputs():
     * Output File - output image file name (with '.png' or '.svg' extension)
     * Model Name - model to query
     * Part Name - part to query. If blank, assembly view will be queried
-    * Color Map - valid Abaqus color map. Choose from: 'Material', 'Section', 'Composite layup', 'Composite ply', 
+    * Color Map - valid Abaqus color map. Choose from: 'Material', 'Section', 'Composite layup', 'Composite ply',
       'Part', 'Part instance', 'Element set', 'Averaging region', 'Element type', 'Default', 'Assembly',
       'Part geometry', 'Load', 'Boundary condition', 'Interaction', 'Constraint', 'Property', 'Meshability',
-      'Instance type', 'Set', 'Surface', 'Internal set', 'Internal surface', 'Display group', 'Selection group', 'Skin', 
+      'Instance type', 'Set', 'Surface', 'Internal set', 'Internal surface', 'Display group', 'Selection group', 'Skin',
       'Stringer', 'Cell', 'Face'
     * Image Size - size in pixels. Width, Height
     * X-Angle - rotation about x-axis in degrees
     * Y-Angle - rotation about y-axis in degrees
     * Z-Angle - rotation about z-axis in degrees
-    
+
     **IMPORTANT** - this function must return key-value pairs that will successfully unpack as ``**kwargs`` in
     ``image``
 
@@ -189,7 +189,7 @@ def _gui_get_inputs():
     * ``y_angle``: ``float`` type, rotation about y-axis in degrees
     * ``z_angle``: ``float`` type, rotation about z-axis in degrees
 
-    :raises RuntimeError: if ``output_file`` is not specified, if ``output_file`` extension is not valid, if 
+    :raises RuntimeError: if ``output_file`` is not specified, if ``output_file`` extension is not valid, if
         ``color_map`` is not valid
     """
     import abaqus
