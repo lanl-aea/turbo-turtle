@@ -23,6 +23,10 @@ Bug fixes
 - Sphere module was missing an ``if`` statement that protected GUI execution from hitting the ``sys.exit(main(...))`` 
   statement and crashing the GUI session (:issue:`176`, :merge:`169`). By `Thomas Roberts`_.
 
+Documentation
+=============
+- Break long API function signatures into multiple lines for better readability (:issue:`178`) By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Work-in-progress support for Abaqus CAE GUI export capability (:issue:`154`, :merge:`171`). By `Thomas Roberts`_.
