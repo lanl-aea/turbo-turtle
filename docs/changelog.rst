@@ -20,12 +20,13 @@ New Features
 
 Bug fixes
 =========
-- Sphere module was missing an ``if`` statement that protected GUI execution from hitting the ``sys.exit(main(...))`` 
+- Sphere module was missing an ``if`` statement that protected GUI execution from hitting the ``sys.exit(main(...))``
   statement and crashing the GUI session (:issue:`176`, :merge:`169`). By `Thomas Roberts`_.
 
 Documentation
 =============
-- Break long API function signatures into multiple lines for better readability (:issue:`178`) By `Kyle Brindley`_.
+- Break long API function signatures into multiple lines for better readability (:issue:`178`, :merge:`172`) By `Kyle
+  Brindley`_.
 
 Internal Changes
 ================
