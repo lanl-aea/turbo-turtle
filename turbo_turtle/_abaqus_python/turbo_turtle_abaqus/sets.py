@@ -74,23 +74,39 @@ def sets(
     :param list[tuple[str, str]] vertex_sets: Vertex set tuples (name, mask)
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
+
+    :raises RuntimeError: Collection of all set creation RuntimeError(s)
     """
     import abaqus
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
 
-    if face_sets is not None:
-        _abaqus_utilities.set_from_mask(part, "faces", face_sets)
-        _abaqus_utilities.surface_from_mask(part, "faces", face_sets)
+    error_messages = []
+    try:
+        if face_sets is not None:
+            _abaqus_utilities.set_from_mask(part, "faces", face_sets)
+            _abaqus_utilities.surface_from_mask(part, "faces", face_sets)
+    except RuntimeError as face_err:
+        error_messages.append("{}".format(face_err))
 
-    if edge_sets is not None:
-        _abaqus_utilities.set_from_mask(part, "edges", edge_sets)
-        if _abaqus_utilities.part_dimensionality(part) == 2:
-            _abaqus_utilities.surface_from_mask(part, "edges", edge_sets)
+    try:
+        if edge_sets is not None:
+            _abaqus_utilities.set_from_mask(part, "edges", edge_sets)
+            if _abaqus_utilities.part_dimensionality(part) == 2:
+                _abaqus_utilities.surface_from_mask(part, "edges", edge_sets)
+    except RuntimeError as face_err:
+        error_messages.append("{}".format(face_err))
 
-    if vertex_sets is not None:
-        _abaqus_utilities.set_from_mask(part, "vertices", vertex_sets)
+    try:
+        if vertex_sets is not None:
+            _abaqus_utilities.set_from_mask(part, "vertices", vertex_sets)
+    except RuntimeError as face_err:
+        error_messages.append("{}".format(face_err))
+
+    if error_messages:
+        message = "\n".join(error_messages)
+        raise RuntimeError(message)
 
 
 if __name__ == "__main__":
