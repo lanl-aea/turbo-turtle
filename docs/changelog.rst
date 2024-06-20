@@ -39,6 +39,11 @@ Internal Changes
 - Activate project CI environment directly. Fixes errors related to conda-build/boa/mambabuild during packaging
   (:merge:`168`). By `Kyle Brindley`_.
 
+Enhancements
+============
+- Collect and report specific set name/mask failures in the ``sets`` subcommand (:issue:`182`, :merge:`173`). By `Kyle
+  Brindley`_.
+
 ********************
 v0.12.1 (2024-04-30)
 ********************
