@@ -60,9 +60,13 @@ def set_from_mask(part, feature, name_mask):
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges', 'vertices'
     :param list[tuple[str, str]] name_mask: List of set name/mask tuples to create
     """
+    import abaqus
     attribute = getattr(part, feature)
     for name, mask in name_mask:
-        objects = attribute.getSequenceFromMask(mask=(mask, ))
+        try:
+            objects = attribute.getSequenceFromMask(mask=(mask, ))
+        except abaqus.AbaqusException as err:
+            raise RuntimeError("{}. name/mask ({}, {})".format(err, name, mask))
         part.Set(**{feature: objects, "name": name})
 
 
@@ -83,7 +87,10 @@ def surface_from_mask(part, feature, name_mask):
     else:
         raise ValueError("Feature must be one of: faces, edges")
     for name, mask in name_mask:
-        objects = attribute.getSequenceFromMask(mask=(mask, ))
+        try:
+            objects = attribute.getSequenceFromMask(mask=(mask, ))
+        except abaqus.AbaqusException as err:
+            raise RuntimeError("{}. name/mask ({}, {})".format(err, name, mask))
         part.Surface(**{"name": name, surface_keyword: objects})
 
 
