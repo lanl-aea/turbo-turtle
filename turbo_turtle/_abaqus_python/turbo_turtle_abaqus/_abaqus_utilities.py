@@ -62,12 +62,16 @@ def set_from_mask(part, feature, name_mask):
     """
     import abaqus
     attribute = getattr(part, feature)
+    bad_masks = []
     for name, mask in name_mask:
         try:
             objects = attribute.getSequenceFromMask(mask=(mask, ))
         except abaqus.AbaqusException as err:
-            raise RuntimeError("{}. name/mask ({}, {})".format(err, name, mask))
-        part.Set(**{feature: objects, "name": name})
+            bad_masks.append((name, mask))
+        else:
+            part.Set(**{feature: objects, "name": name})
+    if bad_masks:
+        raise RuntimeError("Creaton of one or more sets failed {}".format(bad_masks))
 
 
 def surface_from_mask(part, feature, name_mask):
@@ -86,12 +90,16 @@ def surface_from_mask(part, feature, name_mask):
         surface_keyword = "side1Edges"
     else:
         raise ValueError("Feature must be one of: faces, edges")
+    bad_masks = []
     for name, mask in name_mask:
         try:
             objects = attribute.getSequenceFromMask(mask=(mask, ))
         except abaqus.AbaqusException as err:
-            raise RuntimeError("{}. name/mask ({}, {})".format(err, name, mask))
-        part.Surface(**{"name": name, surface_keyword: objects})
+            bad_masks.append((name, mask))
+        else:
+            part.Surface(**{"name": name, surface_keyword: objects})
+    if bad_masks:
+        raise RuntimeError("Creaton of one or more sets failed {}".format(bad_masks))
 
 
 def edge_seeds(part, name_number):
