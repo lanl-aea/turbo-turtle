@@ -69,7 +69,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
         extension=extension
     ))
 
-    # SCons extensions import
+    # Geometry XYPlot import
     workflow.extend(builder(
         target=["import_geometry_xyplot${extension}"],
         source=["import_package.py"],
