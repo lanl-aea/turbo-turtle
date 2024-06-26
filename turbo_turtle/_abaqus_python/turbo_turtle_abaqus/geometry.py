@@ -180,17 +180,14 @@ def draw_part_from_splines(lines, splines,
     if planar:
         part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
                                                   type=abaqusConstants.DEFORMABLE_BODY)
-        part = abaqus.mdb.models[model_name].parts[part_name]
         part.BaseShell(sketch=sketch)
     elif numpy.isclose(revolution_angle, 0.0):
         part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
                                                   type=abaqusConstants.DEFORMABLE_BODY)
-        part = abaqus.mdb.models[model_name].parts[part_name]
         part.BaseShell(sketch=sketch)
     else:
         part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
                                                   type=abaqusConstants.DEFORMABLE_BODY)
-        part = abaqus.mdb.models[model_name].parts[part_name]
         part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqus.ON)
     sketch.unsetPrimaryObject()
     del abaqus.mdb.models[model_name].sketches['__profile__']
