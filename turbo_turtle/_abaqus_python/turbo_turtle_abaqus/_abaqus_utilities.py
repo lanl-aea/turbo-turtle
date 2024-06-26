@@ -196,6 +196,8 @@ def revolution_direction(revolution_angle):
 
     Positive rotation angles should result in +Y revolve direction (abaqusConstants.ON)
     Negative rotation angles should result in -Y revolve direction (abaqusConstants.OFF)
+
+    :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     """
     import abaqusConstants
 
