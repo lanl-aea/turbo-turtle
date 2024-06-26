@@ -178,22 +178,21 @@ def draw_part_from_splines(lines, splines,
         point2 = tuple(point2)
         sketch.Line(point1=point1, point2=point2)
     if planar:
-        p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
-            type=abaqusConstants.DEFORMABLE_BODY)
-        p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseShell(sketch=sketch)
+        part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
+                                                  type=abaqusConstants.DEFORMABLE_BODY)
+        part = abaqus.mdb.models[model_name].parts[part_name]
+        part.BaseShell(sketch=sketch)
     elif numpy.isclose(revolution_angle, 0.0):
-        p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
-            type=abaqusConstants.DEFORMABLE_BODY)
-        p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseShell(sketch=sketch)
+        part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
+                                                  type=abaqusConstants.DEFORMABLE_BODY)
+        part = abaqus.mdb.models[model_name].parts[part_name]
+        part.BaseShell(sketch=sketch)
     else:
-        p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
-            type=abaqusConstants.DEFORMABLE_BODY)
-        p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqus.ON)
+        part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
+                                                  type=abaqusConstants.DEFORMABLE_BODY)
+        part = abaqus.mdb.models[model_name].parts[part_name]
+        part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqus.ON)
     sketch.unsetPrimaryObject()
-    p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
 
 

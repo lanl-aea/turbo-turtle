@@ -307,7 +307,7 @@ def _rename_and_sweep(surface, part_name,
         return_object = surface.volumes()[0]
     else:
         cubit_command_or_exception(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
-                              f"angle {revolution_angle} merge")
+                                   f"angle {revolution_angle} merge")
         return_object = surface.volumes()[0]
         volume_id = return_object.id()
         cubit_command_or_exception(f"regularize volume {volume_id}")

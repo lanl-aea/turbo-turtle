@@ -8,6 +8,10 @@ Changelog
 v0.12.3 (unreleased)
 ********************
 
+Bug fixes
+=========
+- Match revolution direction of Abaqus and Cubit to the +Y axis (:issue:`183`, :merge:`174`). By `Kyle Brindley`_.
+
 ********************
 v0.12.2 (2024-06-20)
 ********************
