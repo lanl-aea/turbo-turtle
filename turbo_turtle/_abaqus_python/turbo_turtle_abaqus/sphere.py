@@ -116,7 +116,7 @@ def sphere(inner_radius, outer_radius,
         part.BaseShell(sketch=sketch)
     else:
         part = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D, type=abaqusConstants.DEFORMABLE_BODY)
-        part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqusConstants.OFF)
+        part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqusConstants.ON)
     del sketch
 
 

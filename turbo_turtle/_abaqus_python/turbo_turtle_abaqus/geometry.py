@@ -191,7 +191,7 @@ def draw_part_from_splines(lines, splines,
         p = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
             type=abaqusConstants.DEFORMABLE_BODY)
         p = abaqus.mdb.models[model_name].parts[part_name]
-        p.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqus.OFF)
+        p.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqus.ON)
     sketch.unsetPrimaryObject()
     p = abaqus.mdb.models[model_name].parts[part_name]
     del abaqus.mdb.models[model_name].sketches['__profile__']
