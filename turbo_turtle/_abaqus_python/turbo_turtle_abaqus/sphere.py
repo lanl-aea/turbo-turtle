@@ -87,11 +87,8 @@ def sphere(inner_radius, outer_radius,
     import abaqus
     import abaqusConstants
 
-    if revolution_angle < 0.:
-        revolution_angle = abs(revolution_angle)
-        revolution_direction = abaqusConstants.OFF
-    else:
-        revolution_direction = abaqusConstants.ON
+    revolution_direction = _abaqus_utilities.revolution_direction(revolution_angle)
+    revolution_angle = abs(revolution_angle)
 
     _abaqus_utilities._conditionally_create_model(model_name)
 
@@ -108,9 +105,9 @@ def sphere(inner_radius, outer_radius,
         inner_point2 = center
     else:
         sketch.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
-            direction=abaqusConstants.CLOCKWISE)
+                               direction=abaqusConstants.CLOCKWISE)
     sketch.ArcByCenterEnds(center=center, point1=outer_point1, point2=outer_point2,
-        direction=abaqusConstants.CLOCKWISE)
+                           direction=abaqusConstants.CLOCKWISE)
     sketch.Line(point1=outer_point1, point2=inner_point1)
     sketch.Line(point1=outer_point2, point2=inner_point2)
     centerline = sketch.ConstructionLine(point1=center, angle=90.0)

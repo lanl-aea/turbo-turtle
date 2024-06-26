@@ -189,3 +189,18 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
             print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
     except RuntimeError as err:
         print(err)
+
+
+def revolution_direction(revolution_angle):
+    """Pick revolution direction constant consistent with +Y revolve direction
+
+    Positive rotation angles should result in +Y revolve direction (abaqusConstants.ON)
+    Negative rotation angles should result in -Y revolve direction (abaqusConstants.OFF)
+    """
+    import abaqusConstants
+
+    if revolution_angle < 0.:
+        revolution_direction = abaqusConstants.OFF
+    else:
+        revolution_direction = abaqusConstants.ON
+    return revolution_direction

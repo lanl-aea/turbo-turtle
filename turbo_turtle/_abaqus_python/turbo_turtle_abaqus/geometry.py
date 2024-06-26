@@ -162,11 +162,8 @@ def draw_part_from_splines(lines, splines,
     import abaqus
     import abaqusConstants
 
-    if revolution_angle < 0.:
-        revolution_angle = abs(revolution_angle)
-        revolution_direction = abaqusConstants.OFF
-    else:
-        revolution_direction = abaqusConstants.ON
+    revolution_direction = _abaqus_utilities.revolution_direction(revolution_angle)
+    revolution_angle = abs(revolution_angle)
 
     sketch = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__', sheetSize=200.0)
     sketch.sketchOptions.setValues(viewStyle=abaqusConstants.AXISYM)
