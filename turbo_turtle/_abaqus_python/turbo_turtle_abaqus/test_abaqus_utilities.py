@@ -38,6 +38,10 @@ class TestAbaqusUtilities(unittest.TestCase):
         with self.assertRaises(SystemExit):
             attribute = _abaqus_utilities.return_abaqus_constant_or_exit("NotFound")
 
+    def test_revolution_direction(self):
+        assert abaqusConstants.ON == _abaqus_utilities.revolution_direction(1.)
+        assert abaqusConstants.OFF == _abaqus_utilities.revolution_direction(-1.)
+
 
 if __name__ == '__main__':
     unittest.main()
