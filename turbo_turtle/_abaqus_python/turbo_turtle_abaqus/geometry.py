@@ -162,6 +162,12 @@ def draw_part_from_splines(lines, splines,
     import abaqus
     import abaqusConstants
 
+    if revolution_angle < 0.:
+        revolution_angle = abs(revolution_angle)
+        revolution_direction = abaqusConstants.OFF
+    else:
+        revolution_direction = abaqusConstants.ON
+
     sketch = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__', sheetSize=200.0)
     sketch.sketchOptions.setValues(viewStyle=abaqusConstants.AXISYM)
     sketch.setPrimaryObject(option=abaqusConstants.STANDALONE)
@@ -188,7 +194,7 @@ def draw_part_from_splines(lines, splines,
     else:
         part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
                                                   type=abaqusConstants.DEFORMABLE_BODY)
-        part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqus.ON)
+        part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=revolution_direction)
     sketch.unsetPrimaryObject()
     del abaqus.mdb.models[model_name].sketches['__profile__']
 

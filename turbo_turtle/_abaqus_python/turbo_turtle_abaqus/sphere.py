@@ -87,6 +87,12 @@ def sphere(inner_radius, outer_radius,
     import abaqus
     import abaqusConstants
 
+    if revolution_angle < 0.:
+        revolution_angle = abs(revolution_angle)
+        revolution_direction = abaqusConstants.OFF
+    else:
+        revolution_direction = abaqusConstants.ON
+
     _abaqus_utilities._conditionally_create_model(model_name)
 
     _validate_sphere_quadrant(quadrant, parsers.sphere_quadrant_options)
@@ -116,7 +122,7 @@ def sphere(inner_radius, outer_radius,
         part.BaseShell(sketch=sketch)
     else:
         part = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D, type=abaqusConstants.DEFORMABLE_BODY)
-        part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=abaqusConstants.ON)
+        part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=revolution_direction)
     del sketch
 
 
