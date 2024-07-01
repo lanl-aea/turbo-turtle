@@ -13,6 +13,11 @@ Documentation
 - Edge seeds are implemented in Cubit. Remove "not yet implemented" statement from CLI usage help (:issue:`179`,
   :merge:`175`). By `Kyle Brindley`_.
 
+Internal Changes
+================
+- Remove indexing of the shared conda channel from CI deployment job. Can't use a project specific CI environment and
+  manage the shared conda channel (:issue:`184`, :merge:`176`). By `Kyle Brindley`_.
+
 ********************
 v0.12.3 (2024-06-26)
 ********************
