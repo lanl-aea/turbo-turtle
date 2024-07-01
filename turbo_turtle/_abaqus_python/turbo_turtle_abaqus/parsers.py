@@ -455,10 +455,7 @@ def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_d
         nargs=2,
         metavar=("name", "number"),
         default=mesh_defaults["edge_seeds"],
-        # TODO: Remove Cubit caveat when implemented in Cubit
-        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
-        help="Edge seed (name, number) pairs. Repeat once per edge set. Not yet implemented for Cubit " \
-             "(default: %(default)s)"
+        help="Edge seed (name, number) pairs. Repeat once per edge set. (default: %(default)s)"
     )
 
     return parser

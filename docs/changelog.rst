@@ -8,6 +8,11 @@ Changelog
 v0.12.4 (unreleased)
 ********************
 
+Documentation
+=============
+- Edge seeds are implemented in Cubit. Remove "not yet implemented" statement from CLI usage help (:issue:`179`,
+  :merge:`175`). By `Kyle Brindley`_.
+
 ********************
 v0.12.3 (2024-06-26)
 ********************
