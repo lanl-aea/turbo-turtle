@@ -1,3 +1,4 @@
+"""Python 2/3 compatible settings for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
 import inspect
 import os
 import sys
