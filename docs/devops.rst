@@ -22,6 +22,89 @@ Testing
    :start-after: testing-start-do-not-remove
    :end-before: testing-end-do-not-remove
 
+===================
+External Interfaces
+===================
+
+The structure of this package is more complex than most Python 3 packages due to incompatible Python 3 and Abaqus Python
+interpretters and environments. The structure is further complicated by the number of desirable external interfaces for
+a variety of use cases. The package is structured for the following external interfaces, but not all are stable public
+interfaces yet
+
+#. Python 3 CLI (public): :ref:`turbo_turtle_cli`
+#. Python 3 API (public): :ref:`external_api`
+#. Abaqus Python GUI plugin (public): :ref:`abaqus_gui_plugins`
+#. Abaqus Python API (private): :ref:`abaqus_python_package`
+#. Abaqus Python CLI (private)
+
+The primary interfaces are the Python 3 CLI and API. These are the focus for a stable version 1.0 release and promised
+long term support.
+
+The Abaqus Python CLI and API are not currently exposed as public interfaces, but the interfaces and package structure
+restrictions must be maintained for internal use. They are considered private mostly to allow instability in internal
+module structure and behavior as the project explores the best way to manage error handling and Abaqus Python package
+structure. These interfaces are subject to change without warning as long as they don't break the public Python 3
+behavior. If these interfaces stabilize, it may be desirable to release a subset of the Abaqus Python API in the future,
+e.g. the Abaqus Python set creation utilities. There is little benefit to exposing the Abaqus Python CLI because it is
+largely a pass through duplication of the Python 3 CLI.
+
+The Abaqus Python GUI interface is considered an experimental public interface. It is desirable to provide interactive
+behavior consistent with the non-interactive command line behavior for heavily interactive workflows and debugging
+purposes. The plugin structure benefits from the existing :ref:`abaqus_python_package` structure and adds additional
+error handling complexity.
+
+To accomodate the Abaqus Python API and GUI, the Python 3 and Abaqus Python root package directories must be separated
+by an intermediate layer provided by the ``_abaqus_python`` directory. The GUI plugin file, ``_turbo_turtle_plugin.py``,
+and the Abaqus Python package root directory, ``turbo_turtle_abaqus``, can be found in this directory.
+
+* ``turbo_turtle/``: Python 3 package root
+
+  * ``_abaqus_python/``: separation layer to avoid cross polluting the Python 3 and Abaqus Python namespaces. Put on
+    PYTHONPATH to import Abaqus Python package. Put in Abaqus plugin directory to use the Abaqus GUI.
+
+    * ``_turbo_turtle_plugin.py``
+    * ``turbo_turtle_abaqus/``: Abaqus Python package root
+
+This layer of separation makes it possible to put the parent directory of ``turbo_turtle_abaqus`` on PYTHONPATH, which
+makes the Abaqus Python API an importable package without accidentally including Python 3 modules. This is necessary for
+the GUI behavior, which uses the Abaqus Python API, and helps disambiguate the Abaqus Python package internal imports.
+
+The Abaqus Python package itself is separated into pure Abaqus Python and mixed Python 2/3 compatible modules. This is
+necessary to allow re-use of common settings and functions in the Python 3 package for consistency with the Abaqus
+Python implementation and CLI options. The Abaqus Python package internal imports are complicated by this module
+separation and Python 3 re-use. Each module must put the ``turbo_turtle_abaqus`` package root directory on PYTHONPATH
+before the internal imports are possible. This takes the form of boilerplate code required in every module which locates
+the package root with respect to the module file and a ``sys.path`` modification prior to internal imports.
+
+.. code-block::
+
+    import os
+    import sys
+    import inspect
+
+    filename = inspect.getfile(lambda: None)
+    basename = os.path.basename(filename)
+    parent = os.path.dirname(filename)
+    grandparent = os.path.dirname(parent)
+    sys.path.insert(0, grandparent)
+    from turbo_turtle_abaqus import parsers
+
+In addition to the import structure, the pure Abaqus Python modules must not import Abaqus packages at the module level.
+This is required to enable Sphinx documentation of the internal API, which is performed in a Python 3 environment. Mixed
+Python 2/3 compatible packages may not perform *any* internal package imports because the ``sys.path`` modifications
+would expose the Abaqus Python package to the Python 3 namespace.
+
+Finally, the Abaqus Python CLI is simply direct execution of the individual subcommand modules in the Abaqus Python
+package. Executing against the Abaqus Python CLI requires a different PYTHONPATH modification than the Abaqus Python
+API. To use the CLI, the ``turbo_turtle_abaqus`` directory itself, not its parent, must be put on PYTHONPATH. It would
+be possible to write a dedicated, wrapping main module for the Abaqus Python CLI; however, this has not been necessary
+so far. It might be desirable to make this change if the Abaqus Python CLI were made public or if the consolidated CLI
+implementation could reduce duplication in the Python 3 CLI. This might be easiest with a new file in
+``_abaqus_python``, e.g. ``turbo_turtle/_abaqus_python/turbo_turtle_cli.py``, to make the CLI and API PYTHONPATH
+modifications consistent.
+
+.. _abaqus_python_package:
+
 =====================
 Abaqus Python Package
 =====================
