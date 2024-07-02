@@ -62,10 +62,10 @@ and the Abaqus Python package root directory, ``turbo_turtle_abaqus``, can be fo
 * ``turbo-turtle/``: repository root
 
   * ``turbo_turtle/``: Python 3 package root
-  
+
     * ``_abaqus_python/``: separation layer to avoid cross polluting the Python 3 and Abaqus Python namespaces. Put on
       PYTHONPATH to import Abaqus Python package. Put in Abaqus plugin directory to use the Abaqus GUI.
-  
+
       * ``_turbo_turtle_plugin.py``
       * ``turbo_turtle_abaqus/``: Abaqus Python package root
 
@@ -99,14 +99,15 @@ Python 2/3 compatible packages may not perform *any* internal package imports be
 would expose the Abaqus Python package to the Python 3 namespace.
 
 Finally, the Abaqus Python CLI is simply direct execution of the individual subcommand modules in the Abaqus Python
-package. Executing against the Abaqus Python CLI requires a different PYTHONPATH modification than the Abaqus Python
-API. To use the CLI, the ``turbo_turtle_abaqus`` directory itself, not its parent, must be put on PYTHONPATH. It would
-be possible to write a dedicated, wrapping main module for the Abaqus Python CLI; however, this has not been necessary
-so far. It might be desirable to make this change if the Abaqus Python CLI were made public or if the consolidated CLI
-implementation could reduce duplication in the Python 3 CLI. This might be easiest with a new file in
-``_abaqus_python``, e.g. ``turbo_turtle/_abaqus_python/turbo_turtle_abaqus_cli.py``, to make the CLI and API PYTHONPATH
-modifications consistent. This is unnecessary in the current Python 3 pass through use of the Abaqus Python CLI, which
-calls the Abaqus Python scripts by absolute path.
+package. Executing against the Abaqus Python CLI can be performed by absolute or by a PATH modification independent from
+the Abaqus Python API PYTHONPATH modification. To use the CLI, the ``turbo_turtle_abaqus`` directory itself, not its
+parent, must be put on PATH. It would be possible to write a dedicated, wrapping main module for the Abaqus Python CLI;
+however, this has not been necessary so far. It might be desirable to make the PATH and PYTHONPATH consistent if the
+Abaqus Python CLI were made public or if the consolidated CLI implementation could reduce duplication in the Python 3
+CLI. This might be easiest with a new file in ``_abaqus_python``, e.g.
+``turbo_turtle/_abaqus_python/turbo_turtle_abaqus_cli.py``, to make the CLI PATH and API PYTHONPATH directories
+consistent. This is unnecessary in the current Python 3 pass through use of the Abaqus Python CLI, which calls the
+Abaqus Python scripts by absolute path.
 
 .. _abaqus_python_package:
 
