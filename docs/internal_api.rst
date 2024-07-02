@@ -286,7 +286,8 @@ Abaqus Python tests
 *******************
 
 These modules are intended purely for use in Abaqus Python. They do not need to be Python 3 compatible, but they may
-have corresponding :ref:`python3_tests`.
+have corresponding :ref:`python3_tests`. These tests would be signifacantly improved by understanding and adding Abaqus
+Python mocking. Without mocking behavior, some of the Python 3 test conditions can not be replicated in Abaqus Python.
 
 Abaqus python unit test files may be executed as ``abaqus python -m unittest discover <directory>``, for example from
 the project root directory
@@ -298,6 +299,13 @@ the project root directory
 The test execution is also available as an SCons alias: ``test_abaqus_python``, which is collected under the aliases:
 ``unittest`` and ``regression``.
 
+test_abaqus_utilities
+=====================
+
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.test_abaqus_utilities
+   :members:
+   :private-members:
+
 test_mixed_utilities
 ====================
 
@@ -305,9 +313,16 @@ test_mixed_utilities
    :members:
    :private-members:
 
-test_abaqus_utilities
-=====================
+test_parsers
+============
 
-.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.test_abaqus_utilities
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.test_parsers
+   :members:
+   :private-members:
+
+test_vertices
+=============
+
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus.test_vertices
    :members:
    :private-members:
