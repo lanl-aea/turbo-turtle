@@ -190,6 +190,13 @@ _mixed_utilities
    :members:
    :private-members:
 
+_mixed_settings
+===============
+
+.. automodule:: turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_settings
+   :members:
+   :private-members:
+
 .. _abaqus_python_api:
 
 *************
