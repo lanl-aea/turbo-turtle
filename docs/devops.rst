@@ -38,20 +38,22 @@ interfaces yet
 #. Abaqus Python CLI (private)
 
 The primary interfaces are the Python 3 CLI and API. These are the focus for a stable version 1.0 release and promised
-long term support.
-
-The Abaqus Python CLI and API are not currently exposed as public interfaces, but the interfaces and package structure
-restrictions must be maintained for internal use. They are considered private mostly to allow instability in internal
-module structure and behavior as the project explores the best way to manage error handling and Abaqus Python package
-structure. These interfaces are subject to change without warning as long as they don't break the public Python 3
-behavior. If these interfaces stabilize, it may be desirable to release a subset of the Abaqus Python API in the future,
-e.g. the Abaqus Python set creation utilities. There is little benefit to exposing the Abaqus Python CLI because it is
-largely a pass through duplication of the Python 3 CLI.
+long term support. There are no real restrictions on the Python 3 package structure except that it must make selective,
+per file imports of the modules found in the Abaqus Python package and directories to avoid importing Abaqus Python
+modules which are incompatible with Python 3.
 
 The Abaqus Python GUI interface is considered an experimental public interface. It is desirable to provide interactive
 behavior consistent with the non-interactive command line behavior for heavily interactive workflows and debugging
 purposes. The plugin structure benefits from the existing :ref:`abaqus_python_package` structure and adds additional
 error handling complexity.
+
+The Abaqus Python CLI and API are not currently exposed as public interfaces, but the interfaces and package structure
+restrictions must be maintained for internal use. They are considered private mostly to allow instability in internal
+module structure and behavior as the project explores the best way to manage the Abaqus Python package structure and
+Abaqus Python error handling. These interfaces are subject to change without warning as long as they don't break the
+public Python 3 behavior. If these interfaces stabilize, it may be desirable to release a subset of the Abaqus Python
+API in the future, e.g. the Abaqus Python set creation utilities. There is little benefit to exposing the Abaqus Python
+CLI because it is largely a pass through duplication of the Python 3 CLI.
 
 To accomodate the Abaqus Python API and GUI, the Python 3 and Abaqus Python root package directories must be separated
 by an intermediate layer provided by the ``_abaqus_python`` directory. The GUI plugin file, ``_turbo_turtle_plugin.py``,
@@ -100,8 +102,9 @@ API. To use the CLI, the ``turbo_turtle_abaqus`` directory itself, not its paren
 be possible to write a dedicated, wrapping main module for the Abaqus Python CLI; however, this has not been necessary
 so far. It might be desirable to make this change if the Abaqus Python CLI were made public or if the consolidated CLI
 implementation could reduce duplication in the Python 3 CLI. This might be easiest with a new file in
-``_abaqus_python``, e.g. ``turbo_turtle/_abaqus_python/turbo_turtle_cli.py``, to make the CLI and API PYTHONPATH
-modifications consistent.
+``_abaqus_python``, e.g. ``turbo_turtle/_abaqus_python/turbo_turtle_abaqus_cli.py``, to make the CLI and API PYTHONPATH
+modifications consistent. This is unnecessary in the current Python 3 pass through use of the Abaqus Python CLI, which
+calls the Abaqus Python scripts by absolute path.
 
 .. _abaqus_python_package:
 

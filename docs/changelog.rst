@@ -12,6 +12,7 @@ Documentation
 =============
 - Edge seeds are implemented in Cubit. Remove "not yet implemented" statement from CLI usage help (:issue:`179`,
   :merge:`175`). By `Kyle Brindley`_.
+- Add developer notes about package structure and interface designs (:issue:`135`, :merge:`178`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
