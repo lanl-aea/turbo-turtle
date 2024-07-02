@@ -1,3 +1,4 @@
+import math
 from contextlib import nullcontext as does_not_raise
 
 import numpy
@@ -61,7 +62,7 @@ def test_create_spline_from_coordinates(coordinates, outcome):
             pass
 
 
-quarter_arc_length = 2. * numpy.pi / 4.
+quarter_arc_length = 2. * math.pi / 4.
 create_arc_from_coordinates = {
     "float": ((0., 0., 0.), (1., 0., 0.), (0., 1., 0.), quarter_arc_length),
     "int": ((0, 0, 0), (1, 0, 0), (0, 1, 0), quarter_arc_length),
