@@ -22,9 +22,9 @@ Testing
    :start-after: testing-start-do-not-remove
    :end-before: testing-end-do-not-remove
 
-===================
-External Interfaces
-===================
+================================
+Package Interfaces and Structure
+================================
 
 The structure of this package is more complex than most Python 3 packages due to incompatible Python 3 and Abaqus Python
 interpretters and environments. The structure is further complicated by the number of desirable external interfaces for
