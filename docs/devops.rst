@@ -59,13 +59,15 @@ To accomodate the Abaqus Python API and GUI, the Python 3 and Abaqus Python root
 by an intermediate layer provided by the ``_abaqus_python`` directory. The GUI plugin file, ``_turbo_turtle_plugin.py``,
 and the Abaqus Python package root directory, ``turbo_turtle_abaqus``, can be found in this directory.
 
-* ``turbo_turtle/``: Python 3 package root
+* ``turbo-turtle/``: repository root
 
-  * ``_abaqus_python/``: separation layer to avoid cross polluting the Python 3 and Abaqus Python namespaces. Put on
-    PYTHONPATH to import Abaqus Python package. Put in Abaqus plugin directory to use the Abaqus GUI.
-
-    * ``_turbo_turtle_plugin.py``
-    * ``turbo_turtle_abaqus/``: Abaqus Python package root
+  * ``turbo_turtle/``: Python 3 package root
+  
+    * ``_abaqus_python/``: separation layer to avoid cross polluting the Python 3 and Abaqus Python namespaces. Put on
+      PYTHONPATH to import Abaqus Python package. Put in Abaqus plugin directory to use the Abaqus GUI.
+  
+      * ``_turbo_turtle_plugin.py``
+      * ``turbo_turtle_abaqus/``: Abaqus Python package root
 
 This layer of separation makes it possible to put the parent directory of ``turbo_turtle_abaqus`` on PYTHONPATH, which
 makes the Abaqus Python API an importable package without accidentally including Python 3 modules. This is necessary for
