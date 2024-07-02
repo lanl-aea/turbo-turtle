@@ -1,9 +1,3 @@
-"""
-For the purposes of Sphinx compatible documentation, Abaqus package imports are not located at the module level. Abaqus
-Python imports must be made in each function where they are used.
-
-Internal package imports must treat the ``turbo_turtle_abaqus`` directory as a package
-"""
 import os
 import sys
 import inspect
