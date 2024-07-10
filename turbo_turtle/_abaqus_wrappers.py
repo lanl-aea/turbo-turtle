@@ -109,11 +109,14 @@ def sets(args, command):
         command += f"--output-file {args.output_file} "
     command += f"--model-name {args.model_name} --part-name {args.part_name} "
     if args.face_sets is not None:
-        command += _utilities.construct_append_options('--face-set', args.face_sets) + " "
+        face_sets = [[name, f"'{mask}'"] for name, mask in args.face_sets]
+        command += _utilities.construct_append_options('--face-set', face_sets) + " "
     if args.edge_sets is not None:
-        command += _utilities.construct_append_options('--edge-set', args.edge_sets) + " "
+        edge_sets = [[name, f"'{mask}'"] for name, mask in args.edge_sets]
+        command += _utilities.construct_append_options('--edge-set', edge_sets) + " "
     if args.vertex_sets is not None:
-        command += _utilities.construct_append_options('--vertex-set', args.vertex_sets)
+        vertex_sets = [[name, f"'{mask}'"] for name, mask in args.vertex_sets]
+        command += _utilities.construct_append_options('--vertex-set', vertex_sets)
     _utilities.run_command(command)
 
 
