@@ -8,6 +8,11 @@ Changelog
 v0.12.4 (unreleased)
 ********************
 
+Bug fixes
+=========
+- Preserve white space in set masks of Abaqus pass-through wrapper of the sets subcommand (:issue:`185`, :merge:`179`).
+  By `Kyle Brindley`_.
+
 Documentation
 =============
 - Edge seeds are implemented in Cubit. Remove "not yet implemented" statement from CLI usage help (:issue:`179`,
