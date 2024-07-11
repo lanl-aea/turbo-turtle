@@ -5,8 +5,16 @@ Changelog
 #########
 
 ********************
-v0.12.5 (unreleased)
+v0.12.6 (unreleased)
 ********************
+
+********************
+v0.12.5 (2024-07-11)
+********************
+
+Internal Changes
+================
+- Experimental Gitlab PyPI registry deployment (:issue:`187`, :merge:`181`). By `Kyle Brindley`_.
 
 ********************
 v0.12.4 (2024-07-10)
