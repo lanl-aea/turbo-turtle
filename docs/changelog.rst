@@ -5,8 +5,12 @@ Changelog
 #########
 
 ********************
-v0.12.6 (unreleased)
+v0.12.6 (2024-07-11)
 ********************
+
+Internal Changes
+================
+- Add twine package for Gitlab PyPI registry deployment (:merge:`182`). By `Kyle Brindley`_.
 
 ********************
 v0.12.5 (2024-07-11)
