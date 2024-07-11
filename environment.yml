@@ -22,4 +22,5 @@ dependencies:
   - sphinx-copybutton >=0.5.1
   - sphinx_rtd_theme >=1
   - sphinxcontrib-bibtex
+  - twine
   - waves >=0.7.2
