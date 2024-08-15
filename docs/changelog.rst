@@ -5,6 +5,14 @@ Changelog
 #########
 
 ********************
+v0.12.7 (unreleased)
+********************
+
+Internal Changes
+================
+- Use common AEA Conda channel downstream deployment pipeline (:issue:`188`, :merge:`183`). By `Kyle Brindley`_.
+
+********************
 v0.12.6 (2024-07-11)
 ********************
 
