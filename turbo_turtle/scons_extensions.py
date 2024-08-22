@@ -3,7 +3,12 @@ import argparse
 
 import SCons.Builder
 # Importing WAVES internals is marginally preferred over project specific, hardcoded duplication of the WAVES settings
-from waves.scons_extensions import _first_target_emitter
+# TODO: Remove the ``_first_target_emitter`` when WAVES v0.10.1 is released on conda-forge
+# Replace with public API ``first_target_emitter`` and bump the minimum WAVES version
+try:
+    from waves.scons_extensions import _first_target_emitter as first_target_emitter
+except ImportError:
+    from waves.scons_extensions import first_target_emitter
 
 from turbo_turtle._settings import _cd_action_prefix
 from turbo_turtle._settings import _redirect_action_postfix
@@ -227,7 +232,7 @@ def cli_builder(
                   "--backend ${backend} ${redirect_action_postfix}"]
     builder = SCons.Builder.Builder(
         action=action,
-        emitter=_first_target_emitter,
+        emitter=first_target_emitter,
         cd_action_prefix=_cd_action_prefix,
         redirect_action_postfix=_redirect_action_postfix,
         program=program,

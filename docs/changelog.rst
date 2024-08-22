@@ -8,6 +8,10 @@ Changelog
 v0.12.7 (unreleased)
 ********************
 
+Bug fixes
+=========
+- Handle the first target emitter name change for WAVES v0.10/v0.11 (:issue:`189`, :merge:`184`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Use common AEA Conda channel downstream deployment pipeline (:issue:`188`, :merge:`183`). By `Kyle Brindley`_.
