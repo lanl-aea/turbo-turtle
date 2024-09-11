@@ -8,6 +8,11 @@ Changelog
 v0.12.10 (unreleased)
 *********************
 
+Bug fixes
+=========
+- Fix package manifest for builds with newer conda-build/setuptools packages (:issue:`192`, :merge:`188`). By `Kyle
+  Brindley`_.
+
 ********************
 v0.12.9 (2024-09-11)
 ********************
