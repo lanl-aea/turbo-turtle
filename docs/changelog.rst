@@ -16,6 +16,11 @@ Bug fixes
   (:issue:`193`, :merge:`189`). By `Kyle Brindley`_.
 - Fix the conda package entry points (:issue:`195`, :merge:`190`). By `Kyle Brindley`_.
 
+Internal Changes
+================
+- Add Windows compatible build script for external conda package recipes (:issue:`196`, :merge:`191`). By `Kyle
+  Brindley`_.
+
 ********************
 v0.12.9 (2024-09-11)
 ********************
