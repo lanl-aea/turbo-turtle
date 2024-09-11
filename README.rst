@@ -21,11 +21,15 @@
 Turbo Turtle
 ############
 
-.. image:: https://img.shields.io/github/actions/workflow/status/lanl-aea/turbo-turtle/pages.yml?branch=main&label=GitHub-Pages
+.. |pipeline| image:: https://img.shields.io/github/actions/workflow/status/lanl-aea/turbo-turtle/pages.yml?branch=main&label=GitHub-Pages
    :target: https://lanl-aea.github.io/turbo-turtle/
 
-.. image:: https://img.shields.io/github/v/release/lanl-aea/turbo-turtle?label=GitHub-Release
+.. |release| image:: https://img.shields.io/github/v/release/lanl-aea/turbo-turtle?label=GitHub-Release
    :target: https://github.com/lanl-aea/turbo-turtle/releases
+
+|pipeline|
+
+|release|
 
 .. inclusion-marker-do-not-remove
 
