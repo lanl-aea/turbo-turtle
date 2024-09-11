@@ -18,6 +18,10 @@ Bug fixes
 - Better OS (Windows) path handling in test expectations (:issue:`197`, :merge:`192`). By `Kyle Brindley`_.
 - Mock Cubit module during pytesting when Cubit is not available (:issue:`194`, :merge:`193`). By `Kyle Brindley`_.
 
+Documentation
+=============
+- Point the README shields to the open-source release (:issue:`191`, :merge:`194`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Add Windows compatible build script for external conda package recipes (:issue:`196`, :merge:`191`). By `Kyle
