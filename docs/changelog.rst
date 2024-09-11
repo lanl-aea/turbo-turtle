@@ -16,6 +16,7 @@ Bug fixes
   (:issue:`193`, :merge:`189`). By `Kyle Brindley`_.
 - Fix the conda package entry points (:issue:`195`, :merge:`190`). By `Kyle Brindley`_.
 - Better OS (Windows) path handling in test expectations (:issue:`197`, :merge:`192`). By `Kyle Brindley`_.
+- Mock Cubit module during pytesting when Cubit is not available (:issue:`194`, :merge:`193`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
