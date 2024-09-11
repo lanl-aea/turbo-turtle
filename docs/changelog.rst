@@ -15,6 +15,7 @@ Bug fixes
 - Remove system tests from external recipe(s) because they can not pass on CI servers without Abaqus and Cubit installed
   (:issue:`193`, :merge:`189`). By `Kyle Brindley`_.
 - Fix the conda package entry points (:issue:`195`, :merge:`190`). By `Kyle Brindley`_.
+- Better OS (Windows) path handling in test expectations (:issue:`197`, :merge:`192`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
