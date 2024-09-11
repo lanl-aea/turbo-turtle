@@ -12,6 +12,8 @@ Bug fixes
 =========
 - Fix package manifest for builds with newer conda-build/setuptools packages (:issue:`192`, :merge:`188`). By `Kyle
   Brindley`_.
+- Remove system tests from external recipe(s) because they can not pass on CI servers without Abaqus and Cubit installed
+  (:issue:`193`, :merge:`189`). By `Kyle Brindley`_.
 
 ********************
 v0.12.9 (2024-09-11)
