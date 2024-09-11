@@ -4,9 +4,17 @@
 Changelog
 #########
 
+*********************
+v0.12.10 (unreleased)
+*********************
+
 ********************
-v0.12.9 (unreleased)
+v0.12.9 (2024-09-11)
 ********************
+
+Documentation
+=============
+- Add the LANL software release number to the README (:merge:`187`). By `Kyle Brindley`_.
 
 ********************
 v0.12.8 (2024-09-11)
