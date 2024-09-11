@@ -5,8 +5,16 @@ Changelog
 #########
 
 ********************
-v0.12.8 (unreleased)
+v0.12.9 (unreleased)
 ********************
+
+********************
+v0.12.8 (2024-09-11)
+********************
+
+Bug fixes
+=========
+- Fix the GitHub pages build environment (:issue:`190`, :merge:`186`). By `Kyle Brindley`_.
 
 ********************
 v0.12.7 (2024-08-27)
