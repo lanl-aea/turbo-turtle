@@ -5,7 +5,6 @@ from unittest.mock import patch
 import pytest
 
 from turbo_turtle import _abaqus_wrappers
-from turbo_turtle import _cubit_wrappers
 
 
 command = "/dummy/command"
@@ -466,7 +465,9 @@ cubit_wrapper_tests = {
                          cubit_wrapper_tests.values(), ids=cubit_wrapper_tests.keys())
 def test_cubit_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
-    with patch(f"turbo_turtle._cubit_python.{subcommand}") as mock_function:
+    with patch("turbo_turtle._utilities.import_cubit"), \
+         patch(f"turbo_turtle._cubit_python.{subcommand}") as mock_function:
+        from turbo_turtle import _cubit_wrappers
         subcommand_wrapper = getattr(_cubit_wrappers, subcommand)
         subcommand_wrapper(args, command)
     mock_function.assert_called_once()
