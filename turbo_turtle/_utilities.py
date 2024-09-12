@@ -96,6 +96,20 @@ def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional
     return cubit_bin
 
 
+def import_cubit():
+    """Intermediate Cubit import function
+
+    Allows better CLI error reporting and Cubit package mocking during unit tests
+    """
+    try:
+        import cubit
+    except ImportError as err:
+        raise RuntimeError(
+            f"Could not import Cubit package. Provide or check the Cubit executable path.\n'ImportError: {err}'"
+        )
+    return cubit
+
+
 def run_command(command: str) -> None:
     """Split command on whitespace, execute shell command, raise RuntimeError with any error message
 

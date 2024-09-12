@@ -11,12 +11,14 @@ import pathlib
 import tempfile
 
 import numpy
-import cubit
 
 from turbo_turtle import _utilities
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
+
+
+cubit = _utilities.import_cubit()
 
 
 def cubit_command_or_exception(command):
