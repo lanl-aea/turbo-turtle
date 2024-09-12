@@ -11,6 +11,7 @@ v0.12.12 (unreleased)
 Documentation
 =============
 - Add GitHub shields to HTML documentation (:issue:`198`, :merge:`197`). By `Kyle Brindley`_.
+- Add GitHub-Pages documentation URL to README and documentation (:issue:`199`, :merge:`198`). By `Kyle Brindley`_.
 
 *********************
 v0.12.11 (2024-09-12)

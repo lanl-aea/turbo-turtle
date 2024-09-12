@@ -4,9 +4,8 @@
     :end-before: target-end-do-not-remove
 
 .. Project references
-.. _`documentation`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/python_stub/main/index.html 
-.. _`repository`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
-.. _`issues`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues
+.. _`documentation`: https://lanl-aea.github.io/turbo-turtle/index.html
+.. _`repository`: https://github.com/lanl-aea/turbo-turtle 
 
 .. External references
 .. _`PEP-440`: https://www.python.org/dev/peps/pep-0440/

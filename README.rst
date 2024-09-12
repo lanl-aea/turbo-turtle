@@ -1,6 +1,6 @@
 .. target-start-do-not-remove
 
-.. _`turbo-turtle`: https://re-git.lanl.gov/tproberts/turbo-turtle
+.. _`turbo-turtle`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
 .. _`AEA Gitlab Group`: https://re-git.lanl.gov/aea
 .. _`Gitlab CI/CD`: https://docs.gitlab.com/ee/ci/
 .. _`AEA Compute Environment`: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
@@ -56,7 +56,8 @@ ball) pattern.
 Documentation
 =============
 
-* https://aea.re-pages.lanl.gov/python-projects/turbo-turtle/
+* GitHub: https://lanl-aea.github.io/turbo-turtle/
+* LANL: https://aea.re-pages.lanl.gov/python-projects/turbo-turtle/
 
 Author Info
 ===========
