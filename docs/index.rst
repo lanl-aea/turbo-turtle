@@ -4,6 +4,16 @@
 
 .. include:: project_brief.txt
 
+.. only:: html
+
+   .. |pipeline| image:: https://img.shields.io/github/actions/workflow/status/lanl-aea/turbo-turtle/pages.yml?branch=main&label=GitHub-Pages
+      :target: https://lanl-aea.github.io/turbo-turtle/
+
+   .. |release| image:: https://img.shields.io/github/v/release/lanl-aea/turbo-turtle?label=GitHub-Release
+      :target: https://github.com/lanl-aea/turbo-turtle/releases
+
+   |pipeline| |release|
+
 .. raw:: latex
 
    \part{User Manual}

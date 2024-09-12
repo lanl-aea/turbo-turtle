@@ -27,9 +27,7 @@ Turbo Turtle
 .. |release| image:: https://img.shields.io/github/v/release/lanl-aea/turbo-turtle?label=GitHub-Release
    :target: https://github.com/lanl-aea/turbo-turtle/releases
 
-|pipeline|
-
-|release|
+|pipeline| |release|
 
 .. inclusion-marker-do-not-remove
 
