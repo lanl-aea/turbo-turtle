@@ -8,6 +8,10 @@ Changelog
 v0.12.11 (unreleased)
 *********************
 
+Bug fixes
+=========
+- Better unit test patch for missing Cubit package, e.g. on conda-forge CI servers (:merge:`196`). By `Kyle Brindley`_.
+
 *********************
 v0.12.10 (2024-09-11)
 *********************
