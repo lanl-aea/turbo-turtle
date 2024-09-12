@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from contextlib import nullcontext as does_not_raise
 import subprocess
 
@@ -64,6 +64,14 @@ def test_cubit_os_bin():
     with patch("platform.system", return_value="Windows"):
         bin_directory = _utilities.cubit_os_bin()
         assert bin_directory == "bin"
+
+
+def test_import_cubit():
+    with patch.dict("sys.modules", cubit=MagicMock), does_not_raise():
+        cubit = _utilities.import_cubit()
+
+    with patch.dict("sys.modules", cubit=None, side_effect=ImportError()), pytest.raises(RuntimeError):
+        cubit = _utilities.import_cubit()
 
 
 construct_append_options = {
