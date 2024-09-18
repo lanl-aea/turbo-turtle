@@ -28,6 +28,7 @@ before_script:
   - if [[ -d ${environment_path} ]]; then module unload ${environment}; module load ${project_environment}; fi
   - conda info
   - conda_artifacts_directory='conda-bld'
+  - croot="/scratch/$USER/$(basename $PWD)/${conda_artifacts_directory}"
 
 environment:
   stage: environment
@@ -114,7 +115,6 @@ conda-build:
     # Override default permissions. Set group to rx with no write permissions.
     - umask 0022
     - mkdir ${conda_artifacts_directory}
-    - croot="/scratch/$USER/$(basename $PWD)/${conda_artifacts_directory}"
     - VERSION=$(python -m setuptools_scm) conda mambabuild recipe-internal --channel conda-forge --no-anaconda-upload --croot ${croot} --output-folder ${conda_artifacts_directory}
     - conda build purge --croot ${croot}
   artifacts:
