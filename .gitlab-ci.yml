@@ -124,6 +124,27 @@ conda-build:
   tags:
     - shell-aea
 
+conda-build-external:
+  stage: test
+  variables:
+    GIT_STRATEGY: clone
+  dependencies: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    # Set the LANL internal proxies
+    - export ALL_PROXY="proxyout.lanl.gov:8080"
+    - export HTTP_PROXY="http://$ALL_PROXY"
+    - export HTTPS_PROXY=$HTTP_PROXY
+    # Override default permissions. Set group to rx with no write permissions.
+    - umask 0022
+    - mkdir ${conda_artifacts_directory}
+    - VERSION=$(python -m setuptools_scm) conda mambabuild recipe --channel conda-forge --no-anaconda-upload --croot ${croot}/recipe-external --output-folder ${conda_artifacts_directory}
+    - conda build purge --croot ${croot}/recipe-external
+  tags:
+    - shell-aea
+
 # https://re-git.lanl.gov/aea/developer-operations/aea-conda
 aea-conda-deploy:
   stage: deploy
