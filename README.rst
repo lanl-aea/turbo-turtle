@@ -27,7 +27,10 @@ Turbo Turtle
 .. |release| image:: https://img.shields.io/github/v/release/lanl-aea/turbo-turtle?label=GitHub-Release
    :target: https://github.com/lanl-aea/turbo-turtle/releases
 
-|pipeline| |release|
+.. |zenodo| image:: https://zenodo.org/badge/855818315.svg
+   :target: https://zenodo.org/doi/10.5281/zenodo.13787498
+
+|pipeline| |release| |zenodo|
 
 .. inclusion-marker-do-not-remove
 
