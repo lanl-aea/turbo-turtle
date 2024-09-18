@@ -8,6 +8,14 @@ authors:
   given-names: "Thomas"
   orcid: "https://orcid.org/0000-0001-7121-1823"
 title: "turbo-turtle"
-url: "https://github.com/lanl/turbo-turtle"
+doi: 10.5281/zenodo.13787499
+url: "https://github.com/lanl-aea/turbo-turtle"
 license: BSD-3-Clause
 date-released: 2024-04-30
+identifiers:
+  - description: "All versions"
+    type: doi
+    value: 10.5281/zenodo.13787499
+  - description: "0.12.1"
+    type: doi
+    value: 10.5281/zenodo.13787499
