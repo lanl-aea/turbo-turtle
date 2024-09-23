@@ -15,8 +15,8 @@ dependencies:
   - pytest-xdist
   - python-build
   - scons >=4
-  - setuptools >=62
-  - setuptools_scm[toml] >=6.2,<8
+  - setuptools >=64
+  - setuptools_scm >=8
   - sphinx >=5.1
   - sphinx-argparse
   - sphinx-copybutton >=0.5.1
