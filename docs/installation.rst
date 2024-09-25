@@ -43,6 +43,6 @@ Installation
    =======================
 
    Users with access to the |PROJECT| `upstream repository`_ or the `AEA Gitlab group`_ may also install from the
-   experimental Gitlab PyPI-style package registry: https://re-git.lanl.gov/aea/python-projects/turbo_turtle/-/packages.
+   experimental Gitlab PyPI-style package registry: https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/packages.
    Click on a package to view in the Gitlab installation instructions, e.g.
-   https://re-git.lanl.gov/aea/python-projects/turbo_turtle/-/packages/33.
+   https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/packages/33.
