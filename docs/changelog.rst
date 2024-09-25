@@ -13,6 +13,7 @@ Documentation
 - Add GitHub shields to HTML documentation (:issue:`198`, :merge:`197`). By `Kyle Brindley`_.
 - Add GitHub-Pages documentation URL to README and documentation (:issue:`199`, :merge:`198`). By `Kyle Brindley`_.
 - Add Zenodo DOI shields and citations (:issue:`168`, :merge:`199`). By `Kyle Brindley`_.
+- Add conda-forge installation instructions and shields (:issue:`167`, :merge:`205`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
