@@ -13,4 +13,5 @@ exclude .git*
 exclude SConstruct
 exclude flake8
 exclude mypy
+exclude cProfile
 exclude pytest
