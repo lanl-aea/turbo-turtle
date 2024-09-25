@@ -5,6 +5,7 @@
 
 .. Project references
 .. _`documentation`: https://lanl-aea.github.io/turbo-turtle/index.html
+.. _`upstream repository`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
 .. _`repository`: https://github.com/lanl-aea/turbo-turtle 
 
 .. External references
