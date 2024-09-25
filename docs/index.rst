@@ -12,10 +12,16 @@
    .. |release| image:: https://img.shields.io/github/v/release/lanl-aea/turbo-turtle?label=GitHub-Release
       :target: https://github.com/lanl-aea/turbo-turtle/releases
 
+   .. |conda-forge version| image:: https://img.shields.io/conda/vn/conda-forge/turbo_turtle
+      :target: https://anaconda.org/conda-forge/turbo_turtle
+
+   .. |conda-forge downloads| image:: https://img.shields.io/conda/dn/conda-forge/turbo_turtle.svg?label=Conda%20downloads
+      :target: https://anaconda.org/conda-forge/turbo_turtle
+
    .. |zenodo| image:: https://zenodo.org/badge/855818315.svg
       :target: https://zenodo.org/doi/10.5281/zenodo.13787498
 
-   |pipeline| |release| |zenodo|
+   |pipeline| |release| |conda-forge version| |conda-forge downloads| |zenodo|
 
 .. raw:: latex
 
