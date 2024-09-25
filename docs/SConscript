@@ -128,4 +128,4 @@ env.Clean(latexpdf, [Dir("latex")] + sources)
 env.Alias("latexpdf", latexpdf)
 
 env.Alias("documentation", html + man + latexpdf)
-env.Alias("regression", html + man + latexpdf)
+env.Alias("regression", html + man + latexpdf + internal)
