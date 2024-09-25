@@ -1,7 +1,7 @@
 .. target-start-do-not-remove
 
 .. _`Turbo-Turtle`: https://lanl-aea.github.io/turbo-turtle/index.html
-.. _`turbo-turtle`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
+.. _`Turbo-Turtle repository`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
 .. _`AEA Gitlab Group`: https://re-git.lanl.gov/aea
 .. _`Gitlab CI/CD`: https://docs.gitlab.com/ee/ci/
 .. _`AEA Compute Environment`: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
@@ -140,7 +140,7 @@ Cloning the Repository
 .. cloning-the-repo-start-do-not-remove
 
 Cloning the repository is very easy, simply refer to the sample session below. Keep in mind that you get to choose the
-location of your local `turbo-turtle`_ clone. Here we use ``/projects/roppenheimer/repos`` as an example.
+location of your local `Turbo-Turtle repository`_ clone. Here we use ``/projects/roppenheimer/repos`` as an example.
 
 .. code-block:: bash
 
