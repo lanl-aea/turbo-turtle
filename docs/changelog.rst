@@ -21,6 +21,7 @@ Internal Changes
 - Update setuptools version specs to match current setuptools_scm documentation (:issue:`201`, :merge:`200`). By `Kyle
   Brindley`_.
 - Update recipes to match conda-forge recommendations (:issue:`202`, :merge:`201`). By `Kyle Brindley`_.
+- Remove unnecessary fast test job from CI deployment pipelines (:issue:`203`, :merge:`202`). By `Kyle Brindley`_.
 
 *********************
 v0.12.11 (2024-09-12)
