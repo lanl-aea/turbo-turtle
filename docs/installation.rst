@@ -2,6 +2,47 @@
 Installation
 ############
 
+.. only:: aea
+
+   ***********
+   Open source
+   ***********
+
 .. include:: README.txt
    :start-after: installation-start-do-not-remove
    :end-before: installation-end-do-not-remove
+
+.. only:: aea
+
+   *************
+   LANL internal
+   *************
+
+   |PROJECT| is released internally with continuous delivery practices. Production versions are released internally a
+   month or two before the open-source release on conda-forge. The bleeding edge development version is released daily
+   during active development cycles, often with several releases per day. Users can access the internal release through
+   several mechanisms.
+
+   For up-to-date AEA Conda channel instructions see the `AEA Conda channel`_ documentation.
+
+   W-13/AEA RHEL servers
+   =====================
+
+   .. code-block::
+
+      $ conda install --channel /projects/aea_compute/aea-conda turbo_turtle
+
+   HPC servers
+   ===========
+
+   .. code-block::
+
+      $ conda install --channel /usr/projects/ea/aea_compute/aea-conda turbo_turtle
+
+   Gitlab package registry
+   =======================
+
+   Users with access to the |PROJECT| `upstream repository`_ or the `AEA Gitlab group`_ may also install from the
+   experimental Gitlab PyPI-style package registry: https://re-git.lanl.gov/aea/python-projects/turbo_turtle/-/packages.
+   Click on a package to view in the Gitlab installation instructions, e.g.
+   https://re-git.lanl.gov/aea/python-projects/turbo_turtle/-/packages/33.
