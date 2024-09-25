@@ -1,5 +1,6 @@
 .. target-start-do-not-remove
 
+.. _`Turbo-Turtle`: https://lanl-aea.github.io/turbo-turtle/index.html
 .. _`turbo-turtle`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
 .. _`AEA Gitlab Group`: https://re-git.lanl.gov/aea
 .. _`Gitlab CI/CD`: https://docs.gitlab.com/ee/ci/
@@ -46,7 +47,7 @@ Description
 
 .. description-start-do-not-remove
 
-Turbo-Turtle (LANL code O4765) is a collection of solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D
+`Turbo-Turtle`_ (LANL code O4765) is a collection of solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D
 revolved models. It also contains general purpose meshing and image generation utilities appropriate for any model, not
 just those created with this package. Implemented for Abaqus and Cubit as backend modeling and meshing software. Orginal
 implementation targeted Abaqus so most options and descriptions use Abaqus modeling concepts and language.
@@ -74,22 +75,28 @@ Author Info
 * `Kyle Brindley`_
 * `Thomas Roberts`_
 
+************
+Installation
+************
+
+.. installation-start-do-not-remove
+
+`Turbo-Turtle`_ can be installed in a `Conda`_ environment with the `Conda`_ package manager. See the `Conda
+installation`_ and `Conda environment management`_ documentation for more details about using `Conda`_.
+
+.. code-block::
+
+   $ conda install --channel conda-forge turbo_turtle 
+
+.. installation-end-do-not-remove
+
 ***********
 Quick Start
 ***********
 
 .. user-start-do-not-remove
 
-Currently, this project is only available on the `AEA Conda channel`_ and in an `AEA Compute Environment`_.
-
-1. Load the AEA compute environment
-
-   .. code-block::
-
-      $ module use /projects/aea_compute/aea-conda
-      $ module load aea-beta
-
-2. View the CLI usage
+1. View the CLI usage
 
    .. code-block::
 
@@ -105,23 +112,6 @@ Currently, this project is only available on the `AEA Conda channel`_ and in an 
       $ turbo-turtle export -h
 
 .. user-end-do-not-remove
-
-************
-Installation
-************
-
-.. installation-start-do-not-remove
-
-Currently, this project is only available on the `AEA Conda channel`_ and in an `AEA Compute Environment`_.
-
-Turbo-Turtle can be installed in a `Conda`_ environment with the `Conda`_ package manager. See the `Conda installation`_
-and `Conda environment management`_ documentation for more details about using `Conda`_.
-
-.. code-block::
-
-   $ conda install --channel /projects/aea_compute/aea-conda --channel conda-forge waves
-
-.. installation-end-do-not-remove
 
 ****************
 Copyright Notice
