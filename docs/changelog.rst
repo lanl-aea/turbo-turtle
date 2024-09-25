@@ -22,6 +22,8 @@ Internal Changes
   Brindley`_.
 - Update recipes to match conda-forge recommendations (:issue:`202`, :merge:`201`). By `Kyle Brindley`_.
 - Remove unnecessary fast test job from CI deployment pipelines (:issue:`203`, :merge:`202`). By `Kyle Brindley`_.
+- Clean up PIP and Conda package builds to exclude project version control files (:issue:`204`, :merge:`203`). By `Kyle
+  Brindley`_.
 
 *********************
 v0.12.11 (2024-09-12)
