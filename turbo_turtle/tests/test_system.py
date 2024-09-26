@@ -200,6 +200,8 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
 
     return commands
 
+
+commands_list = []
 # Legacy geometry system tests requires a series of commands before the temp directory is removed
 # TODO: Decide if we should package or drop the legacy geometry tests
 name='Turbo-Turtle-Tests'
