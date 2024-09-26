@@ -125,14 +125,14 @@ test_scons_extensions.py
    :members:
    :private-members:
 
-test_systemtest.py
-==================
+test_system.py
+==============
 
 The system tests are not included in the default pytest options. They are marked with a ``systemtest`` marker and may be
 executed with ``pytest -m systemtest``. They are also collected under the SCons alias ``systemtest`` which contains
 additional pytest command line options to control test failure output more convenient to the system test execution.
 
-.. automodule:: turbo_turtle.tests.test_systemtest
+.. automodule:: turbo_turtle.tests.test_system
    :members:
    :private-members:
 
