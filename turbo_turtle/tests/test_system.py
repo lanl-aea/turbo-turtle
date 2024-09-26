@@ -16,8 +16,6 @@ from turbo_turtle.conftest import missing_display
 
 parser = get_parser()
 subcommand_list = parser._subparsers._group_actions[0].choices.keys()
-
-
 env = os.environ.copy()
 turbo_turtle_command = "turbo-turtle"
 
@@ -202,12 +200,6 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
 
     return commands
 
-# Help/Usage sign-of-life
-commands_list = []
-commands_list.append(
-    [f"{turbo_turtle_command} -h"] + [f"{turbo_turtle_command} {subcommand} -h" for subcommand in subcommand_list]
-)
-
 # Legacy geometry system tests requires a series of commands before the temp directory is removed
 # TODO: Decide if we should package or drop the legacy geometry tests
 name='Turbo-Turtle-Tests'
@@ -351,14 +343,15 @@ for files in sconstruct_files:
 
 
 @pytest.mark.systemtest
+@pytest.mark.require_third_party
 @pytest.mark.parametrize("number, commands", enumerate(commands_list))
-def test_shell_commands(number, commands):
+def test_shell_commands(number: int, commands: list):
     """Run the system tests.
 
     Executes with a temporary directory that is cleaned up after each test execution.
 
-    :param int number: the command number. Used during local testing to separate command directories.
-    :param str command: the full command string for the system test
+    :param number: the command number. Used during local testing to separate command directories.
+    :param command: the full list of command string(s) for the system test
     """
     if isinstance(commands, str):
         commands = [commands]
@@ -375,3 +368,22 @@ def run_commands(commands, build_directory):
     for command in commands:
         command = shlex.split(command)
         result = subprocess.check_output(command, env=env, cwd=build_directory).decode('utf-8')
+
+
+# Help/Usage sign-of-life
+project_only_commands_list = [f"{turbo_turtle_command} -h"]
+project_only_commands_list.extend([f"{turbo_turtle_command} {subcommand} -h" for subcommand in subcommand_list])
+project_only_commands_list.append(f"{turbo_turtle_command} fetch")
+
+
+@pytest.mark.systemtest
+@pytest.mark.parametrize("number, commands", enumerate(project_only_commands_list))
+def test_project_shell_commands(number: int, commands: list):
+    """Run system tests that do not require third-party software
+
+    Thin wrapper of :meth:`test_shell_commands` with a different set of function level pytest marks
+
+    :param number: the command number. Used during local testing to separate command directories.
+    :param command: the full list of command string(s) for the system test
+    """
+    test_shell_commands(number, commands)
