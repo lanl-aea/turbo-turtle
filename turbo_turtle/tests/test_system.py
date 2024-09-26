@@ -321,8 +321,6 @@ for part_name in ("washer vase merge-sphere", ""):
     commands_list.append(setup_merge_commands(part_name, cubit=True))
 
 # SCons extensions tests
-# TODO: Use a turbo-turtle fetch command
-# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/145
 # System tests as SCons tasks
 sconstruct = _settings._project_root_abspath / "tests/SConstruct"
 commands_list.append(f"scons . --sconstruct {sconstruct} --turbo-turtle-command='{turbo_turtle_command}'")
