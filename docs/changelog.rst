@@ -25,6 +25,9 @@ Internal Changes
 - Remove unnecessary fast test job from CI deployment pipelines (:issue:`203`, :merge:`202`). By `Kyle Brindley`_.
 - Clean up PIP and Conda package builds to exclude project version control files (:issue:`204`, :merge:`203`). By `Kyle
   Brindley`_.
+- Separate system tests that require third-party software from those that do not. Run external recipe builds with a
+  single pytest command instead of hardcoding the CLI tests in the recipe test script (:issue:`205`, :merge:`206`). By
+  `Kyle Brindley`_.
 
 Enhancements
 ============
