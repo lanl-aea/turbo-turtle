@@ -9,7 +9,7 @@ from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
-cubit = _utilities.import_cubit()
+gmsh = _utilities.import_gmsh()
 
 
 def geometry(*args, **kwargs):
