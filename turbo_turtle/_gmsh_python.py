@@ -102,7 +102,8 @@ def _draw_surface(lines, splines) -> int:
         zero_column = numpy.zeros([len(spline), 1])
         spline_3d = numpy.append(spline, zero_column, axis=1)
         curves.append(_create_spline_from_coordinates(spline_3d))
-    return gmsh.model.geo.addPlaneSurface(curves)
+    curve_loop = gmsh.model.occ.addCurveLoop(curves)
+    return gmsh.model.occ.addPlaneSurface([curve_loop])
 
 
 def _create_line_from_coordinates(point1, point2) -> int:
@@ -113,9 +114,9 @@ def _create_line_from_coordinates(point1, point2) -> int:
 
     :returns: Gmsh 1D entity tag
     """
-    point1_tag = gmsh.model.geo.addPoint(*point1)
-    point2_tag = gmsh.model.geo.addPoint(*point2)
-    return gmsh.model.geo.addLine(point1_tag, point2_tag)
+    point1_tag = gmsh.model.occ.addPoint(*point1)
+    point2_tag = gmsh.model.occ.addPoint(*point2)
+    return gmsh.model.occ.addLine(point1_tag, point2_tag)
 
 
 def _create_spline_from_coordinates(coordinates) -> int:
@@ -132,9 +133,9 @@ def _create_spline_from_coordinates(coordinates) -> int:
 
     points = []
     for point in coordinates:
-        points.append(gmsh.model.geo.addPoint(*tuple(point)))
+        points.append(gmsh.model.occ.addPoint(*tuple(point)))
 
-    return gmsh.model.geo.addBSpline(points)
+    return gmsh.model.occ.addBSpline(points)
 
 
 def _rename_and_sweep(
