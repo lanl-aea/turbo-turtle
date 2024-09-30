@@ -39,7 +39,7 @@ if not installed:
         env[key] = f"{package_parent_path}"
 
 
-def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, quadrant, element_type, element_replacement, cubit, output_type,
+def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, quadrant, element_type, element_replacement, backend, output_type,
                           turbo_turtle_command=turbo_turtle_command):
     """Return the sphere/partition/mesh commands for system testing
 
@@ -48,7 +48,7 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
     """
     model = pathlib.Path(model).with_suffix(".cae")
     image = model.with_suffix(".png")
-    if cubit:
+    if backend == "cubit":
         model = model.with_suffix(".cub")
         image = image.parent / f"{image.stem}-cubit{image.suffix}"
     assembly = model.stem + "_assembly.inp"
@@ -75,13 +75,13 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
     # Skip the image subcommand when DISPLAY is not found
     # Skip the image subcommand when running the Genesis variations. We don't need duplicate images of the cubit meshes
     # TODO: Update as Cubit support is added for partition/mesh/image/export
-    if (cubit and missing_display) or (cubit and output_type.lower() == "genesis"):
+    if (backend == "cubit" and missing_display) or (backend == "cubit" and output_type.lower() == "genesis"):
         commands.pop(3)
     # Skip the partition/mesh/image/export
     if inner_radius == 0:
         commands = [commands[0]]
-    if cubit:
-        commands = [f"{command} --backend cubit" for command in commands]
+    if backend is not None:
+        commands = [f"{command} --backend {backend}" for command in commands]
     return commands
 
 
@@ -95,11 +95,13 @@ def setup_geometry_xyplot_commands(model, input_file):
     return commands
 
 
-def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit,
+def setup_geometry_commands(model, input_file, revolution_angle, y_offset, backend,
                             turbo_turtle_command=turbo_turtle_command):
     model = pathlib.Path(model).with_suffix(".cae")
-    if cubit:
+    if backend == "cubit":
         model = model.with_suffix(".cub")
+    if backend == "gmsh":
+        model = model.with_suffix(".step")
     part_name = " ".join(csv.stem for csv in input_file)
     input_file = _utilities.character_delimited_list(input_file)
     commands = [
@@ -107,19 +109,19 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, cubit
             f"--part-name {part_name} --output-file {model} --revolution-angle {revolution_angle} " \
             f"--y-offset {y_offset}",
     ]
-    if cubit:
-        commands = [f"{command} --backend cubit" for command in commands]
+    if backend is not None:
+        commands = [f"{command} --backend {backend}" for command in commands]
     return commands
 
 
-def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_sets, edge_seeds, element_type, cubit,
+def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_sets, edge_seeds, element_type, backend,
                         turbo_turtle_command=turbo_turtle_command):
     model = pathlib.Path(model).with_suffix(".cae")
-    if cubit:
+    if backend == "cubit":
         model = model.with_suffix(".cub")
     part_name = " ".join(csv.stem for csv in input_file)
     commands = setup_geometry_commands(
-        model, input_file, revolution_angle, 0., cubit,
+        model, input_file, revolution_angle, 0., backend,
         turbo_turtle_command=turbo_turtle_command
     )
     if face_sets is not None:
@@ -141,8 +143,8 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_set
             f"--part-name {part_name} --output-file {model} --global-seed 1. --element-type {element_type} " \
             f"{edge_seeds}"
     ]
-    if cubit:
-        sets_commands = [f"{command} --backend cubit" for command in sets_commands]
+    if backend is not None:
+        sets_commands = [f"{command} --backend {backend}" for command in sets_commands]
     commands.extend(sets_commands)
     return commands
 
@@ -164,7 +166,7 @@ def setup_cylinder_commands(model, revolution_angle, backend,
     return commands
 
 
-def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_command):
+def setup_merge_commands(part_name, backend, turbo_turtle_command=turbo_turtle_command):
     commands = []
 
     sphere_model = pathlib.Path("merge-sphere.cae")
@@ -172,7 +174,7 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
     sphere_element_replacement = "C3D8R"
     geometry_model = pathlib.Path("merge-multi-part")
     output_file = pathlib.Path("merge.cae")
-    if cubit:
+    if backend == "cubit":
         sphere_model = sphere_model.with_suffix(".cub")
         sphere_element_type = None
         sphere_element_replacement = "HEX20"
@@ -180,14 +182,14 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
         output_file = output_file.with_suffix(".cub")
 
     # Create sphere file
-    sphere_options = (str(sphere_model), 1., 2., 360., 0., "both", sphere_element_type, sphere_element_replacement, cubit, "abaqus")
+    sphere_options = (str(sphere_model), 1., 2., 360., 0., "both", sphere_element_type, sphere_element_replacement, backend, "abaqus")
     commands.append(setup_sphere_commands(*sphere_options)[0])
 
     # Create washer/vase combined file
     geometry_options = (str(geometry_model),
                         [_settings._project_root_abspath / "tests" / "washer.csv",
                          _settings._project_root_abspath / "tests" / "vase.csv"],
-                        360.0, 0., cubit)
+                        360.0, 0., backend)
     commands.extend(setup_geometry_commands(*geometry_options))
 
     # Run the actual merge command
@@ -196,8 +198,8 @@ def setup_merge_commands(part_name, cubit, turbo_turtle_command=turbo_turtle_com
                      f"--model-name merge-multi-part merge-sphere"
     if part_name:
         merge_command += f" --part-name {part_name}"
-    if cubit:
-        merge_command = f"{merge_command} --backend cubit"
+    if backend is not None:
+        merge_command = f"{merge_command} --backend {backend}"
     commands.append(merge_command)
 
     return commands
@@ -218,37 +220,37 @@ commands_list.append([
 
 # Sphere/partition/mesh
 system_tests = (
-    # model/part, inner_radius, outer_radius, angle, y-offset, quadrant, element_type, element_replacement, cubit, output_type
+    # model/part, inner_radius, outer_radius, angle, y-offset, quadrant, element_type, element_replacement, backend, output_type
     # Abaqus CAE
-    ("sphere.cae",               1.,     2., 360.,       0.,  "both",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",  "CAX4",       "CAX4R", False, "abaqus"),
-    ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("eigth-sphere.cae",         1.,     2.,  90.,       0., "upper",  "C3D8",       "C3D8R", False, "abaqus"),
-    ("half-sphere.cae",          1.,     2., 360.,       0., "upper",  "C3D8",       "C3D8R", False, "abaqus"),
+    ("sphere.cae",               1.,     2., 360.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),
+    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),
+    ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",  "CAX4",       "CAX4R", None, "abaqus"),
+    ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),
+    ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),
+    ("eigth-sphere.cae",         1.,     2.,  90.,       0., "upper",  "C3D8",       "C3D8R", None, "abaqus"),
+    ("half-sphere.cae",          1.,     2., 360.,       0., "upper",  "C3D8",       "C3D8R", None, "abaqus"),
     # Cubit: for Abaqus INP
-    ("sphere.cae",               1.,     2., 360.,       0.,  "both",    None,       "C3D8R", True, "abaqus"),
-    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",    None,       "C3D8R", True, "abaqus"),
-    ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",    None,       "CAX4R", True, "abaqus"),
-    ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",    None,       "C3D8R", True, "abaqus"),
-    ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",    None,       "C3D8R", True, "abaqus"),
-    ("eigth-sphere.cae",         1.,     2.,  90.,       0., "upper",    None,       "C3D8R", True, "abaqus"),
-    ("half-sphere.cae",          1.,     2., 360.,       0., "upper",    None,       "C3D8R", True, "abaqus"),
+    ("sphere.cae",               1.,     2., 360.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),
+    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),
+    ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",    None,       "CAX4R", "cubit", "abaqus"),
+    ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),
+    ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",    None,       "C3D8R", "cubit", "abaqus"),
+    ("eigth-sphere.cae",         1.,     2.,  90.,       0., "upper",    None,       "C3D8R", "cubit", "abaqus"),
+    ("half-sphere.cae",          1.,     2., 360.,       0., "upper",    None,       "C3D8R", "cubit", "abaqus"),
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets.cae",          1.,     2., 360.,     0., "both", "tetmesh",       None, True, "abaqus"),
-    ("axisymmetric-tri.cae",     1.,     2.,   0.,     0., "both", "trimesh",       None, True, "abaqus"),
+    ("sphere-tets.cae",          1.,     2., 360.,     0., "both", "tetmesh",       None, "cubit", "abaqus"),
+    ("axisymmetric-tri.cae",     1.,     2.,   0.,     0., "both", "trimesh",       None, "cubit", "abaqus"),
     # Cubit: for Genesis INP
-    ("sphere-genesis.cae",         1.,   2., 360., 0.,  "both",   None,  "HEX", True, "genesis"),
-    ("solid-sphere-genesis.cae",   0.,   2., 360., 0.,  "both",   None,  "HEX", True, "genesis"),
-    ("axisymmetric-genesis.cae",   1.,   2.,   0., 0.,  "both",   None, "QUAD", True, "genesis"),
-    ("quarter-sphere-genesis.cae", 1.,   2.,  90., 0.,  "both",   None,  "HEX", True, "genesis"),
-    ("offset-sphere-genesis.cae",  1.,   2., 360., 1.,  "both",   None,  "HEX", True, "genesis"),
-    ("eigth-sphere-genesis.cae",   1.,   2.,  90., 0., "upper",   None,  "HEX", True, "genesis"),
-    ("half-sphere-genesis.cae",    1.,   2., 360., 0., "upper",   None,  "HEX", True, "genesis"),
+    ("sphere-genesis.cae",         1.,   2., 360., 0.,  "both",   None,  "HEX", "cubit", "genesis"),
+    ("solid-sphere-genesis.cae",   0.,   2., 360., 0.,  "both",   None,  "HEX", "cubit", "genesis"),
+    ("axisymmetric-genesis.cae",   1.,   2.,   0., 0.,  "both",   None, "QUAD", "cubit", "genesis"),
+    ("quarter-sphere-genesis.cae", 1.,   2.,  90., 0.,  "both",   None,  "HEX", "cubit", "genesis"),
+    ("offset-sphere-genesis.cae",  1.,   2., 360., 1.,  "both",   None,  "HEX", "cubit", "genesis"),
+    ("eigth-sphere-genesis.cae",   1.,   2.,  90., 0., "upper",   None,  "HEX", "cubit", "genesis"),
+    ("half-sphere-genesis.cae",    1.,   2., 360., 0., "upper",   None,  "HEX", "cubit", "genesis"),
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets-genesis.cae",     1.,   2., 360., 0., "both", "tetmesh",   "TRI", True, "genesis"),
-    ("axisymmetric-tri-genesis.cae",1.,   2.,   0., 0., "both", "trimesh", "TETRA", True, "genesis"),
+    ("sphere-tets-genesis.cae",     1.,   2., 360., 0., "both", "tetmesh",   "TRI", "cubit", "genesis"),
+    ("axisymmetric-tri-genesis.cae",1.,   2.,   0., 0., "both", "trimesh", "TETRA", "cubit", "genesis"),
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
@@ -267,41 +269,41 @@ for test in system_tests:
 
 # Geometry tests
 system_tests = (
-    # model/part,                                                           input_file, angle, y-offset, cubit
+    # model/part,                                                           input_file, angle, y-offset, backend
     # Abaqus
-    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., False),
-    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., False),
-    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., False),
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., False),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., False),
+    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., None),
+    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., None),
+    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., None),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., None),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., None),
     ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., False),
+                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., None),
     ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., False),
+                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., None),
     # Cubit
-    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., True),
-    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., True),
-    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., True),
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., True),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., True),
+    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., "cubit"),
+    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., "cubit"),
+    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., "cubit"),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "cubit"),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "cubit"),
     ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., True),
+                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "cubit"),
     ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., True),
+                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "cubit"),
 )
 for test in system_tests:
     commands_list.append(setup_geometry_commands(*test))
 
 # Sets/mesh tests
 system_tests = (
-    # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                        edge seeds, element_type, cubit
+    # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                        edge seeds, element_type, backend
     # Abaqus
     # TODO: Pick some Abaqus edge sets for the system tests
     ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                              None, "C3D8R", False),
     ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]],  "CAX4", False),
     # Cubit
-    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "4"], ["bottom", "7"], ["outer", "'2 3 8'"]], [["top_outer", "13"]], [["top_outer", "1.000001"]], "C3D8R", True),
-    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "2"], ["bottom", "6"], ["outer", "'1 7 8'"]], [["top", "1.000001"]], "CAX4", True),
+    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "4"], ["bottom", "7"], ["outer", "'2 3 8'"]], [["top_outer", "13"]], [["top_outer", "1.000001"]], "C3D8R", "cubit"),
+    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "2"], ["bottom", "6"], ["outer", "'1 7 8'"]], [["top", "1.000001"]], "CAX4", "cubit"),
 )
 for test in system_tests:
     commands_list.append(setup_sets_commands(*test))
@@ -321,8 +323,8 @@ for test in system_tests:
 
 # Merge tests
 for part_name in ("washer vase merge-sphere", ""):
-    commands_list.append(setup_merge_commands(part_name, cubit=False))
-    commands_list.append(setup_merge_commands(part_name, cubit=True))
+    commands_list.append(setup_merge_commands(part_name, backend=None))
+    commands_list.append(setup_merge_commands(part_name, backend="cubit"))
 
 # SCons extensions tests
 # System tests as SCons tasks
