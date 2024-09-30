@@ -22,18 +22,40 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     :param float y_offset: vertical offset along the global Y-axis
     """
+    # Universally required setup
     gmsh.initialize()
     gmsh.logger.start()
 
-    part_name = _mixed_utilities.cubit_part_names(part_name)
-    gmsh.model.add(part_name)
+    # Input/Output setup
     output_file = pathlib.Path(output_file)
 
+    # Model setup
+    part_name = _mixed_utilities.cubit_part_names(part_name)
+    gmsh.model.add(part_name)
+
+    # Create the 2D axisymmetric shape
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
-    # TODO: implement the Gmsh line/surface creation
+    x = min([line[0] for line in lines])
+    dx = max([line[0] for line in lines]) - x
+    y = min([line[1] for line in lines])
+    dy = max([line[1] for line in lines]) - y
+    z = 0.0
+    rectangle_tag = gmsh.model.occ.addRectangle(x, y, z, dx, dy)
 
-    # TODO: revolve
+    # Conditionally create the 3D revolved shape
+    if not numpy.isclose(revolution_angle, 0.0):
+        revolved_tag = gmsh.model.occ.revolve(
+            [(2, rectangle_tag)],
+            0.,  # Center: x
+            0.,  # Center: y
+            0.,  # Center: z
+            0.,  # Direction: x
+            1.,  # Direction: y
+            0.,  # Direction: z
+            revolution_angle
+        )
 
+    # Output and cleanup
     gmsh.model.occ.synchronize()
     # TODO: Figure out how to save geometry files instead of mesh files with Gmsh
     gmsh.write(str(output_file))
