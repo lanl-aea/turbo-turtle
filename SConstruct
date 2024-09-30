@@ -10,11 +10,6 @@ import setuptools_scm
 
 warnings.filterwarnings(action="ignore", message="tag", category=UserWarning, module="setuptools_scm")
 
-project_variables = {
-    "project_dir": Dir(".").abspath,
-    "version": setuptools_scm.get_version(),
-}
-project_variables_substitution = waves.scons_extensions.substitution_syntax(project_variables)
 
 AddOption(
     "--build-dir",
@@ -27,13 +22,18 @@ AddOption(
     help="SCons build (variant) root directory. Relative or absolute path. (default: '%default')"
 )
 
-env = Environment(
+env = waves.scons_extensions.WAVESEnvironment(
     ENV=os.environ.copy(),
     variant_dir_base=GetOption("variant_dir_base")
 )
+env["abaqus"] = env.AddProgram(["/apps/abaqus/Commands/abq2023", "abq2023"])
+project_variables = {
+    "project_dir": Dir(".").abspath,
+    "version": setuptools_scm.get_version(),
+}
 for key, value in project_variables.items():
     env[key] = value
-env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
+project_variables_substitution = env.SubstitutionSyntax(project_variables)
 
 variant_dir_base = pathlib.Path(env["variant_dir_base"])
 build_dir = variant_dir_base / "docs"
