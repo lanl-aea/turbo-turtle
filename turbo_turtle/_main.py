@@ -76,7 +76,7 @@ def add_abaqus_and_cubit(parsers: typing.List[argparse.ArgumentParser]) -> None:
                             help="Back end software (default: %(default)s)")
 
 
-def append_cubit_help(text: str, append: str = "with Abaqus or Cubit") -> str:
+def append_cubit_help(text: str, append: str = "with Abaqus, Cubit, or Gmsh (work-in-progress)") -> str:
     """Append common short help with optional Cubit text
 
     :param str text: original text
@@ -90,9 +90,9 @@ def append_cubit_help(text: str, append: str = "with Abaqus or Cubit") -> str:
 
 def append_cubit_description(
     text: str,
-    append: str = "Defaults to Abaqus, but can optionally run Cubit. Cubit implementation "
-                  "replaces hyphens with underscores in part name(s) and ignores model/assembly name "
-                  "arguments."
+    append: str = "Defaults to Abaqus, but can optionally run Cubit (Gmsh implementation is a work-in-progress). "
+                  "Cubit implementation replaces hyphens with underscores in part name(s) and ignores model/assembly "
+                  "name arguments."
 ) -> str:
     """Append common long description with optional Cubit text
 
@@ -113,7 +113,7 @@ def get_parser() -> argparse.ArgumentParser:
     """
     main_description = \
         "A collection of solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models. " \
-        "Implemented for Abaqus and Cubit as backend modeling and meshing software. " \
+        "Implemented for Abaqus, Cubit, and Gmsh (work-in-progress) as backend modeling and meshing software. " \
         "Most of the interface options and descriptions use Abaqus modeling concepts and language. " \
         "Turbo-Turtle makes a best effort to maintain common behaviors and features across each third-party " \
         "software's modeling concepts."

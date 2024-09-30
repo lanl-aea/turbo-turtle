@@ -24,7 +24,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
     :param float height: Height of the cylinder
-    :param str output_file: Cubit ``*.cub`` database to save the part(s)
+    :param str output_file: Gmsh ``*.step`` file to save the part(s)
     :param list part_name: name(s) of the part(s) being created
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     :param float y_offset: vertical offset along the global Y-axis
@@ -34,6 +34,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     gmsh.logger.start()
 
     # Input/Output setup
+    # TODO: allow other output formats support by Gmsh
     output_file = pathlib.Path(output_file).with_suffix(".step")
 
     # Model setup
