@@ -32,11 +32,11 @@ def geometry(
     Note that 2D axisymmetric sketches and sketches for 3D bodies of revolution about the global Y-axis must lie
     entirely on the positive-X side of the global Y-axis.
 
-    This function can create multiple sheet bodies or volumes in the same Cubit ``*.cub`` file. If no part (body/volume)
+    This function can create multiple surfaces or volumes in the same Gmsh ``*.step`` file. If no part (body/volume)
     names are provided, the body/volume will be named after the input file base name.
 
     :param str input_file: input text file(s) with coordinates to draw
-    :param str output_file: Cubit ``*.cub`` database to save the part(s)
+    :param str output_file: Gmsh ``*.step`` database to save the part(s)
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param str model_name: name of the Gmsh model in which to create the part
     :param list part_name: name(s) of the part(s) being created
@@ -147,7 +147,7 @@ def _rename_and_sweep(
 
     Hyphens are replaced by underscores to make the ACIS engine happy.
 
-    :param int surface: Cubit surface object to rename and conditionally sweep
+    :param int surface: Gmsh surface tag to rename and conditionally sweep
     :param str part_name: name(s) of the part(s) being created
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.

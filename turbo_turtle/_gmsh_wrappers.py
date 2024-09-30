@@ -3,7 +3,27 @@ from turbo_turtle import _gmsh_python
 
 
 def geometry(args, command):
-    raise RuntimeError("geometry subcommand is not yet implemented")
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.geometry`
+
+    Unpack the argument namespace into the full function interface
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    :param str command: gmsh executable path, unused. Kept for API compatibility with
+        :meth:`turbo_turtle._abaqus_wrappers`
+    """
+    _gmsh_python.geometry(
+        args.input_file, args.output_file,
+        planar=args.planar,
+        part_name=args.part_name,
+        unit_conversion=args.unit_conversion,
+        euclidean_distance=args.euclidean_distance,
+        delimiter=args.delimiter,
+        header_lines=args.header_lines,
+        revolution_angle=args.revolution_angle,
+        y_offset=args.y_offset,
+        rtol=args.rtol,
+        atol=args.atol
+    )
 
 
 def cylinder(args, command):
