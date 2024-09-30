@@ -289,7 +289,7 @@ def _rename_and_sweep(surface, part_name,
     Hyphens are replaced by underscores to make the ACIS engine happy.
 
     :param cubit.Surface surface: Cubit surface object to rename and conditionally sweep
-    :param list part_name: name(s) of the part(s) being created
+    :param str part_name: name of the part being created
     :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
 

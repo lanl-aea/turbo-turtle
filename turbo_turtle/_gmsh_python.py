@@ -1,4 +1,5 @@
 """Python 3 module that imports python-gmsh"""
+import typing
 import pathlib
 
 import numpy
@@ -75,7 +76,8 @@ def geometry(
         surfaces.append(_draw_surface(lines, splines))
 
     # Conditionally create the 3D revolved shape
-    # Part name handling
+    for surface, new_part in zip(surfaces, part_name):
+        _rename_and_sweep(surface, new_part, planar=planar, revolution_angle=revolution_angle)
 
     # Output and cleanup
     gmsh.write(str(output_file))
@@ -83,14 +85,13 @@ def geometry(
     gmsh.finalize()
 
 
-def _draw_surface(lines, splines):
+def _draw_surface(lines, splines) -> int:
     """Given ordered lists of line/spline coordinates, create a Gmsh 2D surface object
 
     :param list lines: list of [2, 2] shaped arrays of (x, y) coordinates defining a line segment
     :param list splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a spline
 
     :returns: Gmsh 2D entity tag
-    :rtype: int
     """
     curves = []
     for first, second in lines:
@@ -104,27 +105,25 @@ def _draw_surface(lines, splines):
     return gmsh.model.geo.addPlaneSurface(curves)
 
 
-def _create_line_from_coordinates(point1, point2):
+def _create_line_from_coordinates(point1, point2) -> int:
     """Create a curve from 2 three-dimensional coordinates
 
     :param tuple point1: First set of coordinates (x1, y1, z1)
     :param tuple point2: Second set of coordinates (x2, y2, z2)
 
     :returns: Gmsh 1D entity tag
-    :rtype: int
     """
     point1_tag = gmsh.model.geo.addPoint(*point1)
     point2_tag = gmsh.model.geo.addPoint(*point2)
     return gmsh.model.geo.addLine(point1_tag, point2_tag)
 
 
-def _create_spline_from_coordinates(coordinates):
+def _create_spline_from_coordinates(coordinates) -> int:
     """Create a spline from a list of coordinates
 
     :param numpy.array coordinates: [N, 3] array of coordinates (x, y, z)
 
     :returns: Gmsh 1D entity tag
-    :rtype: int
     """
     coordinates = numpy.array(coordinates)
     minimum = 2
@@ -136,6 +135,47 @@ def _create_spline_from_coordinates(coordinates):
         points.append(gmsh.model.geo.addPoint(*tuple(point)))
 
     return gmsh.model.geo.addBSpline(points)
+
+
+def _rename_and_sweep(
+    surface: int, part_name: str,
+    center=numpy.array([0., 0., 0.]),
+    planar=parsers.geometry_defaults["planar"],
+    revolution_angle=parsers.geometry_defaults["revolution_angle"]
+) -> typing.Tuple[int, int]:
+    """Recover surface, sweep part if required, and rename surface/volume by part name
+
+    Hyphens are replaced by underscores to make the ACIS engine happy.
+
+    :param int surface: Cubit surface object to rename and conditionally sweep
+    :param str part_name: name(s) of the part(s) being created
+    :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
+    :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
+
+    :returns: Gmsh dimTag (dimension, tag)
+    """
+    center = numpy.array(center)
+    revolution_axis = numpy.array([0., 1., 0.])
+    if planar:
+        dim_tag = (2, surface)
+    elif numpy.isclose(revolution_angle, 0.0):
+        dim_tag = (2, surface)
+    else:
+        dimTags = gmsh.model.occ.revolve(
+            [(2, surface)],
+            *center,
+            *revolution_axis,
+            numpy.radians(revolution_angle)
+        )
+        dim_tag = dimTags[0]
+
+    part_dimension = dim_tag[0]
+    part_tag = dim_tag[0]
+    part_name = _mixed_utilities.cubit_part_names(part_name)
+    gmsh.model.occ.synchronize()
+    part_tag = gmsh.model.addPhysicalGroup(part_dimension, [part_tag], name=part_name)
+
+    return dim_tag
 
 
 def cylinder(
@@ -176,28 +216,10 @@ def cylinder(
     y = min(ycoords)
     dy = max(ycoords) - y
     z = 0.0
-    part_dimension = 2
-    part_tag = gmsh.model.occ.addRectangle(x, y, z, dx, dy)
+    surface_tag = gmsh.model.occ.addRectangle(x, y, z, dx, dy)
 
     # Conditionally create the 3D revolved shape
-    if not numpy.isclose(revolution_angle, 0.0):
-        dimTags = gmsh.model.occ.revolve(
-            [(part_dimension, part_tag)],
-            0.,  # Center: x
-            0.,  # Center: y
-            0.,  # Center: z
-            0.,  # Direction: x
-            1.,  # Direction: y
-            0.,  # Direction: z
-            numpy.radians(revolution_angle)
-        )
-        part_dimension = dimTags[0][0]
-        part_tag = dimTags[0][1]
-
-    # Part name handling
-    gmsh.model.occ.synchronize()
-    part_name = _mixed_utilities.cubit_part_names(part_name)
-    part_tag = gmsh.model.addPhysicalGroup(part_dimension, [part_tag], name=part_name)
+    _rename_and_sweep(surface_tag, part_name, revolution_angle=revolution_angle)
 
     # Output and cleanup
     gmsh.write(str(output_file))
