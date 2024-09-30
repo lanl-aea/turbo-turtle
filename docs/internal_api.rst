@@ -48,6 +48,15 @@ _cubit_python
    :members:
    :private-members:
 
+.. _gmsh_python_api:
+
+_gmsh_python
+============
+
+.. automodule:: turbo_turtle._gmsh_python
+   :members:
+   :private-members:
+
 _utilities
 ==========
 
