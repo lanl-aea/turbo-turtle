@@ -160,7 +160,7 @@ def setup_cylinder_commands(model, revolution_angle, backend,
             f"--inner-radius 1 --outer-radius 2 --height 1"
     ]
     if backend is not None:
-        commands = [f"{command} --backend " for command in commands]
+        commands = [f"{command} --backend {backend}" for command in commands]
     return commands
 
 
