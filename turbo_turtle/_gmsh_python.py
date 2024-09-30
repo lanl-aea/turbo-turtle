@@ -1,5 +1,8 @@
 """Python 3 module that imports python-gmsh"""
+import pathlib
+
 import gmsh
+import numpy
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
@@ -27,7 +30,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     gmsh.logger.start()
 
     # Input/Output setup
-    output_file = pathlib.Path(output_file).with_suffix(".geo")
+    output_file = pathlib.Path(output_file).with_suffix(".step")
 
     # Model setup
     part_name = _mixed_utilities.cubit_part_names(part_name)
@@ -35,10 +38,12 @@ def cylinder(inner_radius, outer_radius, height, output_file,
 
     # Create the 2D axisymmetric shape
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
-    x = min([line[0] for line in lines])
-    dx = max([line[0] for line in lines]) - x
-    y = min([line[1] for line in lines])
-    dy = max([line[1] for line in lines]) - y
+    xcoords = [point[0] for points in lines for point in points]
+    ycoords = [point[1] for points in lines for point in points]
+    x = min(xcoords)
+    dx = max(xcoords) - x
+    y = min(ycoords)
+    dy = max(ycoords) - y
     z = 0.0
     rectangle_tag = gmsh.model.occ.addRectangle(x, y, z, dx, dy)
 
@@ -57,7 +62,6 @@ def cylinder(inner_radius, outer_radius, height, output_file,
 
     # Output and cleanup
     gmsh.model.occ.synchronize()
-    # TODO: Figure out how to save geometry files instead of mesh files with Gmsh
     gmsh.write(str(output_file))
     gmsh.logger.stop()
     gmsh.finalize()
