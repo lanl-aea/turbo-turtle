@@ -3,6 +3,7 @@ import gmsh
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
 def cylinder(inner_radius, outer_radius, height, output_file,
