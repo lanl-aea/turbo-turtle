@@ -11,6 +11,7 @@ v0.12.13 (unreleased)
 New Features
 ============
 - Work-in-progress Gmsh cylinder subcommand implementation (:issue:`208`, :merge:`208`). By `Kyle Brindley`_.
+- Work-in-progress Gmsh geometry subcommand implementation (:issue:`209`, :merge:`210`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
