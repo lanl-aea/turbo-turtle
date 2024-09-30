@@ -299,8 +299,8 @@ system_tests = (
     # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                        edge seeds, element_type, backend
     # Abaqus
     # TODO: Pick some Abaqus edge sets for the system tests
-    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                              None, "C3D8R", False),
-    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]],  "CAX4", False),
+    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                              None, "C3D8R", None),
+    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]],  "CAX4", None),
     # Cubit
     ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "4"], ["bottom", "7"], ["outer", "'2 3 8'"]], [["top_outer", "13"]], [["top_outer", "1.000001"]], "C3D8R", "cubit"),
     ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "2"], ["bottom", "6"], ["outer", "'1 7 8'"]], [["top", "1.000001"]], "CAX4", "cubit"),
