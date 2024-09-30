@@ -105,7 +105,8 @@ def import_gmsh():
         import gmsh
     except ImportError as err:
         raise RuntimeError(
-            f"Could not import gmsh package. Please install `python-gmsh` in the Conda environment.\n'ImportError: {err}'"
+            f"Could not import gmsh package. Please install `python-gmsh` in the Conda environment.\n" \
+            "'ImportError: {err}'"
         )
     return gmsh
 
