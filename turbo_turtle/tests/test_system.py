@@ -147,18 +147,20 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_set
     return commands
 
 
-def setup_cylinder_commands(model, revolution_angle, cubit,
+def setup_cylinder_commands(model, revolution_angle, backend,
                             turbo_turtle_command=turbo_turtle_command):
     model = pathlib.Path(model).with_suffix(".cae")
-    if cubit:
+    if backend == "cubit":
         model = model.with_suffix(".cub")
+    if backend == "gmsh":
+        model = model.with_suffix(".step")
     commands = [
         f"{turbo_turtle_command} cylinder --model-name {model.stem} --part-name {model.stem} " \
             f"--output-file {model} --revolution-angle {revolution_angle} " \
             f"--inner-radius 1 --outer-radius 2 --height 1"
     ]
-    if cubit:
-        commands = [f"{command} --backend cubit" for command in commands]
+    if backend is not None:
+        commands = [f"{command} --backend " for command in commands]
     return commands
 
 
@@ -307,10 +309,12 @@ for test in system_tests:
 # Cylinder tests
 system_tests = (
     # model/part,   angle, cubit
-    ("cylinder_3d", 360., False),
-    ("cylinder_2d",   0., False),
-    ("cylinder_3d", 360., True),
-    ("cylinder_2d",   0., True)
+    ("cylinder_3d", 360., None),
+    ("cylinder_2d",   0., None),
+    ("cylinder_3d", 360., "cubit"),
+    ("cylinder_2d",   0., "cubit"),
+    ("cylinder_3d", 360., "gmsh"),
+    ("cylinder_2d",   0., "gmsh")
 )
 for test in system_tests:
     commands_list.append(setup_cylinder_commands(*test))
