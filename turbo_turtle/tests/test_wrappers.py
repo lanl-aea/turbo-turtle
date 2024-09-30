@@ -481,7 +481,7 @@ def test_cubit_wrappers(subcommand, namespace, positional, keywords):
                          cubit_wrapper_tests.values(), ids=cubit_wrapper_tests.keys())
 def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
-    implemented = ["cylinder"]
+    implemented = ["geometry", "cylinder"]
     if subcommand in implemented:
         with patch("turbo_turtle._utilities.import_gmsh"), \
              patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function:
