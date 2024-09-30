@@ -57,7 +57,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
             0.,  # Direction: x
             1.,  # Direction: y
             0.,  # Direction: z
-            revolution_angle
+            numpy.radians(revolution_angle)
         )
 
     # Output and cleanup
