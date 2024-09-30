@@ -48,6 +48,7 @@ requirements:
 
 test:
   requires:
+    - pip
     - pytest
     - pytest-xdist
   imports:

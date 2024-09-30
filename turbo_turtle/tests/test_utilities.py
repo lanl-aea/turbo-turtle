@@ -66,6 +66,14 @@ def test_cubit_os_bin():
         assert bin_directory == "bin"
 
 
+def test_import_gmsh():
+    with patch.dict("sys.modules", cubit=MagicMock), does_not_raise():
+        cubit = _utilities.import_gmsh()
+
+    with patch.dict("sys.modules", cubit=None, side_effect=ImportError()), pytest.raises(RuntimeError):
+        cubit = _utilities.import_gmsh()
+
+
 def test_import_cubit():
     with patch.dict("sys.modules", cubit=MagicMock), does_not_raise():
         cubit = _utilities.import_cubit()

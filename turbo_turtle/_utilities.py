@@ -96,6 +96,20 @@ def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional
     return cubit_bin
 
 
+def import_gmsh():
+    """Intermediate gmsh import function
+
+    Allows better CLI error reporting and gmsh package mocking during unit tests
+    """
+    try:
+        import gmsh
+    except ImportError as err:
+        raise RuntimeError(
+            f"Could not import gmsh package. Please install `python-gmsh` in the Conda environment.\n'ImportError: {err}'"
+        )
+    return gmsh
+
+
 def import_cubit():
     """Intermediate Cubit import function
 

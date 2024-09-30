@@ -48,8 +48,9 @@ requirements:
 
 test:
   requires:
-    - numpy
+    - pip
     - pytest
     - pytest-xdist
+    - python-gmsh
   imports:
     - turbo_turtle
