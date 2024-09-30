@@ -286,6 +286,63 @@ def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expe
         assert numpy.allclose(spline, expectation)
 
 
+ordered_lines_and_splines = {
+    "washer": (
+        numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
+        4,
+        [numpy.array([[1.0, -0.5], [2.0, -0.5]]),
+         numpy.array([[2.0, -0.5], [2.0,  0.5]]),
+         numpy.array([[2.0,  0.5], [1.0,  0.5]]),
+         numpy.array([[1.0,  0.5], [1.0, -0.5]])],
+    ),
+    "vase": (
+        numpy.array([[ 5.1, -5. ],
+                     [ 5. , -4.8],
+                     [ 4.5, -4. ],
+                     [ 4.1, -3. ],
+                     [ 4. , -2.5],
+                     [ 4. ,  2.5],
+                     [ 4.1,  3. ],
+                     [ 4.5,  4. ],
+                     [ 5. ,  4.8],
+                     [ 5.1,  5. ],
+                     [ 3. ,  5. ],
+                     [ 3. , -4. ],
+                     [ 0. , -4. ],
+                     [ 0. , -5. ]]),
+        4,
+        [
+         numpy.array([[ 5.1, -5. ],
+                      [ 5. , -4.8],
+                      [ 4.5, -4. ],
+                      [ 4.1, -3. ],
+                      [ 4. , -2.5]]),
+         numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),
+         numpy.array([[ 4. ,  2.5],
+                      [ 4.1,  3. ],
+                      [ 4.5,  4. ],
+                      [ 5. ,  4.8],
+                      [ 5.1,  5. ]]),
+         numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),
+         numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),
+         numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),
+         numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),
+         numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]])
+        ]
+    )
+}
+
+
+@pytest.mark.parametrize("coordinates, euclidean_distance, expected_lines_and_splines",
+                         ordered_lines_and_splines.values(),
+                         ids=ordered_lines_and_splines.keys())
+def test_ordered_lines_and_splines(coordinates, euclidean_distance, expected_lines_and_splines):
+    lines_and_splines = vertices.ordered_lines_and_splines(coordinates, euclidean_distance)
+    assert len(lines_and_splines) == len(expected_lines_and_splines)
+    for curve, expectation in zip(lines_and_splines, expected_lines_and_splines):
+        assert numpy.allclose(curve, expectation)
+
+
 def test_lines_and_splines_passthrough():
     with patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._break_coordinates", return_value=[]) as mock_break_coordinates, \
          patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._line_pairs", return_value=[]):

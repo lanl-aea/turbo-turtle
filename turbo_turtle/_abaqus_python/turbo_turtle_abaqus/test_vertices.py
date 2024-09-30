@@ -220,6 +220,61 @@ class TestVertices(unittest.TestCase):
             for spline, expectation in zip(splines, expected_splines):
                 assert numpy.allclose(spline, expectation)
 
+
+
+
+    def test_ordered_lines_and_splines(self):
+        tests = [
+            (
+                numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
+                4,
+                [numpy.array([[1.0, -0.5], [2.0, -0.5]]),
+                 numpy.array([[2.0, -0.5], [2.0,  0.5]]),
+                 numpy.array([[2.0,  0.5], [1.0,  0.5]]),
+                 numpy.array([[1.0,  0.5], [1.0, -0.5]])],
+            ),
+            (
+                numpy.array([[ 5.1, -5. ],
+                             [ 5. , -4.8],
+                             [ 4.5, -4. ],
+                             [ 4.1, -3. ],
+                             [ 4. , -2.5],
+                             [ 4. ,  2.5],
+                             [ 4.1,  3. ],
+                             [ 4.5,  4. ],
+                             [ 5. ,  4.8],
+                             [ 5.1,  5. ],
+                             [ 3. ,  5. ],
+                             [ 3. , -4. ],
+                             [ 0. , -4. ],
+                             [ 0. , -5. ]]),
+                4,
+                [
+                 numpy.array([[ 5.1, -5. ],
+                              [ 5. , -4.8],
+                              [ 4.5, -4. ],
+                              [ 4.1, -3. ],
+                              [ 4. , -2.5]]),
+                 numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),
+                 numpy.array([[ 4. ,  2.5],
+                              [ 4.1,  3. ],
+                              [ 4.5,  4. ],
+                              [ 5. ,  4.8],
+                              [ 5.1,  5. ]]),
+                 numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),
+                 numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),
+                 numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),
+                 numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),
+                 numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]])
+                ]
+            )
+        ]
+        for coordinates, euclidean_distance, expected_lines_and_splines in tests:
+            lines_and_splines = vertices.ordered_lines_and_splines(coordinates, euclidean_distance)
+            assert len(lines_and_splines) == len(expected_lines_and_splines)
+            for curve, expectation in zip(lines_and_splines, expected_lines_and_splines):
+                assert numpy.allclose(curve, expectation)
+
     # TODO: flesh out when we figure out how to patch in Abaqus Python 2
     def test_lines_and_splines_passthrough(self):
         pass

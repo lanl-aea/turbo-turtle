@@ -131,7 +131,7 @@ def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
     return lines, splines
 
 
-def _ordered_lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
+def ordered_lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
     """Return a single, closed loop list of [M, 2] arrays with lines (length 2) and splines (length >2)"""
     all_splines = _break_coordinates(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     lines_and_splines = [all_splines[0]]
