@@ -8,6 +8,10 @@ Changelog
 v0.12.13 (unreleased)
 *********************
 
+Internal Changes
+================
+- Add Gmsh Python API to CI environment (:merge:`207`). By `Kyle Brindley`_.
+
 *********************
 v0.12.12 (2024-09-26)
 *********************

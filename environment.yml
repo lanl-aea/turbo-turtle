@@ -14,6 +14,7 @@ dependencies:
   - pytest-cov
   - pytest-xdist
   - python-build
+  - python-gmsh
   - scons >=4
   - setuptools >=64
   - setuptools_scm >=8
