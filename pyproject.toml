@@ -24,6 +24,7 @@ classifiers = [
 dynamic = ["version"]
 dependencies = [
     "lazy_loader >=0.4",
+    "python-gmsh >=4",
     "scons >=4",
     "waves >=0.7.2"
 ]
