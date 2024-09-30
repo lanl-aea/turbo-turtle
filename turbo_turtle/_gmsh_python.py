@@ -72,8 +72,8 @@ def geometry(
         coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
                                                          expected_dimensions=2, expected_columns=2)
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
-        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
-        surfaces.append(_draw_surface(lines, splines))
+        lines_and_splines = vertices._ordered_lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
+        surfaces.append(_draw_surface(lines_and_splines))
 
     # Conditionally create the 3D revolved shape
     for surface, new_part in zip(surfaces, part_name):
@@ -85,34 +85,26 @@ def geometry(
     gmsh.finalize()
 
 
-def _draw_surface(lines, splines) -> int:
+def _draw_surface(lines_and_splines) -> int:
     """Given ordered lists of line/spline coordinates, create a Gmsh 2D surface object
 
-    :param list lines: list of [2, 2] shaped arrays of (x, y) coordinates defining a line segment
-    :param list splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a spline
+    :param list lines_and_splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a line (N=2) or spline
+        (N>2)
 
     :returns: Gmsh 2D entity tag
     """
     curves = []
-    for first, second in lines:
-        point1 = tuple(first) + (0.,)
-        point2 = tuple(second) + (0.,)
-        curves.append(_create_line_from_coordinates(point1, point2))
-    for spline in splines:
-        zero_column = numpy.zeros([len(spline), 1])
-        spline_3d = numpy.append(spline, zero_column, axis=1)
-        curves.append(_create_spline_from_coordinates(spline_3d))
+    for coordinates in lines_and_splines:
+        if len(coordinates) == 2:
+            point1 = tuple(coordinates[0]) + (0.,)
+            point2 = tuple(coordinates[1]) + (0.,)
+            curves.append(_create_line_from_coordinates(point1, point2))
+        else:
+            zero_column = numpy.zeros([len(coordinates), 1])
+            spline_3d = numpy.append(coordinates, zero_column, axis=1)
+            curves.append(_create_spline_from_coordinates(spline_3d))
 
-    # TODO: deterministically build the closed curve loop
-    # Brute force solution is ``math.factorial(len(curves))``
-    import itertools
-    for permutation in itertools.permutations(curves):
-        try:
-            curve_loop = gmsh.model.occ.addCurveLoop(permutation)
-            break
-        except Exception:
-            pass
-
+    curve_loop = gmsh.model.occ.addCurveLoop(curves)
     return gmsh.model.occ.addPlaneSurface([curve_loop])
 
 
@@ -220,7 +212,7 @@ def cylinder(
 
     # Create the 2D axisymmetric shape
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
-    surface_tag = _draw_surface(lines, [])
+    surface_tag = _draw_surface(lines_and_splines)
 
     # Conditionally create the 3D revolved shape
     _rename_and_sweep(surface_tag, part_name, revolution_angle=revolution_angle)

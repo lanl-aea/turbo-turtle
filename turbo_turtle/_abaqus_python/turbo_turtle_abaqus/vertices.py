@@ -131,6 +131,19 @@ def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
     return lines, splines
 
 
+def _ordered_lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
+    """Return a single, closed loop list of [M, 2] arrays with lines (length 2) and splines (length >2)"""
+    all_splines = _break_coordinates(coordinates, euclidean_distance, rtol=rtol, atol=atol)
+    lines_and_splines = [all_splines[0]]
+    for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:]):
+        lines_and_splines.append(numpy.stack((spline1[-1], spline2[0])))
+        lines_and_splines.append(spline2)
+    lines_and_splines.append(numpy.stack((all_splines[-1][-1], all_splines[0][0])))
+    # Eliminate points after creating line connections
+    lines_and_splines = [array for array in lines_and_splines if len(array) > 1]
+    return lines_and_splines
+
+
 def _break_coordinates(coordinates, euclidean_distance, rtol=None, atol=None):
     """Accept a [N, 2] numpy array and break into a list of [M, 2] arrays
 
