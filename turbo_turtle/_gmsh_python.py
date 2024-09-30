@@ -54,13 +54,13 @@ def cylinder(
     y = min(ycoords)
     dy = max(ycoords) - y
     z = 0.0
-    rectangle_tag = gmsh.model.occ.addRectangle(x, y, z, dx, dy)
-    rectangle_group_tag = gmsh.model.addPhysicalGroup(2, [rectangle_tag], name=part_name)
+    part_dimension = 2
+    part_tag = gmsh.model.occ.addRectangle(x, y, z, dx, dy)
 
     # Conditionally create the 3D revolved shape
     if not numpy.isclose(revolution_angle, 0.0):
-        revolved_tag = gmsh.model.occ.revolve(
-            [(2, rectangle_tag)],
+        dimTags = gmsh.model.occ.revolve(
+            [(part_dimension, part_tag)],
             0.,  # Center: x
             0.,  # Center: y
             0.,  # Center: z
@@ -69,9 +69,14 @@ def cylinder(
             0.,  # Direction: z
             numpy.radians(revolution_angle)
         )
+        part_dimension = dimTags[0][0]
+        part_tag = dimTags[0][1]
+
+    # Part name handling
+    gmsh.model.occ.synchronize()
+    part_tag = gmsh.model.addPhysicalGroup(part_dimension, [part_tag], name=part_name)
 
     # Output and cleanup
-    gmsh.model.occ.synchronize()
     gmsh.write(str(output_file))
     gmsh.logger.stop()
     gmsh.finalize()
