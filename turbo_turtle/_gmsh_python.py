@@ -9,6 +9,10 @@ from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
+def geometry(*args, **kwargs):
+    raise RuntimeError("geometry subcommand is not yet implemented")
+
+
 def cylinder(inner_radius, outer_radius, height, output_file,
              part_name=parsers.cylinder_defaults["part_name"],
              revolution_angle=parsers.geometry_defaults["revolution_angle"],
@@ -65,3 +69,31 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     gmsh.write(str(output_file))
     gmsh.logger.stop()
     gmsh.finalize()
+
+
+def sphere(*args, **kwargs):
+    raise RuntimeError("sphere subcommand is not yet implemented")
+
+
+def partition(*args, **kwargs):
+    raise RuntimeError("partition subcommand is not yet implemented")
+
+
+def sets(*args, **kwargs):
+    raise RuntimeError("sets subcommand is not yet implemented")
+
+
+def mesh(*args, **kwargs):
+    raise RuntimeError("mesh subcommand is not yet implemented")
+
+
+def merge(*args, **kwargs):
+    raise RuntimeError("merge subcommand is not yet implemented")
+
+
+def export(*args, **kwargs):
+    raise RuntimeError("export subcommand is not yet implemented")
+
+
+def image(*args, **kwargs):
+    raise RuntimeError("image subcommand is not yet implemented")

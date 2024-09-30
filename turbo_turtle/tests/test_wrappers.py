@@ -475,3 +475,26 @@ def test_cubit_wrappers(subcommand, namespace, positional, keywords):
     call_keywords = mock_function.call_args[1]
     assert call_positional == positional
     assert call_keywords == keywords
+
+
+@pytest.mark.parametrize("subcommand, namespace, positional, keywords",
+                         cubit_wrapper_tests.values(), ids=cubit_wrapper_tests.keys())
+def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
+    args = argparse.Namespace(**namespace)
+    implemented = ["cylinder"]
+    if subcommand in implemented:
+        with patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function:
+            from turbo_turtle import _gmsh_wrappers
+            subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
+            subcommand_wrapper(args, command)
+        mock_function.assert_called_once()
+        call_positional = mock_function.call_args[0]
+        call_keywords = mock_function.call_args[1]
+        assert call_positional == positional
+        assert call_keywords == keywords
+    else:
+        with patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function, \
+             pytest.raises(RuntimeError):
+            from turbo_turtle import _gmsh_wrappers
+            subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
+            subcommand_wrapper(args, command)
