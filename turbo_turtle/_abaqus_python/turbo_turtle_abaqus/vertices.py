@@ -126,7 +126,7 @@ def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
     """
     all_splines = _break_coordinates(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     lines = _line_pairs(all_splines)
-    lines.extend([(array[0], array[1]) for array in all_splines if len(array) == 2])
+    lines.extend([numpy.stack((array[0], array[1])) for array in all_splines if len(array) == 2])
     splines = [array for array in all_splines if len(array) > 2]
     return lines, splines
 
@@ -238,9 +238,10 @@ def _line_pairs(all_splines):
     :param list all_splines: a list of 2D numpy arrays
 
     :returns: line pairs
-    :rtype: list of tuples of [1, 2] arrays
+    :rtype: list of [2, 2] numpy arrays
     """
-    line_pairs = [(spline1[-1], spline2[0]) for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:])]
+    zipped_splines = zip(all_splines[0:-1], all_splines[1:])
+    line_pairs = [numpy.stack((spline1[-1], spline2[0])) for spline1, spline2 in zipped_splines]
     line_pairs.append((all_splines[-1][-1], all_splines[0][0]))
     return line_pairs
 
