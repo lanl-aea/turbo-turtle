@@ -145,7 +145,7 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
     """
     keys = vars(args).keys()
     if ("backend" in keys and args.backend == "gmsh"):
-        command = find_command_or_exit(["gmsh"])
+        command = "unused"
         from turbo_turtle import _gmsh_wrappers as _wrappers
     elif ("backend" in keys and args.backend == "cubit"):
         command = find_command_or_exit(args.cubit_command)
