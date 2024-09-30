@@ -130,7 +130,10 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
     :return: _wrappers, command. Wrapper module, executable command string.
     """
     keys = vars(args).keys()
-    if ("backend" in keys and args.backend == "cubit"):
+    if ("backend" in keys and args.backend == "gmsh"):
+        command = find_command_or_exit(["gmsh"])
+        from turbo_turtle import _gmsh_wrappers as _wrappers
+    elif ("backend" in keys and args.backend == "cubit"):
         command = find_command_or_exit(args.cubit_command)
         cubit_bin = find_cubit_bin([command])
         cubitx = cubit_bin / "cubitx"
