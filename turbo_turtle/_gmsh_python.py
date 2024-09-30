@@ -27,7 +27,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     gmsh.logger.start()
 
     # Input/Output setup
-    output_file = pathlib.Path(output_file)
+    output_file = pathlib.Path(output_file).with_suffix(".geo")
 
     # Model setup
     part_name = _mixed_utilities.cubit_part_names(part_name)
