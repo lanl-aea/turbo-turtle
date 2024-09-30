@@ -290,6 +290,16 @@ system_tests = (
                              _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "cubit"),
     ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
                              _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "cubit"),
+    # Gmsh
+    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., "gmsh"),
+    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., "gmsh"),
+    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., "gmsh"),
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "gmsh"),
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "gmsh"),
+    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",
+                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "gmsh"),
+    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
+                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "gmsh"),
 )
 for test in system_tests:
     commands_list.append(setup_geometry_commands(*test))
