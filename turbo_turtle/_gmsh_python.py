@@ -212,7 +212,7 @@ def cylinder(
 
     # Create the 2D axisymmetric shape
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
-    surface_tag = _draw_surface(lines_and_splines)
+    surface_tag = _draw_surface(lines)
 
     # Conditionally create the 3D revolved shape
     _rename_and_sweep(surface_tag, part_name, revolution_angle=revolution_angle)
