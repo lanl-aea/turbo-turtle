@@ -13,10 +13,13 @@ def geometry(*args, **kwargs):
     raise RuntimeError("geometry subcommand is not yet implemented")
 
 
-def cylinder(inner_radius, outer_radius, height, output_file,
-             part_name=parsers.cylinder_defaults["part_name"],
-             revolution_angle=parsers.geometry_defaults["revolution_angle"],
-             y_offset=parsers.cylinder_defaults["y_offset"]):
+def cylinder(
+    inner_radius, outer_radius, height, output_file,
+    model_name=parsers.geometry_defaults["model_name"],
+    part_name=parsers.cylinder_defaults["part_name"],
+    revolution_angle=parsers.geometry_defaults["revolution_angle"],
+    y_offset=parsers.cylinder_defaults["y_offset"]
+) -> None:
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 
     Centroid of cylinder is located on the global coordinate origin by default.
@@ -25,6 +28,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     :param float outer_radius: Outer radius of the cylinder
     :param float height: Height of the cylinder
     :param str output_file: Gmsh ``*.step`` file to save the part(s)
+    :param str model_name: name of the Gmsh model in which to create the part
     :param list part_name: name(s) of the part(s) being created
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     :param float y_offset: vertical offset along the global Y-axis
@@ -39,7 +43,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
 
     # Model setup
     part_name = _mixed_utilities.cubit_part_names(part_name)
-    gmsh.model.add(part_name)
+    gmsh.model.add(model_name)
 
     # Create the 2D axisymmetric shape
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
@@ -51,6 +55,7 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     dy = max(ycoords) - y
     z = 0.0
     rectangle_tag = gmsh.model.occ.addRectangle(x, y, z, dx, dy)
+    rectangle_group_tag = gmsh.model.addPhysicalGroup(2, [rectangle_tag], name=part_name)
 
     # Conditionally create the 3D revolved shape
     if not numpy.isclose(revolution_angle, 0.0):
