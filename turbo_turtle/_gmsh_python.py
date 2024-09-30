@@ -210,14 +210,7 @@ def cylinder(
 
     # Create the 2D axisymmetric shape
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, y_offset=y_offset)
-    xcoords = [point[0] for points in lines for point in points]
-    ycoords = [point[1] for points in lines for point in points]
-    x = min(xcoords)
-    dx = max(xcoords) - x
-    y = min(ycoords)
-    dy = max(ycoords) - y
-    z = 0.0
-    surface_tag = gmsh.model.occ.addRectangle(x, y, z, dx, dy)
+    surface_tag = _draw_surface(lines, [])
 
     # Conditionally create the 3D revolved shape
     _rename_and_sweep(surface_tag, part_name, revolution_angle=revolution_angle)
