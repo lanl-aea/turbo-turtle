@@ -25,7 +25,8 @@ author_manpage = author_manpage.rstrip(', ')
 # required by the documentation build, e.g. cubit.
 mock_modules = [
     # Python 2/3 and Cubit
-    "pytest", "matplotlib", "matplotlib.pyplot", "numpy", "cubit", "waves", "waves.scons_extensions", "waves._settings",
+    "pytest", "matplotlib", "matplotlib.pyplot", "numpy", "cubit", "gmsh",
+    "waves", "waves.scons_extensions", "waves._settings",
     # Abaqus Python
     "abaqus", "abaqusConstants", "caeModules", "mesh",
 ]
