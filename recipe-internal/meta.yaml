@@ -48,7 +48,6 @@ requirements:
 
 test:
   requires:
-    - pip
     - numpy
     - pytest
     - pytest-xdist
