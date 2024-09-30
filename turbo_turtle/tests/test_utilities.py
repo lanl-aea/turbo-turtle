@@ -67,10 +67,10 @@ def test_cubit_os_bin():
 
 
 def test_import_gmsh():
-    with patch.dict("sys.modules", cubit=MagicMock), does_not_raise():
+    with patch.dict("sys.modules", gmsh=MagicMock), does_not_raise():
         cubit = _utilities.import_gmsh()
 
-    with patch.dict("sys.modules", cubit=None, side_effect=ImportError()), pytest.raises(RuntimeError):
+    with patch.dict("sys.modules", gmsh=None, side_effect=ImportError()), pytest.raises(RuntimeError):
         cubit = _utilities.import_gmsh()
 
 
