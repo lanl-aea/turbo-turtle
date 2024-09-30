@@ -483,7 +483,7 @@ def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
     implemented = ["cylinder"]
     if subcommand in implemented:
-        with patch("turbo_turtle._utilities.import_cubit"), \
+        with patch("turbo_turtle._utilities.import_gmsh"), \
              patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function:
             from turbo_turtle import _gmsh_wrappers
             subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
@@ -494,7 +494,7 @@ def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
         assert call_positional == positional
         assert call_keywords == keywords
     else:
-        with patch("turbo_turtle._utilities.import_cubit"), \
+        with patch("turbo_turtle._utilities.import_gmsh"), \
              patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function, \
              pytest.raises(RuntimeError):
             from turbo_turtle import _gmsh_wrappers
