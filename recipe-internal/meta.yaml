@@ -42,7 +42,6 @@ requirements:
   run:
     - python >=3.8
     - lazy_loader >=0.4
-    - python-gmsh >=4
     - scons >=4
     - waves >=0.7.2
 
@@ -51,6 +50,6 @@ test:
     - pip
     - pytest
     - pytest-xdist
-    - python-gmsh
+    - python-gmsh >=4
   imports:
     - turbo_turtle
