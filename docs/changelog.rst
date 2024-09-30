@@ -8,6 +8,10 @@ Changelog
 v0.12.13 (unreleased)
 *********************
 
+New Features
+============
+- Work-in-progress Gmsh cylinder subcommand implementation (:issue:`208`, :merge:`208`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Add Gmsh Python API to CI environment (:merge:`207`). By `Kyle Brindley`_.
