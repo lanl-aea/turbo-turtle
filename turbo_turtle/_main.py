@@ -91,8 +91,8 @@ def append_cubit_help(text: str, append: str = "with Abaqus, Cubit, or Gmsh (wor
 def append_cubit_description(
     text: str,
     append: str = "Defaults to Abaqus, but can optionally run Cubit (Gmsh implementation is a work-in-progress). "
-                  "Cubit implementation replaces hyphens with underscores in part name(s) and ignores model/assembly "
-                  "name arguments."
+                  "Cubit and Gmsh backends replace hyphens with underscores in part name(s) for ACIS "
+                  "compatibility. Cubit backend ignores model/assembly name arguments."
 ) -> str:
     """Append common long description with optional Cubit text
 
