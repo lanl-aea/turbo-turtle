@@ -14,6 +14,7 @@ def geometry(args, command):
     _gmsh_python.geometry(
         args.input_file, args.output_file,
         planar=args.planar,
+        model_name=args.model_name,
         part_name=args.part_name,
         unit_conversion=args.unit_conversion,
         euclidean_distance=args.euclidean_distance,
@@ -40,6 +41,7 @@ def cylinder(args, command):
         args.outer_radius,
         args.height,
         args.output_file,
+        model_name=args.model_name,
         part_name=args.part_name,
         revolution_angle=args.revolution_angle,
         y_offset=args.y_offset

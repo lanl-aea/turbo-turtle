@@ -477,8 +477,62 @@ def test_cubit_wrappers(subcommand, namespace, positional, keywords):
     assert call_keywords == keywords
 
 
+geometry_keywords = trim_namespace(geometry_namespace_sparse, geometry_positional)
+cylinder_keywords = trim_namespace(cylinder_namespace, cylinder_positional)
+gmsh_wrapper_tests = {
+    "geometry": (
+        "geometry",
+        geometry_namespace_sparse,
+        (["input_file"], "output_file"),
+        geometry_keywords
+    ),
+    "cylinder": (
+        "cylinder",
+        cylinder_namespace,
+        (1., 2., 1., "output_file"),
+        cylinder_keywords
+    ),
+    "sphere": (
+        "sphere",
+        sphere_namespace_sparse,
+        (1., 2., "output_file"),
+        sphere_keywords
+    ),
+    "partition": (
+        "partition",
+        partition_namespace_sparse,
+        ("input_file",),
+        partition_keywords
+    ),
+    "mesh": (
+        "mesh",
+        mesh_namespace_sparse,
+        ("input_file", "element_type"),
+        mesh_keywords
+    ),
+    "merge": (
+        "merge",
+        merge_namespace_sparse,
+        (["input_file"], "output_file"),
+        merge_keywords
+    ),
+    "export": (
+        "export",
+        export_namespace_cubit,
+        ("input_file",),
+        export_keywords
+    ),
+    "image": (
+        "image",
+        image_namespace_sparse,
+        ("input_file", "output_file", command),
+        image_keywords
+    ),
+}
+
+
 @pytest.mark.parametrize("subcommand, namespace, positional, keywords",
-                         cubit_wrapper_tests.values(), ids=cubit_wrapper_tests.keys())
+                         gmsh_wrapper_tests.values(), ids=gmsh_wrapper_tests.keys())
 def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
     implemented = ["geometry", "cylinder"]
