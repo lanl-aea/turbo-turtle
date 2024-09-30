@@ -479,6 +479,12 @@ def test_cubit_wrappers(subcommand, namespace, positional, keywords):
 
 geometry_keywords = trim_namespace(geometry_namespace_sparse, geometry_positional)
 cylinder_keywords = trim_namespace(cylinder_namespace, cylinder_positional)
+sphere_keywords = trim_namespace(sphere_namespace_sparse, sphere_positional)
+partition_keywords = trim_namespace(partition_namespace_sparse, partition_positional)
+mesh_keywords = trim_namespace(mesh_namespace_sparse, mesh_positional)
+merge_keywords = trim_namespace(merge_namespace_sparse, merge_positional)
+export_keywords = trim_namespace(export_namespace_cubit, export_positional)
+image_keywords = trim_namespace(image_namespace_sparse, image_positional)
 gmsh_wrapper_tests = {
     "geometry": (
         "geometry",
