@@ -102,7 +102,17 @@ def _draw_surface(lines, splines) -> int:
         zero_column = numpy.zeros([len(spline), 1])
         spline_3d = numpy.append(spline, zero_column, axis=1)
         curves.append(_create_spline_from_coordinates(spline_3d))
-    curve_loop = gmsh.model.occ.addCurveLoop(curves)
+
+    # TODO: deterministically build the closed curve loop
+    # Brute force solution is ``math.factorial(len(curves))``
+    import itertools
+    for permutation in itertools.permutations(curves):
+        try:
+            curve_loop = gmsh.model.occ.addCurveLoop(permutation)
+            break
+        except Exception:
+            pass
+
     return gmsh.model.occ.addPlaneSurface([curve_loop])
 
 
