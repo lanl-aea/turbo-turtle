@@ -984,6 +984,7 @@ def image(input_file, output_file, cubit_command,
     :param float x_angle: Rotation about 'world' X-axis in degrees
     :param float y_angle: Rotation about 'world' Y-axis in degrees
     :param float z_angle: Rotation about 'world' Z-axis in degrees
+    :param tuple image_size: Image size in pixels (width, height)
     """
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file)

@@ -370,6 +370,7 @@ def image(
     :param float x_angle: Rotation about 'world' X-axis in degrees
     :param float y_angle: Rotation about 'world' Y-axis in degrees
     :param float z_angle: Rotation about 'world' Z-axis in degrees
+    :param tuple image_size: Image size in pixels (width, height)
     """
     # Universally required setup
     gmsh.initialize()
