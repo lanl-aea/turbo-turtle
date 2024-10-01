@@ -335,24 +335,29 @@ for test in system_tests:
 
 # TODO: Merge Gmsh sphere system tests when partition/mesh/image subcommands are implemented
 # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/217
-gmsh_sphere = [
+gmsh_sphere_2D = [
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. --backend gmsh"],
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant upper"],
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant lower"],
-    [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh"],
-    [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant upper"],
-    [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant lower"],
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. --backend gmsh"],
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant upper"],
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant lower"],
+]
+for test in gmsh_sphere_2D:
+    if not missing_display:
+        test.append(f"{turbo_turtle_command} image --input-file sphere.step --output-file sphere.png --x-angle 0 --y-angle 0 --backend gmsh")
+    commands_list.append(test)
+gmsh_sphere_3D = [
+    [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh"],
+    [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant upper"],
+    [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant lower"],
     # TODO: Fix solid sphere revolve
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/218
     #[f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh"],
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant upper"],
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant lower"],
 ]
-for test in gmsh_sphere:
-    # Skip the image subcommand when DISPLAY is not found
+for test in gmsh_sphere_3D:
     if not missing_display:
         test.append(f"{turbo_turtle_command} image --input-file sphere.step --output-file sphere.png --x-angle 45 --y-angle -45 --backend gmsh")
     commands_list.append(test)
