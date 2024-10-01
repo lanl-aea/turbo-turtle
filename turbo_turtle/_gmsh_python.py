@@ -80,6 +80,8 @@ def geometry(
         _rename_and_sweep(surface, new_part, planar=planar, revolution_angle=revolution_angle)
 
     # Output and cleanup
+    # FIXME: Write physical groups to geometry output files
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/221
     gmsh.write(str(output_file))
     gmsh.logger.stop()
     gmsh.finalize()
@@ -218,6 +220,8 @@ def cylinder(
     _rename_and_sweep(surface_tag, part_name, revolution_angle=revolution_angle)
 
     # Output and cleanup
+    # FIXME: Write physical groups to geometry output files
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/221
     gmsh.write(str(output_file))
     gmsh.logger.stop()
     gmsh.finalize()
@@ -264,11 +268,15 @@ def sphere(
             gmsh.open(input_file)
             _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                     part_name=part_name)
+            # FIXME: Write physical groups to geometry output files
+            # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/221
             gmsh.write(str(output_file))
     else:
         gmsh.model.add(model_name)
         _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                 part_name=part_name)
+        # FIXME: Write physical groups to geometry output files
+        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/221
         gmsh.write(str(output_file))
 
     # Output and cleanup
@@ -375,8 +383,10 @@ def mesh(
         gmsh.open(str(input_file))
         # TODO: Move to dedicated meshing function
         # TODO: Do physical group names apply to all dimensional entities associated with original name? Can we jump
-        # straight to points with matching names?
-        # FIXME: The physical groups are not getting saved. Apply global mesh globally without regard to part name.
+        # straight to points with matching physical/entity names?
+        # FIXME: The physical groups are not getting saved. Stop global application of seed without regard to
+        # part/entity name.
+        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/222
         points = gmsh.model.getEntities(dim=0)
         gmsh.model.mesh.setSize(points, global_seed)
         gmsh.model.mesh.generate(3)
