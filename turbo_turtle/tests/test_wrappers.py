@@ -541,7 +541,7 @@ gmsh_wrapper_tests = {
                          gmsh_wrapper_tests.values(), ids=gmsh_wrapper_tests.keys())
 def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
-    implemented = ["geometry", "cylinder"]
+    implemented = ["geometry", "cylinder", "sphere"]
     if subcommand in implemented:
         with patch("turbo_turtle._utilities.import_gmsh"), \
              patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function:
