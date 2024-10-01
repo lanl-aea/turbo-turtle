@@ -344,8 +344,10 @@ gmsh_sphere_2D = [
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant lower"],
 ]
 for test in gmsh_sphere_2D:
+    test.append(f"{turbo_turtle_command} mesh --input-file sphere.step --output-file sphere.msh --global-seed 1. --element-type unused --backend gmsh")
     if not missing_display:
-        test.append(f"{turbo_turtle_command} image --input-file sphere.step --output-file sphere.png --x-angle 0 --y-angle 0 --backend gmsh")
+        test.append(f"{turbo_turtle_command} image --input-file sphere.step --output-file sphere.step.png --x-angle 0 --y-angle 0 --backend gmsh")
+        test.append(f"{turbo_turtle_command} image --input-file sphere.msh --output-file sphere.msh.png --x-angle 0 --y-angle 0 --backend gmsh")
     commands_list.append(test)
 gmsh_sphere_3D = [
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh"],
@@ -358,8 +360,10 @@ gmsh_sphere_3D = [
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant lower"],
 ]
 for test in gmsh_sphere_3D:
+    test.append(f"{turbo_turtle_command} mesh --input-file sphere.step --output-file sphere.msh --global-seed 1. --element-type unused --backend gmsh")
     if not missing_display:
-        test.append(f"{turbo_turtle_command} image --input-file sphere.step --output-file sphere.png --x-angle 45 --y-angle -45 --backend gmsh")
+        test.append(f"{turbo_turtle_command} image --input-file sphere.step --output-file sphere.step.png --x-angle 45 --y-angle -45 --backend gmsh")
+        test.append(f"{turbo_turtle_command} image --input-file sphere.msh --output-file sphere.msh.png --x-angle 45 --y-angle -45 --backend gmsh")
     commands_list.append(test)
 
 # Merge tests

@@ -364,7 +364,7 @@ def mesh(
 
     :param input_file: Gmsh ``*.step`` file to open that already contains physical entities to be meshed
     :param element_type: Gmsh scheme.
-    :param output_file: Gmsh ``*.msh`` file to write
+    :param output_file: Gmsh mesh file to write
     :param model_name: name of the Gmsh model in which to create the part
     :param part_name: physical entity name prefix
     :param global_seed: The global mesh seed size
@@ -417,12 +417,12 @@ def image(
     z_angle=parsers.image_defaults["z_angle"],
     image_size=parsers.image_defaults["image_size"]
 ) -> None:
-    """Open a Gmsh ``*.step`` file and save an image
+    """Open a Gmsh geometry or mesh file and save an image
 
     Uses the Gmsh ``write`` command, which accepts gif, jpg, tex, pdf, png, pgf, ps, ppm, svg, tikz, and yuv file
     extensions.
 
-    :param str input_file: Gmsh ``*.step`` file to open that already contains parts/volumes to be meshed
+    :param str input_file: Gmsh input file to open
     :param str output_file: Screenshot file to write
     :param float x_angle: Rotation about 'world' X-axis in degrees
     :param float y_angle: Rotation about 'world' Y-axis in degrees
@@ -434,8 +434,7 @@ def image(
     gmsh.logger.start()
 
     # Input/Output setup
-    # TODO: allow other output formats supported by Gmsh
-    input_file = pathlib.Path(input_file).with_suffix(".step")
+    input_file = pathlib.Path(input_file)
     output_file = pathlib.Path(output_file)
 
     gmsh.open(str(input_file))
