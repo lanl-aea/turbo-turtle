@@ -12,8 +12,13 @@ New Features
 ============
 - Work-in-progress Gmsh cylinder subcommand implementation (:issue:`208`, :merge:`208`). By `Kyle Brindley`_.
 - Work-in-progress Gmsh geometry subcommand implementation (:issue:`209`, :merge:`210`). By `Kyle Brindley`_.
-- Work-in-progress Gmsh sphere subcommand implementation (:issue:`210`, :merge:`211`). By `Kyle Brindley`_.
-- Work-in-progress Gmsh image subcommand implementation (:issue:`214`, :merge:`212`). By `Kyle Brindley`_.
+- Work-in-progress Gmsh sphere subcommand implementation. Incorrect pre-existing, ``--input-file``, model handling.
+  Solid spheres do not revolve correctly (:issue:`210`, :merge:`211`). By `Kyle Brindley`_.
+- Work-in-progress Gmsh image subcommand implementation. Missing model name, part name, and image size behavior
+  (:issue:`214`, :merge:`212`). By `Kyle Brindley`_.
+- Work-in-progress Gmsh mesh subcommand implementation. Missing model name, part name, element type, and edge seed
+  behaviors. Performs global tri- and tet-meshing globally to all models and parts. (:issue:`214`, :merge:`212`). By `Kyle
+  Brindley`_.
 
 Internal Changes
 ================
