@@ -1,6 +1,7 @@
 """Python 3 module that imports python-gmsh"""
 import typing
 import pathlib
+import tempfile
 
 import numpy
 
