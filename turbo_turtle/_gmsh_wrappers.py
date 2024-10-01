@@ -102,7 +102,6 @@ def image(args, command):
     _gmsh_python.image(
         args.input_file,
         args.output_file,
-        command,
         x_angle=args.x_angle,
         y_angle=args.y_angle,
         z_angle=args.z_angle,

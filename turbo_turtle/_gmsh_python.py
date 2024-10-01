@@ -381,8 +381,9 @@ def image(
     input_file = pathlib.Path(input_file).with_suffix(".step")
     output_file = pathlib.Path(output_file)
 
-    gmsh.open(input_file)
+    gmsh.open(str(input_file))
 
+    gmsh.fltk.initialize()
     gmsh.option.setNumber("General.Trackball", 0)
     gmsh.option.setNumber("General.RotationX", x_angle)
     gmsh.option.setNumber("General.RotationY", y_angle)
