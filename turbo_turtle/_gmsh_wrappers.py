@@ -49,7 +49,25 @@ def cylinder(args, command):
 
 
 def sphere(args, command):
-    raise RuntimeError("sphere subcommand is not yet implemented")
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.sphere`
+
+    Unpack the argument namespace into the full function interface
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    :param str command: gmsh executable path, unused. Kept for API compatibility with
+        :meth:`turbo_turtle._abaqus_wrappers`
+    """
+    _gmsh_python.sphere(
+        args.inner_radius,
+        args.outer_radius,
+        args.output_file,
+        input_file=args.input_file,
+        quadrant=args.quadrant,
+        revolution_angle=args.revolution_angle,
+        y_offset=args.y_offset,
+        model_name=args.model_name,
+        part_name=args.part_name
+    )
 
 
 def partition(args, command):
