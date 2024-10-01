@@ -380,9 +380,9 @@ def mesh(
     if output_file is None:
         output_file = input_file
     # TODO: allow other output formats supported by Gmsh
-    output_file = pathlib.Path(output_file).with_suffix(".msh")
+    output_file = pathlib.Path(output_file)
 
-    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+    with tempfile.NamedTemporaryFile(suffix=input_file.suffix, dir=".") as copy_file:
         gmsh.open(str(input_file))
         # TODO: Move to dedicated meshing function
         # TODO: Do physical group names apply to all dimensional entities associated with original name? Can we jump
@@ -394,6 +394,9 @@ def mesh(
         gmsh.model.mesh.setSize(points, global_seed)
         gmsh.model.mesh.generate(3)
         gmsh.write(str(output_file))
+
+    gmsh.option.setNumber("Mesh.SaveGroupsOfElements", 1)
+    gmsh.option.setNumber("Mesh.SaveGroupsOfNodes", 1)
 
     # Output and cleanup
     gmsh.logger.stop()
