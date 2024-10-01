@@ -91,6 +91,7 @@ def mesh(args, command):
         args.input_file,
         args.element_type,
         output_file=args.output_file,
+        model_name=args.model_name,
         part_name=args.part_name,
         global_seed=args.global_seed,
         edge_seeds=args.edge_seeds

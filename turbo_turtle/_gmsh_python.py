@@ -355,6 +355,7 @@ def mesh(
     input_file: str,
     element_type: str,
     output_file: typing.Optional[str] = parsers.mesh_defaults["output_file"],
+    model_name: typing.Optional[str] = parsers.mesh_defaults["model_name"],
     part_name: typing.Optional[str] = parsers.mesh_defaults["part_name"],
     global_seed: typing.Optional[float] = parsers.mesh_defaults["global_seed"],
     edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"]
@@ -364,6 +365,7 @@ def mesh(
     :param input_file: Gmsh ``*.step`` file to open that already contains physical entities to be meshed
     :param element_type: Gmsh scheme.
     :param output_file: Gmsh ``*.msh`` file to write
+    :param model_name: name of the Gmsh model in which to create the part
     :param part_name: physical entity name prefix
     :param global_seed: The global mesh seed size
     :param edge_seeds: Edge seed tuples (name, number)
