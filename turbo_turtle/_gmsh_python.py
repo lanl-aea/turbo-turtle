@@ -261,11 +261,13 @@ def sphere(
         # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
         with tempfile.NamedTemporaryFile(suffix=".step", dir=".") as copy_file:
             shutil.copyfile(input_file, copy_file.name)
-            # TODO: Implement sphere call
             gmsh.open(input_file)
+            _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
+                    part_name=part_name)
     else:
         gmsh.model.add(model_name)
-        # TODO: Implement sphere call
+        _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
+                part_name=part_name)
 
     # Output and cleanup
     gmsh.write(str(output_file))
