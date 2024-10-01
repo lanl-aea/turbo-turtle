@@ -376,23 +376,8 @@ def mesh(
         # TODO: Move to dedicated meshing function
         # TODO: Do physical group names apply to all dimensional entities associated with original name? Can we jump
         # straight to points with matching names?
-        surfaces = gmsh.model.getPhyscialGroups(dim=2)
-        surface_names = [gmsh.model.getEntityName(dimension, tag) for dimension, tag in dim_tags]
-        surface_parts = [(dimension, tag) for dimension, tag, name in zip(dim_tags, names) if name.startswith(part_name)]
-        volumes = gmsh.model.getPhyscialGroups(dim=3)
-        volume_names = [gmsh.model.getEntityName(dimension, tag) for dimension, tag in dim_tags]
-        volume_parts = [(dimension, tag) for dimension, tag, name in zip(dim_tags, names) if name.startswith(part_name)]
-        for dimension, tag in volume_parts:
-            upward, downward = gmsh.model.getAdjacencies(dimension, tag)
-            surface_parts.extend([(2, downward)])
-        lines = []
-        for dimension, tag in surface_parts:
-            upward, downward = gmsh.model.getAdjacencies(dimension, tag)
-            lines.extend(downward)
-        points = []
-        for tag in lines:
-            upward, downward = gmsh.model.getAdjacencies(1, tag)
-            points.extend((0, downward))
+        # FIXME: The physical groups are not getting saved. Apply global mesh globally without regard to part name.
+        points = gmsh.model.getEntities(dim=0)
         gmsh.model.mesh.setSize(points, global_seed)
         gmsh.model.mesh.generate(3)
         gmsh.write(str(output_file))
