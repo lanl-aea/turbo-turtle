@@ -273,6 +273,62 @@ def sphere(
     gmsh.finalize()
 
 
+def _sphere(
+    inner_radius, outer_radius,
+    quadrant=parsers.sphere_defaults["quadrant"],
+    revolution_angle=parsers.sphere_defaults["revolution_angle"],
+    center=parsers.sphere_defaults["center"],
+    part_name=parsers.sphere_defaults["part_name"]
+) -> None:
+    """
+    :param float inner_radius: inner radius (size of hollow)
+    :param float outer_radius: outer radius (size of sphere)
+    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
+    :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
+    # TODO: consolidate pure Python 3 logic in a common module for both Gmsh and Cubit
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/boards
+    arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
+    zero_column = numpy.zeros([len(arc_points), 1])
+    arc_points_3d = numpy.append(arc_points, zero_column, axis=1)
+    inner_point1 = arc_points[0]
+    inner_point2 = arc_points[1]
+    outer_point1 = arc_points[2]
+    outer_point2 = arc_points[3]
+
+    center_3d = numpy.append(center, [0.])
+    curves = []
+    if numpy.allclose(inner_point1, center) and numpy.allclose(inner_point2, center):
+        inner_point1 = center
+        inner_point2 = center
+    else:
+        curves.append(_create_arc_from_coordinates(center_3d, inner_point1, inner_point2))
+    curves.append(_create_arc_from_coordinates(center_3d, outer_point1, outer_point2))
+    curves.append(_create_line_from_coordinates(inner_point1, outer_point1))
+    curves.append(_create_line_from_coordinates(inner_point2, outer_point2))
+    surface = _draw_surface(curves)
+
+    _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
+
+
+def _create_arc_from_coordinates(center, point1, point2) -> int:
+    """Create a circle arc Gmsh object from center and points on the curve
+
+    :param tuple center: tuple of floats (X, Y, Z) location for the center of the circle arc
+    :param tuple point1: tuple of floats (X, Y, Z) location for the first point on the arc
+    :param tuple point2: tuple of floats (X, Y, Z) location for the second point on the arc
+
+    :returns: Gmsh curve tag
+    """
+    center_tag = gmsh.model.occ.addPoint(*center)
+    point1_tag = gmsh.model.occ.addPoint(*point1)
+    point2_tag = gmsh.model.occ.addPoint(*point2)
+
+    return gmsh.model.occ.addCircleArc(point1_tag, center_tag, point2_tag, center=True)
+
+
 def partition(*args, **kwargs):
     raise RuntimeError("partition subcommand is not yet implemented")
 

@@ -153,6 +153,10 @@ def create_spline_from_coordinates(coordinates):
 def create_arc_from_coordinates(center, point1, point2):
     """Create a circular arc cubit.Curve object from center and points on the curve
 
+    :param tuple center: tuple of floats (X, Y, Z) location for the center of the circle arc
+    :param tuple point1: tuple of floats (X, Y, Z) location for the first point on the arc
+    :param tuple point2: tuple of floats (X, Y, Z) location for the second point on the arc
+
     :returns: cubit curve object
     :rtype: curbit.Curve
     """
@@ -417,6 +421,8 @@ def _sphere(inner_radius, outer_radius,
     :param tuple center: tuple of floats (X, Y) location for the center of the sphere
     :param str part_name: name of the part to be created in the Abaqus model
     """
+    # TODO: consolidate pure Python 3 logic in a common module for both Gmsh and Cubit
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/boards
     arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
     zero_column = numpy.zeros([len(arc_points), 1])
     arc_points_3d = numpy.append(arc_points, zero_column, axis=1)
