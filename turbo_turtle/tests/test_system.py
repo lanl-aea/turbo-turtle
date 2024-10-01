@@ -48,6 +48,8 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
     """
     model = pathlib.Path(model).with_suffix(".cae")
     image = model.with_suffix(".png")
+    # TODO: Merge Gmsh sphere system tests when partition/mesh/image subcommands are implemented
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/217
     if backend == "cubit":
         model = model.with_suffix(".cub")
         image = image.parent / f"{image.stem}-cubit{image.suffix}"
@@ -330,6 +332,13 @@ system_tests = (
 )
 for test in system_tests:
     commands_list.append(setup_cylinder_commands(*test))
+
+# TODO: Merge Gmsh sphere system tests when partition/mesh/image subcommands are implemented
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/217
+commands_list.extend([
+    [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. --backend gmsh"],
+    [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh"],
+])
 
 # Merge tests
 for part_name in ("washer vase merge-sphere", ""):
