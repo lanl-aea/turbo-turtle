@@ -378,8 +378,7 @@ def mesh(
     # TODO: allow other output formats supported by Gmsh
     input_file = pathlib.Path(input_file).with_suffix(".step")
     if output_file is None:
-        output_file = input_file
-    # TODO: allow other output formats supported by Gmsh
+        output_file = input_file.with_suffix(".msh")
     output_file = pathlib.Path(output_file)
 
     with tempfile.NamedTemporaryFile(suffix=input_file.suffix, dir=".") as copy_file:
