@@ -110,7 +110,8 @@ def mesh(args, command):
     Unpack the argument namespace into the full function interface
 
     :param argparse.Namespace args: namespace of parsed arguments
-    :param str command: cubit executable path
+    :param str command: cubit executable path, unused. Kept for API compatibility with
+        :meth:`turbo_turtle._abaqus_wrappers`
     """
     _cubit_python.mesh(
         args.input_file,

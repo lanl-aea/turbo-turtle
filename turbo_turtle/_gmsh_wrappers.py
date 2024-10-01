@@ -79,7 +79,22 @@ def sets(args, command):
 
 
 def mesh(args, command):
-    raise RuntimeError("mesh subcommand is not yet implemented")
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.mesh`
+
+    Unpack the argument namespace into the full function interface
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    :param str command: gmsh executable path, unused. Kept for API compatibility with
+        :meth:`turbo_turtle._abaqus_wrappers`
+    """
+    _gmsh_python.mesh(
+        args.input_file,
+        args.element_type,
+        output_file=args.output_file,
+        part_name=args.part_name,
+        global_seed=args.global_seed,
+        edge_seeds=args.edge_seeds
+    )
 
 
 def merge(args, command):
