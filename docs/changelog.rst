@@ -13,6 +13,7 @@ New Features
 - Work-in-progress Gmsh cylinder subcommand implementation (:issue:`208`, :merge:`208`). By `Kyle Brindley`_.
 - Work-in-progress Gmsh geometry subcommand implementation (:issue:`209`, :merge:`210`). By `Kyle Brindley`_.
 - Work-in-progress Gmsh sphere subcommand implementation (:issue:`210`, :merge:`211`). By `Kyle Brindley`_.
+- Work-in-progress Gmsh image subcommand implementation (:issue:`214`, :merge:`212`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
