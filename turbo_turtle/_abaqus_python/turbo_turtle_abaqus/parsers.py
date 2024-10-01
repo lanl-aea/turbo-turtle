@@ -98,7 +98,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     if cubit:
         part_name_help_cubit = "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -106,7 +106,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     required.add_argument("--input-file", type=str, nargs="+", required=True,
                           help="Name of an input file(s) with points in x-y coordinate system")
     required.add_argument("--output-file", type=str, required=True,
-                          help="Name of the output Abaqus CAE file to save")
+                          help="Name of the output model database file to save")
 
     optional = parser.add_argument_group('optional arguments')
     optional.add_argument("--unit-conversion", type=positive_float, default=geometry_defaults["unit_conversion"],
@@ -118,7 +118,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
                           help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric " \
                                "(default: %(default)s)")
     optional.add_argument("--model-name", type=str, default=geometry_defaults["model_name"],
-                          help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
+                          help="Model name in which to create the new part(s) (default: %(default)s)")
     optional.add_argument("--part-name", type=str, nargs="+", default=geometry_defaults["part_name"],
                           help=part_name_help)
     optional.add_argument("--delimiter", type=str, default=geometry_defaults["delimiter"],
@@ -173,7 +173,7 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -185,11 +185,11 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
     required.add_argument("--height", type=positive_float, required=True,
                           help="Height of the right circular cylinder")
     required.add_argument("--output-file", type=str, required=True,
-                          help="Name of the output Abaqus CAE file to save")
+                          help="Name of the output model database file to save")
 
     optional = parser.add_argument_group('optional arguments')
     optional.add_argument("--model-name", type=str, default=geometry_defaults["model_name"],
-                          help="Abaqus model name in which to create the new part(s) (default: %(default)s)")
+                          help="Model name in which to create the new part(s) (default: %(default)s)")
     optional.add_argument("--part-name", type=str, default=cylinder_defaults["part_name"],
                           help=part_name_help)
     optional.add_argument("--revolution-angle", type=float, default=geometry_defaults["revolution_angle"],
@@ -230,7 +230,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
@@ -240,11 +240,11 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     required.add_argument('--outer-radius', type=positive_float, required=True,
                           help="Outer radius (sphere size)")
     required.add_argument('--output-file', type=str, required=True,
-                          help="Abaqus model database to create")
+                          help="Model database to create")
 
     optional = parser.add_argument_group('optional arguments')
     optional.add_argument('--input-file', type=str, default=sphere_defaults["input_file"],
-                          help="Abaqus model database to open (default: %(default)s)")
+                          help="Model database to open (default: %(default)s)")
     optional.add_argument("--quadrant", type=str, choices=sphere_quadrant_options, default=sphere_defaults["quadrant"],
                           help="XY plane quadrant: both, upper (I), lower (IV) (default: %(default)s)")
     optional.add_argument('--revolution-angle', type=float, default=sphere_defaults["revolution_angle"],
@@ -252,7 +252,7 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     optional.add_argument('--y-offset', type=float, default=sphere_defaults["y_offset"],
                           help="Offset along the global Y-axis (default: %(default)s)")
     optional.add_argument('--model-name', type=str, default=sphere_defaults["model_name"],
-                          help="Abaqus model name (default: %(default)s)")
+                          help="Model name (default: %(default)s)")
     optional.add_argument('--part-name', type=str, default=sphere_defaults["part_name"],
                           help=part_name_help)
 
@@ -290,17 +290,17 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     required = parser.add_argument_group('required arguments')
     required.add_argument('--input-file', type=str, required=True,
-                          help="Abaqus model database to open (default: %(default)s)")
+                          help="Model database to open (default: %(default)s)")
 
     optional = parser.add_argument_group('optional arguments')
     optional.add_argument('--output-file', type=str, default=partition_defaults["output_file"],
-                          help="Abaqus model database to save to. Defaults to the specified --input-file")
+                          help="Model database to save to. Defaults to the specified --input-file")
     optional.add_argument('--center', nargs=3, type=float, default=partition_defaults["center"],
                           help="Center of the sphere (default: %(default)s)")
     optional.add_argument('--xvector', nargs=3, type=float, default=partition_defaults["xvector"],
@@ -308,7 +308,7 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     optional.add_argument('--zvector', nargs=3, type=float, default=partition_defaults["zvector"],
                           help="Local z-axis vector defined in global coordinates (default: %(default)s)")
     optional.add_argument('--model-name', type=str, default=partition_defaults["model_name"],
-                          help="Abaqus model name (default: %(default)s)")
+                          help="Model name (default: %(default)s)")
     optional.add_argument('--part-name', type=str, nargs='+', default=partition_defaults["part_name"],
                           help=part_name_help)
     optional.add_argument('--big-number', type=positive_float, default=partition_defaults["big_number"],
@@ -348,19 +348,19 @@ def sets_parser(basename="sets.py", add_help=True, description=sets_cli_descript
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = "unused by Cubit implementation."
-    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     required = parser.add_argument_group('required arguments')
     required.add_argument("--input-file", type=str, required=True,
-                          help="Abaqus CAE input file")
+                          help="Model database input file")
 
     optional = parser.add_argument_group('optional arguments')
     optional.add_argument("--output-file", type=str, default=sets_defaults["output_file"],
-                          help="Abaqus CAE output file (default: %(default)s)")
+                          help="Model database output file (default: %(default)s)")
     optional.add_argument("--model-name", type=str, default=sets_defaults["model_name"],
-                          help="Abaqus model name (default: %(default)s)")
+                          help="Model name (default: %(default)s)")
     optional.add_argument("--part-name", type=str, default=sets_defaults["part_name"],
                           help=part_name_help)
     optional.add_argument(
@@ -401,10 +401,10 @@ mesh_defaults = {
     "global_seed": 1.0,
     "edge_seeds": None
 }
-mesh_cli_help = "Mesh an Abaqus part from a global seed and optional edge seeds"
+mesh_cli_help = "Mesh a part from a global seed and optional edge seeds"
 # TODO: Write a more descriptive behavior message
 mesh_cli_description = \
-    "Mesh an Abaqus part from a global seed and optional edge seeds. The edge seeds must be positive numbers. If " \
+    "Mesh a part from a global seed and optional edge seeds. The edge seeds must be positive numbers. If " \
     "the seed is an integer, the edge will be seeded by number. If it is a float, the edge will be seeded by size."
 
 
@@ -423,7 +423,7 @@ def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_d
     if cubit:
         part_name_help_cubit = "or Cubit volume name. Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
     element_type_help_cubit = ""
     if cubit:
@@ -435,15 +435,15 @@ def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_d
 
     required = parser.add_argument_group('required arguments')
     required.add_argument("--input-file", type=str, required=True,
-                          help="Abaqus CAE input file")
+                          help="Model database input file")
     required.add_argument("--element-type", type=str, required=True,
                           help=element_type_help)
 
     optional = parser.add_argument_group('optional arguments')
     optional.add_argument("--output-file", type=str, default=mesh_defaults["output_file"],
-                          help="Abaqus CAE output file (default: %(default)s)")
+                          help="Model database output file (default: %(default)s)")
     optional.add_argument("--model-name", type=str, default=mesh_defaults["model_name"],
-                          help="Abaqus model name (default: %(default)s)")
+                          help="Model name (default: %(default)s)")
     optional.add_argument("--part-name", type=str, default=mesh_defaults["part_name"],
                           help=part_name_help)
     optional.add_argument("--global-seed", type=positive_float, default=mesh_defaults["global_seed"],
@@ -466,10 +466,10 @@ merge_defaults = {
     "model_name": [None],
     "part_name": [None]
 }
-merge_cli_help = "Merge parts from multiple Abaqus CAE files into a single model"
-merge_cli_description = "Supply multiple Abaqus CAE files, model names, and part names to merge the parts into a " \
-                        "new model. Every CAE file is searched for every model/part name combination. If a part name " \
-                        "is found in more than one model, return an error."
+merge_cli_help = "Merge parts from multiple model database files into a single model"
+merge_cli_description = "Supply multiple model database files, model names, and part names to merge the parts into a " \
+                        "new model. Every model databse file is searched for every model/part name combination. " \
+                        "If a part name is found in more than one model, return an error."
 
 
 def merge_parser(basename="merge.py", add_help=True, description=merge_cli_description, cubit=False):
@@ -486,21 +486,22 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
     if cubit:
         part_name_help_cubit = ". Unused by Cubit implementation. "
     part_name_help = \
-        "Abaqus part name(s) to search for within model(s){} (default: %(default)s)".format(part_name_help_cubit)
+        "Part name(s) to search for within model(s){} (default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     required = parser.add_argument_group('required arguments')
     required.add_argument("--input-file", type=str, nargs="+", required=True,
-                          help="Abaqus CAE input file(s)")
+                          help="Model database input file(s)")
     required.add_argument("--output-file", type=str, required=True,
-                          help="Abaqus CAE file to save the merged model")
+                          help="Model database file to save the merged model")
 
     optional = parser.add_argument_group('optional arguments')
     optional.add_argument("--merged-model-name", type=str, default=merge_defaults["merged_model_name"],
                           help="Model to create and merge parts into (default: %(default)s)")
     optional.add_argument("--model-name", type=str, nargs="+", default=merge_defaults["model_name"],
-                          help="Abaqus model name(s) to query in the input CAE file(s) (default: %(default)s)")
+                          help="Model name(s) to query in the input model database file(s) " \
+                               "(default: %(default)s)")
     optional.add_argument("--part-name", type=str, nargs="+", default=merge_defaults["part_name"],
                           help=part_name_help)
     return parser
@@ -515,9 +516,9 @@ export_defaults = {
 }
 export_output_type_choices = ["abaqus", "genesis", "genesis-normal", "genesis-hdf5"]
 export_defaults["output_type"] = export_output_type_choices[0]
-export_cli_help = "Export an Abaqus part mesh as an orphan mesh"
+export_cli_help = "Export a part mesh as an orphan mesh"
 # TODO: Write a more descriptive behavior message
-export_cli_description = "Export an Abaqus part mesh as an orphan mesh"
+export_cli_description = "Export a part mesh as an orphan mesh"
 
 
 def export_parser(basename="export.py", add_help=True, description=export_cli_description, cubit=False):
@@ -534,20 +535,20 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
     if cubit:
         part_name_help_cubit = "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " \
                                "ACIS compatibility. "
-    part_name_help = "Abaqus part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
+    part_name_help = "Part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
 
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         "--input-file", type=str, required=True,
-        help="Abaqus CAE input file"
+        help="Model database input file"
     )
 
     optional = parser.add_argument_group('optional arguments')
     optional.add_argument(
         "--model-name", type=str, default=export_defaults["model_name"],
-        help="Abaqus model name (default: %(default)s)"
+        help="Model name (default: %(default)s)"
     )
     optional.add_argument(
         "--part-name", type=str, nargs='+', default=export_defaults["part_name"],
@@ -588,7 +589,7 @@ image_defaults = {
     "model_name": "Model-1",
     "part_name": None
 }
-image_cli_help = "Save an image of an Abaqus model"
+image_cli_help = "Save an image of a model database file"
 image_cli_description = "Save a part or assembly view image for a given Abaqus input file"
 # One time dump from abaqus.session.viewports['Viewport: 1'].colorMappings.keys()) to stay Python 3 compatible
 image_color_map_choices = [
@@ -612,8 +613,8 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
     help_cubit = ""
     if cubit:
         help_cubit = ". Unused by Cubit implementation."
-    model_name_help = "Abaqus model name{} (default: %(default)s)".format(help_cubit)
-    part_name_help = "Abaqus part name{} (default: %(default)s)".format(help_cubit)
+    model_name_help = "Model name{} (default: %(default)s)".format(help_cubit)
+    part_name_help = "Part name{} (default: %(default)s)".format(help_cubit)
     color_map_help = "Color map{} (default: %(default)s)".format(help_cubit)
 
     parser = argparse.ArgumentParser(add_help=add_help, description=description, prog=construct_prog(basename))
