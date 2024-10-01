@@ -58,7 +58,7 @@ def geometry(
     gmsh.logger.start()
 
     # Input/Output setup
-    # TODO: allow other output formats support by Gmsh
+    # TODO: allow other output formats supported by Gmsh
     output_file = pathlib.Path(output_file).with_suffix(".step")
 
     # Model setup
@@ -183,9 +183,9 @@ def _rename_and_sweep(
 
 def cylinder(
     inner_radius, outer_radius, height, output_file,
-    model_name=parsers.geometry_defaults["model_name"],
+    model_name=parsers.cylinder_defaults["model_name"],
     part_name=parsers.cylinder_defaults["part_name"],
-    revolution_angle=parsers.geometry_defaults["revolution_angle"],
+    revolution_angle=parsers.cylinder_defaults["revolution_angle"],
     y_offset=parsers.cylinder_defaults["y_offset"]
 ) -> None:
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
@@ -206,7 +206,7 @@ def cylinder(
     gmsh.logger.start()
 
     # Input/Output setup
-    # TODO: allow other output formats support by Gmsh
+    # TODO: allow other output formats supported by Gmsh
     output_file = pathlib.Path(output_file).with_suffix(".step")
     gmsh.model.add(model_name)
 
@@ -223,8 +223,54 @@ def cylinder(
     gmsh.finalize()
 
 
-def sphere(*args, **kwargs):
-    raise RuntimeError("sphere subcommand is not yet implemented")
+def sphere(
+    inner_radius, outer_radius, output_file,
+    input_file=parsers.sphere_defaults["input_file"],
+    quadrant=parsers.sphere_defaults["quadrant"],
+    revolution_angle=parsers.sphere_defaults["revolution_angle"],
+    y_offset=parsers.sphere_defaults["y_offset"],
+    model_name=parsers.sphere_defaults["model_name"],
+    part_name=parsers.sphere_defaults["part_name"]
+) -> None:
+    """
+    :param float inner_radius: inner radius (size of hollow)
+    :param float outer_radius: outer radius (size of sphere)
+    :param str output_file: output file name. Will be stripped of the extension and ``.step`` will be used.
+    :param str input_file: input file name. Will be stripped of the extension and ``.step`` will be used.
+    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
+    :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param float y_offset: vertical offset along the global Y-axis
+    :param str model_name: name of the Gmsh model in which to create the part
+    :param str part_name: name of the part to be created in the Abaqus model
+    """
+    # Universally required setup
+    gmsh.initialize()
+    gmsh.logger.start()
+
+    # Input/Output setup
+    # TODO: allow other output formats supported by Gmsh
+    output_file = pathlib.Path(output_file).with_suffix(".step")
+
+    # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
+    center = (0., y_offset)
+
+    if input_file is not None:
+        # TODO: allow other input formats supported by Gmsh
+        input_file = pathlib.Path(input_file).with_suffix(".step")
+        # Avoid modifying the contents or timestamp on the input file.
+        # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
+        with tempfile.NamedTemporaryFile(suffix=".step", dir=".") as copy_file:
+            shutil.copyfile(input_file, copy_file.name)
+            # TODO: Implement sphere call
+            gmsh.open(input_file)
+    else:
+        gmsh.model.add(model_name)
+        # TODO: Implement sphere call
+
+    # Output and cleanup
+    gmsh.write(str(output_file))
+    gmsh.logger.stop()
+    gmsh.finalize()
 
 
 def partition(*args, **kwargs):
