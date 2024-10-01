@@ -342,6 +342,14 @@ commands_list.extend([
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh"],
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant upper"],
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant lower"],
+    [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. --backend gmsh"],
+    [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant upper"],
+    [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant lower"],
+    # TODO: Fix solid sphere revolve
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/218
+    #[f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh"],
+    [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant upper"],
+    [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant lower"],
 ])
 
 # Merge tests
