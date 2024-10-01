@@ -264,13 +264,14 @@ def sphere(
             gmsh.open(input_file)
             _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                     part_name=part_name)
+            gmsh.write(str(output_file))
     else:
         gmsh.model.add(model_name)
         _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                 part_name=part_name)
+        gmsh.write(str(output_file))
 
     # Output and cleanup
-    gmsh.write(str(output_file))
     gmsh.logger.stop()
     gmsh.finalize()
 
@@ -341,8 +342,64 @@ def sets(*args, **kwargs):
     raise RuntimeError("sets subcommand is not yet implemented")
 
 
-def mesh(*args, **kwargs):
-    raise RuntimeError("mesh subcommand is not yet implemented")
+def mesh(
+    input_file: str,
+    element_type: str,
+    output_file: typing.Optional[str] = parsers.mesh_defaults["output_file"],
+    part_name: typing.Optional[str] = parsers.mesh_defaults["part_name"],
+    global_seed: typing.Optional[float] = parsers.mesh_defaults["global_seed"],
+    edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"]
+) -> None:
+    """Mesh Gmsh physical entities by part name
+
+    :param input_file: Gmsh ``*.step`` file to open that already contains physical entities to be meshed
+    :param element_type: Gmsh scheme.
+    :param output_file: Gmsh ``*.msh`` file to write
+    :param part_name: physical entity name prefix
+    :param global_seed: The global mesh seed size
+    :param edge_seeds: Edge seed tuples (name, number)
+    """
+    # Universally required setup
+    gmsh.initialize()
+    gmsh.logger.start()
+
+    # Input/Output setup
+    # TODO: allow other output formats supported by Gmsh
+    input_file = pathlib.Path(input_file).with_suffix(".step")
+    if output_file is None:
+        output_file = input_file
+    # TODO: allow other output formats supported by Gmsh
+    output_file = pathlib.Path(output_file).with_suffix(".msh")
+
+    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+        gmsh.open(str(input_file))
+        # TODO: Move to dedicated meshing function
+        # TODO: Do physical group names apply to all dimensional entities associated with original name? Can we jump
+        # straight to points with matching names?
+        surfaces = gmsh.model.getPhyscialGroups(dim=2)
+        surface_names = [gmsh.model.getEntityName(dimension, tag) for dimension, tag in dim_tags]
+        surface_parts = [(dimension, tag) for dimension, tag, name in zip(dim_tags, names) if name.startswith(part_name)]
+        volumes = gmsh.model.getPhyscialGroups(dim=3)
+        volume_names = [gmsh.model.getEntityName(dimension, tag) for dimension, tag in dim_tags]
+        volume_parts = [(dimension, tag) for dimension, tag, name in zip(dim_tags, names) if name.startswith(part_name)]
+        for dimension, tag in volume_parts:
+            upward, downward = gmsh.model.getAdjacencies(dimension, tag)
+            surface_parts.extend([(2, downward)])
+        lines = []
+        for dimension, tag in surface_parts:
+            upward, downward = gmsh.model.getAdjacencies(dimension, tag)
+            lines.extend(downward)
+        points = []
+        for tag in lines:
+            upward, downward = gmsh.model.getAdjacencies(1, tag)
+            points.extend((0, downward))
+        gmsh.model.mesh.setSize(points, global_seed)
+        gmsh.model.mesh.generate(3)
+        gmsh.write(str(output_file))
+
+    # Output and cleanup
+    gmsh.logger.stop()
+    gmsh.finalize()
 
 
 def merge(*args, **kwargs):
