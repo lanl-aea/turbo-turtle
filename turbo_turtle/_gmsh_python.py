@@ -293,24 +293,26 @@ def _sphere(
     # TODO: consolidate pure Python 3 logic in a common module for both Gmsh and Cubit
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/boards
     arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
-    zero_column = numpy.zeros([len(arc_points), 1])
-    arc_points_3d = numpy.append(arc_points, zero_column, axis=1)
-    inner_point1 = arc_points[0]
-    inner_point2 = arc_points[1]
-    outer_point1 = arc_points[2]
-    outer_point2 = arc_points[3]
 
     center_3d = numpy.append(center, [0.])
+    zero_column = numpy.zeros([len(arc_points), 1])
+    arc_points_3d = numpy.append(arc_points, zero_column, axis=1)
+    inner_point1 = arc_points_3d[0]
+    inner_point2 = arc_points_3d[1]
+    outer_point1 = arc_points_3d[2]
+    outer_point2 = arc_points_3d[3]
+
     curves = []
-    if numpy.allclose(inner_point1, center) and numpy.allclose(inner_point2, center):
-        inner_point1 = center
-        inner_point2 = center
+    if numpy.allclose(inner_point1, center_3d) and numpy.allclose(inner_point2, center_3d):
+        inner_point1 = center_3d
+        inner_point2 = center_3d
     else:
         curves.append(_create_arc_from_coordinates(center_3d, inner_point1, inner_point2))
-    curves.append(_create_arc_from_coordinates(center_3d, outer_point1, outer_point2))
-    curves.append(_create_line_from_coordinates(inner_point1, outer_point1))
     curves.append(_create_line_from_coordinates(inner_point2, outer_point2))
-    surface = _draw_surface(curves)
+    curves.append(_create_arc_from_coordinates(center_3d, outer_point2, outer_point1))
+    curves.append(_create_line_from_coordinates(outer_point1, inner_point1))
+    curve_loop = gmsh.model.occ.addCurveLoop(curves)
+    surface = gmsh.model.occ.addPlaneSurface([curve_loop])
 
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
 

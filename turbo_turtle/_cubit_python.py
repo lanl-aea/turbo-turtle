@@ -424,8 +424,6 @@ def _sphere(inner_radius, outer_radius,
     # TODO: consolidate pure Python 3 logic in a common module for both Gmsh and Cubit
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/boards
     arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
-    zero_column = numpy.zeros([len(arc_points), 1])
-    arc_points_3d = numpy.append(arc_points, zero_column, axis=1)
     inner_point1 = arc_points[0]
     inner_point2 = arc_points[1]
     outer_point1 = arc_points[2]
