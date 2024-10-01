@@ -91,4 +91,20 @@ def export(args, command):
 
 
 def image(args, command):
-    raise RuntimeError("image subcommand is not yet implemented")
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.image`
+
+    Unpack the argument namespace into the full function interface
+
+    :param argparse.Namespace args: namespace of parsed arguments
+    :param str command: gmsh executable path, unused. Kept for API compatibility with
+        :meth:`turbo_turtle._abaqus_wrappers`
+    """
+    _gmsh_python.image(
+        args.input_file,
+        args.output_file,
+        command,
+        x_angle=args.x_angle,
+        y_angle=args.y_angle,
+        z_angle=args.z_angle,
+        image_size=args.image_size
+    )
