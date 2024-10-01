@@ -335,7 +335,7 @@ for test in system_tests:
 
 # TODO: Merge Gmsh sphere system tests when partition/mesh/image subcommands are implemented
 # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/217
-commands_list.extend([
+gmsh_sphere = [
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. --backend gmsh"],
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant upper"],
     [f"{turbo_turtle_command} sphere --inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. --backend gmsh --quadrant lower"],
@@ -350,7 +350,12 @@ commands_list.extend([
     #[f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh"],
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant upper"],
     [f"{turbo_turtle_command} sphere --inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. --backend gmsh --quadrant lower"],
-])
+]
+for test in gmsh_sphere:
+    # Skip the image subcommand when DISPLAY is not found
+    if not missing_display:
+        test.append(f"{turbo_turtle_command} image --input-file sphere.step --output-file sphere.png --x-angle 45 --y-angle -45 --backend gmsh")
+    commands_list.append(test)
 
 # Merge tests
 for part_name in ("washer vase merge-sphere", ""):
