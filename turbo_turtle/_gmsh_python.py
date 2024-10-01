@@ -353,5 +353,41 @@ def export(*args, **kwargs):
     raise RuntimeError("export subcommand is not yet implemented")
 
 
-def image(*args, **kwargs):
-    raise RuntimeError("image subcommand is not yet implemented")
+def image(
+    input_file, output_file,
+    x_angle=parsers.image_defaults["x_angle"],
+    y_angle=parsers.image_defaults["y_angle"],
+    z_angle=parsers.image_defaults["z_angle"],
+    image_size=parsers.image_defaults["image_size"]
+) -> None:
+    """Open a Gmsh ``*.step`` file and save an image
+
+    Uses the Gmsh ``write`` command, which accepts gif, jpg, tex, pdf, png, pgf, ps, ppm, svg, tikz, and yuv file
+    extensions.
+
+    :param str input_file: Gmsh ``*.step`` file to open that already contains parts/volumes to be meshed
+    :param str output_file: Screenshot file to write
+    :param float x_angle: Rotation about 'world' X-axis in degrees
+    :param float y_angle: Rotation about 'world' Y-axis in degrees
+    :param float z_angle: Rotation about 'world' Z-axis in degrees
+    """
+    # Universally required setup
+    gmsh.initialize()
+    gmsh.logger.start()
+
+    # Input/Output setup
+    # TODO: allow other output formats supported by Gmsh
+    input_file = pathlib.Path(input_file).with_suffix(".step")
+    output_file = pathlib.Path(output_file)
+
+    gmsh.open(input_file)
+
+    gmsh.option.setNumber("General.Trackball", 0)
+    gmsh.option.setNumber("General.RotationX", x_angle)
+    gmsh.option.setNumber("General.RotationY", y_angle)
+    gmsh.option.setNumber("General.RotationZ", z_angle)
+
+    # Output and cleanup
+    gmsh.write(str(output_file))
+    gmsh.logger.stop()
+    gmsh.finalize()
