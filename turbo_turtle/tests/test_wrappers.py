@@ -484,7 +484,7 @@ partition_keywords = trim_namespace(partition_namespace_sparse, partition_positi
 mesh_keywords = trim_namespace(mesh_namespace_sparse, mesh_positional)
 merge_keywords = trim_namespace(merge_namespace_sparse, merge_positional)
 export_keywords = trim_namespace(export_namespace_cubit, export_positional)
-image_keywords = trim_namespace(image_namespace_sparse, image_positional)
+image_keywords = trim_namespace(image_namespace_sparse, image_positional + image_unused)
 gmsh_wrapper_tests = {
     "geometry": (
         "geometry",
@@ -531,7 +531,7 @@ gmsh_wrapper_tests = {
     "image": (
         "image",
         image_namespace_sparse,
-        ("input_file", "output_file", command),
+        ("input_file", "output_file"),
         image_keywords
     ),
 }
@@ -541,7 +541,7 @@ gmsh_wrapper_tests = {
                          gmsh_wrapper_tests.values(), ids=gmsh_wrapper_tests.keys())
 def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
-    implemented = ["geometry", "cylinder", "sphere"]
+    implemented = ["geometry", "cylinder", "sphere", "image"]
     if subcommand in implemented:
         with patch("turbo_turtle._utilities.import_gmsh"), \
              patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function:
