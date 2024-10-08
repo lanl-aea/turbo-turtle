@@ -118,7 +118,7 @@ def _api_builder(subcommand: str) -> SCons.Builder.Builder:
 
        .. code-block::
 
-          env["cubit"] = waves.scons_extensions.add_program(["cubit"], env)
+          env["cubit"] = waves.scons_extensions.add_program(env, ["cubit"])
 
        which will override the Turbo-Turtle subcommand ``--cubit`` boolean in the builder. It is best to avoid SCons
        construction environment variable names that clash with the Turbo-Turtle subcommand CLI variables. If this is not
@@ -134,7 +134,7 @@ def _api_builder(subcommand: str) -> SCons.Builder.Builder:
        import waves
        import turbo_turtle
        env = Environment()
-       env["abaqus"] = waves.scons_extensions.add_program(["abaqus"], env)
+       env["abaqus"] = waves.scons_extensions.add_program(env, ["abaqus"])
        env.Append(BUILDERS={"TurboTurtleGeometry": turbo_turtle.scons_extensions._api_builder("geometry")})
        env.TurboTurtleGeometry(target=["vase.cae"], source=["vase.csv"])
 
@@ -204,7 +204,7 @@ def cli_builder(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleCLIBuilder": turbo_turtle.scons_extensions.cli_builder(
                program=env["turbo_turtle],
@@ -279,7 +279,7 @@ def geometry(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleGeometry": turbo_turtle.scons_extensions.geometry(
                program=env["turbo_turtle],
@@ -337,7 +337,7 @@ def geometry_xyplot(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleGeometryXYPlot": turbo_turtle.scons_extensions.geometry_xyplot(
                program=env["turbo_turtle],
@@ -402,7 +402,7 @@ def cylinder(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleCylinder": turbo_turtle.scons_extensions.cylinder(
                program=env["turbo_turtle]
@@ -466,7 +466,7 @@ def sphere(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
                program=env["turbo_turtle]
@@ -524,7 +524,7 @@ def partition(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
                program=env["turbo_turtle]
@@ -586,7 +586,7 @@ def sets(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleSets": turbo_turtle.scons_extensions.sets(
                program=env["turbo_turtle],
@@ -650,7 +650,7 @@ def mesh(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
                program=env["turbo_turtle]
@@ -707,7 +707,7 @@ def image(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleImage": turbo_turtle.scons_extensions.image(
                program=env["turbo_turtle]
@@ -763,7 +763,7 @@ def merge(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleMerge": turbo_turtle.scons_extensions.merge(
                program=env["turbo_turtle]
@@ -819,7 +819,7 @@ def export(
        import waves
        import turbo_turtle
        env = Environment()
-       env["turbo_turtle"] = waves.scons_extensions.add_program(["turbo-turtle"], env)
+       env["turbo_turtle"] = waves.scons_extensions.add_program(env, ["turbo-turtle"])
        env.Append(BUILDERS={
            "TurboTurtleExport": turbo_turtle.scons_extensions.export(
                program=env["turbo_turtle]

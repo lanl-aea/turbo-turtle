@@ -25,8 +25,8 @@ env = Environment(
     ENV=os.environ.copy(),
     turbo_turtle_command=GetOption("turbo_turtle_command"),
 )
-env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
-env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cubit"], env)
+env["abaqus"] = waves.scons_extensions.add_program(env, ["/apps/abaqus/Commands/abq2023", "abq2023"])
+env["cubit"] = waves.scons_extensions.add_cubit(env, ["/apps/Cubit-16.12/cubit", "cubit"])
 env["turbo_turtle"] = env["turbo_turtle_command"]
 env.Append(BUILDERS={
     # API Builders

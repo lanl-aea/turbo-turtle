@@ -38,8 +38,8 @@ env = Environment(
 # Build path object for extension and re-use
 variant_dir_base = pathlib.Path(env["variant_dir_base"])
 
-env["abaqus"] = waves.scons_extensions.add_program(["/apps/abaqus/Commands/abq2023", "abq2023"], env)
-env["cubit"] = waves.scons_extensions.add_cubit(["/apps/Cubit-16.12/cubit", "cubit"], env)
+env["abaqus"] = waves.scons_extensions.add_program(env, ["/apps/abaqus/Commands/abq2023", "abq2023"])
+env["cubit"] = waves.scons_extensions.add_cubit(env, ["/apps/Cubit-16.12/cubit", "cubit"])
 
 env.Append(BUILDERS={
     "TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
