@@ -394,8 +394,7 @@ def sphere(inner_radius, outer_radius, output_file,
         input_file = pathlib.Path(input_file).with_suffix(".cub")
         # Avoid modifying the contents or timestamp on the input file.
         # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-        with tempfile.NamedTemporaryFile(suffix=".cub", dir=".", delete_on_close=False) as copy_file:
-            shutil.copyfile(input_file, copy_file.name)
+        with _utilities.NamedTemporaryFileCopy(suffix=".cub", dir=".") as copy_file:
             # TODO: look for a Cubit Python interface proper open/close/save command(s)
             cubit_command_or_exception(f"open '{copy_file.name}'")
             _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
@@ -593,8 +592,7 @@ def partition(input_file,
         output_file = input_file
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file).with_suffix(".cub")
-    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".", delete_on_close=False) as copy_file:
-        shutil.copyfile(input_file, copy_file.name)
+    with _utilities.NamedTemporaryFileCopy(suffix=".cub", dir=".") as copy_file:
         cubit_command_or_exception(f"open '{copy_file.name}'")
         _partition(center, xvector, zvector, part_name, big_number)
         cubit_command_or_exception(f"save as '{output_file}' overwrite")
@@ -721,8 +719,7 @@ def sets(
         output_file = input_file
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file).with_suffix(".cub")
-    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".", delete_on_close=False) as copy_file:
-        shutil.copyfile(input_file, copy_file.name)
+    with _utilities.NamedTemporaryFileCopy(suffix=".cub", dir=".") as copy_file:
         cubit_command_or_exception(f"open '{copy_file.name}'")
         _sets(face_sets, edge_sets, vertex_sets)
         cubit_command_or_exception(f"save as '{output_file}' overwrite")
@@ -752,8 +749,7 @@ def mesh(
         output_file = input_file
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file).with_suffix(".cub")
-    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".", delete_on_close=False) as copy_file:
-        shutil.copyfile(input_file, copy_file.name)
+    with _utilities.NamedTemporaryFileCopy(suffix=".cub", dir=".") as copy_file:
         cubit_command_or_exception(f"open '{copy_file.name}'")
         _mesh(element_type, part_name, global_seed, edge_seeds)
         cubit_command_or_exception(f"save as '{output_file}' overwrite")

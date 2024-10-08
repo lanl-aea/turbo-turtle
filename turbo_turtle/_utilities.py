@@ -13,6 +13,27 @@ import subprocess
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities import print_exception_message
 
 
+class NamedTemporaryFileCopy:
+    """Create a temporary file copy
+
+    Thin wrapper around ``tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)`` to provide Windows handling
+
+    Provides Windows compatible temporary file handling. ``delete=False`` is required until Python 3.12
+    ``delete_on_close=False`` option can be made a minimum runtime dependence.
+
+    :param str input_file: The input file to copy into a temporary file
+    """
+    def __init__(self, input_file, *args, **kwargs):
+        self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
+        shutil.copyfile(input_file, self.temporary_file.name)
+
+    def __enter__(self):
+        return self.temporary_file
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        os.remove(self.temporary_file.name)
+
+
 def search_commands(options: typing.Iterable[str]) -> typing.Union[str, None]:
     """Return the first found command in the list of options. Return None if none are found.
 
