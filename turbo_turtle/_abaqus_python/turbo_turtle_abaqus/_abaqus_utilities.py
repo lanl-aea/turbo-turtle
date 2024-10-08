@@ -20,18 +20,19 @@ class AbaqusNamedTemporaryFile:
 
     :param str input_file: The input file to copy before open
     """
-    import abaqus
 
     def __init__(self, input_file, *args, **kwargs):
+        import abaqus
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
         shutil.copyfile(input_file, self.temporary_file.name)
-        self.abaqus.openMdb(pathName=self.temporary_file.name)
+        abaqus.openMdb(pathName=self.temporary_file.name)
 
     def __enter__(self):
         return self.temporary_file
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.abaqus.mdb.close()
+        import abaqus
+        abaqus.mdb.close()
         self.temporary_file.close()
         os.remove(self.temporary_file.name)
 
