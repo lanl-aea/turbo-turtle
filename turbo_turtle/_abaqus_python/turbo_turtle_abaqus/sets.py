@@ -53,9 +53,9 @@ def main(
                 model_name=model_name,
                 part_name=part_name
             )
+            abaqus.mdb.saveAs(pathName=output_file)
     except RuntimeError as err:
         _mixed_utilities.sys_exit(err.message)
-    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def sets(

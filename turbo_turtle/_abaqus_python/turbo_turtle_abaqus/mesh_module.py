@@ -50,9 +50,9 @@ def main(
                 global_seed=global_seed,
                 edge_seeds=edge_seeds
             )
+            abaqus.mdb.saveAs(pathName=output_file)
     except RuntimeError as err:
         _mixed_utilities.sys_exit(err.message)
-    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def mesh(

@@ -53,12 +53,13 @@ def main(inner_radius, outer_radius, output_file,
             with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
                 sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                        model_name=model_name, part_name=part_name)
+                abaqus.mdb.saveAs(pathName=output_file)
         else:
             sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                    model_name=model_name, part_name=part_name)
+            abaqus.mdb.saveAs(pathName=output_file)
     except RuntimeError as err:
         _mixed_utilities.sys_exit(err.message)
-    abaqus.mdb.saveAs(pathName=output_file)
 
 
 def sphere(inner_radius, outer_radius,
