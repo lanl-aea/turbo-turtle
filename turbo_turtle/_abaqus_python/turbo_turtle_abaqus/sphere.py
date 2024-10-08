@@ -50,7 +50,7 @@ def main(inner_radius, outer_radius, output_file,
             input_file = os.path.splitext(input_file)[0] + ".cae"
             # Avoid modifying the contents or timestamp on the input file.
             # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-            with _abaqus_utilities.AbaqusNamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
+            with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
                 sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                        model_name=model_name, part_name=part_name)
         else:

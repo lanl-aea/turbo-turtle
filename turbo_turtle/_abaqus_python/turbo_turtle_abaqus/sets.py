@@ -45,7 +45,7 @@ def main(
             output_file = input_file
         input_file = os.path.splitext(input_file)[0] + ".cae"
         output_file = os.path.splitext(output_file)[0] + ".cae"
-        with _abaqus_utilities.AbaqusNamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
+        with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
             sets(
                 face_sets=face_sets,
                 edge_sets=edge_sets,

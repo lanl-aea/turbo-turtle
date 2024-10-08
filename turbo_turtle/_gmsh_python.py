@@ -264,7 +264,7 @@ def sphere(
         input_file = pathlib.Path(input_file).with_suffix(".step")
         # Avoid modifying the contents or timestamp on the input file.
         # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-        with _utilities.NamedTemporaryFileCopy(suffix=".step", dir=".") as copy_file:
+        with _utilities.NamedTemporaryFileCopy(input_file, suffix=".step", dir=".") as copy_file:
             gmsh.open(copy_file.name)
             _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                     part_name=part_name)
@@ -380,7 +380,7 @@ def mesh(
         output_file = input_file.with_suffix(".msh")
     output_file = pathlib.Path(output_file)
 
-    with _utilities.NamedTemporaryFileCopy(suffix=input_file.suffix, dir=".") as copy_file:
+    with _utilities.NamedTemporaryFileCopy(input_file, suffix=input_file.suffix, dir=".") as copy_file:
         gmsh.open(copy_file.name)
         # TODO: Move to dedicated meshing function
         # TODO: Do physical group names apply to all dimensional entities associated with original name? Can we jump

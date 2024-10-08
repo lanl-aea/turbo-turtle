@@ -25,13 +25,13 @@ class AbaqusNamedTemporaryFile:
     def __init__(self, input_file, *args, **kwargs):
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
         shutil.copyfile(input_file, self.temporary_file.name)
-        abaqus.openMdb(pathName=self.temporary_file.name)
+        self.abaqus.openMdb(pathName=self.temporary_file.name)
 
     def __enter__(self):
         return self.temporary_file
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        abaqus.mdb.close()
+        self.abaqus.mdb.close()
         os.remove(self.temporary_file.name)
 
 

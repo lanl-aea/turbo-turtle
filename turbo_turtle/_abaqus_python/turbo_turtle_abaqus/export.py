@@ -37,7 +37,7 @@ def main(input_file,
     """
     import abaqus
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    with _abaqus_utilities.AbaqusNamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
+    with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
         export(model_name=model_name, part_name=part_name, element_type=element_type, destination=destination,
                assembly=assembly)
 
