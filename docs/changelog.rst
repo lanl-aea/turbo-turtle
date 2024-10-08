@@ -20,6 +20,10 @@ New Features
   behaviors. Performs global tri- and tet-meshing globally to all models and parts. (:issue:`214`, :merge:`212`). By `Kyle
   Brindley`_.
 
+Bug fixes
+=========
+- Fix temporary file handling for Windows (:issue:`224`, :merge:`214`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Add Gmsh Python API to CI environment (:merge:`207`). By `Kyle Brindley`_.

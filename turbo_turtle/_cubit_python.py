@@ -394,7 +394,7 @@ def sphere(inner_radius, outer_radius, output_file,
         input_file = pathlib.Path(input_file).with_suffix(".cub")
         # Avoid modifying the contents or timestamp on the input file.
         # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-        with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+        with tempfile.NamedTemporaryFile(suffix=".cub", dir=".", delete_on_close=False) as copy_file:
             shutil.copyfile(input_file, copy_file.name)
             # TODO: look for a Cubit Python interface proper open/close/save command(s)
             cubit_command_or_exception(f"open '{copy_file.name}'")
@@ -593,7 +593,7 @@ def partition(input_file,
         output_file = input_file
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file).with_suffix(".cub")
-    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".", delete_on_close=False) as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exception(f"open '{copy_file.name}'")
         _partition(center, xvector, zvector, part_name, big_number)
@@ -721,7 +721,7 @@ def sets(
         output_file = input_file
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file).with_suffix(".cub")
-    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".", delete_on_close=False) as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exception(f"open '{copy_file.name}'")
         _sets(face_sets, edge_sets, vertex_sets)
@@ -752,7 +752,7 @@ def mesh(
         output_file = input_file
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file).with_suffix(".cub")
-    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".") as copy_file:
+    with tempfile.NamedTemporaryFile(suffix=".cub", dir=".", delete_on_close=False) as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         cubit_command_or_exception(f"open '{copy_file.name}'")
         _mesh(element_type, part_name, global_seed, edge_seeds)

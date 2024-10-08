@@ -51,7 +51,7 @@ def main(input_file,
         output_file = input_file
     input_file = os.path.splitext(input_file)[0] + ".cae"
     output_file = os.path.splitext(output_file)[0] + ".cae"
-    with tempfile.NamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
+    with tempfile.NamedTemporaryFile(suffix=".cae", dir=".", delete_on_close=False) as copy_file:
         shutil.copyfile(input_file, copy_file.name)
         abaqus.openMdb(pathName=copy_file.name)
         partition(center, xvector, zvector, model_name, part_name, big_number=big_number)
