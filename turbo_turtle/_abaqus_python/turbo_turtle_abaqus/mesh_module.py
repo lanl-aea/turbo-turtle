@@ -42,9 +42,7 @@ def main(
             output_file = input_file
         input_file = os.path.splitext(input_file)[0] + ".cae"
         output_file = os.path.splitext(output_file)[0] + ".cae"
-        with tempfile.NamedTemporaryFile(suffix=".cae", dir=".", delete_on_close=False) as copy_file:
-            shutil.copyfile(input_file, copy_file.name)
-            abaqus.openMdb(pathName=copy_file.name)
+        with _abaqus_utilities.AbaqusNamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
             mesh(
                 element_type,
                 model_name=model_name,

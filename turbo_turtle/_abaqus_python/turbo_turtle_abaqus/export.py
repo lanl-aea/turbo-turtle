@@ -37,10 +37,7 @@ def main(input_file,
     """
     import abaqus
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    with tempfile.NamedTemporaryFile(suffix=".cae", dir=".", delete_on_close=False) as copy_file:
-        shutil.copyfile(input_file, copy_file.name)
-        abaqus.openMdb(pathName=copy_file.name)
-
+    with _abaqus_utilities.AbaqusNamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
         export(model_name=model_name, part_name=part_name, element_type=element_type, destination=destination,
                assembly=assembly)
 

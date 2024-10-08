@@ -1,6 +1,8 @@
 import os
 import sys
+import shutil
 import inspect
+import tempfile
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
@@ -8,6 +10,29 @@ parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
 from turbo_turtle_abaqus import _mixed_utilities
+
+
+class AbaqusNamedTemporaryFile:
+    """Open an Abaqus CAE ``input_file`` as a temporary file. Close and delete on exit of context manager.
+
+    Provides Windows compatible temporary file handling. Required until Python 3.12 ``delete_on_close=False`` option is
+    available in Abaqus Python.
+
+    :param str input_file: The input file to copy before open
+    """
+    import abaqus
+
+    def __init__(self, input_file, *args, **kwargs):
+        self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
+        shutil.copyfile(input_file, self.temporary_file.name)
+        abaqus.openMdb(pathName=self.temporary_file.name)
+
+    def __enter__(self):
+        return self.temporary_file
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        abaqus.mdb.close()
+        os.remove(self.temporary_file.name)
 
 
 def return_abaqus_constant(search):

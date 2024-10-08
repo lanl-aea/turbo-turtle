@@ -50,9 +50,7 @@ def main(inner_radius, outer_radius, output_file,
             input_file = os.path.splitext(input_file)[0] + ".cae"
             # Avoid modifying the contents or timestamp on the input file.
             # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
-            with tempfile.NamedTemporaryFile(suffix=".cae", dir=".", delete_on_close=False) as copy_file:
-                shutil.copyfile(input_file, copy_file.name)
-                abaqus.openMdb(pathName=copy_file.name)
+            with _abaqus_utilities.AbaqusNamedTemporaryFile(suffix=".cae", dir=".") as copy_file:
                 sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
                        model_name=model_name, part_name=part_name)
         else:
