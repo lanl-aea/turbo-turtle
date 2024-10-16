@@ -199,6 +199,18 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
 
 
 def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs):
+    """Partition a 2D-axisymmetric part by three lines using the same vertex pairs computed for the 3D case
+
+    :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae
+        -nogui``)
+    :param list part_name: list of parts to query in the specified Abaqus model (only applies when used with ``abaqus
+        cae -nogui``)
+    :param list center: center location of the geometry
+    :param float big_number: Number larger than the outer radius of the part to partition.
+    :param tuple sketch_vertex_pairs: Tuple of vertices that make up the 3D partioning scheme's sketch (See
+        :meth:`turbo_turtle._abaqus_python.vertices.rectalinear_coordinates`)
+    """
+
     import abaqus
     import abaqusConstants
 
