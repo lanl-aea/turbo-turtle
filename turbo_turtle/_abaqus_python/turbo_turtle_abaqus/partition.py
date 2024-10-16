@@ -147,32 +147,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     model = abaqus.mdb.models[model_name]
     for current_part in part_name:
         if get_part_dimensionality(model_name, current_part) == "Axisymmetric":  # Abaqus 2023.HF5
-            part = model.parts[current_part]
-            transform = part.MakeSketchTransform(
-                sketchPlane=part.faces[0],
-                sketchPlaneSide=abaqusConstants.SIDE1,
-                origin=center
-            )
-            sketch = model.ConstrainedSketch(
-                name='__profile__',
-                sheetSize=91.45,
-                gridSpacing=2.28,
-                transform=transform
-                )
-            sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
-            part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
-            vertex_1 = sketch_vertex_pairs[0][1]  # Positive 45-degree partition
-            vertex_2 = sketch_vertex_pairs[1][1]  # Negative 45-degree partition
-            vertex_3 = (big_number, 0.0)  # Must manually construct the horizontal partition
-            sketch.Line(point1=(0.0, 0.0), point2=vertex_1)
-            sketch.Line(point1=(0.0, 0.0), point2=vertex_2)
-            sketch.Line(point1=(0.0, 0.0), point2=vertex_3)
-            try:
-                part.PartitionFaceBySketch(faces=part.faces[:], sketch=sketch)
-            # TODO: Is is possible to distinguish between expected failures (operating on an incomplete sphere, so
-            # sketch doesn't intersect) and unexpected failures (bad options, missing geometry, etc)?
-            except abaqus.AbaqusException as err:
-                pass
+            partition_2d(model_name, current_part, center, sketch_vertex_pairs)
         else:
             part = model.parts[current_part]
 
@@ -221,6 +196,35 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
                         pass
 
         abaqus.mdb.models[model_name].parts[current_part].checkGeometry()
+
+
+def partition_2d(model_name, part_name, center, sketch_vertex_pairs):
+    part = model.parts[part_name]
+    transform = part.MakeSketchTransform(
+        sketchPlane=part.faces[0],
+        sketchPlaneSide=abaqusConstants.SIDE1,
+        origin=center
+    )
+    sketch = model.ConstrainedSketch(
+        name='__profile__',
+        sheetSize=91.45,
+        gridSpacing=2.28,
+        transform=transform
+        )
+    sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
+    part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
+    vertex_1 = sketch_vertex_pairs[0][1]  # Positive 45-degree partition
+    vertex_2 = sketch_vertex_pairs[1][1]  # Negative 45-degree partition
+    vertex_3 = (big_number, 0.0)  # Must manually construct the horizontal partition
+    sketch.Line(point1=(0.0, 0.0), point2=vertex_1)
+    sketch.Line(point1=(0.0, 0.0), point2=vertex_2)
+    sketch.Line(point1=(0.0, 0.0), point2=vertex_3)
+    try:
+        part.PartitionFaceBySketch(faces=part.faces[:], sketch=sketch)
+    # TODO: Is is possible to distinguish between expected failures (operating on an incomplete sphere, so
+    # sketch doesn't intersect) and unexpected failures (bad options, missing geometry, etc)?
+    except abaqus.AbaqusException as err:
+        pass
 
 
 def _gui_get_inputs():
