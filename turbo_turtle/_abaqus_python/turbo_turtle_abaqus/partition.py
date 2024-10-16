@@ -121,22 +121,16 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     :param float big_number: Number larger than the outer radius of the part to partition.
     """
     import abaqus
-    import caeModules
-    import abaqusConstants
 
     # Process input and calculate local coordinate system properties
     xvector = vertices.normalize_vector(xvector)
     zvector = vertices.normalize_vector(zvector)
     yvector = numpy.cross(zvector, xvector)
     center = numpy.array(center)
-    plane_normals = vertices.datum_planes(xvector, zvector)
 
     angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0 / 3.0))
     big_number_coordinates = vertices.rectalinear_coordinates([big_number], [angle])[0]
-    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.datum_planes` tuple
-    # order. Find a way to programmatically calculate (or return) the paired positive sketch edge instead of hardcoding
-    # the matching order.
-    positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
+
     sketch_vertex_pairs = (
         ((-big_number_coordinates[0],  big_number_coordinates[1]),   # noqa: E201,E241
          ( big_number_coordinates[0],  big_number_coordinates[1])),  # noqa: E201,E241
@@ -144,58 +138,86 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
          ( big_number_coordinates[0], -big_number_coordinates[1]))   # noqa: E201,E241
     )
 
-    model = abaqus.mdb.models[model_name]
     for current_part in part_name:
         if get_part_dimensionality(model_name, current_part) == "Axisymmetric":  # Abaqus 2023.HF5
             partition_2d(model_name, current_part, center, big_number, sketch_vertex_pairs)
         else:
-            part = model.parts[current_part]
-
-            # Create local coordinate system primary partition planes
-            partition_planes = [datum_plane(center, normal, part) for normal in plane_normals]
-
-            # Partition by three (3) local coordinate system x/y/z planes
-            for plane in partition_planes[0:3]:
-                try:
-                    part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
-                except abaqus.AbaqusException as err:
-                    pass
-
-            # Partition by sketch on the six (6) 45 degree planes
-            for edge, plane in zip(positive_sketch_axis, partition_planes[3:]):
-                axis = datum_axis(center, edge, part)
-                # TODO: Move to a dedicated partition function
-                for vertex_1, vertex_2 in sketch_vertex_pairs:
-                    transform = part.MakeSketchTransform(
-                        sketchPlane=plane,
-                        sketchUpEdge=axis,
-                        sketchPlaneSide=abaqusConstants.SIDE1,
-                        origin=center
-                    )
-                    sketch = model.ConstrainedSketch(
-                        name='__profile__',
-                        sheetSize=91.45,
-                        gridSpacing=2.28,
-                        transform=transform
-                    )
-                    sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
-                    part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
-                    sketch.Line(point1=(0.0, 0.0), point2=vertex_1)
-                    sketch.Line(point1=(0.0, 0.0), point2=vertex_2)
-                    sketch.Line(point1=vertex_1, point2=vertex_2)
-                    try:
-                        part.PartitionCellBySketch(
-                            sketchPlane=plane,
-                            sketchUpEdge=axis,
-                            cells=part.cells[:],
-                            sketch=sketch
-                        )
-                    # TODO: Is it possible to distinguish between expected failures (operating on an incomplete sphere,
-                    # so sketch doesn't intersect) and unexpected failures (bad options, missing geometry, etc)?
-                    except abaqus.AbaqusException as err:
-                        pass
-
+            partition_3d(model_name, current_part, center, xvector, yvector, zvector, sketch_vertex_pairs)
         abaqus.mdb.models[model_name].parts[current_part].checkGeometry()
+
+
+def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketch_vertex_pairs):
+    """Partition a 3D-revolved part by using the turtle shell method, also known as the soccer ball method.
+
+    :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae
+        -nogui``)
+    :param list part_name: list of parts to query in the specified Abaqus model (only applies when used with ``abaqus
+        cae -nogui``)
+    :param list center: center location of the geometry
+    :param list xvector: Local x-axis vector defined in global coordinates
+    :param list yvector: Local y-axis vector defined in global coordinates
+    :param list zvector: Local z-axis vector defined in global coordinates
+    :param tuple sketch_vertex_pairs: Tuple of vertices that make up the 3D partioning scheme's sketch (See
+        :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`)
+    """
+    import abaqus
+    import caeModules
+    import abaqusConstants
+
+    # Process input and calculate local coordinate system properties
+    plane_normals = vertices.datum_planes(xvector, zvector)
+
+    # TODO: This depends on the :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.datum_planes` tuple
+    # order. Find a way to programmatically calculate (or return) the paired positive sketch edge instead of hardcoding
+    # the matching order.
+    positive_sketch_axis = (yvector, yvector, zvector, zvector, xvector, xvector)
+
+    model = abaqus.mdb.models[model_name]
+    part = model.parts[part_name]
+
+    # Create local coordinate system primary partition planes
+    partition_planes = [datum_plane(center, normal, part) for normal in plane_normals]
+
+    # Partition by three (3) local coordinate system x/y/z planes
+    for plane in partition_planes[0:3]:
+        try:
+            part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
+        except abaqus.AbaqusException as err:
+            pass
+
+    # Partition by sketch on the six (6) 45 degree planes
+    for edge, plane in zip(positive_sketch_axis, partition_planes[3:]):
+        axis = datum_axis(center, edge, part)
+        # TODO: Move to a dedicated partition function
+        for vertex_1, vertex_2 in sketch_vertex_pairs:
+            transform = part.MakeSketchTransform(
+                sketchPlane=plane,
+                sketchUpEdge=axis,
+                sketchPlaneSide=abaqusConstants.SIDE1,
+                origin=center
+            )
+            sketch = model.ConstrainedSketch(
+                name='__profile__',
+                sheetSize=91.45,
+                gridSpacing=2.28,
+                transform=transform
+            )
+            sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
+            part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
+            sketch.Line(point1=(0.0, 0.0), point2=vertex_1)
+            sketch.Line(point1=(0.0, 0.0), point2=vertex_2)
+            sketch.Line(point1=vertex_1, point2=vertex_2)
+            try:
+                part.PartitionCellBySketch(
+                    sketchPlane=plane,
+                    sketchUpEdge=axis,
+                    cells=part.cells[:],
+                    sketch=sketch
+                )
+            # TODO: Is it possible to distinguish between expected failures (operating on an incomplete sphere,
+            # so sketch doesn't intersect) and unexpected failures (bad options, missing geometry, etc)?
+            except abaqus.AbaqusException as err:
+                pass
 
 
 def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs):
