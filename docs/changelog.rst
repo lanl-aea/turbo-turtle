@@ -175,6 +175,8 @@ v0.12.2 (2024-06-20)
 
 New Features
 ============
+- Abaqus implementation of the partitioning algorithm for 2D-axisymmetric parts (:issue:`181`, :merge:`217`). By
+ `Thomas Roberts`_.
 - Abaqus implementation of a ``sets`` subcommand for programmatic set creation (:issue:`164`, :merge:`161`). By `Kyle
   Brindley`_.
 - Abaqus implementation of an edge seed option in the ``mesh`` subcommand (:issue:`173`, :merge:`164`). By `Kyle
