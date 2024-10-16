@@ -208,7 +208,7 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
     :param list center: center location of the geometry
     :param float big_number: Number larger than the outer radius of the part to partition.
     :param tuple sketch_vertex_pairs: Tuple of vertices that make up the 3D partioning scheme's sketch (See
-        :meth:`turbo_turtle._abaqus_python.vertices.rectalinear_coordinates`)
+        :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`)
     """
 
     import abaqus
