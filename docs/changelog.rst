@@ -32,6 +32,9 @@ Internal Changes
   Brindley`_.
 - Add missing package to GitHub-CI environments (:issue:`226`, :merge:`219`). By `Kyle Brindley`_.
 - Drop Python 3.8 support as end-of-life by the end of October, 2024 (:issue:`211`, :merge:`220`). By `Kyle Brindley`_.
+- Set maximum ``sphinx_rtd_theme`` version because v3 removed the display version in sidebar support unless the
+  documentation is actually hosted on Read the Docs. Temporary solution to finding a new documentation theme
+  (:merge:`221`). By `Kyle Brindley`_.
 
 *********************
 v0.12.12 (2024-09-26)
