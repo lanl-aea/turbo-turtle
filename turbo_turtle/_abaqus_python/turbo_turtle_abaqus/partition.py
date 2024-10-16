@@ -84,23 +84,6 @@ def datum_plane(center, normal, part):
     return part.datums[part.DatumPlaneByPointNormal(point=tuple(center), normal=axis).id]
 
 
-def get_part_dimensionality(model_name, part_name):
-    """Get the Abaqus dimensionality of the current part
-
-    :param str model_name: model to query in the Abaqus model database
-    :param str part_name: part to query in the specified Abaqus model
-
-    :return: part dimensionality
-    :rtype: str
-    """
-    import abaqus
-
-    part = abaqus.mdb.models[model_name].parts[part_name]
-    geometry_properties = part.queryGeometry(printResults=False)
-    dimensionality = geometry_properties['space']
-    return dimensionality
-
-
 def partition(center, xvector, zvector, model_name, part_name, big_number=parsers.partition_defaults["big_number"]):
     """Partition the model/part with the turtle shell method, also know as the soccer ball method.
 
@@ -139,7 +122,8 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     )
 
     for current_part in part_name:
-        if get_part_dimensionality(model_name, current_part) == "Axisymmetric":  # Abaqus 2023.HF5
+        part = abaqus.mdb.models[model_name].parts[current_part]
+        if _abaqus_utilities.part_dimensionality_key(part) == "Axisymmetric":  # Abaqus 2023.HF5
             partition_2d(model_name, current_part, center, big_number, sketch_vertex_pairs)
         else:
             partition_3d(model_name, current_part, center, xvector, yvector, zvector, sketch_vertex_pairs)

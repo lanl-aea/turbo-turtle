@@ -80,6 +80,20 @@ def part_dimensionality(part):
     return known_geometries[geometry_key]
 
 
+def part_dimensionality_key(part):
+    """Get the Abaqus dimensionality key for the current part
+
+    :param abaqus.models[model].parts[part] part: Abaqus part object
+
+    :return: part dimensionality
+    :rtype: str
+    """
+    import abaqus
+
+    dimensionality = part.queryGeometry(printResults=False)["space"]
+    return dimensionality
+
+
 def set_from_mask(part, feature, name_mask):
     """Create named set(s) from the geometric feature and mask(s)
 
