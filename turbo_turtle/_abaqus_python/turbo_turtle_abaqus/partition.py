@@ -161,7 +161,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
                 )
             sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
             part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
-            vertex_1 = sketch_vertex_pairs[0][0]  # Positive 45-degree partition
+            vertex_1 = sketch_vertex_pairs[0][1]  # Positive 45-degree partition
             vertex_2 = sketch_vertex_pairs[1][1]  # Negative 45-degree partition
             vertex_3 = (big_number, 0.0)  # Must manually construct the horizontal partition
             sketch.Line(point1=(0.0, 0.0), point2=vertex_1)
