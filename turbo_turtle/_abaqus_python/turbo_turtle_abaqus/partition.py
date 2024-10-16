@@ -226,7 +226,7 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
         sheetSize=91.45,
         gridSpacing=2.28,
         transform=transform
-        )
+    )
     sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
     part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
     vertex_1 = sketch_vertex_pairs[0][1]  # Positive 45-degree partition
