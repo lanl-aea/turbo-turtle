@@ -123,7 +123,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
 
     for current_part in part_name:
         part = abaqus.mdb.models[model_name].parts[current_part]
-        if _abaqus_utilities.part_dimensionality_key(part) == "Axisymmetric":  # Abaqus 2023.HF5
+        if _abaqus_utilities.part_dimensionality_key(part) in ("Axisymmetric", "2D Planar"):  # Abaqus 2023.HF5
             partition_2d(model_name, current_part, center, big_number, sketch_vertex_pairs)
         else:
             partition_3d(model_name, current_part, center, xvector, yvector, zvector, sketch_vertex_pairs)
