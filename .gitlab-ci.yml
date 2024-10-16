@@ -63,7 +63,7 @@ environment:
     # Link SCons man pages to the expected MANPATH location
     - ln ${environment_path}/scons.1 ${environment_path}/man/man1/scons.1 || true
     - ln ${environment_path}/sconsign.1 ${environment_path}/man/man1/sconsign.1 || true
-    - ln ${environment_path}/scons-time.1 ${environment_path}/man/man1/scons-time.1 | true
+    - ln ${environment_path}/scons-time.1 ${environment_path}/man/man1/scons-time.1 || true
   tags:
     - shell-aea
 
