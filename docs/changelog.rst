@@ -23,6 +23,7 @@ New Features
 Bug fixes
 =========
 - Fix temporary file handling for Windows (:issue:`224`, :merge:`214`). By `Kyle Brindley`_.
+- Partition 2D models with Abaqus backend (:issue:`181`, :merge:`217`). By `Thomas Roberts`_.
 
 Internal Changes
 ================
