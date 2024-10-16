@@ -29,6 +29,7 @@ Internal Changes
 - Add Gmsh Python API to CI environment (:merge:`207`). By `Kyle Brindley`_.
 - Update system tests and example scons extensions to use WAVES v0.11.0 syntax (:issue:`225`, :merge:`215`). By `Kyle
   Brindley`_.
+- Add missing package to GitHub-CI environments (:issue:`226`, :merge:`219`). By `Kyle Brindley`_.
 
 *********************
 v0.12.12 (2024-09-26)
