@@ -147,7 +147,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     model = abaqus.mdb.models[model_name]
     for current_part in part_name:
         if get_part_dimensionality(model_name, current_part) == "Axisymmetric":  # Abaqus 2023.HF5
-            partition_2d(model_name, current_part, center, sketch_vertex_pairs)
+            partition_2d(model_name, current_part, center, big_number, sketch_vertex_pairs)
         else:
             part = model.parts[current_part]
 
@@ -198,7 +198,11 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         abaqus.mdb.models[model_name].parts[current_part].checkGeometry()
 
 
-def partition_2d(model_name, part_name, center, sketch_vertex_pairs):
+def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs):
+    import abaqus
+    import abaqusConstants
+
+    model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
     transform = part.MakeSketchTransform(
         sketchPlane=part.faces[0],
