@@ -235,12 +235,20 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
     )
     sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
     part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
-    vertex_1 = sketch_vertex_pairs[0][1]  # Positive 45-degree partition
-    vertex_2 = sketch_vertex_pairs[1][1]  # Negative 45-degree partition
-    vertex_3 = (big_number, 0.0)  # Must manually construct the horizontal partition
-    sketch.Line(point1=(0.0, 0.0), point2=vertex_1)
-    sketch.Line(point1=(0.0, 0.0), point2=vertex_2)
-    sketch.Line(point1=(0.0, 0.0), point2=vertex_3)
+
+    sketch_vertices = (
+        sketch_vertex_pairs[0][1],  # +x +45 degree partition
+        sketch_vertex_pairs[1][1],  # +x -45 degree partition
+        (big_number, 0.0),  # Must manually construct the +x horizontal partition
+        sketch_vertex_pairs[0][0],  # -x +45 degree partition
+        sketch_vertex_pairs[1][0],  # -x -45 degree partition
+        (-big_number, 0.0),  # Must manually construct the -x horizontal partition
+        (0.0, big_number),  # Must manually construct the +y vertical partition
+        (0.0, -big_number)  # Must manually construct the -y vertical partition
+    )
+
+    for current_vertex in sketch_vertices:
+        sketch.Line(point1=(0.0, 0.0), point2=current_vertex)
     try:
         part.PartitionFaceBySketch(faces=part.faces[:], sketch=sketch)
     # TODO: Is is possible to distinguish between expected failures (operating on an incomplete sphere, so
