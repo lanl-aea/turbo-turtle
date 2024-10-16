@@ -14,7 +14,7 @@ def positive_float(argument):
     """Type function for argparse - positive floats including zero
 
     Abaqus Python 2 and Python 3 compatible argparse type method:
-    https://docs.python.org/3.8/library/argparse.html#type.
+    https://docs.python.org/3.9/library/argparse.html#type.
 
     :param str argument: string argument from argparse
 
@@ -35,7 +35,7 @@ def positive_int(argument):
     """Type function for argparse - positive integers including zero
 
     Abaqus Python 2 and Python 3 compatible argparse type method:
-    https://docs.python.org/3.8/library/argparse.html#type.
+    https://docs.python.org/3.9/library/argparse.html#type.
 
     :param str argument: string argument from argparse
 

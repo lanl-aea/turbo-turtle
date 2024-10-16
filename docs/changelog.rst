@@ -31,6 +31,7 @@ Internal Changes
 - Update system tests and example scons extensions to use WAVES v0.11.0 syntax (:issue:`225`, :merge:`215`). By `Kyle
   Brindley`_.
 - Add missing package to GitHub-CI environments (:issue:`226`, :merge:`219`). By `Kyle Brindley`_.
+- Drop Python 3.8 support as end-of-life by the end of October, 2024 (:issue:`211`, :merge:`220`). By `Kyle Brindley`_.
 
 *********************
 v0.12.12 (2024-09-26)
