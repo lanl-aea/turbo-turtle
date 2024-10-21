@@ -37,10 +37,6 @@ release.
 Minor Number
 ************
 
-.. warning::
-
-   Until the version 1.0.0 release, minor increments may also indicate breaking changes.
-
 The minor number is updated for the following reasons:
 
 * New modules or major features
@@ -77,9 +73,10 @@ Steps needed for a release include:
 
 1. Create a release branch, e.g. ``release-0-4-1``.
 2. Modify ``docs/changelog.rst`` to move version number for release MR commit and add description as relevant.
-3. Commit changes and submit a merge request to the ``main`` branch at the upstream `repository`_.
-4. Solicit feedback and make any required changes.
-5. Immediately prior to merge, add the new version tag to the most recent commit.
+3. Update ``CITATION.*`` files for Zenodo DOI and version numbers.
+4. Commit changes and submit a merge request to the ``main`` branch at the upstream `repository`_.
+5. Solicit feedback and make any required changes.
+6. Immediately prior to merge, add the new version tag to the most recent commit.
 
    .. code-block::
 
