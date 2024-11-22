@@ -22,14 +22,20 @@ AddOption(
     help="SCons build (variant) root directory. Relative or absolute path. (default: '%default')"
 )
 
+# Inherit Conda environment from user's active environment and add options
 env = waves.scons_extensions.WAVESEnvironment(
     ENV=os.environ.copy(),
     variant_dir_base=GetOption("variant_dir_base")
 )
+
+# Find third-party software
 abaqus_versions = (2024, 2023, 2022, 2021, 2020)
 env["abaqus_matrix"] = {
     f"abq{version}": env.AddProgram([f"/apps/abaqus/Commands/abq{version}"]) for version in abaqus_versions
 }
+env.AddCubit(["/apps/Cubit-16.12/cubit"])
+
+# Set project meta data
 project_variables = {
     "project_dir": Dir(".").abspath,
     "version": setuptools_scm.get_version(),
@@ -38,6 +44,7 @@ for key, value in project_variables.items():
     env[key] = value
 project_variables_substitution = env.SubstitutionSyntax(project_variables)
 
+# Add documentation build
 variant_dir_base = pathlib.Path(env["variant_dir_base"])
 build_dir = variant_dir_base / "docs"
 SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_variables_substitution"])

@@ -3,50 +3,46 @@
 # Prereqs and conflicts
 conflict aea-release
 conflict aea-quarterly
-conflict aea-beta
+conflict aea-nightly
 conflict waves-env
 
 # Set AEA standard software version and environment names
-set cubit_version "Cubit-16.12"
 set environment "turbo-turtle-dev"
 
 # Get current hostname
 set hostname [info hostname]
 
+# Get the current user
+set user $env(USER)
+
 # Set host specific environment information
 set projects ""
-set software_prefix ""
-set cubit_path ""
 set anaconda_path ""
 # HPC case
 if { [ string match "*.localdomain" $hostname ] ||
      [ string match "??-rfe?.lanl.gov" $hostname ] ||
-     [ string match "??-fe?.lanl.gov" $hostname ] } {
+     [ string match "??-fe?.lanl.gov" $hostname ] ||
+     [ string match "nid??????" $hostname ] } {
     set projects "/usr/projects/ea"
-    set cubit_path "$projects/Cubit/$cubit_version"
+    set scratch "/lustre/roscratch1/$user"
+    set ci_environment_path "$scratch"
 # W-13 machine cases
 } elseif { [ string match "*.lanl.gov" $hostname ] } {
-    set software_prefix "/apps"
     set projects "/projects"
-    set cubit_path "$software_prefix/$cubit_version"
+    set scratch "/scratch/$user"
+    set ci_environment_path "$projects/aea_compute"
 # Error out
 } else {
     error "Unknown or unsupported host"
 }
-set environment_path "$projects/aea_compute/$environment"
+set environment_path "$ci_environment_path/$environment"
 set anaconda_source "$environment_path/etc/profile.d/conda.sh"
 set environment_bin "$environment_path/bin"
 set environment_man "$environment_path/share/man"
-set cubit_bin "$cubit_path/bin"
 
 # Set the bash environment variables similarly to HPC anaconda module
-# Reference - sn-rfe.lanl.gov:/usr/projects/hpcsoft/modulefiles/toss3/snow/tools/python/3.10-anaconda-2023.03
 prepend-path PATH "$environment_bin"
 prepend-path MANPATH "$environment_man"
-
-# Set the bash environment variables for commonly used AEA software
-append-path PATH "$cubit_path"
-append-path PYTHONPATH "$cubit_bin"
 
 # Activate the Conda environment
 # Variables and functions from $anaconda_path/etc/profile.d/conda.sh initialization script that must be unset
@@ -54,7 +50,7 @@ set conda_variables "CONDA_SHLVL CONDA_EXE _CE_CONDA CONDA_PYTHON_EXE"
 set conda_functions "__add_sys_prefix_to_path __conda_hashr __conda_activate __conda_reactivate conda"
 if { [module-info mode load] || [module-info mode switch2] } {
     puts stdout "source $anaconda_source > /dev/null;"
-    puts stdout "conda activate $projects/aea_compute/$environment;"
+    puts stdout "conda activate $environment_path;"
 } elseif { [module-info mode remove] && ![module-info mode switch3] } {
     # TODO: use "getenv" when module v4.0 is available
     # https://modules.readthedocs.io/en/latest/modulefile.html#mfcmd-getenv
@@ -75,28 +71,20 @@ module-whatis "Configure the common TurboTurtle CI/development Conda environment
 proc ModulesHelp {} {
     global hostname
     global environment
-    global software_prefix
     global projects
     global anaconda_path
     global environment_path
     global environment_bin
     global environment_man
-    global cubit_version
-    global cubit_path
-    global cubit_bin
 
     puts stderr "\nWAVES modulefiles debugging information"
     puts stderr "hostname: $hostname"
     puts stderr "environment: $environment"
-    puts stderr "software_prefix: $software_prefix"
     puts stderr "projects: $projects"
     puts stderr "anaconda_path: $anaconda_path"
     puts stderr "environment_path: $environment_path"
-    puts stderr "cubit_version: $cubit_version"
 
     puts stderr "\n\nModifies environment variables"
     puts stderr "PATH prepended with: $environment_bin"
-    puts stderr "PATH appended with: $cubit_path"
-    puts stderr "PYTHONPATH appended with: $cubit_bin"
     puts stderr "MANPATH prepended with: $environment_man"
 }
