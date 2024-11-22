@@ -16,7 +16,7 @@ AddOption(
     dest="variant_dir_base",
     default="build",
     nargs=1,
-    type=pathlib.Path,
+    type=str,
     action="store",
     metavar="DIR",
     help="SCons build (variant) root directory. Relative or absolute path. (default: '%default')"
@@ -25,7 +25,7 @@ AddOption(
 # Inherit Conda environment from user's active environment and add options
 env = waves.scons_extensions.WAVESEnvironment(
     ENV=os.environ.copy(),
-    variant_dir_base=GetOption("variant_dir_base")
+    variant_dir_base=pathlib.Path(GetOption("variant_dir_base"))
 )
 
 # Find third-party software
