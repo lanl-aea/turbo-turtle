@@ -26,7 +26,10 @@ env = waves.scons_extensions.WAVESEnvironment(
     ENV=os.environ.copy(),
     variant_dir_base=GetOption("variant_dir_base")
 )
-env["abaqus"] = env.AddProgram(["/apps/abaqus/Commands/abq2023", "abq2023"])
+abaqus_versions = (2024, 2023, 2022, 2021, 2020)
+env["abaqus_matrix"] = {
+    f"abq{version}": env.AddProgram([f"/apps/abaqus/Commands/abq{version}"]) for version in abaqus_versions
+}
 project_variables = {
     "project_dir": Dir(".").abspath,
     "version": setuptools_scm.get_version(),

@@ -44,23 +44,24 @@ env.Alias("systemtest", targets)
 env.Alias("regression", targets)
 env.AlwaysBuild(targets)
 
-target = ["test_abaqus_python.txt"]
-source = [
-    "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_abaqus_utilities.py",
-    "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_mixed_utilities.py",
-    "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_parsers.py",
-    "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_vertices.py",
-]
-targets = env.Command(
-    target=target,
-    source=source,
-    action=[
-        "PYTHONDONTWRITEBYTECODE=1 ${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose 2>&1 | tee ${TARGET.abspath}"
-    ],
-    program=env["abaqus"]
-)
-env.Alias("test_abaqus_python", targets)
-env.Alias("unittests", targets)
-env.Alias("regression", targets)
-# Always run pytests in place of a complete source list
-env.AlwaysBuild(targets)
+for name, path in env["abaqus_matrix"].items():
+    target = [f"test_{name}_python.txt"]
+    source = [
+        "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_abaqus_utilities.py",
+        "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_mixed_utilities.py",
+        "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_parsers.py",
+        "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_vertices.py",
+    ]
+    targets = env.Command(
+        target=target,
+        source=source,
+        action=[
+            "PYTHONDONTWRITEBYTECODE=1 ${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose 2>&1 | tee ${TARGET.abspath}"
+        ],
+        program=path
+    )
+    env.Alias("test_abaqus_python", targets)
+    env.Alias("unittests", targets)
+    env.Alias("regression", targets)
+    # Always run pytests in place of a complete source list
+    env.AlwaysBuild(targets)
