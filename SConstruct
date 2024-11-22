@@ -27,6 +27,7 @@ env = waves.scons_extensions.WAVESEnvironment(
     ENV=os.environ.copy(),
     variant_dir_base=pathlib.Path(GetOption("variant_dir_base"))
 )
+env["ENV"]["PYTHONDONTWRITEBYTECODE"] = 1
 
 # Find third-party software
 abaqus_versions = (2024, 2023, 2022, 2021, 2020)

@@ -396,23 +396,24 @@ for files in sconstruct_files:
 @pytest.mark.systemtest
 @pytest.mark.require_third_party
 @pytest.mark.parametrize("number, commands", enumerate(commands_list))
-def test_shell_commands(number: int, commands: list):
-    """Run the system tests.
+def test_shell_commands(abaqus_command, cubit_command, number: int, commands: list):
+    """Run system tests that require third-party software
 
     Executes with a temporary directory that is cleaned up after each test execution.
+
+    Accepts custom pytest CLI options to specify abaqus and cubit commands
+
+    .. code-block::
+
+       pytest --abaqus-command /my/system/abaqus --cubit-command /my/system/cubit
 
     :param number: the command number. Used during local testing to separate command directories.
     :param command: the full list of command string(s) for the system test
     """
     if isinstance(commands, str):
         commands = [commands]
-    if installed:
-        with tempfile.TemporaryDirectory() as temp_directory:
-            run_commands(commands, temp_directory)
-    else:
-        command_directory = build_directory / f"commands{number}"
-        command_directory.mkdir(parents=True, exist_ok=True)
-        run_commands(commands, command_directory)
+    commands = [command + f"--abaqus-command {abaqus_command} --cubit-command {cubit_command}" for command in commands]
+    test_project_shell_commands(number, commands)
 
 
 def run_commands(commands, build_directory):
@@ -430,11 +431,22 @@ project_only_commands_list.append(f"{turbo_turtle_command} fetch")
 @pytest.mark.systemtest
 @pytest.mark.parametrize("number, commands", enumerate(project_only_commands_list))
 def test_project_shell_commands(number: int, commands: list):
-    """Run system tests that do not require third-party software
+    """Run the system tests.
 
-    Thin wrapper of :meth:`test_shell_commands` with a different set of function level pytest marks
+    Executes with a temporary directory that is cleaned up after each test execution.
 
-    :param number: the command number. Used during local testing to separate command directories.
-    :param command: the full list of command string(s) for the system test
+    Accepts custom pytest CLI options to specify abaqus and cubit commands
+
+    .. code-block::
+
+       pytest --abaqus-command /my/system/abaqus --cubit-command /my/system/cubit
     """
-    test_shell_commands(number, commands)
+    if isinstance(commands, str):
+        commands = [commands]
+    if installed:
+        with tempfile.TemporaryDirectory() as temp_directory:
+            run_commands(commands, temp_directory)
+    else:
+        command_directory = build_directory / f"commands{number}"
+        command_directory.mkdir(parents=True, exist_ok=True)
+        run_commands(commands, command_directory)

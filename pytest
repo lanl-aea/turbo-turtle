@@ -10,7 +10,7 @@ pytest_source_list = [
     "pyproject.toml",
 ]
 
-pytest_command = "PYTHONDONTWRITEBYTECODE=1 pytest --junitxml=${TARGET.abspath}"
+pytest_command = "cd turbo_turtle/ && pytest --junitxml=${TARGET.abspath}"
 coverage_command = "coverage xml -o ${TARGETS[1].abspath}"
 targets = env.Command(
     target=["test_results.xml", "coverage.xml"],
@@ -31,7 +31,7 @@ env.AlwaysBuild(targets)
 for name, cubit_environment in env["cubit_environments"].items():
     targets = cubit_environment.Command(
         target=[f"test_{name}_results.xml"],
-        source=pytest_source_list + ["turbo_turtle/tests/test_cubit_python.py"],
+        source=pytest_source_list + ["tests/test_cubit_python.py"],
         action=[
             "${pytest_command} ${SOURCES[1].abspath} -vvv -n 4 -m 'not systemtest' --cov",
         ],
@@ -47,9 +47,14 @@ targets = env.Command(
     target=["systemtest_results.xml"],
     source=source,
     action=[
-        "${pytest_command} -v --no-showlocals -n 4 -m systemtest --tb=short --cache-clear"
+        (
+            "${pytest_command} -v --no-showlocals -n 4 -m systemtest --tb=short --cache-clear "
+            "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
+        ),
     ],
-    pytest_command=pytest_command
+    pytest_command=pytest_command,
+    abaqus_command="/apps/abaqus/Commands/abq2023",
+    cubit_command="/apps/Cubit-16.16/cubit",
 )
 env.Alias("systemtest", targets)
 env.Alias("systemtests", targets)
