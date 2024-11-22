@@ -15,7 +15,7 @@ dependencies:
   - pytest-xdist
   - python-build
   - python-gmsh >=4
-  - scons >=4
+  - scons >=4.6
   - setuptools >=64
   - setuptools_scm >=8
   - sphinx >=5.1

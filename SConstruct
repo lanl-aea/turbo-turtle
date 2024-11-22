@@ -16,7 +16,7 @@ AddOption(
     dest="variant_dir_base",
     default="build",
     nargs=1,
-    type="string",
+    type=pathlib.Path,
     action="store",
     metavar="DIR",
     help="SCons build (variant) root directory. Relative or absolute path. (default: '%default')"
@@ -52,9 +52,8 @@ for key, value in project_variables.items():
 project_variables_substitution = env.SubstitutionSyntax(project_variables)
 
 # Add documentation build
-variant_dir_base = pathlib.Path(env["variant_dir_base"])
 build_dir = variant_dir_base / "docs"
-SConscript(dirs="docs", variant_dir=pathlib.Path(build_dir), exports=["env", "project_variables_substitution"])
+SConscript(dirs="docs", variant_dir=build_dir, exports=["env", "project_variables_substitution"])
 
 # Add pytests, style checks, and static type checking
 workflow_configurations = ["pytest", "flake8", "mypy", "cProfile"]
