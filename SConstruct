@@ -33,7 +33,12 @@ abaqus_versions = (2024, 2023, 2022, 2021, 2020)
 env["abaqus_matrix"] = {
     f"abq{version}": env.AddProgram([f"/apps/abaqus/Commands/abq{version}"]) for version in abaqus_versions
 }
-env.AddCubit(["/apps/Cubit-16.12/cubit"])
+cubit_versions = ("16.16", "16.12")
+env["cubit_environments"] = dict()
+for version in cubit_versions:
+    cubit_environment = env.Clone()
+    cubit_environment.AddProgram([f"/apps/Cubit-{version}/cubit"])
+    env["cubit_environments"].update({f"cubit{version}": cubit_environment})
 
 # Set project meta data
 project_variables = {

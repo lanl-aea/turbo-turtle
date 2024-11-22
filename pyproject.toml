@@ -55,7 +55,7 @@ markers = [
     "systemtest: marks system tests, e.g. the tutorials",
     "require_third_party: marks system tests that require third-party software command line calls",
 ]
-addopts = "--ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers"
+addopts = "--ignore=turbo_turtle/tests/test_cubit_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers"
 
 [tool.mypy]
 disable_error_code = [
