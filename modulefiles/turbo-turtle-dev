@@ -17,7 +17,6 @@ set hostname [info hostname]
 set projects ""
 set software_prefix ""
 set cubit_path ""
-set abaqus_path ""
 set anaconda_path ""
 # HPC case
 if { [ string match "*.localdomain" $hostname ] ||
@@ -25,13 +24,11 @@ if { [ string match "*.localdomain" $hostname ] ||
      [ string match "??-fe?.lanl.gov" $hostname ] } {
     set projects "/usr/projects/ea"
     set cubit_path "$projects/Cubit/$cubit_version"
-    set abaqus_path "$projects/abaqus/Commands"
 # W-13 machine cases
 } elseif { [ string match "*.lanl.gov" $hostname ] } {
     set software_prefix "/apps"
     set projects "/projects"
     set cubit_path "$software_prefix/$cubit_version"
-    set abaqus_path "$software_prefix/abaqus/Commands"
 # Error out
 } else {
     error "Unknown or unsupported host"
@@ -48,7 +45,6 @@ prepend-path PATH "$environment_bin"
 prepend-path MANPATH "$environment_man"
 
 # Set the bash environment variables for commonly used AEA software
-append-path PATH "$abaqus_path"
 append-path PATH "$cubit_path"
 append-path PYTHONPATH "$cubit_bin"
 
@@ -86,7 +82,6 @@ proc ModulesHelp {} {
     global environment_bin
     global environment_man
     global cubit_version
-    global abaqus_path
     global cubit_path
     global cubit_bin
 
@@ -98,11 +93,10 @@ proc ModulesHelp {} {
     puts stderr "anaconda_path: $anaconda_path"
     puts stderr "environment_path: $environment_path"
     puts stderr "cubit_version: $cubit_version"
-    puts stderr "abaqus_path: $abaqus_path"
 
     puts stderr "\n\nModifies environment variables"
     puts stderr "PATH prepended with: $environment_bin"
-    puts stderr "PATH appended with: $abaqus_path:$cubit_path"
+    puts stderr "PATH appended with: $cubit_path"
     puts stderr "PYTHONPATH appended with: $cubit_bin"
     puts stderr "MANPATH prepended with: $environment_man"
 }
