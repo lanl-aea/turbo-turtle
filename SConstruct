@@ -52,13 +52,13 @@ for key, value in project_variables.items():
 project_variables_substitution = env.SubstitutionSyntax(project_variables)
 
 # Add documentation build
-build_dir = variant_dir_base / "docs"
+build_dir = env["variant_dir_base"] / "docs"
 SConscript(dirs="docs", variant_dir=build_dir, exports=["env", "project_variables_substitution"])
 
 # Add pytests, style checks, and static type checking
 workflow_configurations = ["pytest", "flake8", "mypy", "cProfile"]
 for workflow in workflow_configurations:
-    build_dir = variant_dir_base / workflow
+    build_dir = env["variant_dir_base"] / workflow
     SConscript(build_dir.name, variant_dir=build_dir, exports='env', duplicate=False)
 
 waves.scons_extensions.project_help_message()
