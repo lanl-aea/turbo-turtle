@@ -52,6 +52,7 @@ targets = env.Command(
     pytest_command=pytest_command
 )
 env.Alias("systemtest", targets)
+env.Alias("systemtests", targets)
 env.Alias("regression", targets)
 env.AlwaysBuild(targets)
 

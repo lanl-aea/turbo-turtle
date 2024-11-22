@@ -39,6 +39,8 @@ for version in cubit_versions:
     cubit_environment = env.Clone()
     cubit_environment.AddProgram([f"/apps/Cubit-{version}/cubit"])
     env["cubit_environments"].update({f"cubit{version}": cubit_environment})
+# TODO: separate the systemtests by third-party software and test against the appropriate environment matrix
+env.AddCubit(["/apps/Cubit-16.16/cubit"])
 
 # Set project meta data
 project_variables = {
