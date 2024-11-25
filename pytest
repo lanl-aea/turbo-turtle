@@ -42,25 +42,6 @@ for name, cubit_environment in env["cubit_environments"].items():
     # Always run pytests in place of a complete source list
     cubit_environment.AlwaysBuild(targets)
 
-source = pytest_source_list + [str(pathlib.Path("turbo_turtle/tests/test_system.py"))]
-targets = env.Command(
-    target=["systemtest_results.xml"],
-    source=source,
-    action=[
-        (
-            "${pytest_command} -v --no-showlocals -n 4 -m systemtest --tb=short --cache-clear "
-            "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
-        ),
-    ],
-    pytest_command=pytest_command,
-    abaqus_command="/apps/abaqus/Commands/abq2023",
-    cubit_command="/apps/Cubit-16.16/cubit",
-)
-env.Alias("systemtest", targets)
-env.Alias("systemtests", targets)
-env.Alias("regression", targets)
-env.AlwaysBuild(targets)
-
 # Abaqus unit tests
 for name, path in env["abaqus_matrix"].items():
     source = [
@@ -81,3 +62,25 @@ for name, path in env["abaqus_matrix"].items():
     env.Alias("regression", targets)
     # Always run pytests in place of a complete source list
     env.AlwaysBuild(targets)
+
+# System tests
+# TODO: test against a matrix of Abaqus/Cubit versions
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/233
+source = pytest_source_list + [str(pathlib.Path("turbo_turtle/tests/test_system.py"))]
+targets = env.Command(
+    target=["systemtest_results.xml"],
+    source=source,
+    action=[
+        (
+            "${pytest_command} -v --no-showlocals -n 4 -m systemtest --tb=short --cache-clear "
+            "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
+        ),
+    ],
+    pytest_command=pytest_command,
+    abaqus_command="/apps/abaqus/Commands/abq2023",
+    cubit_command="/apps/Cubit-16.16/cubit",
+)
+env.Alias("systemtest", targets)
+env.Alias("systemtests", targets)
+env.Alias("regression", targets)
+env.AlwaysBuild(targets)
