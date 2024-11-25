@@ -8,6 +8,10 @@ Changelog
 v1.1.0 (unreleased)
 *******************
 
+Internal Changes
+================
+- Run the unit tests against a matrix of Abaqus and Cubit versions (:issue:`141`, :merge:`224`). By `Kyle Brindley`_.
+
 *******************
 v1.0.0 (2024-10-21)
 *******************
