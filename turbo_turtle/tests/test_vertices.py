@@ -23,10 +23,10 @@ compare_xy_values = {
         numpy.array([[0, 0], [1, 1]]), [False, False], None, None
     ),
     "inside default rtol": (
-        numpy.array([[100, 0], [100 + 100*5e-6, 1]]), [False, True], None, None
+        numpy.array([[100, 0], [100 + 100 * 5e-6, 1]]), [False, True], None, None
     ),
     "adjust rtol": (
-        numpy.array([[100, 0], [100 + 100*5e-6, 1]]), [False, False], 1e-6, None
+        numpy.array([[100, 0], [100 + 100 * 5e-6, 1]]), [False, False], 1e-6, None
     ),
 }
 
@@ -104,35 +104,35 @@ break_coordinates = {
         [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])]
     ),
     "vase": (
-        numpy.array([[ 5.1, -5. ],
-                     [ 5. , -4.8],
-                     [ 4.5, -4. ],
-                     [ 4.1, -3. ],
-                     [ 4. , -2.5],
-                     [ 4. ,  2.5],
-                     [ 4.1,  3. ],
-                     [ 4.5,  4. ],
-                     [ 5. ,  4.8],
-                     [ 5.1,  5. ],
-                     [ 3. ,  5. ],
-                     [ 3. , -4. ],
-                     [ 0. , -4. ],
-                     [ 0. , -5. ]]),
+        numpy.array([[ 5.1, -5. ],  # noqa: E201,E202
+                     [ 5. , -4.8],  # noqa: E201,E202,E203
+                     [ 4.5, -4. ],  # noqa: E201,E202
+                     [ 4.1, -3. ],  # noqa: E201,E202
+                     [ 4. , -2.5],  # noqa: E201,E202,E203
+                     [ 4. ,  2.5],  # noqa: E201,E202,E203,E241
+                     [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
+                     [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
+                     [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
+                     [ 5.1,  5. ],  # noqa: E201,E202,E203,E241
+                     [ 3. ,  5. ],  # noqa: E201,E202,E203,E241
+                     [ 3. , -4. ],  # noqa: E201,E202,E203
+                     [ 0. , -4. ],  # noqa: E201,E202,E203,E241
+                     [ 0. , -5. ]]),  # noqa: E201,E202,E203,E241
         4,
-        [numpy.array([[ 5.1, -5. ],
-                      [ 5. , -4.8],
-                      [ 4.5, -4. ],
-                      [ 4.1, -3. ],
-                      [ 4. , -2.5]]),
-         numpy.array([[ 4. ,  2.5],
-                      [ 4.1,  3. ],
-                      [ 4.5,  4. ],
-                      [ 5. ,  4.8],
-                      [ 5.1,  5. ]]),
-         numpy.array([[ 3.0,  5.0]]),
-         numpy.array([[ 3.0, -4.0]]),
-         numpy.array([[ 0.0, -4.0]]),
-         numpy.array([[ 0.0, -5.0]])]
+        [numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
+                      [ 5. , -4.8],  # noqa: E201,E202,E203,E241
+                      [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
+                      [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
+                      [ 4. , -2.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 4. ,  2.5],  # noqa: E201,E202,E203,E241
+                      [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
+                      [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
+                      [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
+                      [ 5.1,  5. ]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 3.0,  5.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 3.0, -4.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 0.0, -4.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 0.0, -5.0]])]  # noqa: E201,E202,E203,E241
     )
 }
 
@@ -150,31 +150,31 @@ line_pairs = {
     "washer": (
         [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])],
         [(numpy.array([1.0, -0.5]), numpy.array([2.0, -0.5])),
-         (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),
-         (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),
-         (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5]))]
+         (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),  # noqa: E201,E202,E203,E241
+         (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),  # noqa: E201,E202,E203,E241
+         (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5]))]  # noqa: E201,E202,E203,E241
     ),
     "vase": (
-        [numpy.array([[ 5.1, -5. ],
-                      [ 5. , -4.8],
-                      [ 4.5, -4. ],
-                      [ 4.1, -3. ],
-                      [ 4. , -2.5]]),
-         numpy.array([[ 4. ,  2.5],
-                      [ 4.1,  3. ],
-                      [ 4.5,  4. ],
-                      [ 5. ,  4.8],
-                      [ 5.1,  5. ]]),
-         numpy.array([[ 3.0,  5.0]]),
-         numpy.array([[ 3.0, -4.0]]),
-         numpy.array([[ 0.0, -4.0]]),
-         numpy.array([[ 0.0, -5.0]])],
-        [(numpy.array([ 4. , -2.5]), numpy.array([ 4. ,  2.5])),
-         (numpy.array([ 5.1,  5. ]), numpy.array([ 3.0,  5.0])),
-         (numpy.array([ 3.0,  5.0]), numpy.array([ 3.0, -4.0])),
-         (numpy.array([ 3.0, -4.0]), numpy.array([ 0.0, -4.0])),
-         (numpy.array([ 0.0, -4.0]), numpy.array([ 0.0, -5.0])),
-         (numpy.array([ 0.0, -5.0]), numpy.array([ 5.1, -5. ]))]
+        [numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
+                      [ 5. , -4.8],  # noqa: E201,E202,E203,E241
+                      [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
+                      [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
+                      [ 4. , -2.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 4. ,  2.5],  # noqa: E201,E202,E203,E241
+                      [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
+                      [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
+                      [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
+                      [ 5.1,  5. ]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 3.0,  5.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 3.0, -4.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 0.0, -4.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 0.0, -5.0]])],  # noqa: E201,E202,E203,E241
+        [(numpy.array([ 4. , -2.5]), numpy.array([ 4. ,  2.5])),  # noqa: E201,E202,E203,E241
+         (numpy.array([ 5.1,  5. ]), numpy.array([ 3.0,  5.0])),  # noqa: E201,E202,E203,E241
+         (numpy.array([ 3.0,  5.0]), numpy.array([ 3.0, -4.0])),  # noqa: E201,E202,E203,E241
+         (numpy.array([ 3.0, -4.0]), numpy.array([ 0.0, -4.0])),  # noqa: E201,E202,E203,E241
+         (numpy.array([ 0.0, -4.0]), numpy.array([ 0.0, -5.0])),  # noqa: E201,E202,E203,E241
+         (numpy.array([ 0.0, -5.0]), numpy.array([ 5.1, -5. ]))]  # noqa: E201,E202,E203,E241
     ),
 }
 
@@ -230,44 +230,44 @@ the_real_mccoy = {
     "washer": (
         numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
         4,
-        [numpy.array([[1.0, -0.5], [2.0, -0.5]]),
-         numpy.array([[2.0, -0.5], [2.0,  0.5]]),
-         numpy.array([[2.0,  0.5], [1.0,  0.5]]),
-         numpy.array([[1.0,  0.5], [1.0, -0.5]])],
+        [numpy.array([[1.0, -0.5], [2.0, -0.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[1.0,  0.5], [1.0, -0.5]])],  # noqa: E201,E202,E203,E241
         []
     ),
     "vase": (
-        numpy.array([[ 5.1, -5. ],
-                     [ 5. , -4.8],
-                     [ 4.5, -4. ],
-                     [ 4.1, -3. ],
-                     [ 4. , -2.5],
-                     [ 4. ,  2.5],
-                     [ 4.1,  3. ],
-                     [ 4.5,  4. ],
-                     [ 5. ,  4.8],
-                     [ 5.1,  5. ],
-                     [ 3. ,  5. ],
-                     [ 3. , -4. ],
-                     [ 0. , -4. ],
-                     [ 0. , -5. ]]),
+        numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
+                     [ 5. , -4.8],  # noqa: E201,E202,E203,E241
+                     [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
+                     [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
+                     [ 4. , -2.5],  # noqa: E201,E202,E203,E241
+                     [ 4. ,  2.5],  # noqa: E201,E202,E203,E241
+                     [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
+                     [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
+                     [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
+                     [ 5.1,  5. ],  # noqa: E201,E202,E203,E241
+                     [ 3. ,  5. ],  # noqa: E201,E202,E203,E241
+                     [ 3. , -4. ],  # noqa: E201,E202,E203,E241
+                     [ 0. , -4. ],  # noqa: E201,E202,E203,E241
+                     [ 0. , -5. ]]),  # noqa: E201,E202,E203,E241
         4,
-        [numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),
-         numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),
-         numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),
-         numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),
-         numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),
-         numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]])],
-        [numpy.array([[ 5.1, -5. ],
-                      [ 5. , -4.8],
-                      [ 4.5, -4. ],
-                      [ 4.1, -3. ],
-                      [ 4. , -2.5]]),
-         numpy.array([[ 4. ,  2.5],
-                      [ 4.1,  3. ],
-                      [ 4.5,  4. ],
-                      [ 5. ,  4.8],
-                      [ 5.1,  5. ]])]
+        [numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]])],  # noqa: E201,E202,E203,E241
+        [numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
+                      [ 5. , -4.8],  # noqa: E201,E202,E203,E241
+                      [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
+                      [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
+                      [ 4. , -2.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 4. ,  2.5],  # noqa: E201,E202,E203,E241
+                      [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
+                      [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
+                      [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
+                      [ 5.1,  5. ]])]  # noqa: E201,E202,E203,E241
     )
 }
 
@@ -290,44 +290,44 @@ ordered_lines_and_splines = {
     "washer": (
         numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
         4,
-        [numpy.array([[1.0, -0.5], [2.0, -0.5]]),
-         numpy.array([[2.0, -0.5], [2.0,  0.5]]),
-         numpy.array([[2.0,  0.5], [1.0,  0.5]]),
-         numpy.array([[1.0,  0.5], [1.0, -0.5]])],
+        [numpy.array([[1.0, -0.5], [2.0, -0.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[1.0,  0.5], [1.0, -0.5]])],  # noqa: E201,E202,E203,E241
     ),
     "vase": (
-        numpy.array([[ 5.1, -5. ],
-                     [ 5. , -4.8],
-                     [ 4.5, -4. ],
-                     [ 4.1, -3. ],
-                     [ 4. , -2.5],
-                     [ 4. ,  2.5],
-                     [ 4.1,  3. ],
-                     [ 4.5,  4. ],
-                     [ 5. ,  4.8],
-                     [ 5.1,  5. ],
-                     [ 3. ,  5. ],
-                     [ 3. , -4. ],
-                     [ 0. , -4. ],
-                     [ 0. , -5. ]]),
+        numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
+                     [ 5. , -4.8],  # noqa: E201,E202,E203,E241
+                     [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
+                     [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
+                     [ 4. , -2.5],  # noqa: E201,E202,E203,E241
+                     [ 4. ,  2.5],  # noqa: E201,E202,E203,E241
+                     [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
+                     [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
+                     [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
+                     [ 5.1,  5. ],  # noqa: E201,E202,E203,E241
+                     [ 3. ,  5. ],  # noqa: E201,E202,E203,E241
+                     [ 3. , -4. ],  # noqa: E201,E202,E203,E241
+                     [ 0. , -4. ],  # noqa: E201,E202,E203,E241
+                     [ 0. , -5. ]]),  # noqa: E201,E202,E203,E241
         4,
         [
-         numpy.array([[ 5.1, -5. ],
-                      [ 5. , -4.8],
-                      [ 4.5, -4. ],
-                      [ 4.1, -3. ],
-                      [ 4. , -2.5]]),
-         numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),
-         numpy.array([[ 4. ,  2.5],
-                      [ 4.1,  3. ],
-                      [ 4.5,  4. ],
-                      [ 5. ,  4.8],
-                      [ 5.1,  5. ]]),
-         numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),
-         numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),
-         numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),
-         numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),
-         numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]])
+         numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
+                      [ 5. , -4.8],  # noqa: E201,E202,E203,E241
+                      [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
+                      [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
+                      [ 4. , -2.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 4. ,  2.5],  # noqa: E201,E202,E203,E241
+                      [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
+                      [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
+                      [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
+                      [ 5.1,  5. ]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),  # noqa: E201,E202,E203,E241
+         numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]])  # noqa: E201,E202,E203,E241
         ]
     )
 }
@@ -344,18 +344,25 @@ def test_ordered_lines_and_splines(coordinates, euclidean_distance, expected_lin
 
 
 def test_lines_and_splines_passthrough():
-    with patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._break_coordinates", return_value=[]) as mock_break_coordinates, \
-         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._line_pairs", return_value=[]):
+    with (
+        patch(
+            "turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._break_coordinates",
+            return_value=[]
+        ) as mock_break_coordinates,
+        patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._line_pairs", return_value=[]),
+    ):
         all_splines = vertices.lines_and_splines([], 4.0, rtol=1e-5, atol=1e-9)
         mock_break_coordinates.assert_called_once_with([], 4.0, rtol=1e-5, atol=1e-9)
 
 
 def test_break_coordinates_passthrough():
-    with patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_xy_values") as mock_xy_values, \
-         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_euclidean_distance"), \
-         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._bool_via_or"), \
-         patch("numpy.where"), \
-         patch("numpy.split"):
+    with (
+        patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_xy_values") as mock_xy_values,
+        patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_euclidean_distance"),
+        patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._bool_via_or"),
+        patch("numpy.where"),
+        patch("numpy.split"),
+    ):
         all_splines = vertices._break_coordinates([], 4.0, rtol=1e-5, atol=1e-9)
         mock_xy_values.assert_called_once_with([], rtol=1e-5, atol=1e-9)
 
@@ -385,10 +392,12 @@ def test_cylinder(inner_radius, outer_radius, height, y_offset, expected):
 cylinder_lines = {
     "no offset": (
         1., 2., 1., None,
-        [(numpy.array([1.,  0.5]), numpy.array([2.,  0.5])),
-         (numpy.array([2.,  0.5]), numpy.array([2., -0.5])),
-         (numpy.array([2., -0.5]), numpy.array([1., -0.5])),
-         (numpy.array([1., -0.5]), numpy.array([1.,  0.5]))],
+        [
+            (numpy.array([1.,  0.5]), numpy.array([2.,  0.5])),  # noqa: E241
+            (numpy.array([2.,  0.5]), numpy.array([2., -0.5])),  # noqa: E241
+            (numpy.array([2., -0.5]), numpy.array([1., -0.5])),
+            (numpy.array([1., -0.5]), numpy.array([1.,  0.5]))  # noqa: E241
+        ],
     ),
     "offset half height": (
         1., 2., 1., 0.5,
@@ -491,6 +500,7 @@ def test_midpoint_vector(first, second, expected):
     midpoint = vertices.midpoint_vector(first, second)
     assert numpy.allclose(midpoint, expected)
 
+
 is_parallel = {
     "identical": (
         (1., 1., 1.), (1., 1., 1.), True
@@ -541,12 +551,12 @@ datum_planes = {
          numpy.array([0., 0., 1.]),  # XY plane
          numpy.array([1., 0., 0.]),  # YZ plane
          numpy.array([0., 1., 0.]),  # ZX plane
-         numpy.array([ norm,  norm, 0.]),
-         numpy.array([ norm, -norm, 0.]),
-         numpy.array([ 0., norm,  norm]),
-         numpy.array([ 0., norm, -norm]),
-         numpy.array([  norm, 0., norm]),
-         numpy.array([ -norm, 0., norm])
+         numpy.array([ norm,  norm, 0.]),  # noqa: E201,E241
+         numpy.array([ norm, -norm, 0.]),  # noqa: E201,E241
+         numpy.array([ 0., norm,  norm]),  # noqa: E201,E241
+         numpy.array([ 0., norm, -norm]),  # noqa: E201,E241
+         numpy.array([  norm, 0., norm]),  # noqa: E201,E241
+         numpy.array([ -norm, 0., norm])  # noqa: E201,E241
         ]
     ),
 }
@@ -566,14 +576,14 @@ fortyfive_vectors = {
     "cartesian aligned": (
         numpy.array([1., 0., 0.]), numpy.array([0., 0., 1.]),
         [
-            numpy.array([ over_root_three,  over_root_three,  over_root_three]),
-            numpy.array([-over_root_three,  over_root_three,  over_root_three]),
-            numpy.array([-over_root_three,  over_root_three, -over_root_three]),
-            numpy.array([ over_root_three,  over_root_three, -over_root_three]),
-            numpy.array([ over_root_three, -over_root_three,  over_root_three]),
-            numpy.array([-over_root_three, -over_root_three,  over_root_three]),
-            numpy.array([-over_root_three, -over_root_three, -over_root_three]),
-            numpy.array([ over_root_three, -over_root_three, -over_root_three]),
+            numpy.array([ over_root_three,  over_root_three,  over_root_three]),  # noqa: E201,E241
+            numpy.array([-over_root_three,  over_root_three,  over_root_three]),  # noqa: E201,E241
+            numpy.array([-over_root_three,  over_root_three, -over_root_three]),  # noqa: E201,E241
+            numpy.array([ over_root_three,  over_root_three, -over_root_three]),  # noqa: E201,E241
+            numpy.array([ over_root_three, -over_root_three,  over_root_three]),  # noqa: E201,E241
+            numpy.array([-over_root_three, -over_root_three,  over_root_three]),  # noqa: E201,E241
+            numpy.array([-over_root_three, -over_root_three, -over_root_three]),  # noqa: E201,E241
+            numpy.array([ over_root_three, -over_root_three, -over_root_three]),  # noqa: E201,E241
         ]
     ),
 }
