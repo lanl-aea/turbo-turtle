@@ -351,7 +351,8 @@ def test_recursive_copy(root_directory, source_files, source_tree, destination_t
         mock_print_list.assert_not_called()
         mock_conditional_copy.assert_called_once_with(copy_tuples)
 
-    # Files in destination tree do exist, but we want to overwrite contents and dry-run. Print the modsim_template file tree.
+    # Files in destination tree do exist, but we want to overwrite contents and dry-run.
+    # Print the modsim_template file tree.
     with patch("turbo_turtle._fetch.available_files", return_value=available_files_output), \
          patch("turbo_turtle._fetch.print_list") as mock_print_list, \
          patch("turbo_turtle._fetch.conditional_copy") as mock_conditional_copy, \
