@@ -267,7 +267,7 @@ commands_list = []
 # TODO: Decide if we should package or drop the legacy geometry tests
 name = 'Turbo-Turtle-Tests'
 legacy_geometry_file = _settings._project_root_abspath / "tests" / "legacy_geometry.py"
-commands_list.append([
+commands_list.append(pytest.param([
     string.Template(f"${{abaqus_command}} cae -noGui {legacy_geometry_file}"),
     string.Template(
         "${turbo_turtle_command} partition --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
@@ -288,7 +288,7 @@ commands_list.append([
         "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
         f"--input-file {name}.cae --model-name {name} --output-file swiss-cheese.png --part-name swiss-cheese"
     ),
-])
+], marks=pytest.mark.abaqus))
 
 # Sphere/partition/mesh
 system_tests = (
@@ -503,7 +503,7 @@ for test in gmsh_sphere_2D:
                 "--input-file sphere.msh --output-file sphere.msh.png --x-angle 0 --y-angle 0 --backend gmsh"
             )
         )
-    commands_list.append(test)
+    commands_list.append(pytest.param(test, marks=pytest.mark.gmsh))
 gmsh_sphere_3D = [
     [
         string.Template(
@@ -572,7 +572,7 @@ for test in gmsh_sphere_3D:
                 "--input-file sphere.msh --output-file sphere.msh.png --x-angle 45 --y-angle -45 --backend gmsh"
             )
         )
-    commands_list.append(test)
+    commands_list.append(pytest.param(test, marks=pytest.mark.gmsh))
 
 # Merge tests
 for part_name in ("washer vase merge-sphere", ""):
@@ -581,8 +581,15 @@ for part_name in ("washer vase merge-sphere", ""):
 
 # SCons extensions tests
 # System tests as SCons tasks
+# TODO: Decide how to handle this system test which requires both Abaqus and Cubit.
+# Separate the SConstruct file into Abaqus/Cubit halves? Dedicated, non-matrixed construction environment?
 sconstruct = _settings._project_root_abspath / "tests/SConstruct"
-commands_list.append(f"scons . --sconstruct {sconstruct} --turbo-turtle-command='{turbo_turtle_command}'")
+commands_list.append(
+    pytest.param(
+        [f"scons . --sconstruct={sconstruct} --turbo-turtle-command='{turbo_turtle_command}'"],
+        marks=[pytest.mark.abaqus, pytest.mark.cubit]
+    )
+)
 # User manual example SCons tasks
 sconstruct_files = [
     [

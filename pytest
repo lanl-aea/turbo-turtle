@@ -69,11 +69,12 @@ for name, abaqus_environment in abaqus_environments.items():
 
 # System tests
 matrix = (
-    ("gmsh", {"default": env}),
-    ("abaqus", abaqus_environments),
-    ("cubit", cubit_environments),
+    ("and not require_third_party", {"python3": env}),
+    ("and gmsh", {"gmsh": env}),
+    ("and abaqus", abaqus_environments),
+    ("and cubit", cubit_environments),
 )
-for backend, environments in matrix:
+for backend_option, environments in matrix:
     for name, environment in environments.items():
         source = pytest_source_list + [str(pathlib.Path("turbo_turtle/tests/test_system.py"))]
         targets = env.Command(
@@ -81,13 +82,13 @@ for backend, environments in matrix:
             source=source,
             action=[
                 (
-                    "${pytest_command} -v --no-showlocals -m 'systemtest and ${backend}' --tb=short --cache-clear "
+                    "${pytest_command} -v --no-showlocals -m 'systemtest ${backend_option}' --tb=short --cache-clear "
                     "--cov --cov-report=xml:${TARGET.abspath} "
                     "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
                 ),
             ],
             pytest_command=pytest_command,
-            backend=backend,
+            backend_option=backend_option,
             abaqus_command=environment["abaqus"] if "abaqus" in environment else None,
             cubit_command=environment["cubit"] if "cubit" in environment else None,
         )
