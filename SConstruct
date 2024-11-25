@@ -31,18 +31,18 @@ env["ENV"]["PYTHONDONTWRITEBYTECODE"] = 1
 
 # Find third-party software
 abaqus_versions = (2024, 2023, 2022, 2021, 2020)
-env["abaqus_environments"] = dict()
+abaqus_environments = dict()
 for version in abaqus_versions:
     abaqus_environment = env.Clone()
     abaqus_environment["abaqus"] = abaqus_environment.AddProgram([f"/apps/abaqus/Commands/abq{version}"])
-    env["abaqus_environments"].update({f"abaqus{version}": abaqus_environment})
+    abaqus_environments.update({f"abaqus{version}": abaqus_environment})
 
 cubit_versions = ("16.16", "16.12")
-env["cubit_environments"] = dict()
+cubit_environments = dict()
 for version in cubit_versions:
     cubit_environment = env.Clone()
     cubit_environment["cubit"] = cubit_environment.AddCubit([f"/apps/Cubit-{version}/cubit"])
-    env["cubit_environments"].update({f"cubit{version}": cubit_environment})
+    cubit_environments.update({f"cubit{version}": cubit_environment})
 
 # Set project meta data
 project_variables = {
@@ -61,6 +61,11 @@ SConscript(dirs="docs", variant_dir=build_dir, exports=["env", "project_variable
 workflow_configurations = ["pytest", "flake8", "mypy", "cProfile"]
 for workflow in workflow_configurations:
     build_dir = env["variant_dir_base"] / workflow
-    SConscript(build_dir.name, variant_dir=build_dir, exports='env', duplicate=False)
+    SConscript(
+        build_dir.name,
+        variant_dir=build_dir,
+        exports=["env", "abaqus_environments", "cubit_environments"],
+        duplicate=False
+    )
 
 waves.scons_extensions.project_help_message()

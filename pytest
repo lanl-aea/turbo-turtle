@@ -3,7 +3,7 @@
 import pathlib
 
 # Inherit the parent construction environment
-Import("env")
+Import("env", "abaqus_environments", "cubit_environments")
 
 # Limit list of source files to allow Conda build-test to test off the installed package
 pytest_source_list = [
@@ -29,7 +29,7 @@ env.Alias("regression", targets)
 env.AlwaysBuild(targets)
 
 # Cubit unit tests
-for name, cubit_environment in env["cubit_environments"].items():
+for name, cubit_environment in cubit_environments.items():
     targets = cubit_environment.Command(
         target=[f"test_{name}_results.xml"],
         source=pytest_source_list + ["turbo_turtle/tests/test_cubit_python.py"],
@@ -44,7 +44,7 @@ for name, cubit_environment in env["cubit_environments"].items():
     cubit_environment.AlwaysBuild(targets)
 
 # Abaqus unit tests
-for name, abaqus_environment in env["abaqus_environments"].items():
+for name, abaqus_environment in abaqus_environments.items():
     source = [
         "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_abaqus_utilities.py",
         "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_mixed_utilities.py",
@@ -68,23 +68,30 @@ for name, abaqus_environment in env["abaqus_environments"].items():
     abaqus_environment.AlwaysBuild(targets)
 
 # System tests
-# TODO: test against a matrix of Abaqus/Cubit versions
-# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/233
-source = pytest_source_list + [str(pathlib.Path("turbo_turtle/tests/test_system.py"))]
-targets = env.Command(
-    target=["systemtest_results.xml"],
-    source=source,
-    action=[
-        (
-            "${pytest_command} -v --no-showlocals -m 'systemtest and gmsh' --tb=short --cache-clear --cov "
-            "--cov-report=xml:${TARGET.abspath} --abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
-        ),
-    ],
-    pytest_command=pytest_command,
-    abaqus_command="/apps/abaqus/Commands/abq2023",
-    cubit_command="/apps/Cubit-16.16/cubit",
+matrix = (
+    ("gmsh", {"default": env}),
+    ("abaqus", abaqus_environments),
+    ("cubit", cubit_environments),
 )
-env.Alias("systemtest", targets)
-env.Alias("systemtests", targets)
-env.Alias("regression", targets)
-env.AlwaysBuild(targets)
+for backend, environments in matrix:
+    for name, environment in environments.items():
+        source = pytest_source_list + [str(pathlib.Path("turbo_turtle/tests/test_system.py"))]
+        targets = env.Command(
+            target=[f"systemtest_{name}_results.xml"],
+            source=source,
+            action=[
+                (
+                    "${pytest_command} -v --no-showlocals -m 'systemtest and ${backend}' --tb=short --cache-clear "
+                    "--cov --cov-report=xml:${TARGET.abspath} "
+                    "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
+                ),
+            ],
+            pytest_command=pytest_command,
+            backend=backend,
+            abaqus_command=environment["abaqus"] if "abaqus" in environment else None,
+            cubit_command=environment["cubit"] if "cubit" in environment else None,
+        )
+        env.Alias("systemtest", targets)
+        env.Alias("systemtests", targets)
+        env.Alias("regression", targets)
+        env.AlwaysBuild(targets)
