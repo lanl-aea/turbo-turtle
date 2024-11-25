@@ -32,7 +32,7 @@ for name, cubit_environment in env["cubit_environments"].items():
         target=[f"test_{name}_results.xml"],
         source=pytest_source_list + ["turbo_turtle/tests/test_cubit_python.py"],
         action=[
-            "${pytest_command} ${SOURCES[1].abspath} -vvv -n 4 -m 'cubit_python' --cov",
+            "${pytest_command} ${SOURCES[1].abspath} -vvv -n 4 -m 'cubit_python' --cov-report=xml:${TARGET.abspath}",
         ],
         pytest_command=pytest_command,
     )
@@ -71,7 +71,7 @@ targets = env.Command(
     source=source,
     action=[
         (
-            "${pytest_command} -v --no-showlocals -n 4 -m systemtest --tb=short --cache-clear "
+            "${pytest_command} -v --no-showlocals -n 4 -m systemtest --tb=short --cache-clear  --cov-report=xml:${TARGET.abspath}"
             "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
         ),
     ],
