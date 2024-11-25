@@ -233,7 +233,7 @@ def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
     sphere_options = (
         str(sphere_model), 1., 2., 360., 0., "both", sphere_element_type, sphere_element_replacement, backend, "abaqus"
     )
-    commands.append(setup_sphere_commands(*sphere_options)[0])
+    commands.append(setup_sphere_commands(*sphere_options).values[0][0])
 
     # Create washer/vase combined file
     geometry_options = (
@@ -246,7 +246,7 @@ def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
         0.,
         backend
     )
-    commands.extend(setup_geometry_commands(*geometry_options))
+    commands.extend(setup_geometry_commands(*geometry_options).values[0])
 
     # Run the actual merge command
     part_name = f"--part-name {part_name}" if part_name else ""
