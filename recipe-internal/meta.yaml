@@ -29,6 +29,7 @@ requirements:
     - python
     - python-build
     - pip
+    - pytest
     - lazy_loader >=0.4
     - scons >=4
     - setuptools >=64
