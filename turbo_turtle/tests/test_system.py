@@ -118,7 +118,7 @@ def setup_geometry_xyplot_commands(model, input_file, backend) -> typing.List[st
         string.Template(
             "${turbo_turtle_command} geometry-xyplot "
             "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
-            f"--input-file {input_file} --output-file {model}.png --part-name {part_name}"
+            f"--input-file {input_file} --output-file {model}.png --part-name {part_name} "
             f"--backend {backend}"
         )
     ]
@@ -606,7 +606,7 @@ for files in sconstruct_files:
 @pytest.mark.systemtest
 @pytest.mark.require_third_party
 @pytest.mark.parametrize("commands", commands_list)
-def test_shell_commands(abaqus_command, cubit_command, commands: list) -> None:
+def test_require_third_party(abaqus_command, cubit_command, commands: list) -> None:
     """Run system tests that require third-party software
 
     Executes with a temporary directory that is cleaned up after each test execution.
