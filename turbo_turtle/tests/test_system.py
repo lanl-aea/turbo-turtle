@@ -605,8 +605,8 @@ for files in sconstruct_files:
 
 @pytest.mark.systemtest
 @pytest.mark.require_third_party
-@pytest.mark.parametrize("number, commands", enumerate(commands_list))
-def test_shell_commands(abaqus_command, cubit_command, number: int, commands: list) -> None:
+@pytest.mark.parametrize("commands", commands_list)
+def test_shell_commands(abaqus_command, cubit_command, commands: list) -> None:
     """Run system tests that require third-party software
 
     Executes with a temporary directory that is cleaned up after each test execution.
@@ -619,10 +619,9 @@ def test_shell_commands(abaqus_command, cubit_command, number: int, commands: li
 
     :param abaqus_command: string absolute path to Abaqus executable
     :param cubit_command: string absolute path to Cubit executable
-    :param number: the command number. Used during local testing to separate command directories.
     :param command: the full list of command string(s) for the system test
     """
-    test_project_shell_commands(abaqus_command, cubit_command, number, commands)
+    test_project_shell_commands(abaqus_command, cubit_command, commands)
 
 
 def run_commands(commands, build_directory, template_substitution={}) -> None:
@@ -648,8 +647,8 @@ project_only_commands_list.append(
 
 
 @pytest.mark.systemtest
-@pytest.mark.parametrize("number, commands", enumerate(project_only_commands_list))
-def test_project_shell_commands(abaqus_command, cubit_command, number: int, commands: list) -> None:
+@pytest.mark.parametrize("commands", project_only_commands_list)
+def test_project_shell_commands(abaqus_command, cubit_command, commands: list) -> None:
     """Run the system tests.
 
     Executes with a temporary directory that is cleaned up after each test execution.
@@ -662,7 +661,6 @@ def test_project_shell_commands(abaqus_command, cubit_command, number: int, comm
 
     :param abaqus_command: string absolute path to Abaqus executable
     :param cubit_command: string absolute path to Cubit executable
-    :param number: the command number. Used during local testing to separate command directories.
     :param command: the full list of command string(s) for the system test
     """
     template_substitution = {
@@ -676,6 +674,5 @@ def test_project_shell_commands(abaqus_command, cubit_command, number: int, comm
         with tempfile.TemporaryDirectory() as temp_directory:
             run_commands(commands, temp_directory, template_substitution=template_substitution)
     else:
-        command_directory = build_directory / f"commands{number}"
-        command_directory.mkdir(parents=True, exist_ok=True)
-        run_commands(commands, command_directory, template_substitution=template_substitution)
+        with tempfile.TemporaryDirectory(dir=build_directory) as temp_directory:
+            run_commands(commands, temp_directory, template_substitution=template_substitution)
