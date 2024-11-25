@@ -65,9 +65,9 @@ def setup_sphere_commands(
         model = model.with_suffix(".cub")
         image = image.parent / f"{image.stem}-cubit{image.suffix}"
     assembly = model.stem + "_assembly.inp"
-    center=f"0. {y_offset} 0."
-    xvector=_utilities.character_delimited_list([1., 0., 0.])
-    zvector=_utilities.character_delimited_list([0., 0., 1.])
+    center = f"0. {y_offset} 0."
+    xvector = _utilities.character_delimited_list([1., 0., 0.])
+    zvector = _utilities.character_delimited_list([0., 0., 1.])
     backend_option = f"--backend {backend}" if backend is not None else ""
 
     commands = [
@@ -116,7 +116,8 @@ def setup_geometry_xyplot_commands(model, input_file) -> typing.List[string.Temp
     input_file = _utilities.character_delimited_list(input_file)
     commands = [
         string.Template(
-            "${turbo_turtle_command} geometry-xyplot --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} geometry-xyplot "
+            "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {input_file} --output-file {model}.png --part-name {part_name}"
         )
     ]
@@ -290,37 +291,37 @@ commands_list.append([
 
 # Sphere/partition/mesh
 system_tests = (
-    # model/part, inner_radius, outer_radius, angle, y-offset, quadrant, element_type, element_replacement, backend, output_type
+    # model/part, inner_radius, outer_radius, angle, y-offset, quadrant, element_type, element_replacement, backend, output_type  # noqa: E501
     # Abaqus CAE
-    ("sphere.cae",               1.,     2., 360.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),
-    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),
-    ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",  "CAX4",       "CAX4R", None, "abaqus"),
-    ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),
-    ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),
-    ("eigth-sphere.cae",         1.,     2.,  90.,       0., "upper",  "C3D8",       "C3D8R", None, "abaqus"),
-    ("half-sphere.cae",          1.,     2., 360.,       0., "upper",  "C3D8",       "C3D8R", None, "abaqus"),
+    ("sphere.cae",               1.,     2., 360.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),  # noqa: E241,E501
+    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),  # noqa: E241,E501
+    ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",  "CAX4",       "CAX4R", None, "abaqus"),  # noqa: E241,E501
+    ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),  # noqa: E241,E501
+    ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",  "C3D8",       "C3D8R", None, "abaqus"),  # noqa: E241,E501
+    ("eigth-sphere.cae",         1.,     2.,  90.,       0., "upper",  "C3D8",       "C3D8R", None, "abaqus"),  # noqa: E241,E501
+    ("half-sphere.cae",          1.,     2., 360.,       0., "upper",  "C3D8",       "C3D8R", None, "abaqus"),  # noqa: E241,E501
     # Cubit: for Abaqus INP
-    ("sphere.cae",               1.,     2., 360.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),
-    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),
-    ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",    None,       "CAX4R", "cubit", "abaqus"),
-    ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),
-    ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",    None,       "C3D8R", "cubit", "abaqus"),
-    ("eigth-sphere.cae",         1.,     2.,  90.,       0., "upper",    None,       "C3D8R", "cubit", "abaqus"),
-    ("half-sphere.cae",          1.,     2., 360.,       0., "upper",    None,       "C3D8R", "cubit", "abaqus"),
+    ("sphere.cae",               1.,     2., 360.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),  # noqa: E241,E501
+    ("solid-sphere.cae",         0.,     2., 360.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),  # noqa: E241,E501
+    ("axisymmetric.cae",         1.,     2.,   0.,       0.,  "both",    None,       "CAX4R", "cubit", "abaqus"),  # noqa: E241,E501
+    ("quarter-sphere.cae",       1.,     2.,  90.,       0.,  "both",    None,       "C3D8R", "cubit", "abaqus"),  # noqa: E241,E501
+    ("offset-sphere.cae",        1.,     2., 360.,       1.,  "both",    None,       "C3D8R", "cubit", "abaqus"),  # noqa: E241,E501
+    ("eigth-sphere.cae",         1.,     2.,  90.,       0., "upper",    None,       "C3D8R", "cubit", "abaqus"),  # noqa: E241,E501
+    ("half-sphere.cae",          1.,     2., 360.,       0., "upper",    None,       "C3D8R", "cubit", "abaqus"),  # noqa: E241,E501
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets.cae",          1.,     2., 360.,     0., "both", "tetmesh",       None, "cubit", "abaqus"),
-    ("axisymmetric-tri.cae",     1.,     2.,   0.,     0., "both", "trimesh",       None, "cubit", "abaqus"),
+    ("sphere-tets.cae",          1.,     2., 360.,     0., "both", "tetmesh",       None, "cubit", "abaqus"),  # noqa: E241,E501
+    ("axisymmetric-tri.cae",     1.,     2.,   0.,     0., "both", "trimesh",       None, "cubit", "abaqus"),  # noqa: E241,E501
     # Cubit: for Genesis INP
-    ("sphere-genesis.cae",         1.,   2., 360., 0.,  "both",   None,  "HEX", "cubit", "genesis"),
-    ("solid-sphere-genesis.cae",   0.,   2., 360., 0.,  "both",   None,  "HEX", "cubit", "genesis"),
-    ("axisymmetric-genesis.cae",   1.,   2.,   0., 0.,  "both",   None, "QUAD", "cubit", "genesis"),
-    ("quarter-sphere-genesis.cae", 1.,   2.,  90., 0.,  "both",   None,  "HEX", "cubit", "genesis"),
-    ("offset-sphere-genesis.cae",  1.,   2., 360., 1.,  "both",   None,  "HEX", "cubit", "genesis"),
-    ("eigth-sphere-genesis.cae",   1.,   2.,  90., 0., "upper",   None,  "HEX", "cubit", "genesis"),
-    ("half-sphere-genesis.cae",    1.,   2., 360., 0., "upper",   None,  "HEX", "cubit", "genesis"),
+    ("sphere-genesis.cae",         1.,   2., 360., 0.,  "both",   None,  "HEX", "cubit", "genesis"),  # noqa: E241,E501
+    ("solid-sphere-genesis.cae",   0.,   2., 360., 0.,  "both",   None,  "HEX", "cubit", "genesis"),  # noqa: E241,E501
+    ("axisymmetric-genesis.cae",   1.,   2.,   0., 0.,  "both",   None, "QUAD", "cubit", "genesis"),  # noqa: E241,E501
+    ("quarter-sphere-genesis.cae", 1.,   2.,  90., 0.,  "both",   None,  "HEX", "cubit", "genesis"),  # noqa: E241,E501
+    ("offset-sphere-genesis.cae",  1.,   2., 360., 1.,  "both",   None,  "HEX", "cubit", "genesis"),  # noqa: E241,E501
+    ("eigth-sphere-genesis.cae",   1.,   2.,  90., 0., "upper",   None,  "HEX", "cubit", "genesis"),  # noqa: E241,E501
+    ("half-sphere-genesis.cae",    1.,   2., 360., 0., "upper",   None,  "HEX", "cubit", "genesis"),  # noqa: E241,E501
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets-genesis.cae",     1.,   2., 360., 0., "both", "tetmesh",   "TRI", "cubit", "genesis"),
-    ("axisymmetric-tri-genesis.cae",1.,   2.,   0., 0., "both", "trimesh", "TETRA", "cubit", "genesis"),
+    ("sphere-tets-genesis.cae",     1.,   2., 360., 0., "both", "tetmesh",   "TRI", "cubit", "genesis"),  # noqa: E241,E501
+    ("axisymmetric-tri-genesis.cae",1.,   2.,   0., 0., "both", "trimesh", "TETRA", "cubit", "genesis"),  # noqa: E241,E231,E501
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
@@ -328,8 +329,8 @@ for test in system_tests:
 # Geometry XY Plot tests
 system_tests = (
     # model/part,                                                  input_file
-    ("washer",     [_settings._project_root_abspath / "tests" / "washer.csv"]),
-    ("vase",       [_settings._project_root_abspath / "tests" / "vase.csv"]),
+    ("washer",     [_settings._project_root_abspath / "tests" / "washer.csv"]),  # noqa: E241
+    ("vase",       [_settings._project_root_abspath / "tests" / "vase.csv"]),  # noqa: E241
     ("multi-part", [_settings._project_root_abspath / "tests" / "washer.csv",
                     _settings._project_root_abspath / "tests" / "vase.csv"]),
 )
@@ -341,49 +342,49 @@ for test in system_tests:
 system_tests = (
     # model/part,                                                           input_file, angle, y-offset, backend
     # Abaqus
-    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., None),
-    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., None),
-    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., None),
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., None),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., None),
-    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., None),
-    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., None),
+    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., None),  # noqa: E241,E501
+    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., None),  # noqa: E241,E501
+    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., None),  # noqa: E241,E501
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., None),  # noqa: E241,E501
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., None),  # noqa: E241,E501
+    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # noqa: E241
+                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., None),  # noqa: E241,E501
+    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # noqa: E241
+                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., None),  # noqa: E241,E501
     # Cubit
-    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., "cubit"),
-    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., "cubit"),
-    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., "cubit"),
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "cubit"),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "cubit"),
-    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "cubit"),
-    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "cubit"),
+    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., "cubit"),  # noqa: E241,E501
+    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., "cubit"),  # noqa: E241,E501
+    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., "cubit"),  # noqa: E241,E501
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "cubit"),  # noqa: E241,E501
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "cubit"),  # noqa: E241,E501
+    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # noqa: E241
+                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "cubit"),  # noqa: E241,E501
+    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # noqa: E241
+                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "cubit"),  # noqa: E241,E501
     # Gmsh
-    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., "gmsh"),
-    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., "gmsh"),
-    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., "gmsh"),
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "gmsh"),
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "gmsh"),
-    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "gmsh"),
-    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",
-                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "gmsh"),
+    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 0., "gmsh"),  # noqa: E241,E501
+    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0, 1., "gmsh"),  # noqa: E241,E501
+    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0, 0., "gmsh"),  # noqa: E241,E501
+    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "gmsh"),  # noqa: E241,E501
+    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "gmsh"),  # noqa: E241,E501
+    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # noqa: E241
+                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0, 0., "gmsh"),  # noqa: E241,E501
+    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # noqa: E241
+                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0, 0., "gmsh"),  # noqa: E241,E501
 )
 for test in system_tests:
     commands_list.append(setup_geometry_commands(*test))
 
 # Sets/mesh tests
 system_tests = (
-    # model/part,                                                           input_file, angle,                         face_sets,       edge_sets,                        edge seeds, element_type, backend
+    # model/part,                                                           input_file, angle,                       # face_sets,       edge_sets,                        edge seeds, element_type, backend  # noqa: E501
     # Abaqus
     # TODO: Pick some Abaqus edge sets for the system tests
-    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]], None,                              None, "C3D8R", None),
-    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]],  "CAX4", None),
+    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "'[#4 ]'"],     ["bottom", "'[#40 ]'"]], None,                              None, "C3D8R", None),  # noqa: E241,E501
+    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]], [["top", "5"], ["bottom", "0.5"]],  "CAX4", None),  # noqa: E241,E501
     # Cubit
-    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "4"], ["bottom", "7"], ["outer", "'2 3 8'"]], [["top_outer", "13"]], [["top_outer", "1.000001"]], "C3D8R", "cubit"),
-    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "2"], ["bottom", "6"], ["outer", "'1 7 8'"]], [["top", "1.000001"]], "CAX4", "cubit"),
+    ("vase",              [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, [["top", "4"], ["bottom", "7"], ["outer", "'2 3 8'"]], [["top_outer", "13"]], [["top_outer", "1.000001"]], "C3D8R", "cubit"),   # noqa: E241,E501
+    ("vase-axisymmetric", [_settings._project_root_abspath / "tests" / "vase.csv"],   0.0, None, [["top", "2"], ["bottom", "6"], ["outer", "'1 7 8'"]], [["top", "1.000001"]], "CAX4", "cubit"),  # noqa: E241,E501
 )
 for test in system_tests:
     commands_list.append(setup_sets_commands(*test))
@@ -392,11 +393,11 @@ for test in system_tests:
 system_tests = (
     # model/part,   angle, cubit
     ("cylinder_3d", 360., None),
-    ("cylinder_2d",   0., None),
+    ("cylinder_2d",   0., None),  # noqa: E241
     ("cylinder_3d", 360., "cubit"),
-    ("cylinder_2d",   0., "cubit"),
+    ("cylinder_2d",   0., "cubit"),  # noqa: E241
     ("cylinder_3d", 360., "gmsh"),
-    ("cylinder_2d",   0., "gmsh")
+    ("cylinder_2d",   0., "gmsh"),  # noqa: E241
 )
 for test in system_tests:
     commands_list.append(setup_cylinder_commands(*test))
@@ -491,13 +492,13 @@ gmsh_sphere_3D = [
     ],
     # TODO: Fix solid sphere revolve
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/218
-    #[
+    #[  # noqa: E265
     #    string.Template(
     #        "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
     #        "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. "
     #        "--backend gmsh"
     #    )
-    #],
+    #],  # noqa: E265
     [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
@@ -561,7 +562,7 @@ for files in sconstruct_files:
         ),
         # FIXME: Figure out why this command fails on the CI server, but not in local user tests
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/159
-        #f"scons . --turbo-turtle-command='{turbo_turtle_command}'"
+        #f"scons . --turbo-turtle-command='{turbo_turtle_command}'"  # noqa: E265
     ]
     commands_list.append(scons_test_commands)
 
