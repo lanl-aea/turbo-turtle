@@ -533,8 +533,7 @@ for files in sconstruct_files:
     space_delimited_files = ' '.join([str(path) for path in files])
     scons_test_commands = [
         string.Template(
-            "${turbo_turtle_command} fetch --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
-            "SConstruct SConscript"
+            "${turbo_turtle_command} fetch SConstruct SConscript"
         ),
         # FIXME: Figure out why this command fails on the CI server, but not in local user tests
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/159
@@ -583,7 +582,7 @@ project_only_commands_list.extend(
     ]
 )
 project_only_commands_list.append(
-    string.Template("${turbo_turtle_command} fetch --abaqus-command ${abaqus_command} --cubit-command ${cubit_command}")
+    string.Template("${turbo_turtle_command} fetch")
 )
 
 
@@ -610,7 +609,7 @@ def test_project_shell_commands(abaqus_command, cubit_command, number: int, comm
         "abaqus_command": abaqus_command,
         "cubit_command": cubit_command,
     }
-    if isinstance(commands, str):
+    if isinstance(commands, str) or isinstance(commands, string.Template):
         commands = [commands]
     if installed:
         with tempfile.TemporaryDirectory() as temp_directory:
