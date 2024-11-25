@@ -10,19 +10,18 @@ pytest_source_list = [
     "pyproject.toml",
 ]
 
-pytest_command = "cd turbo_turtle/ && pytest --junitxml=${TARGET.abspath}"
-coverage_command = "cd turbo_turtle/ && coverage xml -o ${TARGETS[1].abspath}"
+pytest_command = "cd turbo_turtle/ && pytest"
 targets = env.Command(
-    target=["test_results.xml", "coverage.xml"],
+    target=["coverage.xml", Dir("./coverage")],
     source=pytest_source_list,
     action=[
-        "${pytest_command} -vvv -n 4 -m 'not systemtest' --cov",
-        "${coverage_command}"
+        "${pytest_command} -vvv -n 4 -m 'not systemtest' ${coverage}"
     ],
     pytest_command=pytest_command,
-    coverage_command=coverage_command
+    coverage="--cov --cov-report=term --cov-report=xml:${TARGETS[0].abspath} --cov-report=html:${TARGETS[1].abspath}"
 )
 env.Alias("pytest", targets)
+env.Clean("pytest", Dir("./coverage"))
 env.Alias("regression", targets)
 # Always run pytests in place of a complete source list
 env.AlwaysBuild(targets)
