@@ -165,7 +165,7 @@ Abaqus CAE:
 
    .. code-block::
 
-      PYTHONPATH=$(turbo_turtle print-abaqus-path):$PYTHONPATH abq2023 cae -noGui myScript.py
+      PYTHONPATH=$(turbo_turtle print-abaqus-path):$PYTHONPATH abq2024 cae -noGui myScript.py
 
 Importing Turbo-Turtle Modules
 ------------------------------

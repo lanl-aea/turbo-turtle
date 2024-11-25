@@ -163,8 +163,8 @@ On an AEA Linux Machine
 
    [roppenheimer@sstbigbird turbo-turtle]$ module use /projects/aea_compute/modulefiles
    [roppenheimer@sstbigbird turbo-turtle]$ module load turbo-turtle-dev
-   (aea-beta) [roppenheimer@sstbigbird]$ which abq2023
-   /apps/abaqus/Commands/abq2023
+   (aea-beta) [roppenheimer@sstbigbird]$ which abq2024
+   /apps/abaqus/Commands/abq2024
    (aea-beta) [roppenheimer@sstbigbird]$ which cubit
    /apps/Cubit16.12/cubit
 
