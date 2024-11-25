@@ -10,15 +10,17 @@ pytest_source_list = [
     "pyproject.toml",
 ]
 
-pytest_command = "cd turbo_turtle/ && pytest"
+pytest_command = "cd turbo_turtle/ && pytest -n 4"
 targets = env.Command(
     target=["coverage.xml", Dir("./coverage")],
     source=pytest_source_list,
     action=[
-        "${pytest_command} -vvv -n 4 -m 'not systemtest' ${coverage}"
+        (
+            "${pytest_command} -vvv -m 'not systemtest' --cov --cov-report=term "
+            "--cov-report=xml:${TARGETS[0].abspath} --cov-report=html:${TARGETS[1].abspath}"
+        )
     ],
     pytest_command=pytest_command,
-    coverage="--cov --cov-report=term --cov-report=xml:${TARGETS[0].abspath} --cov-report=html:${TARGETS[1].abspath}"
 )
 env.Alias("pytest", targets)
 env.Clean("pytest", Dir("./coverage"))
@@ -32,7 +34,7 @@ for name, cubit_environment in env["cubit_environments"].items():
         target=[f"test_{name}_results.xml"],
         source=pytest_source_list + ["turbo_turtle/tests/test_cubit_python.py"],
         action=[
-            "${pytest_command} ${SOURCES[1].abspath} -vvv -n 4 -m 'cubit_python' --cov --cov-report=xml:${TARGET.abspath}",
+            "${pytest_command} ${SOURCES[1].abspath} -vvv -m 'cubit_python' --cov --cov-report=xml:${TARGET.abspath}",
         ],
         pytest_command=pytest_command,
     )
@@ -53,7 +55,10 @@ for name, path in env["abaqus_matrix"].items():
         target=[f"test_{name}_python.txt"],
         source=source,
         action=[
-            "PYTHONDONTWRITEBYTECODE=1 ${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose 2>&1 | tee ${TARGET.abspath}"
+            (
+                "PYTHONDONTWRITEBYTECODE=1 ${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose "
+                "2>&1 | tee ${TARGET.abspath}"
+            )
         ],
         program=path
     )
@@ -71,8 +76,8 @@ targets = env.Command(
     source=source,
     action=[
         (
-            "${pytest_command} -v --no-showlocals -n 4 -m systemtest --tb=short --cache-clear  --cov-report=xml:${TARGET.abspath}"
-            "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
+            "${pytest_command} -v --no-showlocals -m systemtest --tb=short --cache-clear --cov "
+            "--cov-report=xml:${TARGET.abspath} --abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
         ),
     ],
     pytest_command=pytest_command,
