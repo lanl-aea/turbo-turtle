@@ -55,6 +55,9 @@ markers = [
     "systemtest: marks system tests, e.g. the tutorials",
     "require_third_party: marks system tests that require third-party software command line calls",
     "cubit_python: marks Cubit Python API unit tests that require a Cubit import",
+    "abaqus: tests requiring the Abaqus executable",
+    "cubit: tests requiring the Cubit executable",
+    "gmsh: tests requiring the Gmsh executable",
 ]
 addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -m 'not systemtest'"
 
