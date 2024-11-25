@@ -58,42 +58,41 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
     center=f"0. {y_offset} 0."
     xvector=_utilities.character_delimited_list([1., 0., 0.])
     zvector=_utilities.character_delimited_list([0., 0., 1.])
-    backend = f"--backend {backend}" if backend is not None else ""
+    backend_option = f"--backend {backend}" if backend is not None else ""
 
     commands = [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--inner-radius {inner_radius} --outer-radius {outer_radius} --output-file {model} "
             f"--model-name {model.stem} --part-name {model.stem} --quadrant {quadrant} "
-            f"--revolution-angle {angle} --y-offset {y_offset} {backend}"
+            f"--revolution-angle {angle} --y-offset {y_offset} {backend_option}"
         ),
         string.Template(
             "${turbo_turtle_command} partition --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {model} --output-file {model} "
             f"--model-name {model.stem} --part-name {model.stem} --center {center} "
-            f"--xvector {xvector} --zvector {zvector} {backend}"
+            f"--xvector {xvector} --zvector {zvector} {backend_option}"
         ),
         string.Template(
             "${turbo_turtle_command} mesh --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {model} --output-file {model} "
             f"--model-name {model.stem} --part-name {model.stem} --global-seed 0.15 "
-            f"--element-type {element_type} {backend}"
+            f"--element-type {element_type} {backend_option}"
         ),
         string.Template(
             "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {model} --output-file {image} "
-            f"--model-name {model.stem} --part-name {model.stem} {backend}"
+            f"--model-name {model.stem} --part-name {model.stem} {backend_option}"
         ),
         string.Template(
             "${turbo_turtle_command} export --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {model} --model-name {model.stem} --part-name {model.stem} "
             f"--element-type {element_replacement} --destination . "
-            f"--assembly {assembly} --output-type {output_type} {backend}"
+            f"--assembly {assembly} --output-type {output_type} {backend_option}"
         ),
     ]
     # Skip the image subcommand when DISPLAY is not found
     # Skip the image subcommand when running the Genesis variations. We don't need duplicate images of the cubit meshes
-    # TODO: Update as Cubit support is added for partition/mesh/image/export
     if (backend == "cubit" and missing_display) or (backend == "cubit" and output_type.lower() == "genesis"):
         commands.pop(3)
     # Skip the partition/mesh/image/export
@@ -123,13 +122,13 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, backe
         model = model.with_suffix(".step")
     part_name = " ".join(csv.stem for csv in input_file)
     input_file = _utilities.character_delimited_list(input_file)
-    backend = f"--backend {backend}" if backend is not None else ""
+    backend_option = f"--backend {backend}" if backend is not None else ""
     commands = [
         string.Template(
             "${turbo_turtle_command} geometry --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {input_file} --model-name {model.stem} "
             f"--part-name {part_name} --output-file {model} --revolution-angle {revolution_angle} "
-            f"--y-offset {y_offset} {backend}"
+            f"--y-offset {y_offset} {backend_option}"
         )
     ]
     return commands
@@ -157,18 +156,18 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_set
         edge_seeds = _utilities.construct_append_options("--edge-seed", edge_seeds)
     else:
         edge_seeds = ""
-    backend = f"--backend {backend}" if backend is not None else ""
+    backend_option = f"--backend {backend}" if backend is not None else ""
     sets_commands = [
         string.Template(
             "${turbo_turtle_command} sets --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {model} --model-name {model.stem} "
-            f"--part-name {part_name} --output-file {model} {face_sets} {edge_sets} {backend}"
+            f"--part-name {part_name} --output-file {model} {face_sets} {edge_sets} {backend_option}"
         ),
         string.Template(
             "${turbo_turtle_command} mesh --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {model} --model-name {model.stem} "
             f"--part-name {part_name} --output-file {model} --global-seed 1. --element-type {element_type} "
-            f"{edge_seeds} {backend}"
+            f"{edge_seeds} {backend_option}"
         )
     ]
     commands.extend(sets_commands)
@@ -182,13 +181,13 @@ def setup_cylinder_commands(model, revolution_angle, backend,
         model = model.with_suffix(".cub")
     if backend == "gmsh":
         model = model.with_suffix(".step")
-    backend = f"--backend {backend}" if backend is not None else ""
+    backend_option = f"--backend {backend}" if backend is not None else ""
     commands = [
         string.Template(
             "${turbo_turtle_command} cylinder --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--model-name {model.stem} --part-name {model.stem} "
             f"--output-file {model} --revolution-angle {revolution_angle} "
-            f"--inner-radius 1 --outer-radius 2 --height 1 {backend}"
+            f"--inner-radius 1 --outer-radius 2 --height 1 {backend_option}"
         )
     ]
     return commands
@@ -216,20 +215,26 @@ def setup_merge_commands(part_name, backend, turbo_turtle_command=turbo_turtle_c
     commands.append(setup_sphere_commands(*sphere_options)[0])
 
     # Create washer/vase combined file
-    geometry_options = (str(geometry_model),
-                        [_settings._project_root_abspath / "tests" / "washer.csv",
-                         _settings._project_root_abspath / "tests" / "vase.csv"],
-                        360.0, 0., backend)
+    geometry_options = (
+        str(geometry_model),
+        [
+            _settings._project_root_abspath / "tests" / "washer.csv",
+            _settings._project_root_abspath / "tests" / "vase.csv"
+        ],
+        360.0,
+        0.,
+        backend
+    )
     commands.extend(setup_geometry_commands(*geometry_options))
 
     # Run the actual merge command
     part_name = f"--part-name {part_name}" if part_name else ""
-    backend = f"--backend {backend}" if backend is not None else ""
+    backend_option = f"--backend {backend}" if backend is not None else ""
     merge_command = string.Template(
         "${turbo_turtle_command} merge --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
         f"--input-file {sphere_model} {geometry_model} "
         f"--output-file {output_file} --merged-model-name merge "
-        f"--model-name merge-multi-part merge-sphere {part_name} {backend}"
+        f"--model-name merge-multi-part merge-sphere {part_name} {backend_option}"
     )
     commands.append(merge_command)
 
