@@ -674,5 +674,5 @@ def test_project_shell_commands(abaqus_command, cubit_command, commands: list) -
         with tempfile.TemporaryDirectory() as temp_directory:
             run_commands(commands, temp_directory, template_substitution=template_substitution)
     else:
-        with tempfile.TemporaryDirectory(dir=build_directory) as temp_directory:
+        with tempfile.TemporaryDirectory(dir=build_directory, ignore_cleanup_errors=True) as temp_directory:
             run_commands(commands, temp_directory, template_substitution=template_substitution)
