@@ -11,7 +11,7 @@ pytest_source_list = [
 ]
 
 pytest_command = "cd turbo_turtle/ && pytest --junitxml=${TARGET.abspath}"
-coverage_command = "coverage xml -o ${TARGETS[1].abspath}"
+coverage_command = "cd turbo_turtle/ && coverage xml -o ${TARGETS[1].abspath}"
 targets = env.Command(
     target=["test_results.xml", "coverage.xml"],
     source=pytest_source_list,

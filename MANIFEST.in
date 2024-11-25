@@ -8,6 +8,7 @@ recursive-exclude .github *
 global-exclude *.pyc
 global-exclude config.log
 global-exclude .sconsign.dblite
+exclude turbo_turtle/.coveragerc
 exclude package_documentation.py
 exclude .git*
 exclude SConstruct
