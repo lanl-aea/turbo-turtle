@@ -108,10 +108,10 @@ def setup_sphere_commands(
     # Skip the partition/mesh/image/export
     if inner_radius == 0:
         commands = [commands[0]]
-    return commands
+    return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_geometry_xyplot_commands(model, input_file) -> typing.List[string.Template]:
+def setup_geometry_xyplot_commands(model, input_file, backend) -> typing.List[string.Template]:
     part_name = _utilities.character_delimited_list(csv.stem for csv in input_file)
     input_file = _utilities.character_delimited_list(input_file)
     commands = [
@@ -119,9 +119,10 @@ def setup_geometry_xyplot_commands(model, input_file) -> typing.List[string.Temp
             "${turbo_turtle_command} geometry-xyplot "
             "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
             f"--input-file {input_file} --output-file {model}.png --part-name {part_name}"
+            f"--backend {backend}"
         )
     ]
-    return commands
+    return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
 def setup_geometry_commands(
@@ -147,7 +148,7 @@ def setup_geometry_commands(
             f"--y-offset {y_offset} {backend_option}"
         )
     ]
-    return commands
+    return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
 def setup_sets_commands(
@@ -164,7 +165,7 @@ def setup_sets_commands(
     if backend == "cubit":
         model = model.with_suffix(".cub")
     part_name = " ".join(csv.stem for csv in input_file)
-    commands = setup_geometry_commands(model, input_file, revolution_angle, 0., backend)
+    commands = setup_geometry_commands(model, input_file, revolution_angle, 0., backend).values[0]
     if face_sets is not None:
         face_sets = _utilities.construct_append_options("--face-set", face_sets)
     else:
@@ -192,7 +193,7 @@ def setup_sets_commands(
         )
     ]
     commands.extend(sets_commands)
-    return commands
+    return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
 def setup_cylinder_commands(model, revolution_angle, backend) -> typing.List[string.Template]:
@@ -210,7 +211,7 @@ def setup_cylinder_commands(model, revolution_angle, backend) -> typing.List[str
             f"--inner-radius 1 --outer-radius 2 --height 1 {backend_option}"
         )
     ]
-    return commands
+    return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
 def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
@@ -258,7 +259,7 @@ def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
     )
     commands.append(merge_command)
 
-    return commands
+    return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
 commands_list = []
@@ -328,11 +329,11 @@ for test in system_tests:
 
 # Geometry XY Plot tests
 system_tests = (
-    # model/part,                                                  input_file
-    ("washer",     [_settings._project_root_abspath / "tests" / "washer.csv"]),  # noqa: E241
-    ("vase",       [_settings._project_root_abspath / "tests" / "vase.csv"]),  # noqa: E241
+    # model/part,                                                  input_file, backend
+    ("washer",     [_settings._project_root_abspath / "tests" / "washer.csv"], "abaqus"),  # noqa: E241
+    ("vase",       [_settings._project_root_abspath / "tests" / "vase.csv"],   "abaqus"),  # noqa: E241
     ("multi-part", [_settings._project_root_abspath / "tests" / "washer.csv",
-                    _settings._project_root_abspath / "tests" / "vase.csv"]),
+                    _settings._project_root_abspath / "tests" / "vase.csv"],   "abaqus"),  # noqa: E241
 )
 for test in system_tests:
     commands_list.append(setup_geometry_xyplot_commands(*test))
