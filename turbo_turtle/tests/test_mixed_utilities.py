@@ -157,10 +157,20 @@ return_genfromtxt = {
 }
 
 
-@pytest.mark.parametrize("file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome",
-                         return_genfromtxt.values(),
-                         ids=return_genfromtxt.keys())
-def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome):
+@pytest.mark.parametrize(
+    "file_name, delimiter, header_lines, expected_dimensions, expected_columns, expected, outcome",
+    return_genfromtxt.values(),
+    ids=return_genfromtxt.keys(),
+)
+def test_return_genfromtxt(
+    file_name,
+    delimiter,
+    header_lines,
+    expected_dimensions,
+    expected_columns,
+    expected,
+    outcome,
+):
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.return_genfromtxt`
 
     Tests both the expection raising version and the system exit version
@@ -191,9 +201,13 @@ def test_return_genfromtxt(file_name, delimiter, header_lines, expected_dimensio
         outcome = pytest.raises(SystemExit)
     with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected) as mock_genfromtxt, outcome:
         try:
-            coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter=delimiter, header_lines=header_lines,
-                                                               expected_dimensions=expected_dimensions,
-                                                               expected_columns=expected_columns)
+            coordinates = _mixed_utilities.return_genfromtxt_or_exit(
+                file_name,
+                delimiter=delimiter,
+                header_lines=header_lines,
+                expected_dimensions=expected_dimensions,
+                expected_columns=expected_columns,
+            )
             assert numpy.allclose(coordinates, expected)
         finally:
             pass
@@ -264,12 +278,22 @@ def test_element_type_regex(content, element_type, expected):
 
 
 def test_substitute_element_type():
-    with patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
-         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._element_type_regex", return_value="old_content"):
+    with (
+        patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
+        patch(
+            "turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._element_type_regex",
+            return_value="old_content"
+        ),
+    ):
         _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
         open_mock.assert_called_once()
-    with patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
-         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._element_type_regex", return_value="new_content"):
+    with (
+        patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
+        patch(
+            "turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._element_type_regex",
+            return_value="new_content"
+        ),
+    ):
         _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
         assert open_mock.call_count == 2
 
