@@ -56,7 +56,7 @@ markers = [
     "require_third_party: marks system tests that require third-party software command line calls",
     "cubit_python: marks Cubit Python API unit tests that require a Cubit import",
 ]
-addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers"
+addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -m 'not systemtest'"
 
 [tool.mypy]
 disable_error_code = [
