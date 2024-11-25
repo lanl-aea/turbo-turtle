@@ -76,7 +76,7 @@ targets = env.Command(
     source=source,
     action=[
         (
-            "${pytest_command} -v --no-showlocals -m systemtest --tb=short --cache-clear --cov "
+            "${pytest_command} -v --no-showlocals -m 'systemtest and gmsh' --tb=short --cache-clear --cov "
             "--cov-report=xml:${TARGET.abspath} --abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
         ),
     ],
