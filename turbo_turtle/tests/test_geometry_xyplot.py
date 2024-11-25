@@ -27,7 +27,6 @@ def test_geometry_xyplot():
     mock_set_aspect.assert_called_once_with("equal", adjustable="box")
 
 
-
 def test_main():
     kwargs = {}
     expected_call_kwargs = {
