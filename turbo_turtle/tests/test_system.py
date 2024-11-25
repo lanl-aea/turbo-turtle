@@ -1,6 +1,7 @@
 import os
 import shlex
 import string
+import typing
 import pathlib
 import tempfile
 import subprocess
@@ -40,12 +41,21 @@ if not installed:
         env[key] = f"{package_parent_path}"
 
 
-def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, quadrant, element_type, element_replacement, backend, output_type,
-                          turbo_turtle_command=turbo_turtle_command):
+def setup_sphere_commands(
+    model,
+    inner_radius,
+    outer_radius,
+    angle,
+    y_offset,
+    quadrant,
+    element_type,
+    element_replacement,
+    backend,
+    output_type,
+) -> typing.List[string.Template]:
     """Return the sphere/partition/mesh commands for system testing
 
-    :returns: list of string commands
-    :rtype: list
+    :returns: list of string or string template commands
     """
     model = pathlib.Path(model).with_suffix(".cae")
     image = model.with_suffix(".png")
@@ -101,7 +111,7 @@ def setup_sphere_commands(model, inner_radius, outer_radius, angle, y_offset, qu
     return commands
 
 
-def setup_geometry_xyplot_commands(model, input_file):
+def setup_geometry_xyplot_commands(model, input_file) -> typing.List[string.Template]:
     part_name = _utilities.character_delimited_list(csv.stem for csv in input_file)
     input_file = _utilities.character_delimited_list(input_file)
     commands = [
@@ -113,8 +123,13 @@ def setup_geometry_xyplot_commands(model, input_file):
     return commands
 
 
-def setup_geometry_commands(model, input_file, revolution_angle, y_offset, backend,
-                            turbo_turtle_command=turbo_turtle_command):
+def setup_geometry_commands(
+    model,
+    input_file,
+    revolution_angle,
+    y_offset,
+    backend,
+) -> typing.List[string.Template]:
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
@@ -134,16 +149,21 @@ def setup_geometry_commands(model, input_file, revolution_angle, y_offset, backe
     return commands
 
 
-def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_sets, edge_seeds, element_type, backend,
-                        turbo_turtle_command=turbo_turtle_command):
+def setup_sets_commands(
+    model,
+    input_file,
+    revolution_angle,
+    face_sets,
+    edge_sets,
+    edge_seeds,
+    element_type,
+    backend,
+) -> typing.List[string.Template]:
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
     part_name = " ".join(csv.stem for csv in input_file)
-    commands = setup_geometry_commands(
-        model, input_file, revolution_angle, 0., backend,
-        turbo_turtle_command=turbo_turtle_command
-    )
+    commands = setup_geometry_commands(model, input_file, revolution_angle, 0., backend)
     if face_sets is not None:
         face_sets = _utilities.construct_append_options("--face-set", face_sets)
     else:
@@ -174,8 +194,7 @@ def setup_sets_commands(model, input_file, revolution_angle, face_sets, edge_set
     return commands
 
 
-def setup_cylinder_commands(model, revolution_angle, backend,
-                            turbo_turtle_command=turbo_turtle_command):
+def setup_cylinder_commands(model, revolution_angle, backend) -> typing.List[string.Template]:
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
@@ -193,7 +212,7 @@ def setup_cylinder_commands(model, revolution_angle, backend,
     return commands
 
 
-def setup_merge_commands(part_name, backend, turbo_turtle_command=turbo_turtle_command):
+def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
     commands = []
 
     sphere_model = pathlib.Path("merge-sphere.cae")
@@ -550,7 +569,7 @@ for files in sconstruct_files:
 @pytest.mark.systemtest
 @pytest.mark.require_third_party
 @pytest.mark.parametrize("number, commands", enumerate(commands_list))
-def test_shell_commands(abaqus_command, cubit_command, number: int, commands: list):
+def test_shell_commands(abaqus_command, cubit_command, number: int, commands: list) -> None:
     """Run system tests that require third-party software
 
     Executes with a temporary directory that is cleaned up after each test execution.
@@ -569,7 +588,7 @@ def test_shell_commands(abaqus_command, cubit_command, number: int, commands: li
     test_project_shell_commands(abaqus_command, cubit_command, number, commands)
 
 
-def run_commands(commands, build_directory, template_substitution={}):
+def run_commands(commands, build_directory, template_substitution={}) -> None:
     for command in commands:
         if isinstance(command, string.Template):
             command = command.substitute(template_substitution)
@@ -593,7 +612,7 @@ project_only_commands_list.append(
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("number, commands", enumerate(project_only_commands_list))
-def test_project_shell_commands(abaqus_command, cubit_command, number: int, commands: list):
+def test_project_shell_commands(abaqus_command, cubit_command, number: int, commands: list) -> None:
     """Run the system tests.
 
     Executes with a temporary directory that is cleaned up after each test execution.
