@@ -24,7 +24,7 @@ def seveneigths_sphere(model_name, part_name='seveneigths-sphere'):
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
-    if not model_name in abaqus.mdb.models.keys():
+    if model_name not in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
@@ -96,7 +96,7 @@ def swiss_cheese(model_name, part_name='swiss-cheese'):
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
-    if not model_name in abaqus.mdb.models.keys():
+    if model_name not in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__',
         sheetSize=200.0)
