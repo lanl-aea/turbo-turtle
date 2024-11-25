@@ -44,14 +44,14 @@ for name, cubit_environment in env["cubit_environments"].items():
     cubit_environment.AlwaysBuild(targets)
 
 # Abaqus unit tests
-for name, path in env["abaqus_matrix"].items():
+for name, abaqus_environment in env["abaqus_environments"].items():
     source = [
         "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_abaqus_utilities.py",
         "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_mixed_utilities.py",
         "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_parsers.py",
         "turbo_turtle/_abaqus_python/turbo_turtle_abaqus/test_vertices.py",
     ]
-    targets = env.Command(
+    targets = abaqus_environment.Command(
         target=[f"test_{name}_python.txt"],
         source=source,
         action=[
@@ -60,12 +60,12 @@ for name, path in env["abaqus_matrix"].items():
                 "2>&1 | tee ${TARGET.abspath}"
             )
         ],
-        program=path
+        program=abaqus_environment["abaqus"]
     )
-    env.Alias("test_abaqus_python", targets)
-    env.Alias("regression", targets)
+    abaqus_environment.Alias("test_abaqus_python", targets)
+    abaqus_environment.Alias("regression", targets)
     # Always run pytests in place of a complete source list
-    env.AlwaysBuild(targets)
+    abaqus_environment.AlwaysBuild(targets)
 
 # System tests
 # TODO: test against a matrix of Abaqus/Cubit versions
