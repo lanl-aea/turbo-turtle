@@ -8,6 +8,9 @@ cubit = pytest.importorskip("cubit", reason="Could not import Cubit")
 from turbo_turtle import _cubit_python
 
 
+pytestmark = pytest.mark.cubit_python
+
+
 cubit_command_or_exception = {
     "good command": ("reset aprepro", does_not_raise()),
     "bad command": ("definitetlynotacubitcommand", pytest.raises(RuntimeError)),
