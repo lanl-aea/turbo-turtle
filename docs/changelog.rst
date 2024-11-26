@@ -13,6 +13,7 @@ Internal Changes
 - Run the unit tests against a matrix of Abaqus and Cubit versions (:issue:`141`, :merge:`224`). By `Kyle Brindley`_.
 - Run both unit and system tests against a matrix of Abaqus and Cubit versions during scheduled CI tests (:issue:`233`,
   :merge:`225`, :merge:`227`). By `Kyle Brindley`_.
+- Add a scheduled CI job to test all support Python versions (:issue:`235`, :merge:`228`). By `Kyle Brindley`_.
 
 *******************
 v1.0.0 (2024-10-21)
