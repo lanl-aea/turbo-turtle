@@ -38,7 +38,7 @@ requirements:
     - sphinx >=5.1
     - sphinx-argparse
     - sphinx-copybutton >=0.5.1
-    - sphinx_rtd_theme >=1,<3
+    - sphinx-book-theme
     - sphinxcontrib-bibtex
     - waves >=0.11.0
   run:
