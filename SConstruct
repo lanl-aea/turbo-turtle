@@ -21,28 +21,56 @@ AddOption(
     metavar="DIR",
     help="SCons build (variant) root directory. Relative or absolute path. (default: '%default')"
 )
+default_abaqus_command = "/apps/abaqus/Commands/abq2024"
+AddOption(
+    "--abaqus-command",
+    dest="abaqus_command",
+    nargs=1,
+    type="string",
+    action="append",
+    metavar="COMMAND",
+    help=f"Override for the Abaqus command. Repeat to specify more than one (default: '[{default_abaqus_command}]')"
+)
+default_cubit_command = "/apps/Cubit-16.16/cubit"
+AddOption(
+    "--cubit-command",
+    dest="cubit_command",
+    nargs=1,
+    type="string",
+    action="append",
+    metavar="COMMAND",
+    help=f"Override for the Cubit command. Repeat to specify more than one (default: '[{default_cubit_command}]')"
+)
 
 # Inherit Conda environment from user's active environment and add options
 env = waves.scons_extensions.WAVESEnvironment(
     ENV=os.environ.copy(),
-    variant_dir_base=pathlib.Path(GetOption("variant_dir_base"))
+    variant_dir_base=pathlib.Path(GetOption("variant_dir_base")),
+    abaqus_command=GetOption("abaqus_command"),
+    cubit_command=GetOption("cubit_command"),
 )
+env["abaqus_command"] = env["abaqus_command"] if env["abaqus_command"] is not None else [default_abaqus_command]
+env["cubit_command"] = env["cubit_command"] if env["cubit_command"] is not None else [default_cubit_command]
 env["ENV"]["PYTHONDONTWRITEBYTECODE"] = 1
 
 # Find third-party software
-abaqus_versions = (2024, 2023, 2022, 2021, 2020)
+abaqus_commands = env["abaqus_command"]
 abaqus_environments = dict()
-for version in abaqus_versions:
+for command in abaqus_commands:
+    # TODO: more robust version/name recovery without CI server assumptions
+    version = pathlib.Path(command).name
     abaqus_environment = env.Clone()
-    abaqus_environment["abaqus"] = abaqus_environment.AddProgram([f"/apps/abaqus/Commands/abq{version}"])
-    abaqus_environments.update({f"abaqus{version}": abaqus_environment})
+    abaqus_environment["abaqus"] = abaqus_environment.AddProgram([command])
+    abaqus_environments.update({version: abaqus_environment})
 
-cubit_versions = ("16.16", "16.12")
+cubit_commands = env["cubit_command"]
 cubit_environments = dict()
-for version in cubit_versions:
+for command in cubit_commands:
+    # TODO: more robust version/name recovery without CI server assumptions
+    version = pathlib.Path(command).parent.name
     cubit_environment = env.Clone()
-    cubit_environment["cubit"] = cubit_environment.AddCubit([f"/apps/Cubit-{version}/cubit"])
-    cubit_environments.update({f"cubit{version}": cubit_environment})
+    cubit_environment["cubit"] = cubit_environment.AddCubit([command])
+    cubit_environments.update({version: cubit_environment})
 
 # Set project meta data
 project_variables = {
