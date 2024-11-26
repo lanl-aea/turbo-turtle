@@ -587,8 +587,10 @@ sconstruct = _settings._project_root_abspath / "tests/SConstruct"
 commands_list.append(
     pytest.param(
         [
-            f"scons . --sconstruct={sconstruct} --turbo-turtle-command='{turbo_turtle_command}' "
-            "--abaqus-command=${abaqus_command} --backend=abaqus"
+            string.Template(
+                f"scons . --sconstruct={sconstruct} --turbo-turtle-command='${{turbo_turtle_command}}' "
+                "--abaqus-command=${abaqus_command} --backend=abaqus"
+            )
         ],
         marks=pytest.mark.abaqus
     )
@@ -596,8 +598,10 @@ commands_list.append(
 commands_list.append(
     pytest.param(
         [
-            f"scons . --sconstruct={sconstruct} --turbo-turtle-command='{turbo_turtle_command}' "
-            "--cubit-command=${cubit_command} --backend=cubit"
+            string.Template(
+                f"scons . --sconstruct={sconstruct} --turbo-turtle-command='${{turbo_turtle_command}}' "
+                "--cubit-command=${cubit_command} --backend=cubit"
+            )
         ],
         marks=pytest.mark.cubit
     )
