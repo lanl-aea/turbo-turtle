@@ -10,16 +10,14 @@ sys.dont_write_bytecode = True
 
 # -- Project information -----------------------------------------------------
 project_dir = pathlib.Path(r"@project_dir@").resolve()
-authors = [
+author_contact = [
     ("Kyle Brindley", "<kbrindley@lanl.gov>"),
     ("Thomas Roberts", "<tproberts@lanl.gov>"),
 ]
-author_latex = r"\and ".join(author for author, email in authors)
-epub_author = ", ".join(author for author, email in authors)
-author_manpage = ""
-for author, email in authors:
-    author_manpage += f"{author} {email}, "
-author_manpage = author_manpage.rstrip(', ')
+author = " and ".join(author for author, email in author_contact)
+author_latex = r"\and ".join(author for author, email in author_contact)
+epub_author = ", ".join(author for author, email in author_contact)
+author_manpage = ", ".join(f"{author} {email}" for author, email in author_contact)
 
 # Mock modules unavailable in the Conda development environment, e.g. Abaqus Python modules, and large imports not
 # required by the documentation build, e.g. cubit.
@@ -83,7 +81,7 @@ def setup(app):
     app.add_css_file("custom.css")
 
 html_favicon = "_static/favicon.ico"
-html_logo = 'turboTurtleLogo.png'
+html_logo = 'turbo-turtle-logo.png'
 html_last_updated_fmt = ""
 html_theme = "sphinx_book_theme"
 html_theme_options = {
@@ -108,7 +106,7 @@ man_pages = [
 ]
 
 # -- Options for LaTeX output ---------------------------------------------
-latex_logo = html_logo
+latex_logo = "turboTurtleLogo.png"
 copyright_latex = f"""\\textcopyright\\ Copyright {copyright}.
 
 Unless otherwise indicated, this information has been authored by an employee or employees of the Triad National

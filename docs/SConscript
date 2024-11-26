@@ -43,6 +43,7 @@ sphinx_configuration_files = [
     "references.bib",  # Found in conf.py, which is not currently scanned
     "targets.txt",  # Found in conf.py, which is not currently scanned
     "turboTurtleLogo.png",
+    "turbo-turtle-logo.png",
     "_static/custom.css",
     "_static/favicon.ico"
 ]
