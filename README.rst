@@ -86,7 +86,7 @@ installation`_ and `Conda environment management`_ documentation for more detail
 
 .. code-block::
 
-   $ conda install --channel conda-forge turbo_turtle 
+   $ conda install --channel conda-forge turbo_turtle
 
 .. installation-end-do-not-remove
 
@@ -163,10 +163,6 @@ On an AEA Linux Machine
 
    [roppenheimer@sstbigbird turbo-turtle]$ module use /projects/aea_compute/modulefiles
    [roppenheimer@sstbigbird turbo-turtle]$ module load turbo-turtle-dev
-   (aea-beta) [roppenheimer@sstbigbird]$ which abq2024
-   /apps/abaqus/Commands/abq2024
-   (aea-beta) [roppenheimer@sstbigbird]$ which cubit
-   /apps/Cubit16.12/cubit
 
 Local development environment
 -----------------------------
