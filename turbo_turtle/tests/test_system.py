@@ -586,8 +586,20 @@ for part_name in ("washer vase merge-sphere", ""):
 sconstruct = _settings._project_root_abspath / "tests/SConstruct"
 commands_list.append(
     pytest.param(
-        [f"scons . --sconstruct={sconstruct} --turbo-turtle-command='{turbo_turtle_command}'"],
-        marks=[pytest.mark.abaqus, pytest.mark.cubit]
+        [
+            f"scons abaqus --sconstruct={sconstruct} --turbo-turtle-command='{turbo_turtle_command}' "
+            "--abaqus-command=${abaqus_command} --backend=abaqus"
+        ],
+        marks=pytest.mark.abaqus
+    )
+)
+commands_list.append(
+    pytest.param(
+        [
+            f"scons cubit --sconstruct={sconstruct} --turbo-turtle-command='{turbo_turtle_command}' "
+            "--cubit-command=${cubit_command} --backend=cubit"
+        ],
+        marks=pytest.mark.cubit
     )
 )
 # User manual example SCons tasks
@@ -598,14 +610,14 @@ sconstruct_files = [
     ]
 ]
 for files in sconstruct_files:
-    space_delimited_files = ' '.join([str(path) for path in files])
+    space_delimited_files = " ".join([str(path) for path in files])
     scons_test_commands = [
         string.Template(
             "${turbo_turtle_command} fetch SConstruct SConscript"
         ),
         # FIXME: Figure out why this command fails on the CI server, but not in local user tests
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/159
-        #f"scons . --turbo-turtle-command='{turbo_turtle_command}'"  # noqa: E265
+        #f"scons . --turbo-turtle-command="{turbo_turtle_command}""  # noqa: E265
     ]
     commands_list.append(scons_test_commands)
 
