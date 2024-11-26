@@ -22,11 +22,15 @@ from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 _exclude_from_namespace = set(globals().keys())
 
 
+# TODO: remove when API builders are deprecated.
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/234
 def _get_defaults_dictionary(subcommand: str) -> typing.Dict:
     defaults_dictionary = f"{subcommand}_defaults".replace("-", "_")
     return getattr(parsers, defaults_dictionary)
 
 
+# TODO: remove when API builders are deprecated.
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/234
 def _action(target: list, source: list, env) -> None:
     """Define the builder action when calling internal package and not the cli
 
@@ -82,6 +86,8 @@ def _action(target: list, source: list, env) -> None:
         wrapper_command(args, command)
 
 
+# TODO: remove when API builders are deprecated.
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/234
 def _api_builder(subcommand: str) -> SCons.Builder.Builder:
     """Turbo-Turtle subcommand builder
 
