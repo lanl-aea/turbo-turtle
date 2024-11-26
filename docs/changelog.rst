@@ -12,6 +12,7 @@ Documentation
 =============
 - Package internal HTML documentation for internal Conda package distribution (:issue:`235`, :merge:`230`). By `Kyle
   Brindley`_.
+- Change Sphinx theme to ``sphinx-book-theme`` (:issue:`228`, :merge:`234`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
