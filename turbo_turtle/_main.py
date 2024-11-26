@@ -4,45 +4,11 @@ import argparse
 
 from turbo_turtle import __version__
 from turbo_turtle import _settings
+from turbo_turtle import _docs
 from turbo_turtle import _utilities
 from turbo_turtle import _fetch
 from turbo_turtle import geometry_xyplot
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
-
-
-def _docs_parser() -> argparse.ArgumentParser:
-    """Get parser object for docs subcommand command line options
-
-    :return: parser
-    :rtype: ArgumentParser
-    """
-    parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("-p", "--print-local-path",
-                        action="store_true",
-                        help="Print the path to the locally installed documentation index file. " \
-                             "As an alternative to the docs sub-command, open index.html in a web browser " \
-                             "(default: %(default)s)")
-    return parser
-
-
-def _docs(print_local_path: bool = False) -> None:
-    """Open or print the package's installed documentation
-
-    Exits with a non-zero exit code if the installed index file is not found.
-
-    :param bool print_local_path: If True, print the index file path instead of opening with a web browser
-    """
-
-    if not _settings._installed_docs_index.exists():
-        # This should only be reached if the package installation structure doesn't match the assumptions in
-        # _settings.py. It is used by the Conda build tests as a sign-of-life that the assumptions are correct.
-        sys.exit("Could not find package documentation HTML index file")
-
-    if print_local_path:
-        print(_settings._installed_docs_index, file=sys.stdout)
-    else:
-        import webbrowser
-        webbrowser.open(str(_settings._installed_docs_index))
 
 
 def _print_abaqus_path_parser() -> argparse.ArgumentParser:
@@ -136,9 +102,12 @@ def get_parser() -> argparse.ArgumentParser:
     subparsers.add_parser(
         "docs",
         help=f"Open the {_settings._project_name_short} HTML documentation",
-        description=f"Open the packaged {_settings._project_name_short} HTML documentation in the  " \
+        # fmt: off
+        description=f"Open the packaged {_settings._project_name_short} HTML documentation in the "
                      "system default web browser",
-        parents=[_docs_parser()])
+        # fmt: on
+        parents=[_docs.get_parser()],
+    )
 
     subparsers.add_parser(
         "fetch",
@@ -267,7 +236,7 @@ def main() -> None:
         if args.subcommand not in subcommand_list:
             parser.print_help()
         elif args.subcommand == "docs":
-            _docs(print_local_path=args.print_local_path)
+            _docs.main(_settings._installed_docs_index, print_local_path=args.print_local_path)
         elif args.subcommand == "fetch":
             root_directory = _settings._tutorials_directory.parent
             relative_paths = _settings._fetch_subdirectories

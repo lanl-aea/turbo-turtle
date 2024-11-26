@@ -22,6 +22,11 @@ Internal Changes
 - Remove the experimental, semi-private API builders in favor of the public CLI builder design (:issue:`234`,
   :merge:`231`).  By `Kyle Brindley`_.
 
+Enhancements
+============
+- Update docs subcommand implementation for more robust error messages (:issue:`232`, :merge:`232`). By `Kyle
+  Brindley`_.
+
 *******************
 v1.0.0 (2024-10-21)
 *******************
