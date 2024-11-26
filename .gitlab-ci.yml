@@ -156,7 +156,7 @@ conda-build-external:
 
 conda-build-matrix:
   timeout: 4h
-  stage: scheduled
+  stage: test 
   variables:
     GIT_STRATEGY: clone
   dependencies: []
