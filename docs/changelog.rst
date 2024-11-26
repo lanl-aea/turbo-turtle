@@ -19,6 +19,8 @@ Internal Changes
 - Run both unit and system tests against a matrix of Abaqus and Cubit versions during scheduled CI tests (:issue:`233`,
   :merge:`225`, :merge:`227`). By `Kyle Brindley`_.
 - Add a scheduled CI job to test all support Python versions (:issue:`236`, :merge:`229`). By `Kyle Brindley`_.
+- Remove the experimental, semi-private API builders in favor of the public CLI builder design (:issue:`234`,
+  :merge:`231`).  By `Kyle Brindley`_.
 
 *******************
 v1.0.0 (2024-10-21)

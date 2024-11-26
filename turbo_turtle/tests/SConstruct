@@ -62,66 +62,61 @@ env.AddProgram([env["abaqus_command"]])
 env.AddCubit([env["cubit_command"]])
 env["backend_list"] = env["backend_list"] if env["backend_list"] is not None else ["abaqus", "cubit"]
 env.Append(BUILDERS={
-    # API Builders
-    "geometry_api": turbo_turtle.scons_extensions._api_builder("geometry"),
-    "geometry_xyplot_api": turbo_turtle.scons_extensions._api_builder("geometry-xyplot"),
-    "merge_api": turbo_turtle.scons_extensions._api_builder("merge"),
-    # CLI builders
-    "geometry_cli": turbo_turtle.scons_extensions.geometry(
+    "geometry": turbo_turtle.scons_extensions.geometry(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
-    "geometry_xyplot_cli": turbo_turtle.scons_extensions.geometry_xyplot(
+    "geometry_xyplot": turbo_turtle.scons_extensions.geometry_xyplot(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
-    "cylinder_cli": turbo_turtle.scons_extensions.cylinder(
+    "cylinder": turbo_turtle.scons_extensions.cylinder(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
-    "sphere_cli": turbo_turtle.scons_extensions.sphere(
+    "sphere": turbo_turtle.scons_extensions.sphere(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
-    "partition_cli": turbo_turtle.scons_extensions.partition(
+    "partition": turbo_turtle.scons_extensions.partition(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
-    "sets_cli": turbo_turtle.scons_extensions.sets(
+    "sets": turbo_turtle.scons_extensions.sets(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name} ${face_sets}"
     ),
-    "mesh_cli": turbo_turtle.scons_extensions.mesh(
+    "mesh": turbo_turtle.scons_extensions.mesh(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name} --global-seed ${global_seed}"
     ),
-    "image_cli": turbo_turtle.scons_extensions.image(
+    "image": turbo_turtle.scons_extensions.image(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
-    "merge_cli": turbo_turtle.scons_extensions.merge(
+    "merge": turbo_turtle.scons_extensions.merge(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
         options="--model-name ${model_name} --part-name ${part_name} --merged-model-name ${merged_model_name}"
     ),
-    "export_cli": turbo_turtle.scons_extensions.export(
+    "export": turbo_turtle.scons_extensions.export(
         program=env["turbo_turtle"],
         abaqus_command=[env["abaqus_command"]],
         cubit_command=[env["cubit_command"]],
@@ -129,7 +124,6 @@ env.Append(BUILDERS={
     )
 })
 
-# API builders
 backend_extensions = {
     "abaqus": "cae",
     "cubit": "cub",
@@ -138,131 +132,106 @@ for backend in env["backend_list"]:
     targets = list()
     extension = backend_extensions[backend]
 
-    # TODO: remove when API builders are deprecated.
-    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/234
-    for interface in ["api", "cli"]:
+    # Geometry
+    builder = f"geometry"
+    part_name = [f"scons-vase"]
+    targets.extend(
+        env["BUILDERS"][builder](
+            env,
+            target=[f"scons-vase.{extension}"],
+            source=[project_directory / "vase.csv"],
+            backend=backend,
+            output_file="${TARGET.abspath}",
+            model_name=f"scons-vase",
+            part_name=" ".join(part_name),
+        )
+    )
+    part_name = [f"scons-washer"]
+    targets.extend(
+        env["BUILDERS"][builder](
+            env,
+            target=[f"scons-washer.{extension}"],
+            source=[project_directory / "washer.csv"],
+            backend=backend,
+            output_file="${TARGET.abspath}",
+            model_name=f"scons-washer",
+            part_name=" ".join(part_name),
+        )
+    )
+    part_name = [f"scons-vase", f"scons-washer"]
+    targets.extend(
+        env["BUILDERS"][builder](
+            env,
+            target=[f"scons-multi-part.{extension}"],
+            source=[
+                project_directory / "vase.csv",
+                project_directory / "washer.csv",
+            ],
+            backend=backend,
+            output_file="${TARGET.abspath}",
+            model_name=f"scons-multi-part",
+            part_name=" ".join(part_name),
+        )
+    )
 
-        # The API builders require executables to be passed through the construction/task environment
-        # Do not pass through to CLI builders to avoid false positives in the CLI builder instantiation
-        # TODO: remove when API builders are deprecated.
-        # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/234
-        executable_paths = {}
-        if interface == "api":
-            executable_paths = {
-                "abaqus_command": [env["abaqus_command"]],
-                "cubit_command": [env["cubit_command"]],
-            }
+    # Geometry-XY Plot
+    builder = f"geometry_xyplot"
+    part_name = [f"scons-vase"]
+    targets.extend(
+        env["BUILDERS"][builder](
+            env,
+            target=[f"scons-vase.{extension}.png"],
+            source=[project_directory / "vase.csv"],
+            backend=backend,
+            output_file="${TARGET.abspath}",
+            model_name=f"scons-vase",
+            part_name=" ".join(part_name),
+        )
+    )
+    part_name = [f"scons-washer"]
+    targets.extend(
+        env["BUILDERS"][builder](
+            env,
+            target=[f"scons-washer.{extension}.png"],
+            source=[project_directory / "washer.csv"],
+            backend=backend,
+            output_file="${TARGET.abspath}",
+            model_name=f"scons-washer",
+            part_name=" ".join(part_name),
+        )
+    )
+    part_name = [f"scons-vase", f"scons-washer"]
+    targets.extend(
+        env["BUILDERS"][builder](
+            env,
+            target=[f"scons-multi-part.{extension}.png"],
+            source=[
+                project_directory / "vase.csv",
+                project_directory / "washer.csv"
+            ],
+            backend=backend,
+            output_file="${TARGET.abspath}",
+            model_name=f"scons-multi-part",
+            part_name=" ".join(part_name),
+        )
+    )
 
-        # Geometry
-        builder = f"geometry_{interface}"
-        part_name = [f"scons-{interface}-vase"]
-        targets.extend(
-            env["BUILDERS"][builder](
-                env,
-                target=[f"scons-{interface}-vase.{extension}"],
-                source=[project_directory / "vase.csv"],
-                backend=backend,
-                output_file="${TARGET.abspath}",
-                model_name=f"scons-{interface}-vase",
-                part_name=" ".join(part_name) if interface == "cli" else part_name,
-                **executable_paths,
-            )
+    # Merge
+    builder = f"merge"
+    model_name = [f"scons-vase", f"scons-washer"]
+    part_name = [f"scons-vase", f"scons-washer"]
+    targets.extend(
+        env["BUILDERS"][builder](
+            env,
+            target=[f"scons-merge-multi-part.{extension}"],
+            source=[f"scons-vase.{extension}", f"scons-washer.{extension}"],
+            backend=backend,
+            output_file="${TARGET.abspath}",
+            model_name=" ".join(model_name),
+            part_name=" ".join(part_name),
+            merged_model_name=f"scons-merge-multi-part",
         )
-        part_name = [f"scons-{interface}-washer"]
-        targets.extend(
-            env["BUILDERS"][builder](
-                env,
-                target=[f"scons-{interface}-washer.{extension}"],
-                source=[project_directory / "washer.csv"],
-                backend=backend,
-                output_file="${TARGET.abspath}",
-                model_name=f"scons-{interface}-washer",
-                part_name=" ".join(part_name) if interface == "cli" else part_name,
-                **executable_paths,
-            )
-        )
-        part_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
-        targets.extend(
-            env["BUILDERS"][builder](
-                env,
-                target=[f"scons-{interface}-multi-part.{extension}"],
-                source=[
-                    project_directory / "vase.csv",
-                    project_directory / "washer.csv",
-                ],
-                backend=backend,
-                output_file="${TARGET.abspath}",
-                model_name=f"scons-{interface}-multi-part",
-                part_name=" ".join(part_name) if interface == "cli" else part_name,
-                **executable_paths,
-            )
-        )
-
-        # Geometry-XY Plot
-        builder = f"geometry_xyplot_{interface}"
-        part_name = [f"scons-{interface}-vase"]
-        targets.extend(
-            env["BUILDERS"][builder](
-                env,
-                target=[f"scons-{interface}-vase.{extension}.png"],
-                source=[project_directory / "vase.csv"],
-                backend=backend,
-                output_file="${TARGET.abspath}",
-                model_name=f"scons-{interface}-vase",
-                part_name=" ".join(part_name) if interface == "cli" else part_name,
-                **executable_paths,
-            )
-        )
-        part_name = [f"scons-{interface}-washer"]
-        targets.extend(
-            env["BUILDERS"][builder](
-                env,
-                target=[f"scons-{interface}-washer.{extension}.png"],
-                source=[project_directory / "washer.csv"],
-                backend=backend,
-                output_file="${TARGET.abspath}",
-                model_name=f"scons-{interface}-washer",
-                part_name=" ".join(part_name) if interface == "cli" else part_name,
-                **executable_paths,
-            )
-        )
-        part_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
-        targets.extend(
-            env["BUILDERS"][builder](
-                env,
-                target=[f"scons-{interface}-multi-part.{extension}.png"],
-                source=[
-                    project_directory / "vase.csv",
-                    project_directory / "washer.csv"
-                ],
-                backend=backend,
-                output_file="${TARGET.abspath}",
-                model_name=f"scons-{interface}-multi-part",
-                part_name=" ".join(part_name) if interface == "cli" else part_name,
-                **executable_paths,
-            )
-        )
-
-        # Merge
-        builder = f"merge_{interface}"
-        model_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
-        part_name = [f"scons-{interface}-vase", f"scons-{interface}-washer"]
-        targets.extend(
-            env["BUILDERS"][builder](
-                env,
-                target=[f"scons-{interface}-merge-multi-part.{extension}"],
-                source=[f"scons-{interface}-vase.{extension}", f"scons-{interface}-washer.{extension}"],
-                backend=backend,
-                output_file="${TARGET.abspath}",
-                model_name=" ".join(model_name) if interface == "cli" else model_name,
-                part_name=" ".join(part_name) if interface == "cli" else part_name,
-                merged_model_name=f"scons-{interface}-merge-multi-part",
-                **executable_paths,
-            )
-        )
-
-    # Subcommands not implemented in API builder
-    interface = "cli"
+    )
 
     # Vase sets
     if backend == "abaqus":
@@ -272,15 +241,15 @@ for backend in env["backend_list"]:
     elif backend == "cubit":
         face_sets = "--face-set top 4 --face-set bottom 7 --face-set outer '2 3 8'"
         edge_sets = "--top_outer 13"
-    builder = f"sets_{interface}"
+    builder = f"sets"
     targets.extend(
         env["BUILDERS"][builder](
             env,
-            target=[f"scons-{interface}-vase-sets.{extension}"],
-            source=[f"scons-{interface}-vase.{extension}"],
+            target=[f"scons-vase-sets.{extension}"],
+            source=[f"scons-vase.{extension}"],
             backend=backend,
-            model_name=f"scons-{interface}-vase",
-            part_name=f"scons-{interface}-vase",
+            model_name=f"scons-vase",
+            part_name=f"scons-vase",
             face_sets=face_sets,
             edge_sets=edge_sets
         )
@@ -290,59 +259,59 @@ for backend in env["backend_list"]:
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
 
     # Cylinder
-    builder = f"cylinder_{interface}"
+    builder = f"cylinder"
     targets.extend(
         env["BUILDERS"][builder](
             env,
-            target=[f"scons-{interface}-cylinder.{extension}"],
+            target=[f"scons-cylinder.{extension}"],
             source=[project_configuration],
             backend=backend,
             inner_radius=1.,
             outer_radius=2.,
             height=1.,
-            model_name=f"scons-{interface}-cylinder",
-            part_name=f"scons-{interface}-cylinder"
+            model_name=f"scons-cylinder",
+            part_name=f"scons-cylinder"
         )
     )
 
     # Sphere
-    builder = f"sphere_{interface}"
+    builder = f"sphere"
     targets.extend(
         env["BUILDERS"][builder](
             env,
-            target=[f"scons-{interface}-sphere.{extension}"],
+            target=[f"scons-sphere.{extension}"],
             source=[project_configuration],
             backend=backend,
             inner_radius=1.,
             outer_radius=2.,
-            model_name=f"scons-{interface}-sphere-{extension}",
-            part_name=f"scons-{interface}-sphere-{extension}"
+            model_name=f"scons-sphere-{extension}",
+            part_name=f"scons-sphere-{extension}"
         )
     )
 
     # Partition
-    builder = f"partition_{interface}"
+    builder = f"partition"
     targets.extend(
         env["BUILDERS"][builder](
             env,
-            target=[f"scons-{interface}-partition.{extension}"],
-            source=[f"scons-{interface}-sphere.{extension}"],
+            target=[f"scons-partition.{extension}"],
+            source=[f"scons-sphere.{extension}"],
             backend=backend,
-            model_name=f"scons-{interface}-sphere-{extension}",
-            part_name=f"scons-{interface}-sphere-{extension}"
+            model_name=f"scons-sphere-{extension}",
+            part_name=f"scons-sphere-{extension}"
         )
     )
 
     # Mesh
-    builder = f"mesh_{interface}"
+    builder = f"mesh"
     targets.extend(
         env["BUILDERS"][builder](
             env,
-            target=[f"scons-{interface}-mesh.{extension}"],
-            source=[f"scons-{interface}-partition.{extension}"],
+            target=[f"scons-mesh.{extension}"],
+            source=[f"scons-partition.{extension}"],
             backend=backend,
-            model_name=f"scons-{interface}-sphere-{extension}",
-            part_name=f"scons-{interface}-sphere-{extension}",
+            model_name=f"scons-sphere-{extension}",
+            part_name=f"scons-sphere-{extension}",
             element_type="C3D8R",
             global_seed=0.15
         )
@@ -351,28 +320,28 @@ for backend in env["backend_list"]:
     # Image
     # TODO: chase down why this fails in the CI jobs, but not locally
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/129
-    #builder = f"image_{interface}"
+    #builder = f"image"
     #env["BUILDERS"][builder](env,
-    #    target=[f"scons-{interface}-image-{extension}.png"],
-    #    source=[f"scons-{interface}-mesh.{extension}"],
+    #    target=[f"scons-image-{extension}.png"],
+    #    source=[f"scons-mesh.{extension}"],
     #    backend=backend,
-    #    model_name=f"scons-{interface}-sphere-{extension}",
-    #    part_name=f"scons-{interface}-sphere-{extension}"
+    #    model_name=f"scons-sphere-{extension}",
+    #    part_name=f"scons-sphere-{extension}"
     #)
 
     # Export
-    builder = f"export_{interface}"
-    input_file = f"scons-{interface}-sphere-{extension}.inp"
+    builder = f"export"
+    input_file = f"scons-sphere-{extension}.inp"
     if backend == "cubit":
         input_file = input_file.replace("-", "_")
     targets.extend(
         env["BUILDERS"][builder](
             env,
             target=[input_file],
-            source=[f"scons-{interface}-mesh.{extension}"],
+            source=[f"scons-mesh.{extension}"],
             backend=backend,
-            model_name=f"scons-{interface}-sphere-{extension}",
-            part_name=f"scons-{interface}-sphere-{extension}"
+            model_name=f"scons-sphere-{extension}",
+            part_name=f"scons-sphere-{extension}"
         )
     )
 
