@@ -11,7 +11,7 @@ v1.1.0 (unreleased)
 Internal Changes
 ================
 - Run the unit tests against a matrix of Abaqus and Cubit versions (:issue:`141`, :merge:`224`). By `Kyle Brindley`_.
-- Run the system tests against a matrix of Abaqus and Cubit versions during scheduled CI tests (:issue:`233`,
+- Run both unit and system tests against a matrix of Abaqus and Cubit versions during scheduled CI tests (:issue:`233`,
   :merge:`225`). By `Kyle Brindley`_.
 
 *******************
