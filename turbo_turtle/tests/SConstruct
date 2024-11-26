@@ -40,12 +40,11 @@ AddOption(
 AddOption(
     "--backend",
     dest="backend_list",
-    default=["abaqus", "cubit"],
     nargs=1,
     type="string",
     action="append",
     metavar="BACKEND",
-    help="Backend task list. Repeat to specify more than one (default: '%default')"
+    help="Backend task list. Repeat to specify more than one. If not specified, defaults to: [abaqus, cubit]."
 )
 
 project_configuration = pathlib.Path(inspect.getfile(lambda: None))
@@ -61,6 +60,7 @@ env = waves.scons_extensions.WAVESEnvironment(
 env["turbo_turtle"] = env["turbo_turtle_command"]
 env.AddProgram([env["abaqus_command"]])
 env.AddCubit([env["cubit_command"]])
+env["backend_list"] = env["backend_list"] if env["backend_list"] is not None else ["abaqus", "cubit"]
 env.Append(BUILDERS={
     # API Builders
     "geometry_api": turbo_turtle.scons_extensions._api_builder("geometry"),
