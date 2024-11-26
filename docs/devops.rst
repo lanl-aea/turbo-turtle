@@ -22,6 +22,45 @@ Testing
    :start-after: testing-start-do-not-remove
    :end-before: testing-end-do-not-remove
 
+There is significant complexity in the test construction. This complexity makes adding new tests non-trivial, but
+enables (1) simple regression suite test commands for local testing and (2) matrixed tests against multiple versions of
+third-party software, e.g. Abaqus and Cubit.
+
+The relevant files are
+
+#. ``SConstruct``: Specify one or more Abaqus and Cubit command(s) and call the pytest configuration
+#. ``pytest``: SConscript test configuration that builds the pytest command suite for both unit and system tests
+#. ``pyproject.toml``: Define project specific pytest markers for test control
+#. ``turbo_turtle/conftest.py``: Configure custom pytest command line options to allow pass-through Abaqus and Cubit
+   executable paths
+#. ``turbo_turtle/tests/*``: Directory containing unit and system test source files
+
+   #. ``turbo_turtle/tests/test_system.py``: System test shell command definitions
+
+The design of the system tests is intended to configure a full test suite for a matrix of construction environments. The
+pytest marker assignment by associated backend software is important to allow subsets of the full suite to run in
+dedicated construction environments. The matrixed construction environments are controlled under the SCons task
+definitions for the ``systemtest`` alias.
+
+This design of construction environments on the outside and a single test suite on the inside allows for execution
+against a single version of each third-party software. The passthrough complexity also allows for direct pytest
+execution. Testing against a non-default or range of third-party software paths can be achieved with the
+``--abaqus-command`` and ``--cubit-command`` options to the launching command.
+
+.. code-block::
+
+   scons regression --abaqus-command /my/local/intallation/abaqus --cubit-command /my/local/installation/cubit
+   scons regression --abaqus-command /apps/abaqus/Commands/abq2024 --abaqus-command /apps/abaqus/Commands/abq2023 --cubit-command /apps/Cubit-16.16/cubit --cubit-command /apps/Cubit-16.12/cubit
+
+The pytest command only accepts a single version of third-party software at a time because the design intent is to wrap the
+matrix of third-party software around the pytest command and limit the pytest suite to a single construction environment
+at a time.
+
+.. code-block::
+
+   pytest -m 'systemtest' --abaqus-command /my/local/intallation/abaqus --cubit-command /my/local/installation/cubit
+   pytest -m 'systemtest' --abaqus-command /apps/abaqus/Commands/abq2024 --cubit-command /apps/Cubit-16.16/cubit
+
 ================================
 Package Interfaces and Structure
 ================================
