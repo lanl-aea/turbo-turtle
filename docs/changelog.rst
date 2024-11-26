@@ -8,6 +8,11 @@ Changelog
 v1.1.0 (unreleased)
 *******************
 
+Documentation
+=============
+- Package internal HTML documentation for internal Conda package distribution (:issue:`235`, :merge:`230`). By `Kyle
+  Brindley`_.
+
 Internal Changes
 ================
 - Run the unit tests against a matrix of Abaqus and Cubit versions (:issue:`141`, :merge:`224`). By `Kyle Brindley`_.
