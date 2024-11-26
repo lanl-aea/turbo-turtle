@@ -1,4 +1,5 @@
 """Python 2/3 compatible settings for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
+
 import inspect
 import os
 import sys
@@ -9,7 +10,7 @@ _project_root_abspath = os.path.dirname(os.path.dirname(os.path.abspath(_parent)
 
 _author = "Kyle Brindley (kbrindley@lanl.gov), Thomas Roberts (tproberts@lanl.gov)"
 
-_docs_directory = os.path.join(_project_root_abspath, 'docs')
+_docs_directory = os.path.join(_project_root_abspath, "docs")
 _file_prefix = "file://"
 _gui_docs_file = _file_prefix + os.path.join(_docs_directory, "gui.html")
 

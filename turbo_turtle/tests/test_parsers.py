@@ -9,16 +9,18 @@ from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
 positive_float = {
-    "zero": ("0.", 0., does_not_raise()),
-    "one": ("1.", 1., does_not_raise()),
+    "zero": ("0.", 0.0, does_not_raise()),
+    "one": ("1.", 1.0, does_not_raise()),
     "negative": ("-1.", None, pytest.raises(argparse.ArgumentTypeError)),
     "string": ("negative_one", None, pytest.raises(argparse.ArgumentTypeError)),
 }
 
 
-@pytest.mark.parametrize("input_string, expected_float, outcome",
-                         positive_float.values(),
-                         ids=positive_float.keys())
+@pytest.mark.parametrize(
+    "input_string, expected_float, outcome",
+    positive_float.values(),
+    ids=positive_float.keys(),
+)
 def test_positive_float(input_string, expected_float, outcome):
     with outcome:
         try:
@@ -36,9 +38,11 @@ positive_int = {
 }
 
 
-@pytest.mark.parametrize("input_string, expected_int, outcome",
-                         positive_int.values(),
-                         ids=positive_int.keys())
+@pytest.mark.parametrize(
+    "input_string, expected_int, outcome",
+    positive_int.values(),
+    ids=positive_int.keys(),
+)
 def test_positive_int(input_string, expected_int, outcome):
     with outcome:
         try:
@@ -48,71 +52,41 @@ def test_positive_int(input_string, expected_int, outcome):
             pass
 
 
-construct_prog = {
-    "script": ("script", "abaqus cae -noGui script --")
-}
+construct_prog = {"script": ("script", "abaqus cae -noGui script --")}
 
 
-@pytest.mark.parametrize("basename, expected_prog",
-                         construct_prog.values(),
-                         ids=construct_prog.keys())
+@pytest.mark.parametrize(
+    "basename, expected_prog",
+    construct_prog.values(),
+    ids=construct_prog.keys(),
+)
 def test_construct_prog(basename, expected_prog):
     prog = parsers.construct_prog(basename)
     assert prog == expected_prog
 
 
 subcommand_parser = {
-    "geometry": (
-        "geometry",
-        ["--input-file", "input_file", "--output-file", "output_file"],
-        []
-    ),
+    "geometry": ("geometry", ["--input-file", "input_file", "--output-file", "output_file"], []),
     "cylinder": (
         "cylinder",
         ["--inner-radius", "1.", "--outer-radius", "2.", "--height", "1.", "--output-file", "output_file"],
-        []
+        [],
     ),
-    "sphere": (
-        "sphere",
-        ["--inner-radius", "1.", "--outer-radius", "2.", "--output-file", "output_file"],
-        ["center"]
-    ),
-    "partition": (
-        "partition",
-        ["--input-file", "input_file"],
-        []
-    ),
-    "sets": (
-        "sets",
-        ["--input-file", "input_file"],
-        []
-    ),
-    "mesh": (
-        "mesh",
-        ["--input-file", "input_file", "--element-type", "C3D8"],
-        []
-    ),
-    "merge": (
-        "merge",
-        ["--input-file", "input_file", "--output-file", "output_file"],
-        []
-    ),
-    "export": (
-        "export",
-        ["--input-file", "input_file"],
-        ["output_type"]
-    ),
-    "image": (
-        "image",
-        ["--input-file", "input_file", "--output-file", "output_file"],
-        []
-    ),
+    "sphere": ("sphere", ["--inner-radius", "1.", "--outer-radius", "2.", "--output-file", "output_file"], ["center"]),
+    "partition": ("partition", ["--input-file", "input_file"], []),
+    "sets": ("sets", ["--input-file", "input_file"], []),
+    "mesh": ("mesh", ["--input-file", "input_file", "--element-type", "C3D8"], []),
+    "merge": ("merge", ["--input-file", "input_file", "--output-file", "output_file"], []),
+    "export": ("export", ["--input-file", "input_file"], ["output_type"]),
+    "image": ("image", ["--input-file", "input_file", "--output-file", "output_file"], []),
 }
 
 
-@pytest.mark.parametrize("subcommand, required_argv, exclude_keys",
-                         subcommand_parser.values(),
-                         ids=subcommand_parser.keys())
+@pytest.mark.parametrize(
+    "subcommand, required_argv, exclude_keys",
+    subcommand_parser.values(),
+    ids=subcommand_parser.keys(),
+)
 def test_subcommand_parser(subcommand, required_argv, exclude_keys):
     """Test the default value assignments in the subcommand parsers
 

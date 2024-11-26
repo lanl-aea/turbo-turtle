@@ -12,7 +12,7 @@ exclude turbo_turtle/.coveragerc
 exclude package_documentation.py
 exclude .git*
 exclude SConstruct
-exclude flake8
+exclude style
 exclude mypy
 exclude cProfile
 exclude pytest

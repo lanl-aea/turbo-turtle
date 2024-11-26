@@ -19,13 +19,17 @@ from turbo_turtle_abaqus import _abaqus_utilities
 from turbo_turtle_abaqus import _mixed_settings
 
 
-def main(inner_radius, outer_radius, output_file,
-         input_file=parsers.sphere_defaults["input_file"],
-         quadrant=parsers.sphere_defaults["quadrant"],
-         revolution_angle=parsers.sphere_defaults["revolution_angle"],
-         y_offset=parsers.sphere_defaults["y_offset"],
-         model_name=parsers.sphere_defaults["model_name"],
-         part_name=parsers.sphere_defaults["part_name"]):
+def main(
+    inner_radius,
+    outer_radius,
+    output_file,
+    input_file=parsers.sphere_defaults["input_file"],
+    quadrant=parsers.sphere_defaults["quadrant"],
+    revolution_angle=parsers.sphere_defaults["revolution_angle"],
+    y_offset=parsers.sphere_defaults["y_offset"],
+    model_name=parsers.sphere_defaults["model_name"],
+    part_name=parsers.sphere_defaults["part_name"],
+):
     """Wrap sphere function with file open and file write operations
 
     :param float inner_radius: inner radius (size of hollow)
@@ -43,7 +47,7 @@ def main(inner_radius, outer_radius, output_file,
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
     # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
-    center = (0., y_offset)
+    center = (0.0, y_offset)
 
     try:
         if input_file is not None:
@@ -51,23 +55,40 @@ def main(inner_radius, outer_radius, output_file,
             # Avoid modifying the contents or timestamp on the input file.
             # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
             with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
-                sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
-                       model_name=model_name, part_name=part_name)
+                sphere(
+                    inner_radius,
+                    outer_radius,
+                    quadrant=quadrant,
+                    revolution_angle=revolution_angle,
+                    center=center,
+                    model_name=model_name,
+                    part_name=part_name,
+                )
                 abaqus.mdb.saveAs(pathName=output_file)
         else:
-            sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
-                   model_name=model_name, part_name=part_name)
+            sphere(
+                inner_radius,
+                outer_radius,
+                quadrant=quadrant,
+                revolution_angle=revolution_angle,
+                center=center,
+                model_name=model_name,
+                part_name=part_name,
+            )
             abaqus.mdb.saveAs(pathName=output_file)
     except RuntimeError as err:
         _mixed_utilities.sys_exit(err.message)
 
 
-def sphere(inner_radius, outer_radius,
-           center=parsers.sphere_defaults["center"],
-           quadrant=parsers.sphere_defaults["quadrant"],
-           revolution_angle=parsers.sphere_defaults["revolution_angle"],
-           model_name=parsers.sphere_defaults["model_name"],
-           part_name=parsers.sphere_defaults["part_name"]):
+def sphere(
+    inner_radius,
+    outer_radius,
+    center=parsers.sphere_defaults["center"],
+    quadrant=parsers.sphere_defaults["quadrant"],
+    revolution_angle=parsers.sphere_defaults["revolution_angle"],
+    model_name=parsers.sphere_defaults["model_name"],
+    part_name=parsers.sphere_defaults["part_name"],
+):
     """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both
     quadrants.
 
@@ -98,23 +119,24 @@ def sphere(inner_radius, outer_radius,
     arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
     inner_point1, inner_point2, outer_point1, outer_point2 = arc_points
 
-    sketch = model.ConstrainedSketch(name='__profile__', sheetSize=200.0)
+    sketch = model.ConstrainedSketch(name="__profile__", sheetSize=200.0)
     if numpy.allclose(inner_point1, center) and numpy.allclose(inner_point2, center):
         inner_point1 = center
         inner_point2 = center
     else:
-        sketch.ArcByCenterEnds(center=center, point1=inner_point1, point2=inner_point2,
-                               direction=abaqusConstants.CLOCKWISE)
-    sketch.ArcByCenterEnds(center=center, point1=outer_point1, point2=outer_point2,
-                           direction=abaqusConstants.CLOCKWISE)
+        sketch.ArcByCenterEnds(
+            center=center, point1=inner_point1, point2=inner_point2, direction=abaqusConstants.CLOCKWISE
+        )
+    sketch.ArcByCenterEnds(center=center, point1=outer_point1, point2=outer_point2, direction=abaqusConstants.CLOCKWISE)
     sketch.Line(point1=outer_point1, point2=inner_point1)
     sketch.Line(point1=outer_point2, point2=inner_point2)
     centerline = sketch.ConstructionLine(point1=center, angle=90.0)
     sketch.assignCenterline(line=centerline)
 
-    if numpy.isclose(revolution_angle, 0.):
-        part = model.Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
-                          type=abaqusConstants.DEFORMABLE_BODY)
+    if numpy.isclose(revolution_angle, 0.0):
+        part = model.Part(
+            name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC, type=abaqusConstants.DEFORMABLE_BODY
+        )
         part.BaseShell(sketch=sketch)
     else:
         part = model.Part(name=part_name, dimensionality=abaqusConstants.THREE_D, type=abaqusConstants.DEFORMABLE_BODY)
@@ -170,34 +192,40 @@ def _gui_get_inputs():
     import abaqus
 
     fields = (
-        ('Part Name:', parsers.sphere_defaults['part_name']),
-        ('Model Name:', parsers.sphere_defaults['model_name']),
-        ('Inner Radius:', ''),
-        ('Outer Radius:', ''),
-        ('Revolution Angle:', str(parsers.sphere_defaults['revolution_angle'])),
-        ('Y-Offset:', str(parsers.sphere_defaults['y_offset'])),
-        ('Quadrant:', parsers.sphere_defaults['quadrant'])
+        ("Part Name:", parsers.sphere_defaults["part_name"]),
+        ("Model Name:", parsers.sphere_defaults["model_name"]),
+        ("Inner Radius:", ""),
+        ("Outer Radius:", ""),
+        ("Revolution Angle:", str(parsers.sphere_defaults["revolution_angle"])),
+        ("Y-Offset:", str(parsers.sphere_defaults["y_offset"])),
+        ("Quadrant:", parsers.sphere_defaults["quadrant"]),
     )
 
     part_name, model_name, inner_radius, outer_radius, revolution_angle, y_offset, quadrant = abaqus.getInputs(
-        dialogTitle='Turbo Turtle Sphere',
+        dialogTitle="Turbo Turtle Sphere",
         label=_mixed_settings._sphere_gui_help_string,
-        fields=fields
+        fields=fields,
     )
 
     if part_name is not None:  # Will be None if the user hits the "cancel/esc" button
         # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
-        center = (0., float(y_offset))
+        center = (0.0, float(y_offset))
 
         if not inner_radius or not outer_radius:
-            error_message = 'Error: You must specify an inner and outer radius for the sphere'
+            error_message = "Error: You must specify an inner and outer radius for the sphere"
             raise RuntimeError(error_message)
 
         _validate_sphere_quadrant(quadrant, parsers.sphere_quadrant_options)
 
-        user_inputs = {'inner_radius': float(inner_radius), 'outer_radius': float(outer_radius), 'center': center,
-                       'quadrant': quadrant, 'revolution_angle': float(revolution_angle), 'model_name': model_name,
-                       'part_name': part_name}
+        user_inputs = {
+            "inner_radius": float(inner_radius),
+            "outer_radius": float(outer_radius),
+            "center": center,
+            "quadrant": quadrant,
+            "revolution_angle": float(revolution_angle),
+            "model_name": model_name,
+            "part_name": part_name,
+        }
     else:
         user_inputs = {}
     return user_inputs
@@ -205,13 +233,13 @@ def _gui_get_inputs():
 
 def _gui():
     """Function with no inputs required for driving the plugin"""
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
-                                  subcommand_function=sphere,
-                                  post_action_function=_abaqus_utilities._view_part)
+    _abaqus_utilities.gui_wrapper(
+        inputs_function=_gui_get_inputs, subcommand_function=sphere, post_action_function=_abaqus_utilities._view_part
+    )
 
 
 if __name__ == "__main__":
-    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+    if "caeModules" in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         _gui()
     else:
         parser = parsers.sphere_parser(basename=basename)
@@ -220,14 +248,16 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-        sys.exit(main(
-            args.inner_radius,
-            args.outer_radius,
-            args.output_file,
-            input_file=args.input_file,
-            quadrant=args.quadrant,
-            revolution_angle=args.revolution_angle,
-            y_offset=args.y_offset,
-            model_name=args.model_name,
-            part_name=args.part_name
-        ))
+        sys.exit(
+            main(
+                args.inner_radius,
+                args.outer_radius,
+                args.output_file,
+                input_file=args.input_file,
+                quadrant=args.quadrant,
+                revolution_angle=args.revolution_angle,
+                y_offset=args.y_offset,
+                model_name=args.model_name,
+                part_name=args.part_name,
+            )
+        )

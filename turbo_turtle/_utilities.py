@@ -24,6 +24,7 @@ class NamedTemporaryFileCopy:
 
     :param str input_file: The input file to copy into a temporary file
     """
+
     def __init__(self, input_file, *args, **kwargs):
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
         shutil.copyfile(input_file, self.temporary_file.name)
@@ -101,8 +102,10 @@ def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional
     if bin_directory is None:
         bin_directory = cubit_os_bin()
 
-    message = "Could not find a Cubit bin directory. Please ensure the Cubit executable is on PATH or provide an " \
-              "absolute path to the Cubit executable."
+    message = (
+        "Could not find a Cubit bin directory. Please ensure the Cubit executable is on PATH or provide an "
+        "absolute path to the Cubit executable."
+    )
 
     cubit_command = find_command(options)
     cubit_command = os.path.realpath(cubit_command)
@@ -128,7 +131,7 @@ def import_gmsh():
         import gmsh
     except ImportError as err:
         raise RuntimeError(
-            f"Could not import gmsh package. Please install `python-gmsh` in the Conda environment.\n" \
+            f"Could not import gmsh package. Please install `python-gmsh` in the Conda environment.\n"
             "'ImportError: {err}'"
         )
     return gmsh
@@ -168,16 +171,17 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
     :return: _wrappers, command. Wrapper module, executable command string.
     """
     keys = vars(args).keys()
-    if ("backend" in keys and args.backend == "gmsh"):
+    if "backend" in keys and args.backend == "gmsh":
         command = "unused"
         from turbo_turtle import _gmsh_wrappers as _wrappers
-    elif ("backend" in keys and args.backend == "cubit"):
+    elif "backend" in keys and args.backend == "cubit":
         command = find_command_or_exit(args.cubit_command)
         cubit_bin = find_cubit_bin([command])
         cubitx = cubit_bin / "cubitx"
         if cubitx.exists():
             command = cubitx
         import importlib.util
+
         if importlib.util.find_spec("cubit") is None:
             sys.path.append(str(cubit_bin))
         from turbo_turtle import _cubit_wrappers as _wrappers
@@ -190,7 +194,7 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
 
 def construct_append_options(
     option: str,
-    array: typing.Iterable[typing.Tuple]
+    array: typing.Iterable[typing.Tuple],
 ) -> str:
     """Construct a command string to match the argparse append action
 

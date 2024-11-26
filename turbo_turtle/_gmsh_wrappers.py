@@ -1,4 +1,5 @@
 """Thin unpacking of the command line argparse namespace into full function interfaces"""
+
 from turbo_turtle import _gmsh_python
 
 
@@ -12,7 +13,8 @@ def geometry(args, command):
         :meth:`turbo_turtle._abaqus_wrappers`
     """
     _gmsh_python.geometry(
-        args.input_file, args.output_file,
+        args.input_file,
+        args.output_file,
         planar=args.planar,
         model_name=args.model_name,
         part_name=args.part_name,
@@ -23,7 +25,7 @@ def geometry(args, command):
         revolution_angle=args.revolution_angle,
         y_offset=args.y_offset,
         rtol=args.rtol,
-        atol=args.atol
+        atol=args.atol,
     )
 
 
@@ -44,7 +46,7 @@ def cylinder(args, command):
         model_name=args.model_name,
         part_name=args.part_name,
         revolution_angle=args.revolution_angle,
-        y_offset=args.y_offset
+        y_offset=args.y_offset,
     )
 
 
@@ -66,7 +68,7 @@ def sphere(args, command):
         revolution_angle=args.revolution_angle,
         y_offset=args.y_offset,
         model_name=args.model_name,
-        part_name=args.part_name
+        part_name=args.part_name,
     )
 
 
@@ -94,7 +96,7 @@ def mesh(args, command):
         model_name=args.model_name,
         part_name=args.part_name,
         global_seed=args.global_seed,
-        edge_seeds=args.edge_seeds
+        edge_seeds=args.edge_seeds,
     )
 
 
@@ -121,5 +123,5 @@ def image(args, command):
         x_angle=args.x_angle,
         y_angle=args.y_angle,
         z_angle=args.z_angle,
-        image_size=args.image_size
+        image_size=args.image_size,
     )

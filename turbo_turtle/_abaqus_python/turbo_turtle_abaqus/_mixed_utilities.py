@@ -1,4 +1,5 @@
 """Python 2/3 compatible utilities for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
+
 import os
 import re
 import sys
@@ -25,6 +26,7 @@ def print_exception_message(function):
 
     :param function: function to decorate
     """
+
     @functools.wraps(function)
     def wrapper(*args, **kwargs):
         try:
@@ -32,6 +34,7 @@ def print_exception_message(function):
         except Exception as err:
             sys_exit(err)
         return output
+
     return wrapper
 
 
@@ -51,7 +54,8 @@ def validate_part_name(input_file, part_name):
         part_name = [os.path.splitext(os.path.basename(part_file))[0] for part_file in input_file]
     elif len(input_file) != len(part_name):
         message = "Error: The part name length '{}' must match the input file length '{}'\n".format(
-                  len(part_name), len(input_file))
+            len(part_name), len(input_file)
+        )
         raise RuntimeError(message)
     return part_name
 
@@ -78,7 +82,8 @@ def validate_element_type(length_part_name, element_type):
         element_type = element_type * length_part_name
     elif length_element_type != length_part_name:
         message = "The element type length '{}' must match the part name length '{}'\n".format(
-                  length_element_type, length_part_name)
+            length_element_type, length_part_name
+        )
         raise RuntimeError(message)
     return element_type
 
@@ -88,11 +93,13 @@ def validate_element_type_or_exit(*args, **kwargs):
     return validate_element_type(*args, **kwargs)
 
 
-def return_genfromtxt(file_name,
-                      delimiter=',',
-                      header_lines=0,
-                      expected_dimensions=None,
-                      expected_columns=None):
+def return_genfromtxt(
+    file_name,
+    delimiter=",",
+    header_lines=0,
+    expected_dimensions=None,
+    expected_columns=None,
+):
     """Parse a text file of XY coordinates into a numpy array
 
     If the resulting numpy array doesn't have the specified dimensions or column count, return an error exit code
@@ -104,18 +111,18 @@ def return_genfromtxt(file_name,
     :return: 2D array of XY coordinates with shape [N, 2]
     :rtype: numpy.array
     """
-    with open(file_name, 'r') as points_file:
+    with open(file_name, "r") as points_file:
         coordinates = numpy.genfromtxt(points_file, delimiter=delimiter, skip_header=header_lines)
     shape = coordinates.shape
     dimensions = len(shape)
     if expected_dimensions is not None and dimensions != expected_dimensions:
         message = "Expected coordinates with '{}' dimensions. Found '{}' dimensions\n".format(
-                  expected_dimensions, dimensions)
+            expected_dimensions, dimensions
+        )
         raise RuntimeError(message)
     columns = shape[1]
     if expected_columns is not None and columns != expected_columns:
-        message = "Expected coordinates with '{}' columns. Found '{}' columns\n".format(
-                  expected_columns, columns)
+        message = "Expected coordinates with '{}' columns. Found '{}' columns\n".format(expected_columns, columns)
         raise RuntimeError(message)
     return coordinates
 
@@ -137,7 +144,7 @@ def remove_duplicate_items(string_list):
     duplicate = []
     [unique.append(x) if x not in unique else duplicate.append(x) for x in string_list]
     if duplicate:
-        message = "WARNING: removing '{}' duplicates: '{}'".format(len(duplicate), ', '.join(duplicate))
+        message = "WARNING: removing '{}' duplicates: '{}'".format(len(duplicate), ", ".join(duplicate))
         if sys.version_info.major == 2:
             print >> sys.__stderr__, "{}".format(message)  # pragma: no cover
         sys.stderr.write(message)
@@ -183,11 +190,11 @@ def substitute_element_type(mesh_file, element_type):
 
     :returns: re-writes ``mesh_file`` if element type changes have been made
     """
-    with open(mesh_file, 'r') as orphan_mesh:
+    with open(mesh_file, "r") as orphan_mesh:
         old_content = orphan_mesh.read()
     new_content = _element_type_regex(old_content, element_type)
     if new_content != old_content:
-        with open(mesh_file, 'w') as orphan_mesh:
+        with open(mesh_file, "w") as orphan_mesh:
             orphan_mesh.write(new_content)
 
 

@@ -19,12 +19,14 @@ from turbo_turtle_abaqus import _abaqus_utilities
 from turbo_turtle_abaqus import _mixed_settings
 
 
-def main(input_file,
-         model_name=parsers.export_defaults["model_name"],
-         part_name=parsers.export_defaults["part_name"],
-         element_type=parsers.export_defaults["element_type"],
-         destination=parsers.export_defaults["destination"],
-         assembly=parsers.export_defaults["assembly"]):
+def main(
+    input_file,
+    model_name=parsers.export_defaults["model_name"],
+    part_name=parsers.export_defaults["part_name"],
+    element_type=parsers.export_defaults["element_type"],
+    destination=parsers.export_defaults["destination"],
+    assembly=parsers.export_defaults["assembly"],
+):
     """Wrap orphan mesh export function for input file handling
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
@@ -36,10 +38,16 @@ def main(input_file,
         found, instance all part names before export.
     """
     import abaqus
+
     input_file = os.path.splitext(input_file)[0] + ".cae"
     with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
-        export(model_name=model_name, part_name=part_name, element_type=element_type, destination=destination,
-               assembly=assembly)
+        export(
+            model_name=model_name,
+            part_name=part_name,
+            element_type=element_type,
+            destination=destination,
+            assembly=assembly,
+        )
 
 
 def export(model_name, part_name, element_type, destination, assembly):
@@ -52,11 +60,13 @@ def export(model_name, part_name, element_type, destination, assembly):
     :param str assembly: Assembly file for exporting the assembly keyword block. If provided and no instances are
         found, instance all part names before export.
     """
-    element_type = \
-        _mixed_utilities.validate_element_type_or_exit(length_part_name=len(part_name), element_type=element_type)
+    element_type = _mixed_utilities.validate_element_type_or_exit(
+        length_part_name=len(part_name), element_type=element_type
+    )
 
-    export_multiple_parts(model_name=model_name, part_name=part_name, element_type=element_type,
-                          destination=destination)
+    export_multiple_parts(
+        model_name=model_name, part_name=part_name, element_type=element_type, destination=destination
+    )
     if assembly is not None:
         assembly = os.path.splitext(assembly)[0] + ".inp"
         _export_assembly(assembly, model_name, part_name)
@@ -76,7 +86,7 @@ def _export_assembly(assembly_file, model_name, part_name):
             assembly.Instance(name=new_instance, part=part, dependent=abaqusConstants.ON)
     model.keywordBlock.synchVersions()
     block = model.keywordBlock.sieBlocks
-    block_string = '\n'.join(block)
+    block_string = "\n".join(block)
     regex = r"\*assembly.*?\*end assembly"
     assembly_text = re.findall(regex, block_string, re.IGNORECASE | re.MULTILINE | re.DOTALL)
     assembly_text = assembly_text[0]
@@ -84,7 +94,7 @@ def _export_assembly(assembly_file, model_name, part_name):
     assembly_text_list.pop(0)
     assembly_text_list.pop(-1)
     assembly_text = "\n".join(assembly_text_list)
-    with open(assembly_file, 'w') as output:
+    with open(assembly_file, "w") as output:
         output.write(assembly_text)
         output.write("\n")
 
@@ -118,9 +128,9 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
             _mixed_utilities.substitute_element_type(mesh_output_file, new_element)
 
 
-def export_mesh_file(output_file,
-           model_name=parsers.export_defaults["model_name"],
-           part_name=parsers.export_defaults["part_name"][0]):
+def export_mesh_file(
+    output_file, model_name=parsers.export_defaults["model_name"], part_name=parsers.export_defaults["part_name"][0]
+):
     """Export an orphan mesh from a single part
 
     :param str output_file: Abaqus CAE file to save with the newly meshed part
@@ -140,11 +150,12 @@ def export_mesh_file(output_file,
 
     model.keywordBlock.synchVersions()
     block = model.keywordBlock.sieBlocks
-    block_string = '\n'.join(block)
-    orphan_mesh = re.findall(r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name),
-                             block_string, re.DOTALL | re.I | re.M)
+    block_string = "\n".join(block)
+    orphan_mesh = re.findall(
+        r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name), block_string, re.DOTALL | re.I | re.M
+    )
     part_definition = orphan_mesh[0]
-    with open(output_file, 'w') as output:
+    with open(output_file, "w") as output:
         output.write(part_definition[1].strip())
 
 
@@ -184,21 +195,21 @@ def _gui_get_inputs():
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
     except AttributeError:
-        print('Warning: could not determine a default part name using the current viewport')
-        default_part_name = parsers.export_defaults['part_name'][0]  # part_name defaults to list of length 1
+        print("Warning: could not determine a default part name using the current viewport")
+        default_part_name = parsers.export_defaults["part_name"][0]  # part_name defaults to list of length 1
 
     fields = (
-        ('Model Name:', model_name),
-        ('Part Name:', default_part_name),
-        ('Element Type:', ''),
-        ('Destination:', parsers.export_defaults['destination']),
-        ('Assembly File:', '')
+        ("Model Name:", model_name),
+        ("Part Name:", default_part_name),
+        ("Element Type:", ""),
+        ("Destination:", parsers.export_defaults["destination"]),
+        ("Assembly File:", ""),
     )
 
     model_name, part_name_strings, element_type_strings, destination, assembly = abaqus.getInputs(
-        dialogTitle='Turbo Turtle Export',
+        dialogTitle="Turbo Turtle Export",
         label=_mixed_settings._export_gui_help_string,
-        fields=fields
+        fields=fields,
     )
 
     if model_name is not None:  # Model name will be None if the user hits the "cancel/esc" button
@@ -208,15 +219,20 @@ def _gui_get_inputs():
             part_name = []
         else:
             part_name = []
-            for this_part_name_string in part_name_strings.split(','):
+            for this_part_name_string in part_name_strings.split(","):
                 part_name += fnmatch.filter(abaqus.mdb.models[model_name].parts.keys(), this_part_name_string)
 
-        element_type = element_type_strings.split(',')
+        element_type = element_type_strings.split(",")
         if len(element_type) == 1 and not element_type[0]:
             element_type = [None]
 
-        user_inputs = {'model_name': model_name, 'part_name': part_name, 'element_type': element_type,
-                       'destination': destination, 'assembly': assembly}
+        user_inputs = {
+            "model_name": model_name,
+            "part_name": part_name,
+            "element_type": element_type,
+            "destination": destination,
+            "assembly": assembly,
+        }
     else:
         user_inputs = {}
     return user_inputs
@@ -224,13 +240,13 @@ def _gui_get_inputs():
 
 def _gui():
     """Function with no inputs that drives the plug-in"""
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
-                                  subcommand_function=export,
-                                  post_action_function=None)
+    _abaqus_utilities.gui_wrapper(
+        inputs_function=_gui_get_inputs, subcommand_function=export, post_action_function=None
+    )
 
 
 if __name__ == "__main__":
-    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+    if "caeModules" in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         _gui()
     else:
         parser = parsers.export_parser()
@@ -239,11 +255,13 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-        sys.exit(main(
-            args.input_file,
-            model_name=args.model_name,
-            part_name=args.part_name,
-            element_type=args.element_type,
-            destination=args.destination,
-            assembly=args.assembly
-        ))
+        sys.exit(
+            main(
+                args.input_file,
+                model_name=args.model_name,
+                part_name=args.part_name,
+                element_type=args.element_type,
+                destination=args.destination,
+                assembly=args.assembly,
+            )
+        )

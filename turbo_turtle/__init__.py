@@ -40,7 +40,7 @@ import lazy_loader
 
 submodules = [
     "scons_extensions",
-    "geometry_xyplot"
+    "geometry_xyplot",
 ]
 __getattr__, __dir__, __all__ = lazy_loader.attach(__name__, submodules=submodules)
 
@@ -49,11 +49,14 @@ try:
 except PackageNotFoundError:
     try:
         from turbo_turtle import _version
+
         __version__ = _version.version
     except ImportError:
         # Should only hit this when running as an un-installed package in the local repository
         import pathlib
         import warnings
-        warnings.filterwarnings(action='ignore', message='tag', category=UserWarning, module='setuptools_scm')
+
+        warnings.filterwarnings(action="ignore", message="tag", category=UserWarning, module="setuptools_scm")
         import setuptools_scm
+
         __version__ = setuptools_scm.get_version(root=pathlib.Path(__file__).parent.parent)

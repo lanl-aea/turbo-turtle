@@ -19,18 +19,21 @@ from turbo_turtle_abaqus import _abaqus_utilities
 from turbo_turtle_abaqus import _mixed_settings
 
 
-def main(input_file, output_file,
-         planar=parsers.geometry_defaults["planar"],
-         model_name=parsers.geometry_defaults["model_name"],
-         part_name=parsers.geometry_defaults["part_name"],
-         unit_conversion=parsers.geometry_defaults["unit_conversion"],
-         euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
-         delimiter=parsers.geometry_defaults["delimiter"],
-         header_lines=parsers.geometry_defaults["header_lines"],
-         revolution_angle=parsers.geometry_defaults["revolution_angle"],
-         y_offset=parsers.geometry_defaults["y_offset"],
-         rtol=parsers.geometry_defaults["rtol"],
-         atol=parsers.geometry_defaults["atol"]):
+def main(
+    input_file,
+    output_file,
+    planar=parsers.geometry_defaults["planar"],
+    model_name=parsers.geometry_defaults["model_name"],
+    part_name=parsers.geometry_defaults["part_name"],
+    unit_conversion=parsers.geometry_defaults["unit_conversion"],
+    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
+    delimiter=parsers.geometry_defaults["delimiter"],
+    header_lines=parsers.geometry_defaults["header_lines"],
+    revolution_angle=parsers.geometry_defaults["revolution_angle"],
+    y_offset=parsers.geometry_defaults["y_offset"],
+    rtol=parsers.geometry_defaults["rtol"],
+    atol=parsers.geometry_defaults["atol"],
+):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
     This script takes an array of XY coordinates from a text file and creates a 2D sketch or 3D body of
@@ -63,17 +66,39 @@ def main(input_file, output_file,
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
     try:
-        geometry(input_file=input_file, planar=planar, model_name=model_name, part_name=part_name,
-                 revolution_angle=revolution_angle, delimiter=delimiter, header_lines=header_lines,
-                 euclidean_distance=euclidean_distance, unit_conversion=unit_conversion, y_offset=y_offset,
-                 rtol=rtol, atol=atol)
+        geometry(
+            input_file=input_file,
+            planar=planar,
+            model_name=model_name,
+            part_name=part_name,
+            revolution_angle=revolution_angle,
+            delimiter=delimiter,
+            header_lines=header_lines,
+            euclidean_distance=euclidean_distance,
+            unit_conversion=unit_conversion,
+            y_offset=y_offset,
+            rtol=rtol,
+            atol=atol,
+        )
     except RuntimeError as err:
         _mixed_utilities.sys_exit(err.message)
     abaqus.mdb.saveAs(pathName=output_file)
 
 
-def geometry(input_file, planar, model_name, part_name, revolution_angle, delimiter, header_lines,
-             euclidean_distance, unit_conversion, y_offset, rtol, atol):
+def geometry(
+    input_file,
+    planar,
+    model_name,
+    part_name,
+    revolution_angle,
+    delimiter,
+    header_lines,
+    euclidean_distance,
+    unit_conversion,
+    y_offset,
+    rtol,
+    atol,
+):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
     This function drive the geometry creation of 2D planar, 2D axisymetric, or 3D revolved bodies and operates on a new
@@ -105,32 +130,46 @@ def geometry(input_file, planar, model_name, part_name, revolution_angle, delimi
 
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     for file_name, new_part in zip(input_file, part_name):
-        coordinates = _mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
-                                                                 expected_dimensions=2, expected_columns=2)
+        coordinates = _mixed_utilities.return_genfromtxt_or_exit(
+            file_name, delimiter, header_lines, expected_dimensions=2, expected_columns=2
+        )
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         try:
-            draw_part_from_splines(lines, splines, planar=planar, model_name=model_name, part_name=new_part,
-                                   euclidean_distance=euclidean_distance, revolution_angle=revolution_angle,
-                                   rtol=rtol, atol=atol)
+            draw_part_from_splines(
+                lines,
+                splines,
+                planar=planar,
+                model_name=model_name,
+                part_name=new_part,
+                euclidean_distance=euclidean_distance,
+                revolution_angle=revolution_angle,
+                rtol=rtol,
+                atol=atol,
+            )
         except abaqus.AbaqusException:
             failed_parts += [(new_part, file_name)]
     if failed_parts:
-        error_message = ["Error: failed to create the following parts from input files. Check the XY coordinates " \
-                         "for inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` " \
-                         "subcommand can plot points to aid in troubleshooting."]
+        error_message = [
+            "Error: failed to create the following parts from input files. Check the XY coordinates "
+            "for inadmissible Abaqus sketch connectivity. The ``turbo-turtle geometry-xyplot`` "
+            "subcommand can plot points to aid in troubleshooting."
+        ]
         error_message += ["    {}, {}".format(this_part, this_file) for this_part, this_file in failed_parts]
         raise RuntimeError("\n".join(error_message))
 
 
-def draw_part_from_splines(lines, splines,
-                           planar=parsers.geometry_defaults["planar"],
-                           model_name=parsers.geometry_defaults["model_name"],
-                           part_name=parsers.geometry_defaults["part_name"],
-                           euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
-                           revolution_angle=parsers.geometry_defaults["revolution_angle"],
-                           rtol=parsers.geometry_defaults["rtol"],
-                           atol=parsers.geometry_defaults["atol"]):
+def draw_part_from_splines(
+    lines,
+    splines,
+    planar=parsers.geometry_defaults["planar"],
+    model_name=parsers.geometry_defaults["model_name"],
+    part_name=parsers.geometry_defaults["part_name"],
+    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
+    revolution_angle=parsers.geometry_defaults["revolution_angle"],
+    rtol=parsers.geometry_defaults["rtol"],
+    atol=parsers.geometry_defaults["atol"],
+):
     """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
     depending on the ``planar`` and ``revolution_angle`` parameters.
@@ -165,7 +204,7 @@ def draw_part_from_splines(lines, splines,
     revolution_direction = _abaqus_utilities.revolution_direction(revolution_angle)
     revolution_angle = abs(revolution_angle)
 
-    sketch = abaqus.mdb.models[model_name].ConstrainedSketch(name='__profile__', sheetSize=200.0)
+    sketch = abaqus.mdb.models[model_name].ConstrainedSketch(name="__profile__", sheetSize=200.0)
     sketch.sketchOptions.setValues(viewStyle=abaqusConstants.AXISYM)
     sketch.setPrimaryObject(option=abaqusConstants.STANDALONE)
     sketch.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
@@ -181,19 +220,22 @@ def draw_part_from_splines(lines, splines,
         point2 = tuple(point2)
         sketch.Line(point1=point1, point2=point2)
     if planar:
-        part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.TWO_D,
-                                                  type=abaqusConstants.DEFORMABLE_BODY)
+        part = abaqus.mdb.models[model_name].Part(
+            name=part_name, dimensionality=abaqusConstants.TWO_D, type=abaqusConstants.DEFORMABLE_BODY
+        )
         part.BaseShell(sketch=sketch)
     elif numpy.isclose(revolution_angle, 0.0):
-        part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC,
-                                                  type=abaqusConstants.DEFORMABLE_BODY)
+        part = abaqus.mdb.models[model_name].Part(
+            name=part_name, dimensionality=abaqusConstants.AXISYMMETRIC, type=abaqusConstants.DEFORMABLE_BODY
+        )
         part.BaseShell(sketch=sketch)
     else:
-        part = abaqus.mdb.models[model_name].Part(name=part_name, dimensionality=abaqusConstants.THREE_D,
-                                                  type=abaqusConstants.DEFORMABLE_BODY)
+        part = abaqus.mdb.models[model_name].Part(
+            name=part_name, dimensionality=abaqusConstants.THREE_D, type=abaqusConstants.DEFORMABLE_BODY
+        )
         part.BaseSolidRevolve(sketch=sketch, angle=revolution_angle, flipRevolveDirection=revolution_direction)
     sketch.unsetPrimaryObject()
-    del abaqus.mdb.models[model_name].sketches['__profile__']
+    del abaqus.mdb.models[model_name].sketches["__profile__"]
 
 
 def _gui_get_inputs():
@@ -241,60 +283,81 @@ def _gui_get_inputs():
     """
     import abaqus
 
-    default_input_files = 'File1.csv,File2.csv OR *.csv'
-    default_part_names = 'Part-1,Part-2, OR None OR blank'
+    default_input_files = "File1.csv,File2.csv OR *.csv"
+    default_part_names = "Part-1,Part-2, OR None OR blank"
 
     fields = (
-        ('Input File(s):', default_input_files),
-        ('Part Name(s):', default_part_names),
-        ('Model Name:', parsers.geometry_defaults['model_name']),
-        ('Unit Conversion:', str(parsers.geometry_defaults['unit_conversion'])),
-        ('Euclidean Distance:', str(parsers.geometry_defaults['euclidean_distance'])),
-        ('Planar Geometry Switch:', str(parsers.geometry_defaults['planar'])),
-        ('Revolution Angle:', str(parsers.geometry_defaults['revolution_angle'])),
-        ('Delimiter:', parsers.geometry_defaults['delimiter']),
-        ('Header Lines:', str(parsers.geometry_defaults['header_lines'])),
-        ('Y-Offset:', str(parsers.geometry_defaults['y_offset'])),
-        ('rtol:', str(parsers.geometry_defaults['rtol'])),
-        ('atol:', str(parsers.geometry_defaults['atol']))
+        ("Input File(s):", default_input_files),
+        ("Part Name(s):", default_part_names),
+        ("Model Name:", parsers.geometry_defaults["model_name"]),
+        ("Unit Conversion:", str(parsers.geometry_defaults["unit_conversion"])),
+        ("Euclidean Distance:", str(parsers.geometry_defaults["euclidean_distance"])),
+        ("Planar Geometry Switch:", str(parsers.geometry_defaults["planar"])),
+        ("Revolution Angle:", str(parsers.geometry_defaults["revolution_angle"])),
+        ("Delimiter:", parsers.geometry_defaults["delimiter"]),
+        ("Header Lines:", str(parsers.geometry_defaults["header_lines"])),
+        ("Y-Offset:", str(parsers.geometry_defaults["y_offset"])),
+        ("rtol:", str(parsers.geometry_defaults["rtol"])),
+        ("atol:", str(parsers.geometry_defaults["atol"])),
     )
 
-    (input_file_strings, part_name_strings, model_name, unit_conversion, euclidean_distance, planar, revolution_angle,
-        delimiter, header_lines, y_offset, rtol, atol) = abaqus.getInputs(
-        dialogTitle='Turbo Turtle Geometry',
+    (
+        input_file_strings,
+        part_name_strings,
+        model_name,
+        unit_conversion,
+        euclidean_distance,
+        planar,
+        revolution_angle,
+        delimiter,
+        header_lines,
+        y_offset,
+        rtol,
+        atol,
+    ) = abaqus.getInputs(
+        dialogTitle="Turbo Turtle Geometry",
         label=_mixed_settings._geometry_gui_help_string,
-        fields=fields
+        fields=fields,
     )
 
     if input_file_strings is not None:  # Will be None if the user hits the "cancel/esc" button
         input_file = []
         if input_file_strings and input_file_strings != default_input_files:
-            for this_input_file_string in input_file_strings.split(','):
+            for this_input_file_string in input_file_strings.split(","):
                 input_file += glob.glob(this_input_file_string)
         else:  # Catch an if the user fails to specify input files
-            error_message = 'Error: You must specify at least one input file'
+            error_message = "Error: You must specify at least one input file"
             raise RuntimeError(error_message)
 
-        if part_name_strings == 'None' or part_name_strings == default_part_names or not part_name_strings:
+        if part_name_strings == "None" or part_name_strings == default_part_names or not part_name_strings:
             part_name = [None]
         else:
-            part_name = part_name_strings.split(',')
+            part_name = part_name_strings.split(",")
 
-        if rtol == 'None' or not rtol:
+        if rtol == "None" or not rtol:
             rtol = None
         else:
             rtol = float(rtol)
 
-        if atol == 'None' or not atol:
+        if atol == "None" or not atol:
             atol = None
         else:
             atol = float(atol)
 
-        user_inputs = {'model_name': model_name, 'input_file': input_file, 'part_name': part_name,
-            'unit_conversion': float(unit_conversion), 'euclidean_distance': float(euclidean_distance),
-            'planar': ast.literal_eval(planar), 'revolution_angle': float(revolution_angle),
-            'delimiter': delimiter, 'header_lines': int(header_lines), 'y_offset': float(y_offset),
-            'rtol': rtol, 'atol': atol}
+        user_inputs = {
+            "model_name": model_name,
+            "input_file": input_file,
+            "part_name": part_name,
+            "unit_conversion": float(unit_conversion),
+            "euclidean_distance": float(euclidean_distance),
+            "planar": ast.literal_eval(planar),
+            "revolution_angle": float(revolution_angle),
+            "delimiter": delimiter,
+            "header_lines": int(header_lines),
+            "y_offset": float(y_offset),
+            "rtol": rtol,
+            "atol": atol,
+        }
     else:
         user_inputs = {}
     return user_inputs
@@ -302,13 +365,13 @@ def _gui_get_inputs():
 
 def _gui():
     """Function with no inputs required for driving the plugin"""
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
-                                  subcommand_function=geometry,
-                                  post_action_function=_abaqus_utilities._view_part)
+    _abaqus_utilities.gui_wrapper(
+        inputs_function=_gui_get_inputs, subcommand_function=geometry, post_action_function=_abaqus_utilities._view_part
+    )
 
 
 if __name__ == "__main__":
-    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+    if "caeModules" in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         _gui()
     else:
         parser = parsers.geometry_parser(basename=basename)
@@ -317,18 +380,20 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-        sys.exit(main(
-            input_file=args.input_file,
-            output_file=args.output_file,
-            planar=args.planar,
-            model_name=args.model_name,
-            part_name=args.part_name,
-            unit_conversion=args.unit_conversion,
-            euclidean_distance=args.euclidean_distance,
-            delimiter=args.delimiter,
-            header_lines=args.header_lines,
-            revolution_angle=args.revolution_angle,
-            y_offset=args.y_offset,
-            rtol=args.rtol,
-            atol=args.atol
-        ))
+        sys.exit(
+            main(
+                input_file=args.input_file,
+                output_file=args.output_file,
+                planar=args.planar,
+                model_name=args.model_name,
+                part_name=args.part_name,
+                unit_conversion=args.unit_conversion,
+                euclidean_distance=args.euclidean_distance,
+                delimiter=args.delimiter,
+                header_lines=args.header_lines,
+                revolution_angle=args.revolution_angle,
+                y_offset=args.y_offset,
+                rtol=args.rtol,
+                atol=args.atol,
+            )
+        )

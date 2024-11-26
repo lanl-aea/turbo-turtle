@@ -1,4 +1,5 @@
 """Python 3 module that imports python-gmsh"""
+
 import typing
 import pathlib
 import tempfile
@@ -15,7 +16,8 @@ gmsh = _utilities.import_gmsh()
 
 
 def geometry(
-    input_file, output_file,
+    input_file,
+    output_file,
     planar=parsers.geometry_defaults["planar"],
     model_name=parsers.geometry_defaults["model_name"],
     part_name=parsers.geometry_defaults["part_name"],
@@ -26,7 +28,7 @@ def geometry(
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
     y_offset=parsers.geometry_defaults["y_offset"],
     rtol=parsers.geometry_defaults["rtol"],
-    atol=parsers.geometry_defaults["atol"]
+    atol=parsers.geometry_defaults["atol"],
 ) -> None:
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
@@ -70,8 +72,9 @@ def geometry(
     # Create part(s)
     surfaces = []
     for file_name, new_part in zip(input_file, part_name):
-        coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
-                                                         expected_dimensions=2, expected_columns=2)
+        coordinates = _mixed_utilities.return_genfromtxt(
+            file_name, delimiter, header_lines, expected_dimensions=2, expected_columns=2
+        )
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
         lines_and_splines = vertices.ordered_lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         surfaces.append(_draw_surface(lines_and_splines))
@@ -99,8 +102,8 @@ def _draw_surface(lines_and_splines) -> int:
     curves = []
     for coordinates in lines_and_splines:
         if len(coordinates) == 2:
-            point1 = tuple(coordinates[0]) + (0.,)
-            point2 = tuple(coordinates[1]) + (0.,)
+            point1 = tuple(coordinates[0]) + (0.0,)
+            point2 = tuple(coordinates[1]) + (0.0,)
             curves.append(_create_line_from_coordinates(point1, point2))
         else:
             zero_column = numpy.zeros([len(coordinates), 1])
@@ -144,10 +147,11 @@ def _create_spline_from_coordinates(coordinates) -> int:
 
 
 def _rename_and_sweep(
-    surface: int, part_name: str,
-    center=numpy.array([0., 0., 0.]),
+    surface: int,
+    part_name: str,
+    center=numpy.array([0.0, 0.0, 0.0]),
     planar=parsers.geometry_defaults["planar"],
-    revolution_angle=parsers.geometry_defaults["revolution_angle"]
+    revolution_angle=parsers.geometry_defaults["revolution_angle"],
 ) -> typing.Tuple[int, int]:
     """Recover surface, sweep part if required, and rename surface/volume by part name
 
@@ -161,7 +165,7 @@ def _rename_and_sweep(
     :returns: Gmsh dimTag (dimension, tag)
     """
     center = numpy.array(center)
-    revolution_axis = numpy.array([0., 1., 0.])
+    revolution_axis = numpy.array([0.0, 1.0, 0.0])
     if planar:
         dim_tag = (2, surface)
     elif numpy.isclose(revolution_angle, 0.0):
@@ -171,7 +175,7 @@ def _rename_and_sweep(
             [(2, surface)],
             *center,
             *revolution_axis,
-            numpy.radians(revolution_angle)
+            numpy.radians(revolution_angle),
         )
         dim_tag = dimTags[0]
 
@@ -185,11 +189,14 @@ def _rename_and_sweep(
 
 
 def cylinder(
-    inner_radius, outer_radius, height, output_file,
+    inner_radius,
+    outer_radius,
+    height,
+    output_file,
     model_name=parsers.geometry_defaults["model_name"],
     part_name=parsers.cylinder_defaults["part_name"],
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
-    y_offset=parsers.cylinder_defaults["y_offset"]
+    y_offset=parsers.cylinder_defaults["y_offset"],
 ) -> None:
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 
@@ -229,13 +236,15 @@ def cylinder(
 
 
 def sphere(
-    inner_radius, outer_radius, output_file,
+    inner_radius,
+    outer_radius,
+    output_file,
     input_file=parsers.sphere_defaults["input_file"],
     quadrant=parsers.sphere_defaults["quadrant"],
     revolution_angle=parsers.sphere_defaults["revolution_angle"],
     y_offset=parsers.sphere_defaults["y_offset"],
     model_name=parsers.sphere_defaults["model_name"],
-    part_name=parsers.sphere_defaults["part_name"]
+    part_name=parsers.sphere_defaults["part_name"],
 ) -> None:
     """
     :param float inner_radius: inner radius (size of hollow)
@@ -257,7 +266,7 @@ def sphere(
     output_file = pathlib.Path(output_file).with_suffix(".step")
 
     # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
-    center = (0., y_offset)
+    center = (0.0, y_offset)
 
     if input_file is not None:
         # TODO: allow other input formats supported by Gmsh
@@ -266,15 +275,27 @@ def sphere(
         # Required to get conditional re-builds with a build system such as GNU Make, CMake, or SCons
         with _utilities.NamedTemporaryFileCopy(input_file, suffix=".step", dir=".") as copy_file:
             gmsh.open(copy_file.name)
-            _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
-                    part_name=part_name)
+            _sphere(
+                inner_radius,
+                outer_radius,
+                quadrant=quadrant,
+                revolution_angle=revolution_angle,
+                center=center,
+                part_name=part_name,
+            )
             # FIXME: Write physical groups to geometry output files
             # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/221
             gmsh.write(str(output_file))
     else:
         gmsh.model.add(model_name)
-        _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
-                part_name=part_name)
+        _sphere(
+            inner_radius,
+            outer_radius,
+            quadrant=quadrant,
+            revolution_angle=revolution_angle,
+            center=center,
+            part_name=part_name,
+        )
         # FIXME: Write physical groups to geometry output files
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/221
         gmsh.write(str(output_file))
@@ -285,11 +306,12 @@ def sphere(
 
 
 def _sphere(
-    inner_radius, outer_radius,
+    inner_radius,
+    outer_radius,
     quadrant=parsers.sphere_defaults["quadrant"],
     revolution_angle=parsers.sphere_defaults["revolution_angle"],
     center=parsers.sphere_defaults["center"],
-    part_name=parsers.sphere_defaults["part_name"]
+    part_name=parsers.sphere_defaults["part_name"],
 ) -> None:
     """
     :param float inner_radius: inner radius (size of hollow)
@@ -303,7 +325,7 @@ def _sphere(
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/boards
     arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
 
-    center_3d = numpy.append(center, [0.])
+    center_3d = numpy.append(center, [0.0])
     zero_column = numpy.zeros([len(arc_points), 1])
     arc_points_3d = numpy.append(arc_points, zero_column, axis=1)
     inner_point1 = arc_points_3d[0]
@@ -357,7 +379,7 @@ def mesh(
     model_name: typing.Optional[str] = parsers.mesh_defaults["model_name"],
     part_name: typing.Optional[str] = parsers.mesh_defaults["part_name"],
     global_seed: typing.Optional[float] = parsers.mesh_defaults["global_seed"],
-    edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"]
+    edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"],
 ) -> None:
     """Mesh Gmsh physical entities by part name
 
@@ -410,11 +432,12 @@ def export(*args, **kwargs):
 
 
 def image(
-    input_file, output_file,
+    input_file,
+    output_file,
     x_angle=parsers.image_defaults["x_angle"],
     y_angle=parsers.image_defaults["y_angle"],
     z_angle=parsers.image_defaults["z_angle"],
-    image_size=parsers.image_defaults["image_size"]
+    image_size=parsers.image_defaults["image_size"],
 ) -> None:
     """Open a Gmsh geometry or mesh file and save an image
 

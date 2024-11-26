@@ -23,7 +23,7 @@ def main(
     vertex_sets=parsers.sets_defaults["vertex_sets"],
     output_file=parsers.sets_defaults["output_file"],
     model_name=parsers.sets_defaults["model_name"],
-    part_name=parsers.sets_defaults["part_name"]
+    part_name=parsers.sets_defaults["part_name"],
 ):
     """Wrap sets function for input file handling
 
@@ -51,7 +51,7 @@ def main(
                 edge_sets=edge_sets,
                 vertex_sets=vertex_sets,
                 model_name=model_name,
-                part_name=part_name
+                part_name=part_name,
             )
             abaqus.mdb.saveAs(pathName=output_file)
     except RuntimeError as err:
@@ -63,7 +63,7 @@ def sets(
     edge_sets=parsers.sets_defaults["edge_sets"],
     vertex_sets=parsers.sets_defaults["vertex_sets"],
     model_name=parsers.sets_defaults["model_name"],
-    part_name=parsers.sets_defaults["part_name"]
+    part_name=parsers.sets_defaults["part_name"],
 ):
     """Create sets from masks
 
@@ -108,7 +108,7 @@ def sets(
 
 
 if __name__ == "__main__":
-    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+    if "caeModules" in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         pass
     else:
         parser = parsers.sets_parser(basename=basename)
@@ -117,12 +117,14 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-        sys.exit(main(
-            args.input_file,
-            face_sets=args.face_sets,
-            edge_sets=args.edge_sets,
-            vertex_sets=args.vertex_sets,
-            output_file=args.output_file,
-            model_name=args.model_name,
-            part_name=args.part_name,
-        ))
+        sys.exit(
+            main(
+                args.input_file,
+                face_sets=args.face_sets,
+                edge_sets=args.edge_sets,
+                vertex_sets=args.vertex_sets,
+                output_file=args.output_file,
+                model_name=args.model_name,
+                part_name=args.part_name,
+            )
+        )

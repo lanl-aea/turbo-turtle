@@ -23,6 +23,7 @@ class AbaqusNamedTemporaryFile:
 
     def __init__(self, input_file, *args, **kwargs):
         import abaqus
+
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
         shutil.copyfile(input_file, self.temporary_file.name)
         abaqus.openMdb(pathName=self.temporary_file.name)
@@ -32,6 +33,7 @@ class AbaqusNamedTemporaryFile:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         import abaqus
+
         abaqus.mdb.close()
         self.temporary_file.close()
         os.remove(self.temporary_file.name)
@@ -72,9 +74,9 @@ def part_dimensionality(part):
     :rtype: int
     """
     known_geometries = {
-        'Axisymmetric': 2,
-        '2D Planar': 2,
-        '3D': 3
+        "Axisymmetric": 2,
+        "2D Planar": 2,
+        "3D": 3,
     }
     geometry_key = part.queryGeometry(printResults=False)["space"]
     return known_geometries[geometry_key]
@@ -104,11 +106,12 @@ def set_from_mask(part, feature, name_mask):
     :raises RuntimeError: If Abaqus throws an empty sequence abaqus.AbaqusException on one or more masks
     """
     import abaqus
+
     attribute = getattr(part, feature)
     bad_masks = []
     for name, mask in name_mask:
         try:
-            objects = attribute.getSequenceFromMask(mask=(mask, ))
+            objects = attribute.getSequenceFromMask(mask=(mask,))
         except abaqus.AbaqusException as err:
             bad_masks.append((name, mask))
         else:
@@ -137,7 +140,7 @@ def surface_from_mask(part, feature, name_mask):
     bad_masks = []
     for name, mask in name_mask:
         try:
-            objects = attribute.getSequenceFromMask(mask=(mask, ))
+            objects = attribute.getSequenceFromMask(mask=(mask,))
         except abaqus.AbaqusException as err:
             bad_masks.append((name, mask))
         else:
@@ -156,7 +159,7 @@ def edge_seeds(part, name_number):
     """
     names, numbers = zip(*name_number)
     numbers = [float(number) for number in numbers]
-    positive_numbers = [number > 0. for number in numbers]
+    positive_numbers = [number > 0.0 for number in numbers]
     if not all(positive_numbers):
         raise ValueError("Edge seeds must be positive numbers")
     for name, number in zip(names, numbers):
@@ -186,9 +189,9 @@ def _view_part(model_name, part_name, **kwargs):
     if isinstance(part_name, list):
         part_name = part_name[-1]
     part_object = abaqus.mdb.models[model_name].parts[part_name]
-    abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
-    abaqus.session.viewports['Viewport: 1'].view.setValues(abaqus.session.views['Iso'])
-    abaqus.session.viewports['Viewport: 1'].view.fitView()
+    abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=part_object)
+    abaqus.session.viewports["Viewport: 1"].view.setValues(abaqus.session.views["Iso"])
+    abaqus.session.viewports["Viewport: 1"].view.fitView()
 
 
 def _conditionally_create_model(model_name):
@@ -227,7 +230,7 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
             if post_action_function is not None:
                 post_action_function(**user_inputs)
         else:
-            print('\nTurboTurtle was canceled\n')  # Do not sys.exit, that will kill Abaqus CAE
+            print("\nTurboTurtle was canceled\n")  # Do not sys.exit, that will kill Abaqus CAE
     except RuntimeError as err:
         print(err)
 
@@ -242,7 +245,7 @@ def revolution_direction(revolution_angle):
     """
     import abaqusConstants
 
-    if revolution_angle < 0.:
+    if revolution_angle < 0.0:
         revolution_direction = abaqusConstants.OFF
     else:
         revolution_direction = abaqusConstants.ON

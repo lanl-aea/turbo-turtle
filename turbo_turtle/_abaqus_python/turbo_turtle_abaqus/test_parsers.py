@@ -3,6 +3,7 @@
 
    These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_parsers`
 """
+
 import os
 import sys
 import inspect
@@ -23,8 +24,8 @@ class TestParsers(unittest.TestCase):
 
     def test_positive_float(self):
         tests = [
-            ("0.", 0.),
-            ("1.", 1.)
+            ("0.", 0.0),
+            ("1.", 1.0),
         ]
         for input_string, expected_float in tests:
             argument = parsers.positive_float(input_string)
@@ -41,7 +42,7 @@ class TestParsers(unittest.TestCase):
     def test_positive_int(self):
         tests = [
             ("0", 0),
-            ("1", 1)
+            ("1", 1),
         ]
         for input_string, expected_int in tests:
             argument = parsers.positive_int(input_string)
@@ -57,7 +58,7 @@ class TestParsers(unittest.TestCase):
 
     def test_construct_prog(self):
         tests = [
-            ("script", "abaqus cae -noGui script --")
+            ("script", "abaqus cae -noGui script --"),
         ]
         for basename, expected_prog in tests:
             prog = parsers.construct_prog(basename)

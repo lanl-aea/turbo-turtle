@@ -13,10 +13,13 @@ from turbo_turtle_abaqus import parsers
 from turbo_turtle_abaqus import _mixed_utilities
 
 
-def main(input_file, output_file,
-         merged_model_name=parsers.merge_defaults["merged_model_name"],
-         model_name=parsers.merge_defaults["model_name"],
-         part_name=parsers.merge_defaults["part_name"]):
+def main(
+    input_file,
+    output_file,
+    merged_model_name=parsers.merge_defaults["merged_model_name"],
+    model_name=parsers.merge_defaults["model_name"],
+    part_name=parsers.merge_defaults["part_name"],
+):
     """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model
 
     This script loops through all input file(s) specified and merges the intersection of provided model/part name(s) and
@@ -49,7 +52,7 @@ def main(input_file, output_file,
         current_models = _mixed_utilities.intersection_of_lists(model_name, available_models)
         # Loop through current model_name
         for this_model in current_models:
-            tmp_model = 'temporary_model_' + this_model
+            tmp_model = "temporary_model_" + this_model
             abaqus.mdb.copyAuxMdbModel(fromName=this_model, toName=tmp_model)
             available_parts = abaqus.mdb.models[tmp_model].parts.keys()
             current_parts = _mixed_utilities.intersection_of_lists(part_name, available_parts)
@@ -57,13 +60,16 @@ def main(input_file, output_file,
             for this_part in current_parts:
                 try:
                     merged_model.Part(this_part, abaqus.mdb.models[tmp_model].parts[this_part])
-                    success_message = \
+                    success_message = (
                         "SUCCESS: merged part '{}' from model '{}' from '{}' into merged model '{}'\n".format(
-                        this_part, this_model, cae_file, merged_model_name)
+                            this_part, this_model, cae_file, merged_model_name
+                        )
+                    )
                     sys.stdout.write(success_message)
                 except abaqus.AbaqusException as err:
                     message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n{}".format(
-                              this_part, this_model, cae_file, err)
+                        this_part, this_model, cae_file, err
+                    )
                     _mixed_utilities.sys_exit(message)
             # If the current model was found in the current cae_file, clean it before ending the loop
             if tmp_model is not None:
@@ -77,7 +83,8 @@ def main(input_file, output_file,
         _mixed_utilities.sys_exit(message)
     elif part_name[0] is not None and merged_part_count != requested_part_count:
         message = "Merged part count '{}' doesn't match unique part name count '{}'.".format(
-                  merged_part_count, requested_part_count)
+            merged_part_count, requested_part_count
+        )
         _mixed_utilities.sys_exit(message)
 
 
@@ -88,10 +95,12 @@ if __name__ == "__main__":
     except SystemExit as err:
         sys.exit(err.code)
 
-    sys.exit(main(
-        input_file=args.input_file,
-        output_file=args.output_file,
-        merged_model_name=args.merged_model_name,
-        model_name=args.model_name,
-        part_name=args.part_name
-    ))
+    sys.exit(
+        main(
+            input_file=args.input_file,
+            output_file=args.output_file,
+            merged_model_name=args.merged_model_name,
+            model_name=args.model_name,
+            part_name=args.part_name,
+        )
+    )

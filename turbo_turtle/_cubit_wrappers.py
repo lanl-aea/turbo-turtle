@@ -1,4 +1,5 @@
 """Thin unpacking of the command line argparse namespace into full function interfaces"""
+
 from turbo_turtle import _cubit_python
 
 
@@ -12,7 +13,8 @@ def geometry(args, command):
         :meth:`turbo_turtle._abaqus_wrappers`
     """
     _cubit_python.geometry(
-        args.input_file, args.output_file,
+        args.input_file,
+        args.output_file,
         planar=args.planar,
         part_name=args.part_name,
         unit_conversion=args.unit_conversion,
@@ -22,7 +24,7 @@ def geometry(args, command):
         revolution_angle=args.revolution_angle,
         y_offset=args.y_offset,
         rtol=args.rtol,
-        atol=args.atol
+        atol=args.atol,
     )
 
 
@@ -42,7 +44,7 @@ def cylinder(args, command):
         args.output_file,
         part_name=args.part_name,
         revolution_angle=args.revolution_angle,
-        y_offset=args.y_offset
+        y_offset=args.y_offset,
     )
 
 
@@ -63,7 +65,7 @@ def sphere(args, command):
         quadrant=args.quadrant,
         revolution_angle=args.revolution_angle,
         y_offset=args.y_offset,
-        part_name=args.part_name
+        part_name=args.part_name,
     )
 
 
@@ -82,7 +84,7 @@ def partition(args, command):
         xvector=args.xvector,
         zvector=args.zvector,
         part_name=args.part_name,
-        big_number=args.big_number
+        big_number=args.big_number,
     )
 
 
@@ -100,7 +102,7 @@ def sets(args, command):
         part_name=args.part_name,
         face_sets=args.face_sets,
         edge_sets=args.edge_sets,
-        vertex_sets=args.vertex_sets
+        vertex_sets=args.vertex_sets,
     )
 
 
@@ -119,7 +121,7 @@ def mesh(args, command):
         output_file=args.output_file,
         part_name=args.part_name,
         global_seed=args.global_seed,
-        edge_seeds=args.edge_seeds
+        edge_seeds=args.edge_seeds,
     )
 
 
@@ -133,7 +135,7 @@ def merge(args, command):
     """
     _cubit_python.merge(
         args.input_file,
-        args.output_file
+        args.output_file,
     )
 
 
@@ -150,7 +152,7 @@ def export(args, command):
         part_name=args.part_name,
         element_type=args.element_type,
         destination=args.destination,
-        output_type=args.output_type
+        output_type=args.output_type,
     )
 
 
@@ -169,5 +171,5 @@ def image(args, command):
         x_angle=args.x_angle,
         y_angle=args.y_angle,
         z_angle=args.z_angle,
-        image_size=args.image_size
+        image_size=args.image_size,
     )

@@ -5,6 +5,7 @@ Which requires that Cubit's bin directory is found on PYTHONPATH, either directl
 perform ``sys.path`` manipulation, so the importing/calling module/script *must* verify that Cubit will import correctly
 first.
 """
+
 import shutil
 import typing
 import pathlib
@@ -35,17 +36,20 @@ def cubit_command_or_exception(command):
     return success
 
 
-def geometry(input_file, output_file,
-             planar=parsers.geometry_defaults["planar"],
-             part_name=parsers.geometry_defaults["part_name"],
-             unit_conversion=parsers.geometry_defaults["unit_conversion"],
-             euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
-             delimiter=parsers.geometry_defaults["delimiter"],
-             header_lines=parsers.geometry_defaults["header_lines"],
-             revolution_angle=parsers.geometry_defaults["revolution_angle"],
-             y_offset=parsers.geometry_defaults["y_offset"],
-             rtol=parsers.geometry_defaults["rtol"],
-             atol=parsers.geometry_defaults["atol"]):
+def geometry(
+    input_file,
+    output_file,
+    planar=parsers.geometry_defaults["planar"],
+    part_name=parsers.geometry_defaults["part_name"],
+    unit_conversion=parsers.geometry_defaults["unit_conversion"],
+    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
+    delimiter=parsers.geometry_defaults["delimiter"],
+    header_lines=parsers.geometry_defaults["header_lines"],
+    revolution_angle=parsers.geometry_defaults["revolution_angle"],
+    y_offset=parsers.geometry_defaults["y_offset"],
+    rtol=parsers.geometry_defaults["rtol"],
+    atol=parsers.geometry_defaults["atol"],
+):
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
     Note that 2D axisymmetric sketches and sketches for 3D bodies of revolution about the global Y-axis must lie
@@ -79,8 +83,9 @@ def geometry(input_file, output_file,
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     surfaces = []
     for file_name, new_part in zip(input_file, part_name):
-        coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter, header_lines,
-                                                         expected_dimensions=2, expected_columns=2)
+        coordinates = _mixed_utilities.return_genfromtxt(
+            file_name, delimiter, header_lines, expected_dimensions=2, expected_columns=2
+        )
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         surfaces.append(_draw_surface(lines, splines))
@@ -102,8 +107,8 @@ def _draw_surface(lines, splines):
     """
     curves = []
     for first, second in lines:
-        point1 = tuple(first) + (0.,)
-        point2 = tuple(second) + (0.,)
+        point1 = tuple(first) + (0.0,)
+        point2 = tuple(second) + (0.0,)
         curves.append(create_curve_from_coordinates(point1, point2))
     for spline in splines:
         zero_column = numpy.zeros([len(spline), 1])
@@ -254,11 +259,12 @@ def _surfaces_by_vector(surfaces, principal_vector, center=numpy.zeros(3)):
     surface_centroids = _surface_centroids(surfaces)
     direction_vectors = [numpy.subtract(centroid, center) for centroid in surface_centroids]
 
-    vector_dot = \
-        numpy.array(([numpy.dot(direction_vector, principal_vector) for direction_vector in direction_vectors]))
+    vector_dot = numpy.array(
+        ([numpy.dot(direction_vector, principal_vector) for direction_vector in direction_vectors])
+    )
     # Account for numerical errors in significant digits
-    vector_dot[numpy.isclose(vector_dot, 0.)] = 0.
-    return numpy.array(surfaces)[numpy.where(vector_dot > 0.)]
+    vector_dot[numpy.isclose(vector_dot, 0.0)] = 0.0
+    return numpy.array(surfaces)[numpy.where(vector_dot > 0.0)]
 
 
 def _create_volume_from_surfaces(surfaces, keep=True):
@@ -284,10 +290,13 @@ def _create_volume_from_surfaces(surfaces, keep=True):
     return cubit.volume(volume_id)
 
 
-def _rename_and_sweep(surface, part_name,
-                      center=numpy.array([0., 0., 0.]),
-                      planar=parsers.geometry_defaults["planar"],
-                      revolution_angle=parsers.geometry_defaults["revolution_angle"]):
+def _rename_and_sweep(
+    surface,
+    part_name,
+    center=numpy.array([0.0, 0.0, 0.0]),
+    planar=parsers.geometry_defaults["planar"],
+    revolution_angle=parsers.geometry_defaults["revolution_angle"],
+):
     """Recover body or volume from body surface, sweep part if required, and rename body/volume by part name
 
     Hyphens are replaced by underscores to make the ACIS engine happy.
@@ -302,7 +311,7 @@ def _rename_and_sweep(surface, part_name,
     """
     center = numpy.array(center)
     center_string = _utilities.character_delimited_list(center)
-    revolution_axis = numpy.array([0., 1., 0.])
+    revolution_axis = numpy.array([0.0, 1.0, 0.0])
     revolution_string = _utilities.character_delimited_list(revolution_axis)
     body_number = surface.id()
     surface_number = _surface_numbers([surface])[0]
@@ -312,8 +321,10 @@ def _rename_and_sweep(surface, part_name,
     elif numpy.isclose(revolution_angle, 0.0):
         return_object = surface.volumes()[0]
     else:
-        cubit_command_or_exception(f"sweep surface {surface_number} axis {center_string} {revolution_string} "
-                                   f"angle {revolution_angle} merge")
+        cubit_command_or_exception(
+            f"sweep surface {surface_number} axis {center_string} {revolution_string} "
+            f"angle {revolution_angle} merge"
+        )
         return_object = surface.volumes()[0]
         volume_id = return_object.id()
         cubit_command_or_exception(f"regularize volume {volume_id}")
@@ -340,10 +351,15 @@ def _get_volumes_from_name(names):
     return parts
 
 
-def cylinder(inner_radius, outer_radius, height, output_file,
-             part_name=parsers.cylinder_defaults["part_name"],
-             revolution_angle=parsers.geometry_defaults["revolution_angle"],
-             y_offset=parsers.cylinder_defaults["y_offset"]):
+def cylinder(
+    inner_radius,
+    outer_radius,
+    height,
+    output_file,
+    part_name=parsers.cylinder_defaults["part_name"],
+    revolution_angle=parsers.geometry_defaults["revolution_angle"],
+    y_offset=parsers.cylinder_defaults["y_offset"],
+):
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
 
     Centroid of cylinder is located on the global coordinate origin by default.
@@ -367,12 +383,16 @@ def cylinder(inner_radius, outer_radius, height, output_file,
     cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
-def sphere(inner_radius, outer_radius, output_file,
-           input_file=parsers.sphere_defaults["input_file"],
-           quadrant=parsers.sphere_defaults["quadrant"],
-           revolution_angle=parsers.sphere_defaults["revolution_angle"],
-           y_offset=parsers.sphere_defaults["y_offset"],
-           part_name=parsers.sphere_defaults["part_name"]):
+def sphere(
+    inner_radius,
+    outer_radius,
+    output_file,
+    input_file=parsers.sphere_defaults["input_file"],
+    quadrant=parsers.sphere_defaults["quadrant"],
+    revolution_angle=parsers.sphere_defaults["revolution_angle"],
+    y_offset=parsers.sphere_defaults["y_offset"],
+    part_name=parsers.sphere_defaults["part_name"],
+):
     """
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
@@ -386,7 +406,7 @@ def sphere(inner_radius, outer_radius, output_file,
     cubit.init(["cubit"])
 
     # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
-    center = (0., y_offset)
+    center = (0.0, y_offset)
 
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
@@ -397,21 +417,36 @@ def sphere(inner_radius, outer_radius, output_file,
         with _utilities.NamedTemporaryFileCopy(input_file, suffix=".cub", dir=".") as copy_file:
             # TODO: look for a Cubit Python interface proper open/close/save command(s)
             cubit_command_or_exception(f"open '{copy_file.name}'")
-            _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
-                    part_name=part_name)
+            _sphere(
+                inner_radius,
+                outer_radius,
+                quadrant=quadrant,
+                revolution_angle=revolution_angle,
+                center=center,
+                part_name=part_name,
+            )
             cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
     else:
-        _sphere(inner_radius, outer_radius, quadrant=quadrant, revolution_angle=revolution_angle, center=center,
-                part_name=part_name)
+        _sphere(
+            inner_radius,
+            outer_radius,
+            quadrant=quadrant,
+            revolution_angle=revolution_angle,
+            center=center,
+            part_name=part_name,
+        )
         cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
-def _sphere(inner_radius, outer_radius,
-            quadrant=parsers.sphere_defaults["quadrant"],
-            revolution_angle=parsers.sphere_defaults["revolution_angle"],
-            center=parsers.sphere_defaults["center"],
-            part_name=parsers.sphere_defaults["part_name"]):
+def _sphere(
+    inner_radius,
+    outer_radius,
+    quadrant=parsers.sphere_defaults["quadrant"],
+    revolution_angle=parsers.sphere_defaults["revolution_angle"],
+    center=parsers.sphere_defaults["center"],
+    part_name=parsers.sphere_defaults["part_name"],
+):
     """
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
@@ -428,7 +463,7 @@ def _sphere(inner_radius, outer_radius,
     outer_point1 = arc_points[2]
     outer_point2 = arc_points[3]
 
-    center_3d = numpy.append(center, [0.])
+    center_3d = numpy.append(center, [0.0])
     curves = []
     if numpy.allclose(inner_point1, center) and numpy.allclose(inner_point2, center):
         inner_point1 = center
@@ -517,12 +552,12 @@ def create_pyramid_volumes(center, xvector, zvector, size):
 
     # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
     pyramid_volume_surfaces = [
-        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y  # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y  # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X  # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X  # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z  # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z  # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y  # fmt: skip # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y  # fmt: skip # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X  # fmt: skip # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X  # fmt: skip # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z  # fmt: skip # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z  # fmt: skip # noqa: E241
     ]
     pyramid_volumes = [_create_volume_from_surfaces(surface_list) for surface_list in pyramid_volume_surfaces]
 
@@ -567,13 +602,15 @@ def create_pyramid_partitions(center, xvector, zvector, size, names):
     return _get_volumes_from_name(names)
 
 
-def partition(input_file,
-              output_file=parsers.partition_defaults["output_file"],
-              center=parsers.partition_defaults["center"],
-              xvector=parsers.partition_defaults["xvector"],
-              zvector=parsers.partition_defaults["zvector"],
-              part_name=parsers.partition_defaults["part_name"],
-              big_number=parsers.partition_defaults["big_number"]):
+def partition(
+    input_file,
+    output_file=parsers.partition_defaults["output_file"],
+    center=parsers.partition_defaults["center"],
+    xvector=parsers.partition_defaults["xvector"],
+    zvector=parsers.partition_defaults["zvector"],
+    part_name=parsers.partition_defaults["part_name"],
+    big_number=parsers.partition_defaults["big_number"],
+):
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
 
@@ -598,11 +635,13 @@ def partition(input_file,
         cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
-def _partition(center=parsers.partition_defaults["center"],
-               xvector=parsers.partition_defaults["xvector"],
-               zvector=parsers.partition_defaults["zvector"],
-               part_name=parsers.partition_defaults["part_name"],
-               big_number=parsers.partition_defaults["big_number"]):
+def _partition(
+    center=parsers.partition_defaults["center"],
+    xvector=parsers.partition_defaults["xvector"],
+    zvector=parsers.partition_defaults["zvector"],
+    part_name=parsers.partition_defaults["part_name"],
+    big_number=parsers.partition_defaults["big_number"],
+):
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
 
@@ -638,16 +677,16 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
     feature = feature.lower()
 
     for name, mask in name_mask:
-        cubit_command_or_exception(f"{feature} {mask} name \"{name}\"")
+        cubit_command_or_exception(f'{feature} {mask} name "{name}"')
 
         nodeset_id = cubit.get_next_nodeset_id()
         cubit_command_or_exception(f"nodeset {nodeset_id} ADD {feature} {mask}")
-        cubit_command_or_exception(f"nodeset {nodeset_id} name \"{name}\"")
+        cubit_command_or_exception(f'nodeset {nodeset_id} name "{name}"')
 
         if feature not in ("vertex", "node"):
             sideset_id = cubit.get_next_sideset_id()
             cubit_command_or_exception(f"sideset {sideset_id} ADD {feature} {mask}")
-            cubit_command_or_exception(f"sideset {sideset_id} name \"{name}\"")
+            cubit_command_or_exception(f'sideset {sideset_id} name "{name}"')
 
 
 def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
@@ -660,7 +699,7 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
     """
     names, numbers = zip(*name_number)
     numbers = [float(number) for number in numbers]
-    positive_numbers = [number > 0. for number in numbers]
+    positive_numbers = [number > 0.0 for number in numbers]
     if not all(positive_numbers):
         raise ValueError("Feature seeds must be positive numbers")
     for name, number in zip(names, numbers):
@@ -674,7 +713,7 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
 def _sets(
     face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
     edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
-    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
+    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"],
 ) -> None:
     """Create named features, with associated node and sidesets, by feature ID
 
@@ -698,7 +737,7 @@ def sets(
     part_name: typing.Optional[str] = parsers.sets_defaults["part_name"],
     face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
     edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
-    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"]
+    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"],
 ) -> None:
     """Create Cubit sidesets and nodesets from feature numbers
 
@@ -731,7 +770,7 @@ def mesh(
     output_file: typing.Optional[str] = parsers.mesh_defaults["output_file"],
     part_name: typing.Optional[str] = parsers.mesh_defaults["part_name"],
     global_seed: typing.Optional[float] = parsers.mesh_defaults["global_seed"],
-    edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"]
+    edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"],
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name
 
@@ -838,11 +877,13 @@ def merge(input_file, output_file):
     cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
-def export(input_file,
-           part_name=parsers.export_defaults["part_name"],
-           element_type=parsers.export_defaults["element_type"],
-           destination=parsers.export_defaults["destination"],
-           output_type=parsers.export_defaults["output_type"]):
+def export(
+    input_file,
+    part_name=parsers.export_defaults["part_name"],
+    element_type=parsers.export_defaults["element_type"],
+    destination=parsers.export_defaults["destination"],
+    output_type=parsers.export_defaults["output_type"],
+):
     """Open a Cubit ``*.cub`` file and export ``part_name`` prefixed volumes as ``part_name``.inp
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains meshed parts/volumes
@@ -852,8 +893,7 @@ def export(input_file,
     """
     cubit.init(["cubit"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
-    element_type = \
-        _mixed_utilities.validate_element_type(length_part_name=len(part_name), element_type=element_type)
+    element_type = _mixed_utilities.validate_element_type(length_part_name=len(part_name), element_type=element_type)
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     destination = pathlib.Path(destination)
 
@@ -964,11 +1004,15 @@ def _export_abaqus(output_file, part_name):
     cubit_command_or_exception(f"export abaqus '{output_file}' block {new_block_id} partial overwrite")
 
 
-def image(input_file, output_file, cubit_command,
-          x_angle=parsers.image_defaults["x_angle"],
-          y_angle=parsers.image_defaults["y_angle"],
-          z_angle=parsers.image_defaults["z_angle"],
-          image_size=parsers.image_defaults["image_size"]):
+def image(
+    input_file,
+    output_file,
+    cubit_command,
+    x_angle=parsers.image_defaults["x_angle"],
+    y_angle=parsers.image_defaults["y_angle"],
+    z_angle=parsers.image_defaults["z_angle"],
+    image_size=parsers.image_defaults["image_size"],
+):
     """Open a Cubit ``*.cub`` file and save an image
 
     Uses the Cubit APREPRO `hardcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions. This
@@ -984,7 +1028,7 @@ def image(input_file, output_file, cubit_command,
     """
     input_file = pathlib.Path(input_file).with_suffix(".cub")
     output_file = pathlib.Path(output_file)
-    output_type = output_file.suffix.strip('.')
+    output_type = output_file.suffix.strip(".")
 
     journal_path = output_file.with_suffix(".jou")
     with open(journal_path, "w") as journal_file:

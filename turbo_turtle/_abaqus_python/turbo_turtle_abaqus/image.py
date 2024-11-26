@@ -18,14 +18,17 @@ from turbo_turtle_abaqus import _abaqus_utilities
 from turbo_turtle_abaqus import _mixed_settings
 
 
-def main(input_file, output_file,
-         x_angle=parsers.image_defaults["x_angle"],
-         y_angle=parsers.image_defaults["y_angle"],
-         z_angle=parsers.image_defaults["z_angle"],
-         image_size=parsers.image_defaults["image_size"],
-         model_name=parsers.image_defaults["model_name"],
-         part_name=parsers.image_defaults["part_name"],
-         color_map=parsers.image_color_map_choices[0]):
+def main(
+    input_file,
+    output_file,
+    x_angle=parsers.image_defaults["x_angle"],
+    y_angle=parsers.image_defaults["y_angle"],
+    z_angle=parsers.image_defaults["z_angle"],
+    image_size=parsers.image_defaults["image_size"],
+    model_name=parsers.image_defaults["model_name"],
+    part_name=parsers.image_defaults["part_name"],
+    color_map=parsers.image_color_map_choices[0],
+):
     """Wrap image with file input handling
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
@@ -48,12 +51,28 @@ def main(input_file, output_file,
         input_file_extension = os.path.splitext(input_file)[1]
         if input_file_extension.lower() == ".cae":
             with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
-                image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
-                      model_name=model_name, part_name=part_name, color_map=color_map)
+                image(
+                    output_file,
+                    x_angle=x_angle,
+                    y_angle=y_angle,
+                    z_angle=z_angle,
+                    image_size=image_size,
+                    model_name=model_name,
+                    part_name=part_name,
+                    color_map=color_map,
+                )
         elif input_file_extension.lower() == ".inp":
             abaqus.mdb.ModelFromInputFile(name=model_name, inputFileName=input_file)
-            image(output_file, x_angle=x_angle, y_angle=y_angle, z_angle=z_angle, image_size=image_size,
-                  model_name=model_name, part_name=part_name, color_map=color_map)
+            image(
+                output_file,
+                x_angle=x_angle,
+                y_angle=y_angle,
+                z_angle=z_angle,
+                image_size=image_size,
+                model_name=model_name,
+                part_name=part_name,
+                color_map=color_map,
+            )
         else:
             message = "Uknown file extension {}".format(input_file_extension)
             _mixed_utilities.sys_exit(message)
@@ -61,14 +80,16 @@ def main(input_file, output_file,
         _mixed_utilities.sys_exit(err.message)
 
 
-def image(output_file,
-          x_angle=parsers.image_defaults["x_angle"],
-          y_angle=parsers.image_defaults["y_angle"],
-          z_angle=parsers.image_defaults["z_angle"],
-          image_size=parsers.image_defaults["image_size"],
-          model_name=parsers.image_defaults["model_name"],
-          part_name=parsers.image_defaults["part_name"],
-          color_map=parsers.image_color_map_choices[0]):
+def image(
+    output_file,
+    x_angle=parsers.image_defaults["x_angle"],
+    y_angle=parsers.image_defaults["y_angle"],
+    z_angle=parsers.image_defaults["z_angle"],
+    image_size=parsers.image_defaults["image_size"],
+    model_name=parsers.image_defaults["model_name"],
+    part_name=parsers.image_defaults["part_name"],
+    color_map=parsers.image_color_map_choices[0],
+):
     """Script for saving a part or assembly view image for a given Abaqus input file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
@@ -105,24 +126,25 @@ def image(output_file,
             for new_instance in model.parts.keys():
                 part = model.parts[new_instance]
                 assembly.Instance(name=new_instance, part=part, dependent=abaqusConstants.ON)
-        abaqus.session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+        abaqus.session.viewports["Viewport: 1"].assemblyDisplay.setValues(
             optimizationTasks=abaqusConstants.OFF,
             geometricRestrictions=abaqusConstants.OFF,
-            stopConditions=abaqusConstants.OFF)
-        abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=assembly)
+            stopConditions=abaqusConstants.OFF,
+        )
+        abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=assembly)
     else:
         part_object = abaqus.mdb.models[model_name].parts[part_name]
-        abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=part_object)
+        abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=part_object)
 
-    abaqus.session.viewports['Viewport: 1'].view.rotate(
+    abaqus.session.viewports["Viewport: 1"].view.rotate(
         xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL
     )
-    abaqus.session.viewports['Viewport: 1'].view.fitView()
-    abaqus.session.viewports['Viewport: 1'].enableMultipleColors()
-    abaqus.session.viewports['Viewport: 1'].setColor(initialColor='#BDBDBD')
-    cmap = abaqus.session.viewports['Viewport: 1'].colorMappings[color_map]
-    abaqus.session.viewports['Viewport: 1'].setColor(colorMapping=cmap)
-    abaqus.session.viewports['Viewport: 1'].disableMultipleColors()
+    abaqus.session.viewports["Viewport: 1"].view.fitView()
+    abaqus.session.viewports["Viewport: 1"].enableMultipleColors()
+    abaqus.session.viewports["Viewport: 1"].setColor(initialColor="#BDBDBD")
+    cmap = abaqus.session.viewports["Viewport: 1"].colorMappings[color_map]
+    abaqus.session.viewports["Viewport: 1"].setColor(colorMapping=cmap)
+    abaqus.session.viewports["Viewport: 1"].disableMultipleColors()
     abaqus.session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
     abaqus.session.pngOptions.setValues(imageSize=image_size)
 
@@ -134,7 +156,7 @@ def image(output_file,
     abaqus.session.printToFile(
         fileName=output_file_stem,
         format=output_format,
-        canvasObjects=(abaqus.session.viewports['Viewport: 1'], )
+        canvasObjects=(abaqus.session.viewports["Viewport: 1"],),
     )
 
 
@@ -198,33 +220,33 @@ def _gui_get_inputs():
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
         if default_part_name == "rootAssembly":
             default_color_map = "Assembly"
-            default_part_name = ''  # Need to reset to blank string for proper handling in the image() function
+            default_part_name = ""  # Need to reset to blank string for proper handling in the image() function
         else:
             default_color_map = "Part geometry"
     except AttributeError:
         deault_color_map = "Assembly"
-        default_part_name = ''
+        default_part_name = ""
 
     fields = (
-        ('Output File', ''),
-        ('Model Name:', model_name),
-        ('Part Name:', default_part_name),
-        ('Color Map:', default_color_map),
-        ('Image Size:', str(parsers.image_defaults['image_size']).replace('[', '').replace(']', '')),
-        ('X-Angle:', str(parsers.image_defaults['x_angle'])),
-        ('Y-Angle:', str(parsers.image_defaults['y_angle'])),
-        ('Z-Angle:', str(parsers.image_defaults['z_angle']))
+        ("Output File", ""),
+        ("Model Name:", model_name),
+        ("Part Name:", default_part_name),
+        ("Color Map:", default_color_map),
+        ("Image Size:", str(parsers.image_defaults["image_size"]).replace("[", "").replace("]", "")),
+        ("X-Angle:", str(parsers.image_defaults["x_angle"])),
+        ("Y-Angle:", str(parsers.image_defaults["y_angle"])),
+        ("Z-Angle:", str(parsers.image_defaults["z_angle"])),
     )
 
     output_file, model_name, part_name, color_map, image_size, x_angle, y_angle, z_angle = abaqus.getInputs(
-        dialogTitle='Turbo Turtle Image',
+        dialogTitle="Turbo Turtle Image",
         label=_mixed_settings._image_gui_help_string,
-        fields=fields
+        fields=fields,
     )
 
     if model_name is not None:  # Model name will be None is the user hits the "cancel/esc" button
         if not output_file:
-            error_message = 'Error: You must specify an output file name'
+            error_message = "Error: You must specify an output file name"
             raise RuntimeError(error_message)
 
         if not part_name:
@@ -234,9 +256,16 @@ def _gui_get_inputs():
 
         image_size = list(ast.literal_eval(image_size))
 
-        user_inputs = {'output_file': output_file, 'x_angle': float(x_angle), 'y_angle': float(y_angle),
-                       'z_angle': float(z_angle), 'image_size': image_size, 'model_name': model_name,
-                       'part_name': part_name, 'color_map': color_map}
+        user_inputs = {
+            "output_file": output_file,
+            "x_angle": float(x_angle),
+            "y_angle": float(y_angle),
+            "z_angle": float(z_angle),
+            "image_size": image_size,
+            "model_name": model_name,
+            "part_name": part_name,
+            "color_map": color_map,
+        }
     else:
         user_inputs = {}
     return user_inputs
@@ -244,13 +273,11 @@ def _gui_get_inputs():
 
 def _gui():
     """Function with no inputs required for driving the plugin"""
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
-                                  subcommand_function=image,
-                                  post_action_function=None)
+    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs, subcommand_function=image, post_action_function=None)
 
 
 if __name__ == "__main__":
-    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+    if "caeModules" in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         _gui()
     else:
         parser = parsers.image_parser(basename=basename)
@@ -259,14 +286,16 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-        sys.exit(main(
-            args.input_file,
-            args.output_file,
-            x_angle=args.x_angle,
-            y_angle=args.y_angle,
-            z_angle=args.z_angle,
-            image_size=args.image_size,
-            model_name=args.model_name,
-            part_name=args.part_name,
-            color_map=args.color_map,
-        ))
+        sys.exit(
+            main(
+                args.input_file,
+                args.output_file,
+                x_angle=args.x_angle,
+                y_angle=args.y_angle,
+                z_angle=args.z_angle,
+                image_size=args.image_size,
+                model_name=args.model_name,
+                part_name=args.part_name,
+                color_map=args.color_map,
+            )
+        )

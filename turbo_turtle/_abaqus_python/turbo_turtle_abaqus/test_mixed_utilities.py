@@ -3,6 +3,7 @@
 
    These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_mixed_utilities`
 """
+
 import os
 import sys
 import inspect
@@ -23,7 +24,7 @@ class TestMixedUtilities(unittest.TestCase):
         tests = [
             (1, [None], [None]),
             (2, [None], [None, None]),
-            (2, ["C3D8"], ["C3D8", "C3D8"])
+            (2, ["C3D8"], ["C3D8", "C3D8"]),
         ]
         for length_part_name, original_element_type, expected in tests:
             element_type = _mixed_utilities.validate_element_type(length_part_name, original_element_type)
@@ -67,10 +68,16 @@ class TestMixedUtilities(unittest.TestCase):
 
     def test_element_type_regex(self):
         tests = [
-            ("*element, type=C3D8\n*ELEMENT, TYPE=C3D8\n*Element, Type=C3D8\n", "C3D8R",
-             "*element, type=C3D8R\n*ELEMENT, TYPE=C3D8R\n*Element, Type=C3D8R\n"),
-            ("*element, type=square4\n*ELEMENT, TYPE=SQUARE4\n*Element, Type=Square4\n", "CAX4",
-             "*element, type=CAX4\n*ELEMENT, TYPE=CAX4\n*Element, Type=CAX4\n")
+            (
+                "*element, type=C3D8\n*ELEMENT, TYPE=C3D8\n*Element, Type=C3D8\n",
+                "C3D8R",
+                "*element, type=C3D8R\n*ELEMENT, TYPE=C3D8R\n*Element, Type=C3D8R\n",
+            ),
+            (
+                "*element, type=square4\n*ELEMENT, TYPE=SQUARE4\n*Element, Type=Square4\n",
+                "CAX4",
+                "*element, type=CAX4\n*ELEMENT, TYPE=CAX4\n*Element, Type=CAX4\n",
+            ),
         ]
         for content, element_type, expected in tests:
             new_contents = _mixed_utilities._element_type_regex(content, element_type)
@@ -81,5 +88,5 @@ class TestMixedUtilities(unittest.TestCase):
         pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

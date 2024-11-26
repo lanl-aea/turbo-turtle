@@ -22,6 +22,7 @@ Internal Changes
 - Add a scheduled CI job to test all support Python versions (:issue:`236`, :merge:`229`). By `Kyle Brindley`_.
 - Remove the experimental, semi-private API builders in favor of the public CLI builder design (:issue:`234`,
   :merge:`231`).  By `Kyle Brindley`_.
+- Autoformat and perform style checks with black and flake8 together (:issue:`231`, :merge:`235`). By `Kyle Brindley`_.
 
 Enhancements
 ============

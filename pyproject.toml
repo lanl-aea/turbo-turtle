@@ -61,6 +61,12 @@ markers = [
 ]
 addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -m 'not systemtest'"
 
+[tool.black]
+target-version = ["py39", "py310", "py311", "py312", "py313"]
+extend-exclude = ".txt|test_vertices.py"
+force-exclude = "build*/"
+line-length = 120
+
 [tool.mypy]
 disable_error_code = [
     "import-untyped",

@@ -27,41 +27,55 @@ def test_sys_exit():
 
 validate_part_name = {
     "None one": (
-        ["dummy.ext"], [None], ["dummy"], does_not_raise()
+        ["dummy.ext"],
+        [None],
+        ["dummy"],
+        does_not_raise(),
     ),
     "None two": (
-        ["thing1.ext", "thing2.ext"], [None], ["thing1", "thing2"], does_not_raise()
+        ["thing1.ext", "thing2.ext"],
+        [None],
+        ["thing1", "thing2"],
+        does_not_raise(),
     ),
     "one part": (
-        ["one_part.ext"], ["part_one"], ["part_one"], does_not_raise()
+        ["one_part.ext"],
+        ["part_one"],
+        ["part_one"],
+        does_not_raise(),
     ),
     "two part": (
-        ["one_part.ext", "two_part.ext"], ["part_one", "part_two"], ["part_one", "part_two"], does_not_raise()
+        ["one_part.ext", "two_part.ext"],
+        ["part_one", "part_two"],
+        ["part_one", "part_two"],
+        does_not_raise(),
     ),
     "seuss": (
         ["one_part.ext", "two_part.ext", "red_part.ext", "blue_part.ext"],
         ["part_one", "part_two", "part_red", "part_blue"],
         ["part_one", "part_two", "part_red", "part_blue"],
-        does_not_raise()
+        does_not_raise(),
     ),
     "wrong length: 2-1": (
         ["one_part.ext", "two_part.ext"],
         ["part_one"],
         [],
-        pytest.raises(RuntimeError)
+        pytest.raises(RuntimeError),
     ),
     "wrong length: 1-2": (
         ["one_part.ext"],
         ["part_one", "part_two"],
         [],
-        pytest.raises(RuntimeError)
+        pytest.raises(RuntimeError),
     ),
 }
 
 
-@pytest.mark.parametrize("input_file, original_part_name, expected, outcome",
-                         validate_part_name.values(),
-                         ids=validate_part_name.keys())
+@pytest.mark.parametrize(
+    "input_file, original_part_name, expected, outcome",
+    validate_part_name.values(),
+    ids=validate_part_name.keys(),
+)
 def test_validate_part_name(input_file, original_part_name, expected, outcome):
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_part_name`
 
@@ -94,26 +108,43 @@ def test_validate_part_name(input_file, original_part_name, expected, outcome):
 
 validate_element_type = {
     "default": (
-        1, [None], [None], does_not_raise()
+        1,
+        [None],
+        [None],
+        does_not_raise(),
     ),
     "two parts": (
-        2, [None], [None, None], does_not_raise()
+        2,
+        [None],
+        [None, None],
+        does_not_raise(),
     ),
     "two element types": (
-        2, ["C3D8"], ["C3D8", "C3D8"], does_not_raise()
+        2,
+        ["C3D8"],
+        ["C3D8", "C3D8"],
+        does_not_raise(),
     ),
     "one parts, two element types": (
-        1, ["C3D8", "C3D8"], [], pytest.raises(RuntimeError)
+        1,
+        ["C3D8", "C3D8"],
+        [],
+        pytest.raises(RuntimeError),
     ),
     "three parts, two element types": (
-        3, ["C3D8", "C3D8"], [], pytest.raises(RuntimeError)
+        3,
+        ["C3D8", "C3D8"],
+        [],
+        pytest.raises(RuntimeError),
     ),
 }
 
 
-@pytest.mark.parametrize("length_part_name, original_element_type, expected, outcome",
-                         validate_element_type.values(),
-                         ids=validate_element_type.keys())
+@pytest.mark.parametrize(
+    "length_part_name, original_element_type, expected, outcome",
+    validate_element_type.values(),
+    ids=validate_element_type.keys(),
+)
 def test_validate_element_type(length_part_name, original_element_type, expected, outcome):
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_element_type`
 
@@ -146,13 +177,31 @@ def test_validate_element_type(length_part_name, original_element_type, expected
 
 return_genfromtxt = {
     "good shape": (
-        "dummy", ",", 0, None, None, numpy.array([[0, 0], [1, 1]]), does_not_raise()
+        "dummy",
+        ",",
+        0,
+        None,
+        None,
+        numpy.array([[0, 0], [1, 1]]),
+        does_not_raise(),
     ),
     "unexpected column": (
-        "dummy", ",", 0, None, 3, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
+        "dummy",
+        ",",
+        0,
+        None,
+        3,
+        numpy.array([[0, 0], [1, 1]]),
+        pytest.raises(RuntimeError),
     ),
     "unexpected dimensions": (
-        "dummy", ",", 0, 1, None, numpy.array([[0, 0], [1, 1]]), pytest.raises(RuntimeError)
+        "dummy",
+        ",",
+        0,
+        1,
+        None,
+        numpy.array([[0, 0], [1, 1]]),
+        pytest.raises(RuntimeError),
     ),
 }
 
@@ -189,9 +238,13 @@ def test_return_genfromtxt(
     """
     with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected) as mock_genfromtxt, outcome:
         try:
-            coordinates = _mixed_utilities.return_genfromtxt(file_name, delimiter=delimiter, header_lines=header_lines,
-                                                       expected_dimensions=expected_dimensions,
-                                                       expected_columns=expected_columns)
+            coordinates = _mixed_utilities.return_genfromtxt(
+                file_name,
+                delimiter=delimiter,
+                header_lines=header_lines,
+                expected_dimensions=expected_dimensions,
+                expected_columns=expected_columns,
+            )
             assert numpy.allclose(coordinates, expected)
         finally:
             pass
@@ -214,18 +267,16 @@ def test_return_genfromtxt(
 
 
 remove_duplicate_items = {
-    "no duplicates": (
-        ["thing1", "thing2"], ["thing1", "thing2"]
-    ),
-    "one duplicate": (
-        ["thing1", "thing2", "thing1"], ["thing1", "thing2"]
-    ),
+    "no duplicates": (["thing1", "thing2"], ["thing1", "thing2"]),
+    "one duplicate": (["thing1", "thing2", "thing1"], ["thing1", "thing2"]),
 }
 
 
-@pytest.mark.parametrize("string_list, expected",
-                         remove_duplicate_items.values(),
-                         ids=remove_duplicate_items.keys())
+@pytest.mark.parametrize(
+    "string_list, expected",
+    remove_duplicate_items.values(),
+    ids=remove_duplicate_items.keys(),
+)
 def test_remove_duplicate_items(string_list, expected):
     with patch("sys.stderr.write") as mock_stderr_write:
         unique = _mixed_utilities.remove_duplicate_items(string_list)
@@ -237,41 +288,41 @@ def test_remove_duplicate_items(string_list, expected):
 
 
 intersection_of_lists = {
-    "None requested": (
-        [None], ["thing1", "thing2"], ["thing1", "thing2"]
-    ),
-    "exact": (
-        ["thing1", "thing2"], ["thing1", "thing2"], ["thing1", "thing2"]
-    ),
-    "one": (
-        ["thing1"], ["thing1", "thing2"], ["thing1"]
-    ),
+    "None requested": ([None], ["thing1", "thing2"], ["thing1", "thing2"]),
+    "exact": (["thing1", "thing2"], ["thing1", "thing2"], ["thing1", "thing2"]),
+    "one": (["thing1"], ["thing1", "thing2"], ["thing1"]),
 }
 
 
-@pytest.mark.parametrize("requested, available, expected",
-                         intersection_of_lists.values(),
-                         ids=intersection_of_lists.keys())
+@pytest.mark.parametrize(
+    "requested, available, expected",
+    intersection_of_lists.values(),
+    ids=intersection_of_lists.keys(),
+)
 def test_intersection_of_lists(requested, available, expected):
-        intersection = _mixed_utilities.intersection_of_lists(requested, available)
-        assert intersection == expected
+    intersection = _mixed_utilities.intersection_of_lists(requested, available)
+    assert intersection == expected
 
 
 element_type_regex = {
     "C3D8-C3D8R": (
-        "*element, type=C3D8\n*ELEMENT, TYPE=C3D8\n*Element, Type=C3D8\n", "C3D8R",
-        "*element, type=C3D8R\n*ELEMENT, TYPE=C3D8R\n*Element, Type=C3D8R\n"
+        "*element, type=C3D8\n*ELEMENT, TYPE=C3D8\n*Element, Type=C3D8\n",
+        "C3D8R",
+        "*element, type=C3D8R\n*ELEMENT, TYPE=C3D8R\n*Element, Type=C3D8R\n",
     ),
     "SQUARE4-CAX4": (
-        "*element, type=square4\n*ELEMENT, TYPE=SQUARE4\n*Element, Type=Square4\n", "CAX4",
-        "*element, type=CAX4\n*ELEMENT, TYPE=CAX4\n*Element, Type=CAX4\n"
+        "*element, type=square4\n*ELEMENT, TYPE=SQUARE4\n*Element, Type=Square4\n",
+        "CAX4",
+        "*element, type=CAX4\n*ELEMENT, TYPE=CAX4\n*Element, Type=CAX4\n",
     ),
 }
 
 
-@pytest.mark.parametrize("content, element_type, expected",
-                         element_type_regex.values(),
-                         ids=element_type_regex.keys())
+@pytest.mark.parametrize(
+    "content, element_type, expected",
+    element_type_regex.values(),
+    ids=element_type_regex.keys(),
+)
 def test_element_type_regex(content, element_type, expected):
     new_contents = _mixed_utilities._element_type_regex(content, element_type)
     assert new_contents == expected
@@ -279,19 +330,19 @@ def test_element_type_regex(content, element_type, expected):
 
 def test_substitute_element_type():
     with (
-        patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
+        patch("builtins.open", mock_open(read_data="old_content")) as open_mock,
         patch(
             "turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._element_type_regex",
-            return_value="old_content"
+            return_value="old_content",
         ),
     ):
         _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
         open_mock.assert_called_once()
     with (
-        patch("builtins.open", mock_open(read_data="old_content")) as open_mock, \
+        patch("builtins.open", mock_open(read_data="old_content")) as open_mock,
         patch(
             "turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities._element_type_regex",
-            return_value="new_content"
+            return_value="new_content",
         ),
     ):
         _mixed_utilities.substitute_element_type("dummy.inp", "dummy_element_type")
@@ -299,21 +350,17 @@ def test_substitute_element_type():
 
 
 cubit_part_names = {
-    "string": (
-        "Part-1", "Part_1"
-    ),
-    "list 1": (
-        ["Part-1"], ["Part_1"]
-    ),
-    "list 2": (
-        ["Part-1", "Part-2"], ["Part_1", "Part_2"]
-    ),
+    "string": ("Part-1", "Part_1"),
+    "list 1": (["Part-1"], ["Part_1"]),
+    "list 2": (["Part-1", "Part-2"], ["Part_1", "Part_2"]),
 }
 
 
-@pytest.mark.parametrize("part_name, expected",
-                         cubit_part_names.values(),
-                         ids=cubit_part_names.keys())
+@pytest.mark.parametrize(
+    "part_name, expected",
+    cubit_part_names.values(),
+    ids=cubit_part_names.keys(),
+)
 def test_cubit_part_names(part_name, expected):
     result = _mixed_utilities.cubit_part_names(part_name)
     assert result == expected

@@ -110,13 +110,13 @@ def sets(args, command):
     command += f"--model-name {args.model_name} --part-name {args.part_name} "
     if args.face_sets is not None:
         face_sets = [[name, f'"{mask}"'] for name, mask in args.face_sets]
-        command += _utilities.construct_append_options('--face-set', face_sets) + " "
+        command += _utilities.construct_append_options("--face-set", face_sets) + " "
     if args.edge_sets is not None:
         edge_sets = [[name, f'"{mask}"'] for name, mask in args.edge_sets]
-        command += _utilities.construct_append_options('--edge-set', edge_sets) + " "
+        command += _utilities.construct_append_options("--edge-set", edge_sets) + " "
     if args.vertex_sets is not None:
         vertex_sets = [[name, f'"{mask}"'] for name, mask in args.vertex_sets]
-        command += _utilities.construct_append_options('--vertex-set', vertex_sets)
+        command += _utilities.construct_append_options("--vertex-set", vertex_sets)
     _utilities.run_command(command)
 
 
@@ -137,7 +137,7 @@ def mesh(args, command):
     command += f"--model-name {args.model_name} --part-name {args.part_name} "
     command += f"--global-seed {args.global_seed} "
     if args.edge_seeds is not None:
-        command += _utilities.construct_append_options('--edge-seed', args.edge_seeds)
+        command += _utilities.construct_append_options("--edge-seed", args.edge_seeds)
     _utilities.run_command(command)
 
 

@@ -23,7 +23,7 @@ def main(
     model_name=parsers.mesh_defaults["model_name"],
     part_name=parsers.mesh_defaults["part_name"],
     global_seed=parsers.mesh_defaults["global_seed"],
-    edge_seeds=parsers.mesh_defaults["edge_seeds"]
+    edge_seeds=parsers.mesh_defaults["edge_seeds"],
 ):
     """Wrap mesh function for input file handling
 
@@ -48,7 +48,7 @@ def main(
                 model_name=model_name,
                 part_name=part_name,
                 global_seed=global_seed,
-                edge_seeds=edge_seeds
+                edge_seeds=edge_seeds,
             )
             abaqus.mdb.saveAs(pathName=output_file)
     except RuntimeError as err:
@@ -60,7 +60,7 @@ def mesh(
     model_name=parsers.mesh_defaults["model_name"],
     part_name=parsers.mesh_defaults["part_name"],
     global_seed=parsers.mesh_defaults["global_seed"],
-    edge_seeds=parsers.mesh_defaults["edge_seeds"]
+    edge_seeds=parsers.mesh_defaults["edge_seeds"],
 ):
     """Apply a global seed, optional edge seed(s), and mesh the specified part
 
@@ -121,18 +121,18 @@ def _gui_get_default_elem_type(model_name, part_name):
     import abaqus
 
     known_dimensions = {  # Abaqus 2023.HF5 default element types for Abaqus Standard/Explicit dimensions
-        'Axisymmetric': 'CAX4R',
-        '3D': 'C3D8R',
-        '2D Planar': 'CPS4R'
+        "Axisymmetric": "CAX4R",
+        "3D": "C3D8R",
+        "2D Planar": "CPS4R",
     }
 
     part = abaqus.mdb.models[model_name].parts[part_name]
     geometry_properties = part.queryGeometry(printResults=False)
-    dimensionality = geometry_properties['space']
+    dimensionality = geometry_properties["space"]
 
     elem_type = known_dimensions.get(dimensionality)  # Returns None if dimensionality is not a key in known_dimensions
     if elem_type is None:
-        elem_type = ''  # Will also show up as a blank string in the Abaqus/CAE GUI inputs dialog box
+        elem_type = ""  # Will also show up as a blank string in the Abaqus/CAE GUI inputs dialog box
 
     return elem_type
 
@@ -169,33 +169,39 @@ def _gui_get_inputs():
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
     except AttributeError:
-        print("Warning: could not determine a default part name using the current viewport. " \
-            "Using default '{}'".format(parsers.mesh_defaults['part_name'][0]))
-        default_part_name = parsers.mesh_defaults['part_name'][0]  # part_name defaults to list of length 1
+        print(
+            "Warning: could not determine a default part name using the current viewport. "
+            "Using default '{}'".format(parsers.mesh_defaults["part_name"][0])
+        )
+        default_part_name = parsers.mesh_defaults["part_name"][0]  # part_name defaults to list of length 1
 
     fields = (
-        ('Part Name:', default_part_name),
-        ('Element Type:', _gui_get_default_elem_type(model_name, default_part_name)),
-        ('Global Seed:', str(parsers.mesh_defaults['global_seed']))
+        ("Part Name:", default_part_name),
+        ("Element Type:", _gui_get_default_elem_type(model_name, default_part_name)),
+        ("Global Seed:", str(parsers.mesh_defaults["global_seed"])),
     )
 
     part_name, element_type, global_seed = abaqus.getInputs(
-        dialogTitle='Turbo Turtle Mesh',
+        dialogTitle="Turbo Turtle Mesh",
         label=_mixed_settings._mesh_gui_help_string,
-        fields=fields
+        fields=fields,
     )
 
     if part_name is not None:  # Will be None if the user hits the "cancel/esc" button
         if not global_seed:
-            error_message = 'Error: You must specify a global seed for meshing'
+            error_message = "Error: You must specify a global seed for meshing"
             raise RuntimeError(error_message)
 
         if not element_type:
-            error_message = 'Error: You must specify an element type for meshing'
+            error_message = "Error: You must specify an element type for meshing"
             raise RuntimeError(error_message)
 
-        user_inputs = {'element_type': element_type, 'model_name': model_name, 'part_name': part_name,
-                       'global_seed': float(global_seed)}
+        user_inputs = {
+            "element_type": element_type,
+            "model_name": model_name,
+            "part_name": part_name,
+            "global_seed": float(global_seed),
+        }
     else:
         user_inputs = {}
     return user_inputs
@@ -203,13 +209,13 @@ def _gui_get_inputs():
 
 def _gui():
     """Function with no inputs that drives the plug-in"""
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
-                                  subcommand_function=mesh,
-                                  post_action_function=_abaqus_utilities._view_part)
+    _abaqus_utilities.gui_wrapper(
+        inputs_function=_gui_get_inputs, subcommand_function=mesh, post_action_function=_abaqus_utilities._view_part
+    )
 
 
 if __name__ == "__main__":
-    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+    if "caeModules" in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         _gui()
     else:
         parser = parsers.mesh_parser(basename=basename)
@@ -218,12 +224,14 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-        sys.exit(main(
-            args.input_file,
-            args.element_type,
-            output_file=args.output_file,
-            model_name=args.model_name,
-            part_name=args.part_name,
-            global_seed=args.global_seed,
-            edge_seeds=args.edge_seeds
-        ))
+        sys.exit(
+            main(
+                args.input_file,
+                args.element_type,
+                output_file=args.output_file,
+                model_name=args.model_name,
+                part_name=args.part_name,
+                global_seed=args.global_seed,
+                edge_seeds=args.edge_seeds,
+            )
+        )

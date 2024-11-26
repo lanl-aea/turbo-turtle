@@ -22,14 +22,16 @@ from turbo_turtle_abaqus import _abaqus_utilities
 from turbo_turtle_abaqus import _mixed_settings
 
 
-def main(input_file,
-         output_file=parsers.partition_defaults["output_file"],
-         center=parsers.partition_defaults["center"],
-         xvector=parsers.partition_defaults["xvector"],
-         zvector=parsers.partition_defaults["zvector"],
-         model_name=parsers.partition_defaults["model_name"],
-         part_name=parsers.partition_defaults["part_name"],
-         big_number=parsers.partition_defaults["big_number"]):
+def main(
+    input_file,
+    output_file=parsers.partition_defaults["output_file"],
+    center=parsers.partition_defaults["center"],
+    xvector=parsers.partition_defaults["xvector"],
+    zvector=parsers.partition_defaults["zvector"],
+    model_name=parsers.partition_defaults["model_name"],
+    part_name=parsers.partition_defaults["part_name"],
+    big_number=parsers.partition_defaults["big_number"],
+):
     """Wrap  partition function with file open and file write operations
 
     :param str input_file: Abaqus CAE model database to open
@@ -111,14 +113,18 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     yvector = numpy.cross(zvector, xvector)
     center = numpy.array(center)
 
-    angle = numpy.pi / 2. - numpy.arccos(numpy.sqrt(2.0 / 3.0))
+    angle = numpy.pi / 2.0 - numpy.arccos(numpy.sqrt(2.0 / 3.0))
     big_number_coordinates = vertices.rectalinear_coordinates([big_number], [angle])[0]
 
     sketch_vertex_pairs = (
-        ((-big_number_coordinates[0],  big_number_coordinates[1]),   # noqa: E201,E241
-         ( big_number_coordinates[0],  big_number_coordinates[1])),  # noqa: E201,E241
-        ((-big_number_coordinates[0], -big_number_coordinates[1]),   # noqa: E201,E241
-         ( big_number_coordinates[0], -big_number_coordinates[1]))   # noqa: E201,E241
+        (
+            (-big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
+            ( big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
+        ),
+        (
+            (-big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
+            ( big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
+        ),
     )
 
     for current_part in part_name:
@@ -178,13 +184,13 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
                 sketchPlane=plane,
                 sketchUpEdge=axis,
                 sketchPlaneSide=abaqusConstants.SIDE1,
-                origin=center
+                origin=center,
             )
             sketch = model.ConstrainedSketch(
-                name='__profile__',
+                name="__profile__",
                 sheetSize=91.45,
                 gridSpacing=2.28,
-                transform=transform
+                transform=transform,
             )
             sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
             part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
@@ -196,7 +202,7 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
                     sketchPlane=plane,
                     sketchUpEdge=axis,
                     cells=part.cells[:],
-                    sketch=sketch
+                    sketch=sketch,
                 )
             # TODO: Is it possible to distinguish between expected failures (operating on an incomplete sphere,
             # so sketch doesn't intersect) and unexpected failures (bad options, missing geometry, etc)?
@@ -225,13 +231,13 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
     transform = part.MakeSketchTransform(
         sketchPlane=part.faces[0],
         sketchPlaneSide=abaqusConstants.SIDE1,
-        origin=center
+        origin=center,
     )
     sketch = model.ConstrainedSketch(
-        name='__profile__',
+        name="__profile__",
         sheetSize=91.45,
         gridSpacing=2.28,
-        transform=transform
+        transform=transform,
     )
     sketch.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
     part.projectReferencesOntoSketch(sketch=sketch, filter=abaqusConstants.COPLANAR_EDGES)
@@ -244,7 +250,7 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
         sketch_vertex_pairs[1][0],  # -x -45 degree partition
         (-big_number, 0.0),  # Must manually construct the -x horizontal partition
         (0.0, big_number),  # Must manually construct the +y vertical partition
-        (0.0, -big_number)  # Must manually construct the -y vertical partition
+        (0.0, -big_number),  # Must manually construct the -y vertical partition
     )
 
     for current_vertex in sketch_vertices:
@@ -289,48 +295,53 @@ def _gui_get_inputs():
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
     except AttributeError:
-        print('Warning: could not determine a default part name using the current viewport')
-        default_part_name = parsers.partition_defaults['part_name'][0]  # part_name defaults to list of length 1
+        print("Warning: could not determine a default part name using the current viewport")
+        default_part_name = parsers.partition_defaults["part_name"][0]  # part_name defaults to list of length 1
 
     fields = (
-        ('Center:', str(parsers.partition_defaults['center']).replace('[', '').replace(']', '')),
-        ('X-Vector:', str(parsers.partition_defaults['xvector']).replace('[', '').replace(']', '')),
-        ('Z-Vector:', str(parsers.partition_defaults['zvector']).replace('[', '').replace(']', '')),
-        ('Part Name(s):', default_part_name),
-        ('Copy and Paste Parameters', 'ctrl+c ctrl+v printed parameters')
+        ("Center:", str(parsers.partition_defaults["center"]).replace("[", "").replace("]", "")),
+        ("X-Vector:", str(parsers.partition_defaults["xvector"]).replace("[", "").replace("]", "")),
+        ("Z-Vector:", str(parsers.partition_defaults["zvector"]).replace("[", "").replace("]", "")),
+        ("Part Name(s):", default_part_name),
+        ("Copy and Paste Parameters", "ctrl+c ctrl+v printed parameters"),
     )
 
     center, xvector, zvector, part_name_strings, cp_parameters = abaqus.getInputs(
-        dialogTitle='Turbo Turtle Partition',
+        dialogTitle="Turbo Turtle Partition",
         label=_mixed_settings._partition_gui_help_string,
-        fields=fields
+        fields=fields,
     )
 
     if center is not None:  # Center will be None if the user hits the "cancel/esc" button
         if cp_parameters != fields[-1][-1]:
-            cp_param = [x.replace('\n', '') for x in cp_parameters.split('\n')]
-            center = ast.literal_eval(cp_param[0].replace('Center: ', ''))
-            xvector = ast.literal_eval(cp_param[1].replace('X-Vector: ', ''))
-            zvector = ast.literal_eval(cp_param[2].replace('Z-Vector: ', ''))
+            cp_param = [x.replace("\n", "") for x in cp_parameters.split("\n")]
+            center = ast.literal_eval(cp_param[0].replace("Center: ", ""))
+            xvector = ast.literal_eval(cp_param[1].replace("X-Vector: ", ""))
+            zvector = ast.literal_eval(cp_param[2].replace("Z-Vector: ", ""))
         else:
             center = list(ast.literal_eval(center))
             xvector = list(ast.literal_eval(xvector))
             zvector = list(ast.literal_eval(zvector))
-        print('\nPartitioning Parameters Entered By User:')
-        print('----------------------------------------')
+        print("\nPartitioning Parameters Entered By User:")
+        print("----------------------------------------")
         print('Only copy the three lines below to use "Copy and Paste Parameters"\n')
-        print('Center: {}'.format(center))
-        print('X-Vector: {}'.format(xvector))
-        print('Z-Vector: {}'.format(zvector))
-        print('')
+        print("Center: {}".format(center))
+        print("X-Vector: {}".format(xvector))
+        print("Z-Vector: {}".format(zvector))
+        print("")
 
         model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
         part_name = []
-        for this_part_name_string in part_name_strings.split(','):
+        for this_part_name_string in part_name_strings.split(","):
             part_name += fnmatch.filter(abaqus.mdb.models[model_name].parts.keys(), this_part_name_string)
 
-        user_inputs = {'center': center, 'xvector': xvector, 'zvector': zvector,
-                       'model_name': model_name, 'part_name': part_name}
+        user_inputs = {
+            "center": center,
+            "xvector": xvector,
+            "zvector": zvector,
+            "model_name": model_name,
+            "part_name": part_name,
+        }
     else:
         user_inputs = {}
     return user_inputs
@@ -338,13 +349,15 @@ def _gui_get_inputs():
 
 def _gui():
     """Function with no inputs that drives the plug-in"""
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs,
-                                  subcommand_function=partition,
-                                  post_action_function=_abaqus_utilities._view_part)
+    _abaqus_utilities.gui_wrapper(
+        inputs_function=_gui_get_inputs,
+        subcommand_function=partition,
+        post_action_function=_abaqus_utilities._view_part,
+    )
 
 
 if __name__ == "__main__":
-    if 'caeModules' in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
+    if "caeModules" in sys.modules:  # All Abaqus CAE sessions immediately load caeModules
         _gui()
     else:
         parser = parsers.partition_parser(basename=basename)
@@ -353,13 +366,15 @@ if __name__ == "__main__":
         except SystemExit as err:
             sys.exit(err.code)
 
-        sys.exit(main(
-            input_file=args.input_file,
-            output_file=args.output_file,
-            center=args.center,
-            xvector=args.xvector,
-            zvector=args.zvector,
-            model_name=args.model_name,
-            part_name=args.part_name,
-            big_number=args.big_number
-        ))
+        sys.exit(
+            main(
+                input_file=args.input_file,
+                output_file=args.output_file,
+                center=args.center,
+                xvector=args.xvector,
+                zvector=args.zvector,
+                model_name=args.model_name,
+                part_name=args.part_name,
+                big_number=args.big_number,
+            )
+        )

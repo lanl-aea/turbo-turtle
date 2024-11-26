@@ -3,6 +3,7 @@
 
    These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_vertices`
 """
+
 import os
 import sys
 import math
@@ -37,8 +38,8 @@ class TestVertices(unittest.TestCase):
     def test_compare_euclidean_distance(self):
         tests = [
             (numpy.array([[0, 0], [1, 0]]), 0.1, [False, True]),
-            (numpy.array([[0, 0], [1, 0]]), 10., [False, False]),
-            (numpy.array([[0, 0], [1, 0]]), 1.0, [False, False])
+            (numpy.array([[0, 0], [1, 0]]), 10.0, [False, False]),
+            (numpy.array([[0, 0], [1, 0]]), 1.0, [False, False]),
         ]
         for coordinates, euclidean_distance, expected in tests:
             bools = vertices._compare_euclidean_distance(coordinates, euclidean_distance)
@@ -50,7 +51,7 @@ class TestVertices(unittest.TestCase):
             ([False, False], [False, False], [False, False]),
             ([True, True], [True, True], [True, True]),
             ([True, False], [False, True], [True, True]),
-            ([False, True], [True, False], [True, True])
+            ([False, True], [True, False], [True, True]),
         ]
         for bool_list_1, bool_list_2, expected in tests:
             bools = vertices._bool_via_or(bool_list_1, bool_list_2)
@@ -58,38 +59,61 @@ class TestVertices(unittest.TestCase):
 
     def test_break_coordinates(self):
         tests = [
-            (numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
-             4,
-             [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])]),  # noqa: E501
-            (numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203
-                          [ 5. , -4.8],  # noqa: E201,E202,E203
-                          [ 4.5, -4. ],  # noqa: E201,E202,E203
-                          [ 4.1, -3. ],  # noqa: E201,E202,E203
-                          [ 4. , -2.5],  # noqa: E201,E202,E203
-                          [ 4. ,  2.5],  # noqa: E201,E202,E203,E241
-                          [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
-                          [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
-                          [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
-                          [ 5.1,  5. ],  # noqa: E201,E202,E203,E241
-                          [ 3. ,  5. ],  # noqa: E201,E202,E203,E241
-                          [ 3. , -4. ],  # noqa: E201,E202,E203
-                          [ 0. , -4. ],  # noqa: E201,E202,E203
-                          [ 0. , -5. ]]),  # noqa: E201,E202,E203
-             4,
-             [numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
-                           [ 5. , -4.8],  # noqa: E201,E202,E203,E241
-                           [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
-                           [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
-                           [ 4. , -2.5]]),  # noqa: E201,E202,E203,E241
-              numpy.array([[ 4. ,  2.5],  # noqa: E201,E202,E203,E241
-                           [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
-                           [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
-                           [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
-                           [ 5.1,  5. ]]),  # noqa: E201,E202,E203,E241
-              numpy.array([[ 3.0,  5.0]]),  # noqa: E201,E202,E203,E241
-              numpy.array([[ 3.0, -4.0]]),  # noqa: E201,E202,E203,E241
-              numpy.array([[ 0.0, -4.0]]),  # noqa: E201,E202,E203,E241
-              numpy.array([[ 0.0, -5.0]])])  # noqa: E201,E202,E203,E241
+            (
+                numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
+                4,
+                [
+                    numpy.array([[1.0, -0.5]]),
+                    numpy.array([[2.0, -0.5]]),
+                    numpy.array([[2.0, 0.5]]),
+                    numpy.array([[1.0, 0.5]]),
+                ],
+            ),
+            (
+                numpy.array(
+                    [
+                        [5.1, -5.0],  # fmt: skip # noqa: E201,E202,E203
+                        [5.0, -4.8],  # fmt: skip # noqa: E201,E202,E203
+                        [4.5, -4.0],  # fmt: skip # noqa: E201,E202,E203
+                        [4.1, -3.0],  # fmt: skip # noqa: E201,E202,E203
+                        [4.0, -2.5],  # fmt: skip # noqa: E201,E202,E203
+                        [4.0,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [4.1,  3.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [4.5,  4.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [5.0,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [5.1,  5.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [3.0,  5.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [3.0, -4.0],  # fmt: skip # noqa: E201,E202,E203
+                        [0.0, -4.0],  # fmt: skip # noqa: E201,E202,E203
+                        [0.0, -5.0],
+                    ]
+                ),  # noqa: E201,E202,E203
+                4,
+                [
+                    numpy.array(
+                        [
+                            [5.1, -5.0],  # noqa: E201,E202,E203,E241
+                            [5.0, -4.8],  # noqa: E201,E202,E203,E241
+                            [4.5, -4.0],  # noqa: E201,E202,E203,E241
+                            [4.1, -3.0],  # noqa: E201,E202,E203,E241
+                            [4.0, -2.5],
+                        ]
+                    ),  # noqa: E201,E202,E203,E241
+                    numpy.array(
+                        [
+                            [4.0, 2.5],  # noqa: E201,E202,E203,E241
+                            [4.1, 3.0],  # noqa: E201,E202,E203,E241
+                            [4.5, 4.0],  # noqa: E201,E202,E203,E241
+                            [5.0, 4.8],  # noqa: E201,E202,E203,E241
+                            [5.1, 5.0],
+                        ]
+                    ),  # noqa: E201,E202,E203,E241
+                    numpy.array([[3.0,  5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[3.0, -4.0]]),  # noqa: E201,E202,E203,E241
+                    numpy.array([[0.0, -4.0]]),  # noqa: E201,E202,E203,E241
+                    numpy.array([[0.0, -5.0]]),
+                ],
+            ),  # noqa: E201,E202,E203,E241
         ]
         for coordinates, euclidean_distance, expected in tests:
             all_splines = vertices._break_coordinates(coordinates, euclidean_distance)
@@ -99,34 +123,53 @@ class TestVertices(unittest.TestCase):
     def test_line_pairs(self):
         tests = [
             (
-                [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])],  # noqa: E201,E202,E203,E241,E501
-                [(numpy.array([1.0, -0.5]), numpy.array([2.0, -0.5])),  # noqa: E201,E202,E203,E241
-                 (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),  # noqa: E201,E202,E203,E241
-                 (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),  # noqa: E201,E202,E203,E241
-                 (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5]))]  # noqa: E201,E202,E203,E241
+                [
+                    numpy.array([[1.0, -0.5]]),
+                    numpy.array([[2.0, -0.5]]),
+                    numpy.array([[2.0,  0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                    numpy.array([[1.0,  0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                ],
+                [
+                    (numpy.array([1.0, -0.5]), numpy.array([2.0, -0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                ],
             ),
             (
-                [numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
-                              [ 5. , -4.8],  # noqa: E201,E202,E203,E241
-                              [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
-                              [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
-                              [ 4. , -2.5]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 4. ,  2.5],  # noqa: E201,E202,E203,E241
-                              [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
-                              [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
-                              [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
-                              [ 5.1,  5. ]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 3.0,  5.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 3.0, -4.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 0.0, -4.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 0.0, -5.0]])],  # noqa: E201,E202,E203,E241
-                [(numpy.array([ 4. , -2.5]), numpy.array([ 4. ,  2.5])),  # noqa: E201,E202,E203,E241
-                 (numpy.array([ 5.1,  5. ]), numpy.array([ 3.0,  5.0])),  # noqa: E201,E202,E203,E241
-                 (numpy.array([ 3.0,  5.0]), numpy.array([ 3.0, -4.0])),  # noqa: E201,E202,E203,E241
-                 (numpy.array([ 3.0, -4.0]), numpy.array([ 0.0, -4.0])),  # noqa: E201,E202,E203,E241
-                 (numpy.array([ 0.0, -4.0]), numpy.array([ 0.0, -5.0])),  # noqa: E201,E202,E203,E241
-                 (numpy.array([ 0.0, -5.0]), numpy.array([ 5.1, -5. ]))]  # noqa: E201,E202,E203,E241
-            )
+                [
+                    numpy.array(
+                        [
+                            [5.1, -5.0],  # noqa: E201,E202,E203,E241
+                            [5.0, -4.8],  # noqa: E201,E202,E203,E241
+                            [4.5, -4.0],  # noqa: E201,E202,E203,E241
+                            [4.1, -3.0],  # noqa: E201,E202,E203,E241
+                            [4.0, -2.5],  # noqa: E201,E202,E203,E241
+                        ]
+                    ),
+                    numpy.array(
+                        [
+                            [4.0, 2.5],  # noqa: E201,E202,E203,E241
+                            [4.1, 3.0],  # noqa: E201,E202,E203,E241
+                            [4.5, 4.0],  # noqa: E201,E202,E203,E241
+                            [5.0, 4.8],  # noqa: E201,E202,E203,E241
+                            [5.1, 5.0],  # noqa: E201,E202,E203,E241
+                        ]
+                    ),
+                    numpy.array([[3.0,  5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[3.0, -4.0]]),  # noqa: E201,E202,E203,E241
+                    numpy.array([[0.0, -4.0]]),  # noqa: E201,E202,E203,E241
+                    numpy.array([[0.0, -5.0]]),  # noqa: E201,E202,E203,E241
+                ],
+                [
+                    (numpy.array([4.0, -2.5]), numpy.array([4.0,  2.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([5.1,  5.0]), numpy.array([3.0,  5.0])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([3.0,  5.0]), numpy.array([3.0, -4.0])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([3.0, -4.0]), numpy.array([0.0, -4.0])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([0.0, -4.0]), numpy.array([0.0, -5.0])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([0.0, -5.0]), numpy.array([5.1, -5.0])),  # fmt: skip # noqa: E201,E202,E203,E241
+                ],
+            ),
         ]
         for all_splines, expected in tests:
             line_pairs = vertices._line_pairs(all_splines)
@@ -138,28 +181,92 @@ class TestVertices(unittest.TestCase):
     def test_scale_and_offset_coordinates(self):
         tests = [
             (
-                numpy.array([[0., 0.,], [1., 1.]]),
-                1.,
-                0.,
-                numpy.array([[0., 0.,], [1., 1.]])
+                numpy.array(
+                    [
+                        [
+                            0.0,
+                            0.0
+                        ],
+                        [1.0, 1.0],
+                    ]
+                ),
+                1.0,
+                0.0,
+                numpy.array(
+                    [
+                        [
+                            0.0,
+                            0.0
+                        ],
+                        [1.0, 1.0],
+                    ]
+                ),
             ),
             (
-                numpy.array([[0., 0.,], [1., 1.]]),
-                2.,
-                0.,
-                numpy.array([[0., 0.,], [2., 2.]])
+                numpy.array(
+                    [
+                        [
+                            0.0,
+                            0.0
+                        ],
+                        [1.0, 1.0],
+                    ]
+                ),
+                2.0,
+                0.0,
+                numpy.array(
+                    [
+                        [
+                            0.0,
+                            0.0
+                        ],
+                        [2.0, 2.0],
+                    ]
+                ),
             ),
             (
-                numpy.array([[0., 0.,], [1., 1.]]),
-                1.,
-                1.,
-                numpy.array([[0., 1.,], [1., 2.]])
+                numpy.array(
+                    [
+                        [
+                            0.0,
+                            0.0
+                        ],
+                        [1.0, 1.0],
+                    ]
+                ),
+                1.0,
+                1.0,
+                numpy.array(
+                    [
+                        [
+                            0.0,
+                            1.0
+                        ],
+                        [1.0, 2.0],
+                    ]
+                ),
             ),
             (
-                numpy.array([[0., 0.,], [1., 1.]]),
-                2.,
-                1.,
-                numpy.array([[0., 1.,], [2., 3.]])
+                numpy.array(
+                    [
+                        [
+                            0.0,
+                            0.0
+                        ],
+                        [1.0, 1.0],
+                    ]
+                ),
+                2.0,
+                1.0,
+                numpy.array(
+                    [
+                        [
+                            0.0,
+                            1.0
+                        ],
+                        [2.0, 3.0],
+                    ]
+                ),
             ),
         ]
         for coordinates, unit_conversion, y_offset, expected in tests:
@@ -171,45 +278,63 @@ class TestVertices(unittest.TestCase):
             (
                 numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
                 4,
-                [numpy.array([[1.0, -0.5], [2.0, -0.5]]),
-                 numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[1.0,  0.5], [1.0, -0.5]])],  # noqa: E201,E202,E203,E241
-                []
+                [
+                    numpy.array([[1.0, -0.5], [2.0, -0.5]]),
+                    numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[1.0,  0.5], [1.0, -0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                ],
+                [],
             ),
             (
-                numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
-                             [ 5. , -4.8],  # noqa: E201,E202,E203,E241
-                             [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
-                             [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
-                             [ 4. , -2.5],  # noqa: E201,E202,E203,E241
-                             [ 4. ,  2.5],  # noqa: E201,E202,E203,E241
-                             [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
-                             [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
-                             [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
-                             [ 5.1,  5. ],  # noqa: E201,E202,E203,E241
-                             [ 3. ,  5. ],  # noqa: E201,E202,E203,E241
-                             [ 3. , -4. ],  # noqa: E201,E202,E203,E241
-                             [ 0. , -4. ],  # noqa: E201,E202,E203,E241
-                             [ 0. , -5. ]]),  # noqa: E201,E202,E203,E241
+                numpy.array(
+                    [
+                        [5.1, -5.0],  # noqa: E201,E202,E203,E241
+                        [5.0, -4.8],  # noqa: E201,E202,E203,E241
+                        [4.5, -4.0],  # noqa: E201,E202,E203,E241
+                        [4.1, -3.0],  # noqa: E201,E202,E203,E241
+                        [4.0, -2.5],  # noqa: E201,E202,E203,E241
+                        [4.0,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [4.1,  3.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [4.5,  4.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [5.0,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [5.1,  5.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [3.0,  5.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [3.0, -4.0],  # noqa: E201,E202,E203,E241
+                        [0.0, -4.0],  # noqa: E201,E202,E203,E241
+                        [0.0, -5.0],  # noqa: E201,E202,E203,E241
+                    ]
+                ),
                 4,
-                [numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]])],  # noqa: E201,E202,E203,E241
-                [numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
-                              [ 5. , -4.8],  # noqa: E201,E202,E203,E241
-                              [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
-                              [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
-                              [ 4. , -2.5]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 4. ,  2.5],  # noqa: E201,E202,E203,E241
-                              [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
-                              [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
-                              [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
-                              [ 5.1,  5. ]])]  # noqa: E201,E202,E203,E241
-            )
+                [
+                    numpy.array([[4.0, -2.5], [4.0,  2.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[5.1,  5.0], [3.0,  5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[3.0,  5.0], [3.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[3.0, -4.0], [0.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[0.0, -4.0], [0.0, -5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[0.0, -5.0], [5.1, -5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                ],
+                [
+                    numpy.array(
+                        [
+                            [5.1, -5.0],  # noqa: E201,E202,E203,E241
+                            [5.0, -4.8],  # noqa: E201,E202,E203,E241
+                            [4.5, -4.0],  # noqa: E201,E202,E203,E241
+                            [4.1, -3.0],  # noqa: E201,E202,E203,E241
+                            [4.0, -2.5],  # noqa: E201,E202,E203,E241
+                        ]
+                    ),
+                    numpy.array(
+                        [
+                            [4.0, 2.5],  # noqa: E201,E202,E203,E241
+                            [4.1, 3.0],  # noqa: E201,E202,E203,E241
+                            [4.5, 4.0],  # noqa: E201,E202,E203,E241
+                            [5.0, 4.8],  # noqa: E201,E202,E203,E241
+                            [5.1, 5.0],  # noqa: E201,E202,E203,E241
+                        ]
+                    ),
+                ],
+            ),
         ]
         for coordinates, euclidean_distance, expected_lines, expected_splines in tests:
             lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
@@ -225,46 +350,65 @@ class TestVertices(unittest.TestCase):
             (
                 numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
                 4,
-                [numpy.array([[1.0, -0.5], [2.0, -0.5]]),
-                 numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # noqa: E241
-                 numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # noqa: E241
-                 numpy.array([[1.0,  0.5], [1.0, -0.5]])],  # noqa: E241
+                [
+                    numpy.array([[1.0, -0.5], [2.0, -0.5]]),
+                    numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # fmt: skip # noqa: E241
+                    numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # fmt: skip # noqa: E241
+                    numpy.array([[1.0,  0.5], [1.0, -0.5]]),  # fmt: skip # noqa: E241
+                ],
             ),
             (
-                numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E241
-                             [ 5. , -4.8],  # noqa: E201,E202,E203,E241
-                             [ 4.5, -4. ],  # noqa: E201,E202,E241
-                             [ 4.1, -3. ],  # noqa: E201,E202,E241
-                             [ 4. , -2.5],  # noqa: E201,E202,E203,E241
-                             [ 4. ,  2.5],  # noqa: E201,E202,E203,E241
-                             [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
-                             [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
-                             [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
-                             [ 5.1,  5. ],  # noqa: E201,E202,E203,E241
-                             [ 3. ,  5. ],  # noqa: E201,E202,E203,E241
-                             [ 3. , -4. ],  # noqa: E201,E202,E203,E241
-                             [ 0. , -4. ],  # noqa: E201,E202,E203,E241
-                             [ 0. , -5. ]]),  # noqa: E201,E202,E203,E241
+                numpy.array(
+                    [
+                        [5.1, -5.0],  # noqa: E201,E202,E241
+                        [5.0, -4.8],  # noqa: E201,E202,E203,E241
+                        [4.5, -4.0],  # noqa: E201,E202,E241
+                        [4.1, -3.0],  # noqa: E201,E202,E241
+                        [4.0, -2.5],  # noqa: E201,E202,E203,E241
+                        [4.0,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [4.1,  3.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [4.5,  4.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [5.0,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [5.1,  5.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [3.0,  5.0],  # fmt: skip # noqa: E201,E202,E203,E241
+                        [3.0, -4.0],  # noqa: E201,E202,E203,E241
+                        [0.0, -4.0],  # noqa: E201,E202,E203,E241
+                        [0.0, -5.0],  # noqa: E201,E202,E203,E241
+                    ]
+                ),
                 4,
                 [
-                 numpy.array([[ 5.1, -5. ],  # noqa: E201,E202,E203,E241
-                              [ 5. , -4.8],  # noqa: E201,E202,E203,E241
-                              [ 4.5, -4. ],  # noqa: E201,E202,E203,E241
-                              [ 4.1, -3. ],  # noqa: E201,E202,E203,E241
-                              [ 4. , -2.5]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 4. ,  2.5],  # noqa: E201,E202,E203,E241
-                              [ 4.1,  3. ],  # noqa: E201,E202,E203,E241
-                              [ 4.5,  4. ],  # noqa: E201,E202,E203,E241
-                              [ 5. ,  4.8],  # noqa: E201,E202,E203,E241
-                              [ 5.1,  5. ]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),  # noqa: E201,E202,E203,E241
-                 numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]])  # noqa: E201,E202,E203,E241
-                ]
-            )
+                    numpy.array(
+                        [
+                            [5.1, -5.0],  # noqa: E201,E202,E203,E241
+                            [5.0, -4.8],  # noqa: E201,E202,E203,E241
+                            [4.5, -4.0],  # noqa: E201,E202,E203,E241
+                            [4.1, -3.0],  # noqa: E201,E202,E203,E241
+                            [4.0, -2.5],  # noqa: E201,E202,E203,E241
+                        ]
+                    ),
+                    numpy.array(
+                        [
+                            [4.0, -2.5],
+                            [4.0,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
+                        ]
+                    ),
+                    numpy.array(
+                        [
+                            [4.0, 2.5],  # noqa: E201,E202,E203,E241
+                            [4.1, 3.0],  # noqa: E201,E202,E203,E241
+                            [4.5, 4.0],  # noqa: E201,E202,E203,E241
+                            [5.0, 4.8],  # noqa: E201,E202,E203,E241
+                            [5.1, 5.0],  # noqa: E201,E202,E203,E241
+                        ]
+                    ),
+                    numpy.array([[5.1,  5.0], [3.0,  5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[3.0,  5.0], [3.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[3.0, -4.0], [0.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[0.0, -4.0], [0.0, -5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([[0.0, -5.0], [5.1, -5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+                ],
+            ),
         ]
         for coordinates, euclidean_distance, expected_lines_and_splines in tests:
             lines_and_splines = vertices.ordered_lines_and_splines(coordinates, euclidean_distance)
@@ -282,8 +426,8 @@ class TestVertices(unittest.TestCase):
 
     def test_cylinder(self):
         tests = [
-            (1., 2., 1., None, numpy.array([[1., 0.5], [2., 0.5], [2., -0.5], [1., -0.5]])),
-            (1., 2., 1., 0.5, numpy.array([[1., 1.], [2., 1.], [2., 0.], [1., 0.]]))
+            (1.0, 2.0, 1.0, None, numpy.array([[1.0, 0.5], [2.0, 0.5], [2.0, -0.5], [1.0, -0.5]])),
+            (1.0, 2.0, 1.0, 0.5, numpy.array([[1.0, 1.0], [2.0, 1.0], [2.0, 0.0], [1.0, 0.0]])),
         ]
         for inner_radius, outer_radius, height, y_offset, expected in tests:
             kwargs = {}
@@ -294,16 +438,30 @@ class TestVertices(unittest.TestCase):
 
     def test_cylinder_lines(self):
         tests = [
-            (1., 2., 1., None,
-             [(numpy.array([1.,  0.5]), numpy.array([2.,  0.5])),  # noqa: E201,E202,E203,E241
-              (numpy.array([2.,  0.5]), numpy.array([2., -0.5])),  # noqa: E201,E202,E203,E241
-              (numpy.array([2., -0.5]), numpy.array([1., -0.5])),  # noqa: E201,E202,E203,E241
-              (numpy.array([1., -0.5]), numpy.array([1.,  0.5]))]),  # noqa: E201,E202,E203,E241
-            (1., 2., 1., 0.5,
-             [(numpy.array([1., 1.]), numpy.array([2., 1.])),
-              (numpy.array([2., 1.]), numpy.array([2., 0.])),
-              (numpy.array([2., 0.]), numpy.array([1., 0.])),
-              (numpy.array([1., 0.]), numpy.array([1., 1.]))])
+            (
+                1.0,
+                2.0,
+                1.0,
+                None,
+                [
+                    (numpy.array([1.0,  0.5]), numpy.array([2.0,  0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([2.0,  0.5]), numpy.array([2.0, -0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([2.0, -0.5]), numpy.array([1.0, -0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                    (numpy.array([1.0, -0.5]), numpy.array([1.0,  0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+                ],
+            ),
+            (
+                1.0,
+                2.0,
+                1.0,
+                0.5,
+                [
+                    (numpy.array([1.0, 1.0]), numpy.array([2.0, 1.0])),
+                    (numpy.array([2.0, 1.0]), numpy.array([2.0, 0.0])),
+                    (numpy.array([2.0, 0.0]), numpy.array([1.0, 0.0])),
+                    (numpy.array([1.0, 0.0]), numpy.array([1.0, 1.0])),
+                ],
+            ),
         ]
         for inner_radius, outer_radius, height, y_offset, expected in tests:
             kwargs = {}
@@ -314,25 +472,32 @@ class TestVertices(unittest.TestCase):
                 assert numpy.allclose(line, expected_line)
 
     def test_rectalinear_coordinates(self):
-        number = math.sqrt(2.**2 / 2.)
+        number = math.sqrt(2.0**2 / 2.0)
         tests = [
-            ((1, 1, 1, 1), (0, math.pi / 2, math.pi, 2 * math.pi), ((1, 0), (0, 1), (-1, 0), (1, 0))),
-            ((2, 2, 2, 2), (math.pi / 4, math.pi * 3 / 4, math.pi * 5 / 4, math.pi * 7 / 4),
-             ((number, number), (-number, number), (-number, -number), (number, -number)))
+            (
+                (1, 1, 1, 1),
+                (0, math.pi / 2, math.pi, 2 * math.pi),
+                ((1, 0), (0, 1), (-1, 0), (1, 0)),
+            ),
+            (
+                (2, 2, 2, 2),
+                (math.pi / 4, math.pi * 3 / 4, math.pi * 5 / 4, math.pi * 7 / 4),
+                ((number, number), (-number, number), (-number, -number), (number, -number)),
+            ),
         ]
         for radius_list, angle_list, expected in tests:
             coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
             assert numpy.allclose(coordinates, expected)
 
     def test_normalize_vector(self):
-        one_over_root_three = 1. / math.sqrt(3.)
+        one_over_root_three = 1.0 / math.sqrt(3.0)
         tests = [
-            ((0., 0., 0.), numpy.array([0., 0., 0.])),
-            ((1., 0., 0.), numpy.array([1., 0., 0.])),
-            ((0., 1., 0.), numpy.array([0., 1., 0.])),
-            ((0., 0., 1.), numpy.array([0., 0., 1.])),
-            ((1., 1., 1.), numpy.array([one_over_root_three, one_over_root_three, one_over_root_three])),
-            ((2., 2., 2.), numpy.array([one_over_root_three, one_over_root_three, one_over_root_three])),
+            ((0.0, 0.0, 0.0), numpy.array([0.0, 0.0, 0.0])),
+            ((1.0, 0.0, 0.0), numpy.array([1.0, 0.0, 0.0])),
+            ((0.0, 1.0, 0.0), numpy.array([0.0, 1.0, 0.0])),
+            ((0.0, 0.0, 1.0), numpy.array([0.0, 0.0, 1.0])),
+            ((1.0, 1.0, 1.0), numpy.array([one_over_root_three, one_over_root_three, one_over_root_three])),
+            ((2.0, 2.0, 2.0), numpy.array([one_over_root_three, one_over_root_three, one_over_root_three])),
         ]
         for vector, expected in tests:
             normalized = vertices.normalize_vector(vector)
@@ -340,11 +505,11 @@ class TestVertices(unittest.TestCase):
 
     def test_midpoint_vector(self):
         tests = [
-            ([1., 0, 0], [0, 1., 0], numpy.array([0.5, 0.5, 0.])),
-            ([1., 0, 0], [0, -1., 0], numpy.array([0.5, -0.5, 0.])),
-            ([0, 1., 0], [0, 0, 1.], numpy.array([0, 0.5, 0.5])),
-            ([0, 1., 0], [0, 0, -1.], numpy.array([0, 0.5, -0.5])),
-            ([1., 1., 1.], [-1., 1., 1.], numpy.array([0, 1., 1.])),
+            ([1.0, 0, 0], [0, 1.0, 0], numpy.array([0.5, 0.5, 0.0])),
+            ([1.0, 0, 0], [0, -1.0, 0], numpy.array([0.5, -0.5, 0.0])),
+            ([0, 1.0, 0], [0, 0, 1.0], numpy.array([0, 0.5, 0.5])),
+            ([0, 1.0, 0], [0, 0, -1.0], numpy.array([0, 0.5, -0.5])),
+            ([1.0, 1.0, 1.0], [-1.0, 1.0, 1.0], numpy.array([0, 1.0, 1.0])),
         ]
         for first, second, expected in tests:
             midpoint = vertices.midpoint_vector(first, second)
@@ -352,9 +517,9 @@ class TestVertices(unittest.TestCase):
 
     def test_is_parallel(self):
         tests = [
-            ((1., 1., 1.), (1., 1., 1.), True),
-            ((1., 0., 0.), (0., 0., 1.), False),
-            ((0., 1., 0.), (0., 2., 0.), True),
+            ((1.0, 1.0, 1.0), (1.0, 1.0, 1.0), True),
+            ((1.0, 0.0, 0.0), (0.0, 0.0, 1.0), False),
+            ((0.0, 1.0, 0.0), (0.0, 2.0, 0.0), True),
         ]
         for first, second, expected in tests:
             boolean = vertices.is_parallel(first, second)
@@ -362,9 +527,9 @@ class TestVertices(unittest.TestCase):
 
     def test_any_parallel(self):
         tests = [
-            ((1., 1., 1.), [(1., 1., 1.), (1., 0., 0.)], True),
-            ((1., 0., 0.), [(0., 0., 1.), (0., 1., 0.)], False),
-            ((0., 1., 0.), [(2., 0., 0.), (0., 2., 0.)], True),
+            ((1.0, 1.0, 1.0), [(1.0, 1.0, 1.0), (1.0, 0.0, 0.0)], True),
+            ((1.0, 0.0, 0.0), [(0.0, 0.0, 1.0), (0.0, 1.0, 0.0)], False),
+            ((0.0, 1.0, 0.0), [(2.0, 0.0, 0.0), (0.0, 2.0, 0.0)], True),
         ]
         for first, options, expected in tests:
             boolean = vertices.any_parallel(first, options)
@@ -374,18 +539,19 @@ class TestVertices(unittest.TestCase):
         norm = math.sqrt(0.5)
         tests = [
             (
-                (1., 0., 0.), (0., 0., 1.),
+                (1.0, 0.0, 0.0),
+                (0.0, 0.0, 1.0),
                 [
-                 numpy.array([0., 0., 1.]),  # XY plane
-                 numpy.array([1., 0., 0.]),  # YZ plane
-                 numpy.array([0., 1., 0.]),  # ZX plane
-                 numpy.array([ norm,  norm, 0.]),  # noqa: E201,E202,E203,E241
-                 numpy.array([ norm, -norm, 0.]),  # noqa: E201,E202,E203,E241
-                 numpy.array([ 0., norm,  norm]),  # noqa: E201,E202,E203,E241
-                 numpy.array([ 0., norm, -norm]),  # noqa: E201,E202,E203,E241
-                 numpy.array([  norm, 0., norm]),  # noqa: E201,E202,E203,E241
-                 numpy.array([ -norm, 0., norm])  # noqa: E201,E202,E203,E241
-                ]
+                    numpy.array([  0.0,   0.0,   1.0]),  # fmt: skip # noqa: E201,E202,E203,E241 # XY plane
+                    numpy.array([  1.0,   0.0,   0.0]),  # fmt: skip # noqa: E201,E202,E203,E241 # YZ plane
+                    numpy.array([  0.0,   1.0,   0.0]),  # fmt: skip # noqa: E201,E202,E203,E241 # ZX plane
+                    numpy.array([ norm,  norm,   0.0]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([ norm, -norm,   0.0]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([  0.0,  norm,  norm]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([  0.0,  norm, -norm]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([ norm,   0.0,  norm]),  # fmt: skip # noqa: E201,E202,E203,E241
+                    numpy.array([-norm,   0.0,  norm]),  # fmt: skip # noqa: E201,E202,E203,E241
+                ],
             ),
         ]
         for xvector, zvector, expected in tests:
@@ -394,20 +560,21 @@ class TestVertices(unittest.TestCase):
                 assert numpy.allclose(plane, expectation)
 
     def test_fortyfive_vectors(self):
-        over_root_three = 1. / math.sqrt(3.)
+        over_root_three = 1.0 / math.sqrt(3.0)
         tests = [
             (
-                numpy.array([1., 0., 0.]), numpy.array([0., 0., 1.]),
+                numpy.array([1.0, 0.0, 0.0]),
+                numpy.array([0.0, 0.0, 1.0]),
                 [
-                    numpy.array([ over_root_three,  over_root_three,  over_root_three]),  # noqa: E201,E202,E203,E241
-                    numpy.array([-over_root_three,  over_root_three,  over_root_three]),  # noqa: E201,E202,E203,E241
-                    numpy.array([-over_root_three,  over_root_three, -over_root_three]),  # noqa: E201,E202,E203,E241
-                    numpy.array([ over_root_three,  over_root_three, -over_root_three]),  # noqa: E201,E202,E203,E241
-                    numpy.array([ over_root_three, -over_root_three,  over_root_three]),  # noqa: E201,E202,E203,E241
-                    numpy.array([-over_root_three, -over_root_three,  over_root_three]),  # noqa: E201,E202,E203,E241
-                    numpy.array([-over_root_three, -over_root_three, -over_root_three]),  # noqa: E201,E202,E203,E241
-                    numpy.array([ over_root_three, -over_root_three, -over_root_three]),  # noqa: E201,E202,E203,E241
-                ]
+                    numpy.array([ over_root_three,  over_root_three,  over_root_three]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                    numpy.array([-over_root_three,  over_root_three,  over_root_three]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                    numpy.array([-over_root_three,  over_root_three, -over_root_three]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                    numpy.array([ over_root_three,  over_root_three, -over_root_three]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                    numpy.array([ over_root_three, -over_root_three,  over_root_three]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                    numpy.array([-over_root_three, -over_root_three,  over_root_three]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                    numpy.array([-over_root_three, -over_root_three, -over_root_three]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                    numpy.array([ over_root_three, -over_root_three, -over_root_three]),  # fmt: skip # noqa: E201,E202,E203,E241,E501
+                ],
             ),
         ]
         for xvector, zvector, expected in tests:

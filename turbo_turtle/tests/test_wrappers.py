@@ -12,25 +12,20 @@ command = "/dummy/command"
 geometry_namespace_sparse = {
     "input_file": ["input_file"],
     "output_file": "output_file",
-    "unit_conversion": 1.,
-    "euclidean_distance": 1.,
+    "unit_conversion": 1.0,
+    "euclidean_distance": 1.0,
     "planar": None,
     "model_name": "model_name",
     "part_name": [None],
     "delimiter": ",",
     "header_lines": 0,
-    "revolution_angle": 360.,
-    "y_offset": 0.,
+    "revolution_angle": 360.0,
+    "y_offset": 0.0,
     "rtol": None,
-    "atol": None
+    "atol": None,
 }
 geometry_namespace_full = copy.deepcopy(geometry_namespace_sparse)
-geometry_namespace_full.update({
-    "planar": True,
-    "part_name": ["part_name"],
-    "rtol": 1.e-9,
-    "atol": 1.e-9
-}),
+geometry_namespace_full.update({"planar": True, "part_name": ["part_name"], "rtol": 1.0e-9, "atol": 1.0e-9}),
 geometry_expected_options_sparse = [
     "--input-file",
     "--output-file",
@@ -40,19 +35,19 @@ geometry_expected_options_sparse = [
     "--delimiter",
     "--header-lines",
     "--revolution-angle",
-    "--y-offset"
+    "--y-offset",
 ]
 geometry_unexpected_options_sparse = ["--planar", "--part-name", "--atol", "--rtol"]
 
 cylinder_namespace = {
-    "inner_radius": 1.,
-    "outer_radius": 2.,
-    "height": 1.,
+    "inner_radius": 1.0,
+    "outer_radius": 2.0,
+    "height": 1.0,
     "output_file": "output_file",
     "model_name": "model_name",
     "part_name": "part_name",
-    "revolution_angle": 360.,
-    "y_offset": 0.
+    "revolution_angle": 360.0,
+    "y_offset": 0.0,
 }
 cylinder_expected_options = [
     command,
@@ -63,17 +58,17 @@ cylinder_expected_options = [
     "--model-name",
     "--part-name",
     "--revolution-angle",
-    "--y-offset"
+    "--y-offset",
 ]
 
 sphere_namespace_sparse = {
-    "inner_radius": 1.,
-    "outer_radius": 2.,
+    "inner_radius": 1.0,
+    "outer_radius": 2.0,
     "output_file": "output_file",
     "input_file": None,
     "quadrant": "both",
-    "revolution_angle": 360.,
-    "y_offset": 0.,
+    "revolution_angle": 360.0,
+    "y_offset": 0.0,
     "model_name": "model_name",
     "part_name": "part_name",
 }
@@ -95,12 +90,12 @@ sphere_unexpected_options_sparse = ["--input-file"]
 partition_namespace_sparse = {
     "input_file": "input_file",
     "output_file": None,
-    "center": (0., 0., 0.),
-    "xvector": (0., 0., 0.),
-    "zvector": (0., 0., 0.),
+    "center": (0.0, 0.0, 0.0),
+    "xvector": (0.0, 0.0, 0.0),
+    "zvector": (0.0, 0.0, 0.0),
     "model_name": "model_name",
     "part_name": ["part_name"],
-    "big_number": 0.
+    "big_number": 0.0,
 }
 partition_namespace_full = copy.deepcopy(partition_namespace_sparse)
 partition_namespace_full.update({"output_file": "output_file"}),
@@ -112,7 +107,7 @@ partition_expected_options_sparse = [
     "--zvector",
     "--model-name",
     "--part-name",
-    "--big-number"
+    "--big-number",
 ]
 partition_unexpected_options_sparse = ["--output-file"]
 
@@ -123,27 +118,19 @@ sets_namespace_sparse = {
     "part_name": "part_name",
     "face_sets": None,
     "edge_sets": None,
-    "vertex_sets": None
+    "vertex_sets": None,
 }
 sets_namespace_full = copy.deepcopy(sets_namespace_sparse)
-sets_namespace_full.update({
-    "output_file": "output_file",
-    "face_sets": [["name1", "2"]],
-    "edge_sets": [["name2", "4"]],
-    "vertex_sets": [["name3", "6"]],
-})
-sets_expected_options_sparse = [
-    command,
-    "--input-file",
-    "--model-name",
-    "--part-name"
-]
-sets_unexpected_options_sparse = [
-    "--output-file",
-    "--face-set",
-    "--edge-set",
-    "--vertex-set"
-]
+sets_namespace_full.update(
+    {
+        "output_file": "output_file",
+        "face_sets": [["name1", "2"]],
+        "edge_sets": [["name2", "4"]],
+        "vertex_sets": [["name3", "6"]],
+    }
+)
+sets_expected_options_sparse = [command, "--input-file", "--model-name", "--part-name"]
+sets_unexpected_options_sparse = ["--output-file", "--face-set", "--edge-set", "--vertex-set"]
 
 mesh_namespace_sparse = {
     "input_file": "input_file",
@@ -152,20 +139,17 @@ mesh_namespace_sparse = {
     "model_name": "model_name",
     "part_name": "part_name",
     "global_seed": "global_seed",
-    "edge_seeds": None
+    "edge_seeds": None,
 }
 mesh_namespace_full = copy.deepcopy(mesh_namespace_sparse)
-mesh_namespace_full.update({
-    "output_file": "output_file",
-    "edge_seeds": [["name", "1"]]
-}),
+mesh_namespace_full.update({"output_file": "output_file", "edge_seeds": [["name", "1"]]}),
 mesh_expected_options_sparse = [
     command,
     "--input-file",
     "--element-type",
     "--model-name",
     "--part-name",
-    "--global-seed"
+    "--global-seed",
 ]
 mesh_unexpected_options_sparse = ["--output-file", "--edge-seed"]
 
@@ -177,10 +161,12 @@ merge_namespace_sparse = {
     "part_name": [None],
 }
 merge_namespace_full = copy.deepcopy(merge_namespace_sparse)
-merge_namespace_full.update({
-    "model_name": ["model_name"],
-    "part_name": ["part_name"],
-}),
+merge_namespace_full.update(
+    {
+        "model_name": ["model_name"],
+        "part_name": ["part_name"],
+    }
+),
 merge_expected_options_sparse = [
     "--input-file",
     "--output-file",
@@ -194,31 +180,28 @@ export_namespace_sparse = {
     "part_name": ["part_name"],
     "element_type": [None],
     "destination": ".",
-    "assembly": None
+    "assembly": None,
 }
 export_namespace_full = copy.deepcopy(export_namespace_sparse)
-export_namespace_full.update({
-    "element_type": ["element_type"],
-    "assembly": True,
-}),
-export_expected_options_sparse = [
-    "--input-file",
-    "--model-name",
-    "--part-name",
-    "--destination"
-]
+export_namespace_full.update(
+    {
+        "element_type": ["element_type"],
+        "assembly": True,
+    }
+),
+export_expected_options_sparse = ["--input-file", "--model-name", "--part-name", "--destination"]
 export_unexpected_options_sparse = ["--element-type", "--assembly"]
 
 image_namespace_sparse = {
     "input_file": "input_file",
     "output_file": "output_file",
-    "x_angle": 0.,
-    "y_angle": 0.,
-    "z_angle": 0.,
+    "x_angle": 0.0,
+    "y_angle": 0.0,
+    "z_angle": 0.0,
     "image_size": [1, 2],
     "model_name": "model_name",
     "part_name": None,
-    "color_map": "color_map"
+    "color_map": "color_map",
 }
 image_namespace_full = copy.deepcopy(image_namespace_sparse)
 image_namespace_full.update({"part_name": "part_name"}),
@@ -231,118 +214,116 @@ image_expected_options_sparse = [
     "--z-angle",
     "--image-size",
     "--model-name",
-    "--color-map"
+    "--color-map",
 ]
 image_unexpected_options_sparse = ["--part-name"]
 
 wrapper_tests = {
-    "cylinder": (
-        "cylinder",
-        cylinder_namespace,
-        cylinder_expected_options,
-        []
-    ),
+    "cylinder": ("cylinder", cylinder_namespace, cylinder_expected_options, []),
     "geometry: sparse": (
         "geometry",
         geometry_namespace_sparse,
         geometry_expected_options_sparse,
-        geometry_unexpected_options_sparse
+        geometry_unexpected_options_sparse,
     ),
     "geometry: full": (
         "geometry",
         geometry_namespace_full,
         geometry_expected_options_sparse + geometry_unexpected_options_sparse,
-        []
+        [],
     ),
     "sphere: sparse": (
         "sphere",
         sphere_namespace_sparse,
         sphere_expected_options_sparse,
-        sphere_unexpected_options_sparse
+        sphere_unexpected_options_sparse,
     ),
     "sphere: full": (
         "sphere",
         sphere_namespace_full,
         sphere_expected_options_sparse + sphere_unexpected_options_sparse,
-        []
+        [],
     ),
     "partition: sparse": (
         "partition",
         partition_namespace_sparse,
         partition_expected_options_sparse,
-        partition_unexpected_options_sparse
+        partition_unexpected_options_sparse,
     ),
     "partition: full": (
         "partition",
         partition_namespace_full,
         partition_expected_options_sparse + partition_unexpected_options_sparse,
-        []
+        [],
     ),
     "sets: sparse": (
         "sets",
         sets_namespace_sparse,
         sets_expected_options_sparse,
-        sets_unexpected_options_sparse
+        sets_unexpected_options_sparse,
     ),
     "sets: full": (
         "sets",
         sets_namespace_full,
         sets_expected_options_sparse + sets_unexpected_options_sparse,
-        []
+        [],
     ),
     "mesh: sparse": (
         "mesh",
         mesh_namespace_sparse,
         mesh_expected_options_sparse,
-        mesh_unexpected_options_sparse
+        mesh_unexpected_options_sparse,
     ),
     "mesh: full": (
         "mesh",
         mesh_namespace_full,
         mesh_expected_options_sparse + mesh_unexpected_options_sparse,
-        []
+        [],
     ),
     "merge: sparse": (
         "merge",
         merge_namespace_sparse,
         merge_expected_options_sparse,
-        merge_unexpected_options_sparse
+        merge_unexpected_options_sparse,
     ),
     "merge: full": (
         "merge",
         merge_namespace_full,
         merge_expected_options_sparse + merge_unexpected_options_sparse,
-        []
+        [],
     ),
     "export: sparse": (
         "export",
         export_namespace_sparse,
         export_expected_options_sparse,
-        export_unexpected_options_sparse
+        export_unexpected_options_sparse,
     ),
     "export: full": (
         "export",
         export_namespace_full,
         export_expected_options_sparse + export_unexpected_options_sparse,
-        []
+        [],
     ),
     "image: sparse": (
         "image",
         image_namespace_sparse,
         image_expected_options_sparse,
-        image_unexpected_options_sparse
+        image_unexpected_options_sparse,
     ),
     "image: full": (
         "image",
         image_namespace_full,
         image_expected_options_sparse + image_unexpected_options_sparse,
-        []
+        [],
     ),
 }
 
 
-@pytest.mark.parametrize("subcommand, namespace, expected_options, unexpected_options",
-                         wrapper_tests.values(), ids=wrapper_tests.keys())
+@pytest.mark.parametrize(
+    "subcommand, namespace, expected_options, unexpected_options",
+    wrapper_tests.values(),
+    ids=wrapper_tests.keys(),
+)
 def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_options):
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
@@ -410,64 +391,30 @@ image_unused = ("model_name", "part_name", "color_map")
 image_keywords = trim_namespace(image_namespace_sparse, image_positional + image_unused)
 
 cubit_wrapper_tests = {
-    "geometry": (
-        "geometry",
-        geometry_namespace_sparse,
-        (["input_file"], "output_file"),
-        geometry_keywords
-    ),
-    "cylinder": (
-        "cylinder",
-        cylinder_namespace,
-        (1., 2., 1., "output_file"),
-        cylinder_keywords
-    ),
-    "sphere": (
-        "sphere",
-        sphere_namespace_sparse,
-        (1., 2., "output_file"),
-        sphere_keywords
-    ),
-    "partition": (
-        "partition",
-        partition_namespace_sparse,
-        ("input_file",),
-        partition_keywords
-    ),
-    "mesh": (
-        "mesh",
-        mesh_namespace_sparse,
-        ("input_file", "element_type"),
-        mesh_keywords
-    ),
-    "merge": (
-        "merge",
-        merge_namespace_sparse,
-        (["input_file"], "output_file"),
-        merge_keywords
-    ),
-    "export": (
-        "export",
-        export_namespace_cubit,
-        ("input_file",),
-        export_keywords
-    ),
-    "image": (
-        "image",
-        image_namespace_sparse,
-        ("input_file", "output_file", command),
-        image_keywords
-    ),
+    "geometry": ("geometry", geometry_namespace_sparse, (["input_file"], "output_file"), geometry_keywords),
+    "cylinder": ("cylinder", cylinder_namespace, (1.0, 2.0, 1.0, "output_file"), cylinder_keywords),
+    "sphere": ("sphere", sphere_namespace_sparse, (1.0, 2.0, "output_file"), sphere_keywords),
+    "partition": ("partition", partition_namespace_sparse, ("input_file",), partition_keywords),
+    "mesh": ("mesh", mesh_namespace_sparse, ("input_file", "element_type"), mesh_keywords),
+    "merge": ("merge", merge_namespace_sparse, (["input_file"], "output_file"), merge_keywords),
+    "export": ("export", export_namespace_cubit, ("input_file",), export_keywords),
+    "image": ("image", image_namespace_sparse, ("input_file", "output_file", command), image_keywords),
 }
 
 
-@pytest.mark.parametrize("subcommand, namespace, positional, keywords",
-                         cubit_wrapper_tests.values(), ids=cubit_wrapper_tests.keys())
+@pytest.mark.parametrize(
+    "subcommand, namespace, positional, keywords",
+    cubit_wrapper_tests.values(),
+    ids=cubit_wrapper_tests.keys(),
+)
 def test_cubit_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
-    with patch("turbo_turtle._utilities.import_cubit"), \
-         patch(f"turbo_turtle._cubit_python.{subcommand}") as mock_function:
+    with (
+        patch("turbo_turtle._utilities.import_cubit"),
+        patch(f"turbo_turtle._cubit_python.{subcommand}") as mock_function,
+    ):
         from turbo_turtle import _cubit_wrappers
+
         subcommand_wrapper = getattr(_cubit_wrappers, subcommand)
         subcommand_wrapper(args, command)
     mock_function.assert_called_once()
@@ -490,62 +437,68 @@ gmsh_wrapper_tests = {
         "geometry",
         geometry_namespace_sparse,
         (["input_file"], "output_file"),
-        geometry_keywords
+        geometry_keywords,
     ),
     "cylinder": (
         "cylinder",
         cylinder_namespace,
-        (1., 2., 1., "output_file"),
-        cylinder_keywords
+        (1.0, 2.0, 1.0, "output_file"),
+        cylinder_keywords,
     ),
     "sphere": (
         "sphere",
         sphere_namespace_sparse,
-        (1., 2., "output_file"),
-        sphere_keywords
+        (1.0, 2.0, "output_file"),
+        sphere_keywords,
     ),
     "partition": (
         "partition",
         partition_namespace_sparse,
         ("input_file",),
-        partition_keywords
+        partition_keywords,
     ),
     "mesh": (
         "mesh",
         mesh_namespace_sparse,
         ("input_file", "element_type"),
-        mesh_keywords
+        mesh_keywords,
     ),
     "merge": (
         "merge",
         merge_namespace_sparse,
         (["input_file"], "output_file"),
-        merge_keywords
+        merge_keywords,
     ),
     "export": (
         "export",
         export_namespace_cubit,
         ("input_file",),
-        export_keywords
+        export_keywords,
     ),
     "image": (
         "image",
         image_namespace_sparse,
         ("input_file", "output_file"),
-        image_keywords
+        image_keywords,
     ),
 }
 
 
-@pytest.mark.parametrize("subcommand, namespace, positional, keywords",
-                         gmsh_wrapper_tests.values(), ids=gmsh_wrapper_tests.keys())
+@pytest.mark.parametrize(
+    "subcommand, namespace, positional, keywords",
+    gmsh_wrapper_tests.values(),
+    ids=gmsh_wrapper_tests.keys(),
+)
 def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
     args = argparse.Namespace(**namespace)
     implemented = ["geometry", "cylinder", "sphere", "mesh", "image"]
     if subcommand in implemented:
-        with patch("turbo_turtle._utilities.import_gmsh"), \
-             patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function:
+        with (
+            patch("turbo_turtle._utilities.import_gmsh"),
+            patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function,
+        ):
             from turbo_turtle import _gmsh_wrappers
+
             subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
             subcommand_wrapper(args, command)
         mock_function.assert_called_once()
@@ -554,9 +507,12 @@ def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
         assert call_positional == positional
         assert call_keywords == keywords
     else:
-        with patch("turbo_turtle._utilities.import_gmsh"), \
-             patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function, \
-             pytest.raises(RuntimeError):
+        with (
+            patch("turbo_turtle._utilities.import_gmsh"),
+            patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function,
+            pytest.raises(RuntimeError),
+        ):
             from turbo_turtle import _gmsh_wrappers
+
             subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
             subcommand_wrapper(args, command)

@@ -1,4 +1,5 @@
 """Python 2/3 compatible coordinate handling for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
+
 import math
 import cmath
 
@@ -19,7 +20,7 @@ def rectalinear_coordinates(radius_list, angle_list):
     return coordinates
 
 
-def cylinder(inner_radius, outer_radius, height, y_offset=0.):
+def cylinder(inner_radius, outer_radius, height, y_offset=0.0):
     """Return a :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` compatible vertex
     array
 
@@ -31,15 +32,15 @@ def cylinder(inner_radius, outer_radius, height, y_offset=0.):
     :rtype: numpy.array
     """
     coordinates = (
-        (inner_radius,  height / 2. + y_offset),  # noqa: E241
-        (outer_radius,  height / 2. + y_offset),  # noqa: E241
-        (outer_radius, -height / 2. + y_offset),
-        (inner_radius, -height / 2. + y_offset)
+        (inner_radius, height / 2.0 + y_offset),  # fmt: skip # noqa: E241
+        (outer_radius, height / 2.0 + y_offset),  # fmt: skip # noqa: E241
+        (outer_radius, -height / 2.0 + y_offset),
+        (inner_radius, -height / 2.0 + y_offset),
     )
     return numpy.array(coordinates)
 
 
-def cylinder_lines(inner_radius, outer_radius, height, y_offset=0.):
+def cylinder_lines(inner_radius, outer_radius, height, y_offset=0.0):
     """Return the line coordinate pairs defining a cylinder
 
     :param float inner_radius: Radius of the hollow center
@@ -50,7 +51,7 @@ def cylinder_lines(inner_radius, outer_radius, height, y_offset=0.):
     :rtype: list of (numpy.array, numpy.array) tuples
     """
     coordinates = cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
-    euclidean_distance = min(inner_radius, height) / 2.
+    euclidean_distance = min(inner_radius, height) / 2.0
     lines, splines = lines_and_splines(coordinates, euclidean_distance)
     return lines
 
@@ -70,14 +71,14 @@ def sphere(center, inner_radius, outer_radius, quadrant):
     outer_radius = abs(outer_radius)
 
     if quadrant == "both":
-        start_angle = -numpy.pi / 2.
-        end_angle = numpy.pi / 2.
+        start_angle = -numpy.pi / 2.0
+        end_angle = numpy.pi / 2.0
     elif quadrant == "upper":
-        start_angle = 0.
-        end_angle = numpy.pi / 2.
+        start_angle = 0.0
+        end_angle = numpy.pi / 2.0
     elif quadrant == "lower":
-        start_angle = -numpy.pi / 2.
-        end_angle = 0.
+        start_angle = -numpy.pi / 2.0
+        end_angle = 0.0
 
     radius_list = (inner_radius, inner_radius, outer_radius, outer_radius)
     angle_list = (end_angle, start_angle, end_angle, start_angle)
@@ -85,7 +86,7 @@ def sphere(center, inner_radius, outer_radius, quadrant):
     return points
 
 
-def scale_and_offset_coordinates(coordinates, unit_conversion=1., y_offset=0.):
+def scale_and_offset_coordinates(coordinates, unit_conversion=1.0, y_offset=0.0):
     """Scale and offset XY coordinates in a 2 column numpy array
 
     First multiply by the unit conversion. Then offset the Y coordinates (2nd column) by adding the y offset
@@ -185,8 +186,9 @@ def _compare_euclidean_distance(coordinates, euclidean_distance):
     :rtype: list of length N
     """
     calculated_euclidean_array = numpy.linalg.norm(coordinates[1:, :] - coordinates[0:-1, :], axis=1)
-    euclidean_distance_bools = [False] + [this_euclidean_distance > euclidean_distance for this_euclidean_distance in
-                                          calculated_euclidean_array]
+    euclidean_distance_bools = [False] + [
+        this_euclidean_distance > euclidean_distance for this_euclidean_distance in calculated_euclidean_array
+    ]
     return euclidean_distance_bools
 
 
@@ -210,9 +212,11 @@ def _compare_xy_values(coordinates, rtol=None, atol=None):
         isclose_kwargs.update({"rtol": rtol})
     if atol is not None:
         isclose_kwargs.update({"atol": atol})
-    vertical_horizontal_bools = [False] + [numpy.isclose(coords1[0], coords2[0], **isclose_kwargs) or  # noqa: W504
-                                           numpy.isclose(coords1[1], coords2[1], **isclose_kwargs) for
-                                           coords1, coords2 in zip(coordinates[1:, :], coordinates[0:-1, :])]
+    vertical_horizontal_bools = [False] + [
+        numpy.isclose(coords1[0], coords2[0], **isclose_kwargs)  # noqa: W504
+        or numpy.isclose(coords1[1], coords2[1], **isclose_kwargs)  # noqa: W503
+        for coords1, coords2 in zip(coordinates[1:, :], coordinates[0:-1, :])
+    ]
     return vertical_horizontal_bools
 
 
@@ -256,7 +260,7 @@ def normalize_vector(vector):
     """
     numpy.array(vector)
     norm = numpy.linalg.norm(vector)
-    if numpy.isclose(norm, 0.):
+    if numpy.isclose(norm, 0.0):
         return vector
     return vector / norm
 
@@ -273,11 +277,11 @@ def midpoint_vector(first, second, third=None):
     first = numpy.array(first)
     second = numpy.array(second)
     summation = first + second
-    midpoint = summation / 2.
+    midpoint = summation / 2.0
     if third is not None:
         third = numpy.array(third)
         summation = summation + third
-        midpoint = summation / 3.
+        midpoint = summation / 3.0
     return midpoint
 
 
@@ -297,7 +301,7 @@ def is_parallel(first, second, rtol=None, atol=None):
         kwargs.update({"rtol": rtol})
     if atol is not None:
         kwargs.update({"atol": atol})
-    return numpy.allclose(numpy.cross(first, second), 0., **kwargs)
+    return numpy.allclose(numpy.cross(first, second), 0.0, **kwargs)
 
 
 def any_parallel(first, options, rtol=None, atol=None):
@@ -329,7 +333,7 @@ def datum_planes(xvector, zvector):
     :rtype: list
     """
     dot = numpy.dot(xvector, zvector)
-    if not numpy.isclose(dot, 0.):
+    if not numpy.isclose(dot, 0.0):
         raise RuntimeError("Provided x-vector '{}' and z-vector '{}' are not orthogonal".format(xvector, zvector))
 
     xvector = normalize_vector(xvector)
@@ -343,12 +347,12 @@ def datum_planes(xvector, zvector):
     primary_planes = [xy_plane, yz_plane, zx_plane]
 
     midpoints = [
-        midpoint_vector(xvector,  yvector),  # noqa: E201,E241
-        midpoint_vector(xvector, -yvector),  # noqa: E201,E241
-        midpoint_vector(yvector,  zvector),  # noqa: E201,E241
-        midpoint_vector(yvector, -zvector),  # noqa: E201,E241
-        midpoint_vector(zvector,  xvector),  # noqa: E201,E241
-        midpoint_vector(zvector, -xvector)   # noqa: E201,E241
+        midpoint_vector(xvector,  yvector),  # fmt: skip # noqa: E201,E241
+        midpoint_vector(xvector, -yvector),  # fmt: skip # noqa: E201,E241
+        midpoint_vector(yvector,  zvector),  # fmt: skip # noqa: E201,E241
+        midpoint_vector(yvector, -zvector),  # fmt: skip # noqa: E201,E241
+        midpoint_vector(zvector,  xvector),  # fmt: skip # noqa: E201,E241
+        midpoint_vector(zvector, -xvector),  # fmt: skip # noqa: E201,E241
     ]
     midpoints = [normalize_vector(midpoint) for midpoint in midpoints]
 
@@ -359,7 +363,7 @@ def fortyfive_vectors(xvector, zvector):
     """Return the normalized (1, 1, 1) vector variants of a local coordinate system defined by the x- and z-vector"""
 
     dot = numpy.dot(xvector, zvector)
-    if not numpy.isclose(dot, 0.):
+    if not numpy.isclose(dot, 0.0):
         raise RuntimeError("Provided x-vector '{}' and z-vector '{}' are not orthogonal".format(xvector, zvector))
 
     xvector = normalize_vector(xvector)
@@ -367,14 +371,14 @@ def fortyfive_vectors(xvector, zvector):
     yvector = numpy.cross(zvector, xvector)
 
     fortyfives = [
-        midpoint_vector( xvector,  yvector,  zvector),  # 0  # noqa: E201,E241
-        midpoint_vector(-xvector,  yvector,  zvector),  # 1  # noqa: E201,E241
-        midpoint_vector(-xvector,  yvector, -zvector),  # 2  # noqa: E201,E241
-        midpoint_vector( xvector,  yvector, -zvector),  # 3  # noqa: E201,E241
-        midpoint_vector( xvector, -yvector,  zvector),  # 4  # noqa: E201,E241
-        midpoint_vector(-xvector, -yvector,  zvector),  # 5  # noqa: E201,E241
-        midpoint_vector(-xvector, -yvector, -zvector),  # 6  # noqa: E201,E241
-        midpoint_vector( xvector, -yvector, -zvector),  # 7  # noqa: E201,E241
+        midpoint_vector( xvector,  yvector,  zvector),  # 0  # fmt: skip # noqa: E201,E241
+        midpoint_vector(-xvector,  yvector,  zvector),  # 1  # fmt: skip # noqa: E201,E241
+        midpoint_vector(-xvector,  yvector, -zvector),  # 2  # fmt: skip # noqa: E201,E241
+        midpoint_vector( xvector,  yvector, -zvector),  # 3  # fmt: skip # noqa: E201,E241
+        midpoint_vector( xvector, -yvector,  zvector),  # 4  # fmt: skip # noqa: E201,E241
+        midpoint_vector(-xvector, -yvector,  zvector),  # 5  # fmt: skip # noqa: E201,E241
+        midpoint_vector(-xvector, -yvector, -zvector),  # 6  # fmt: skip # noqa: E201,E241
+        midpoint_vector( xvector, -yvector, -zvector),  # 7  # fmt: skip # noqa: E201,E241
     ]
     fortyfives = [normalize_vector(vector) for vector in fortyfives]
 
@@ -395,29 +399,37 @@ def pyramid_surfaces(center, xvector, zvector, big_number):
     # TODO: Figure out how to cleanup these coordinate pairs such that they are independent from the fortyfives indices
     surface_coordinates = [
         # +Y surfaces
-        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),   # 0:    +Y +Z
-        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),   # 1: -X +Y
-        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),   # 2:    +Y -Z
-        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),   # 3: +X +Y
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[1]]),  # 0:    +Y +Z
+        numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[2]]),  # 1: -X +Y
+        numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[3]]),  # 2:    +Y -Z
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[0]]),  # 3: +X +Y
         # -Y surfaces
-        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),   # 4:    -Y +Z
-        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),   # 5: -X -Y
-        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),   # 6:    -Y -Z
-        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),   # 7: +X -Y
+        numpy.array([center, fortyfive_vertices[4], fortyfive_vertices[5]]),  # 4:    -Y +Z
+        numpy.array([center, fortyfive_vertices[5], fortyfive_vertices[6]]),  # 5: -X -Y
+        numpy.array([center, fortyfive_vertices[6], fortyfive_vertices[7]]),  # 6:    -Y -Z
+        numpy.array([center, fortyfive_vertices[7], fortyfive_vertices[4]]),  # 7: +X -Y
         # +X surfaces
-        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),   # 8: +X    +Z
-        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),   # 9: +X    -Z
+        numpy.array([center, fortyfive_vertices[0], fortyfive_vertices[4]]),  # 8: +X    +Z
+        numpy.array([center, fortyfive_vertices[3], fortyfive_vertices[7]]),  # 9: +X    -Z
         # -X surfaces
         numpy.array([center, fortyfive_vertices[1], fortyfive_vertices[5]]),  # 10: -X    +Z
         numpy.array([center, fortyfive_vertices[2], fortyfive_vertices[6]]),  # 11: -X    -Z
         # +/- normal to Y
         numpy.array(fortyfive_vertices[0:4]),  # 12: +Y
-        numpy.array(fortyfive_vertices[4:]),   # 13: -Y
+        numpy.array(fortyfive_vertices[4:]),  # 13: -Y
         # +/- normal to X
-        numpy.array([fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]),  # 14: +X  # noqa: E501
-        numpy.array([fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]),  # 15: -X  # noqa: E501
+        numpy.array(
+            [fortyfive_vertices[0], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[4]]  # 14: +X
+        ),
+        numpy.array(
+            [fortyfive_vertices[1], fortyfive_vertices[2], fortyfive_vertices[6], fortyfive_vertices[5]]  # 15: -X
+        ),
         # +/- normal to Z
-        numpy.array([fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]),  # 16: +Z  # noqa: E501
-        numpy.array([fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]),  # 17: -Z  # noqa: E501
+        numpy.array(
+            [fortyfive_vertices[0], fortyfive_vertices[1], fortyfive_vertices[5], fortyfive_vertices[4]]  # 16: +Z
+        ),
+        numpy.array(
+            [fortyfive_vertices[2], fortyfive_vertices[3], fortyfive_vertices[7], fortyfive_vertices[6]]  # 17: -Z
+        ),
     ]
     return surface_coordinates

@@ -20,16 +20,17 @@ def _get_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument(
-        "--no-markers", action="store_true",
-        help="Exclude vertex markers and only plot lines (default: %(default)s)"
+        "--no-markers", action="store_true", help="Exclude vertex markers and only plot lines (default: %(default)s)"
     )
     parser.add_argument(
-        "--annotate", action="store_true",
-        help="Annotate the vertex coordinates with their index from the source CSV file (default: %(default)s)"
+        "--annotate",
+        action="store_true",
+        help="Annotate the vertex coordinates with their index from the source CSV file (default: %(default)s)",
     )
     parser.add_argument(
-        "--scale", action="store_true",
-        help="Change the plot aspect ratio to use the same scale for the X and Y axes (default: %(default)s)"
+        "--scale",
+        action="store_true",
+        help="Change the plot aspect ratio to use the same scale for the X and Y axes (default: %(default)s)",
     )
 
     return parser
@@ -44,7 +45,7 @@ def geometry_xyplot(
     atol: typing.Optional[float] = parsers.geometry_defaults["atol"],
     no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
     annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
-    scale: bool = parsers.geometry_xyplot_defaults["scale"]
+    scale: bool = parsers.geometry_xyplot_defaults["scale"],
 ) -> matplotlib.pyplot.Figure:
     """Return a matplotlib figure with the coordinates plotted consistently with geometry and geometry-xyplot
     subcommands
@@ -97,7 +98,8 @@ def geometry_xyplot(
 
 
 def _main(
-    input_file: list, output_file: str,
+    input_file: list,
+    output_file: str,
     part_name: typing.List[typing.Union[str, None]] = parsers.geometry_xyplot_defaults["part_name"],
     unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],
     euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
@@ -108,7 +110,7 @@ def _main(
     atol: typing.Optional[float] = parsers.geometry_defaults["atol"],
     no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
     annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
-    scale: bool = parsers.geometry_xyplot_defaults["scale"]
+    scale: bool = parsers.geometry_xyplot_defaults["scale"],
 ) -> None:
     """Plotter for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` division of
     coordinates into lines and splines.
@@ -137,9 +139,12 @@ def _main(
     :returns: writes ``{output_file}`` matplotlib image
     """
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
-    coordinates_list = [_mixed_utilities.return_genfromtxt_or_exit(file_name, delimiter, header_lines,
-                                                                   expected_dimensions=2, expected_columns=2)
-                        for file_name in input_file]
+    coordinates_list = [
+        _mixed_utilities.return_genfromtxt_or_exit(
+            file_name, delimiter, header_lines, expected_dimensions=2, expected_columns=2
+        )
+        for file_name in input_file
+    ]
     figure = geometry_xyplot(
         coordinates_list,
         unit_conversion=unit_conversion,
@@ -149,7 +154,7 @@ def _main(
         atol=atol,
         no_markers=no_markers,
         annotate=annotate,
-        scale=scale
+        scale=scale,
     )
 
     figure.savefig(output_file)

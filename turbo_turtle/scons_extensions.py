@@ -23,7 +23,7 @@ def cli_builder(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a generic Turbo-Turtle CLI builder.
 
@@ -90,9 +90,13 @@ def cli_builder(
 
     :returns: SCons Turbo-Turtle CLI builder
     """  # noqa: E501
-    action = ["${cd_action_prefix} ${program} ${subcommand} ${required} ${options} " \
-                  "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} " \
-                  "--backend ${backend} ${redirect_action_postfix}"]
+    action = [
+        (
+            "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} "
+            "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "--backend ${backend} ${redirect_action_postfix}"
+        ),
+    ]
     builder = SCons.Builder.Builder(
         action=action,
         emitter=first_target_emitter,
@@ -104,7 +108,7 @@ def cli_builder(
         options=options,
         abaqus_command=" ".join(abaqus_command),
         cubit_command=" ".join(cubit_command),
-        backend=backend
+        backend=backend,
     )
     return builder
 
@@ -116,7 +120,7 @@ def geometry(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle geometry subcommand CLI builder
 
@@ -163,8 +167,15 @@ def geometry(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def geometry_xyplot(
@@ -174,7 +185,7 @@ def geometry_xyplot(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder
 
@@ -221,19 +232,28 @@ def geometry_xyplot(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def cylinder(
     program: str = "turbo-turtle",
     subcommand: str = "cylinder",
-    required: str = "--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius} " \
+    # fmt: off
+    required: str = "--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius} "
                     "--height ${height}",
+    # fmt: on
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle cylinder subcommand CLI builder
 
@@ -287,8 +307,15 @@ def cylinder(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def sphere(
@@ -298,7 +325,7 @@ def sphere(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle sphere subcommand CLI builder
 
@@ -350,8 +377,15 @@ def sphere(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def partition(
@@ -361,7 +395,7 @@ def partition(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle partition subcommand CLI builder
 
@@ -406,8 +440,15 @@ def partition(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def sets(
@@ -417,7 +458,7 @@ def sets(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle sets subcommand CLI builder
 
@@ -472,8 +513,15 @@ def sets(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def mesh(
@@ -483,7 +531,7 @@ def mesh(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle mesh subcommand CLI builder
 
@@ -533,8 +581,15 @@ def mesh(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def image(
@@ -544,7 +599,7 @@ def image(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle image subcommand CLI builder
 
@@ -589,8 +644,15 @@ def image(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def merge(
@@ -600,7 +662,7 @@ def merge(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle merge subcommand CLI builder
 
@@ -645,8 +707,15 @@ def merge(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 def export(
@@ -656,7 +725,7 @@ def export(
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
-    backend: str = _default_backend
+    backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle export subcommand CLI builder
 
@@ -701,8 +770,15 @@ def export(
     :param list cubit_command: The Cubit command line executable absolute or relative path options
     :param str backend: The backend software
     """  # noqa: E501
-    return cli_builder(program=program, subcommand=subcommand, required=required, options=options,
-                       abaqus_command=abaqus_command, cubit_command=cubit_command, backend=backend)
+    return cli_builder(
+        program=program,
+        subcommand=subcommand,
+        required=required,
+        options=options,
+        abaqus_command=abaqus_command,
+        cubit_command=cubit_command,
+        backend=backend,
+    )
 
 
 _module_objects = set(globals().keys()) - _exclude_from_namespace
