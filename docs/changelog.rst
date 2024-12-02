@@ -14,7 +14,7 @@ v1.1.1 (2024-12-02)
 
 Bug fixes
 =========
-- Fix internal import paths for docs and fetch subcommands (:merge:`237`). By `Kyle Brindley`_.
+- Fix internal import paths for docs and fetch subcommands (:merge:`238`). By `Kyle Brindley`_.
 
 *******************
 v1.1.0 (2024-12-02)
