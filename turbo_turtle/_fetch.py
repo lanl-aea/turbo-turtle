@@ -1,9 +1,3 @@
-"""Internal API module implementing the ``fetch`` subcommand behavior.
-
-Should raise ``RuntimeError`` or a derived class of :class:`waves.exceptions.WAVESError` to allow the CLI implementation
-to convert stack-trace/exceptions into STDERR message and non-zero exit codes.
-"""
-
 import os
 import sys
 import shutil
@@ -68,7 +62,7 @@ def main(
     dry_run: bool = False,
     print_available: bool = False,
 ) -> None:
-    """Thin wrapper on :meth:`waves.fetch.recursive_copy` to provide subcommand specific behavior and STDOUT/STDERR
+    """Thin wrapper on :meth:`turbo_turtle.fetch.recursive_copy` to provide subcommand specific behavior and STDOUT/STDERR
 
     Recursively copy requested paths from root_directory/relative_paths directories into destination directory using
     the shortest possible shared source prefix.
@@ -86,7 +80,7 @@ def main(
     """
     root_directory = pathlib.Path(root_directory)
     if not root_directory.is_dir():
-        # During "waves fetch" sub-command, this should only be reached if the package installation
+        # During "turbo-turtle fetch" sub-command, this should only be reached if the package installation
         # structure doesn't match the assumptions in _settings.py. It is used by the Conda build tests as a
         # sign-of-life that the installed directory assumptions are correct.
         raise RuntimeError(f"Could not find '{root_directory}' directory")

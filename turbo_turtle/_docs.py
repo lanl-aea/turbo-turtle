@@ -1,14 +1,8 @@
-"""Internal API module implementing the ``docs`` subcommand behavior.
-
-Should raise ``RuntimeError`` or a derived class of :class:`waves.exceptions.WAVESError` to allow the CLI implementation
-to convert stack-trace/exceptions into STDERR message and non-zero exit codes.
-"""
-
 import sys
 import pathlib
 import argparse
 
-from waves import _settings
+from turbo_turtle import _settings
 
 
 _exclude_from_namespace = set(globals().keys())
@@ -56,7 +50,7 @@ def main(documentation_index: pathlib.Path, print_local_path: bool = False) -> N
         if not success:
             raise RuntimeError(
                 "Could not open a web browser. Is your system default browser set? Are you working over SSH? "
-                "Try running ``waves docs --print-local-path`` and opening the reported path directly."
+                "Try running ``turbo-turtle docs --print-local-path`` and opening the reported path directly."
             )
 
 
