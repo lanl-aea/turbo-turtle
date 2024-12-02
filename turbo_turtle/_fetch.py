@@ -62,7 +62,8 @@ def main(
     dry_run: bool = False,
     print_available: bool = False,
 ) -> None:
-    """Thin wrapper on :meth:`turbo_turtle.fetch.recursive_copy` to provide subcommand specific behavior and STDOUT/STDERR
+    """Thin wrapper on :meth:`turbo_turtle.fetch.recursive_copy` to provide subcommand specific behavior and
+    STDOUT/STDERR
 
     Recursively copy requested paths from root_directory/relative_paths directories into destination directory using
     the shortest possible shared source prefix.
