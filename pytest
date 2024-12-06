@@ -77,7 +77,7 @@ matrix = (
 for extra_markers, alias_suffix, environments in matrix:
     for name, environment in environments.items():
         source = pytest_source_list + [str(pathlib.Path("turbo_turtle/tests/test_system.py"))]
-        targets = env.Command(
+        targets = environment.Command(
             target=[f"systemtest_{name}_results.xml"],
             source=source,
             action=[
@@ -92,7 +92,7 @@ for extra_markers, alias_suffix, environments in matrix:
             abaqus_command=environment["abaqus"] if "abaqus" in environment else None,
             cubit_command=environment["cubit"] if "cubit" in environment else None,
         )
-        env.Alias("systemtest", targets)
-        env.Alias(f"systemtest_{alias_suffix}", targets)
-        env.Alias("regression", targets)
-        env.AlwaysBuild(targets)
+        environment.Alias("systemtest", targets)
+        environment.Alias(f"systemtest_{alias_suffix}", targets)
+        environment.Alias("regression", targets)
+        environment.AlwaysBuild(targets)
