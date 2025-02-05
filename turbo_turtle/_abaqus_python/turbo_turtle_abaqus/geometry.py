@@ -221,7 +221,7 @@ def draw_part_from_splines(
         sketch.Line(point1=point1, point2=point2)
     if planar:
         part = abaqus.mdb.models[model_name].Part(
-            name=part_name, dimensionality=abaqusConstants.TWO_D, type=abaqusConstants.DEFORMABLE_BODY
+            name=part_name, dimensionality=abaqusConstants.TWO_D_PLANAR, type=abaqusConstants.DEFORMABLE_BODY
         )
         part.BaseShell(sketch=sketch)
     elif numpy.isclose(revolution_angle, 0.0):
