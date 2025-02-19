@@ -61,7 +61,9 @@ environment:
     - ln ${environment_path}/sconsign.1 ${environment_path}/man/man1/sconsign.1 || true
     - ln ${environment_path}/scons-time.1 ${environment_path}/man/man1/scons-time.1 || true
   tags:
-    - shell-aea
+    - shell
+    - aea
+    - linux
 
 test:
   stage: test
@@ -89,7 +91,9 @@ test:
         coverage_format: cobertura
         path: build/pytest/coverage.xml
   tags:
-    - shell-aea
+    - shell
+    - aea
+    - linux
 
 style:
   stage: test
@@ -101,7 +105,9 @@ style:
   script:
     - scons flake8 black-check
   tags:
-    - shell-aea
+    - shell
+    - aea
+    - linux
 
 conda-build:
   stage: test
@@ -123,7 +129,9 @@ conda-build:
     paths:
       - conda-bld/noarch/turbo_turtle-*-*.tar.bz2
   tags:
-    - shell-aea
+    - shell
+    - aea
+    - linux
 
 conda-build-external:
   stage: test
@@ -140,7 +148,9 @@ conda-build-external:
     - VERSION=$(python -m setuptools_scm) conda mambabuild recipe --channel conda-forge --no-anaconda-upload --croot ${croot}/recipe-external --output-folder ${conda_artifacts_directory}
     - conda build purge --croot ${croot}/recipe-external
   tags:
-    - shell-aea
+    - shell
+    - aea
+    - linux
 
 conda-build-matrix:
   timeout: 4h
@@ -157,7 +167,9 @@ conda-build-matrix:
     - pytest recipe-matrix/matrix.py -v --no-showlocals --tb=short
     - conda build purge --croot ${croot}/recipe-matrix
   tags:
-    - shell-aea
+    - shell
+    - aea
+    - linux
 
 # https://re-git.lanl.gov/aea/developer-operations/aea-conda
 aea-conda-deploy:
@@ -194,7 +206,9 @@ pypi-deploy:
     - python -m build
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   tags:
-    - shell-aea
+    - shell
+    - aea
+    - linux
 
 # It MUST be called pages
 pages:
@@ -217,4 +231,6 @@ pages:
       # It MUST be called public
       - public
   tags:
-    - shell-aea
+    - shell
+    - aea
+    - linux
