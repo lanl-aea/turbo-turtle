@@ -9,13 +9,20 @@ v1.2.0 (unreleased)
 *******************
 
 *******************
-v1.1.2 (2024-12-02)
+v1.1.3 (2025-02-24)
 *******************
 
 Bug fixes
 =========
 - Update incorrect ``abaqusConstants`` value for two-dimensional planar parts in ``geometry`` subcommand
   (:issue:`242`, :merge:`242`). By `Thomas Roberts`_.
+
+*******************
+v1.1.2 (2024-12-02)
+*******************
+
+Bug fixes
+=========
 - Add pytest package to documentation build (:merge:`239`). By `Kyle Brindley`_.
 
 *******************
