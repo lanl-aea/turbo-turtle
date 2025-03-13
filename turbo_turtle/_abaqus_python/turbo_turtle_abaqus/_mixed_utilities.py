@@ -18,6 +18,8 @@ def sys_exit(err):
     """
     if sys.version_info.major == 2:
         print >> sys.__stderr__, "{}".format(err)  # pragma: no cover
+    elif sys.version_info.major == 3:
+        print(err, file=sys.__stderr__)
     sys.exit(str(err))
 
 

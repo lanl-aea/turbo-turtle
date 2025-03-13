@@ -8,6 +8,11 @@ Changelog
 v1.2.0 (unreleased)
 *******************
 
+Enhancements
+============
+- Force Abaqus Python 3 scripts to print error messages to shell's STDERR stream (:issue:`245`, :merge:`245`). By `Kyle
+  Brindley`_.
+
 *******************
 v1.1.3 (2025-02-24)
 *******************

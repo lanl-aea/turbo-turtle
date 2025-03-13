@@ -5,6 +5,7 @@
    match.
 """
 
+import sys
 from unittest.mock import patch, mock_open
 from contextlib import nullcontext as does_not_raise
 
@@ -20,8 +21,12 @@ def test_sys_exit():
     We can't test the Abaqus Python override print to ``sys.__stderr__`` because the print statement is not valid Python
     3 code.
     """
-    with patch("sys.exit") as mock_exit:
+    with (
+        patch("sys.exit") as mock_exit,
+        patch("builtins.print") as mock_print,
+    ):
         _mixed_utilities.sys_exit("message")
+        mock_print.assert_called_once_with("message", file=sys.__stderr__)
         mock_exit.assert_called_once_with("message")
 
 
