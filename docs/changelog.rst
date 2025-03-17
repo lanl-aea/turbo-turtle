@@ -8,6 +8,10 @@ Changelog
 v1.2.0 (unreleased)
 *******************
 
+Internal Changes
+================
+- Handle proxy server changes for AEA RHEL CI builds (:issue:`247`, :merge:`247`). By `Kyle Brindley`_.
+
 Enhancements
 ============
 - Abaqus Python 2/3 compatible print to shell's STDERR stream (:issue:`245`, :merge:`245`, :issue:`246`, :merge:`246`).

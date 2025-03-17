@@ -11,6 +11,7 @@ stages:
 
 before_script:
   # Assumes CI executes on AEA compute servers
+  - export all_proxy=''
   - aea_compute_path="/projects/aea_compute"
   - aea_modulefiles="${aea_compute_path}/modulefiles"
   - module use ${aea_modulefiles}
@@ -154,7 +155,7 @@ conda-build-external:
 
 conda-build-matrix:
   timeout: 4h
-  stage: test 
+  stage: test
   variables:
     GIT_STRATEGY: clone
   dependencies: []
