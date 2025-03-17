@@ -74,12 +74,11 @@ test:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
+    - abaqus_command='--abaqus-command=/apps/abaqus/Commands/abq2024 --abaqus-command=/apps/abaqus/Commands/abq2023'
     - |
         if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then
-            abaqus_command='--abaqus-command=/apps/abaqus/Commands/abq2024 --abaqus-command=/apps/abaqus/Commands/abq2023'
             cubit_command='--cubit-command=/apps/Cubit-16.16/cubit --cubit-command=/apps/Cubit-16.12/cubit'
         else
-            abaqus_command=''
             cubit_command=''
         fi
     - echo ${abaqus_command}

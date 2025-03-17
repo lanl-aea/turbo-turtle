@@ -11,6 +11,8 @@ v1.2.0 (unreleased)
 Internal Changes
 ================
 - Handle proxy server changes for AEA RHEL CI builds (:issue:`247`, :merge:`247`). By `Kyle Brindley`_.
+- System test against Abaqus Python 2/3 update (Abaqus 2023/2024) during MR pipelines (:issue:`248`, :merge:248`). By
+  `Kyle Brindley`_.
 
 Enhancements
 ============
