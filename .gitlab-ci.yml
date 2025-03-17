@@ -109,7 +109,7 @@ style:
     - aea
     - linux
 
-conda-build:
+conda-build-internal:
   stage: test
   variables:
     GIT_STRATEGY: clone
@@ -123,7 +123,7 @@ conda-build:
     - umask 0022
     - mkdir ${conda_artifacts_directory}
     - VERSION=$(python -m setuptools_scm) conda mambabuild recipe-internal --channel conda-forge --no-anaconda-upload --croot ${croot} --output-folder ${conda_artifacts_directory}
-    - conda build purge --croot ${croot}
+    - conda build purge --croot ${croot}/recipe-internal
   artifacts:
     expire_in: '2 hrs'
     paths:
@@ -133,7 +133,7 @@ conda-build:
     - aea
     - linux
 
-conda-build-external:
+conda-build:
   stage: test
   variables:
     GIT_STRATEGY: clone
@@ -181,7 +181,7 @@ aea-conda-deploy:
   variables:
     PARENT_CI_PROJECT_PATH: $CI_PROJECT_PATH
     PARENT_CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH
-    AEA_CONDA_PACKAGE_JOB: conda-build
+    AEA_CONDA_PACKAGE_JOB: conda-build-internal
     AEA_CONDA_PACKAGE_ARTIFACTS: conda-bld/noarch/turbo_turtle-*-*.tar.bz2
   trigger:
     project: aea/developer-operations/aea-conda
