@@ -8,6 +8,10 @@ Changelog
 v1.2.0 (unreleased)
 *******************
 
+*******************
+v1.1.4 (2025-03-17)
+*******************
+
 Internal Changes
 ================
 - Handle proxy server changes for AEA RHEL CI builds (:issue:`247`, :merge:`247`). By `Kyle Brindley`_.
