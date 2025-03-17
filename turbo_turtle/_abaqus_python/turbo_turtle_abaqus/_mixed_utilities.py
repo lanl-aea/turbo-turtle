@@ -1,4 +1,5 @@
 """Python 2/3 compatible utilities for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
+from __future__ import print_function
 
 import os
 import re
@@ -11,15 +12,11 @@ import numpy
 def sys_exit(err):
     """Thin wrapper on ``sys.exit`` to force print to STDERR from Abaqus Python
 
-    Preserves Python 3 compatibility by performing a Python major version check prior to the Python 2 syntax call to
-    ``print``.
+    Python 2/3 compatible system exit that forces Abaqus CAE to print to system STDERR
 
     :param Exception err: The exception object to print and pass to ``sys.exit``
     """
-    if sys.version_info.major == 2:
-        print >> sys.__stderr__, "{}".format(err)  # pragma: no cover
-    elif sys.version_info.major == 3:
-        print(err, file=sys.__stderr__)
+    print(err, file=sys.__stderr__)
     sys.exit(str(err))
 
 
@@ -148,7 +145,7 @@ def remove_duplicate_items(string_list):
     if duplicate:
         message = "WARNING: removing '{}' duplicates: '{}'".format(len(duplicate), ", ".join(duplicate))
         if sys.version_info.major == 2:
-            print >> sys.__stderr__, "{}".format(message)  # pragma: no cover
+            print("{}".format(message), file=sys.__stderr__)  # pragma: no cover
         sys.stderr.write(message)
     return unique
 
