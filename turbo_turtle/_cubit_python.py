@@ -77,7 +77,7 @@ def geometry(
     """
     # TODO: Figure out how to log the Cubit operations without printing to console
     # TODO: Figure out how to get a better log of the non-APREPRO actions
-    cubit.init(["cubit"])
+    cubit.init(["cubit", "-nojournal"])
     part_name = _mixed_utilities.validate_part_name(input_file, part_name)
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
@@ -372,7 +372,7 @@ def cylinder(
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     :param float y_offset: vertical offset along the global Y-axis
     """
-    cubit.init(["cubit"])
+    cubit.init(["cubit", "-nojournal"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
 
@@ -403,7 +403,7 @@ def sphere(
     :param float y_offset: vertical offset along the global Y-axis
     :param str part_name: name of the part to be created in the Abaqus model
     """
-    cubit.init(["cubit"])
+    cubit.init(["cubit", "-nojournal"])
 
     # Preserve the (X, Y) center implementation, but use the simpler y-offset interface
     center = (0.0, y_offset)
@@ -622,7 +622,7 @@ def partition(
     :param list part_name: part/volume name prefixes
     :param float big_number: Number larger than the outer radius of the part to partition.
     """
-    cubit.init(["cubit"])
+    cubit.init(["cubit", "-nojournal"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
 
     if output_file is None:
@@ -748,7 +748,7 @@ def sets(
     :param edge_sets: Edge set tuples (name, mask)
     :param vertex_sets: Vertex set tuples (name, mask)
     """
-    cubit.init(["cubit"])
+    cubit.init(["cubit", "-nojournal"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
 
     if not any([face_sets, edge_sets, vertex_sets]):
@@ -781,7 +781,7 @@ def mesh(
     :param global_seed: The global mesh seed size
     :param edge_seeds: Edge seed tuples (name, number)
     """
-    cubit.init(["cubit"])
+    cubit.init(["cubit", "-nojournal"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
 
     if output_file is None:
@@ -869,7 +869,7 @@ def merge(input_file, output_file):
     :param list input_file: List of Cubit ``*.cub`` file(s) to merge
     :param str output_file: Cubit ``*.cub`` file to write
     """
-    cubit.init(["cubit"])
+    cubit.init(["cubit", "-nojournal"])
     input_file = [pathlib.Path(path).with_suffix(".cub") for path in input_file]
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     for path in input_file:
@@ -891,7 +891,7 @@ def export(
     :param list element_type: list of element types, one per part name or one global replacement for every part name
     :param str destination: write output orphan mesh files to this output directory
     """
-    cubit.init(["cubit"])
+    cubit.init(["cubit", "-nojournal"])
     part_name = _mixed_utilities.cubit_part_names(part_name)
     element_type = _mixed_utilities.validate_element_type(length_part_name=len(part_name), element_type=element_type)
     input_file = pathlib.Path(input_file).with_suffix(".cub")

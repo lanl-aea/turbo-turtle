@@ -9,6 +9,17 @@ v1.2.0 (unreleased)
 *******************
 
 *******************
+v1.1.5 (2025-03-28)
+*******************
+
+Enhancements
+============
+- Suppress Cubit journal file output. Output is incomplete and all relevant meta data is also reported to STDOUT, which
+  the user can choose to capture. Cubit can reach a self-imposed journal file count and throw errors until journal files
+  are manually removed. This causes problems in large automated workflows (:issue:`250`, :merge:`250`). By `Kyle
+  Brindley`_.
+
+*******************
 v1.1.4 (2025-03-17)
 *******************
 
