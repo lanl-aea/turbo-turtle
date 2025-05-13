@@ -240,11 +240,11 @@ test_builders = {
 
 
 @pytest.mark.parametrize(
-    "builder, kwargs, node_count, action_count, source_list, target_list, env",
+    "builder, kwargs, node_count, action_count, source_list, target_list, builder_env",
     test_builders.values(),
     ids=test_builders.keys(),
 )
-def test_builders(builder, kwargs, node_count, action_count, source_list, target_list, env):
+def test_builders(builder, kwargs, node_count, action_count, source_list, target_list, builder_env):
     env = SCons.Environment.Environment()
     expected_string = (
         "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} "
@@ -255,4 +255,4 @@ def test_builders(builder, kwargs, node_count, action_count, source_list, target
     builder_function = getattr(scons_extensions, builder)
     env.Append(BUILDERS={builder: builder_function(**kwargs)})
     nodes = env["BUILDERS"][builder](env, target=target_list, source=source_list)
-    check_nodes(nodes, [], node_count, action_count, expected_string, env)
+    check_nodes(nodes, [], node_count, action_count, expected_string, builder_env)
