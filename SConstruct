@@ -104,8 +104,4 @@ for workflow in workflow_configurations:
         duplicate=False,
     )
 
-# TODO: Remove the exception handling when CI environment re-builds with WAVES>=0.12.6
-try:
-    waves.scons_extensions.project_help()
-except AttributeError:
-    waves.scons_extensions.project_help_message()
+waves.scons_extensions.project_help()
