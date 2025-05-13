@@ -104,4 +104,4 @@ for workflow in workflow_configurations:
         duplicate=False,
     )
 
-waves.scons_extensions.project_help_message()
+waves.scons_extensions.project_help()
