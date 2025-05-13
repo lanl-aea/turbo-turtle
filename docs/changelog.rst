@@ -15,6 +15,7 @@ v1.1.6 (unreleased)
 Internal Changes
 ================
 - Fix the SCons extensions builder unit test of builder keyword arguments. By `Kyle Brindley`_.
+- Require WAVES>=0.13 for tutorials and system tests that run SCons workflows. By `Kyle Brindley`_.
 
 *******************
 v1.1.5 (2025-03-28)
