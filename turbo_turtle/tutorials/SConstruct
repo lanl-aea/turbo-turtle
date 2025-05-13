@@ -76,4 +76,4 @@ for backend, extension in [("abaqus", "cae"), ("cubit", "cub")]:
     SConscript("SConscript", variant_dir=build_dir, exports=["env", "backend", "extension"], duplicate=False)
 
 env.Default()
-waves.scons_extensions.project_help_message()
+waves.scons_extensions.project_help()

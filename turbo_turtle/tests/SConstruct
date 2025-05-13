@@ -348,4 +348,4 @@ for backend in env["backend_list"]:
     # Group tasks under backend named aliases
     env.Alias(backend, targets)
 
-waves.scons_extensions.project_help_message()
+waves.scons_extensions.project_help()

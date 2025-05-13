@@ -57,5 +57,6 @@ test:
     - pytest
     - pytest-xdist
     - python-gmsh >=4
+    - waves >=0.13.0
   imports:
     - turbo_turtle
