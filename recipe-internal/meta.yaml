@@ -39,7 +39,7 @@ requirements:
     - sphinx-copybutton >=0.5.1
     - sphinx-book-theme 
     - sphinxcontrib-bibtex
-    - waves >=0.13.0
+    - waves >=0.12.6
   run:
     - python >=3.9
     - lazy_loader >=0.4
@@ -52,6 +52,6 @@ test:
     - pytest
     - pytest-xdist
     - python-gmsh >=4
-    - waves >=0.13.0
+    - waves >=0.12.6
   imports:
     - turbo_turtle
