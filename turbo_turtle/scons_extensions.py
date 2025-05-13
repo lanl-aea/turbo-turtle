@@ -1,5 +1,4 @@
 import typing
-import argparse
 
 import SCons.Builder
 from waves.scons_extensions import first_target_emitter
@@ -9,8 +8,6 @@ from turbo_turtle._settings import _redirect_action_postfix
 from turbo_turtle._settings import _default_abaqus_options
 from turbo_turtle._settings import _default_cubit_options
 from turbo_turtle._settings import _default_backend
-from turbo_turtle import _utilities
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
 _exclude_from_namespace = set(globals().keys())
