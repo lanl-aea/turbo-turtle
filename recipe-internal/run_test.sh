@@ -1,4 +1,3 @@
-pip check
 cd $SP_DIR/$PKG_NAME
 pytest -vvv -n 4 --ignore=_abaqus_python -m "" --abaqus-command=/apps/abaqus/Commands/abq2024 --cubit-command=/apps/Cubit-16.16/cubit
 pytest -vvv -n 4 --ignore=_abaqus_python -m "systemtest and abaqus" --abaqus-command=/apps/abaqus/Commands/abq2023
