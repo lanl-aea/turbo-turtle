@@ -43,14 +43,14 @@ requirements:
     - sphinx-copybutton >=0.5.1
     - sphinx-book-theme
     - sphinxcontrib-bibtex
-    - waves >=0.12.6
+    - waves >=0.13
   run:
     # Force a Python variant package build
     - python {{ python }}
     - lazy_loader >=0.4
     # Force an SCons variant package build
     - scons {{ scons }}
-    - waves >=0.11.0
+    - waves >=0.13
 
 test:
   requires:
@@ -60,6 +60,6 @@ test:
     - pytest
     - pytest-xdist
     - python-gmsh >=4
-    - waves >=0.12.6
+    - waves >=0.13
   imports:
     - turbo_turtle

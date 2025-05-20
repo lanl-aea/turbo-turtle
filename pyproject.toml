@@ -25,7 +25,7 @@ dynamic = ["version"]
 dependencies = [
     "lazy_loader >=0.4",
     "scons >=4",
-    "waves-workflows >=0.11.0"
+    "waves-workflows >=0.13.0"
 ]
 
 [tool.setuptools]
