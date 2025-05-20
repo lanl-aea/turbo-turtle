@@ -188,11 +188,43 @@ aea-conda-deploy:
     branch: main
     strategy: depend
 
-pypi-deploy:
+aea-pip-build:
+  stage: test
+  variables:
+    GIT_STRATEGY: clone
+    distribution_name: "turbo_turtle"
+  dependencies: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+  script:
+    # Job variables
+    - distribution_filename=$(echo ${distribution_name} | tr - _)
+    - scons pyproject.toml
+    - version=$(python -m setuptools_scm)
+    - echo ${distribution_name}
+    - echo ${distribution_filename}
+    - echo ${version}
+    - if [[ -z ${distribution_name} ]]; then exit 1; fi
+    - if [[ -z ${distribution_filename} ]]; then exit 1; fi
+    - if [[ -z ${version} ]]; then exit 1; fi
+    # Job commands
+    # Conda CI environment active
+    - scons build
+    - python -m venv pip-build-test
+    # Python venv environment active
+    - source pip-build-test/bin/activate
+    - python -m pip install --verbose --disable-pip-version-check --require-virtualenv --no-cache-dir build/dist/${distribution_filename}-${version}.tar.gz pytest pytest-xdist
+    - cd pip-build-test/lib/python*/site-packages/waves
+    - python -m pytest -vvv -n 4
+
+aea-pip-deploy:
   stage: deploy
   variables:
     GIT_STRATEGY: clone
-  dependencies: []
+  dependencies:
+    - "aea-pip-build"
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -200,7 +232,6 @@ pypi-deploy:
   script:
     # Only deploy to Gitlab PyPI registry for clean version tags
     - if [[ -z $(git tag --points-at HEAD) ]]; then exit 0; fi
-    - scons build
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   tags:
     - shell
