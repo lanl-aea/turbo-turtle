@@ -1,6 +1,12 @@
 recursive-include turbo_turtle/docs *
 recursive-include turbo_turtle/tutorials *
+recursive-exclude turbo_turtle/docs/.doctrees *
 recursive-exclude build *
+recursive-exclude */*/build *
+recursive-exclude */*/*/build* *
+recursive-exclude *cache* *
+recursive-exclude */*cache* *
+recursive-exclude */*/*cache* *
 recursive-exclude docs *
 recursive-exclude recipe* *
 recursive-exclude modulefiles *
@@ -8,11 +14,16 @@ recursive-exclude .github *
 global-exclude *.pyc
 global-exclude config.log
 global-exclude .sconsign.dblite
+exclude turbo_turtle/docs/.buildinfo*
+exclude .flake8
+exclude .git*
+exclude .pipeline*.yml
 exclude turbo_turtle/.coveragerc
 exclude package_documentation.py
-exclude .git*
 exclude SConstruct
 exclude style
 exclude mypy
 exclude cProfile
 exclude pytest
+include turbo_turtle/README.rst
+include turbo_turtle/pyproject.toml

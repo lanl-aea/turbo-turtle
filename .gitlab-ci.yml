@@ -200,10 +200,7 @@ pypi-deploy:
   script:
     # Only deploy to Gitlab PyPI registry for clean version tags
     - if [[ -z $(git tag --points-at HEAD) ]]; then exit 0; fi
-    - scons html-internal man
-    - cp -r build/docs/html-internal turbo_turtle/docs
-    - cp build/docs/man/*.1 turbo_turtle/docs
-    - python -m build
+    - scons build
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   tags:
     - shell

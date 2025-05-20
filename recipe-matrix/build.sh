@@ -1,1 +1,0 @@
-../recipe-internal/build.sh

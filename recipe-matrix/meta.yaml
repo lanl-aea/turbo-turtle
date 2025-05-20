@@ -14,13 +14,16 @@ about:
   dev_url: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
 
 source:
-  path: '..'
+  git_url: '..'
 
 # NOTE: CANNOT use noarch builds. conda-build will not use python variants if the package is marked "noarch: python"
 build:
   number: 0
   script_env:
     - SETUPTOOLS_SCM_PRETEND_VERSION={{ VERSION }}
+  script:
+    - scons install --prefix=${PREFIX}  # [unix]
+    - scons install --prefix=%PREFIX%  # [win]
   entry_points:
     - turbo-turtle = turbo_turtle._main:main
 

@@ -8,6 +8,11 @@ Changelog
 v1.2.0 (unreleased)
 *******************
 
+Internal Changes
+================
+- SCons build and install aliases for more consistent packaging and deployment scripts (:issue:`252`, :merge:`253`). By
+  `Kyle Brindley`_.
+
 *******************
 v1.1.6 (unreleased)
 *******************
