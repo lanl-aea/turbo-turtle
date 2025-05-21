@@ -153,26 +153,23 @@ Compute Environment
 
 .. compute-env-start-do-not-remove
 
-This repository requires Abaqus and Cubit to be installed and on the system ``PATH``. If you use an AEA linux computer,
-then the project continuous-integration environment is available as a development environment.
+This project uses `Conda`_ to manage most of the compute environment. Some software, e.g. Abaqus and Cubit, can not be
+installed with `Conda`_ and must be installed separately.
 
-On an AEA Linux Machine
------------------------
+`SCons`_  can be installed in a `Conda`_ environment with the `Conda`_ package manager. See the `Conda installation`_
+and `Conda environment management`_ documentation for more details about using `Conda`_.
 
-.. code-block:: bash
+1. Create the environment if it doesn't exist
 
-   [roppenheimer@sstbigbird turbo-turtle]$ module use /projects/aea_compute/modulefiles
-   [roppenheimer@sstbigbird turbo-turtle]$ module load turbo-turtle-dev
+   .. code-block::
 
-Local development environment
------------------------------
+      $ conda env create --name berms-env --file environment.yml
 
-You can also create a local environment with the Conda package manager as
+2. Activate the environment
 
-.. code-block::
+   .. code-block::
 
-   [roppenheimer@mymachine turbo-turtle]$ conda env create --file environment.yml --name turbo-turtle-dev
-   [roppenheimer@mymachine turbo-turtle]$ conda activate turbo-turtle-dev
+      $ conda activate berms-env
 
 .. compute-env-end-do-not-remove
 
