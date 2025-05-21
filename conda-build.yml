@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+
+dependencies:
+  - boa
+  - setuptools >=64
+  - setuptools_scm >=8
+  # TODO: Remove openssl spec when openssl>=3.5.0 is compatible with macos/pip again
+  # https://re-git.lanl.gov/aea/python-projects/berms/-/issues/62
+  - openssl !=3.5.0

@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+
+dependencies:
+  - black
+  - flake8
+  - scons >=4.6
+  - waves >=0.13
