@@ -5,12 +5,20 @@ Changelog
 #########
 
 *******************
-v1.2.6 (unreleased)
+v1.2.7 (unreleased)
+*******************
+
+*******************
+v1.2.6 (2025-05-21)
 *******************
 
 Documentation
 =============
 - Add PyPI shields to README and HTML documentation (:issue:`255`). By `Kyle Brindley`_.
+
+Internal Changes
+================
+- Cleanup internal conda-build deployment logic. By `Kyle Brindley`_.
 
 *******************
 v1.2.5 (2025-05-21)
