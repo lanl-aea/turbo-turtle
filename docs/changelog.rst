@@ -8,6 +8,10 @@ Changelog
 v1.2.6 (unreleased)
 *******************
 
+Documentation
+=============
+- Add PyPI shields to README and HTML documentation (:issue:`255`). By `Kyle Brindley`_.
+
 *******************
 v1.2.5 (2025-05-21)
 *******************
@@ -58,6 +62,8 @@ Documentation
 
 Internal Changes
 ================
+- Fix the SCons extensions builder unit test of builder keyword arguments. By `Kyle Brindley`_.
+- Require WAVES>=0.12.6 for tutorials and system tests that run SCons workflows. By `Kyle Brindley`_.
 - SCons build and install aliases for more consistent packaging and deployment scripts (:issue:`252`, :merge:`253`). By
   `Kyle Brindley`_.
 - Require WAVES v0.13 or newer for building and runtime (:issue:`252`, :merge:`253`). By `Kyle Brindley`_.
@@ -65,15 +71,6 @@ Internal Changes
   :merge:`254`). By `Kyle Brindley`_.
 - Overhaul GitHub-Actions job definitions for common environment definitions with Gitlab-CI environments (:issue:`254`,
   :merge:`254`). By `Kyle Brindley`_.
-
-*******************
-v1.1.6 (unreleased)
-*******************
-
-Internal Changes
-================
-- Fix the SCons extensions builder unit test of builder keyword arguments. By `Kyle Brindley`_.
-- Require WAVES>=0.12.6 for tutorials and system tests that run SCons workflows. By `Kyle Brindley`_.
 
 *******************
 v1.1.5 (2025-03-28)

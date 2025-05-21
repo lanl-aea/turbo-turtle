@@ -18,10 +18,16 @@
    .. |conda-forge downloads| image:: https://img.shields.io/conda/dn/conda-forge/turbo_turtle.svg?label=Conda%20downloads
       :target: https://anaconda.org/conda-forge/turbo_turtle
 
+   .. |pypi version| image:: https://img.shields.io/pypi/v/turbo-turtle?label=PyPI%20package
+      :target: https://pypi.org/project/turbo-turtle/
+
+   .. |pypi downloads| image:: https://img.shields.io/pypi/dm/turbo-turtle?label=PyPI%20downloads
+      :target: https://pypi.org/project/turbo-turtle/
+
    .. |zenodo| image:: https://zenodo.org/badge/855818315.svg
       :target: https://zenodo.org/doi/10.5281/zenodo.13787498
 
-   |pipeline| |release| |conda-forge version| |conda-forge downloads| |zenodo|
+   |pipeline| |release| |conda-forge version| |conda-forge downloads| |pypi version| |pypi downloads| |zenodo|
 
 .. raw:: latex
 
