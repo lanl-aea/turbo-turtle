@@ -61,11 +61,6 @@ stages:
     # Job commands
     - mkdir ${conda_artifacts_directory}
     - VERSION=$(python -m setuptools_scm) conda mambabuild ${recipe_directory} --channel conda-forge --no-anaconda-upload --output-folder ${conda_artifacts_directory}
-    # Help downstream deploy pipeline find this job by ID
-    - tag_job_file_root="/nettmp/aea_service"
-    - tag_job_file_parent="${tag_job_file_root}/${CI_PROJECT_PATH}"
-    - tag_job_file="${tag_job_file_parent}/tag_conda_build.txt"
-    - if [[ ! -z ${CI_COMMIT_TAG} ]] && [[ -d ${tag_job_file_root} ]]; then mkdir -p ${tag_job_file_parent}; echo ${CI_JOB_ID} > ${tag_job_file}; fi
 
 aea-developer-test:
   extends:
@@ -105,12 +100,20 @@ aea-conda-build-internal:
     - .aea-tags
   stage: test
   variables:
-    recipe_directory: "recipe-internal"
     environment_file: "conda-build.yml"
+    recipe_directory: "recipe-internal"
+    conda_artifacts_directory: "conda-bld"
   artifacts:
     expire_in: '2 hrs'
     paths:
       - conda-bld/noarch/turbo_turtle-*-*.tar.bz2
+  script:
+    - !reference [.conda-build, script]
+    # Help downstream deploy pipeline find this job by ID
+    - tag_job_file_root="/nettmp/aea_service"
+    - tag_job_file_parent="${tag_job_file_root}/${CI_PROJECT_PATH}"
+    - tag_job_file="${tag_job_file_parent}/tag_conda_build.txt"
+    - if [[ ! -z ${CI_COMMIT_TAG} ]] && [[ -d ${tag_job_file_root} ]]; then mkdir -p ${tag_job_file_parent}; echo ${CI_JOB_ID} > ${tag_job_file}; fi
 
 aea-conda-build:
   extends:
