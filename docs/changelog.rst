@@ -13,7 +13,9 @@ Internal Changes
 - SCons build and install aliases for more consistent packaging and deployment scripts (:issue:`252`, :merge:`253`). By
   `Kyle Brindley`_.
 - Require WAVES v0.13 or newer for building and runtime (:issue:`252`, :merge:`253`). By `Kyle Brindley`_.
-- Overhaul CI job environments for reduced Conda environment collisions and improved job artifact cleanup (:issue:`254`,
+- Overhaul Gitlab-CI job environments for reduced Conda environment collisions and improved job artifact cleanup (:issue:`254`,
+  :merge:`254`). By `Kyle Brindley`_.
+- Overhaul GitHub-Actions job definitions for common environment definitions with Gitlab-CI environments (:issue:`254`,
   :merge:`254`). By `Kyle Brindley`_.
 
 *******************
