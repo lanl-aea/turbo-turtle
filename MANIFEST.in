@@ -17,13 +17,14 @@ global-exclude .sconsign.dblite
 exclude turbo_turtle/docs/.buildinfo*
 exclude .flake8
 exclude .git*
-exclude .pipeline*.yml
+exclude *.yml
 exclude turbo_turtle/.coveragerc
-exclude package_documentation.py
+exclude import_package.py
 exclude SConstruct
 exclude style
 exclude mypy
 exclude cProfile
 exclude pytest
+exclude pyproject.toml
 include turbo_turtle/README.rst
 include turbo_turtle/pyproject.toml
