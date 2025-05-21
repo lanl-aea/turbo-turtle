@@ -5,8 +5,16 @@ Changelog
 #########
 
 *******************
-v1.2.3 (unreleased)
+v1.2.4 (unreleased)
 *******************
+
+*******************
+v1.2.3 (2025-05-21)
+*******************
+
+Documentation
+=============
+- Fix README targets checked by twine/PyPi during upload. By `Kyle Brindley`_.
 
 *******************
 v1.2.2 (2025-05-21)
