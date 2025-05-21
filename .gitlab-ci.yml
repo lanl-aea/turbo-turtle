@@ -120,9 +120,6 @@ aea-conda-build:
   stage: test
   variables:
     environment_file: "conda-build.yml"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 aea-conda-build-matrix:
   extends:
