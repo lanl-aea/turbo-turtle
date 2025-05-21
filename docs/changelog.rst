@@ -5,8 +5,16 @@ Changelog
 #########
 
 *******************
-v1.2.0 (unreleased)
+v1.2.1 (unreleased)
 *******************
+
+*******************
+v1.2.0 (2025-05-21)
+*******************
+
+Documentation
+=============
+- Update release procedure for a merge-commit style feature-branch workflow. By `Kyle Brindley`_.
 
 Internal Changes
 ================
