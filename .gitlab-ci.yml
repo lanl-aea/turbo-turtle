@@ -179,6 +179,11 @@ aea-pip-build:
     - python -m pip install --verbose --disable-pip-version-check --require-virtualenv --no-cache-dir build/dist/${distribution_filename}-${version}.tar.gz pytest pytest-xdist
     - cd pip-build-test/lib/python*/site-packages/turbo_turtle
     - python -m pytest -vvv -n 4
+  artifacts:
+    expire_in: "2 hrs"
+    paths:
+      - build/dist/turbo_turtle-*.tar.gz
+      - build/dist/turbo_turtle-*.whl
 
 aea-pip-deploy:
   extends:
