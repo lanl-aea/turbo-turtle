@@ -25,6 +25,5 @@ exclude style
 exclude mypy
 exclude cProfile
 exclude pytest
-exclude pyproject.toml
 include turbo_turtle/README.rst
 include turbo_turtle/pyproject.toml
