@@ -36,7 +36,6 @@ stages:
     - if [[ -z ${conda_pkgs_dirs} ]]; then exit 1; fi
     # Environment creation
     - export CONDA_PKGS_DIRS="${conda_pkgs_dirs}"
-    - export PYTENSOR_FLAGS="compiledir=$PWD/pytensor"
     - source ${conda_installation}/etc/profile.d/conda.sh
     - conda info
     - conda env create --prefix ${prefix} --file ${environment_file} --yes
@@ -44,7 +43,7 @@ stages:
     - conda info
     - conda env export
   after_script:
-    - rm -r $PWD/conda-environment $PWD/conda-pkgs $PWD/pytensor || true
+    - rm -r $PWD/conda-environment $PWD/conda-pkgs || true
 
 .conda-build: &conda-build
   variables:
