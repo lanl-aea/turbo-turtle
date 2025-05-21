@@ -24,7 +24,7 @@ classifiers = [
 dynamic = ["version"]
 dependencies = [
     "lazy_loader >=0.4",
-    "scons >=4",
+    "scons >=4.6",
     "waves-workflows >=0.13.0"
 ]
 

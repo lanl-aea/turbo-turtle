@@ -161,6 +161,7 @@ aea-pip-build:
   stage: test
   variables:
     distribution_name: "turbo_turtle"
+    environment_file: "pip-build.yml"
   script:
     # Job variables
     - distribution_filename=$(echo ${distribution_name} | tr - _)

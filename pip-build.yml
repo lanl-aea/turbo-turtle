@@ -2,20 +2,11 @@ channels:
   - conda-forge
 
 dependencies:
-  - black
-  - boa
-  - flake8
-  - ipython
   - lazy_loader >=0.4
-  - mypy
-  - numpy
-  - pandas
   - pip
-  - pytest
-  - pytest-cov
+  - pytest >=6
   - pytest-xdist
   - python-build
-  - python-gmsh >=4
   - scons >=4.6
   - setuptools >=77
   - setuptools_scm >=8
@@ -23,6 +14,6 @@ dependencies:
   - sphinx-argparse
   - sphinx-book-theme
   - sphinx-copybutton >=0.5.1
+  - sphinx-design
   - sphinxcontrib-bibtex
-  - twine
   - waves >=0.13

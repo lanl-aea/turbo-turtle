@@ -1,4 +1,3 @@
-# Reference: https://github.com/softprops/action-gh-release
 name: Release on new tags
 
 on:
@@ -6,11 +5,35 @@ on:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
 
-permissions:
-  contents: write
-
 jobs:
-  release:
+
+  pip-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: 'true'
+          fetch-depth: 0
+      - name: MiniConda setup
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+          miniforge-version: latest
+      - name: Conda environment
+        shell: bash -el {0}
+        run: conda env update --file pip-build.yml
+      - name: pip build
+        shell: bash -el {0}
+        run: scons build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distribution-artifacts
+          path: build/dist/
+
+  pdf-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,19 +48,34 @@ jobs:
         with:
           auto-activate-base: true
           activate-environment: ""
+          miniforge-version: latest
       - name: Conda environment
         shell: bash -el {0}
-        run: conda install boa conda-build 'scons>=4' 'waves>=0.13' 'lazy_loader>=0.4' 'setuptools>=64' 'setuptools_scm>=8' 'sphinx>=5.1' sphinx-argparse 'sphinx-copybutton>=0.5.1' 'sphinx-book-theme' sphinxcontrib-bibtex pytest --yes --channel conda-forge
-      - name: Build documentation
+        run: conda env update --file pip-build.yml
+      - name: Build PDF documentation
         shell: bash -el {0}
         run: scons latexpdf
-      - name: Conda build
-        shell: bash -el {0}
-        run: VERSION=$(python -m setuptools_scm) conda mambabuild recipe --channel conda-forge --no-anaconda-upload --output-folder conda-bld
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-documentation-artifact
+          path: build/docs/latex/turbo-turtle-${{ github.ref_name }}.pdf
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs:
+      - pdf-build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: pdf-documentation-artifact
+          path: build/docs/latex/turbo-turtle-${{ github.ref_name }}.pdf
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             build/docs/latex/turbo-turtle-${{ github.ref_name }}.pdf
-            conda-bld/noarch/turbo-turtle-${{ github.ref_name }}-py_0.tar.bz2
-          body: "Changelog: https://lanl-aea.github.io/turbo-turtle/changelog.html. Installation: https://lanl-aea.github.io/turbo-turtle/installation.html"
+          body: "Changelog: https://lanl-aea.github.io/turboi-turtle/changelog.html. Installation: https://lanl-aea.github.io/turbo-turtle/installation.html"
