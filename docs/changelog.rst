@@ -5,8 +5,16 @@ Changelog
 #########
 
 *******************
-v1.2.1 (unreleased)
+v1.2.2 (unreleased)
 *******************
+
+*******************
+v1.2.1 (2025-05-21)
+*******************
+
+Internal Changes
+================
+- Fix Gitlab-CI pip build artifacts. By `Kyle Brindley`_.
 
 *******************
 v1.2.0 (2025-05-21)
