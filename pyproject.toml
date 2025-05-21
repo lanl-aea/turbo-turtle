@@ -64,7 +64,7 @@ addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=lon
 [tool.black]
 target-version = ["py39", "py310", "py311", "py312", "py313"]
 extend-exclude = ".txt|test_vertices.py"
-force-exclude = "build*/"
+force-exclude = "build*/|conda-environment*/|conda-pkgs*/|pip-build-test*/"
 line-length = 120
 
 [tool.mypy]
