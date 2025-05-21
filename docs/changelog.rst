@@ -8,6 +8,10 @@ Changelog
 v1.2.4 (unreleased)
 *******************
 
+*******************
+v1.2.5 (2025-05-21)
+*******************
+
 Documentation
 =============
 - Match short descriptions across PyPI and conda packages. By `Kyle Brindley`_.
