@@ -160,7 +160,7 @@ aea-pip-build:
     - .aea-tags
   stage: test
   variables:
-    distribution_name: "turbo_turtle"
+    distribution_name: "turbo-turtle"
     environment_file: "pip-build.yml"
   script:
     # Job variables
