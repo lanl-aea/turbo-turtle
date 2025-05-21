@@ -34,10 +34,10 @@ requirements:
     - pip
     - pytest
     - lazy_loader >=0.4
-    - scons >=4
-    - setuptools >=64
+    - scons >=4.6
+    - setuptools >=77
     - setuptools_scm >=8
-    - sphinx >=5.1
+    - sphinx >=7.1
     - sphinx-argparse
     - sphinx-copybutton >=0.5.1
     - sphinx-book-theme
@@ -46,7 +46,7 @@ requirements:
   run:
     - python >=3.9
     - lazy_loader >=0.4
-    - scons >=4
+    - scons >=4.6
     - waves >=0.13
 
 test:
