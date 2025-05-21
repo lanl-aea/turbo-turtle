@@ -5,11 +5,19 @@ Changelog
 #########
 
 *******************
-v1.2.4 (unreleased)
+v1.2.6 (unreleased)
 *******************
 
 *******************
 v1.2.5 (2025-05-21)
+*******************
+
+Internal Changes
+================
+- Automated PyPI deploy workflow from GitHub.com. By `Kyle Brindley`_.
+
+*******************
+v1.2.4 (2025-05-21)
 *******************
 
 Documentation
