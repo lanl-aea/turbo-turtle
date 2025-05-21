@@ -103,7 +103,7 @@ style:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
-    - scons flake8 black-check
+    - scons style 
   tags:
     - shell
     - aea

@@ -82,13 +82,6 @@ env["abaqus_command"] = env["abaqus_command"] if env["abaqus_command"] is not No
 env["cubit_command"] = env["cubit_command"] if env["cubit_command"] is not None else [default_cubit_command]
 env["ENV"]["PYTHONDONTWRITEBYTECODE"] = 1
 
-# Handle OS-aware tee output
-system = platform.system().lower()
-if system == "windows":  # Assume PowerShell
-    env["tee_suffix"] = "$(| Tee-Object -FilePath ${TARGETS[-1].abspath}$)"
-else:  # *Nix style tee
-    env["tee_suffix"] = "$(2>&1 | tee ${TARGETS[-1].abspath}$)"
-
 # Find third-party software
 abaqus_commands = env["abaqus_command"]
 abaqus_environments = dict()
