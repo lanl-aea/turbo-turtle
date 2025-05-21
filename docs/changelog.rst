@@ -5,8 +5,16 @@ Changelog
 #########
 
 *******************
-v1.2.2 (unreleased)
+v1.2.3 (unreleased)
 *******************
+
+*******************
+v1.2.2 (2025-05-21)
+*******************
+
+Internal Changes
+================
+- Update URLs for external package builds to use the external GitHub.com URLs. By `Kyle Brindley`_.
 
 *******************
 v1.2.1 (2025-05-21)

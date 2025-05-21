@@ -42,10 +42,10 @@ zip-safe = false
 turbo-turtle = "turbo_turtle._main:main"
 
 [project.urls]
-homepage = "https://re-git.lanl.gov/aea/python-projects/turbo-turtle"
-documentation = "https://aea.re-pages.lanl.gov/python-projects/turbo-turtle"
-repository = "https://re-git.lanl.gov/aea/python-projects/turbo-turtle"
-changelog = "https://aea.re-pages.lanl.gov/python-projects/turbo-turtle/changelog.html"
+homepage = "https://github.com/lanl-aea/turbo-turtle"
+documentation = "https://lanl-aea.github.io/turbo-turtle/"
+repository = "https://github.com/lanl-aea/turbo-turtle"
+changelog = "https://lanl-aea.github.io/turbo-turtle/changelog.html"
 
 [tool.setuptools_scm]
 write_to = "turbo_turtle/_version.py"

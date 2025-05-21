@@ -10,8 +10,8 @@ about:
   summary: 'Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models'
   description: |
     Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models
-  doc_url: https://aea.re-pages.lanl.gov/python-projects/turbo_turtle/main/index.html
-  dev_url: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
+  doc_url: https://lanl-aea.github.io/turbo-turtle/
+  dev_url: https://github.com/lanl-aea/turbo-turtle
 
 source:
   git_url: '..'
