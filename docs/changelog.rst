@@ -8,6 +8,10 @@ Changelog
 v1.2.7 (unreleased)
 *******************
 
+Internal Changes
+================
+- Match Conda-forge recipe more closely for easier diffs during package recipe updates. By `Kyle Brindley`_.
+
 *******************
 v1.2.6 (2025-05-21)
 *******************
