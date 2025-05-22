@@ -1,17 +1,11 @@
-package:
-  name: turbo_turtle
-  # TODO: Figure out how to use pyproject.toml and a Conda build Jinja template
-  version: {{ VERSION }}
+{% set name = "turbo_turtle" %}
+{% set version = VERSION %}
 
-about:
-  home: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
-  license: BSD-3-Clause
-  license_file: LICENSE.txt
-  summary: 'Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models'
-  description: |
-    Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models
-  doc_url: https://aea.re-pages.lanl.gov/python-projects/turbo_turtle/main/index.html
-  dev_url: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
+package:
+  name: {{ name|lower }}
+  # TODO: Figure out how to use pyproject.toml and a Conda build Jinja template
+  version: {{ version }}
+
 
 source:
   git_url: '..'
@@ -20,7 +14,7 @@ source:
 build:
   number: 0
   script_env:
-    - SETUPTOOLS_SCM_PRETEND_VERSION={{ VERSION }}
+    - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
   script:
     - scons install --prefix=${PREFIX}  # [unix]
     - scons install --prefix=%PREFIX%  # [win]
@@ -63,3 +57,14 @@ test:
     - waves >=0.13
   imports:
     - turbo_turtle
+
+about:
+  home: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  summary: Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models
+  description: |
+    Turbo-Turtle (LANL code O4765) is a solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved
+    models.
+  doc_url: https://aea.re-pages.lanl.gov/python-projects/turbo_turtle/main/index.html
+  dev_url: https://re-git.lanl.gov/aea/python-projects/turbo_turtle
