@@ -8,6 +8,10 @@ Changelog
 v1.2.7 (unreleased)
 *******************
 
+Documentation
+=============
+- Landing page re-design for ease of access and reduced clutter. By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Match Conda-forge recipe more closely for easier diffs during package recipe updates. By `Kyle Brindley`_.

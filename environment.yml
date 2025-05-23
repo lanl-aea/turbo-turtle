@@ -23,6 +23,7 @@ dependencies:
   - sphinx-argparse
   - sphinx-book-theme
   - sphinx-copybutton >=0.5.1
+  - sphinx-design
   - sphinxcontrib-bibtex
   - twine
   - waves >=0.13

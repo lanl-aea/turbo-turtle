@@ -25,6 +25,8 @@ This project builds and deploys as a `Conda`_ package :cite:`conda,conda-getting
    :start-after: installation-start-do-not-remove
    :end-before: installation-end-do-not-remove
 
+.. _quickstart:
+
 ****************
 Examples: Abaqus
 ****************
