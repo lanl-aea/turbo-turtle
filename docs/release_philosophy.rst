@@ -78,4 +78,4 @@ Steps needed for a release include:
 5. Solicit feedback and make any required changes.
 6. Merge the release branch to ``main``.
 7. Create a new tag on the main branch from the CLI or web-interface:
-   https://re-git.lanl.gov/aea/python-projects/berms/-/tags.
+   https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/tags.
