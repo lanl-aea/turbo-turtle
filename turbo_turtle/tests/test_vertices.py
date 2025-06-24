@@ -412,6 +412,7 @@ def test_lines_and_splines_passthrough():
         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._line_pairs", return_value=[]),
     ):
         all_splines = vertices.lines_and_splines([], 4.0, rtol=1e-5, atol=1e-9)
+        assert all_splines == ([], [])
         mock_break_coordinates.assert_called_once_with([], 4.0, rtol=1e-5, atol=1e-9)
 
 
@@ -423,7 +424,7 @@ def test_break_coordinates_passthrough():
         patch("numpy.where"),
         patch("numpy.split"),
     ):
-        all_splines = vertices._break_coordinates([], 4.0, rtol=1e-5, atol=1e-9)
+        vertices._break_coordinates([], 4.0, rtol=1e-5, atol=1e-9)
         mock_xy_values.assert_called_once_with([], rtol=1e-5, atol=1e-9)
 
 

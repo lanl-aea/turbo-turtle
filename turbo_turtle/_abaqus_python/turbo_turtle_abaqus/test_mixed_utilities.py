@@ -14,7 +14,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import _mixed_utilities
+from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
 
 
 class TestMixedUtilities(unittest.TestCase):
@@ -33,18 +33,20 @@ class TestMixedUtilities(unittest.TestCase):
     @unittest.expectedFailure
     def test_validate_element_type_exception1(self):
         element_type = _mixed_utilities.validate_element_type(1, ["C3D8", "C3D8"])
+        assert element_type is None
 
     def test_validate_element_type_exception1_exit(self):
         with self.assertRaises(SystemExit):
-            element_type = _mixed_utilities.validate_element_type_or_exit(1, ["C3D8", "C3D8"])
+            _mixed_utilities.validate_element_type_or_exit(1, ["C3D8", "C3D8"])
 
     @unittest.expectedFailure
     def test_validate_element_type_exception2(self):
         element_type = _mixed_utilities.validate_element_type(3, ["C3D8", "C3D8"])
+        assert element_type is None
 
     def test_validate_element_type_exception2_exit(self):
         with self.assertRaises(SystemExit):
-            element_type = _mixed_utilities.validate_element_type_or_exit(3, ["C3D8", "C3D8"])
+            _mixed_utilities.validate_element_type_or_exit(3, ["C3D8", "C3D8"])
 
     def test_remote_duplicate_items(self):
         tests = [

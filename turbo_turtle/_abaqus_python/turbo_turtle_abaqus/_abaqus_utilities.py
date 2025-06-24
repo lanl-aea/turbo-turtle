@@ -9,7 +9,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import _mixed_utilities
+from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
 
 
 class AbaqusNamedTemporaryFile:
@@ -90,8 +90,6 @@ def part_dimensionality_key(part):
     :return: part dimensionality
     :rtype: str
     """
-    import abaqus
-
     dimensionality = part.queryGeometry(printResults=False)["space"]
     return dimensionality
 
@@ -112,7 +110,7 @@ def set_from_mask(part, feature, name_mask):
     for name, mask in name_mask:
         try:
             objects = attribute.getSequenceFromMask(mask=(mask,))
-        except abaqus.AbaqusException as err:
+        except abaqus.AbaqusException:
             bad_masks.append((name, mask))
         else:
             part.Set(**{feature: objects, "name": name})
@@ -130,6 +128,8 @@ def surface_from_mask(part, feature, name_mask):
     :raises ValueError: If feature is not one of 'faces' or 'edges'
     :raises RuntimeError: If Abaqus throws an empty sequence abaqus.AbaqusException on one or more masks
     """
+    import abaqus
+
     attribute = getattr(part, feature)
     if feature == "faces":
         surface_keyword = "side1Faces"
@@ -141,7 +141,7 @@ def surface_from_mask(part, feature, name_mask):
     for name, mask in name_mask:
         try:
             objects = attribute.getSequenceFromMask(mask=(mask,))
-        except abaqus.AbaqusException as err:
+        except abaqus.AbaqusException:
             bad_masks.append((name, mask))
         else:
             part.Surface(**{"name": name, surface_keyword: objects})

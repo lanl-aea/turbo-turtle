@@ -1,5 +1,4 @@
 import os
-import shlex
 import string
 import pathlib
 import itertools
@@ -13,9 +12,9 @@ CROOT = "--croot ${croot}/recipe-matrix" if "croot" in env else ""
 repository_directory = pathlib.Path(os.path.realpath(__file__)).parent.parent
 
 command_template = string.Template(
-    "VERSION=$(python -m setuptools_scm) conda mambabuild recipe-matrix --channel fierromechanics " \
-    "--channel conda-forge --no-anaconda-upload " \
-    "${CROOT} ${OUTPUT_FOLDER} " \
+    "VERSION=$(python -m setuptools_scm) conda mambabuild recipe-matrix --channel fierromechanics "
+    "--channel conda-forge --no-anaconda-upload "
+    "${CROOT} ${OUTPUT_FOLDER} "
     "--python ${PYTHON_VERSION} --variants \"{'scons':['${SCONS_VERSION}']}\""
 )
 

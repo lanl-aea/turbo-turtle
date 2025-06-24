@@ -8,7 +8,6 @@ import subprocess
 from importlib.metadata import version, PackageNotFoundError
 
 import pytest
-import numpy
 
 from turbo_turtle import _settings
 from turbo_turtle import _utilities

@@ -1,13 +1,11 @@
 import pathlib
 import platform
-from unittest.mock import Mock
 from unittest.mock import patch
 from contextlib import nullcontext as does_not_raise
 
 import pytest
 
 from turbo_turtle import _fetch
-from turbo_turtle import _settings
 
 
 def platform_check():

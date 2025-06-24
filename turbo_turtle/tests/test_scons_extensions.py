@@ -54,13 +54,13 @@ test_cli_builder = {
             "backend": _default_backend,
         },
     ),
-    "cli_builder": (
+    "cli_builder with subcommand": (
         "cli_builder",
         {"subcommand": "subcommand"},
         1,
         1,
-        ["cli_builder.txt"],
-        ["cli_builder.txt.stdout"],
+        ["cli_builder_with_subcommand.txt"],
+        ["cli_builder_with_subcommand.txt.stdout"],
         {
             "program": "turbo-turtle",
             "subcommand": "subcommand",

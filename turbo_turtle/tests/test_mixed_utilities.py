@@ -241,7 +241,7 @@ def test_return_genfromtxt(
     :param outcome: either contextlib.nullcontext or pytest.raises() depending on expected success or exception,
         respectively
     """
-    with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected) as mock_genfromtxt, outcome:
+    with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected), outcome:
         try:
             coordinates = _mixed_utilities.return_genfromtxt(
                 file_name,
@@ -257,7 +257,7 @@ def test_return_genfromtxt(
     # TODO: Figure out how to check against pytest.raises() instead.
     if not isinstance(outcome, does_not_raise):
         outcome = pytest.raises(SystemExit)
-    with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected) as mock_genfromtxt, outcome:
+    with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected), outcome:
         try:
             coordinates = _mixed_utilities.return_genfromtxt_or_exit(
                 file_name,

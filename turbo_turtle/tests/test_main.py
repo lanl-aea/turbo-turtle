@@ -1,7 +1,3 @@
-from unittest.mock import patch
-
-import pytest
-
 from turbo_turtle import _main
 from turbo_turtle import _settings
 

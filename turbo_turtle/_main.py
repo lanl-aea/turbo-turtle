@@ -68,11 +68,11 @@ def append_cubit_help(text: str, append: str = "with Abaqus, Cubit, or Gmsh (wor
 
 def append_cubit_description(
     text: str,
-    # fmt: off
-    append: str = "Defaults to Abaqus, but can optionally run Cubit (Gmsh implementation is a work-in-progress). "
-                  "Cubit and Gmsh backends replace hyphens with underscores in part name(s) for ACIS "
-                  "compatibility. Cubit backend ignores model/assembly name arguments.",
-    # fmt: on
+    append: str = (
+        "Defaults to Abaqus, but can optionally run Cubit (Gmsh implementation is a work-in-progress). "
+        "Cubit and Gmsh backends replace hyphens with underscores in part name(s) for ACIS "
+        "compatibility. Cubit backend ignores model/assembly name arguments."
+    ),
 ) -> str:
     """Append common long description with optional Cubit text
 
@@ -118,36 +118,36 @@ def get_parser() -> argparse.ArgumentParser:
     subparsers.add_parser(
         "docs",
         help=f"Open the {_settings._project_name_short} HTML documentation",
-        # fmt: off
-        description=f"Open the packaged {_settings._project_name_short} HTML documentation in the "
-                     "system default web browser",
-        # fmt: on
+        description=(
+            f"Open the packaged {_settings._project_name_short} HTML documentation in the "
+            "system default web browser"
+        ),
         parents=[_docs.get_parser()],
     )
 
     subparsers.add_parser(
         "fetch",
         help=f"Fetch and copy {_settings._project_name} modsim template files and directories",
-        # fmt: off
-        description=f"Fetch and copy {_settings._project_name} modsim template files and directories. If no ``FILE`` "
-                    "is specified, all available files will be created. Directories are recursively copied. "
-                    "``pathlib.Path`` recursive pattern matching is possible. The source path is truncated to use the "
-                    "shortest common file prefix, e.g. requesting two files ``common/source/file.1`` and "
-                    "``common/source/file.2`` will create " "``/destination/file.1`` and ``/destination/file.2``, "
-                    "respectively.",
-        # fmt: on
+        description=(
+            f"Fetch and copy {_settings._project_name} modsim template files and directories. If no ``FILE`` "
+            "is specified, all available files will be created. Directories are recursively copied. "
+            "``pathlib.Path`` recursive pattern matching is possible. The source path is truncated to use the "
+            "shortest common file prefix, e.g. requesting two files ``common/source/file.1`` and "
+            "``common/source/file.2`` will create " "``/destination/file.1`` and ``/destination/file.2``, "
+            "respectively."
+        ),
         parents=[_fetch.get_parser()],
     )
 
     subparsers.add_parser(
         "print-abaqus-path",
         help="Print the absolute path to Turbo-Turtle's Abaqus Python compatible package.",
-        # fmt: off
-        description="***NOTE: this is an alpha feature for early adopters and developer testing of possible GUI "
-                    "support*** Print the absolute path to Turbo-Turtle's Abaqus Python compatible package. "
-                    "If this directory is on your PYTHONPATH, you can directly import Turbo Turtle Abaqus Python "
-                    "packages in your own scrips (i.e. import turbo_turtle_abaqus.partition)",
-        # fmt: on
+        description=(
+            "***NOTE: this is an alpha feature for early adopters and developer testing of possible GUI "
+            "support*** Print the absolute path to Turbo-Turtle's Abaqus Python compatible package. "
+            "If this directory is on your PYTHONPATH, you can directly import Turbo Turtle Abaqus Python "
+            "packages in your own scrips (i.e. import turbo_turtle_abaqus.partition)"
+        ),
         parents=[_print_abaqus_path_parser()],
     )
 
@@ -185,12 +185,12 @@ def get_parser() -> argparse.ArgumentParser:
     subparsers.add_parser(
         "geometry-xyplot",
         help="Plot the lines-and-splines as parsed by the geometry subcommand.",
-        # fmt: off
-        description="Plot the lines-and-splines as parsed by the geometry subcommand. "
-                    "Lines are shown as solid lines with circle markers at the vertices. "
-                    "Splines are show as dashed lines with plus sign markers at the vertices. "
-                    "If there is more than one part, each part is shown in a unique color.",
-        # fmt: on
+        description=(
+            "Plot the lines-and-splines as parsed by the geometry subcommand. "
+            "Lines are shown as solid lines with circle markers at the vertices. "
+            "Splines are show as dashed lines with plus sign markers at the vertices. "
+            "If there is more than one part, each part is shown in a unique color."
+        ),
         parents=[geometry_parser, geometry_xyplot._get_parser()],
     )
 

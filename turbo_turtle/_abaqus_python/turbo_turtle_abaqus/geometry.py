@@ -12,11 +12,11 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers
-from turbo_turtle_abaqus import vertices
-from turbo_turtle_abaqus import _mixed_utilities
-from turbo_turtle_abaqus import _abaqus_utilities
-from turbo_turtle_abaqus import _mixed_settings
+from turbo_turtle_abaqus import parsers  # noqa: E402
+from turbo_turtle_abaqus import vertices  # noqa: E402
+from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
+from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
+from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
 
 
 def main(

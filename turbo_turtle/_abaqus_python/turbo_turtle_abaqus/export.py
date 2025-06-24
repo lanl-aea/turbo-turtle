@@ -1,10 +1,7 @@
 import re
 import os
 import sys
-import shutil
 import inspect
-import argparse
-import tempfile
 import fnmatch
 
 
@@ -13,10 +10,10 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers
-from turbo_turtle_abaqus import _mixed_utilities
-from turbo_turtle_abaqus import _abaqus_utilities
-from turbo_turtle_abaqus import _mixed_settings
+from turbo_turtle_abaqus import parsers  # noqa: E402
+from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
+from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
+from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
 
 
 def main(
@@ -37,10 +34,8 @@ def main(
     :param str assembly: Assembly file for exporting the assembly keyword block. If provided and no instances are
         found, instance all part names before export.
     """
-    import abaqus
-
     input_file = os.path.splitext(input_file)[0] + ".cae"
-    with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
+    with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir="."):
         export(
             model_name=model_name,
             part_name=part_name,

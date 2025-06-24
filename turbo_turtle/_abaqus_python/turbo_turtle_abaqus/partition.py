@@ -1,11 +1,7 @@
 import ast
 import os
 import sys
-import math
-import shutil
 import inspect
-import argparse
-import tempfile
 import fnmatch
 
 import numpy
@@ -16,10 +12,10 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers
-from turbo_turtle_abaqus import vertices
-from turbo_turtle_abaqus import _abaqus_utilities
-from turbo_turtle_abaqus import _mixed_settings
+from turbo_turtle_abaqus import parsers  # noqa: E402
+from turbo_turtle_abaqus import vertices  # noqa: E402
+from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
+from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
 
 
 def main(
@@ -53,7 +49,7 @@ def main(
         output_file = input_file
     input_file = os.path.splitext(input_file)[0] + ".cae"
     output_file = os.path.splitext(output_file)[0] + ".cae"
-    with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
+    with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir="."):
         partition(center, xvector, zvector, model_name, part_name, big_number=big_number)
         abaqus.mdb.saveAs(pathName=output_file)
 
@@ -151,7 +147,6 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
         :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`)
     """
     import abaqus
-    import caeModules
     import abaqusConstants
 
     # Process input and calculate local coordinate system properties
@@ -172,7 +167,7 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
     for plane in partition_planes[0:3]:
         try:
             part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
-        except abaqus.AbaqusException as err:
+        except abaqus.AbaqusException:
             pass
 
     # Partition by sketch on the six (6) 45 degree planes
@@ -206,7 +201,7 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
                 )
             # TODO: Is it possible to distinguish between expected failures (operating on an incomplete sphere,
             # so sketch doesn't intersect) and unexpected failures (bad options, missing geometry, etc)?
-            except abaqus.AbaqusException as err:
+            except abaqus.AbaqusException:
                 pass
 
 
@@ -259,7 +254,7 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
         part.PartitionFaceBySketch(faces=part.faces[:], sketch=sketch)
     # TODO: Is is possible to distinguish between expected failures (operating on an incomplete sphere, so
     # sketch doesn't intersect) and unexpected failures (bad options, missing geometry, etc)?
-    except abaqus.AbaqusException as err:
+    except abaqus.AbaqusException:
         pass
 
 

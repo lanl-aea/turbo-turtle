@@ -2,7 +2,6 @@
 
 import typing
 import pathlib
-import tempfile
 
 import numpy
 

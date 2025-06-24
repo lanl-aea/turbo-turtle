@@ -2,7 +2,6 @@
 
 import inspect
 import os
-import sys
 
 _filename = inspect.getfile(lambda: None)
 _parent = os.path.dirname(_filename)

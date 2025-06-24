@@ -1,7 +1,6 @@
 from unittest.mock import patch
 
 import numpy
-import pytest
 import matplotlib
 
 from turbo_turtle import geometry_xyplot

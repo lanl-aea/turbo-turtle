@@ -1,7 +1,3 @@
-import os
-import sys
-import inspect
-
 import abaqus
 import abaqusConstants
 
@@ -27,7 +23,7 @@ def seveneigths_sphere(model_name, part_name="seveneigths-sphere"):
     if model_name not in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name="__profile__", sheetSize=200.0)
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
+    g, v, c = s.geometry, s.vertices, s.constraints
     s.setPrimaryObject(option=abaqusConstants.STANDALONE)
     s.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
     s.FixedConstraint(entity=g[2])
@@ -66,7 +62,7 @@ def seveneigths_sphere(model_name, part_name="seveneigths-sphere"):
     s = abaqus.mdb.models[model_name].ConstrainedSketch(
         name="__profile__", sheetSize=11.31, gridSpacing=0.28, transform=t
     )
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
+    g, v, c = s.geometry, s.vertices, s.constraints
     s.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
     p = abaqus.mdb.models[model_name].parts[part_name]
     p.projectReferencesOntoSketch(sketch=s, filter=abaqusConstants.COPLANAR_EDGES)
@@ -110,7 +106,7 @@ def swiss_cheese(model_name, part_name="swiss-cheese"):
     if model_name not in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
     s = abaqus.mdb.models[model_name].ConstrainedSketch(name="__profile__", sheetSize=200.0)
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
+    g = s.geometry
     s.setPrimaryObject(option=abaqusConstants.STANDALONE)
     s.ConstructionLine(point1=(0.0, -100.0), point2=(0.0, 100.0))
     s.FixedConstraint(entity=g[2])
@@ -135,7 +131,7 @@ def swiss_cheese(model_name, part_name="swiss-cheese"):
     p = abaqus.mdb.models[model_name].parts[part_name]
     p.DatumPlaneByPrincipalPlane(principalPlane=abaqusConstants.XZPLANE, offset=0.0)
     p = abaqus.mdb.models[model_name].parts[part_name]
-    f, e, d2 = p.faces, p.edges, p.datums
+    e, d2 = p.edges, p.datums
     t = p.MakeSketchTransform(
         sketchPlane=d2[2],
         sketchUpEdge=e[0],
@@ -146,14 +142,14 @@ def swiss_cheese(model_name, part_name="swiss-cheese"):
     s1 = abaqus.mdb.models[model_name].ConstrainedSketch(
         name="__profile__", sheetSize=15.71, gridSpacing=0.39, transform=t
     )
-    g, v, d, c = s1.geometry, s1.vertices, s1.dimensions, s1.constraints
+    g = s1.geometry
     s1.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
     p = abaqus.mdb.models[model_name].parts[part_name]
     p.projectReferencesOntoSketch(sketch=s1, filter=abaqusConstants.COPLANAR_EDGES)
     s1.CircleByCenterPerimeter(center=(0.5, 0.2), point1=(0.55, 0.25))
     s1.CircleByCenterPerimeter(center=(-0.5, -0.2), point1=(-0.55, -0.25))
     p = abaqus.mdb.models[model_name].parts[part_name]
-    f1, e1, d1 = p.faces, p.edges, p.datums
+    e1, d1 = p.edges, p.datums
     p.CutExtrude(
         sketchPlane=d1[2],
         sketchUpEdge=e1[0],
@@ -165,7 +161,7 @@ def swiss_cheese(model_name, part_name="swiss-cheese"):
     s1.unsetPrimaryObject()
     del abaqus.mdb.models[model_name].sketches["__profile__"]
     p = abaqus.mdb.models[model_name].parts[part_name]
-    f, e, d2 = p.faces, p.edges, p.datums
+    e, d2 = p.edges, p.datums
     t = p.MakeSketchTransform(
         sketchPlane=d2[4],
         sketchUpEdge=e[5],
@@ -176,14 +172,14 @@ def swiss_cheese(model_name, part_name="swiss-cheese"):
     s = abaqus.mdb.models[model_name].ConstrainedSketch(
         name="__profile__", sheetSize=15.71, gridSpacing=0.39, transform=t
     )
-    g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
+    g = s.geometry
     s.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
     p = abaqus.mdb.models[model_name].parts[part_name]
     p.projectReferencesOntoSketch(sketch=s, filter=abaqusConstants.COPLANAR_EDGES)
     s.CircleByCenterPerimeter(center=(0.5, 0.2), point1=(0.55, 0.25))
     s.CircleByCenterPerimeter(center=(-0.5, -0.2), point1=(-0.55, -0.25))
     p = abaqus.mdb.models[model_name].parts[part_name]
-    f1, e1, d1 = p.faces, p.edges, p.datums
+    e1, d1 = p.edges, p.datums
     p.CutExtrude(
         sketchPlane=d1[4],
         sketchUpEdge=e1[5],
@@ -195,7 +191,7 @@ def swiss_cheese(model_name, part_name="swiss-cheese"):
     s.unsetPrimaryObject()
     del abaqus.mdb.models[model_name].sketches["__profile__"]
     p = abaqus.mdb.models[model_name].parts[part_name]
-    f, e, d2 = p.faces, p.edges, p.datums
+    e, d2 = p.edges, p.datums
     t = p.MakeSketchTransform(
         sketchPlane=d2[3],
         sketchUpEdge=e[9],
@@ -206,14 +202,14 @@ def swiss_cheese(model_name, part_name="swiss-cheese"):
     s1 = abaqus.mdb.models[model_name].ConstrainedSketch(
         name="__profile__", sheetSize=15.71, gridSpacing=0.39, transform=t
     )
-    g, v, d, c = s1.geometry, s1.vertices, s1.dimensions, s1.constraints
+    g = s1.geometry
     s1.setPrimaryObject(option=abaqusConstants.SUPERIMPOSE)
     p = abaqus.mdb.models[model_name].parts[part_name]
     p.projectReferencesOntoSketch(sketch=s1, filter=abaqusConstants.COPLANAR_EDGES)
     s1.CircleByCenterPerimeter(center=(0.5, 0.2), point1=(0.55, 0.25))
     s1.CircleByCenterPerimeter(center=(-0.5, -0.2), point1=(-0.55, -0.25))
     p = abaqus.mdb.models[model_name].parts[part_name]
-    f1, e1, d1 = p.faces, p.edges, p.datums
+    e1, d1 = p.edges, p.datums
     p.CutExtrude(
         sketchPlane=d1[3],
         sketchUpEdge=e1[9],

@@ -2,18 +2,17 @@ import os
 import sys
 import inspect
 
-import numpy
-
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers
-from turbo_turtle_abaqus import vertices
-from turbo_turtle_abaqus import geometry
-from turbo_turtle_abaqus import _abaqus_utilities
-from turbo_turtle_abaqus import _mixed_settings
+from turbo_turtle_abaqus import parsers  # noqa: E402
+from turbo_turtle_abaqus import vertices  # noqa: E402
+from turbo_turtle_abaqus import geometry  # noqa: E402
+from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
+from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
+from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
 
 
 def main(
@@ -40,7 +39,6 @@ def main(
     :param float y_offset: vertical offset along the global Y-axis
     """
     import abaqus
-    import abaqusConstants
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
     try:

@@ -10,12 +10,12 @@ import sys
 filename = inspect.getfile(lambda: None)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-from turbo_turtle_abaqus import _mixed_settings
+from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
 
-from abaqusGui import *
+from abaqusGui import *  # noqa: E402,F403
 
-
-toolset = getAFXApp().getAFXMainWindow().getPluginToolset()  # Do this only once
+# Do this only once
+toolset = getAFXApp().getAFXMainWindow().getPluginToolset()  # noqa: F405
 
 # Cylinder Gui Plugin
 toolset.registerKernelMenuButton(
@@ -23,7 +23,7 @@ toolset.registerKernelMenuButton(
     moduleName="turbo_turtle_abaqus.cylinder",
     functionName="_gui()",
     applicableModules=("Part",),
-    icon=afxCreateIcon("turboTurtleIcon.png"),
+    icon=afxCreateIcon("turboTurtleIcon.png"),  # noqa: F405
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._cylinder_gui_help_string,
@@ -35,7 +35,7 @@ toolset.registerKernelMenuButton(
     moduleName="turbo_turtle_abaqus.sphere",
     functionName="_gui()",
     applicableModules=("Part",),
-    icon=afxCreateIcon("turboTurtleIcon.png"),
+    icon=afxCreateIcon("turboTurtleIcon.png"),  # noqa: F405
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._sphere_gui_help_string,
@@ -47,7 +47,7 @@ toolset.registerKernelMenuButton(
     moduleName="turbo_turtle_abaqus.geometry",
     functionName="_gui()",
     applicableModules=("Part",),
-    icon=afxCreateIcon("turboTurtleIcon.png"),
+    icon=afxCreateIcon("turboTurtleIcon.png"),  # noqa: F405
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._geometry_gui_help_string,
@@ -59,7 +59,7 @@ toolset.registerKernelMenuButton(
     moduleName="turbo_turtle_abaqus.partition",
     functionName="_gui()",
     applicableModules=("Part",),
-    icon=afxCreateIcon("turboTurtleIcon.png"),
+    icon=afxCreateIcon("turboTurtleIcon.png"),  # noqa: F405
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._partition_gui_help_string,
@@ -71,7 +71,7 @@ toolset.registerKernelMenuButton(
     moduleName="turbo_turtle_abaqus.mesh_module",
     functionName="_gui()",
     applicableModules=("Mesh",),
-    icon=afxCreateIcon("turboTurtleIcon.png"),
+    icon=afxCreateIcon("turboTurtleIcon.png"),  # noqa: F405
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._mesh_gui_help_string,
@@ -86,7 +86,7 @@ toolset.registerKernelMenuButton(
         "Part",
         "Assembly",
     ),
-    icon=afxCreateIcon("turboTurtleIcon.png"),
+    icon=afxCreateIcon("turboTurtleIcon.png"),  # noqa: F405
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._image_gui_help_string,
@@ -102,7 +102,7 @@ toolset.registerKernelMenuButton(
         "Assembly",
         "Mesh",
     ),
-    icon=afxCreateIcon("turboTurtleIcon.png"),
+    icon=afxCreateIcon("turboTurtleIcon.png"),  # noqa: F405
     helpUrl=_mixed_settings._gui_docs_file,
     author=_mixed_settings._author,
     description=_mixed_settings._export_gui_help_string,

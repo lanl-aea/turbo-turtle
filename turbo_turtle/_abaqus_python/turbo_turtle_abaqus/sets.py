@@ -1,9 +1,6 @@
 import os
 import sys
-import shutil
 import inspect
-import argparse
-import tempfile
 
 
 filename = inspect.getfile(lambda: None)
@@ -11,9 +8,9 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers
-from turbo_turtle_abaqus import _abaqus_utilities
-from turbo_turtle_abaqus import _mixed_utilities
+from turbo_turtle_abaqus import parsers  # noqa: E402
+from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
+from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
 
 
 def main(
@@ -45,7 +42,7 @@ def main(
             output_file = input_file
         input_file = os.path.splitext(input_file)[0] + ".cae"
         output_file = os.path.splitext(output_file)[0] + ".cae"
-        with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
+        with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir="."):
             sets(
                 face_sets=face_sets,
                 edge_sets=edge_sets,

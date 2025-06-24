@@ -4,11 +4,9 @@ import shlex
 import shutil
 import typing
 import pathlib
-import inspect
 import argparse
 import platform
 import tempfile
-import functools
 import subprocess
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities import print_exception_message
@@ -131,8 +129,8 @@ def import_gmsh():
         import gmsh
     except ImportError as err:
         raise RuntimeError(
-            f"Could not import gmsh package. Please install `python-gmsh` in the Conda environment.\n"
-            "'ImportError: {err}'"
+            "Could not import gmsh package. Please install `python-gmsh` in the Conda environment.\n"
+            f"'ImportError: {err}'"
         )
     return gmsh
 
@@ -158,7 +156,7 @@ def run_command(command: str) -> None:
     """
     command_list = shlex.split(command)
     try:
-        stdout = subprocess.check_output(command_list)
+        subprocess.check_output(command_list)
     except subprocess.CalledProcessError as err:
         raise RuntimeError(err.output.decode())
 

@@ -1,9 +1,6 @@
 import os
 import sys
-import shutil
 import inspect
-import argparse
-import tempfile
 import ast
 
 
@@ -12,10 +9,10 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers
-from turbo_turtle_abaqus import _mixed_utilities
-from turbo_turtle_abaqus import _abaqus_utilities
-from turbo_turtle_abaqus import _mixed_settings
+from turbo_turtle_abaqus import parsers  # noqa: E402
+from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
+from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
+from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
 
 
 def main(
@@ -50,7 +47,7 @@ def main(
     try:
         input_file_extension = os.path.splitext(input_file)[1]
         if input_file_extension.lower() == ".cae":
-            with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir=".") as copy_file:
+            with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir="."):
                 image(
                     output_file,
                     x_angle=x_angle,
@@ -224,7 +221,7 @@ def _gui_get_inputs():
         else:
             default_color_map = "Part geometry"
     except AttributeError:
-        deault_color_map = "Assembly"
+        default_color_map = "Assembly"
         default_part_name = ""
 
     fields = (

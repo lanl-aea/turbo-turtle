@@ -16,7 +16,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers
+from turbo_turtle_abaqus import parsers  # noqa: E402
 
 
 class TestParsers(unittest.TestCase):
@@ -34,10 +34,12 @@ class TestParsers(unittest.TestCase):
     @unittest.expectedFailure
     def test_positive_float_negative_exception(self):
         argument = parsers.positive_float("-1.")
+        assert argument is None
 
     @unittest.expectedFailure
     def test_positive_float_nonfloat_exception(self):
         argument = parsers.positive_float("negative_one")
+        assert argument is None
 
     def test_positive_int(self):
         tests = [
@@ -51,10 +53,12 @@ class TestParsers(unittest.TestCase):
     @unittest.expectedFailure
     def test_positive_int_negative_exception(self):
         argument = parsers.positive_int("-1.")
+        assert argument is None
 
     @unittest.expectedFailure
     def test_positive_int_nonint_exception(self):
         argument = parsers.positive_int("negative_one")
+        assert argument is None
 
     def test_construct_prog(self):
         tests = [

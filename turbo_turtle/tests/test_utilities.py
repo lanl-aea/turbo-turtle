@@ -9,11 +9,11 @@ from turbo_turtle import _utilities
 
 def test_search_commands():
     """Test :meth:`turbo_turtle._utilities.search_command`"""
-    with patch("shutil.which", return_value=None) as shutil_which:
+    with patch("shutil.which", return_value=None):
         command_abspath = _utilities.search_commands(["notfound"])
         assert command_abspath is None
 
-    with patch("shutil.which", return_value="found") as shutil_which:
+    with patch("shutil.which", return_value="found"):
         command_abspath = _utilities.search_commands(["found"])
         assert command_abspath == "found"
 
@@ -78,18 +78,18 @@ def test_cubit_os_bin():
 
 def test_import_gmsh():
     with patch.dict("sys.modules", gmsh=MagicMock), does_not_raise():
-        cubit = _utilities.import_gmsh()
+        _utilities.import_gmsh()
 
     with patch.dict("sys.modules", gmsh=None, side_effect=ImportError()), pytest.raises(RuntimeError):
-        cubit = _utilities.import_gmsh()
+        _utilities.import_gmsh()
 
 
 def test_import_cubit():
     with patch.dict("sys.modules", cubit=MagicMock), does_not_raise():
-        cubit = _utilities.import_cubit()
+        _utilities.import_cubit()
 
     with patch.dict("sys.modules", cubit=None, side_effect=ImportError()), pytest.raises(RuntimeError):
-        cubit = _utilities.import_cubit()
+        _utilities.import_cubit()
 
 
 construct_append_options = {

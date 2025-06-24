@@ -5,11 +5,8 @@ Which requires that Cubit's bin directory is found on PYTHONPATH, either directl
 perform ``sys.path`` manipulation, so the importing/calling module/script *must* verify that Cubit will import correctly
 first.
 """
-
-import shutil
 import typing
 import pathlib
-import tempfile
 
 import numpy
 
@@ -313,7 +310,6 @@ def _rename_and_sweep(
     center_string = _utilities.character_delimited_list(center)
     revolution_axis = numpy.array([0.0, 1.0, 0.0])
     revolution_string = _utilities.character_delimited_list(revolution_axis)
-    body_number = surface.id()
     surface_number = _surface_numbers([surface])[0]
     part_name = part_name.replace("-", "_")
     if planar:
@@ -655,7 +651,6 @@ def _partition(
     center = numpy.array(center)
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
-    yvector = numpy.cross(zvector, xvector)
 
     # Create pyramidal intersections/partitions
     create_pyramid_partitions(center, xvector, zvector, big_number, part_name)
@@ -950,11 +945,11 @@ def _set_genesis_output_type(output_type):
     :param str output_type: String identifying genesis output type: genesis (large format), genesis-normal, genesis-hdf5
     """
     if output_type.lower() == "genesis":
-        cubit_command_or_exception(f"set large exodus file on")
+        cubit_command_or_exception("set large exodus file on")
     elif output_type.lower() == "genesis-normal":
-        cubit_command_or_exception(f"set large exodus file off")
+        cubit_command_or_exception("set large exodus file off")
     elif output_type.lower() == "genesis-hdf5":
-        cubit_command_or_exception(f"set exodus netcdf4 on")
+        cubit_command_or_exception("set exodus netcdf4 on")
     else:
         raise RuntimeError("Unknown genesis output type '{output_type}'")
 

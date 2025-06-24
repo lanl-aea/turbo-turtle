@@ -17,7 +17,7 @@ def geometry(args, command):
     command += f"--unit-conversion {args.unit_conversion} "
     command += f"--euclidean-distance {args.euclidean_distance} "
     if args.planar:
-        command += f"--planar "
+        command += "--planar "
     command += f"--model-name {args.model_name} "
     if args.part_name[0] is not None:
         command += f"--part-name {_utilities.character_delimited_list(args.part_name)} "
