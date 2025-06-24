@@ -1,4 +1,5 @@
 """Python 2/3 compatible coordinate handling for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
+
 import cmath
 
 import numpy

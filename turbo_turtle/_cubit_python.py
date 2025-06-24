@@ -5,6 +5,7 @@ Which requires that Cubit's bin directory is found on PYTHONPATH, either directl
 perform ``sys.path`` manipulation, so the importing/calling module/script *must* verify that Cubit will import correctly
 first.
 """
+
 import typing
 import pathlib
 

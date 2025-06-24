@@ -119,8 +119,7 @@ def get_parser() -> argparse.ArgumentParser:
         "docs",
         help=f"Open the {_settings._project_name_short} HTML documentation",
         description=(
-            f"Open the packaged {_settings._project_name_short} HTML documentation in the "
-            "system default web browser"
+            f"Open the packaged {_settings._project_name_short} HTML documentation in the system default web browser"
         ),
         parents=[_docs.get_parser()],
     )
@@ -133,8 +132,7 @@ def get_parser() -> argparse.ArgumentParser:
             "is specified, all available files will be created. Directories are recursively copied. "
             "``pathlib.Path`` recursive pattern matching is possible. The source path is truncated to use the "
             "shortest common file prefix, e.g. requesting two files ``common/source/file.1`` and "
-            "``common/source/file.2`` will create " "``/destination/file.1`` and ``/destination/file.2``, "
-            "respectively."
+            "``common/source/file.2`` will create ``/destination/file.1`` and ``/destination/file.2``, respectively."
         ),
         parents=[_fetch.get_parser()],
     )
