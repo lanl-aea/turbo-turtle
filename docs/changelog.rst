@@ -17,6 +17,10 @@ Internal Changes
 - Match Conda-forge recipe more closely for easier diffs during package recipe updates. By `Kyle Brindley`_.
 - Use full default Flake8 checks. By `Kyle Brindley`_.
 
+Bug fixes
+=========
+- Fix element type assignment in Cubit Python backend implementation of the export subcommand. By `Kyle Brindley`_.
+
 *******************
 v1.2.6 (2025-05-21)
 *******************

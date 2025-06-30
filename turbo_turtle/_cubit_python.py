@@ -969,7 +969,7 @@ def _export_genesis(output_file, part_name, element_type, output_type="genesis")
     for name, element in zip(part_name, element_type):
         block_ids.append(_create_volume_name_block(name))
         if element_type is not None:
-            cubit_command_or_exception(f"block {block_ids[-1]} element type {element}")
+            cubit_command_or_exception(f"block {block_ids[-1]} element type {element_type}")
     _set_genesis_output_type(output_type)
     block_string = _utilities.character_delimited_list(block_ids)
     cubit_command_or_exception(f"export mesh '{output_file}' block {block_string} overwrite")
