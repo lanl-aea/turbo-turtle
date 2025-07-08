@@ -310,7 +310,7 @@ the project root directory
 
 .. code-block::
 
-   $ /apps/abaqus/Commands/abq2024 python -m unittest discover turbo_turtle/_abaqus_python/turbo_turtle_abaqus
+   $ /apps/abaqus/Commands/abq2025 python -m unittest discover turbo_turtle/_abaqus_python/turbo_turtle_abaqus
 
 The test execution is also available as an SCons alias: ``test_abaqus_python``, which is collected under the aliases:
 ``unittest`` and ``regression``.

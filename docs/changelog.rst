@@ -59,6 +59,7 @@ Internal Changes
 ================
 - Match Conda-forge recipe more closely for easier diffs during package recipe updates. By `Kyle Brindley`_.
 - Use full default Flake8 checks. By `Kyle Brindley`_.
+- Use and test Abaqus 2025 by default. By `Kyle Brindley`_.
 
 Bug fixes
 =========

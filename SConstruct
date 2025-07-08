@@ -47,7 +47,7 @@ AddOption(
     metavar="DIR",
     help="SCons installation pip prefix ``--prefix``. Relative or absolute path. (default: '%default')",
 )
-default_abaqus_command = "/apps/abaqus/Commands/abq2024"
+default_abaqus_command = "/apps/abaqus/Commands/abq2025"
 AddOption(
     "--abaqus-command",
     dest="abaqus_command",
