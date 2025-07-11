@@ -20,7 +20,7 @@ stages:
 .nix-job-environment: &nix-job-environment
   variables:
     GIT_STRATEGY: clone
-    conda_installation: "/apps/anaconda/3.12-anaconda-2024.10"
+    conda_installation: "/apps/miniconda3/3.13-miniconda-25.5.1"
     environment_file: "environment.yml"
   before_script:
     - function check_directory_variable () { echo "$1"; if [[ -z $1 ]] || [[ ! -d $1 ]]; then exit 1; fi; }

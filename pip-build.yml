@@ -1,5 +1,6 @@
 channels:
   - conda-forge
+  - nodefaults
 
 dependencies:
   - lazy_loader >=0.4
