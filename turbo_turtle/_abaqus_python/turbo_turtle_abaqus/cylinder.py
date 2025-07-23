@@ -44,7 +44,7 @@ def main(
     try:
         cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name, revolution_angle)
     except RuntimeError as err:
-        _mixed_utilities.sys_exit(err.message)
+        _mixed_utilities.sys_exit(str(err))
     abaqus.mdb.saveAs(pathName=output_file)
 
 
