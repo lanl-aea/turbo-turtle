@@ -16,6 +16,6 @@ identifiers:
   - description: "All versions"
     type: doi
     value: 10.5281/zenodo.13787499
-  - description: "1.1.5"
+  - description: "1.2.6"
     type: doi
-    value: 10.5281/zenodo.15115383
+    value: 10.5281/zenodo.15484840
