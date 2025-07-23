@@ -20,6 +20,9 @@ Internal Changes
 Bug fixes
 =========
 - Fix element type assignment in Cubit Python backend implementation of the export subcommand. By `Kyle Brindley`_.
+- Fix conversion of exception messages to exit error messages. Previously used an exception attribute that was
+  deprecated in Python 2.6, so the bug was a Python 2/3 incompatibility when Abaqus 2024 finally introduced Python 3
+  (:issue:`256`, :merge:`259`). By `Kyle Brindley`_.
 
 *******************
 v1.2.6 (2025-05-21)
