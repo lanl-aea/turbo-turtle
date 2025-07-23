@@ -81,7 +81,7 @@ def main(
             atol=atol,
         )
     except RuntimeError as err:
-        _mixed_utilities.sys_exit(err.message)
+        _mixed_utilities.sys_exit(str(err))
     abaqus.mdb.saveAs(pathName=output_file)
 
 

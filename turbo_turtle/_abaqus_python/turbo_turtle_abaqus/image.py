@@ -74,7 +74,7 @@ def main(
             message = "Uknown file extension {}".format(input_file_extension)
             _mixed_utilities.sys_exit(message)
     except RuntimeError as err:
-        _mixed_utilities.sys_exit(err.message)
+        _mixed_utilities.sys_exit(str(err))
 
 
 def image(

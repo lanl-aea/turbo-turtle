@@ -75,7 +75,7 @@ def main(
             )
             abaqus.mdb.saveAs(pathName=output_file)
     except RuntimeError as err:
-        _mixed_utilities.sys_exit(err.message)
+        _mixed_utilities.sys_exit(str(err))
 
 
 def sphere(
