@@ -370,14 +370,15 @@ def sets(*args, **kwargs) -> typing.NoReturn:
     raise RuntimeError("sets subcommand is not yet implemented")
 
 
+# Argument(s) retained for compatibility with ``_cubit_python.mesh`` API
 def mesh(
     input_file: str,
-    element_type: str,
-    output_file: typing.Optional[str] = parsers.mesh_defaults["output_file"],
-    model_name: typing.Optional[str] = parsers.mesh_defaults["model_name"],
-    part_name: typing.Optional[str] = parsers.mesh_defaults["part_name"],
-    global_seed: typing.Optional[float] = parsers.mesh_defaults["global_seed"],
-    edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"],
+    element_type: str,  # noqa: ARG001
+    output_file: str | None = parsers.mesh_defaults["output_file"],
+    model_name: str | None = parsers.mesh_defaults["model_name"],  # noqa: ARG001
+    part_name: str | None = parsers.mesh_defaults["part_name"],  # noqa: ARG001
+    global_seed: float | None = parsers.mesh_defaults["global_seed"],
+    edge_seeds: tuple[str, int] | None = parsers.mesh_defaults["edge_seeds"],  # noqa: ARG001
 ) -> None:
     """Mesh Gmsh physical entities by part name.
 
@@ -421,21 +422,25 @@ def mesh(
     gmsh.finalize()
 
 
-def merge(*args, **kwargs) -> typing.NoReturn:
+# TODO: Remove ``noqa: ARG001`` when this function is implemented.
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/216
+def merge(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
     raise RuntimeError("merge subcommand is not yet implemented")
 
 
-def export(*args, **kwargs) -> typing.NoReturn:
+# TODO: Remove ``noqa: ARG001`` when this function is implemented.
+def export(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
     raise RuntimeError("export subcommand is not yet implemented")
 
 
 def image(
-    input_file,
-    output_file,
-    x_angle=parsers.image_defaults["x_angle"],
-    y_angle=parsers.image_defaults["y_angle"],
-    z_angle=parsers.image_defaults["z_angle"],
-    image_size=parsers.image_defaults["image_size"],
+    input_file: str,
+    output_file: str,
+    x_angle: float = parsers.image_defaults["x_angle"],
+    y_angle: float = parsers.image_defaults["y_angle"],
+    z_angle: float = parsers.image_defaults["z_angle"],
+    # Argument retained for compatibility with ``_cubit_python.image`` API
+    image_size: tuple[int, int] = parsers.image_defaults["image_size"],  # noqa: ARG001
 ) -> None:
     """Open a Gmsh geometry or mesh file and save an image.
 

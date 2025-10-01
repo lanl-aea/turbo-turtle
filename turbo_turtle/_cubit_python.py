@@ -703,9 +703,9 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
 
 
 def _sets(
-    face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
-    edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
-    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"],
+    face_sets: list | None = parsers.sets_defaults["face_sets"],
+    edge_sets: list | None = parsers.sets_defaults["edge_sets"],
+    vertex_sets: list | None = parsers.sets_defaults["vertex_sets"],
 ) -> None:
     """Create named features, with associated node and sidesets, by feature ID.
 
@@ -725,11 +725,11 @@ def _sets(
 
 def sets(
     input_file: str,
-    output_file: typing.Optional[str] = parsers.sets_defaults["output_file"],
-    part_name: typing.Optional[str] = parsers.sets_defaults["part_name"],
-    face_sets: typing.Optional[typing.List] = parsers.sets_defaults["face_sets"],
-    edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
-    vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"],
+    output_file: str | None = parsers.sets_defaults["output_file"],
+    part_name: str | None = parsers.sets_defaults["part_name"],
+    face_sets: tuple[str, int] = parsers.sets_defaults["face_sets"],
+    edge_sets: tuple[str, int] = parsers.sets_defaults["edge_sets"],
+    vertex_sets: list | None = parsers.sets_defaults["vertex_sets"],
 ) -> None:
     """Create Cubit sidesets and nodesets from feature numbers.
 
@@ -759,10 +759,10 @@ def sets(
 def mesh(
     input_file: str,
     element_type: str,
-    output_file: typing.Optional[str] = parsers.mesh_defaults["output_file"],
-    part_name: typing.Optional[str] = parsers.mesh_defaults["part_name"],
-    global_seed: typing.Optional[float] = parsers.mesh_defaults["global_seed"],
-    edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"],
+    output_file: str | None = parsers.mesh_defaults["output_file"],
+    part_name: str | None = parsers.mesh_defaults["part_name"],
+    global_seed: float | None = parsers.mesh_defaults["global_seed"],
+    edge_seeds: tuple[str, int] | None = parsers.mesh_defaults["edge_seeds"],
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name.
 
@@ -997,13 +997,13 @@ def _export_abaqus(output_file, part_name) -> None:
 
 
 def image(
-    input_file,
-    output_file,
-    cubit_command,
-    x_angle=parsers.image_defaults["x_angle"],
-    y_angle=parsers.image_defaults["y_angle"],
-    z_angle=parsers.image_defaults["z_angle"],
-    image_size=parsers.image_defaults["image_size"],
+    input_file: str,
+    output_file: str,
+    cubit_command: str,
+    x_angle: float = parsers.image_defaults["x_angle"],
+    y_angle: float = parsers.image_defaults["y_angle"],
+    z_angle: float = parsers.image_defaults["z_angle"],
+    image_size: tuple[int, int] = parsers.image_defaults["image_size"],
 ) -> None:
     """Open a Cubit ``*.cub`` file and save an image.
 
