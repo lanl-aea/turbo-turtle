@@ -21,8 +21,6 @@ env.AlwaysBuild(black_check)
 env.Alias("black-check", black_check)
 env.Alias("style", black_check)
 
-# TODO: Remove custom python script if/when black supports magic file type searches
-# https://github.com/psf/black/issues/491
 black_format = env.Command(
     target=["black-format.txt"],
     source=["pyproject.toml"],
