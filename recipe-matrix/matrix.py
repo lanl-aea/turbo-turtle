@@ -26,12 +26,14 @@ conda_build_test_matrix = list(itertools.product(python_versions, scons_versions
 @pytest.mark.parametrize("PYTHON_VERSION, SCONS_VERSION", conda_build_test_matrix)
 def test_matrix(PYTHON_VERSION: str, SCONS_VERSION: str) -> None:
     template = command_template
-    command = template.safe_substitute({
-        "OUTPUT_FOLDER": OUTPUT_FOLDER,
-        "CROOT": CROOT,
-        "PYTHON_VERSION": PYTHON_VERSION,
-        "SCONS_VERSION": SCONS_VERSION
-    })
+    command = template.safe_substitute(
+        {
+            "OUTPUT_FOLDER": OUTPUT_FOLDER,
+            "CROOT": CROOT,
+            "PYTHON_VERSION": PYTHON_VERSION,
+            "SCONS_VERSION": SCONS_VERSION,
+        }
+    )
     subprocess.check_output(
         command,
         env=env,
@@ -39,5 +41,5 @@ def test_matrix(PYTHON_VERSION: str, SCONS_VERSION: str) -> None:
         text=True,
         shell=True,
         stdin=subprocess.DEVNULL,
-        start_new_session=True
+        start_new_session=True,
     )

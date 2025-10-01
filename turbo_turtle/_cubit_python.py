@@ -316,8 +316,7 @@ def _rename_and_sweep(
         return_object = surface.volumes()[0]
     else:
         cubit_command_or_exception(
-            f"sweep surface {surface_number} axis {center_string} {revolution_string} "
-            f"angle {revolution_angle} merge"
+            f"sweep surface {surface_number} axis {center_string} {revolution_string} angle {revolution_angle} merge"
         )
         return_object = surface.volumes()[0]
         volume_id = return_object.id()
@@ -547,11 +546,11 @@ def create_pyramid_volumes(center, xvector, zvector, size):
 
     # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
     pyramid_volume_surfaces = [
-        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y  # fmt: skip
+        _surfaces_by_vector(pyramid_surfaces, yvector, center),  # +Y  # fmt: skip
         _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y  # fmt: skip
-        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X  # fmt: skip
+        _surfaces_by_vector(pyramid_surfaces, xvector, center),  # +X  # fmt: skip
         _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X  # fmt: skip
-        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z  # fmt: skip
+        _surfaces_by_vector(pyramid_surfaces, zvector, center),  # +Z  # fmt: skip
         _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z  # fmt: skip
     ]
     pyramid_volumes = [_create_volume_from_surfaces(surface_list) for surface_list in pyramid_volume_surfaces]

@@ -116,11 +116,11 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
     sketch_vertex_pairs = (
         (
             (-big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip
-            ( big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip
+            (big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip
         ),
         (
             (-big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip
-            ( big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip
+            (big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip
         ),
     )
 

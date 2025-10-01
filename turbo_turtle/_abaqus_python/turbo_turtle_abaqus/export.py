@@ -148,7 +148,9 @@ def export_mesh_file(
     block = model.keywordBlock.sieBlocks
     block_string = "\n".join(block)
     orphan_mesh = re.findall(
-        r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name), block_string, re.DOTALL | re.IGNORECASE | re.MULTILINE
+        r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name),
+        block_string,
+        re.DOTALL | re.IGNORECASE | re.MULTILINE,
     )
     part_definition = orphan_mesh[0]
     with open(output_file, "w") as output:

@@ -12,6 +12,7 @@ Files *must* use extensions ``*.cprofile.{lazy,eager}``
    $ EAGER_IMPORT=eager python -m cProfile -m profiler.cprofile.eager -m turbo_turtle._main
    $ python profile_package.py profiler.cprofile.{eager,lazy} -o profiler.png
 """
+
 import argparse
 import pathlib
 import pstats
@@ -33,22 +34,20 @@ def get_parser() -> argparse.Namespace():
     parser = argparse.ArgumentParser(
         description="Read multiple cProfile files and plot. Files *must* use extensions ``.cprofile.{lazy,eager}``"
     )
+    parser.add_argument("FILE", nargs="+", help="cProfile output file")
     parser.add_argument(
-        "FILE",
-        nargs="+",
-        help="cProfile output file"
-    )
-    parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         default=default_output,
-        help="Output file to save as figure. Must use an extension supported by matplotlib. (default: %(default)s)"
+        help="Output file to save as figure. Must use an extension supported by matplotlib. (default: %(default)s)",
     )
     parser.add_argument(
-        "-f", "--figsize",
+        "-f",
+        "--figsize",
         nargs=2,
         type=float,
         default=default_figsize,
-        help="Matplotlib figure size [width, height] in inches. (default: %(default)s)"
+        help="Matplotlib figure size [width, height] in inches. (default: %(default)s)",
     )
     return parser
 
@@ -72,7 +71,7 @@ def plot(
     dataset: xarray.Dataset,
     figsize: typing.Tuple[float, float] = default_figsize,
     output: typing.Optional[str] = default_output,
-    **kwargs
+    **kwargs,
 ) -> None:
     """Plot Xarray Dataset, optionally saving and output file
 
@@ -99,7 +98,7 @@ def main() -> None:
 
     dispositions = [".eager", ".lazy"]
     paths = [pathlib.Path(path) for path in args.FILE]
-    stems = list(set([smallest_stem(path)for path in paths]))
+    stems = list(set([smallest_stem(path) for path in paths]))
 
     total_time = numpy.zeros([len(stems), len(dispositions)])
     for path in paths:
@@ -112,17 +111,21 @@ def main() -> None:
         total_time[stems_index, disposition_index] = stats.total_tt
 
     dataset = xarray.Dataset(
-        {"total time": (["file", "disposition"], total_time)},
-        coords={
-            "file": stems,
-            "disposition": dispositions
-        }
+        {"total time": (["file", "disposition"], total_time)}, coords={"file": stems, "disposition": dispositions}
     )
     dataset["total time"].attrs["units"] = "s"
     dataset = dataset.sortby("file")
 
-    plot(dataset, figsize=tuple(args.figsize), output=args.output,
-         x="file", y="total time", hue="disposition", add_legend=True, add_colorbar=False)
+    plot(
+        dataset,
+        figsize=tuple(args.figsize),
+        output=args.output,
+        x="file",
+        y="total time",
+        hue="disposition",
+        add_legend=True,
+        add_colorbar=False,
+    )
 
 
 if __name__ == "__main__":

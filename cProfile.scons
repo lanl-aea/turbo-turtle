@@ -7,7 +7,7 @@ def cprofile(
     required: str = "-o ${TARGET.abspath} -m turbo_turtle._main",
     options: str = "",
     selection: str = "turbo-turtle",
-    rows: int = 10
+    rows: int = 10,
 ) -> SCons.Builder.Builder:
     r"""Return a cProfile Builder.
 
@@ -36,80 +36,96 @@ def cprofile(
         required=required,
         options=options,
         selection=selection,
-        rows=rows
+        rows=rows,
     )
     return builder
 
 
 # Inherit the parent construction environment
 Import("env")
-env.Append(BUILDERS={
-    "CProfile": cprofile(),
-    "CProfileEager": cprofile(program="EAGER_IMPORT=eager python -m cProfile", rows=0)
-})
+env.Append(
+    BUILDERS={
+        "CProfile": cprofile(),
+        "CProfileEager": cprofile(program="EAGER_IMPORT=eager python -m cProfile", rows=0),
+    }
+)
 
 # Collector alias
 workflow = []
 
 for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager, ".cprofile.eager")]:
     # Package import
-    workflow.extend(builder(
-        target=["import_package${extension}"],
-        source=["import_package.py"],
-        required="-o ${TARGET.abspath} ${SOURCE.abspath}",
-        options="--package turbo_turtle",
-        extension=extension
-    ))
+    workflow.extend(
+        builder(
+            target=["import_package${extension}"],
+            source=["import_package.py"],
+            required="-o ${TARGET.abspath} ${SOURCE.abspath}",
+            options="--package turbo_turtle",
+            extension=extension,
+        )
+    )
 
     # SCons extensions import
-    workflow.extend(builder(
-        target=["import_scons_extensions${extension}"],
-        source=["import_package.py"],
-        required="-o ${TARGET.abspath} ${SOURCE.abspath}",
-        options="--package turbo_turtle --module scons_extensions",
-        extension=extension
-    ))
+    workflow.extend(
+        builder(
+            target=["import_scons_extensions${extension}"],
+            source=["import_package.py"],
+            required="-o ${TARGET.abspath} ${SOURCE.abspath}",
+            options="--package turbo_turtle --module scons_extensions",
+            extension=extension,
+        )
+    )
 
     # Geometry XYPlot import
-    workflow.extend(builder(
-        target=["import_geometry_xyplot${extension}"],
-        source=["import_package.py"],
-        required="-o ${TARGET.abspath} ${SOURCE.abspath}",
-        options="--package turbo_turtle --module geometry_xyplot",
-        extension=extension
-    ))
+    workflow.extend(
+        builder(
+            target=["import_geometry_xyplot${extension}"],
+            source=["import_package.py"],
+            required="-o ${TARGET.abspath} ${SOURCE.abspath}",
+            options="--package turbo_turtle --module geometry_xyplot",
+            extension=extension,
+        )
+    )
 
     # Help/usage
-    workflow.extend(builder(
-        target=["cli_help${extension}"],
-        source=["cProfile"],
-        options="--help",
-        extension=extension
-    ))
+    workflow.extend(
+        builder(
+            target=["cli_help${extension}"],
+            source=["cProfile"],
+            options="--help",
+            extension=extension,
+        )
+    )
 
     # Geometry-XYPlot
-    workflow.extend(builder(
-        target=["cli_geometryxyplot${extension}", "vase${extension}.png"],
-        source=["turbo_turtle/tests/vase.csv"],
-        options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
-        extension=extension
-    ))
+    workflow.extend(
+        builder(
+            target=["cli_geometryxyplot${extension}", "vase${extension}.png"],
+            source=["turbo_turtle/tests/vase.csv"],
+            options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
+            extension=extension,
+        )
+    )
 
     # Geometry
-    workflow.extend(builder(
-        target=["cli_geometry${extension}", "vase${extension}.cae"],
-        source=["turbo_turtle/tests/vase.csv"],
-        options="geometry --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
-        extension=extension
-    ))
+    workflow.extend(
+        builder(
+            target=["cli_geometry${extension}", "vase${extension}.cae"],
+            source=["turbo_turtle/tests/vase.csv"],
+            options="geometry --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
+            extension=extension,
+        )
+    )
 
 # Summary total time image
 profiles = [node for node in workflow if str(node).endswith(".cprofile.lazy") or str(node).endswith(".cprofile.eager")]
-workflow.extend(env.Command(
-    target=["profiles.png"],
-    source=profiles,
-    action=["python profiles.py ${SOURCES.abspath} -o ${TARGET.abspath}"]
-))
+workflow.extend(
+    env.Command(
+        target=["profiles.png"],
+        source=profiles,
+        action=["python profiles.py ${SOURCES.abspath} -o ${TARGET.abspath}"],
+    )
+)
 
 env.AlwaysBuild(workflow)
 env.Alias("cProfile", workflow)

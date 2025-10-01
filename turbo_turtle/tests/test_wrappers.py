@@ -24,7 +24,7 @@ geometry_namespace_sparse = {
     "atol": None,
 }
 geometry_namespace_full = copy.deepcopy(geometry_namespace_sparse)
-geometry_namespace_full.update({"planar": True, "part_name": ["part_name"], "rtol": 1.0e-9, "atol": 1.0e-9}),
+(geometry_namespace_full.update({"planar": True, "part_name": ["part_name"], "rtol": 1.0e-9, "atol": 1.0e-9}),)
 geometry_expected_options_sparse = [
     "--input-file",
     "--output-file",
@@ -72,7 +72,7 @@ sphere_namespace_sparse = {
     "part_name": "part_name",
 }
 sphere_namespace_full = copy.deepcopy(sphere_namespace_sparse)
-sphere_namespace_full.update({"input_file": "input_file"}),
+(sphere_namespace_full.update({"input_file": "input_file"}),)
 sphere_expected_options_sparse = [
     command,
     "--inner-radius",
@@ -97,7 +97,7 @@ partition_namespace_sparse = {
     "big_number": 0.0,
 }
 partition_namespace_full = copy.deepcopy(partition_namespace_sparse)
-partition_namespace_full.update({"output_file": "output_file"}),
+(partition_namespace_full.update({"output_file": "output_file"}),)
 partition_expected_options_sparse = [
     command,
     "--input-file",
@@ -141,7 +141,7 @@ mesh_namespace_sparse = {
     "edge_seeds": None,
 }
 mesh_namespace_full = copy.deepcopy(mesh_namespace_sparse)
-mesh_namespace_full.update({"output_file": "output_file", "edge_seeds": [["name", "1"]]}),
+(mesh_namespace_full.update({"output_file": "output_file", "edge_seeds": [["name", "1"]]}),)
 mesh_expected_options_sparse = [
     command,
     "--input-file",
@@ -160,12 +160,14 @@ merge_namespace_sparse = {
     "part_name": [None],
 }
 merge_namespace_full = copy.deepcopy(merge_namespace_sparse)
-merge_namespace_full.update(
-    {
-        "model_name": ["model_name"],
-        "part_name": ["part_name"],
-    }
-),
+(
+    merge_namespace_full.update(
+        {
+            "model_name": ["model_name"],
+            "part_name": ["part_name"],
+        }
+    ),
+)
 merge_expected_options_sparse = [
     "--input-file",
     "--output-file",
@@ -182,12 +184,14 @@ export_namespace_sparse = {
     "assembly": None,
 }
 export_namespace_full = copy.deepcopy(export_namespace_sparse)
-export_namespace_full.update(
-    {
-        "element_type": ["element_type"],
-        "assembly": True,
-    }
-),
+(
+    export_namespace_full.update(
+        {
+            "element_type": ["element_type"],
+            "assembly": True,
+        }
+    ),
+)
 export_expected_options_sparse = ["--input-file", "--model-name", "--part-name", "--destination"]
 export_unexpected_options_sparse = ["--element-type", "--assembly"]
 
@@ -203,7 +207,7 @@ image_namespace_sparse = {
     "color_map": "color_map",
 }
 image_namespace_full = copy.deepcopy(image_namespace_sparse)
-image_namespace_full.update({"part_name": "part_name"}),
+(image_namespace_full.update({"part_name": "part_name"}),)
 image_expected_options_sparse = [
     command,
     "--input-file",
