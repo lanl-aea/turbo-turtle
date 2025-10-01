@@ -20,7 +20,7 @@ project_configuration = pathlib.Path(inspect.getfile(lambda: None))
 project_directory = project_configuration.parent
 distribution_name = project_name.replace("-", "_")
 package_specification = f"{distribution_name}-{version}"
-package_directory = project_directory / distribution_name 
+package_directory = project_directory / distribution_name
 project_variables = {
     "name": project_name,
     "version": version,
@@ -157,16 +157,16 @@ env.AlwaysBuild(install)
 env.ProjectAlias("install", install, description="Install pip package to ``prefix``")
 
 # Documentation
-build_dir = env["build_directory"] / "docs"
-SConscript(dirs="docs", variant_dir=build_dir, exports=["env", "project_variables"])
+variant_directory = env["build_directory"] / "docs"
+SConscript(dirs="docs", variant_dir=variant_directory, exports=["env", "project_variables"])
 
 # Pytests, style checks, and static type checking
-workflow_configurations = ["pytest", "style", "mypy", "cProfile"]
+workflow_configurations = ["pytest.scons", "style.scons", "mypy.scons", "cProfile.scons"]
 for workflow in workflow_configurations:
-    build_dir = env["build_directory"] / workflow
+    variant_directory = env["build_directory"] / workflow.replace(".scons", "")
     SConscript(
-        build_dir.name,
-        variant_dir=build_dir,
+        workflow,
+        variant_dir=variant_directory,
         exports=["env", "abaqus_environments", "cubit_environments"],
         duplicate=False,
     )
