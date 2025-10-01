@@ -1,3 +1,9 @@
+"""Internal API module implementing the ``fetch`` subcommand behavior.
+
+Should raise ``RuntimeError`` to allow the CLI implementation to convert stack-trace/exceptions into STDERR message and
+non-zero exit codes.
+"""
+
 import argparse
 import filecmp
 import os

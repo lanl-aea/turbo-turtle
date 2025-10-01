@@ -1,3 +1,9 @@
+"""Internal API module implementing the ``docs`` subcommand behavior.
+
+Should raise ``RuntimeError`` to allow the CLI implementation to convert stack-trace/exceptions into STDERR message and
+non-zero exit codes.
+"""
+
 import argparse
 import pathlib
 import sys
@@ -27,10 +33,12 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 def main(documentation_index: pathlib.Path, print_local_path: bool = False) -> None:
-    """Open the package HTML documentation in the system default web browser or print the path to the documentation
-    index file.
+    """Open the package HTML documentation in the system default web browser or print documentation index path.
 
     :param print_local_path: Flag to print the local path to terminal instead of calling the default web browser
+
+    :raises RuntimeError: if the installed documentation path is not found
+    :raises RuntimeError: if a web browser fails to open
     """
     if print_local_path:
         if documentation_index.exists():
@@ -40,7 +48,7 @@ def main(documentation_index: pathlib.Path, print_local_path: bool = False) -> N
             # _settings.py. It is used by the Conda build tests as a sign-of-life that the assumptions are correct.
             raise RuntimeError("Could not find package documentation HTML index file")
     else:
-        import webbrowser
+        import webbrowser  # noqa: PLC0415
 
         success = webbrowser.open(str(documentation_index))
         if not success:
