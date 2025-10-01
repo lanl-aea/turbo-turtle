@@ -7,7 +7,7 @@ conda-bld/
 _version.py
 test_results.xml
 test_abaqus_python.txt
-.coverage
+.coverage*
 coverage*.xml
 # Generated dynamically during some CI packaging opertions, e.g. PyPI style package
 turbo_turtle/docs
