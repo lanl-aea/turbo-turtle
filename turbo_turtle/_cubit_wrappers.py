@@ -1,10 +1,10 @@
-"""Thin unpacking of the command line argparse namespace into full function interfaces"""
+"""Thin unpacking of the command line argparse namespace into full function interfaces."""
 
 from turbo_turtle import _cubit_python
 
 
-def geometry(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.geometry`
+def geometry(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.geometry`.
 
     Unpack the argument namespace into the full function interface
 
@@ -28,8 +28,8 @@ def geometry(args, command):
     )
 
 
-def cylinder(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.cylinder`
+def cylinder(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.cylinder`.
 
     Unpack the argument namespace into the full function interface
 
@@ -48,8 +48,8 @@ def cylinder(args, command):
     )
 
 
-def sphere(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.sphere`
+def sphere(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.sphere`.
 
     Unpack the argument namespace into the full function interface
 
@@ -69,8 +69,8 @@ def sphere(args, command):
     )
 
 
-def partition(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.partition`
+def partition(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.partition`.
 
     Unpack the argument namespace into the full function interface
 
@@ -88,8 +88,8 @@ def partition(args, command):
     )
 
 
-def sets(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.sets`
+def sets(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.sets`.
 
     Unpack the argument namespace into the full function interface
 
@@ -106,8 +106,8 @@ def sets(args, command):
     )
 
 
-def mesh(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.mesh`
+def mesh(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.mesh`.
 
     Unpack the argument namespace into the full function interface
 
@@ -125,8 +125,8 @@ def mesh(args, command):
     )
 
 
-def merge(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.merge`
+def merge(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.merge`.
 
     Unpack the argument namespace into the full function interface
 
@@ -139,8 +139,8 @@ def merge(args, command):
     )
 
 
-def export(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.export`
+def export(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.export`.
 
     Unpack the argument namespace into the full function interface
 
@@ -156,8 +156,8 @@ def export(args, command):
     )
 
 
-def image(args, command):
-    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.image`
+def image(args, command) -> None:
+    """Python 3 wrapper around Cubit calling :meth:`turbo_turtle._cubit_python.image`.
 
     Unpack the argument namespace into the full function interface
 

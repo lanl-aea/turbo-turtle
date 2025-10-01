@@ -50,7 +50,7 @@ def setup_sphere_commands(
     backend,
     output_type,
 ) -> typing.List[string.Template]:
-    """Return the sphere/partition/mesh commands for system testing
+    """Return the sphere/partition/mesh commands for system testing.
 
     :returns: list of string or string template commands
     """
@@ -854,7 +854,7 @@ for files in sconstruct_files:
 @pytest.mark.require_third_party
 @pytest.mark.parametrize("commands", commands_list)
 def test_require_third_party(abaqus_command, cubit_command, commands: list) -> None:
-    """Run system tests that require third-party software
+    """Run system tests that require third-party software.
 
     Executes with a temporary directory that is cleaned up after each test execution.
 
@@ -871,7 +871,9 @@ def test_require_third_party(abaqus_command, cubit_command, commands: list) -> N
     test_project_shell_commands(abaqus_command, cubit_command, commands)
 
 
-def run_commands(commands, build_directory, template_substitution={}) -> None:
+def run_commands(commands, build_directory, template_substitution=None) -> None:
+    if template_substitution is None:
+        template_substitution = {}
     for command in commands:
         if isinstance(command, string.Template):
             command = command.substitute(template_substitution)

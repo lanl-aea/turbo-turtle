@@ -1,4 +1,4 @@
-"""Turbo-Turtle Plugin Driver Script
+"""Turbo-Turtle Plugin Driver Script.
 
 This script defines Abaqus CAE plugin toolkit options
 """

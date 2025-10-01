@@ -53,7 +53,7 @@ def main(
     root_directory: typing.Union[str, pathlib.Path],
     relative_paths: typing.Iterable[typing.Union[str, pathlib.Path]],
     destination: typing.Union[str, pathlib.Path],
-    requested_paths: typing.List[pathlib.Path] = [],
+    requested_paths: typing.List[pathlib.Path] | None = None,
     overwrite: bool = False,
     dry_run: bool = False,
     print_available: bool = False,
@@ -74,6 +74,8 @@ def main(
     :param dry_run: Print the destination tree and exit. Short circuited by ``print_available``
     :param print_available: Print the available source files and exit. Short circuits ``dry_run``
     """
+    if requested_paths is None:
+        requested_paths = []
     root_directory = pathlib.Path(root_directory)
     if not root_directory.is_dir():
         # During "turbo-turtle fetch" sub-command, this should only be reached if the package installation
@@ -250,7 +252,7 @@ def recursive_copy(
     root_directory: typing.Union[str, pathlib.Path],
     relative_paths: typing.Iterable[typing.Union[str, pathlib.Path]],
     destination: typing.Union[str, pathlib.Path],
-    requested_paths: typing.List[pathlib.Path] = [],
+    requested_paths: typing.List[pathlib.Path] | None = None,
     overwrite: bool = False,
     dry_run: bool = False,
     print_available: bool = False,
@@ -274,7 +276,9 @@ def recursive_copy(
     :raises RuntimeError: If the no requested files exist in the longest common source path
     """
     # Build source tree
-    source_files, missing_relative_paths = build_source_files(root_directory, relative_paths)
+    if requested_paths is None:
+        requested_paths = []
+    source_files, _missing_relative_paths = build_source_files(root_directory, relative_paths)
     longest_common_source_path = longest_common_path_prefix(source_files)
     if print_available:
         print("Available source files:")

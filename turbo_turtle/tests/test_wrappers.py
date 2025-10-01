@@ -327,7 +327,7 @@ wrapper_tests = {
     wrapper_tests.values(),
     ids=wrapper_tests.keys(),
 )
-def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_options):
+def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_options) -> None:
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
         subcommand_wrapper = getattr(_abaqus_wrappers, subcommand)
@@ -341,7 +341,7 @@ def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_opt
 
 
 def trim_namespace(original, pop_keys):
-    """Create a modified dictionary deepcopy by removing the provided keys
+    """Create a modified dictionary deepcopy by removing the provided keys.
 
     :returns: Modified dictionary deepcopy with pop keys removed
     :rtype: dict
@@ -353,7 +353,7 @@ def trim_namespace(original, pop_keys):
     return modified
 
 
-def test_trim_namespace():
+def test_trim_namespace() -> None:
     original = {"keep": "keep", "pop": "pop"}
     modified = trim_namespace(original, ("pop",))
     assert modified == {"keep": "keep"}
@@ -410,7 +410,7 @@ cubit_wrapper_tests = {
     cubit_wrapper_tests.values(),
     ids=cubit_wrapper_tests.keys(),
 )
-def test_cubit_wrappers(subcommand, namespace, positional, keywords):
+def test_cubit_wrappers(subcommand, namespace, positional, keywords) -> None:
     args = argparse.Namespace(**namespace)
     with (
         patch("turbo_turtle._utilities.import_cubit"),
@@ -492,7 +492,7 @@ gmsh_wrapper_tests = {
     gmsh_wrapper_tests.values(),
     ids=gmsh_wrapper_tests.keys(),
 )
-def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
+def test_gmsh_wrappers(subcommand, namespace, positional, keywords) -> None:
     args = argparse.Namespace(**namespace)
     implemented = ["geometry", "cylinder", "sphere", "mesh", "image"]
     if subcommand in implemented:

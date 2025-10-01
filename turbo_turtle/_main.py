@@ -13,7 +13,7 @@ def _print_abaqus_path_parser() -> argparse.ArgumentParser:
 
 
 def _print_abaqus_path_location() -> None:
-    """Print the absolute path to the Turbo Turtle Abaqus Python package directory
+    """Print the absolute path to the Turbo Turtle Abaqus Python package directory.
 
     Exits with a non-zero exit code if the settings variable ``_abaqus_python_parent_abspath`` does not exist.
     """
@@ -24,7 +24,7 @@ def _print_abaqus_path_location() -> None:
 
 
 def add_abaqus_and_cubit(parsers: typing.List[argparse.ArgumentParser]) -> None:
-    """Add the Abaqus and Cubit command arguments to each parser in the parsers list
+    """Add the Abaqus and Cubit command arguments to each parser in the parsers list.
 
     :param list parsers: List of parsers to run ``add_argument`` for the command options
     """
@@ -50,7 +50,7 @@ def add_abaqus_and_cubit(parsers: typing.List[argparse.ArgumentParser]) -> None:
 
 
 def append_cubit_help(text: str, append: str = "with Abaqus, Cubit, or Gmsh (work-in-progress)") -> str:
-    """Append common short help with optional Cubit text
+    """Append common short help with optional Cubit text.
 
     :param str text: original text
     :param str append: new text
@@ -69,7 +69,7 @@ def append_cubit_description(
         "compatibility. Cubit backend ignores model/assembly name arguments."
     ),
 ) -> str:
-    """Append common long description with optional Cubit text
+    """Append common long description with optional Cubit text.
 
     :param str text: original text
     :param str append: new text
@@ -81,7 +81,7 @@ def append_cubit_description(
 
 
 def get_parser() -> argparse.ArgumentParser:
-    """Get parser object for command line options
+    """Get parser object for command line options.
 
     :return: parser
     :rtype: ArgumentParser

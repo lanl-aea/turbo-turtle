@@ -10,7 +10,7 @@ _exclude_from_namespace = set(globals().keys())
 
 
 def _get_parser() -> argparse.ArgumentParser:
-    """Return a partial parser for the geometry-xyplot subcommand options appended to the geometry subcommand options
+    """Return a partial parser for the geometry-xyplot subcommand options appended to the geometry subcommand options.
 
     :return: parser
     """
@@ -43,8 +43,7 @@ def geometry_xyplot(
     annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
     scale: bool = parsers.geometry_xyplot_defaults["scale"],
 ) -> matplotlib.pyplot.Figure:
-    """Return a matplotlib figure with the coordinates plotted consistently with geometry and geometry-xyplot
-    subcommands
+    """Return a matplotlib figure with the coordinates plotted consistently with geometry/geometry-xyplot subcommands.
 
     :param coordinates_list: List of 2D numpy arrays of (X, Y) coordinates
     :param unit_conversion: multiplication factor applies to all coordinates

@@ -27,10 +27,7 @@ default_output = None
 
 
 def get_parser() -> argparse.Namespace():
-    """Get CLI parser
-
-    :returns: profiler.py CLI parser
-    """
+    """Return CLI parser."""
     parser = argparse.ArgumentParser(
         description="Read multiple cProfile files and plot. Files *must* use extensions ``.cprofile.{lazy,eager}``"
     )
@@ -53,7 +50,7 @@ def get_parser() -> argparse.Namespace():
 
 
 def smallest_stem(path: pathlib.Path) -> str:
-    """Return the smallest stem from a pathlib Path object by removing all suffixes
+    """Return the smallest stem from a pathlib Path object by removing all suffixes.
 
     .. warning::
 
@@ -73,7 +70,7 @@ def plot(
     output: typing.Optional[str] = default_output,
     **kwargs,
 ) -> None:
-    """Plot Xarray Dataset, optionally saving and output file
+    """Plot Xarray Dataset, optionally saving and output file.
 
     If no output file is specified, open a matplotlib figure window
 
@@ -92,13 +89,13 @@ def plot(
 
 
 def main() -> None:
-    """Read cProfile files and plot"""
+    """Read cProfile files and plot."""
     parser = get_parser()
     args = parser.parse_args()
 
     dispositions = [".eager", ".lazy"]
     paths = [pathlib.Path(path) for path in args.FILE]
-    stems = list(set([smallest_stem(path) for path in paths]))
+    stems = list({smallest_stem(path) for path in paths})
 
     total_time = numpy.zeros([len(stems), len(dispositions)])
     for path in paths:

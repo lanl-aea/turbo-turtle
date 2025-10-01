@@ -22,7 +22,7 @@ cubit_command_or_exception = {
     cubit_command_or_exception.values(),
     ids=cubit_command_or_exception.keys(),
 )
-def test_cubit_command_or_exception(command, outcome):
+def test_cubit_command_or_exception(command, outcome) -> None:
     with outcome:
         try:
             success = _cubit_python.cubit_command_or_exception(command)
@@ -52,7 +52,7 @@ create_curve_from_coordinates = {
     create_curve_from_coordinates.values(),
     ids=create_curve_from_coordinates.keys(),
 )
-def test_create_curve_from_coordinates(point1, point2, center, length):
+def test_create_curve_from_coordinates(point1, point2, center, length) -> None:
     curve = _cubit_python.create_curve_from_coordinates(point1, point2)
     assert curve.dimension() == 1
     assert numpy.isclose(curve.length(), length)
@@ -84,7 +84,7 @@ create_spline_from_coordinates = {
     create_spline_from_coordinates.values(),
     ids=create_spline_from_coordinates.keys(),
 )
-def test_create_spline_from_coordinates(coordinates, outcome):
+def test_create_spline_from_coordinates(coordinates, outcome) -> None:
     with outcome:
         try:
             curve = _cubit_python.create_spline_from_coordinates(coordinates)
@@ -115,7 +115,7 @@ create_arc_from_coordinates = {
     create_arc_from_coordinates.values(),
     ids=create_arc_from_coordinates.keys(),
 )
-def test_create_arc_from_coordinates(center, point1, point2, length):
+def test_create_arc_from_coordinates(center, point1, point2, length) -> None:
     curve = _cubit_python.create_arc_from_coordinates(center, point1, point2)
     assert numpy.isclose(curve.length(), length)
 
@@ -141,7 +141,7 @@ create_surface_from_coordinates = {
     create_surface_from_coordinates.values(),
     ids=create_surface_from_coordinates.keys(),
 )
-def test_create_surface_from_coordinates(coordinates, outcome):
+def test_create_surface_from_coordinates(coordinates, outcome) -> None:
     with outcome:
         try:
             surface = _cubit_python.create_surface_from_coordinates(coordinates)

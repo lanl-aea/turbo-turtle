@@ -2,8 +2,8 @@ import abaqus
 import abaqusConstants
 
 
-def main(model_name, output_file):
-    """Wrapper for test geometry creation
+def main(model_name, output_file) -> None:
+    """Wrapper for test geometry creation.
 
     :param str model_name: name of the Abaqus model
     :param str output_file: name of the output Abaqus CAE database
@@ -14,8 +14,8 @@ def main(model_name, output_file):
     swiss_cheese(model_name)
 
 
-def seveneigths_sphere(model_name, part_name="seveneigths-sphere"):
-    """Create a hollow, seveneigths-sphere geometry
+def seveneigths_sphere(model_name, part_name="seveneigths-sphere") -> None:
+    """Create a hollow, seveneigths-sphere geometry.
 
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
@@ -97,8 +97,8 @@ def seveneigths_sphere(model_name, part_name="seveneigths-sphere"):
     abaqus.mdb.saveAs(pathName=output_file)
 
 
-def swiss_cheese(model_name, part_name="swiss-cheese"):
-    """Create a hollow, spherical geometry with a few holes sparsely placed through the thickness
+def swiss_cheese(model_name, part_name="swiss-cheese") -> None:
+    """Create a hollow, spherical geometry with a few holes sparsely placed through the thickness.
 
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model

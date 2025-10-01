@@ -1,4 +1,4 @@
-"""Python 3 module that imports cubit
+"""Python 3 module that imports cubit.
 
 Which requires that Cubit's bin directory is found on PYTHONPATH, either directly by the end user or from a successful
 :meth:`turbo_turtle._utilities.find_cubit_bin` call and internal ``sys.path`` modification. This module does *not*
@@ -18,7 +18,7 @@ cubit = _utilities.import_cubit()
 
 
 def cubit_command_or_exception(command):
-    """Thin wrapper around ``cubit.cmd`` to raise an exception when returning False
+    """Thin wrapper around ``cubit.cmd`` to raise an exception when returning False.
 
     Cubit returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
     RuntimeError when the command returns False.
@@ -44,7 +44,7 @@ def geometry(
     y_offset=parsers.geometry_defaults["y_offset"],
     rtol=parsers.geometry_defaults["rtol"],
     atol=parsers.geometry_defaults["atol"],
-):
+) -> None:
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
     Note that 2D axisymmetric sketches and sketches for 3D bodies of revolution about the global Y-axis must lie
@@ -92,7 +92,7 @@ def geometry(
 
 
 def _draw_surface(lines, splines):
-    """Given ordered lists of line/spline coordinates, create a Cubit surface object
+    """Given ordered lists of line/spline coordinates, create a Cubit surface object.
 
     :param list lines: list of [2, 2] shaped arrays of (x, y) coordinates defining a line segment
     :param list splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a spline
@@ -102,8 +102,8 @@ def _draw_surface(lines, splines):
     """
     curves = []
     for first, second in lines:
-        point1 = tuple(first) + (0.0,)
-        point2 = tuple(second) + (0.0,)
+        point1 = (*tuple(first), 0.0)
+        point2 = (*tuple(second), 0.0)
         curves.append(create_curve_from_coordinates(point1, point2))
     for spline in splines:
         zero_column = numpy.zeros([len(spline), 1])
@@ -113,7 +113,7 @@ def _draw_surface(lines, splines):
 
 
 def create_curve_from_coordinates(point1, point2):
-    """Create a curve from 2 three-dimensional coordinates
+    """Create a curve from 2 three-dimensional coordinates.
 
     :param tuple point1: First set of coordinates (x1, y1, z1)
     :param tuple point2: Second set of coordinates (x2, y2, z2)
@@ -127,7 +127,7 @@ def create_curve_from_coordinates(point1, point2):
 
 
 def create_spline_from_coordinates(coordinates):
-    """Create a spline from a list of coordinates
+    """Create a spline from a list of coordinates.
 
     :param numpy.array coordinates: [N, 3] array of coordinates (x, y, z)
 
@@ -151,7 +151,7 @@ def create_spline_from_coordinates(coordinates):
 
 
 def create_arc_from_coordinates(center, point1, point2):
-    """Create a circular arc cubit.Curve object from center and points on the curve
+    """Create a circular arc cubit.Curve object from center and points on the curve.
 
     :param tuple center: tuple of floats (X, Y, Z) location for the center of the circle arc
     :param tuple point1: tuple of floats (X, Y, Z) location for the first point on the arc
@@ -179,7 +179,7 @@ def create_arc_from_coordinates(center, point1, point2):
 
 
 def create_surface_from_coordinates(coordinates):
-    """Create a surface from an [N, 3] array of coordinates
+    """Create a surface from an [N, 3] array of coordinates.
 
     Each row of the array represents a coordinate in 3D space. Must have at least 3 rows or a RuntimeError is raised.
     Coordinates are connected in pairs to create curves. First and last coordinate connected for final curve. Curves
@@ -202,7 +202,7 @@ def create_surface_from_coordinates(coordinates):
 
 
 def _surface_numbers(surfaces):
-    """Return a list of surface IDs from the provided list of surface objects
+    """Return a list of surface IDs from the provided list of surface objects.
 
     :param list surfaces: list of Cubit surface objects
 
@@ -213,7 +213,7 @@ def _surface_numbers(surfaces):
 
 
 def _surface_centroids(surfaces):
-    """Return a list of 3D surface centroids from the provided list of surface objects
+    """Return a list of 3D surface centroids from the provided list of surface objects.
 
     :param list surfaces: list of Cubit surface objects
 
@@ -226,7 +226,7 @@ def _surface_centroids(surfaces):
 
 
 def _surfaces_for_volumes(volumes):
-    """Return a flat list of surface objects for a list of volumes
+    """Return a flat list of surface objects for a list of volumes.
 
     :param list volumes: list of Cubit volume objects
 
@@ -292,7 +292,7 @@ def _rename_and_sweep(
     planar=parsers.geometry_defaults["planar"],
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
 ):
-    """Recover body or volume from body surface, sweep part if required, and rename body/volume by part name
+    """Recover body or volume from body surface, sweep part if required, and rename body/volume by part name.
 
     Hyphens are replaced by underscores to make the ACIS engine happy.
 
@@ -327,7 +327,7 @@ def _rename_and_sweep(
 
 
 def _get_volumes_from_name(names):
-    """Return all volume objects with a prefix from the ``names`` list
+    """Return all volume objects with a prefix from the ``names`` list.
 
     :param list names: Name(s) prefix to search for with ``cubit.get_all_ids_from_name``
 
@@ -352,8 +352,8 @@ def cylinder(
     part_name=parsers.cylinder_defaults["part_name"],
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
     y_offset=parsers.cylinder_defaults["y_offset"],
-):
-    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
+) -> None:
+    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry.
 
     Centroid of cylinder is located on the global coordinate origin by default.
 
@@ -385,7 +385,7 @@ def sphere(
     revolution_angle=parsers.sphere_defaults["revolution_angle"],
     y_offset=parsers.sphere_defaults["y_offset"],
     part_name=parsers.sphere_defaults["part_name"],
-):
+) -> None:
     """Create a sphere geometry with file I/O handling.
 
     :param float inner_radius: inner radius (size of hollow)
@@ -440,7 +440,7 @@ def _sphere(
     revolution_angle=parsers.sphere_defaults["revolution_angle"],
     center=parsers.sphere_defaults["center"],
     part_name=parsers.sphere_defaults["part_name"],
-):
+) -> None:
     """Create a sphere geometry without file I/O.
 
     :param float inner_radius: inner radius (size of hollow)
@@ -473,8 +473,8 @@ def _sphere(
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
 
 
-def imprint_and_merge(names):
-    """Imprint and merge all volume objects with a prefix from the ``names`` list
+def imprint_and_merge(names) -> None:
+    """Imprint and merge all volume objects with a prefix from the ``names`` list.
 
     :param list names: Name(s) prefix to search for with ``cubit.get_all_ids_from_name``
     """
@@ -487,7 +487,7 @@ def imprint_and_merge(names):
 
 
 def webcut_local_coordinate_primary_planes(center, xvector, zvector, names):
-    """Webcut all volumes with a prefix in the ``names`` list on the local coordinate system primary planes
+    """Webcut all volumes with a prefix in the ``names`` list on the local coordinate system primary planes.
 
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
@@ -525,7 +525,7 @@ def webcut_local_coordinate_primary_planes(center, xvector, zvector, names):
 
 
 def create_pyramid_volumes(center, xvector, zvector, size):
-    """Return the six (6) four-sided pyramid volumes defined by a cube's center point and six outer faces
+    """Return the six (6) four-sided pyramid volumes defined by a cube's center point and six outer faces.
 
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
@@ -565,7 +565,7 @@ def create_pyramid_volumes(center, xvector, zvector, size):
 
 
 def create_pyramid_partitions(center, xvector, zvector, size, names):
-    """Partition all volumes with a prefix in the ``names`` list with the size pyramids defined by a cube
+    """Partition all volumes with a prefix in the ``names`` list with the size pyramids defined by a cube.
 
     :param list center: center location of the geometry
     :param list xvector: Local x-axis vector defined in global coordinates
@@ -604,7 +604,7 @@ def partition(
     zvector=parsers.partition_defaults["zvector"],
     part_name=parsers.partition_defaults["part_name"],
     big_number=parsers.partition_defaults["big_number"],
-):
+) -> None:
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
 
@@ -635,7 +635,7 @@ def _partition(
     zvector=parsers.partition_defaults["zvector"],
     part_name=parsers.partition_defaults["part_name"],
     big_number=parsers.partition_defaults["big_number"],
-):
+) -> None:
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
 
@@ -661,7 +661,7 @@ def _partition(
 
 
 def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
-    """Create named features, with associated node and sidesets, by feature ID
+    """Create named features, with associated node and sidesets, by feature ID.
 
     :param feature: Cubit feature name
     :param name_mask: Feature set tuples (name, ID string)
@@ -682,7 +682,7 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
 
 
 def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
-    """Create mesh seeds on features by name
+    """Create mesh seeds on features by name.
 
     If the number is an integer, seed by interval. If the number is a float, seed by size
 
@@ -707,7 +707,7 @@ def _sets(
     edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
     vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"],
 ) -> None:
-    """Create named features, with associated node and sidesets, by feature ID
+    """Create named features, with associated node and sidesets, by feature ID.
 
     :param face_sets: Face set tuples (name, mask)
     :param edge_sets: Edge set tuples (name, mask)
@@ -731,7 +731,7 @@ def sets(
     edge_sets: typing.Optional[typing.List] = parsers.sets_defaults["edge_sets"],
     vertex_sets: typing.Optional[typing.List] = parsers.sets_defaults["vertex_sets"],
 ) -> None:
-    """Create Cubit sidesets and nodesets from feature numbers
+    """Create Cubit sidesets and nodesets from feature numbers.
 
     :param input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
     :param output_file: Cubit ``*.cub`` file to write
@@ -764,7 +764,7 @@ def mesh(
     global_seed: typing.Optional[float] = parsers.mesh_defaults["global_seed"],
     edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"],
 ) -> None:
-    """Mesh Cubit volumes and sheet bodies by part/volume name
+    """Mesh Cubit volumes and sheet bodies by part/volume name.
 
     :param input_file: Cubit ``*.cub`` file to open that already contains parts/volumes to be meshed
     :param element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
@@ -786,8 +786,8 @@ def mesh(
         cubit_command_or_exception(f"save as '{output_file}' overwrite")
 
 
-def _mesh_sheet_body(volume, global_seed, element_type=None):
-    """Mesh a volume that is a sheet body
+def _mesh_sheet_body(volume, global_seed, element_type=None) -> None:
+    """Mesh a volume that is a sheet body.
 
     Assumes ``cubit.is_sheet_body(volume.id())`` is ``True``.
 
@@ -807,8 +807,8 @@ def _mesh_sheet_body(volume, global_seed, element_type=None):
         surface.mesh()
 
 
-def _mesh_volume(volume, global_seed, element_type=None):
-    """Mesh a volume
+def _mesh_volume(volume, global_seed, element_type=None) -> None:
+    """Mesh a volume.
 
     :param cubit.Volume volume: Cubit volume to mesh
     :param float global_seed: Seed size, e.g. ``cubit.cmd(volume {} size {global_seed}``
@@ -823,8 +823,8 @@ def _mesh_volume(volume, global_seed, element_type=None):
     volume.mesh()
 
 
-def _mesh_multiple_volumes(volumes, global_seed, element_type=None):
-    """Mesh ``cubit.Volume`` objects as volumes or sheet bodies
+def _mesh_multiple_volumes(volumes, global_seed, element_type=None) -> None:
+    """Mesh ``cubit.Volume`` objects as volumes or sheet bodies.
 
     :param list volumes: list of Cubit volume objects to mesh
     """
@@ -838,8 +838,8 @@ def _mesh_multiple_volumes(volumes, global_seed, element_type=None):
             _mesh_volume(volume, global_seed, element_type=element_type)
 
 
-def _mesh(element_type, part_name, global_seed, edge_seeds):
-    """Mesh Cubit volumes and sheet bodies by part/volume name
+def _mesh(element_type, part_name, global_seed, edge_seeds) -> None:
+    """Mesh Cubit volumes and sheet bodies by part/volume name.
 
     :param str element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
     :param str part_name: part/volume name prefix
@@ -855,8 +855,8 @@ def _mesh(element_type, part_name, global_seed, edge_seeds):
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
 
 
-def merge(input_file, output_file):
-    """Merge Cubit ``*.cub`` files with forced unique block IDs and save to output file
+def merge(input_file, output_file) -> None:
+    """Merge Cubit ``*.cub`` files with forced unique block IDs and save to output file.
 
     :param list input_file: List of Cubit ``*.cub`` file(s) to merge
     :param str output_file: Cubit ``*.cub`` file to write
@@ -875,8 +875,8 @@ def export(
     element_type=parsers.export_defaults["element_type"],
     destination=parsers.export_defaults["destination"],
     output_type=parsers.export_defaults["output_type"],
-):
-    """Open a Cubit ``*.cub`` file and export ``part_name`` prefixed volumes as ``part_name``.inp
+) -> None:
+    """Open a Cubit ``*.cub`` file and export ``part_name`` prefixed volumes as ``part_name``.inp.
 
     :param str input_file: Cubit ``*.cub`` file to open that already contains meshed parts/volumes
     :param str part_name: list of part/volume name prefix to export
@@ -901,7 +901,7 @@ def export(
 
 
 def _create_new_block(volumes):
-    """Create a new block for all volumes in list
+    """Create a new block for all volumes in list.
 
     Sheet bodies are added to block as surfaces. Volumes are added as volumes.
 
@@ -913,7 +913,7 @@ def _create_new_block(volumes):
     new_block_id = cubit.get_next_block_id()
     volume_ids = [volume.id() for volume in volumes]
     volume_string = _utilities.character_delimited_list(volume_ids)
-    if any([cubit.is_sheet_body(volume_id) for volume_id in volume_ids]):
+    if any(cubit.is_sheet_body(volume_id) for volume_id in volume_ids):
         surfaces = _surface_numbers(_surfaces_for_volumes(volumes))
         surface_string = _utilities.character_delimited_list(surfaces)
         cubit_command_or_exception(f"block {new_block_id} add surface {surface_string}")
@@ -923,7 +923,7 @@ def _create_new_block(volumes):
 
 
 def _create_volume_name_block(name):
-    """Create a new block with all volumes prefixed by name
+    """Create a new block with all volumes prefixed by name.
 
     :param str name: Name for new block and prefix for volume search
 
@@ -936,8 +936,8 @@ def _create_volume_name_block(name):
     return new_block_id
 
 
-def _set_genesis_output_type(output_type):
-    """Set Cubit exodus/genesis output type
+def _set_genesis_output_type(output_type) -> None:
+    """Set Cubit exodus/genesis output type.
 
     :param str output_type: String identifying genesis output type: genesis (large format), genesis-normal, genesis-hdf5
     """
@@ -951,8 +951,8 @@ def _set_genesis_output_type(output_type):
         raise RuntimeError("Unknown genesis output type '{output_type}'")
 
 
-def _export_genesis(output_file, part_name, element_type, output_type="genesis"):
-    """Export all volumes with part name prefix to the output file
+def _export_genesis(output_file, part_name, element_type, output_type="genesis") -> None:
+    """Export all volumes with part name prefix to the output file.
 
     Always creates new blocks named after the part/volume prefix.
 
@@ -971,8 +971,8 @@ def _export_genesis(output_file, part_name, element_type, output_type="genesis")
     cubit_command_or_exception(f"export mesh '{output_file}' block {block_string} overwrite")
 
 
-def _export_abaqus_list(part_name, element_type, destination):
-    """Export one Abaqus orphan mesh per part in the destination directory
+def _export_abaqus_list(part_name, element_type, destination) -> None:
+    """Export one Abaqus orphan mesh per part in the destination directory.
 
     :param list part_name: list of part/volume names to create as blocks from all volumes with a matching prefix
     :param list element_type: List of element type strings
@@ -986,8 +986,8 @@ def _export_abaqus_list(part_name, element_type, destination):
             _mixed_utilities.substitute_element_type(output_file, element)
 
 
-def _export_abaqus(output_file, part_name):
-    """Create a block named after the part, add all volumes/surfaace with name prefix, export an Abaqus orphan mesh file
+def _export_abaqus(output_file, part_name) -> None:
+    """Create a block named after the part, add all volumes/surfaace with name prefix, export an Abaqus orphan mesh file.
 
     :param pathlib.Path output_file: Abaqus file to write
     :param str part_name: part/volume name to create as blocks from all volumes with a matching prefix
@@ -1004,8 +1004,8 @@ def image(
     y_angle=parsers.image_defaults["y_angle"],
     z_angle=parsers.image_defaults["z_angle"],
     image_size=parsers.image_defaults["image_size"],
-):
-    """Open a Cubit ``*.cub`` file and save an image
+) -> None:
+    """Open a Cubit ``*.cub`` file and save an image.
 
     Uses the Cubit APREPRO `hardcopy`_ command, which accepts jpg, gif, bmp, pnm, tiff, and eps file extensions. This
     command only works in batch mode from Cubit APREPRO journal files, so an ``input_file``.jou is created for

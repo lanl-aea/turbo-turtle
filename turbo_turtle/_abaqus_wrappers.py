@@ -1,9 +1,9 @@
 from turbo_turtle import _settings, _utilities
 
 
-def geometry(args, command):
+def geometry(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.geometry_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.geometry_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
@@ -31,9 +31,9 @@ def geometry(args, command):
     _utilities.run_command(command)
 
 
-def cylinder(args, command):
+def cylinder(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.cylinder_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.cylinder_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
@@ -52,9 +52,9 @@ def cylinder(args, command):
     _utilities.run_command(command)
 
 
-def sphere(args, command):
+def sphere(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sphere_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sphere_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
@@ -72,9 +72,9 @@ def sphere(args, command):
     _utilities.run_command(command)
 
 
-def partition(args, command):
+def partition(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.partition_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.partition_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
@@ -93,9 +93,9 @@ def partition(args, command):
     _utilities.run_command(command)
 
 
-def sets(args, command):
+def sets(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sets_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sets_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
@@ -119,9 +119,9 @@ def sets(args, command):
     _utilities.run_command(command)
 
 
-def mesh(args, command):
+def mesh(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.mesh_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.mesh_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
@@ -140,9 +140,9 @@ def mesh(args, command):
     _utilities.run_command(command)
 
 
-def merge(args, command):
+def merge(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.merge_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.merge_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
@@ -160,9 +160,9 @@ def merge(args, command):
     _utilities.run_command(command)
 
 
-def export(args, command):
+def export(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.export_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.export_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
@@ -180,9 +180,9 @@ def export(args, command):
     _utilities.run_command(command)
 
 
-def image(args, command):
+def image(args, command) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.image_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.image_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path

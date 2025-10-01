@@ -10,7 +10,7 @@ else:
     missing_display = False
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser) -> None:
     parser.addoption(
         "--abaqus-command",
         action="store",

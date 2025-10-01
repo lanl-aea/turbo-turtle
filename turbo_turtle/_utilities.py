@@ -13,7 +13,7 @@ from turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities import pri
 
 
 class NamedTemporaryFileCopy:
-    """Create a temporary file copy
+    """Create a temporary file copy.
 
     Thin wrapper around ``tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)`` to provide Windows handling
 
@@ -23,7 +23,7 @@ class NamedTemporaryFileCopy:
     :param str input_file: The input file to copy into a temporary file
     """
 
-    def __init__(self, input_file, *args, **kwargs):
+    def __init__(self, input_file, *args, **kwargs) -> None:
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
         shutil.copyfile(input_file, self.temporary_file.name)
 
@@ -68,7 +68,7 @@ def find_command_or_exit(*args, **kwargs):
 
 
 def cubit_os_bin() -> str:
-    """Return the OS specific Cubit bin directory name
+    """Return the OS specific Cubit bin directory name.
 
     Making Cubit importable requires putting the Cubit bin directory on PYTHONPATH. On MacOS, the directory is "MacOS".
     On other systems it is "bin".
@@ -121,7 +121,7 @@ def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional
 
 
 def import_gmsh():
-    """Intermediate gmsh import function
+    """Intermediate gmsh import function.
 
     Allows better CLI error reporting and gmsh package mocking during unit tests
     """
@@ -136,7 +136,7 @@ def import_gmsh():
 
 
 def import_cubit():
-    """Intermediate Cubit import function
+    """Intermediate Cubit import function.
 
     Allows better CLI error reporting and Cubit package mocking during unit tests
     """
@@ -150,7 +150,7 @@ def import_cubit():
 
 
 def run_command(command: str) -> None:
-    """Split command on whitespace, execute shell command, raise RuntimeError with any error message
+    """Split command on whitespace, execute shell command, raise RuntimeError with any error message.
 
     :param command: String to run on the shell
     """
@@ -162,7 +162,7 @@ def run_command(command: str) -> None:
 
 
 def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
-    """Read an argument namespace and set the wrappers and command appropriately
+    """Read an argument namespace and set the wrappers and command appropriately.
 
     :param args: namespace of parsed arguments from :meth:`turbo_turtle._main.get_parser`
 
@@ -194,7 +194,7 @@ def construct_append_options(
     option: str,
     array: typing.Iterable[typing.Tuple],
 ) -> str:
-    """Construct a command string to match the argparse append action
+    """Construct a command string to match the argparse append action.
 
     Build the repeated option string for argparse appending options that accept more than one value
 
@@ -221,7 +221,7 @@ def construct_append_options(
 
 
 def character_delimited_list(sequence: typing.Iterable, character: str = " ") -> str:
-    """Map a list of non-strings to a character delimited string
+    """Map a list of non-strings to a character delimited string.
 
     :param sequence: Sequence to turn into a character delimited string
     :param character: Character(s) to use when joining sequence elements

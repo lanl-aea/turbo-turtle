@@ -20,7 +20,7 @@ positive_float = {
     positive_float.values(),
     ids=positive_float.keys(),
 )
-def test_positive_float(input_string, expected_float, outcome):
+def test_positive_float(input_string, expected_float, outcome) -> None:
     with outcome:
         try:
             argument = parsers.positive_float(input_string)
@@ -42,7 +42,7 @@ positive_int = {
     positive_int.values(),
     ids=positive_int.keys(),
 )
-def test_positive_int(input_string, expected_int, outcome):
+def test_positive_int(input_string, expected_int, outcome) -> None:
     with outcome:
         try:
             argument = parsers.positive_int(input_string)
@@ -59,7 +59,7 @@ construct_prog = {"script": ("script", "abaqus cae -noGui script --")}
     construct_prog.values(),
     ids=construct_prog.keys(),
 )
-def test_construct_prog(basename, expected_prog):
+def test_construct_prog(basename, expected_prog) -> None:
     prog = parsers.construct_prog(basename)
     assert prog == expected_prog
 
@@ -86,8 +86,8 @@ subcommand_parser = {
     subcommand_parser.values(),
     ids=subcommand_parser.keys(),
 )
-def test_subcommand_parser(subcommand, required_argv, exclude_keys):
-    """Test the default value assignments in the subcommand parsers
+def test_subcommand_parser(subcommand, required_argv, exclude_keys) -> None:
+    """Test the default value assignments in the subcommand parsers.
 
     :param str subcommand: the subcommand parser to test
     :param list required_argv: the argv list of strings for parser positional (required) arguments that have no
@@ -107,9 +107,9 @@ def test_subcommand_parser(subcommand, required_argv, exclude_keys):
             defaults_argv.append(f"--{key.replace('_', '-')}")
             defaults_argv.extend([str(item) for item in value])
 
-    argv = ["dummy"] + required_argv + defaults_argv
+    argv = ["dummy", *required_argv, *defaults_argv]
     with patch("sys.argv", argv):
-        args, unknown = subcommand_parser().parse_known_args()
+        args, _unknown = subcommand_parser().parse_known_args()
     args_dictionary = vars(args)
     for key, value in subcommand_defaults.items():
         if key not in exclude_keys:

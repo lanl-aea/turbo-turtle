@@ -82,7 +82,7 @@ env["ENV"]["PYTHONDONTWRITEBYTECODE"] = 1
 
 # Find third-party software
 abaqus_commands = env["abaqus_command"]
-abaqus_environments = dict()
+abaqus_environments = {}
 for command in abaqus_commands:
     # TODO: more robust version/name recovery without CI server assumptions
     version = pathlib.Path(command).name
@@ -91,7 +91,7 @@ for command in abaqus_commands:
     abaqus_environments.update({version: abaqus_environment})
 
 cubit_commands = env["cubit_command"]
-cubit_environments = dict()
+cubit_environments = {}
 for command in cubit_commands:
     # TODO: more robust version/name recovery without CI server assumptions
     version = pathlib.Path(command).parent.name

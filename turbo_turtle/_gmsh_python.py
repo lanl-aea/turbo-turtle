@@ -1,4 +1,4 @@
-"""Python 3 module that imports python-gmsh"""
+"""Python 3 module that imports python-gmsh."""
 
 import pathlib
 import typing
@@ -88,7 +88,7 @@ def geometry(
 
 
 def _draw_surface(lines_and_splines) -> int:
-    """Given ordered lists of line/spline coordinates, create a Gmsh 2D surface object
+    """Given ordered lists of line/spline coordinates, create a Gmsh 2D surface object.
 
     :param list lines_and_splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a line (N=2) or spline
         (N>2)
@@ -98,8 +98,8 @@ def _draw_surface(lines_and_splines) -> int:
     curves = []
     for coordinates in lines_and_splines:
         if len(coordinates) == 2:
-            point1 = tuple(coordinates[0]) + (0.0,)
-            point2 = tuple(coordinates[1]) + (0.0,)
+            point1 = (*tuple(coordinates[0]), 0.0)
+            point2 = (*tuple(coordinates[1]), 0.0)
             curves.append(_create_line_from_coordinates(point1, point2))
         else:
             zero_column = numpy.zeros([len(coordinates), 1])
@@ -111,7 +111,7 @@ def _draw_surface(lines_and_splines) -> int:
 
 
 def _create_line_from_coordinates(point1, point2) -> int:
-    """Create a curve from 2 three-dimensional coordinates
+    """Create a curve from 2 three-dimensional coordinates.
 
     :param tuple point1: First set of coordinates (x1, y1, z1)
     :param tuple point2: Second set of coordinates (x2, y2, z2)
@@ -124,7 +124,7 @@ def _create_line_from_coordinates(point1, point2) -> int:
 
 
 def _create_spline_from_coordinates(coordinates) -> int:
-    """Create a spline from a list of coordinates
+    """Create a spline from a list of coordinates.
 
     :param numpy.array coordinates: [N, 3] array of coordinates (x, y, z)
 
@@ -149,7 +149,7 @@ def _rename_and_sweep(
     planar=parsers.geometry_defaults["planar"],
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
 ) -> typing.Tuple[int, int]:
-    """Recover surface, sweep part if required, and rename surface/volume by part name
+    """Recover surface, sweep part if required, and rename surface/volume by part name.
 
     Hyphens are replaced by underscores to make the ACIS engine happy.
 
@@ -194,7 +194,7 @@ def cylinder(
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
     y_offset=parsers.cylinder_defaults["y_offset"],
 ) -> None:
-    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
+    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry.
 
     Centroid of cylinder is located on the global coordinate origin by default.
 
@@ -347,7 +347,7 @@ def _sphere(
 
 
 def _create_arc_from_coordinates(center, point1, point2) -> int:
-    """Create a circle arc Gmsh object from center and points on the curve
+    """Create a circle arc Gmsh object from center and points on the curve.
 
     :param tuple center: tuple of floats (X, Y, Z) location for the center of the circle arc
     :param tuple point1: tuple of floats (X, Y, Z) location for the first point on the arc
@@ -362,11 +362,11 @@ def _create_arc_from_coordinates(center, point1, point2) -> int:
     return gmsh.model.occ.addCircleArc(point1_tag, center_tag, point2_tag, center=True)
 
 
-def partition(*args, **kwargs):
+def partition(*args, **kwargs) -> typing.NoReturn:
     raise RuntimeError("partition subcommand is not yet implemented")
 
 
-def sets(*args, **kwargs):
+def sets(*args, **kwargs) -> typing.NoReturn:
     raise RuntimeError("sets subcommand is not yet implemented")
 
 
@@ -379,7 +379,7 @@ def mesh(
     global_seed: typing.Optional[float] = parsers.mesh_defaults["global_seed"],
     edge_seeds: typing.Optional[typing.List] = parsers.mesh_defaults["edge_seeds"],
 ) -> None:
-    """Mesh Gmsh physical entities by part name
+    """Mesh Gmsh physical entities by part name.
 
     :param input_file: Gmsh ``*.step`` file to open that already contains physical entities to be meshed
     :param element_type: Gmsh scheme.
@@ -421,11 +421,11 @@ def mesh(
     gmsh.finalize()
 
 
-def merge(*args, **kwargs):
+def merge(*args, **kwargs) -> typing.NoReturn:
     raise RuntimeError("merge subcommand is not yet implemented")
 
 
-def export(*args, **kwargs):
+def export(*args, **kwargs) -> typing.NoReturn:
     raise RuntimeError("export subcommand is not yet implemented")
 
 
@@ -437,7 +437,7 @@ def image(
     z_angle=parsers.image_defaults["z_angle"],
     image_size=parsers.image_defaults["image_size"],
 ) -> None:
-    """Open a Gmsh geometry or mesh file and save an image
+    """Open a Gmsh geometry or mesh file and save an image.
 
     Uses the Gmsh ``write`` command, which accepts gif, jpg, tex, pdf, png, pgf, ps, ppm, svg, tikz, and yuv file
     extensions.
