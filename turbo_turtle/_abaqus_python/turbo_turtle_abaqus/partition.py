@@ -29,7 +29,7 @@ def main(
     part_name=parsers.partition_defaults["part_name"],
     big_number=parsers.partition_defaults["big_number"],
 ):
-    """Wrap  partition function with file open and file write operations
+    """Wrap  partition function with file open and file write operations.
 
     :param str input_file: Abaqus CAE model database to open
     :param str output_file: Abaqus CAE model database to write. If none is provided, use the input file.
@@ -56,7 +56,7 @@ def main(
 
 
 def datum_axis(center, vector, part):
-    """Return an Abaqus DataAxis object by center and normal axis
+    """Return an Abaqus DataAxis object by center and normal axis.
 
     :param numpy.array center: center location of the axis
     :param numpy.array vector: axis vector
@@ -70,7 +70,7 @@ def datum_axis(center, vector, part):
 
 
 def datum_plane(center, normal, part):
-    """Return an Abaqus DataPlane object by center and normal axis
+    """Return an Abaqus DataPlane object by center and normal axis.
 
     :param numpy.array center: center location of the plane
     :param numpy.array normal: plane normal vector
@@ -207,7 +207,7 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
 
 
 def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs):
-    """Partition a 2D-axisymmetric part by three lines using the same vertex pairs computed for the 3D case
+    """Partition a 2D-axisymmetric part by three lines using the same vertex pairs computed for the 3D case.
 
     :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae
         -nogui``)
@@ -259,7 +259,7 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
 
 
 def _gui_get_inputs():
-    """Partition Interactive Inputs
+    """Partition Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -343,7 +343,7 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs that drives the plug-in"""
+    """Function with no inputs that drives the plug-in."""
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs,
         subcommand_function=partition,

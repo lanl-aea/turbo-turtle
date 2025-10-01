@@ -27,7 +27,7 @@ def main(
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
     y_offset=parsers.cylinder_defaults["y_offset"],
 ):
-    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
+    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry.
 
     Centroid of cylinder is located on the global coordinate origin by default.
 
@@ -51,7 +51,7 @@ def main(
 
 
 def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name, revolution_angle):
-    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry
+    """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry.
 
     This function drives the geometry creation of a cylinder whose axis of symmetry is located on the global coordinate
     origin by default, and always on the global Y-axis.
@@ -73,7 +73,7 @@ def cylinder(inner_radius, outer_radius, height, y_offset, model_name, part_name
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -142,7 +142,7 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs required for driving the plugin"""
+    """Function with no inputs required for driving the plugin."""
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=cylinder, post_action_function=_abaqus_utilities._view_part
     )

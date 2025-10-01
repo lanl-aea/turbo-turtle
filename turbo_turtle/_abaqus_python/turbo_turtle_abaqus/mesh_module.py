@@ -24,7 +24,7 @@ def main(
     global_seed=parsers.mesh_defaults["global_seed"],
     edge_seeds=parsers.mesh_defaults["edge_seeds"],
 ):
-    """Wrap mesh function for input file handling
+    """Wrap mesh function for input file handling.
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str element_type: Abaqus element type
@@ -61,7 +61,7 @@ def mesh(
     global_seed=parsers.mesh_defaults["global_seed"],
     edge_seeds=parsers.mesh_defaults["edge_seeds"],
 ):
-    """Apply a global seed, optional edge seed(s), and mesh the specified part
+    """Apply a global seed, optional edge seed(s), and mesh the specified part.
 
     Always creates sets
 
@@ -107,7 +107,7 @@ def mesh(
 
 
 def _gui_get_default_elem_type(model_name, part_name):
-    """Set default element types for the _gui_get_inputs_function
+    """Set default element types for the _gui_get_inputs_function.
 
     Use a one-time dump of the Abaqus default element types for known part dimensionality
 
@@ -137,7 +137,7 @@ def _gui_get_default_elem_type(model_name, part_name):
 
 
 def _gui_get_inputs():
-    """Mesh Interactive Inputs
+    """Mesh Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -208,7 +208,7 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs that drives the plug-in"""
+    """Function with no inputs that drives the plug-in."""
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=mesh, post_action_function=_abaqus_utilities._view_part
     )

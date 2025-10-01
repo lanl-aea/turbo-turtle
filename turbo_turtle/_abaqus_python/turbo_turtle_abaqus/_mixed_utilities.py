@@ -1,4 +1,4 @@
-"""Python 2/3 compatible utilities for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
+"""Python 2/3 compatible utilities for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules."""
 
 from __future__ import print_function
 
@@ -11,7 +11,7 @@ import numpy
 
 
 def sys_exit(err):
-    """Thin wrapper on ``sys.exit`` to force print to STDERR from Abaqus Python
+    """Thin wrapper on ``sys.exit`` to force print to STDERR from Abaqus Python.
 
     Python 2/3 compatible system exit that forces Abaqus CAE to print to system STDERR
 
@@ -22,7 +22,7 @@ def sys_exit(err):
 
 
 def print_exception_message(function):
-    """Decorate a function to catch bare exception and instead call sys.exit with the message
+    """Decorate a function to catch bare exception and instead call sys.exit with the message.
 
     :param function: function to decorate
     """
@@ -100,7 +100,7 @@ def return_genfromtxt(
     expected_dimensions=None,
     expected_columns=None,
 ):
-    """Parse a text file of XY coordinates into a numpy array
+    """Parse a text file of XY coordinates into a numpy array.
 
     If the resulting numpy array doesn't have the specified dimensions or column count, return an error exit code
 
@@ -133,7 +133,7 @@ def return_genfromtxt_or_exit(*args, **kwargs):
 
 
 def remove_duplicate_items(string_list):
-    """Remove duplicates from  ``string_list`` and print a warning to STDERR of all duplicates removed
+    """Remove duplicates from  ``string_list`` and print a warning to STDERR of all duplicates removed.
 
     :param list string_list: list of strings to remove duplicates
 
@@ -152,7 +152,7 @@ def remove_duplicate_items(string_list):
 
 
 def intersection_of_lists(requested, available):
-    """Return sorted intersection of available and requested items or all available items if none requested
+    """Return sorted intersection of available and requested items or all available items if none requested.
 
     :param list requested: requested items
     :param list available: available items
@@ -168,7 +168,7 @@ def intersection_of_lists(requested, available):
 
 
 def _element_type_regex(content, element_type):
-    """Place element type in Abaqus element keywords. RegEx uses MULTILINE and IGNORECASE
+    """Place element type in Abaqus element keywords. RegEx uses MULTILINE and IGNORECASE.
 
     :param str content: String of Abaqus keyword text
     :param str element_type: New element type to place in the ``*element, type=`` text
@@ -199,7 +199,7 @@ def substitute_element_type(mesh_file, element_type):
 
 
 def cubit_part_names(part_name):
-    """Replace hyphens with underscores in strings for ACIS name compliance
+    """Replace hyphens with underscores in strings for ACIS name compliance.
 
     :param list part_name: list of strings for character replacement(s)
 

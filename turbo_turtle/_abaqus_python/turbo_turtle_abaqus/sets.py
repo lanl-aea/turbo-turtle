@@ -23,7 +23,7 @@ def main(
     model_name=parsers.sets_defaults["model_name"],
     part_name=parsers.sets_defaults["part_name"],
 ):
-    """Wrap sets function for input file handling
+    """Wrap sets function for input file handling.
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param list[tuple[str, str]] face_sets: Face set tuples (name, mask)
@@ -63,7 +63,7 @@ def sets(
     model_name=parsers.sets_defaults["model_name"],
     part_name=parsers.sets_defaults["part_name"],
 ):
-    """Create sets from masks
+    """Create sets from masks.
 
     :param list[tuple[str, str]] face_sets: Face set tuples (name, mask)
     :param list[tuple[str, str]] edge_sets: Edge set tuples (name, mask)

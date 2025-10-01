@@ -20,7 +20,7 @@ def main(
     model_name=parsers.merge_defaults["model_name"],
     part_name=parsers.merge_defaults["part_name"],
 ):
-    """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model
+    """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model.
 
     This script loops through all input file(s) specified and merges the intersection of provided model/part name(s) and
     available model/part combinations. Duplicate part names are removed from the part name list. If a part name exists

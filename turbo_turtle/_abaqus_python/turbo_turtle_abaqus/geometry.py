@@ -240,7 +240,7 @@ def draw_part_from_splines(
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -330,7 +330,7 @@ def _gui_get_inputs():
             error_message = "Error: You must specify at least one input file"
             raise RuntimeError(error_message)
 
-        if part_name_strings == "None" or part_name_strings == default_part_names or not part_name_strings:
+        if part_name_strings in ("None", default_part_names) or not part_name_strings:
             part_name = [None]
         else:
             part_name = part_name_strings.split(",")
@@ -365,7 +365,7 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs required for driving the plugin"""
+    """Function with no inputs required for driving the plugin."""
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=geometry, post_action_function=_abaqus_utilities._view_part
     )

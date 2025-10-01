@@ -25,7 +25,7 @@ def main(
     destination=parsers.export_defaults["destination"],
     assembly=parsers.export_defaults["assembly"],
 ):
-    """Wrap orphan mesh export function for input file handling
+    """Wrap orphan mesh export function for input file handling.
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str model_name: model to query in the Abaqus model database
@@ -47,7 +47,7 @@ def main(
 
 
 def export(model_name, part_name, element_type, destination, assembly):
-    """Driver function for exporting part and assembly files
+    """Driver function for exporting part and assembly files.
 
     :param str model_name: model to query in the Abaqus model database
     :param list part_name: list of parts to query in the specified Abaqus model
@@ -96,7 +96,7 @@ def _export_assembly(assembly_file, model_name, part_name):
 
 
 def export_multiple_parts(model_name, part_name, element_type, destination):
-    """Export orphan mesh files for multiple parts, and allow element type changes
+    """Export orphan mesh files for multiple parts, and allow element type changes.
 
     Specify a model name and one or multiple part names for exporting orphan mesh files. This function will write one
     orphan mesh file per part name specified, and the orphan mesh file name will be the part name.
@@ -127,7 +127,7 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
 def export_mesh_file(
     output_file, model_name=parsers.export_defaults["model_name"], part_name=parsers.export_defaults["part_name"][0]
 ):
-    """Export an orphan mesh from a single part
+    """Export an orphan mesh from a single part.
 
     :param str output_file: Abaqus CAE file to save with the newly meshed part
     :param str model_name: model to query in the Abaqus model database
@@ -158,7 +158,7 @@ def export_mesh_file(
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -237,7 +237,7 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs that drives the plug-in"""
+    """Function with no inputs that drives the plug-in."""
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=export, post_action_function=None
     )

@@ -27,7 +27,7 @@ def main(
     part_name=parsers.image_defaults["part_name"],
     color_map=parsers.image_color_map_choices[0],
 ):
-    """Wrap image with file input handling
+    """Wrap image with file input handling.
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
@@ -159,7 +159,7 @@ def image(
 
 
 def _validate_color_map(color_map, valid_color_maps):
-    """Validate the user-provided color map against a provided list of valid color maps
+    """Validate the user-provided color map against a provided list of valid color maps.
 
     :param str color_map: user provided color map
     :param list valid_color_maps: valid color maps to check against
@@ -172,7 +172,7 @@ def _validate_color_map(color_map, valid_color_maps):
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -270,7 +270,7 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs required for driving the plugin"""
+    """Function with no inputs required for driving the plugin."""
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs, subcommand_function=image, post_action_function=None)
 
 

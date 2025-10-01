@@ -29,7 +29,7 @@ def main(
     model_name=parsers.sphere_defaults["model_name"],
     part_name=parsers.sphere_defaults["part_name"],
 ):
-    """Wrap sphere function with file open and file write operations
+    """Wrap sphere function with file open and file write operations.
 
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
@@ -144,7 +144,7 @@ def sphere(
 
 
 def _validate_sphere_quadrant(quadrant, valid_quadrants):
-    """Validate the user-provided sphere quadrant against a provided list of valid quadrants
+    """Validate the user-provided sphere quadrant against a provided list of valid quadrants.
 
     :param str quadrant: user provided sphere quadrant
     :param list valid_quadrants: valid quadrant to check against
@@ -157,7 +157,7 @@ def _validate_sphere_quadrant(quadrant, valid_quadrants):
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -231,7 +231,7 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs required for driving the plugin"""
+    """Function with no inputs required for driving the plugin."""
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=sphere, post_action_function=_abaqus_utilities._view_part
     )

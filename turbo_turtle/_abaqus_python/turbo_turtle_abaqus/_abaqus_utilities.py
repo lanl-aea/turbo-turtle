@@ -66,7 +66,7 @@ def return_abaqus_constant_or_exit(*args, **kwargs):
 
 
 def part_dimensionality(part):
-    """Return part dimensionality as an int
+    """Return part dimensionality as an int.
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
 
@@ -83,7 +83,7 @@ def part_dimensionality(part):
 
 
 def part_dimensionality_key(part):
-    """Get the Abaqus dimensionality key for the current part
+    """Get the Abaqus dimensionality key for the current part.
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
 
@@ -95,7 +95,7 @@ def part_dimensionality_key(part):
 
 
 def set_from_mask(part, feature, name_mask):
-    """Create named set(s) from the geometric feature and mask(s)
+    """Create named set(s) from the geometric feature and mask(s).
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges', 'vertices'
@@ -119,7 +119,7 @@ def set_from_mask(part, feature, name_mask):
 
 
 def surface_from_mask(part, feature, name_mask):
-    """Create named surface(s) from the geometric feature and mask(s)
+    """Create named surface(s) from the geometric feature and mask(s).
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges'
@@ -150,7 +150,7 @@ def surface_from_mask(part, feature, name_mask):
 
 
 def edge_seeds(part, name_number):
-    """Seed edges by number (if passed integer) or size (if passed float)
+    """Seed edges by number (if passed integer) or size (if passed float).
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges'
@@ -171,7 +171,7 @@ def edge_seeds(part, name_number):
 
 
 def _view_part(model_name, part_name, **kwargs):
-    """Place a part in the current viewport as a GUI post-action
+    """Place a part in the current viewport as a GUI post-action.
 
     Depending on if ``part_name`` is a list or a string, either place the last part in the list or the string part name
     in the viewport.
@@ -195,7 +195,7 @@ def _view_part(model_name, part_name, **kwargs):
 
 
 def _conditionally_create_model(model_name):
-    """Create a new model in an Abaqus database if the specified model name is not already existing
+    """Create a new model in an Abaqus database if the specified model name is not already existing.
 
     :param str model_name: Abaqus model name
     """
@@ -207,7 +207,7 @@ def _conditionally_create_model(model_name):
 
 
 def gui_wrapper(inputs_function, subcommand_function, post_action_function=None):
-    """Wrapper for a function calling ``abaqus.getInputs``, then the wrapper calls a ``turbo_turtle`` subcommand module
+    """Wrapper for a function calling ``abaqus.getInputs``, then the wrapper calls a ``turbo_turtle`` subcommand module.
 
     ``inputs_function`` cannot have any function arguments. ``inputs_function`` must return
     a dictionary of key-value pairs that match the ``subcommand_function`` arguments. ``post_action_function`` must have
@@ -236,7 +236,7 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
 
 
 def revolution_direction(revolution_angle):
-    """Pick revolution direction constant consistent with +Y revolve direction
+    """Pick revolution direction constant consistent with +Y revolve direction.
 
     Positive rotation angles should result in +Y revolve direction (abaqusConstants.ON)
     Negative rotation angles should result in -Y revolve direction (abaqusConstants.OFF)
