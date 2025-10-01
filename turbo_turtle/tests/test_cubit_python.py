@@ -8,7 +8,6 @@ cubit = pytest.importorskip("cubit", reason="Could not import Cubit")
 
 from turbo_turtle import _cubit_python  # noqa: E402
 
-
 pytestmark = pytest.mark.cubit_python
 
 

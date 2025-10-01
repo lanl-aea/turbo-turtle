@@ -1,10 +1,9 @@
-from unittest.mock import patch
 from contextlib import nullcontext as does_not_raise
+from unittest.mock import patch
 
 import pytest
 
-from turbo_turtle import _settings
-from turbo_turtle import _docs
+from turbo_turtle import _docs, _settings
 
 
 def test_docs():

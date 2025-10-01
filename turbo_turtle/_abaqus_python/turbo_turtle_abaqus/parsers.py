@@ -6,9 +6,9 @@ CLI parser(s). Other content, such as project/package settings type variables, c
 as the Abaqus Python package settings file and the parsers file.
 """
 
-import os
-import copy
 import argparse
+import copy
+import os
 
 
 def positive_float(argument):
@@ -100,7 +100,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -140,7 +140,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     optional.add_argument(
         "--planar",
         action="store_true",
-        help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric " "(default: %(default)s)",
+        help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric (default: %(default)s)",
     )
     optional.add_argument(
         "--model-name",
@@ -210,7 +210,7 @@ cylinder_defaults = {
 }
 cylinder_cli_help = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 cylinder_cli_description = (
-    "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved " "geometry."
+    "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry."
 )
 
 
@@ -225,11 +225,10 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name. Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name. Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -317,11 +316,10 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name. Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name. Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -417,11 +415,10 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name. Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name. Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -605,11 +602,10 @@ def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_d
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name. Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name. Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -728,7 +724,7 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
         type=str,
         nargs="+",
         default=merge_defaults["model_name"],
-        help="Model name(s) to query in the input model database file(s) " "(default: %(default)s)",
+        help="Model name(s) to query in the input model database file(s) (default: %(default)s)",
     )
     optional.add_argument(
         "--part-name",
@@ -767,7 +763,7 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 

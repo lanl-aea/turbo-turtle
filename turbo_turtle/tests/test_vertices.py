@@ -1,16 +1,17 @@
-"""
+"""Test Python 3 compatibility of the vertices module.
+
 .. warning::
 
    These are tests of a mixed Python 2/3 compatible module. When updating, be sure to update the Abaqus Python tests to
    match.
 """
-from unittest.mock import patch
-import pytest
-import numpy
 import math
+from unittest.mock import patch
+
+import numpy
+import pytest
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
-
 
 compare_xy_values = {
     "horizontal": (
@@ -34,7 +35,7 @@ compare_xy_values = {
 @pytest.mark.parametrize("coordinates, expected, rtol, atol",
                          compare_xy_values.values(),
                          ids=compare_xy_values.keys(),)
-def test_compare_xy_values(coordinates, expected, rtol, atol):
+def test_compare_xy_values(coordinates, expected, rtol, atol) -> None:
     bools = vertices._compare_xy_values(coordinates, rtol=rtol, atol=atol)
     assert bools == expected
 
@@ -55,7 +56,7 @@ compare_euclidean_distance = {
 @pytest.mark.parametrize("coordinates, euclidean_distance, expected",
                          compare_euclidean_distance.values(),
                          ids=compare_euclidean_distance.keys(),)
-def test_compare_euclidean_distance(coordinates, euclidean_distance, expected):
+def test_compare_euclidean_distance(coordinates, euclidean_distance, expected) -> None:
     bools = vertices._compare_euclidean_distance(coordinates, euclidean_distance)
     assert bools == expected
 
@@ -92,7 +93,7 @@ bool_via_or = {
 @pytest.mark.parametrize("bool_list_1, bool_list_2, expected",
                          bool_via_or.values(),
                          ids=bool_via_or.keys(),)
-def test_bool_via_or(bool_list_1, bool_list_2, expected):
+def test_bool_via_or(bool_list_1, bool_list_2, expected) -> None:
     bools = vertices._bool_via_or(bool_list_1, bool_list_2)
     assert bools == expected
 
@@ -106,46 +107,46 @@ break_coordinates = {
     "vase": (
         numpy.array(
             [
-                [ 5.1, -5. ],  # fmt: skip # noqa: E201,E202
-                [ 5. , -4.8],  # fmt: skip # noqa: E201,E202,E203
-                [ 4.5, -4. ],  # fmt: skip # noqa: E201,E202
-                [ 4.1, -3. ],  # fmt: skip # noqa: E201,E202
-                [ 4. , -2.5],  # fmt: skip # noqa: E201,E202,E203
-                [ 4. ,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.1,  3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.5,  4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 5. ,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 5.1,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 3. ,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 3. , -4. ],  # fmt: skip # noqa: E201,E202,E203
-                [ 0. , -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 0. , -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
+                [ 5.1, -5. ],  # fmt: skip
+                [ 5. , -4.8],  # fmt: skip
+                [ 4.5, -4. ],  # fmt: skip
+                [ 4.1, -3. ],  # fmt: skip
+                [ 4. , -2.5],  # fmt: skip
+                [ 4. ,  2.5],  # fmt: skip
+                [ 4.1,  3. ],  # fmt: skip
+                [ 4.5,  4. ],  # fmt: skip
+                [ 5. ,  4.8],  # fmt: skip
+                [ 5.1,  5. ],  # fmt: skip
+                [ 3. ,  5. ],  # fmt: skip
+                [ 3. , -4. ],  # fmt: skip
+                [ 0. , -4. ],  # fmt: skip
+                [ 0. , -5. ],  # fmt: skip
             ]
         ),
         4,
         [
             numpy.array(
                 [
-                    [ 5.1, -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5. , -4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.5, -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.1, -3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4. , -2.5],  # fmt: skip # noqa: E201,E202,E203,E241
+                    [ 5.1, -5. ],  # fmt: skip
+                    [ 5. , -4.8],  # fmt: skip
+                    [ 4.5, -4. ],  # fmt: skip
+                    [ 4.1, -3. ],  # fmt: skip
+                    [ 4. , -2.5],  # fmt: skip
                 ]
             ),
             numpy.array(
                 [
-                    [ 4. ,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.1,  3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.5,  4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5. ,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5.1,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
+                    [ 4. ,  2.5],  # fmt: skip
+                    [ 4.1,  3. ],  # fmt: skip
+                    [ 4.5,  4. ],  # fmt: skip
+                    [ 5. ,  4.8],  # fmt: skip
+                    [ 5.1,  5. ],  # fmt: skip
                 ]
             ),
-            numpy.array([[ 3.0,  5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 3.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 0.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 0.0, -5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+            numpy.array([[ 3.0,  5.0]]),  # fmt: skip
+            numpy.array([[ 3.0, -4.0]]),  # fmt: skip
+            numpy.array([[ 0.0, -4.0]]),  # fmt: skip
+            numpy.array([[ 0.0, -5.0]]),  # fmt: skip
         ]
     )
 }
@@ -154,9 +155,9 @@ break_coordinates = {
 @pytest.mark.parametrize("coordinates, euclidean_distance, expected",
                          break_coordinates.values(),
                          ids=break_coordinates.keys(),)
-def test_break_coordinates(coordinates, euclidean_distance, expected):
+def test_break_coordinates(coordinates, euclidean_distance, expected) -> None:
     all_splines = vertices._break_coordinates(coordinates, euclidean_distance)
-    for spline, expectation in zip(all_splines, expected):
+    for spline, expectation in zip(all_splines, expected, strict=True):
         assert numpy.allclose(spline, expectation)
 
 
@@ -165,43 +166,43 @@ line_pairs = {
         [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])],
         [
             (numpy.array([1.0, -0.5]), numpy.array([2.0, -0.5])),
-            (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
-            (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
-            (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5])),  # fmt: skip # noqa: E201,E202,E203,E241
+            (numpy.array([2.0, -0.5]), numpy.array([2.0,  0.5])),  # fmt: skip
+            (numpy.array([2.0,  0.5]), numpy.array([1.0,  0.5])),  # fmt: skip
+            (numpy.array([1.0,  0.5]), numpy.array([1.0, -0.5])),  # fmt: skip
         ]
     ),
     "vase": (
         [
             numpy.array(
                 [
-                    [ 5.1, -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5. , -4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.5, -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.1, -3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4. , -2.5],  # fmt: skip # noqa: E201,E202,E203,E241
+                    [ 5.1, -5. ],  # fmt: skip
+                    [ 5. , -4.8],  # fmt: skip
+                    [ 4.5, -4. ],  # fmt: skip
+                    [ 4.1, -3. ],  # fmt: skip
+                    [ 4. , -2.5],  # fmt: skip
                 ]
             ),
             numpy.array(
                 [
-                    [ 4. ,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.1,  3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.5,  4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5. ,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5.1,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
+                    [ 4. ,  2.5],  # fmt: skip
+                    [ 4.1,  3. ],  # fmt: skip
+                    [ 4.5,  4. ],  # fmt: skip
+                    [ 5. ,  4.8],  # fmt: skip
+                    [ 5.1,  5. ],  # fmt: skip
                 ]
             ),
-            numpy.array([[ 3.0,  5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 3.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 0.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 0.0, -5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
+            numpy.array([[ 3.0,  5.0]]),  # fmt: skip
+            numpy.array([[ 3.0, -4.0]]),  # fmt: skip
+            numpy.array([[ 0.0, -4.0]]),  # fmt: skip
+            numpy.array([[ 0.0, -5.0]]),  # fmt: skip
         ],
         [
-            (numpy.array([ 4. , -2.5]), numpy.array([ 4. ,  2.5])),  # fmt: skip # noqa: E201,E202,E203,E241
-            (numpy.array([ 5.1,  5. ]), numpy.array([ 3.0,  5.0])),  # fmt: skip # noqa: E201,E202,E203,E241
-            (numpy.array([ 3.0,  5.0]), numpy.array([ 3.0, -4.0])),  # fmt: skip # noqa: E201,E202,E203,E241
-            (numpy.array([ 3.0, -4.0]), numpy.array([ 0.0, -4.0])),  # fmt: skip # noqa: E201,E202,E203,E241
-            (numpy.array([ 0.0, -4.0]), numpy.array([ 0.0, -5.0])),  # fmt: skip # noqa: E201,E202,E203,E241
-            (numpy.array([ 0.0, -5.0]), numpy.array([ 5.1, -5. ])),  # fmt: skip # noqa: E201,E202,E203,E241
+            (numpy.array([ 4. , -2.5]), numpy.array([ 4. ,  2.5])),  # fmt: skip
+            (numpy.array([ 5.1,  5. ]), numpy.array([ 3.0,  5.0])),  # fmt: skip
+            (numpy.array([ 3.0,  5.0]), numpy.array([ 3.0, -4.0])),  # fmt: skip
+            (numpy.array([ 3.0, -4.0]), numpy.array([ 0.0, -4.0])),  # fmt: skip
+            (numpy.array([ 0.0, -4.0]), numpy.array([ 0.0, -5.0])),  # fmt: skip
+            (numpy.array([ 0.0, -5.0]), numpy.array([ 5.1, -5. ])),  # fmt: skip
         ]
     ),
 }
@@ -210,9 +211,9 @@ line_pairs = {
 @pytest.mark.parametrize("all_splines, expected",
                          line_pairs.values(),
                          ids=line_pairs.keys(),)
-def test_line_pairs(all_splines, expected):
+def test_line_pairs(all_splines, expected) -> None:
     line_pairs = vertices._line_pairs(all_splines)
-    for pair, expectation in zip(line_pairs, expected):
+    for pair, expectation in zip(line_pairs, expected, strict=True):
         assert len(pair) == len(expectation)
         assert numpy.allclose(pair[0], expectation[0])
         assert numpy.allclose(pair[1], expectation[1])
@@ -249,7 +250,7 @@ scale_and_offset_coordinates = {
 @pytest.mark.parametrize("coordinates, unit_conversion, y_offset, expected",
                          scale_and_offset_coordinates.values(),
                          ids=scale_and_offset_coordinates.keys(),)
-def test_scale_and_offset_coordinates(coordinates, unit_conversion, y_offset, expected):
+def test_scale_and_offset_coordinates(coordinates, unit_conversion, y_offset, expected) -> None:
     new_coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
     assert numpy.allclose(new_coordinates, expected)
 
@@ -259,58 +260,58 @@ the_real_mccoy = {
         numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
         4,
         [
-            numpy.array([[1.0, -0.5], [2.0, -0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[1.0,  0.5], [1.0, -0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
+            numpy.array([[1.0, -0.5], [2.0, -0.5]]),  # fmt: skip
+            numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # fmt: skip
+            numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # fmt: skip
+            numpy.array([[1.0,  0.5], [1.0, -0.5]]),  # fmt: skip
         ],
         []
     ),
     "vase": (
         numpy.array(
             [
-                [ 5.1, -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 5. , -4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.5, -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.1, -3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4. , -2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4. ,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.1,  3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.5,  4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 5. ,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 5.1,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 3. ,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 3. , -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 0. , -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 0. , -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
+                [ 5.1, -5. ],  # fmt: skip
+                [ 5. , -4.8],  # fmt: skip
+                [ 4.5, -4. ],  # fmt: skip
+                [ 4.1, -3. ],  # fmt: skip
+                [ 4. , -2.5],  # fmt: skip
+                [ 4. ,  2.5],  # fmt: skip
+                [ 4.1,  3. ],  # fmt: skip
+                [ 4.5,  4. ],  # fmt: skip
+                [ 5. ,  4.8],  # fmt: skip
+                [ 5.1,  5. ],  # fmt: skip
+                [ 3. ,  5. ],  # fmt: skip
+                [ 3. , -4. ],  # fmt: skip
+                [ 0. , -4. ],  # fmt: skip
+                [ 0. , -5. ],  # fmt: skip
             ]
         ),
         4,
         [
-            numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]]),  # fmt: skip # noqa: E201,E202,E203,E241
+            numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),  # fmt: skip
+            numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),  # fmt: skip
+            numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),  # fmt: skip
+            numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),  # fmt: skip
+            numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),  # fmt: skip
+            numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]]),  # fmt: skip
         ],
         [
             numpy.array(
                 [
-                    [ 5.1, -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5. , -4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.5, -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.1, -3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4. , -2.5],  # fmt: skip # noqa: E201,E202,E203,E241
+                    [ 5.1, -5. ],  # fmt: skip
+                    [ 5. , -4.8],  # fmt: skip
+                    [ 4.5, -4. ],  # fmt: skip
+                    [ 4.1, -3. ],  # fmt: skip
+                    [ 4. , -2.5],  # fmt: skip
                 ]
             ),
             numpy.array(
                [
-                   [ 4. ,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                   [ 4.1,  3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                   [ 4.5,  4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                   [ 5. ,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                   [ 5.1,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
+                   [ 4. ,  2.5],  # fmt: skip
+                   [ 4.1,  3. ],  # fmt: skip
+                   [ 4.5,  4. ],  # fmt: skip
+                   [ 5. ,  4.8],  # fmt: skip
+                   [ 5.1,  5. ],  # fmt: skip
                ]
             )
         ]
@@ -321,14 +322,14 @@ the_real_mccoy = {
 @pytest.mark.parametrize("coordinates, euclidean_distance, expected_lines, expected_splines",
                          the_real_mccoy.values(),
                          ids=the_real_mccoy.keys(),)
-def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expected_splines):
-    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines`"""
+def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expected_splines) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines`."""
     lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     assert len(lines) == len(expected_lines)
-    for line, expectation in zip(lines, expected_lines):
+    for line, expectation in zip(lines, expected_lines, strict=True):
         assert numpy.allclose(line, expectation)
     assert len(splines) == len(expected_splines)
-    for spline, expectation in zip(splines, expected_splines):
+    for spline, expectation in zip(splines, expected_splines, strict=True):
         assert numpy.allclose(spline, expectation)
 
 
@@ -337,57 +338,57 @@ ordered_lines_and_splines = {
         numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
         4,
         [
-            numpy.array([[1.0, -0.5], [2.0, -0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[1.0,  0.5], [1.0, -0.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
+            numpy.array([[1.0, -0.5], [2.0, -0.5]]),  # fmt: skip
+            numpy.array([[2.0, -0.5], [2.0,  0.5]]),  # fmt: skip
+            numpy.array([[2.0,  0.5], [1.0,  0.5]]),  # fmt: skip
+            numpy.array([[1.0,  0.5], [1.0, -0.5]]),  # fmt: skip
         ],
     ),
     "vase": (
         numpy.array(
             [
-                [ 5.1, -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 5. , -4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.5, -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.1, -3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4. , -2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4. ,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.1,  3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 4.5,  4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 5. ,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 5.1,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 3. ,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 3. , -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 0. , -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                [ 0. , -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
+                [ 5.1, -5. ],  # fmt: skip
+                [ 5. , -4.8],  # fmt: skip
+                [ 4.5, -4. ],  # fmt: skip
+                [ 4.1, -3. ],  # fmt: skip
+                [ 4. , -2.5],  # fmt: skip
+                [ 4. ,  2.5],  # fmt: skip
+                [ 4.1,  3. ],  # fmt: skip
+                [ 4.5,  4. ],  # fmt: skip
+                [ 5. ,  4.8],  # fmt: skip
+                [ 5.1,  5. ],  # fmt: skip
+                [ 3. ,  5. ],  # fmt: skip
+                [ 3. , -4. ],  # fmt: skip
+                [ 0. , -4. ],  # fmt: skip
+                [ 0. , -5. ],  # fmt: skip
             ]
         ),
         4,
         [
             numpy.array(
                 [
-                    [ 5.1, -5. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5. , -4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.5, -4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.1, -3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4. , -2.5],  # fmt: skip # noqa: E201,E202,E203,E241
+                    [ 5.1, -5. ],  # fmt: skip
+                    [ 5. , -4.8],  # fmt: skip
+                    [ 4.5, -4. ],  # fmt: skip
+                    [ 4.1, -3. ],  # fmt: skip
+                    [ 4. , -2.5],  # fmt: skip
                 ]
             ),
-            numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),  # fmt: skip # noqa: E201,E202,E203,E241
+            numpy.array([[ 4. , -2.5], [ 4. ,  2.5]]),  # fmt: skip
             numpy.array(
                 [
-                    [ 4. ,  2.5],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.1,  3. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 4.5,  4. ],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5. ,  4.8],  # fmt: skip # noqa: E201,E202,E203,E241
-                    [ 5.1,  5. ],  # fmt: skip # noqa: E201,E202,E203,E241
+                    [ 4. ,  2.5],  # fmt: skip
+                    [ 4.1,  3. ],  # fmt: skip
+                    [ 4.5,  4. ],  # fmt: skip
+                    [ 5. ,  4.8],  # fmt: skip
+                    [ 5.1,  5. ],  # fmt: skip
                 ]
             ),
-            numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),  # fmt: skip # noqa: E201,E202,E203,E241
-            numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]]),  # fmt: skip # noqa: E201,E202,E203,E241
+            numpy.array([[ 5.1,  5. ], [ 3.0,  5.0]]),  # fmt: skip
+            numpy.array([[ 3.0,  5.0], [ 3.0, -4.0]]),  # fmt: skip
+            numpy.array([[ 3.0, -4.0], [ 0.0, -4.0]]),  # fmt: skip
+            numpy.array([[ 0.0, -4.0], [ 0.0, -5.0]]),  # fmt: skip
+            numpy.array([[ 0.0, -5.0], [ 5.1, -5. ]]),  # fmt: skip
         ]
     )
 }
@@ -396,14 +397,14 @@ ordered_lines_and_splines = {
 @pytest.mark.parametrize("coordinates, euclidean_distance, expected_lines_and_splines",
                          ordered_lines_and_splines.values(),
                          ids=ordered_lines_and_splines.keys(),)
-def test_ordered_lines_and_splines(coordinates, euclidean_distance, expected_lines_and_splines):
+def test_ordered_lines_and_splines(coordinates, euclidean_distance, expected_lines_and_splines) -> None:
     lines_and_splines = vertices.ordered_lines_and_splines(coordinates, euclidean_distance)
     assert len(lines_and_splines) == len(expected_lines_and_splines)
-    for curve, expectation in zip(lines_and_splines, expected_lines_and_splines):
+    for curve, expectation in zip(lines_and_splines, expected_lines_and_splines, strict=True):
         assert numpy.allclose(curve, expectation)
 
 
-def test_lines_and_splines_passthrough():
+def test_lines_and_splines_passthrough() -> None:
     with (
         patch(
             "turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._break_coordinates",
@@ -416,7 +417,7 @@ def test_lines_and_splines_passthrough():
         mock_break_coordinates.assert_called_once_with([], 4.0, rtol=1e-5, atol=1e-9)
 
 
-def test_break_coordinates_passthrough():
+def test_break_coordinates_passthrough() -> None:
     with (
         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_xy_values") as mock_xy_values,
         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_euclidean_distance"),
@@ -441,8 +442,8 @@ cylinder = {
 @pytest.mark.parametrize("inner_radius, outer_radius, height, y_offset, expected",
                          cylinder.values(),
                          ids=cylinder.keys(),)
-def test_cylinder(inner_radius, outer_radius, height, y_offset, expected):
-    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.cylinder`"""
+def test_cylinder(inner_radius, outer_radius, height, y_offset, expected) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.cylinder`."""
     kwargs = {}
     if y_offset is not None:
         kwargs = {"y_offset": y_offset}
@@ -454,10 +455,10 @@ cylinder_lines = {
     "no offset": (
         1., 2., 1., None,
         [
-            (numpy.array([1.,  0.5]), numpy.array([2.,  0.5])),  # fmt: skip # noqa: E241
-            (numpy.array([2.,  0.5]), numpy.array([2., -0.5])),  # fmt: skip # noqa: E241
+            (numpy.array([1.,  0.5]), numpy.array([2.,  0.5])),  # fmt: skip
+            (numpy.array([2.,  0.5]), numpy.array([2., -0.5])),  # fmt: skip
             (numpy.array([2., -0.5]), numpy.array([1., -0.5])),
-            (numpy.array([1., -0.5]), numpy.array([1.,  0.5])),  # fmt: skip # noqa: E241
+            (numpy.array([1., -0.5]), numpy.array([1.,  0.5])),  # fmt: skip
         ],
     ),
     "offset half height": (
@@ -475,13 +476,13 @@ cylinder_lines = {
 @pytest.mark.parametrize("inner_radius, outer_radius, height, y_offset, expected",
                          cylinder_lines.values(),
                          ids=cylinder_lines.keys(),)
-def test_cylinder_lines(inner_radius, outer_radius, height, y_offset, expected):
-    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.cylinder_lines`"""
+def test_cylinder_lines(inner_radius, outer_radius, height, y_offset, expected) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.cylinder_lines`."""
     kwargs = {}
     if y_offset is not None:
         kwargs = {"y_offset": y_offset}
     lines = vertices.cylinder_lines(inner_radius, outer_radius, height, **kwargs)
-    for line, expected_line in zip(lines, expected):
+    for line, expected_line in zip(lines, expected, strict=True):
         assert numpy.allclose(line, expected_line)
 
 
@@ -500,8 +501,8 @@ rectalinear_coordinates = {
 @pytest.mark.parametrize("radius_list, angle_list, expected",
                          rectalinear_coordinates.values(),
                          ids=rectalinear_coordinates.keys(),)
-def test_rectalinear_coordinates(radius_list, angle_list, expected):
-    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`"""
+def test_rectalinear_coordinates(radius_list, angle_list, expected) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`."""
     coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
     assert numpy.allclose(coordinates, expected)
 
@@ -532,7 +533,7 @@ normalize_vector = {
 @pytest.mark.parametrize("vector, expected",
                          normalize_vector.values(),
                          ids=normalize_vector.keys(),)
-def test_normalize_vector(vector, expected):
+def test_normalize_vector(vector, expected) -> None:
     normalized = vertices.normalize_vector(vector)
     assert numpy.allclose(normalized, expected)
 
@@ -559,7 +560,7 @@ midpoint_vector = {
 @pytest.mark.parametrize("first, second, expected",
                          midpoint_vector.values(),
                          ids=midpoint_vector.keys(),)
-def test_midpoint_vector(first, second, expected):
+def test_midpoint_vector(first, second, expected) -> None:
     midpoint = vertices.midpoint_vector(first, second)
     assert numpy.allclose(midpoint, expected)
 
@@ -580,7 +581,7 @@ is_parallel = {
 @pytest.mark.parametrize("first, second, expected",
                          is_parallel.values(),
                          ids=is_parallel.keys(),)
-def test_is_parallel(first, second, expected):
+def test_is_parallel(first, second, expected) -> None:
     boolean = vertices.is_parallel(first, second)
     assert boolean == expected
 
@@ -601,7 +602,7 @@ any_parallel = {
 @pytest.mark.parametrize("first, options, expected",
                          any_parallel.values(),
                          ids=any_parallel.keys(),)
-def test_any_parallel(first, options, expected):
+def test_any_parallel(first, options, expected) -> None:
     boolean = vertices.any_parallel(first, options)
     assert boolean == expected
 
@@ -614,12 +615,12 @@ datum_planes = {
             numpy.array([0., 0., 1.]),  # XY plane
             numpy.array([1., 0., 0.]),  # YZ plane
             numpy.array([0., 1., 0.]),  # ZX plane
-            numpy.array([ norm,  norm, 0.]),  # fmt: skip # noqa: E201,E241
-            numpy.array([ norm, -norm, 0.]),  # fmt: skip # noqa: E201,E241
-            numpy.array([ 0., norm,  norm]),  # fmt: skip # noqa: E201,E241
-            numpy.array([ 0., norm, -norm]),  # fmt: skip # noqa: E201,E241
-            numpy.array([  norm, 0., norm]),  # fmt: skip # noqa: E201,E241
-            numpy.array([ -norm, 0., norm]),  # fmt: skip # noqa: E201,E241
+            numpy.array([ norm,  norm, 0.]),  # fmt: skip
+            numpy.array([ norm, -norm, 0.]),  # fmt: skip
+            numpy.array([ 0., norm,  norm]),  # fmt: skip
+            numpy.array([ 0., norm, -norm]),  # fmt: skip
+            numpy.array([  norm, 0., norm]),  # fmt: skip
+            numpy.array([ -norm, 0., norm]),  # fmt: skip
         ]
     ),
 }
@@ -628,9 +629,9 @@ datum_planes = {
 @pytest.mark.parametrize("xvector, zvector, expected",
                          datum_planes.values(),
                          ids=datum_planes.keys(),)
-def test_datum_planes(xvector, zvector, expected):
+def test_datum_planes(xvector, zvector, expected) -> None:
     planes = vertices.datum_planes(xvector, zvector)
-    for plane, expectation in zip(planes, expected):
+    for plane, expectation in zip(planes, expected, strict=True):
         assert numpy.allclose(plane, expectation)
 
 
@@ -639,14 +640,14 @@ fortyfive_vectors = {
     "cartesian aligned": (
         numpy.array([1., 0., 0.]), numpy.array([0., 0., 1.]),
         [
-            numpy.array([ over_root_three,  over_root_three,  over_root_three]),  # fmt: skip # noqa: E201,E241
-            numpy.array([-over_root_three,  over_root_three,  over_root_three]),  # fmt: skip # noqa: E201,E241
-            numpy.array([-over_root_three,  over_root_three, -over_root_three]),  # fmt: skip # noqa: E201,E241
-            numpy.array([ over_root_three,  over_root_three, -over_root_three]),  # fmt: skip # noqa: E201,E241
-            numpy.array([ over_root_three, -over_root_three,  over_root_three]),  # fmt: skip # noqa: E201,E241
-            numpy.array([-over_root_three, -over_root_three,  over_root_three]),  # fmt: skip # noqa: E201,E241
-            numpy.array([-over_root_three, -over_root_three, -over_root_three]),  # fmt: skip # noqa: E201,E241
-            numpy.array([ over_root_three, -over_root_three, -over_root_three]),  # fmt: skip # noqa: E201,E241
+            numpy.array([ over_root_three,  over_root_three,  over_root_three]),  # fmt: skip
+            numpy.array([-over_root_three,  over_root_three,  over_root_three]),  # fmt: skip
+            numpy.array([-over_root_three,  over_root_three, -over_root_three]),  # fmt: skip
+            numpy.array([ over_root_three,  over_root_three, -over_root_three]),  # fmt: skip
+            numpy.array([ over_root_three, -over_root_three,  over_root_three]),  # fmt: skip
+            numpy.array([-over_root_three, -over_root_three,  over_root_three]),  # fmt: skip
+            numpy.array([-over_root_three, -over_root_three, -over_root_three]),  # fmt: skip
+            numpy.array([ over_root_three, -over_root_three, -over_root_three]),  # fmt: skip
         ]
     ),
 }
@@ -655,7 +656,7 @@ fortyfive_vectors = {
 @pytest.mark.parametrize("xvector, zvector, expected",
                          fortyfive_vectors.values(),
                          ids=fortyfive_vectors.keys(),)
-def test_fortyfive_vectors(xvector, zvector, expected):
+def test_fortyfive_vectors(xvector, zvector, expected) -> None:
     fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
-    for vector, expectation in zip(fortyfive_vectors, expected):
+    for vector, expectation in zip(fortyfive_vectors, expected, strict=True):
         assert numpy.allclose(vector, expectation)

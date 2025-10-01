@@ -9,7 +9,7 @@ def cprofile(
     selection: str = "turbo-turtle",
     rows: int = 10
 ) -> SCons.Builder.Builder:
-    """cProfile Builder
+    r"""Return a cProfile Builder.
 
     .. code-block::
        :caption: action construction
@@ -22,11 +22,13 @@ def cprofile(
     :param options: Options for the profiled script
 
     :returns: SCons cProfile Builder
-    """
+    """  # noqa: E501
     action = [
         "cd ${TARGET.dir} && PYTHONPATH=${project_directory} ${program} ${required} ${options} >/dev/null",
-        "python -c \"import pstats; p = pstats.Stats('${TARGET.abspath}'); " \
+        (
+            "python -c \"import pstats; p = pstats.Stats('${TARGET.abspath}'); "
             "p.sort_stats(pstats.SortKey.CUMULATIVE).print_stats('${selection}', ${rows})\""
+        ),
     ]
     builder = SCons.Builder.Builder(
         action=action,

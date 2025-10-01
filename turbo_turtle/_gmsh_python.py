@@ -1,15 +1,12 @@
 """Python 3 module that imports python-gmsh"""
 
-import typing
 import pathlib
+import typing
 
 import numpy
 
 from turbo_turtle import _utilities
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
-
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities, parsers, vertices
 
 gmsh = _utilities.import_gmsh()
 
@@ -70,7 +67,7 @@ def geometry(
 
     # Create part(s)
     surfaces = []
-    for file_name, new_part in zip(input_file, part_name):
+    for file_name, new_part in zip(input_file, part_name, strict=True):
         coordinates = _mixed_utilities.return_genfromtxt(
             file_name, delimiter, header_lines, expected_dimensions=2, expected_columns=2
         )
@@ -79,7 +76,7 @@ def geometry(
         surfaces.append(_draw_surface(lines_and_splines))
 
     # Conditionally create the 3D revolved shape
-    for surface, new_part in zip(surfaces, part_name):
+    for surface, new_part in zip(surfaces, part_name, strict=True):
         _rename_and_sweep(surface, new_part, planar=planar, revolution_angle=revolution_angle)
 
     # Output and cleanup
@@ -245,7 +242,8 @@ def sphere(
     model_name=parsers.sphere_defaults["model_name"],
     part_name=parsers.sphere_defaults["part_name"],
 ) -> None:
-    """
+    """Create a sphere geometry with file I/O handling.
+
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
     :param str output_file: output file name. Will be stripped of the extension and ``.step`` will be used.
@@ -312,7 +310,8 @@ def _sphere(
     center=parsers.sphere_defaults["center"],
     part_name=parsers.sphere_defaults["part_name"],
 ) -> None:
-    """
+    """Create a sphere geometry without file I/O handling.
+
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both

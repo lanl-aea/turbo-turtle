@@ -1,13 +1,13 @@
+import argparse
 import os
-import sys
+import pathlib
+import platform
 import shlex
 import shutil
-import typing
-import pathlib
-import argparse
-import platform
-import tempfile
 import subprocess
+import sys
+import tempfile
+import typing
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities import print_exception_message
 

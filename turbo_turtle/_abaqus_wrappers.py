@@ -1,5 +1,4 @@
-from turbo_turtle import _settings
-from turbo_turtle import _utilities
+from turbo_turtle import _settings, _utilities
 
 
 def geometry(args, command):

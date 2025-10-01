@@ -10,7 +10,7 @@ import sys
 filename = inspect.getfile(lambda: None)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import _mixed_settings  # noqa: E402,I001
 
 from abaqusGui import *  # noqa: E402,F403
 

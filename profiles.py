@@ -12,15 +12,14 @@ Files *must* use extensions ``*.cprofile.{lazy,eager}``
    $ EAGER_IMPORT=eager python -m cProfile -m profiler.cprofile.eager -m turbo_turtle._main
    $ python profile_package.py profiler.cprofile.{eager,lazy} -o profiler.png
 """
-import typing
-import pstats
-import pathlib
 import argparse
+import pathlib
+import pstats
+import typing
 
+import matplotlib.pyplot
 import numpy
 import xarray
-import matplotlib.pyplot
-
 
 default_figsize = [10, 5]
 default_output = None

@@ -1,12 +1,11 @@
 import argparse
-from unittest.mock import patch
 from contextlib import nullcontext as does_not_raise
+from unittest.mock import patch
 
-import pytest
 import numpy
+import pytest
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
-
 
 positive_float = {
     "zero": ("0.", 0.0, does_not_raise()),

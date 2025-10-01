@@ -4,9 +4,7 @@ import pytest
 import SCons
 
 from turbo_turtle import scons_extensions
-from turbo_turtle._settings import _default_abaqus_options
-from turbo_turtle._settings import _default_cubit_options
-from turbo_turtle._settings import _default_backend
+from turbo_turtle._settings import _default_abaqus_options, _default_backend, _default_cubit_options
 
 
 def check_nodes(nodes, post_action, node_count, action_count, expected_string, expected_env_kwargs):

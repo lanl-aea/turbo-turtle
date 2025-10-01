@@ -1,11 +1,10 @@
-import copy
 import argparse
+import copy
 from unittest.mock import patch
 
 import pytest
 
 from turbo_turtle import _abaqus_wrappers
-
 
 command = "/dummy/command"
 

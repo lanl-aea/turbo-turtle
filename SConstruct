@@ -1,14 +1,12 @@
 #! /usr/bin/env python
 
-import os
 import inspect
+import os
 import pathlib
-import platform
 import warnings
 
-import waves
 import setuptools_scm
-
+import waves
 
 warnings.filterwarnings(action="ignore", message="tag", category=UserWarning, module="setuptools_scm")
 

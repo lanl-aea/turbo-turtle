@@ -3,12 +3,13 @@ import typing
 import SCons.Builder
 from waves.scons_extensions import first_target_emitter
 
-from turbo_turtle._settings import _cd_action_prefix
-from turbo_turtle._settings import _redirect_action_postfix
-from turbo_turtle._settings import _default_abaqus_options
-from turbo_turtle._settings import _default_cubit_options
-from turbo_turtle._settings import _default_backend
-
+from turbo_turtle._settings import (
+    _cd_action_prefix,
+    _default_abaqus_options,
+    _default_backend,
+    _default_cubit_options,
+    _redirect_action_postfix,
+)
 
 _exclude_from_namespace = set(globals().keys())
 

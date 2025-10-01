@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
-import numpy
 import matplotlib
+import numpy
 
 from turbo_turtle import geometry_xyplot
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers

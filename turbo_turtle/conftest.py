@@ -3,7 +3,6 @@ import pathlib
 
 import pytest
 
-
 display = os.environ.get("DISPLAY")
 if not display:
     missing_display = True

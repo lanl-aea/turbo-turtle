@@ -1,6 +1,6 @@
-from unittest.mock import patch, MagicMock
-from contextlib import nullcontext as does_not_raise
 import subprocess
+from contextlib import nullcontext as does_not_raise
+from unittest.mock import MagicMock, patch
 
 import pytest
 

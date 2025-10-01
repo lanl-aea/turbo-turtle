@@ -6,16 +6,13 @@ perform ``sys.path`` manipulation, so the importing/calling module/script *must*
 first.
 """
 
-import typing
 import pathlib
+import typing
 
 import numpy
 
 from turbo_turtle import _utilities
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
-
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities, parsers, vertices
 
 cubit = _utilities.import_cubit()
 
@@ -80,7 +77,7 @@ def geometry(
     part_name = _mixed_utilities.cubit_part_names(part_name)
     output_file = pathlib.Path(output_file).with_suffix(".cub")
     surfaces = []
-    for file_name, new_part in zip(input_file, part_name):
+    for file_name, new_part in zip(input_file, part_name, strict=True):
         coordinates = _mixed_utilities.return_genfromtxt(
             file_name, delimiter, header_lines, expected_dimensions=2, expected_columns=2
         )
@@ -88,7 +85,7 @@ def geometry(
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         surfaces.append(_draw_surface(lines, splines))
 
-    for surface, new_part in zip(surfaces, part_name):
+    for surface, new_part in zip(surfaces, part_name, strict=True):
         _rename_and_sweep(surface, new_part, planar=planar, revolution_angle=revolution_angle)
 
     cubit_command_or_exception(f"save as '{output_file}' overwrite")
@@ -199,7 +196,7 @@ def create_surface_from_coordinates(coordinates):
     curves = []
     last = numpy.array([coordinates[-1]])
     coordinates_shift = numpy.append(last, coordinates[0:-1], axis=0)
-    for point1, point2 in zip(coordinates, coordinates_shift):
+    for point1, point2 in zip(coordinates, coordinates_shift, strict=True):
         curves.append(create_curve_from_coordinates(point1, point2))
     return cubit.create_surface(curves)
 
@@ -390,7 +387,8 @@ def sphere(
     y_offset=parsers.sphere_defaults["y_offset"],
     part_name=parsers.sphere_defaults["part_name"],
 ):
-    """
+    """Create a sphere geometry with file I/O handling.
+
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
     :param str output_file: output file name. Will be stripped of the extension and ``.cub`` will be used.
@@ -444,7 +442,8 @@ def _sphere(
     center=parsers.sphere_defaults["center"],
     part_name=parsers.sphere_defaults["part_name"],
 ):
-    """
+    """Create a sphere geometry without file I/O.
+
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
     :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
@@ -537,7 +536,6 @@ def create_pyramid_volumes(center, xvector, zvector, size):
     :returns: list of Cubit volumes
     :rtype: list of cubit.Volume objects
     """
-
     center = numpy.array(center)
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
@@ -549,12 +547,12 @@ def create_pyramid_volumes(center, xvector, zvector, size):
 
     # Identify surfaces for individual pyramid volumes based on location relative to local coordinate system
     pyramid_volume_surfaces = [
-        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y  # fmt: skip # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y  # fmt: skip # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X  # fmt: skip # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X  # fmt: skip # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z  # fmt: skip # noqa: E241
-        _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z  # fmt: skip # noqa: E241
+        _surfaces_by_vector(pyramid_surfaces,  yvector, center),  # +Y  # fmt: skip
+        _surfaces_by_vector(pyramid_surfaces, -yvector, center),  # -Y  # fmt: skip
+        _surfaces_by_vector(pyramid_surfaces,  xvector, center),  # +X  # fmt: skip
+        _surfaces_by_vector(pyramid_surfaces, -xvector, center),  # -X  # fmt: skip
+        _surfaces_by_vector(pyramid_surfaces,  zvector, center),  # +Z  # fmt: skip
+        _surfaces_by_vector(pyramid_surfaces, -zvector, center),  # -Z  # fmt: skip
     ]
     pyramid_volumes = [_create_volume_from_surfaces(surface_list) for surface_list in pyramid_volume_surfaces]
 
@@ -648,7 +646,6 @@ def _partition(
     :param list part_name: part/volume name prefixes
     :param float big_number: Number larger than the outer radius of the part to partition.
     """
-
     center = numpy.array(center)
     xvector = numpy.array(xvector)
     zvector = numpy.array(zvector)
@@ -693,12 +690,12 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
     :param feature: Cubit feature name
     :param name_number: Feature seed tuples (name, number)
     """
-    names, numbers = zip(*name_number)
+    names, numbers = zip(*name_number, strict=True)
     numbers = [float(number) for number in numbers]
     positive_numbers = [number > 0.0 for number in numbers]
     if not all(positive_numbers):
         raise ValueError("Feature seeds must be positive numbers")
-    for name, number in zip(names, numbers):
+    for name, number in zip(names, numbers, strict=True):
         feature_ids = _utilities.character_delimited_list(cubit.get_all_ids_from_name(feature, name))
         if number.is_integer():
             cubit_command_or_exception(f"{feature} {feature_ids} interval {int(number)}")
@@ -966,7 +963,7 @@ def _export_genesis(output_file, part_name, element_type, output_type="genesis")
     :param str output_type: String identifying genesis output type: genesis (large format), genesis-normal, genesis-hdf5
     """
     block_ids = []
-    for name, element in zip(part_name, element_type):
+    for name, element in zip(part_name, element_type, strict=True):
         block_ids.append(_create_volume_name_block(name))
         if element is not None:
             cubit_command_or_exception(f"block {block_ids[-1]} element type {element}")
@@ -982,7 +979,7 @@ def _export_abaqus_list(part_name, element_type, destination):
     :param list element_type: List of element type strings
     :param pathlib.Path destination: Parent directory for orphan mesh files
     """
-    for name, element in zip(part_name, element_type):
+    for name, element in zip(part_name, element_type, strict=True):
         output_file = destination / name
         output_file = output_file.with_suffix(".inp")
         _export_abaqus(output_file, name)

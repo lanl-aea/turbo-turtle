@@ -1,7 +1,7 @@
-import os
-import sys
-import shutil
 import inspect
+import os
+import shutil
+import sys
 import tempfile
 
 filename = inspect.getfile(lambda: None)

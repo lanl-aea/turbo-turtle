@@ -1,19 +1,20 @@
-import re
-import os
-import sys
-import inspect
 import fnmatch
-
+import inspect
+import os
+import re
+import sys
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_settings,
+    _mixed_utilities,
+    parsers,
+)
 
 
 def main(
@@ -147,7 +148,7 @@ def export_mesh_file(
     block = model.keywordBlock.sieBlocks
     block_string = "\n".join(block)
     orphan_mesh = re.findall(
-        r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name), block_string, re.DOTALL | re.I | re.M
+        r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name), block_string, re.DOTALL | re.IGNORECASE | re.MULTILINE
     )
     part_definition = orphan_mesh[0]
     with open(output_file, "w") as output:

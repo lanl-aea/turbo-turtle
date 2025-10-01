@@ -2,7 +2,6 @@ import pathlib
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_settings
 
-
 _project_root_abspath = pathlib.Path(_mixed_settings._project_root_abspath)
 _project_name = "Turbo Turtle"
 _project_name_short = "turbo-turtle"

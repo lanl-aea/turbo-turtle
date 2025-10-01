@@ -1,13 +1,10 @@
-import typing
 import argparse
+import typing
 
-import numpy
 import matplotlib.pyplot
+import numpy
 
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
-
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities, parsers, vertices
 
 _exclude_from_namespace = set(globals().keys())
 
@@ -17,7 +14,6 @@ def _get_parser() -> argparse.ArgumentParser:
 
     :return: parser
     """
-
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument(
         "--no-markers", action="store_true", help="Exclude vertex markers and only plot lines (default: %(default)s)"
@@ -65,7 +61,6 @@ def geometry_xyplot(
 
     :returns: matplotlib figure
     """
-
     if no_markers:
         line_kwargs = {}
         spline_kwargs = {}
@@ -78,7 +73,7 @@ def geometry_xyplot(
         colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(coordinates_list)))
     else:
         colors = ["black"]
-    for coordinates, color in zip(coordinates_list, colors):
+    for coordinates, color in zip(coordinates_list, colors, strict=True):
         coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
         lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
         for line in lines:

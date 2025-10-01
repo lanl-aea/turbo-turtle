@@ -1,21 +1,22 @@
 import ast
+import fnmatch
+import inspect
 import os
 import sys
-import inspect
-import fnmatch
 
 import numpy
-
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import vertices  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_settings,
+    parsers,
+    vertices,
+)
 
 
 def main(
@@ -114,12 +115,12 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
 
     sketch_vertex_pairs = (
         (
-            (-big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
-            ( big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
+            (-big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip
+            ( big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip
         ),
         (
-            (-big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
-            ( big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
+            (-big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip
+            ( big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip
         ),
     )
 
@@ -217,7 +218,6 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
     :param tuple sketch_vertex_pairs: Tuple of vertices that make up the 3D partioning scheme's sketch (See
         :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`)
     """
-
     import abaqus
     import abaqusConstants
 
@@ -323,7 +323,7 @@ def _gui_get_inputs():
         print("Center: {}".format(center))
         print("X-Vector: {}".format(xvector))
         print("Z-Vector: {}".format(zvector))
-        print("")
+        print()
 
         model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
         part_name = []

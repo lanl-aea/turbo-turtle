@@ -31,8 +31,8 @@ def cylinder(inner_radius, outer_radius, height, y_offset=0.0):
     :rtype: numpy.array
     """
     coordinates = (
-        (inner_radius, height / 2.0 + y_offset),  # fmt: skip # noqa: E241
-        (outer_radius, height / 2.0 + y_offset),  # fmt: skip # noqa: E241
+        (inner_radius, height / 2.0 + y_offset),  # fmt: skip
+        (outer_radius, height / 2.0 + y_offset),  # fmt: skip
         (outer_radius, -height / 2.0 + y_offset),
         (inner_radius, -height / 2.0 + y_offset),
     )
@@ -212,8 +212,8 @@ def _compare_xy_values(coordinates, rtol=None, atol=None):
     if atol is not None:
         isclose_kwargs.update({"atol": atol})
     vertical_horizontal_bools = [False] + [
-        numpy.isclose(coords1[0], coords2[0], **isclose_kwargs)  # noqa: W504
-        or numpy.isclose(coords1[1], coords2[1], **isclose_kwargs)  # noqa: W503
+        numpy.isclose(coords1[0], coords2[0], **isclose_kwargs)
+        or numpy.isclose(coords1[1], coords2[1], **isclose_kwargs)
         for coords1, coords2 in zip(coordinates[1:, :], coordinates[0:-1, :])
     ]
     return vertical_horizontal_bools
@@ -346,12 +346,12 @@ def datum_planes(xvector, zvector):
     primary_planes = [xy_plane, yz_plane, zx_plane]
 
     midpoints = [
-        midpoint_vector(xvector,  yvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(xvector, -yvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(yvector,  zvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(yvector, -zvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(zvector,  xvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(zvector, -xvector),  # fmt: skip # noqa: E201,E241
+        midpoint_vector(xvector,  yvector),  # fmt: skip
+        midpoint_vector(xvector, -yvector),  # fmt: skip
+        midpoint_vector(yvector,  zvector),  # fmt: skip
+        midpoint_vector(yvector, -zvector),  # fmt: skip
+        midpoint_vector(zvector,  xvector),  # fmt: skip
+        midpoint_vector(zvector, -xvector),  # fmt: skip
     ]
     midpoints = [normalize_vector(midpoint) for midpoint in midpoints]
 
@@ -360,7 +360,6 @@ def datum_planes(xvector, zvector):
 
 def fortyfive_vectors(xvector, zvector):
     """Return the normalized (1, 1, 1) vector variants of a local coordinate system defined by the x- and z-vector"""
-
     dot = numpy.dot(xvector, zvector)
     if not numpy.isclose(dot, 0.0):
         raise RuntimeError("Provided x-vector '{}' and z-vector '{}' are not orthogonal".format(xvector, zvector))
@@ -370,14 +369,14 @@ def fortyfive_vectors(xvector, zvector):
     yvector = numpy.cross(zvector, xvector)
 
     fortyfives = [
-        midpoint_vector( xvector,  yvector,  zvector),  # 0  # fmt: skip # noqa: E201,E241
-        midpoint_vector(-xvector,  yvector,  zvector),  # 1  # fmt: skip # noqa: E201,E241
-        midpoint_vector(-xvector,  yvector, -zvector),  # 2  # fmt: skip # noqa: E201,E241
-        midpoint_vector( xvector,  yvector, -zvector),  # 3  # fmt: skip # noqa: E201,E241
-        midpoint_vector( xvector, -yvector,  zvector),  # 4  # fmt: skip # noqa: E201,E241
-        midpoint_vector(-xvector, -yvector,  zvector),  # 5  # fmt: skip # noqa: E201,E241
-        midpoint_vector(-xvector, -yvector, -zvector),  # 6  # fmt: skip # noqa: E201,E241
-        midpoint_vector( xvector, -yvector, -zvector),  # 7  # fmt: skip # noqa: E201,E241
+        midpoint_vector( xvector,  yvector,  zvector),  # 0  # fmt: skip
+        midpoint_vector(-xvector,  yvector,  zvector),  # 1  # fmt: skip
+        midpoint_vector(-xvector,  yvector, -zvector),  # 2  # fmt: skip
+        midpoint_vector( xvector,  yvector, -zvector),  # 3  # fmt: skip
+        midpoint_vector( xvector, -yvector,  zvector),  # 4  # fmt: skip
+        midpoint_vector(-xvector, -yvector,  zvector),  # 5  # fmt: skip
+        midpoint_vector(-xvector, -yvector, -zvector),  # 6  # fmt: skip
+        midpoint_vector( xvector, -yvector, -zvector),  # 7  # fmt: skip
     ]
     fortyfives = [normalize_vector(vector) for vector in fortyfives]
 
