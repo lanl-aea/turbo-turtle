@@ -987,7 +987,7 @@ def _export_abaqus_list(part_name, element_type, destination) -> None:
 
 
 def _export_abaqus(output_file, part_name) -> None:
-    """Create a block named after the part, add all volumes/surfaace with name prefix, export an Abaqus orphan mesh file.
+    """Create a part-named block, add all volumes/surfaces with name prefix, export an Abaqus orphan mesh file.
 
     :param pathlib.Path output_file: Abaqus file to write
     :param str part_name: part/volume name to create as blocks from all volumes with a matching prefix
