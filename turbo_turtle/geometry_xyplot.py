@@ -1,3 +1,4 @@
+"""Provide a public API for the internal implementation of the geometry plotting command-line interface."""
 import argparse
 import typing
 
@@ -73,8 +74,8 @@ def geometry_xyplot(
     else:
         colors = ["black"]
     for coordinates, color in zip(coordinates_list, colors, strict=True):
-        coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
-        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
+        transformed_coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+        lines, splines = vertices.lines_and_splines(transformed_coordinates, euclidean_distance, rtol=rtol, atol=atol)
         for line in lines:
             array = numpy.array(line)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, markerfacecolor="none", **line_kwargs)
@@ -82,7 +83,7 @@ def geometry_xyplot(
             array = numpy.array(spline)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, linestyle="dashed", **spline_kwargs)
         if annotate:
-            for index, coordinate in enumerate(coordinates):
+            for index, coordinate in enumerate(transformed_coordinates):
                 matplotlib.pyplot.annotate(str(index), coordinate, color=color)
 
     if scale:
@@ -131,7 +132,7 @@ def _main(
     :param scale: Change the plot aspect ratio to use the same scale for the X and Y axes.
 
     :returns: writes ``{output_file}`` matplotlib image
-    """
+    """  # noqa: D205
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     coordinates_list = [
         _mixed_utilities.return_genfromtxt_or_exit(
