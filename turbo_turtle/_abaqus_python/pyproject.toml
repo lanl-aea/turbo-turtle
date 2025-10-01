@@ -1,0 +1,7 @@
+[tool.ruff]
+extend = "../../pyproject.toml"
+
+[tool.ruff.lint.extend-per-file-ignores]
+# Abaqus Python 2 compatible files
+"*.py" = ["ANN", "PTH", "UP", "FURB188"]
+"*/*.py" = ["ANN", "PTH", "UP", "FURB188"]
