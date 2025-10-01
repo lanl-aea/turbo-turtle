@@ -3,6 +3,7 @@ channels:
   - nodefaults
 
 dependencies:
+  - python >=3.10
   - black
   - boa
   - flake8

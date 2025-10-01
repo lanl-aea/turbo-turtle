@@ -10,7 +10,7 @@ authors = [
 ]
 description = "Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models"
 readme = "README.rst"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "BSD-3-Clause"
 license-files = ["LICENSE.txt"]
 classifiers = [
@@ -62,7 +62,7 @@ markers = [
 addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -m 'not systemtest'"
 
 [tool.black]
-target-version = ["py39", "py310", "py311", "py312", "py313"]
+target-version = ["py310", "py311", "py312", "py313"]
 extend-exclude = ".txt|test_vertices.py"
 force-exclude = "build*/|conda-environment*/|conda-pkgs*/|pip-build-test*/"
 line-length = 120

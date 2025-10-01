@@ -1,5 +1,6 @@
 {% set name = "turbo_turtle" %}
 {% set version = VERSION %}
+{% set python_min = "3.10" %}
 
 package:
   name: {{ name|lower }}
@@ -22,7 +23,6 @@ build:
 
 requirements:
   host:
-    - python
     - python-build
     - pip
     - pytest
@@ -38,7 +38,7 @@ requirements:
     - sphinxcontrib-bibtex
     - waves >=0.13
   run:
-    - python >=3.9
+    - python >={{ python_min }}
     - lazy_loader >=0.4
     - scons >=4.6
     - waves >=0.13
