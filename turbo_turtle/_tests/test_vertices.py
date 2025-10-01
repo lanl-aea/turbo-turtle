@@ -28,7 +28,10 @@ compare_xy_values = {
     compare_xy_values.values(),
     ids=compare_xy_values.keys(),
 )
-def test_compare_xy_values(coordinates, expected, rtol, atol) -> None:
+def test_compare_xy_values(
+    coordinates: numpy.ndarray, expected: list[bool], rtol: float | None, atol: float | None
+) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_xy_values`."""
     bools = vertices._compare_xy_values(coordinates, rtol=rtol, atol=atol)
     assert bools == expected
 
@@ -45,7 +48,10 @@ compare_euclidean_distance = {
     compare_euclidean_distance.values(),
     ids=compare_euclidean_distance.keys(),
 )
-def test_compare_euclidean_distance(coordinates, euclidean_distance, expected) -> None:
+def test_compare_euclidean_distance(
+    coordinates: numpy.ndarray, euclidean_distance: float, expected: list[bool]
+) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_euclidean_distance`."""
     bools = vertices._compare_euclidean_distance(coordinates, euclidean_distance)
     assert bools == expected
 
@@ -72,7 +78,8 @@ bool_via_or = {
     bool_via_or.values(),
     ids=bool_via_or.keys(),
 )
-def test_bool_via_or(bool_list_1, bool_list_2, expected) -> None:
+def test_bool_via_or(bool_list_1: list[bool], bool_list_2: list[bool], expected: list[bool]) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._bool_via_or`."""
     bools = vertices._bool_via_or(bool_list_1, bool_list_2)
     assert bools == expected
 
@@ -136,7 +143,10 @@ break_coordinates = {
     break_coordinates.values(),
     ids=break_coordinates.keys(),
 )
-def test_break_coordinates(coordinates, euclidean_distance, expected) -> None:
+def test_break_coordinates(
+    coordinates: numpy.ndarray, euclidean_distance: float, expected: list[numpy.ndarray]
+) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._break_coordinates`."""
     all_splines = vertices._break_coordinates(coordinates, euclidean_distance)
     for spline, expectation in zip(all_splines, expected, strict=True):
         assert numpy.allclose(spline, expectation)
@@ -194,7 +204,8 @@ line_pairs = {
     line_pairs.values(),
     ids=line_pairs.keys(),
 )
-def test_line_pairs(all_splines, expected) -> None:
+def test_line_pairs(all_splines: list[numpy.ndarray], expected: list[tuple[numpy.ndarray, numpy.ndarray]]) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._line_pairs`."""
     line_pairs = vertices._line_pairs(all_splines)
     for pair, expectation in zip(line_pairs, expected, strict=True):
         assert len(pair) == len(expectation)
@@ -299,7 +310,10 @@ scale_and_offset_coordinates = {
     scale_and_offset_coordinates.values(),
     ids=scale_and_offset_coordinates.keys(),
 )
-def test_scale_and_offset_coordinates(coordinates, unit_conversion, y_offset, expected) -> None:
+def test_scale_and_offset_coordinates(
+    coordinates: numpy.ndarray, unit_conversion: float, y_offset: float, expected: numpy.ndarray
+) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.scale_and_offset_coordinates`."""
     new_coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
     assert numpy.allclose(new_coordinates, expected)
 
@@ -373,7 +387,12 @@ the_real_mccoy = {
     the_real_mccoy.values(),
     ids=the_real_mccoy.keys(),
 )
-def test_lines_and_splines(coordinates, euclidean_distance, expected_lines, expected_splines) -> None:
+def test_lines_and_splines(
+    coordinates: numpy.ndarray,
+    euclidean_distance: float,
+    expected_lines: list[numpy.ndarray],
+    expected_splines: list[numpy.ndarray],
+) -> None:
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines`."""
     lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance)
     assert len(lines) == len(expected_lines)
@@ -450,7 +469,10 @@ ordered_lines_and_splines = {
     ordered_lines_and_splines.values(),
     ids=ordered_lines_and_splines.keys(),
 )
-def test_ordered_lines_and_splines(coordinates, euclidean_distance, expected_lines_and_splines) -> None:
+def test_ordered_lines_and_splines(
+    coordinates: numpy.ndarray, euclidean_distance: float, expected_lines_and_splines: list[numpy.ndarray]
+) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.ordered_lines_and_splines`."""
     lines_and_splines = vertices.ordered_lines_and_splines(coordinates, euclidean_distance)
     assert len(lines_and_splines) == len(expected_lines_and_splines)
     for curve, expectation in zip(lines_and_splines, expected_lines_and_splines, strict=True):
@@ -458,6 +480,7 @@ def test_ordered_lines_and_splines(coordinates, euclidean_distance, expected_lin
 
 
 def test_lines_and_splines_passthrough() -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines`."""
     with (
         patch(
             "turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._break_coordinates", return_value=[]
@@ -470,6 +493,7 @@ def test_lines_and_splines_passthrough() -> None:
 
 
 def test_break_coordinates_passthrough() -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._break_coordinates`."""
     with (
         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_xy_values") as mock_xy_values,
         patch("turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices._compare_euclidean_distance"),
@@ -492,7 +516,9 @@ cylinder = {
     cylinder.values(),
     ids=cylinder.keys(),
 )
-def test_cylinder(inner_radius, outer_radius, height, y_offset, expected) -> None:
+def test_cylinder(
+    inner_radius: float, outer_radius: float, height: float, y_offset: float | None, expected: numpy.ndarray
+) -> None:
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.cylinder`."""
     kwargs = {}
     if y_offset is not None:
@@ -534,7 +560,13 @@ cylinder_lines = {
     cylinder_lines.values(),
     ids=cylinder_lines.keys(),
 )
-def test_cylinder_lines(inner_radius, outer_radius, height, y_offset, expected) -> None:
+def test_cylinder_lines(
+    inner_radius: float,
+    outer_radius: float,
+    height: float,
+    y_offset: float,
+    expected: list[tuple[numpy.ndarray, numpy.ndarray]],
+) -> None:
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.cylinder_lines`."""
     kwargs = {}
     if y_offset is not None:
@@ -560,7 +592,9 @@ rectalinear_coordinates = {
     rectalinear_coordinates.values(),
     ids=rectalinear_coordinates.keys(),
 )
-def test_rectalinear_coordinates(radius_list, angle_list, expected) -> None:
+def test_rectalinear_coordinates(
+    radius_list: tuple[float, ...], angle_list: tuple[float, ...], expected: tuple[tuple[float, ...]]
+) -> None:
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`."""
     coordinates = vertices.rectalinear_coordinates(radius_list, angle_list)
     assert numpy.allclose(coordinates, expected)
@@ -582,7 +616,8 @@ normalize_vector = {
     normalize_vector.values(),
     ids=normalize_vector.keys(),
 )
-def test_normalize_vector(vector, expected) -> None:
+def test_normalize_vector(vector: tuple[float, ...], expected: numpy.ndarray) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.normalize_vector`."""
     normalized = vertices.normalize_vector(vector)
     assert numpy.allclose(normalized, expected)
 
@@ -601,7 +636,8 @@ midpoint_vector = {
     midpoint_vector.values(),
     ids=midpoint_vector.keys(),
 )
-def test_midpoint_vector(first, second, expected) -> None:
+def test_midpoint_vector(first: list[float], second: list[float], expected: numpy.ndarray) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.midpoint_vector`."""
     midpoint = vertices.midpoint_vector(first, second)
     assert numpy.allclose(midpoint, expected)
 
@@ -618,7 +654,8 @@ is_parallel = {
     is_parallel.values(),
     ids=is_parallel.keys(),
 )
-def test_is_parallel(first, second, expected) -> None:
+def test_is_parallel(first: tuple[float, ...], second: tuple[float, ...], expected: bool) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.is_parallel`."""
     boolean = vertices.is_parallel(first, second)
     assert boolean == expected
 
@@ -635,7 +672,8 @@ any_parallel = {
     any_parallel.values(),
     ids=any_parallel.keys(),
 )
-def test_any_parallel(first, options, expected) -> None:
+def test_any_parallel(first: tuple[float, ...], options: list[tuple[float, ...]], expected: bool) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.any_parallel`."""
     boolean = vertices.any_parallel(first, options)
     assert boolean == expected
 
@@ -665,7 +703,8 @@ datum_planes = {
     datum_planes.values(),
     ids=datum_planes.keys(),
 )
-def test_datum_planes(xvector, zvector, expected) -> None:
+def test_datum_planes(xvector: numpy.ndarray, zvector: numpy.ndarray, expected: numpy.ndarray) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.datum_planes`."""
     planes = vertices.datum_planes(xvector, zvector)
     for plane, expectation in zip(planes, expected, strict=True):
         assert numpy.allclose(plane, expectation)
@@ -695,7 +734,8 @@ fortyfive_vectors = {
     fortyfive_vectors.values(),
     ids=fortyfive_vectors.keys(),
 )
-def test_fortyfive_vectors(xvector, zvector, expected) -> None:
+def test_fortyfive_vectors(xvector: numpy.ndarray, zvector: numpy.ndarray, expected: numpy.ndarray) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.fortyfive_vectors`."""
     fortyfive_vectors = vertices.fortyfive_vectors(xvector, zvector)
     for vector, expectation in zip(fortyfive_vectors, expected, strict=True):
         assert numpy.allclose(vector, expectation)
