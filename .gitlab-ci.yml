@@ -165,7 +165,6 @@ aea-pip-build:
   script:
     # Job variables
     - distribution_filename=$(echo ${distribution_name} | tr - _)
-    - scons pyproject.toml
     - version=$(python -m setuptools_scm)
     - echo ${distribution_name}
     - echo ${distribution_filename}
