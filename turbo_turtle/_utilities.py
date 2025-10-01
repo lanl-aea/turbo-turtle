@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import types
 import typing
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities import print_exception_message
@@ -20,19 +21,21 @@ class NamedTemporaryFileCopy:
     Provides Windows compatible temporary file handling. ``delete=False`` is required until Python 3.12
     ``delete_on_close=False`` option can be made a minimum runtime dependence.
 
-    :param str input_file: The input file to copy into a temporary file
+    :param input_file: The input file to copy into a temporary file
     """
 
-    def __init__(self, input_file, *args, **kwargs) -> None:
+    def __init__(self, input_file: str, *args, **kwargs) -> None:
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
         shutil.copyfile(input_file, self.temporary_file.name)
 
-    def __enter__(self):
+    def __enter__(self) -> tempfile._TemporaryFileWrapper:
         return self.temporary_file
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: types.TracebackType | None
+    ) -> bool | None:
         self.temporary_file.close()
-        os.remove(self.temporary_file.name)
+        pathlib.Path(self.temporary_file.name).unlink()
 
 
 def search_commands(options: typing.Iterable[str]) -> typing.Union[str, None]:
@@ -63,7 +66,7 @@ def find_command(options: typing.Iterable[str]) -> str:
 
 
 @print_exception_message
-def find_command_or_exit(*args, **kwargs):
+def find_command_or_exit(*args, **kwargs) -> str:
     return find_command(*args, **kwargs)
 
 
@@ -85,7 +88,7 @@ def cubit_os_bin() -> str:
 
 
 def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional[str] = None) -> pathlib.Path:
-    """Provided a few options for the Cubit executable, search for the bin directory.
+    """Search for the bin directory provided a few options for the Cubit executable.
 
     Recommend first checking to see if cubit will import.
 
@@ -115,37 +118,37 @@ def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional
         search = cubit_bin.glob(f"**/{bin_directory}")
         try:
             cubit_bin = next((path for path in search if path.name == bin_directory))
-        except StopIteration:
-            raise FileNotFoundError(message)
+        except StopIteration as err:
+            raise FileNotFoundError(message) from err
     return cubit_bin
 
 
-def import_gmsh():
+def import_gmsh() -> types.ModuleType:
     """Intermediate gmsh import function.
 
     Allows better CLI error reporting and gmsh package mocking during unit tests
     """
     try:
-        import gmsh
+        import gmsh  # noqa: PLC0415
     except ImportError as err:
         raise RuntimeError(
             "Could not import gmsh package. Please install `python-gmsh` in the Conda environment.\n"
             f"'ImportError: {err}'"
-        )
+        ) from err
     return gmsh
 
 
-def import_cubit():
+def import_cubit() -> types.ModuleType:
     """Intermediate Cubit import function.
 
     Allows better CLI error reporting and Cubit package mocking during unit tests
     """
     try:
-        import cubit
+        import cubit  # noqa: PLC0415
     except ImportError as err:
         raise RuntimeError(
             f"Could not import Cubit package. Provide or check the Cubit executable path.\n'ImportError: {err}'"
-        )
+        ) from err
     return cubit
 
 
@@ -158,7 +161,7 @@ def run_command(command: str) -> None:
     try:
         subprocess.check_output(command_list)
     except subprocess.CalledProcessError as err:
-        raise RuntimeError(err.output.decode())
+        raise RuntimeError(err.output.decode()) from err
 
 
 def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
@@ -171,21 +174,21 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
     keys = vars(args).keys()
     if "backend" in keys and args.backend == "gmsh":
         command = "unused"
-        from turbo_turtle import _gmsh_wrappers as _wrappers
+        from turbo_turtle import _gmsh_wrappers as _wrappers  # noqa: PLC0415
     elif "backend" in keys and args.backend == "cubit":
         command = find_command_or_exit(args.cubit_command)
         cubit_bin = find_cubit_bin([command])
         cubitx = cubit_bin / "cubitx"
         if cubitx.exists():
             command = cubitx
-        import importlib.util
+        import importlib.util  # noqa: PLC0415
 
         if importlib.util.find_spec("cubit") is None:
             sys.path.append(str(cubit_bin))
-        from turbo_turtle import _cubit_wrappers as _wrappers
+        from turbo_turtle import _cubit_wrappers as _wrappers  # noqa: PLC0415
     elif "abaqus_command" in keys:
         command = find_command_or_exit(args.abaqus_command)
-        from turbo_turtle import _abaqus_wrappers as _wrappers
+        from turbo_turtle import _abaqus_wrappers as _wrappers  # noqa: PLC0415
 
     return _wrappers, command
 
