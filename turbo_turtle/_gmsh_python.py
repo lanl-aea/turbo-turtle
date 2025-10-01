@@ -12,19 +12,19 @@ gmsh = _utilities.import_gmsh()
 
 
 def geometry(
-    input_file,
-    output_file,
-    planar=parsers.geometry_defaults["planar"],
-    model_name=parsers.geometry_defaults["model_name"],
-    part_name=parsers.geometry_defaults["part_name"],
-    unit_conversion=parsers.geometry_defaults["unit_conversion"],
-    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
-    delimiter=parsers.geometry_defaults["delimiter"],
-    header_lines=parsers.geometry_defaults["header_lines"],
-    revolution_angle=parsers.geometry_defaults["revolution_angle"],
-    y_offset=parsers.geometry_defaults["y_offset"],
-    rtol=parsers.geometry_defaults["rtol"],
-    atol=parsers.geometry_defaults["atol"],
+    input_file: str,
+    output_file: str,
+    planar: bool = parsers.geometry_defaults["planar"],
+    model_name: str = parsers.geometry_defaults["model_name"],
+    part_name: str = parsers.geometry_defaults["part_name"],
+    unit_conversion: float = parsers.geometry_defaults["unit_conversion"],
+    euclidean_distance: float = parsers.geometry_defaults["euclidean_distance"],
+    delimiter: str = parsers.geometry_defaults["delimiter"],
+    header_lines: int = parsers.geometry_defaults["header_lines"],
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
+    y_offset: float = parsers.geometry_defaults["y_offset"],
+    rtol: float = parsers.geometry_defaults["rtol"],
+    atol: float = parsers.geometry_defaults["atol"],
 ) -> None:
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
@@ -34,21 +34,21 @@ def geometry(
     This function can create multiple surfaces or volumes in the same Gmsh ``*.step`` file. If no part (body/volume)
     names are provided, the body/volume will be named after the input file base name.
 
-    :param str input_file: input text file(s) with coordinates to draw
-    :param str output_file: Gmsh ``*.step`` database to save the part(s)
-    :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
-    :param str model_name: name of the Gmsh model in which to create the part
-    :param list part_name: name(s) of the part(s) being created
-    :param float unit_conversion: multiplication factor applies to all coordinates
-    :param float euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
+    :param input_file: input text file(s) with coordinates to draw
+    :param output_file: Gmsh ``*.step`` database to save the part(s)
+    :param planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
+    :param model_name: name of the Gmsh model in which to create the part
+    :param part_name: name(s) of the part(s) being created
+    :param unit_conversion: multiplication factor applies to all coordinates
+    :param euclidean_distance: if the distance between two coordinates is greater than this, draw a straight line.
         Distance should be provided in units *after* the unit conversion
-    :param str delimiter: character to use as a delimiter when reading the input file
-    :param int header_lines: number of lines in the header to skip when reading the input file
-    :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
-    :param float y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
+    :param delimiter: character to use as a delimiter when reading the input file
+    :param header_lines: number of lines in the header to skip when reading the input file
+    :param revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
+    :param y_offset: vertical offset along the global Y-axis. Offset should be provided in units *after* the unit
         conversion.
-    :param float rtol: relative tolerance for vertical/horizontal line checks
-    :param float atol: absolute tolerance for vertical/horizontal line checks
+    :param rtol: relative tolerance for vertical/horizontal line checks
+    :param atol: absolute tolerance for vertical/horizontal line checks
 
     :returns: writes ``{output_file}.step``
     """
@@ -67,7 +67,7 @@ def geometry(
 
     # Create part(s)
     surfaces = []
-    for file_name, new_part in zip(input_file, part_name, strict=True):
+    for file_name, _new_part in zip(input_file, part_name, strict=True):
         coordinates = _mixed_utilities.return_genfromtxt(
             file_name, delimiter, header_lines, expected_dimensions=2, expected_columns=2
         )
@@ -87,10 +87,10 @@ def geometry(
     gmsh.finalize()
 
 
-def _draw_surface(lines_and_splines) -> int:
+def _draw_surface(lines_and_splines: list[numpy.ndarray]) -> int:
     """Given ordered lists of line/spline coordinates, create a Gmsh 2D surface object.
 
-    :param list lines_and_splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a line (N=2) or spline
+    :param lines_and_splines: list of [N, 2] shaped arrays of (x, y) coordinates defining a line (N=2) or spline
         (N>2)
 
     :returns: Gmsh 2D entity tag
@@ -110,11 +110,11 @@ def _draw_surface(lines_and_splines) -> int:
     return gmsh.model.occ.addPlaneSurface([curve_loop])
 
 
-def _create_line_from_coordinates(point1, point2) -> int:
+def _create_line_from_coordinates(point1: tuple[float, float, float], point2: tuple[float, float, float]) -> int:
     """Create a curve from 2 three-dimensional coordinates.
 
-    :param tuple point1: First set of coordinates (x1, y1, z1)
-    :param tuple point2: Second set of coordinates (x2, y2, z2)
+    :param point1: First set of coordinates (x1, y1, z1)
+    :param point2: Second set of coordinates (x2, y2, z2)
 
     :returns: Gmsh 1D entity tag
     """
@@ -123,10 +123,10 @@ def _create_line_from_coordinates(point1, point2) -> int:
     return gmsh.model.occ.addLine(point1_tag, point2_tag)
 
 
-def _create_spline_from_coordinates(coordinates) -> int:
-    """Create a spline from a list of coordinates.
+def _create_spline_from_coordinates(coordinates: typing.Sequence[tuple[float, float, float]] | numpy.ndarray) -> int:
+    """Create a spline from a sequence of coordinates.
 
-    :param numpy.array coordinates: [N, 3] array of coordinates (x, y, z)
+    :param coordinates: [N, 3] array of coordinates (x, y, z)
 
     :returns: Gmsh 1D entity tag
     """
@@ -135,9 +135,7 @@ def _create_spline_from_coordinates(coordinates) -> int:
     if coordinates.shape[0] < minimum:
         raise RuntimeError(f"Requires at least {minimum} coordinates to create a spline")
 
-    points = []
-    for point in coordinates:
-        points.append(gmsh.model.occ.addPoint(*tuple(point)))
+    points = [gmsh.model.occ.addPoint(*tuple(point)) for point in coordinates]
 
     return gmsh.model.occ.addBSpline(points)
 
@@ -145,18 +143,19 @@ def _create_spline_from_coordinates(coordinates) -> int:
 def _rename_and_sweep(
     surface: int,
     part_name: str,
-    center=numpy.array([0.0, 0.0, 0.0]),
-    planar=parsers.geometry_defaults["planar"],
-    revolution_angle=parsers.geometry_defaults["revolution_angle"],
+    center: tuple[float, float, float] | numpy.ndarray = (0.0, 0.0, 0.0),
+    planar: bool = parsers.geometry_defaults["planar"],
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
 ) -> typing.Tuple[int, int]:
     """Recover surface, sweep part if required, and rename surface/volume by part name.
 
     Hyphens are replaced by underscores to make the ACIS engine happy.
 
-    :param int surface: Gmsh surface tag to rename and conditionally sweep
-    :param str part_name: name(s) of the part(s) being created
-    :param bool planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
-    :param float revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
+    :param surface: Gmsh surface tag to rename and conditionally sweep
+    :param part_name: name(s) of the part(s) being created
+    :param center: coordinate location for the center of axisymmetric sweep
+    :param planar: switch to indicate that 2D model dimensionality is planar, not axisymmetric
+    :param revolution_angle: angle of solid revolution for ``3D`` geometries. Ignore when planar is True.
 
     :returns: Gmsh dimTag (dimension, tag)
     """
@@ -167,7 +166,8 @@ def _rename_and_sweep(
     elif numpy.isclose(revolution_angle, 0.0):
         dim_tag = (2, surface)
     else:
-        dimTags = gmsh.model.occ.revolve(
+        # Using naming convention of the external library, Gmsh
+        dimTags = gmsh.model.occ.revolve(  # noqa: N806
             [(2, surface)],
             *center,
             *revolution_axis,
@@ -185,27 +185,27 @@ def _rename_and_sweep(
 
 
 def cylinder(
-    inner_radius,
-    outer_radius,
-    height,
-    output_file,
-    model_name=parsers.geometry_defaults["model_name"],
-    part_name=parsers.cylinder_defaults["part_name"],
-    revolution_angle=parsers.geometry_defaults["revolution_angle"],
-    y_offset=parsers.cylinder_defaults["y_offset"],
+    inner_radius: float,
+    outer_radius: float,
+    height: float,
+    output_file: str,
+    model_name: str = parsers.geometry_defaults["model_name"],
+    part_name: str = parsers.cylinder_defaults["part_name"],
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
+    y_offset: float = parsers.cylinder_defaults["y_offset"],
 ) -> None:
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry.
 
     Centroid of cylinder is located on the global coordinate origin by default.
 
-    :param float inner_radius: Radius of the hollow center
-    :param float outer_radius: Outer radius of the cylinder
-    :param float height: Height of the cylinder
-    :param str output_file: Gmsh ``*.step`` file to save the part(s)
-    :param str model_name: name of the Gmsh model in which to create the part
-    :param list part_name: name(s) of the part(s) being created
-    :param float revolution_angle: angle of solid revolution for ``3D`` geometries
-    :param float y_offset: vertical offset along the global Y-axis
+    :param inner_radius: Radius of the hollow center
+    :param outer_radius: Outer radius of the cylinder
+    :param height: Height of the cylinder
+    :param output_file: Gmsh ``*.step`` file to save the part(s)
+    :param model_name: name of the Gmsh model in which to create the part
+    :param part_name: name(s) of the part(s) being created
+    :param revolution_angle: angle of solid revolution for ``3D`` geometries
+    :param y_offset: vertical offset along the global Y-axis
     """
     # Universally required setup
     gmsh.initialize()
@@ -232,27 +232,27 @@ def cylinder(
 
 
 def sphere(
-    inner_radius,
-    outer_radius,
-    output_file,
-    input_file=parsers.sphere_defaults["input_file"],
-    quadrant=parsers.sphere_defaults["quadrant"],
-    revolution_angle=parsers.sphere_defaults["revolution_angle"],
-    y_offset=parsers.sphere_defaults["y_offset"],
-    model_name=parsers.sphere_defaults["model_name"],
-    part_name=parsers.sphere_defaults["part_name"],
+    inner_radius: float,
+    outer_radius: float,
+    output_file: str,
+    input_file: str = parsers.sphere_defaults["input_file"],
+    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],
+    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
+    y_offset: float = parsers.sphere_defaults["y_offset"],
+    model_name: str = parsers.sphere_defaults["model_name"],
+    part_name: str = parsers.sphere_defaults["part_name"],
 ) -> None:
     """Create a sphere geometry with file I/O handling.
 
-    :param float inner_radius: inner radius (size of hollow)
-    :param float outer_radius: outer radius (size of sphere)
-    :param str output_file: output file name. Will be stripped of the extension and ``.step`` will be used.
-    :param str input_file: input file name. Will be stripped of the extension and ``.step`` will be used.
-    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
-    :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
-    :param float y_offset: vertical offset along the global Y-axis
-    :param str model_name: name of the Gmsh model in which to create the part
-    :param str part_name: name of the part to be created in the Abaqus model
+    :param inner_radius: inner radius (size of hollow)
+    :param outer_radius: outer radius (size of sphere)
+    :param output_file: output file name. Will be stripped of the extension and ``.step`` will be used.
+    :param input_file: input file name. Will be stripped of the extension and ``.step`` will be used.
+    :param quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
+    :param revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param y_offset: vertical offset along the global Y-axis
+    :param model_name: name of the Gmsh model in which to create the part
+    :param part_name: name of the part to be created in the Abaqus model
     """
     # Universally required setup
     gmsh.initialize()
@@ -303,21 +303,21 @@ def sphere(
 
 
 def _sphere(
-    inner_radius,
-    outer_radius,
-    quadrant=parsers.sphere_defaults["quadrant"],
-    revolution_angle=parsers.sphere_defaults["revolution_angle"],
-    center=parsers.sphere_defaults["center"],
-    part_name=parsers.sphere_defaults["part_name"],
+    inner_radius: float,
+    outer_radius: float,
+    quadrant: str = parsers.sphere_defaults["quadrant"],
+    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
+    center: tuple[float, float] = parsers.sphere_defaults["center"],
+    part_name: str = parsers.sphere_defaults["part_name"],
 ) -> None:
     """Create a sphere geometry without file I/O handling.
 
-    :param float inner_radius: inner radius (size of hollow)
-    :param float outer_radius: outer radius (size of sphere)
-    :param str quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
-    :param float revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
-    :param tuple center: tuple of floats (X, Y) location for the center of the sphere
-    :param str part_name: name of the part to be created in the Abaqus model
+    :param inner_radius: inner radius (size of hollow)
+    :param outer_radius: outer radius (size of sphere)
+    :param quadrant: quadrant of XY plane for the sketch: upper (I), lower (IV), both
+    :param revolution_angle: angle of rotation 0.-360.0 degrees. Provide 0 for a 2D axisymmetric model.
+    :param center: tuple of floats (X, Y) location for the center of the sphere
+    :param part_name: name of the part to be created in the Abaqus model
     """
     # TODO: consolidate pure Python 3 logic in a common module for both Gmsh and Cubit
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/boards
@@ -346,12 +346,14 @@ def _sphere(
     _rename_and_sweep(surface, part_name, revolution_angle=revolution_angle, center=center_3d)
 
 
-def _create_arc_from_coordinates(center, point1, point2) -> int:
+def _create_arc_from_coordinates(
+    center: tuple[float, float, float], point1: tuple[float, float, float], point2: tuple[float, float, float]
+) -> int:
     """Create a circle arc Gmsh object from center and points on the curve.
 
-    :param tuple center: tuple of floats (X, Y, Z) location for the center of the circle arc
-    :param tuple point1: tuple of floats (X, Y, Z) location for the first point on the arc
-    :param tuple point2: tuple of floats (X, Y, Z) location for the second point on the arc
+    :param center: tuple of floats (X, Y, Z) location for the center of the circle arc
+    :param point1: tuple of floats (X, Y, Z) location for the first point on the arc
+    :param point2: tuple of floats (X, Y, Z) location for the second point on the arc
 
     :returns: Gmsh curve tag
     """
@@ -362,11 +364,14 @@ def _create_arc_from_coordinates(center, point1, point2) -> int:
     return gmsh.model.occ.addCircleArc(point1_tag, center_tag, point2_tag, center=True)
 
 
-def partition(*args, **kwargs) -> typing.NoReturn:
+# TODO: Remove ``noqa: ARG001`` when this function is implemented.
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/212
+def partition(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
     raise RuntimeError("partition subcommand is not yet implemented")
 
 
-def sets(*args, **kwargs) -> typing.NoReturn:
+# TODO: Remove ``noqa: ARG001`` when this function is implemented.
+def sets(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
     raise RuntimeError("sets subcommand is not yet implemented")
 
 

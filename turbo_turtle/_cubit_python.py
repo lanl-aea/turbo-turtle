@@ -32,18 +32,18 @@ def cubit_command_or_exception(command):
 
 
 def geometry(
-    input_file,
-    output_file,
-    planar=parsers.geometry_defaults["planar"],
-    part_name=parsers.geometry_defaults["part_name"],
-    unit_conversion=parsers.geometry_defaults["unit_conversion"],
-    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
-    delimiter=parsers.geometry_defaults["delimiter"],
-    header_lines=parsers.geometry_defaults["header_lines"],
-    revolution_angle=parsers.geometry_defaults["revolution_angle"],
-    y_offset=parsers.geometry_defaults["y_offset"],
-    rtol=parsers.geometry_defaults["rtol"],
-    atol=parsers.geometry_defaults["atol"],
+    input_file: str,
+    output_file: str,
+    planar: bool = parsers.geometry_defaults["planar"],
+    part_name: str = parsers.geometry_defaults["part_name"],
+    unit_conversion: float = parsers.geometry_defaults["unit_conversion"],
+    euclidean_distance: float = parsers.geometry_defaults["euclidean_distance"],
+    delimiter: str = parsers.geometry_defaults["delimiter"],
+    header_lines: int = parsers.geometry_defaults["header_lines"],
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
+    y_offset: float = parsers.geometry_defaults["y_offset"],
+    rtol: float = parsers.geometry_defaults["rtol"],
+    atol: float = parsers.geometry_defaults["atol"],
 ) -> None:
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
