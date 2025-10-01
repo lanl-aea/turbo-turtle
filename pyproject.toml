@@ -75,6 +75,11 @@ extend-select = [
 # TODO: decide how to handle *args/**kwargs type annotations and remove ignores for ANN00[23]
 extend-ignore = ["ANN002", "ANN003", "B028", "D203", "D213", "PLR0912", "PLR0913", "PLR0915", "PLR1730", "PLR2004"]
 
+[tool.ruff.lint.extend-per-file-ignores]
+"*SConstruct" = ["F821"]
+"*SConscript" = ["F821"]
+"*.scons" = ["F821"]
+
 [tool.black]
 target-version = ["py310", "py311", "py312", "py313"]
 extend-exclude = ".txt|test_vertices.py"
