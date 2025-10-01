@@ -3,15 +3,6 @@
 # Inherit the parent construction environment
 Import("env")
 
-flake8 = env.Command(
-    target=["flake8.txt"],
-    source=[".flake8"],
-    action=["flake8 --tee --output-file=${TARGET.abspath}"],
-)
-env.AlwaysBuild(flake8)
-env.Alias("flake8", flake8)
-env.Alias("style", flake8)
-
 black_check = env.Command(
     target=["black-check.txt"],
     source=["pyproject.toml"],

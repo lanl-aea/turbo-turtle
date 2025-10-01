@@ -15,7 +15,6 @@ global-exclude *.pyc
 global-exclude config.log
 global-exclude .sconsign.dblite
 exclude turbo_turtle/docs/.buildinfo*
-exclude .flake8
 exclude .git*
 exclude *.yml
 exclude turbo_turtle/.coveragerc
