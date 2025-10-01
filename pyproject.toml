@@ -61,6 +61,20 @@ markers = [
 ]
 addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -m 'not systemtest'"
 
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+extend-exclude = ["build", "install", "conda-environment", "conda-pkgs", "pip-build-test"]
+extend-include = ["SConstruct", "SConscript", "*.scons"]
+
+[tool.ruff.lint]
+extend-select = [
+    "A", "B", "D", "E", "F", "I", "N", "W",
+    "ANN", "ARG", "BLE", "C4", "ERA", "FURB", "ISC", "NPY", "PD", "PERF", "PGH", "PL", "PTH", "RUF", "T10"
+]
+# TODO: decide how to handle *args/**kwargs type annotations and remove ignores for ANN00[23]
+extend-ignore = ["ANN002", "ANN003", "B028", "D203", "D213", "PLR0912", "PLR0913", "PLR0915", "PLR1730", "PLR2004"]
+
 [tool.black]
 target-version = ["py310", "py311", "py312", "py313"]
 extend-exclude = ".txt|test_vertices.py"
