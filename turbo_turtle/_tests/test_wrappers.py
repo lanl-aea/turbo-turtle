@@ -1,10 +1,12 @@
+"""Test the Python 3 wrappers of third-party interfaces."""
 import argparse
 import copy
+import typing
 from unittest.mock import patch
 
 import pytest
 
-from turbo_turtle import _abaqus_wrappers
+from turbo_turtle import _abaqus_wrappers, _gmsh_wrappers
 
 command = "/dummy/command"
 
@@ -327,7 +329,10 @@ wrapper_tests = {
     wrapper_tests.values(),
     ids=wrapper_tests.keys(),
 )
-def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_options) -> None:
+def test_abaqus_wrappers(
+    subcommand: str, namespace: dict[str, typing.Any], expected_options: list[str], unexpected_options: list[str]
+) -> None:
+    """Test the :mod:`turbo_turtle._abaqus_wrappers` module."""
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
         subcommand_wrapper = getattr(_abaqus_wrappers, subcommand)
@@ -340,7 +345,7 @@ def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_opt
         assert option not in command_string
 
 
-def trim_namespace(original, pop_keys):
+def trim_namespace(original: dict, pop_keys: typing.Sequence[str]) -> dict:
     """Create a modified dictionary deepcopy by removing the provided keys.
 
     :returns: Modified dictionary deepcopy with pop keys removed
@@ -354,6 +359,7 @@ def trim_namespace(original, pop_keys):
 
 
 def test_trim_namespace() -> None:
+    """Test :func:`.trim_namespace` function."""
     original = {"keep": "keep", "pop": "pop"}
     modified = trim_namespace(original, ("pop",))
     assert modified == {"keep": "keep"}
@@ -410,13 +416,17 @@ cubit_wrapper_tests = {
     cubit_wrapper_tests.values(),
     ids=cubit_wrapper_tests.keys(),
 )
-def test_cubit_wrappers(subcommand, namespace, positional, keywords) -> None:
+def test_cubit_wrappers(
+    subcommand: str, namespace: dict[str, typing.Any], positional: tuple[str], keywords: dict[str, typing.Any]
+) -> None:
+    """Test the :mod:`turbo_turtle._cubit_wrappers` module."""
     args = argparse.Namespace(**namespace)
     with (
         patch("turbo_turtle._utilities.import_cubit"),
         patch(f"turbo_turtle._cubit_python.{subcommand}") as mock_function,
     ):
-        from turbo_turtle import _cubit_wrappers
+        # Third-party module requires Cubit imports, which require special handling.
+        from turbo_turtle import _cubit_wrappers  # noqa: PLC0415
 
         subcommand_wrapper = getattr(_cubit_wrappers, subcommand)
         subcommand_wrapper(args, command)
@@ -492,7 +502,10 @@ gmsh_wrapper_tests = {
     gmsh_wrapper_tests.values(),
     ids=gmsh_wrapper_tests.keys(),
 )
-def test_gmsh_wrappers(subcommand, namespace, positional, keywords) -> None:
+def test_gmsh_wrappers(
+    subcommand: str, namespace: dict[str, typing.Any], positional: tuple[str], keywords: dict[str, typing.Any]
+) -> None:
+    """Test the :mod:`turbo_turtle._gmsh_wrappers` module."""
     args = argparse.Namespace(**namespace)
     implemented = ["geometry", "cylinder", "sphere", "mesh", "image"]
     if subcommand in implemented:
@@ -500,8 +513,6 @@ def test_gmsh_wrappers(subcommand, namespace, positional, keywords) -> None:
             patch("turbo_turtle._utilities.import_gmsh"),
             patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function,
         ):
-            from turbo_turtle import _gmsh_wrappers
-
             subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
             subcommand_wrapper(args, command)
         mock_function.assert_called_once()
@@ -515,7 +526,6 @@ def test_gmsh_wrappers(subcommand, namespace, positional, keywords) -> None:
             patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function,
             pytest.raises(RuntimeError),
         ):
-            from turbo_turtle import _gmsh_wrappers
 
             subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
             subcommand_wrapper(args, command)
