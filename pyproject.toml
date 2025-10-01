@@ -80,12 +80,6 @@ extend-ignore = ["ANN002", "ANN003", "B028", "D203", "D213", "PLR0912", "PLR0913
 "*SConscript" = ["F821"]
 "*.scons" = ["F821"]
 
-[tool.black]
-target-version = ["py310", "py311", "py312", "py313"]
-extend-exclude = ".txt|test_vertices.py"
-force-exclude = "build*/|conda-environment*/|conda-pkgs*/|pip-build-test*/"
-line-length = 120
-
 [tool.mypy]
 disable_error_code = [
     "import-untyped",

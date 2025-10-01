@@ -3,7 +3,6 @@ channels:
   - nodefaults
 
 dependencies:
-  - black
   - ruff
   - scons >=4.6
   - setuptools >=77
