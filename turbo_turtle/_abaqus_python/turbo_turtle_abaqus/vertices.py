@@ -31,8 +31,8 @@ def cylinder(inner_radius, outer_radius, height, y_offset=0.0):
     :rtype: numpy.array
     """
     coordinates = (
-        (inner_radius, height / 2.0 + y_offset),  # fmt: skip
-        (outer_radius, height / 2.0 + y_offset),  # fmt: skip
+        (inner_radius, height / 2.0 + y_offset),
+        (outer_radius, height / 2.0 + y_offset),
         (outer_radius, -height / 2.0 + y_offset),
         (inner_radius, -height / 2.0 + y_offset),
     )
@@ -346,12 +346,12 @@ def datum_planes(xvector, zvector):
     primary_planes = [xy_plane, yz_plane, zx_plane]
 
     midpoints = [
-        midpoint_vector(xvector, yvector),  # fmt: skip
-        midpoint_vector(xvector, -yvector),  # fmt: skip
-        midpoint_vector(yvector, zvector),  # fmt: skip
-        midpoint_vector(yvector, -zvector),  # fmt: skip
-        midpoint_vector(zvector, xvector),  # fmt: skip
-        midpoint_vector(zvector, -xvector),  # fmt: skip
+        midpoint_vector(xvector, yvector),
+        midpoint_vector(xvector, -yvector),
+        midpoint_vector(yvector, zvector),
+        midpoint_vector(yvector, -zvector),
+        midpoint_vector(zvector, xvector),
+        midpoint_vector(zvector, -xvector),
     ]
     midpoints = [normalize_vector(midpoint) for midpoint in midpoints]
 
@@ -369,14 +369,14 @@ def fortyfive_vectors(xvector, zvector):
     yvector = numpy.cross(zvector, xvector)
 
     fortyfives = [
-        midpoint_vector(xvector, yvector, zvector),  # 0  # fmt: skip
-        midpoint_vector(-xvector, yvector, zvector),  # 1  # fmt: skip
-        midpoint_vector(-xvector, yvector, -zvector),  # 2  # fmt: skip
-        midpoint_vector(xvector, yvector, -zvector),  # 3  # fmt: skip
-        midpoint_vector(xvector, -yvector, zvector),  # 4  # fmt: skip
-        midpoint_vector(-xvector, -yvector, zvector),  # 5  # fmt: skip
-        midpoint_vector(-xvector, -yvector, -zvector),  # 6  # fmt: skip
-        midpoint_vector(xvector, -yvector, -zvector),  # 7  # fmt: skip
+        midpoint_vector(xvector, yvector, zvector),  # 0
+        midpoint_vector(-xvector, yvector, zvector),  # 1
+        midpoint_vector(-xvector, yvector, -zvector),  # 2
+        midpoint_vector(xvector, yvector, -zvector),  # 3
+        midpoint_vector(xvector, -yvector, zvector),  # 4
+        midpoint_vector(-xvector, -yvector, zvector),  # 5
+        midpoint_vector(-xvector, -yvector, -zvector),  # 6
+        midpoint_vector(xvector, -yvector, -zvector),  # 7
     ]
     fortyfives = [normalize_vector(vector) for vector in fortyfives]
 

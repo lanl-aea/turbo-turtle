@@ -86,46 +86,46 @@ break_coordinates = {
     "vase": (
         numpy.array(
             [
-                [5.1, -5.0],  # fmt: skip
-                [5.0, -4.8],  # fmt: skip
-                [4.5, -4.0],  # fmt: skip
-                [4.1, -3.0],  # fmt: skip
-                [4.0, -2.5],  # fmt: skip
-                [4.0, 2.5],  # fmt: skip
-                [4.1, 3.0],  # fmt: skip
-                [4.5, 4.0],  # fmt: skip
-                [5.0, 4.8],  # fmt: skip
-                [5.1, 5.0],  # fmt: skip
-                [3.0, 5.0],  # fmt: skip
-                [3.0, -4.0],  # fmt: skip
-                [0.0, -4.0],  # fmt: skip
-                [0.0, -5.0],  # fmt: skip
+                [5.1, -5.0],
+                [5.0, -4.8],
+                [4.5, -4.0],
+                [4.1, -3.0],
+                [4.0, -2.5],
+                [4.0, 2.5],
+                [4.1, 3.0],
+                [4.5, 4.0],
+                [5.0, 4.8],
+                [5.1, 5.0],
+                [3.0, 5.0],
+                [3.0, -4.0],
+                [0.0, -4.0],
+                [0.0, -5.0],
             ]
         ),
         4,
         [
             numpy.array(
                 [
-                    [5.1, -5.0],  # fmt: skip
-                    [5.0, -4.8],  # fmt: skip
-                    [4.5, -4.0],  # fmt: skip
-                    [4.1, -3.0],  # fmt: skip
-                    [4.0, -2.5],  # fmt: skip
+                    [5.1, -5.0],
+                    [5.0, -4.8],
+                    [4.5, -4.0],
+                    [4.1, -3.0],
+                    [4.0, -2.5],
                 ]
             ),
             numpy.array(
                 [
-                    [4.0, 2.5],  # fmt: skip
-                    [4.1, 3.0],  # fmt: skip
-                    [4.5, 4.0],  # fmt: skip
-                    [5.0, 4.8],  # fmt: skip
-                    [5.1, 5.0],  # fmt: skip
+                    [4.0, 2.5],
+                    [4.1, 3.0],
+                    [4.5, 4.0],
+                    [5.0, 4.8],
+                    [5.1, 5.0],
                 ]
             ),
-            numpy.array([[3.0, 5.0]]),  # fmt: skip
-            numpy.array([[3.0, -4.0]]),  # fmt: skip
-            numpy.array([[0.0, -4.0]]),  # fmt: skip
-            numpy.array([[0.0, -5.0]]),  # fmt: skip
+            numpy.array([[3.0, 5.0]]),
+            numpy.array([[3.0, -4.0]]),
+            numpy.array([[0.0, -4.0]]),
+            numpy.array([[0.0, -5.0]]),
         ],
     ),
 }
@@ -147,43 +147,43 @@ line_pairs = {
         [numpy.array([[1.0, -0.5]]), numpy.array([[2.0, -0.5]]), numpy.array([[2.0, 0.5]]), numpy.array([[1.0, 0.5]])],
         [
             (numpy.array([1.0, -0.5]), numpy.array([2.0, -0.5])),
-            (numpy.array([2.0, -0.5]), numpy.array([2.0, 0.5])),  # fmt: skip
-            (numpy.array([2.0, 0.5]), numpy.array([1.0, 0.5])),  # fmt: skip
-            (numpy.array([1.0, 0.5]), numpy.array([1.0, -0.5])),  # fmt: skip
+            (numpy.array([2.0, -0.5]), numpy.array([2.0, 0.5])),
+            (numpy.array([2.0, 0.5]), numpy.array([1.0, 0.5])),
+            (numpy.array([1.0, 0.5]), numpy.array([1.0, -0.5])),
         ],
     ),
     "vase": (
         [
             numpy.array(
                 [
-                    [5.1, -5.0],  # fmt: skip
-                    [5.0, -4.8],  # fmt: skip
-                    [4.5, -4.0],  # fmt: skip
-                    [4.1, -3.0],  # fmt: skip
-                    [4.0, -2.5],  # fmt: skip
+                    [5.1, -5.0],
+                    [5.0, -4.8],
+                    [4.5, -4.0],
+                    [4.1, -3.0],
+                    [4.0, -2.5],
                 ]
             ),
             numpy.array(
                 [
-                    [4.0, 2.5],  # fmt: skip
-                    [4.1, 3.0],  # fmt: skip
-                    [4.5, 4.0],  # fmt: skip
-                    [5.0, 4.8],  # fmt: skip
-                    [5.1, 5.0],  # fmt: skip
+                    [4.0, 2.5],
+                    [4.1, 3.0],
+                    [4.5, 4.0],
+                    [5.0, 4.8],
+                    [5.1, 5.0],
                 ]
             ),
-            numpy.array([[3.0, 5.0]]),  # fmt: skip
-            numpy.array([[3.0, -4.0]]),  # fmt: skip
-            numpy.array([[0.0, -4.0]]),  # fmt: skip
-            numpy.array([[0.0, -5.0]]),  # fmt: skip
+            numpy.array([[3.0, 5.0]]),
+            numpy.array([[3.0, -4.0]]),
+            numpy.array([[0.0, -4.0]]),
+            numpy.array([[0.0, -5.0]]),
         ],
         [
-            (numpy.array([4.0, -2.5]), numpy.array([4.0, 2.5])),  # fmt: skip
-            (numpy.array([5.1, 5.0]), numpy.array([3.0, 5.0])),  # fmt: skip
-            (numpy.array([3.0, 5.0]), numpy.array([3.0, -4.0])),  # fmt: skip
-            (numpy.array([3.0, -4.0]), numpy.array([0.0, -4.0])),  # fmt: skip
-            (numpy.array([0.0, -4.0]), numpy.array([0.0, -5.0])),  # fmt: skip
-            (numpy.array([0.0, -5.0]), numpy.array([5.1, -5.0])),  # fmt: skip
+            (numpy.array([4.0, -2.5]), numpy.array([4.0, 2.5])),
+            (numpy.array([5.1, 5.0]), numpy.array([3.0, 5.0])),
+            (numpy.array([3.0, 5.0]), numpy.array([3.0, -4.0])),
+            (numpy.array([3.0, -4.0]), numpy.array([0.0, -4.0])),
+            (numpy.array([0.0, -4.0]), numpy.array([0.0, -5.0])),
+            (numpy.array([0.0, -5.0]), numpy.array([5.1, -5.0])),
         ],
     ),
 }
@@ -309,58 +309,58 @@ the_real_mccoy = {
         numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
         4,
         [
-            numpy.array([[1.0, -0.5], [2.0, -0.5]]),  # fmt: skip
-            numpy.array([[2.0, -0.5], [2.0, 0.5]]),  # fmt: skip
-            numpy.array([[2.0, 0.5], [1.0, 0.5]]),  # fmt: skip
-            numpy.array([[1.0, 0.5], [1.0, -0.5]]),  # fmt: skip
+            numpy.array([[1.0, -0.5], [2.0, -0.5]]),
+            numpy.array([[2.0, -0.5], [2.0, 0.5]]),
+            numpy.array([[2.0, 0.5], [1.0, 0.5]]),
+            numpy.array([[1.0, 0.5], [1.0, -0.5]]),
         ],
         [],
     ),
     "vase": (
         numpy.array(
             [
-                [5.1, -5.0],  # fmt: skip
-                [5.0, -4.8],  # fmt: skip
-                [4.5, -4.0],  # fmt: skip
-                [4.1, -3.0],  # fmt: skip
-                [4.0, -2.5],  # fmt: skip
-                [4.0, 2.5],  # fmt: skip
-                [4.1, 3.0],  # fmt: skip
-                [4.5, 4.0],  # fmt: skip
-                [5.0, 4.8],  # fmt: skip
-                [5.1, 5.0],  # fmt: skip
-                [3.0, 5.0],  # fmt: skip
-                [3.0, -4.0],  # fmt: skip
-                [0.0, -4.0],  # fmt: skip
-                [0.0, -5.0],  # fmt: skip
+                [5.1, -5.0],
+                [5.0, -4.8],
+                [4.5, -4.0],
+                [4.1, -3.0],
+                [4.0, -2.5],
+                [4.0, 2.5],
+                [4.1, 3.0],
+                [4.5, 4.0],
+                [5.0, 4.8],
+                [5.1, 5.0],
+                [3.0, 5.0],
+                [3.0, -4.0],
+                [0.0, -4.0],
+                [0.0, -5.0],
             ]
         ),
         4,
         [
-            numpy.array([[4.0, -2.5], [4.0, 2.5]]),  # fmt: skip
-            numpy.array([[5.1, 5.0], [3.0, 5.0]]),  # fmt: skip
-            numpy.array([[3.0, 5.0], [3.0, -4.0]]),  # fmt: skip
-            numpy.array([[3.0, -4.0], [0.0, -4.0]]),  # fmt: skip
-            numpy.array([[0.0, -4.0], [0.0, -5.0]]),  # fmt: skip
-            numpy.array([[0.0, -5.0], [5.1, -5.0]]),  # fmt: skip
+            numpy.array([[4.0, -2.5], [4.0, 2.5]]),
+            numpy.array([[5.1, 5.0], [3.0, 5.0]]),
+            numpy.array([[3.0, 5.0], [3.0, -4.0]]),
+            numpy.array([[3.0, -4.0], [0.0, -4.0]]),
+            numpy.array([[0.0, -4.0], [0.0, -5.0]]),
+            numpy.array([[0.0, -5.0], [5.1, -5.0]]),
         ],
         [
             numpy.array(
                 [
-                    [5.1, -5.0],  # fmt: skip
-                    [5.0, -4.8],  # fmt: skip
-                    [4.5, -4.0],  # fmt: skip
-                    [4.1, -3.0],  # fmt: skip
-                    [4.0, -2.5],  # fmt: skip
+                    [5.1, -5.0],
+                    [5.0, -4.8],
+                    [4.5, -4.0],
+                    [4.1, -3.0],
+                    [4.0, -2.5],
                 ]
             ),
             numpy.array(
                 [
-                    [4.0, 2.5],  # fmt: skip
-                    [4.1, 3.0],  # fmt: skip
-                    [4.5, 4.0],  # fmt: skip
-                    [5.0, 4.8],  # fmt: skip
-                    [5.1, 5.0],  # fmt: skip
+                    [4.0, 2.5],
+                    [4.1, 3.0],
+                    [4.5, 4.0],
+                    [5.0, 4.8],
+                    [5.1, 5.0],
                 ]
             ),
         ],
@@ -389,57 +389,57 @@ ordered_lines_and_splines = {
         numpy.array([[1.0, -0.5], [2.0, -0.5], [2.0, 0.5], [1.0, 0.5]]),
         4,
         [
-            numpy.array([[1.0, -0.5], [2.0, -0.5]]),  # fmt: skip
-            numpy.array([[2.0, -0.5], [2.0, 0.5]]),  # fmt: skip
-            numpy.array([[2.0, 0.5], [1.0, 0.5]]),  # fmt: skip
-            numpy.array([[1.0, 0.5], [1.0, -0.5]]),  # fmt: skip
+            numpy.array([[1.0, -0.5], [2.0, -0.5]]),
+            numpy.array([[2.0, -0.5], [2.0, 0.5]]),
+            numpy.array([[2.0, 0.5], [1.0, 0.5]]),
+            numpy.array([[1.0, 0.5], [1.0, -0.5]]),
         ],
     ),
     "vase": (
         numpy.array(
             [
-                [5.1, -5.0],  # fmt: skip
-                [5.0, -4.8],  # fmt: skip
-                [4.5, -4.0],  # fmt: skip
-                [4.1, -3.0],  # fmt: skip
-                [4.0, -2.5],  # fmt: skip
-                [4.0, 2.5],  # fmt: skip
-                [4.1, 3.0],  # fmt: skip
-                [4.5, 4.0],  # fmt: skip
-                [5.0, 4.8],  # fmt: skip
-                [5.1, 5.0],  # fmt: skip
-                [3.0, 5.0],  # fmt: skip
-                [3.0, -4.0],  # fmt: skip
-                [0.0, -4.0],  # fmt: skip
-                [0.0, -5.0],  # fmt: skip
+                [5.1, -5.0],
+                [5.0, -4.8],
+                [4.5, -4.0],
+                [4.1, -3.0],
+                [4.0, -2.5],
+                [4.0, 2.5],
+                [4.1, 3.0],
+                [4.5, 4.0],
+                [5.0, 4.8],
+                [5.1, 5.0],
+                [3.0, 5.0],
+                [3.0, -4.0],
+                [0.0, -4.0],
+                [0.0, -5.0],
             ]
         ),
         4,
         [
             numpy.array(
                 [
-                    [5.1, -5.0],  # fmt: skip
-                    [5.0, -4.8],  # fmt: skip
-                    [4.5, -4.0],  # fmt: skip
-                    [4.1, -3.0],  # fmt: skip
-                    [4.0, -2.5],  # fmt: skip
+                    [5.1, -5.0],
+                    [5.0, -4.8],
+                    [4.5, -4.0],
+                    [4.1, -3.0],
+                    [4.0, -2.5],
                 ]
             ),
-            numpy.array([[4.0, -2.5], [4.0, 2.5]]),  # fmt: skip
+            numpy.array([[4.0, -2.5], [4.0, 2.5]]),
             numpy.array(
                 [
-                    [4.0, 2.5],  # fmt: skip
-                    [4.1, 3.0],  # fmt: skip
-                    [4.5, 4.0],  # fmt: skip
-                    [5.0, 4.8],  # fmt: skip
-                    [5.1, 5.0],  # fmt: skip
+                    [4.0, 2.5],
+                    [4.1, 3.0],
+                    [4.5, 4.0],
+                    [5.0, 4.8],
+                    [5.1, 5.0],
                 ]
             ),
-            numpy.array([[5.1, 5.0], [3.0, 5.0]]),  # fmt: skip
-            numpy.array([[3.0, 5.0], [3.0, -4.0]]),  # fmt: skip
-            numpy.array([[3.0, -4.0], [0.0, -4.0]]),  # fmt: skip
-            numpy.array([[0.0, -4.0], [0.0, -5.0]]),  # fmt: skip
-            numpy.array([[0.0, -5.0], [5.1, -5.0]]),  # fmt: skip
+            numpy.array([[5.1, 5.0], [3.0, 5.0]]),
+            numpy.array([[3.0, 5.0], [3.0, -4.0]]),
+            numpy.array([[3.0, -4.0], [0.0, -4.0]]),
+            numpy.array([[0.0, -4.0], [0.0, -5.0]]),
+            numpy.array([[0.0, -5.0], [5.1, -5.0]]),
         ],
     ),
 }
@@ -508,10 +508,10 @@ cylinder_lines = {
         1.0,
         None,
         [
-            (numpy.array([1.0, 0.5]), numpy.array([2.0, 0.5])),  # fmt: skip
-            (numpy.array([2.0, 0.5]), numpy.array([2.0, -0.5])),  # fmt: skip
+            (numpy.array([1.0, 0.5]), numpy.array([2.0, 0.5])),
+            (numpy.array([2.0, 0.5]), numpy.array([2.0, -0.5])),
             (numpy.array([2.0, -0.5]), numpy.array([1.0, -0.5])),
-            (numpy.array([1.0, -0.5]), numpy.array([1.0, 0.5])),  # fmt: skip
+            (numpy.array([1.0, -0.5]), numpy.array([1.0, 0.5])),
         ],
     ),
     "offset half height": (
@@ -649,12 +649,12 @@ datum_planes = {
             numpy.array([0.0, 0.0, 1.0]),  # XY plane
             numpy.array([1.0, 0.0, 0.0]),  # YZ plane
             numpy.array([0.0, 1.0, 0.0]),  # ZX plane
-            numpy.array([norm, norm, 0.0]),  # fmt: skip
-            numpy.array([norm, -norm, 0.0]),  # fmt: skip
-            numpy.array([0.0, norm, norm]),  # fmt: skip
-            numpy.array([0.0, norm, -norm]),  # fmt: skip
-            numpy.array([norm, 0.0, norm]),  # fmt: skip
-            numpy.array([-norm, 0.0, norm]),  # fmt: skip
+            numpy.array([norm, norm, 0.0]),
+            numpy.array([norm, -norm, 0.0]),
+            numpy.array([0.0, norm, norm]),
+            numpy.array([0.0, norm, -norm]),
+            numpy.array([norm, 0.0, norm]),
+            numpy.array([-norm, 0.0, norm]),
         ],
     ),
 }
@@ -677,14 +677,14 @@ fortyfive_vectors = {
         numpy.array([1.0, 0.0, 0.0]),
         numpy.array([0.0, 0.0, 1.0]),
         [
-            numpy.array([over_root_three, over_root_three, over_root_three]),  # fmt: skip
-            numpy.array([-over_root_three, over_root_three, over_root_three]),  # fmt: skip
-            numpy.array([-over_root_three, over_root_three, -over_root_three]),  # fmt: skip
-            numpy.array([over_root_three, over_root_three, -over_root_three]),  # fmt: skip
-            numpy.array([over_root_three, -over_root_three, over_root_three]),  # fmt: skip
-            numpy.array([-over_root_three, -over_root_three, over_root_three]),  # fmt: skip
-            numpy.array([-over_root_three, -over_root_three, -over_root_three]),  # fmt: skip
-            numpy.array([over_root_three, -over_root_three, -over_root_three]),  # fmt: skip
+            numpy.array([over_root_three, over_root_three, over_root_three]),
+            numpy.array([-over_root_three, over_root_three, over_root_three]),
+            numpy.array([-over_root_three, over_root_three, -over_root_three]),
+            numpy.array([over_root_three, over_root_three, -over_root_three]),
+            numpy.array([over_root_three, -over_root_three, over_root_three]),
+            numpy.array([-over_root_three, -over_root_three, over_root_three]),
+            numpy.array([-over_root_three, -over_root_three, -over_root_three]),
+            numpy.array([over_root_three, -over_root_three, -over_root_three]),
         ],
     ),
 }
