@@ -86,7 +86,7 @@ disable_error_code = [
     "import-not-found"
 ]
 exclude = [
-    "tests",
+    "_tests",
     "_abaqus_python"
 ]
 packages = ["turbo_turtle"]

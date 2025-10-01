@@ -245,8 +245,8 @@ def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
     geometry_options = (
         str(geometry_model),
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         360.0,
         0.0,
@@ -272,7 +272,7 @@ commands_list = []
 # Legacy geometry system tests requires a series of commands before the temp directory is removed
 # TODO: Decide if we should package or drop the legacy geometry tests
 name = "Turbo-Turtle-Tests"
-legacy_geometry_file = _settings._project_root_abspath / "tests" / "legacy_geometry.py"
+legacy_geometry_file = _settings._project_root_abspath / "_tests" / "legacy_geometry.py"
 commands_list.append(
     pytest.param(
         [
@@ -429,13 +429,13 @@ for test in system_tests:
 # Geometry XY Plot tests
 system_tests = (
     # model/part,                                                  input_file, backend
-    ("washer", [_settings._project_root_abspath / "tests" / "washer.csv"], "abaqus"),
-    ("vase", [_settings._project_root_abspath / "tests" / "vase.csv"], "abaqus"),
+    ("washer", [_settings._project_root_abspath / "_tests" / "washer.csv"], "abaqus"),
+    ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], "abaqus"),
     (
         "multi-part",
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         "abaqus",
     ),
@@ -450,29 +450,29 @@ system_tests = (
     # Abaqus
     (
         "washer",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         360.0,
         0.0,
         "abaqus",
     ),
     (
         "offset-washer",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         360.0,
         1.0,
         "abaqus",
     ),
     (
         "washer-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         0.0,
         0.0,
         "abaqus",
     ),
-    ("vase", [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, 0.0, "abaqus"),
+    ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], 360.0, 0.0, "abaqus"),
     (
         "vase-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         0.0,
         0.0,
         "abaqus",
@@ -480,8 +480,8 @@ system_tests = (
     (
         "multi-part-3D",
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         360.0,
         0.0,
@@ -490,8 +490,8 @@ system_tests = (
     (
         "multi-part-2D",
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         0.0,
         0.0,
@@ -500,29 +500,29 @@ system_tests = (
     # Cubit
     (
         "washer",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         360.0,
         0.0,
         "cubit",
     ),
     (
         "offset-washer",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         360.0,
         1.0,
         "cubit",
     ),
     (
         "washer-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         0.0,
         0.0,
         "cubit",
     ),
-    ("vase", [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, 0.0, "cubit"),
+    ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], 360.0, 0.0, "cubit"),
     (
         "vase-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         0.0,
         0.0,
         "cubit",
@@ -530,8 +530,8 @@ system_tests = (
     (
         "multi-part-3D",
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         360.0,
         0.0,
@@ -540,8 +540,8 @@ system_tests = (
     (
         "multi-part-2D",
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         0.0,
         0.0,
@@ -550,29 +550,29 @@ system_tests = (
     # Gmsh
     (
         "washer",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         360.0,
         0.0,
         "gmsh",
     ),
     (
         "offset-washer",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         360.0,
         1.0,
         "gmsh",
     ),
     (
         "washer-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "washer.csv"],
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
         0.0,
         0.0,
         "gmsh",
     ),
-    ("vase", [_settings._project_root_abspath / "tests" / "vase.csv"], 360.0, 0.0, "gmsh"),
+    ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], 360.0, 0.0, "gmsh"),
     (
         "vase-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         0.0,
         0.0,
         "gmsh",
@@ -580,8 +580,8 @@ system_tests = (
     (
         "multi-part-3D",
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         360.0,
         0.0,
@@ -590,8 +590,8 @@ system_tests = (
     (
         "multi-part-2D",
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         0.0,
         0.0,
@@ -608,7 +608,7 @@ system_tests = (
     # TODO: Pick some Abaqus edge sets for the system tests
     (
         "vase",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         360.0,
         [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]],
         None,
@@ -618,7 +618,7 @@ system_tests = (
     ),
     (
         "vase-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         0.0,
         None,
         [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]],
@@ -629,7 +629,7 @@ system_tests = (
     # Cubit
     (
         "vase",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         360.0,
         [["top", "4"], ["bottom", "7"], ["outer", "'2 3 8'"]],
         [["top_outer", "13"]],
@@ -639,7 +639,7 @@ system_tests = (
     ),
     (
         "vase-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         0.0,
         None,
         [["top", "2"], ["bottom", "6"], ["outer", "'1 7 8'"]],
@@ -788,14 +788,14 @@ for test in gmsh_sphere_3D:
         test.append(
             string.Template(
                 "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
-                "--input-file sphere.step --output-file sphere.step.png --x-angle 45 --y-angle -45 "
+                "--input-file sphere.step --output-file sphere.step.png --x-angle 45.0 --y-angle -45.0 "
                 "--backend gmsh"
             )
         )
         test.append(
             string.Template(
                 "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
-                "--input-file sphere.msh --output-file sphere.msh.png --x-angle 45 --y-angle -45 --backend gmsh"
+                "--input-file sphere.msh --output-file sphere.msh.png --x-angle 45.0 --y-angle -45.0 --backend gmsh"
             )
         )
     commands_list.append(pytest.param(test, marks=pytest.mark.gmsh))
@@ -809,7 +809,7 @@ for part_name in ("washer vase merge-sphere", ""):
 # System tests as SCons tasks
 # TODO: Decide how to handle this system test which requires both Abaqus and Cubit.
 # Separate the SConstruct file into Abaqus/Cubit halves? Dedicated, non-matrixed construction environment?
-sconstruct = _settings._project_root_abspath / "tests/SConstruct"
+sconstruct = _settings._project_root_abspath / "_tests/SConstruct"
 commands_list.append(
     pytest.param(
         [

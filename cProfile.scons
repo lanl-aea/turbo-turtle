@@ -101,7 +101,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
     workflow.extend(
         builder(
             target=["cli_geometryxyplot${extension}", "vase${extension}.png"],
-            source=["turbo_turtle/tests/vase.csv"],
+            source=["turbo_turtle/_tests/vase.csv"],
             options="geometry-xyplot --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
             extension=extension,
         )
@@ -111,7 +111,7 @@ for builder, extension in [(env.CProfile, ".cprofile.lazy"), (env.CProfileEager,
     workflow.extend(
         builder(
             target=["cli_geometry${extension}", "vase${extension}.cae"],
-            source=["turbo_turtle/tests/vase.csv"],
+            source=["turbo_turtle/_tests/vase.csv"],
             options="geometry --input-file ${SOURCE.abspath} --output-file ${TARGETS[1].abspath}",
             extension=extension,
         )

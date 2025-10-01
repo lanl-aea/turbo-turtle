@@ -33,9 +33,9 @@ The relevant files are
 #. ``pyproject.toml``: Define project specific pytest markers for test control
 #. ``turbo_turtle/conftest.py``: Configure custom pytest command line options to allow pass-through Abaqus and Cubit
    executable paths
-#. ``turbo_turtle/tests/*``: Directory containing unit and system test source files
+#. ``turbo_turtle/_tests/*``: Directory containing unit and system test source files
 
-   #. ``turbo_turtle/tests/test_system.py``: System test shell command definitions
+   #. ``turbo_turtle/_tests/test_system.py``: System test shell command definitions
 
 The design of the system tests is intended to configure a full test suite for a matrix of construction environments. The
 pytest marker assignment by associated backend software is important to allow subsets of the full suite to run in
