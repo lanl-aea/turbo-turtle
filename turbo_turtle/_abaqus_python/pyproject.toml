@@ -1,5 +1,7 @@
 [tool.ruff]
 extend = "../../pyproject.toml"
+# TODO: include test modules in the linter. Remove ``"*/test*.py"`` from extend-exclude list.
+extend-exclude = ["*/test*.py"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 # Abaqus Python 2 compatible files
