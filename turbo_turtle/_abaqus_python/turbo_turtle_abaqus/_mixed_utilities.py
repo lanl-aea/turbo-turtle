@@ -31,7 +31,8 @@ def print_exception_message(function):
     def wrapper(*args, **kwargs):
         try:
             output = function(*args, **kwargs)
-        except Exception as err:
+        # Decorator design intent specifically requires catching a blind Exception.
+        except Exception as err:  # noqa: BLE001
             sys_exit(err)
         return output
 
@@ -39,7 +40,9 @@ def print_exception_message(function):
 
 
 def validate_part_name(input_file, part_name):
-    """Validate the structure of the ``part_name`` list to the following rules:
+    """Validate the structure of the ``part_name`` list.
+
+    Validated against the following rules:
 
     * If ``part_name`` is ``[None]``, assign the base names of ``input_file`` to ``part_name``
     * Else if the length of ``part_name`` is not equal to the length of ``input_file``, raise an exception
@@ -66,7 +69,9 @@ def validate_part_name_or_exit(*args, **kwargs):
 
 
 def validate_element_type(length_part_name, element_type):
-    """Validate the structure of the ``element_type`` list to the following rules:
+    """Validate the structure of the ``element_type`` list.
+
+    Validated against the following rules:
 
     * If the length of ``element_type`` is 1, propagate to match ``length_part_name``
     * Raise a RuntimeError if ``element_type`` is greater than 1, but not equal to the length of ``part_name``
@@ -178,12 +183,11 @@ def _element_type_regex(content, element_type):
     """
     regex = r"(\*element,\s+type=)([a-zA-Z0-9]*)"
     subst = "\\1{}".format(element_type)
-    return re.sub(regex, subst, content, 0, re.MULTILINE | re.IGNORECASE)
+    return re.sub(regex, subst, content, count=0, flags=re.MULTILINE | re.IGNORECASE)
 
 
 def substitute_element_type(mesh_file, element_type):
-    """Use regular expressions to substitute element types in an existing orphan mesh file via the
-    ``*Element`` keyword.
+    """Substitute element types in an existing orphan mesh file via the ``*Element`` keyword.
 
     :param str mesh_file: existing orphan mesh file
     :param str element_type: element type to substitute into the ``*Element`` keyword phrase
