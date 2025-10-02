@@ -135,7 +135,7 @@ def create_curve_from_coordinates(  # noqa: ANN202
 
 # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
 def create_spline_from_coordinates(  # noqa: ANN202
-    coordinates: typing.Sequence[tuple[float, float, float]] | numpy.ndarray
+    coordinates: typing.Sequence[tuple[float, float, float]] | numpy.ndarray,
 ):
     """Create a spline from a list of coordinates.
 
@@ -191,7 +191,7 @@ def create_arc_from_coordinates(  # noqa: ANN202
 
 # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
 def create_surface_from_coordinates(  # noqa: ANN202
-    coordinates: typing.Sequence[tuple[float, float, float]] | numpy.ndarray
+    coordinates: typing.Sequence[tuple[float, float, float]] | numpy.ndarray,
 ):
     """Create a surface from an [N, 3] array of coordinates.
 
@@ -507,7 +507,7 @@ def webcut_local_coordinate_primary_planes(
     center: tuple[float, float, float] | numpy.ndarray,
     xvector: tuple[float, float, float] | numpy.ndarray,
     zvector: tuple[float, float, float] | numpy.ndarray,
-    names: list[str]
+    names: list[str],
 ) -> list:
     """Webcut all volumes with a prefix in the ``names`` list on the local coordinate system primary planes.
 
@@ -823,7 +823,7 @@ def _mesh_sheet_body(
     # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
     volume,  # noqa: ANN001
     global_seed: float,
-    element_type: str | None = None
+    element_type: str | None = None,
 ) -> None:
     """Mesh a volume that is a sheet body.
 
@@ -849,7 +849,7 @@ def _mesh_volume(
     # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
     volume,  # noqa: ANN001
     global_seed: float,
-    element_type: str | None = None
+    element_type: str | None = None,
 ) -> None:
     """Mesh a volume.
 

@@ -1,4 +1,5 @@
 """Create a sphere geometry through Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
 import inspect
 import os
 import sys

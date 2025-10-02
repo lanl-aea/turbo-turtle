@@ -1,4 +1,5 @@
 """Provide a public API for the internal implementation of the geometry plotting command-line interface."""
+
 import argparse
 import typing
 

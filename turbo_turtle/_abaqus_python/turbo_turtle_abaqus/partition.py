@@ -1,4 +1,5 @@
 """Partition spheres through the Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
 import ast
 import fnmatch
 import inspect

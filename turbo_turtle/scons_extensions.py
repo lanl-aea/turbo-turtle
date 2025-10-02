@@ -1,4 +1,5 @@
 """Provide common SCons builders wrapping the Turbo-Turtle command-line interface."""
+
 import typing
 
 import SCons.Builder
