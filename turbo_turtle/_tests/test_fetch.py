@@ -349,8 +349,8 @@ def test_print_list() -> None:
 @pytest.mark.parametrize(
     "root_directory, source_files, source_tree, destination_tree",
     [
-        (root_directory, source_files, two_file_source_tree, two_file_destination_tree, None),
-        (root_directory, source_files, two_file_source_tree, two_file_destination_tree, 6),
+        (root_directory, source_files, two_file_source_tree, two_file_destination_tree),
+        (root_directory, source_files, two_file_source_tree, two_file_destination_tree),
     ],
 )
 def test_recursive_copy(
