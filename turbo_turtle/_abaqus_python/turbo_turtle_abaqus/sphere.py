@@ -41,7 +41,7 @@ def main(
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
@@ -103,8 +103,8 @@ def sphere(
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     revolution_direction = _abaqus_utilities.revolution_direction(revolution_angle)
     revolution_angle = abs(revolution_angle)
@@ -188,7 +188,7 @@ def _gui_get_inputs():
 
     :raises RuntimeError: if inner radius or  outer radius are not specified.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     fields = (
         ("Part Name:", parsers.sphere_defaults["part_name"]),

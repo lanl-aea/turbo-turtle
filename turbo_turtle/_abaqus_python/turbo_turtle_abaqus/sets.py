@@ -33,7 +33,7 @@ def main(
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     if not any([face_sets, edge_sets, vertex_sets]):
         _mixed_utilities.sys_exit("Must specify at least one of: face_sets, edge_sets, vertex_sets")
@@ -73,7 +73,7 @@ def sets(
 
     :raises RuntimeError: Collection of all set creation RuntimeError(s)
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]

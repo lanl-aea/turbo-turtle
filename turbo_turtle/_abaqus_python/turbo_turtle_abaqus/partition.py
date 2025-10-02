@@ -44,7 +44,7 @@ def main(
 
     :returns: Abaqus CAE database named ``{output_file}.cae``
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     if output_file is None:
         output_file = input_file
@@ -102,7 +102,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         cae -nogui``)
     :param float big_number: Number larger than the outer radius of the part to partition.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     # Process input and calculate local coordinate system properties
     xvector = vertices.normalize_vector(xvector)
@@ -147,8 +147,8 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
     :param tuple sketch_vertex_pairs: Tuple of vertices that make up the 3D partioning scheme's sketch (See
         :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`)
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     # Process input and calculate local coordinate system properties
     plane_normals = vertices.datum_planes(xvector, zvector)
@@ -218,8 +218,8 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
     :param tuple sketch_vertex_pairs: Tuple of vertices that make up the 3D partioning scheme's sketch (See
         :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`)
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
@@ -285,7 +285,7 @@ def _gui_get_inputs():
     * ``model_name``: ``str`` type, name of the model in the current viewport
     * ``part_name``: ``list`` type, name of the part in the current viewport, or a list of all part names in the model
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name

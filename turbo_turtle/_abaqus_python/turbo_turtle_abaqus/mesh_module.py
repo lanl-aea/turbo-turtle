@@ -34,7 +34,7 @@ def main(
     :param float global_seed: The global mesh seed size
     :param list[tuple[str, number]] edge_seeds: List of edge seed (name, number) pairs
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     try:
         if output_file is None:
@@ -74,8 +74,8 @@ def mesh(
     :param float global_seed: The global mesh seed size
     :param list[tuple[str, number]] edge_seeds: List of edge seed (name, number) pairs
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
     import mesh
 
     model = abaqus.mdb.models[model_name]
@@ -117,7 +117,7 @@ def _gui_get_default_elem_type(model_name, part_name):
     :return: element type from a hard-coded mapping of Abaqus default element types
     :rtype: str
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     known_dimensions = {  # Abaqus 2023.HF5 default element types for Abaqus Standard/Explicit dimensions
         "Axisymmetric": "CAX4R",
@@ -161,7 +161,7 @@ def _gui_get_inputs():
 
     :raises RuntimeError: if a element type or global mesh seed are not specified.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
 

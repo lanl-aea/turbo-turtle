@@ -63,7 +63,7 @@ def main(
 
     :returns: writes ``{output_file}.cae``
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
     try:
@@ -123,7 +123,7 @@ def geometry(
 
     :raises RuntimeError: failure to create a sketch or part from a CSV file.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     _abaqus_utilities._conditionally_create_model(model_name)
 
@@ -199,8 +199,8 @@ def draw_part_from_splines(
 
     :returns: creates ``{part_name}`` within an Abaqus CAE database, not yet saved to local memory
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     revolution_direction = _abaqus_utilities.revolution_direction(revolution_angle)
     revolution_angle = abs(revolution_angle)
@@ -282,7 +282,7 @@ def _gui_get_inputs():
 
     :raises RuntimeError: if at least one input file is not specified
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     default_input_files = "File1.csv,File2.csv OR *.csv"
     default_part_names = "Part-1,Part-2, OR None OR blank"

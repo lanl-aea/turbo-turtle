@@ -22,7 +22,7 @@ class AbaqusNamedTemporaryFile:
     """
 
     def __init__(self, input_file, *args, **kwargs):
-        import abaqus
+        import abaqus  # noqa: PLC0415
 
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
         shutil.copyfile(input_file, self.temporary_file.name)
@@ -32,7 +32,7 @@ class AbaqusNamedTemporaryFile:
         return self.temporary_file
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        import abaqus
+        import abaqus  # noqa: PLC0415
 
         abaqus.mdb.close()
         self.temporary_file.close()
@@ -49,7 +49,7 @@ def return_abaqus_constant(search):
     :return value: abaqusConstants attribute
     :rtype: abaqusConstants.<search>
     """
-    import abaqusConstants
+    import abaqusConstants  # noqa: PLC0415
 
     search = search.upper()
     attribute = None
@@ -103,7 +103,7 @@ def set_from_mask(part, feature, name_mask):
 
     :raises RuntimeError: If Abaqus throws an empty sequence abaqus.AbaqusException on one or more masks
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     attribute = getattr(part, feature)
     bad_masks = []
@@ -128,7 +128,7 @@ def surface_from_mask(part, feature, name_mask):
     :raises ValueError: If feature is not one of 'faces' or 'edges'
     :raises RuntimeError: If Abaqus throws an empty sequence abaqus.AbaqusException on one or more masks
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     attribute = getattr(part, feature)
     if feature == "faces":
@@ -184,7 +184,7 @@ def _view_part(model_name, part_name, **kwargs):
     :param str/list part_name: name of the part to place in the viewport. If ``list`` type, use the last part name in
         the list. If ``str`` type, use that part name directly.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     if isinstance(part_name, list):
         part_name = part_name[-1]
@@ -199,8 +199,8 @@ def _conditionally_create_model(model_name):
 
     :param str model_name: Abaqus model name
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     if model_name not in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
@@ -243,7 +243,7 @@ def revolution_direction(revolution_angle):
 
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     """
-    import abaqusConstants
+    import abaqusConstants  # noqa: PLC0415
 
     if revolution_angle < 0.0:
         revolution_direction = abaqusConstants.OFF

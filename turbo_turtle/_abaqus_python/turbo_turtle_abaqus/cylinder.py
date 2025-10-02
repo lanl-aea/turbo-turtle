@@ -40,7 +40,7 @@ def main(
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     :param float y_offset: vertical offset along the global Y-axis
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
     try:
@@ -104,7 +104,7 @@ def _gui_get_inputs():
 
     :raises RuntimeError: if inner radius, outer radius, or height are not specified.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     fields = (
         ("Part Name:", parsers.cylinder_defaults["part_name"]),

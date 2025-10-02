@@ -34,8 +34,8 @@ def main(
 
     :returns: writes ``{output_file}.cae`` with the merged model
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     part_name = _mixed_utilities.remove_duplicate_items(part_name)
     requested_part_count = len(part_name)

@@ -43,7 +43,7 @@ def main(
 
     :returns: writes image to ``{output_file}``
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     try:
         input_file_extension = os.path.splitext(input_file)[1]
@@ -112,8 +112,8 @@ def image(
 
     :raises RuntimeError: if the extension of ``output_file`` is not recognized by Abaqus
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     output_file_stem, output_file_extension = os.path.splitext(output_file)
     output_file_extension = output_file_extension.lstrip(".")
@@ -210,7 +210,7 @@ def _gui_get_inputs():
     :raises RuntimeError: if ``output_file`` is not specified, if ``output_file`` extension is not valid, if
         ``color_map`` is not valid
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
 

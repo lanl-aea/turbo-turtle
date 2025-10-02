@@ -69,8 +69,8 @@ def export(model_name, part_name, element_type, destination, assembly):
 
 
 def _export_assembly(assembly_file, model_name, part_name):
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     assembly = model.rootAssembly
@@ -109,8 +109,8 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
     :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element
               types with :turbo_turtle._export.substitute_element_type`
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     for new_part, new_element in zip(part_name, element_type):
         tmp_name = "tmp" + new_part
@@ -135,8 +135,8 @@ def export_mesh_file(
 
     :returns: writes ``output_file``
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     assembly = model.rootAssembly
@@ -186,7 +186,7 @@ def _gui_get_inputs():
     * ``assembly``: ``str`` type, assembly keword block file. If provided and no instances are found, all part names are
       instanced before exporting the file.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
 
