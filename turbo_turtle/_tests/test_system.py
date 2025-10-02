@@ -8,6 +8,7 @@ All tests that require a third-party software unavailable on conda-forge should 
 All tests should use string template substitution instead of f-strings, if possible. See :meth:`test_system` for
 available substitutions.
 """
+
 import os
 import pathlib
 import shlex

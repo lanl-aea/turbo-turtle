@@ -24,9 +24,7 @@ cubit_command_or_exception = {
     cubit_command_or_exception.values(),
     ids=cubit_command_or_exception.keys(),
 )
-def test_cubit_command_or_exception(
-    command: str, outcome: contextlib.nullcontext | pytest.RaisesExc
-) -> None:
+def test_cubit_command_or_exception(command: str, outcome: contextlib.nullcontext | pytest.RaisesExc) -> None:
     with outcome:
         try:
             success = _cubit_python.cubit_command_or_exception(command)
@@ -56,9 +54,7 @@ create_curve_from_coordinates = {
     create_curve_from_coordinates.values(),
     ids=create_curve_from_coordinates.keys(),
 )
-def test_create_curve_from_coordinates(
-    point1: tuple, point2: tuple, center: tuple, length: float
-) -> None:
+def test_create_curve_from_coordinates(point1: tuple, point2: tuple, center: tuple, length: float) -> None:
     curve = _cubit_python.create_curve_from_coordinates(point1, point2)
     assert curve.dimension() == 1
     assert numpy.isclose(curve.length(), length)
