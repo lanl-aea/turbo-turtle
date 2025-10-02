@@ -1,5 +1,7 @@
 """Test Turbo-Turtle SCons builders and support functions."""
 
+import typing
+
 import pytest
 import SCons
 
@@ -7,10 +9,17 @@ from turbo_turtle import scons_extensions
 from turbo_turtle._settings import _default_abaqus_options, _default_backend, _default_cubit_options
 
 
-def check_nodes(nodes, post_action, node_count, action_count, expected_string, expected_env_kwargs) -> None:
+def check_nodes(
+    nodes: SCons.Node.NodeList,
+    post_action: list[str],
+    node_count: int,
+    action_count: int,
+    expected_string: str,
+    expected_env_kwargs: dict[str, str],
+) -> None:
     """Verify the expected action string against a builder's target nodes.
 
-    :param SCons.Node.NodeList nodes: Target node list returned by a builder
+    :param  nodes: Target node list returned by a builder
     :param list post_action: list of post action strings passed to builder
     :param int node_count: expected length of ``nodes``
     :param int action_count: expected length of action list for each node
@@ -75,7 +84,16 @@ test_cli_builder = {
     test_cli_builder.values(),
     ids=test_cli_builder.keys(),
 )
-def test_cli_builder(builder, kwargs, node_count, action_count, source_list, target_list, builder_env) -> None:
+def test_cli_builder(
+    builder: str,
+    kwargs: dict[str, typing.Any],
+    node_count: int,
+    action_count: int,
+    source_list: list[str],
+    target_list: list[str],
+    builder_env: dict[str, str],
+) -> None:
+    """Test :func:`turbo_turtle.scons_extensions.cli_builder`."""
     env = SCons.Environment.Environment()
     expected_string = (
         "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} "
@@ -242,7 +260,16 @@ test_builders = {
     test_builders.values(),
     ids=test_builders.keys(),
 )
-def test_builders(builder, kwargs, node_count, action_count, source_list, target_list, builder_env) -> None:
+def test_builders(
+    builder: str,
+    kwargs: dict,
+    node_count: int,
+    action_count: int,
+    source_list: list[str],
+    target_list: list[str],
+    builder_env: dict[str, str],
+) -> None:
+    """Test :mod:`turbo_turtle.scons_extensions` builders."""
     env = SCons.Environment.Environment()
     expected_string = (
         "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} "
