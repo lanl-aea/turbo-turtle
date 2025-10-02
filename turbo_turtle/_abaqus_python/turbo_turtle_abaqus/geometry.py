@@ -161,18 +161,21 @@ def geometry(
         raise RuntimeError("\n".join(error_message))
 
 
+# TODO: Decide if unused arguments (ARG001) should be removed or find where they should have been used.
 def draw_part_from_splines(
     lines,
     splines,
     planar=parsers.geometry_defaults["planar"],
     model_name=parsers.geometry_defaults["model_name"],
     part_name=parsers.geometry_defaults["part_name"],
-    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
+    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],  # noqa: ARG001
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
-    rtol=parsers.geometry_defaults["rtol"],
-    atol=parsers.geometry_defaults["atol"],
+    rtol=parsers.geometry_defaults["rtol"],  # noqa: ARG001
+    atol=parsers.geometry_defaults["atol"],  # noqa: ARG001
 ):
-    """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
+    """Create a part from connected lines and splines.
+
+    Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
     depending on the ``planar`` and ``revolution_angle`` parameters.
 
@@ -215,12 +218,10 @@ def draw_part_from_splines(
     sketch.FixedConstraint(entity=sketch.geometry[3])
 
     for spline in splines:
-        spline = tuple(map(tuple, spline))
-        sketch.Spline(points=spline)
+        spline_tuples = tuple(map(tuple, spline))
+        sketch.Spline(points=spline_tuples)
     for point1, point2 in lines:
-        point1 = tuple(point1)
-        point2 = tuple(point2)
-        sketch.Line(point1=point1, point2=point2)
+        sketch.Line(point1=tuple(point1), point2=tuple(point2))
     if planar:
         part = abaqus.mdb.models[model_name].Part(
             name=part_name, dimensionality=abaqusConstants.TWO_D_PLANAR, type=abaqusConstants.DEFORMABLE_BODY
