@@ -24,6 +24,7 @@ build:
 requirements:
   host:
     - python-build
+    - python-gmsh >=4
     - pip
     - pytest
     - lazy_loader >=0.4
