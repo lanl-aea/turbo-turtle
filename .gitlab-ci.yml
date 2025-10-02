@@ -178,7 +178,7 @@ aea-pip-build:
     - python -m venv pip-build-test
     # Python venv environment active
     - source pip-build-test/bin/activate
-    - python -m pip install --verbose --disable-pip-version-check --require-virtualenv --no-cache-dir build/dist/${distribution_filename}-${version}.tar.gz pytest pytest-xdist
+    - python -m pip install --verbose --disable-pip-version-check --require-virtualenv --no-cache-dir build/dist/${distribution_filename}-${version}.tar.gz pytest pytest-xdist python-gmsh
     - cd pip-build-test/lib/python*/site-packages/turbo_turtle
     - python -m pytest -vvv -n 4
   artifacts:
