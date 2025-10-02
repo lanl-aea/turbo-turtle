@@ -28,6 +28,10 @@ dependencies = [
     "waves-workflows >=0.13.0"
 ]
 
+[project.optional-dependencies]
+gmsh = ["gmsh"]
+
+
 [tool.setuptools]
 packages = [
     "turbo_turtle",
