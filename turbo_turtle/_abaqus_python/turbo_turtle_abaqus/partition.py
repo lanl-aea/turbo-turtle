@@ -167,9 +167,10 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
 
     # Partition by three (3) local coordinate system x/y/z planes
     for plane in partition_planes[0:3]:
+        # Abaqus Python API design requires a try:except, despite the performance penalty
         try:
             part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
-        except abaqus.AbaqusException:
+        except abaqus.AbaqusException:  # noqa: PERF203
             pass
 
     # Partition by sketch on the six (6) 45 degree planes
