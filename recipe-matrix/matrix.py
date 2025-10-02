@@ -1,3 +1,5 @@
+"""Run the conda-recipe build against a matrix of dependencies."""
+
 import itertools
 import os
 import pathlib
@@ -15,7 +17,7 @@ command_template = string.Template(
     "VERSION=$(python -m setuptools_scm) conda mambabuild recipe-matrix --channel fierromechanics "
     "--channel conda-forge --no-anaconda-upload "
     "${CROOT} ${OUTPUT_FOLDER} "
-    "--python ${PYTHON_VERSION} --variants \"{'scons':['${SCONS_VERSION}']}\""
+    "--python ${python_version} --variants \"{'scons':['${scons_version}']}\""
 )
 
 python_versions = ["3.10", "3.11", "3.12", "3.13"]
@@ -23,15 +25,20 @@ scons_versions = ["4.8"]
 conda_build_test_matrix = list(itertools.product(python_versions, scons_versions))
 
 
-@pytest.mark.parametrize("PYTHON_VERSION, SCONS_VERSION", conda_build_test_matrix)
-def test_matrix(PYTHON_VERSION: str, SCONS_VERSION: str) -> None:
+@pytest.mark.parametrize(("python_version", "scons_version"), conda_build_test_matrix)
+def test_matrix(python_version: str, scons_version: str) -> None:
+    """Run the conda-recipe build against a matrix of dependencies.
+
+    :param python_version: the Python version with major and minor version numbers, e.g. "3.10"
+    :param scons_version: the SCons version with major and minor version numbers, e.g. "4.6"
+    """
     template = command_template
     command = template.safe_substitute(
         {
             "OUTPUT_FOLDER": OUTPUT_FOLDER,
             "CROOT": CROOT,
-            "PYTHON_VERSION": PYTHON_VERSION,
-            "SCONS_VERSION": SCONS_VERSION,
+            "python_version": python_version,
+            "scons_version": scons_version,
         }
     )
     subprocess.check_output(
