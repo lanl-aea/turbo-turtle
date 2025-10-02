@@ -50,6 +50,7 @@ test:
     - pip
     - pytest
     - pytest-xdist
+    - python-gmsh >=4
   imports:
     - turbo_turtle
 
