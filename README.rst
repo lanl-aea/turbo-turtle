@@ -2,15 +2,17 @@
 
 .. _`Turbo-Turtle`: https://lanl-aea.github.io/turbo-turtle/index.html
 .. _`Turbo-Turtle repository`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
-.. _`AEA Gitlab Group`: https://re-git.lanl.gov/aea
-.. _`Gitlab CI/CD`: https://docs.gitlab.com/ee/ci/
 .. _`AEA Compute Environment`: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
 .. _`AEA Conda channel`: https://aea.re-pages.lanl.gov/developer-operations/aea_compute_environment/aea_compute_environment.html#aea-conda-channel
+.. _`AEA Gitlab Group`: https://re-git.lanl.gov/aea
 .. _`Bash rsync`: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
-.. _Conda: https://docs.conda.io/en/latest/
-.. _Conda installation: https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html
-.. _Conda environment management: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
-.. _SCons: https://scons.org/
+.. _`Conda environment management`: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+.. _`Conda installation`: https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html
+.. _`Conda`: https://docs.conda.io/en/latest/
+.. _`Gitlab CI/CD`: https://docs.gitlab.com/ee/ci/
+.. _`PyPI`: https://pypi.org/
+.. _`SCons`: https://scons.org/
+.. _`pip`: https://pip.pypa.io/en/stable/
 
 .. _`Kyle Brindley`: kbrindley@lanl.gov
 .. _`Thomas Roberts`: tproberts@lanl.gov
