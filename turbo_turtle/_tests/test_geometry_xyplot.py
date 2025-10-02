@@ -1,3 +1,5 @@
+"""Test :mod:`turbo_turtle.geometry_xyplot`."""
+
 from unittest.mock import patch
 
 import matplotlib
@@ -8,6 +10,7 @@ from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
 def test_geometry_xyplot() -> None:
+    """Test :func:`turbo_turtle.geometry_xyplot.geometry_xyplot`."""
     kwargs = {}
     coordinates_list = [numpy.array([[0.0, 0.0], [1.0, 1.0]])]
     figure = geometry_xyplot.geometry_xyplot(coordinates_list, **kwargs)
@@ -25,6 +28,7 @@ def test_geometry_xyplot() -> None:
 
 
 def test_main() -> None:
+    """Test :func:`turbo_turtle.geometry_xyplot._main`."""
     kwargs = {}
     expected_call_kwargs = {
         "unit_conversion": parsers.geometry_xyplot_defaults["unit_conversion"],
