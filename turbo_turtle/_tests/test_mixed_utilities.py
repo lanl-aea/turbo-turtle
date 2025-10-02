@@ -6,14 +6,16 @@
    match.
 """
 
+import contextlib
 import sys
-from contextlib import nullcontext as does_not_raise
 from unittest.mock import mock_open, patch
 
 import numpy
 import pytest
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
+
+does_not_raise = contextlib.nullcontext()
 
 
 def test_sys_exit() -> None:
@@ -36,31 +38,31 @@ validate_part_name = {
         ["dummy.ext"],
         [None],
         ["dummy"],
-        does_not_raise(),
+        does_not_raise,
     ),
     "None two": (
         ["thing1.ext", "thing2.ext"],
         [None],
         ["thing1", "thing2"],
-        does_not_raise(),
+        does_not_raise,
     ),
     "one part": (
         ["one_part.ext"],
         ["part_one"],
         ["part_one"],
-        does_not_raise(),
+        does_not_raise,
     ),
     "two part": (
         ["one_part.ext", "two_part.ext"],
         ["part_one", "part_two"],
         ["part_one", "part_two"],
-        does_not_raise(),
+        does_not_raise,
     ),
     "seuss": (
         ["one_part.ext", "two_part.ext", "red_part.ext", "blue_part.ext"],
         ["part_one", "part_two", "part_red", "part_blue"],
         ["part_one", "part_two", "part_red", "part_blue"],
-        does_not_raise(),
+        does_not_raise,
     ),
     "wrong length: 2-1": (
         ["one_part.ext", "two_part.ext"],
@@ -82,7 +84,12 @@ validate_part_name = {
     validate_part_name.values(),
     ids=validate_part_name.keys(),
 )
-def test_validate_part_name(input_file, original_part_name, expected, outcome) -> None:
+def test_validate_part_name(
+    input_file: list[str],
+    original_part_name: list[str],
+    expected: list[str],
+    outcome: contextlib.nullcontext | pytest.RaisesExc,
+) -> None:
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_part_name`.
 
     Tests both the expection raising version and the system exit version
@@ -117,19 +124,19 @@ validate_element_type = {
         1,
         [None],
         [None],
-        does_not_raise(),
+        does_not_raise,
     ),
     "two parts": (
         2,
         [None],
         [None, None],
-        does_not_raise(),
+        does_not_raise,
     ),
     "two element types": (
         2,
         ["C3D8"],
         ["C3D8", "C3D8"],
-        does_not_raise(),
+        does_not_raise,
     ),
     "one parts, two element types": (
         1,
@@ -151,7 +158,12 @@ validate_element_type = {
     validate_element_type.values(),
     ids=validate_element_type.keys(),
 )
-def test_validate_element_type(length_part_name, original_element_type, expected, outcome) -> None:
+def test_validate_element_type(
+    length_part_name: int,
+    original_element_type: list[str | None],
+    expected: list[str | None],
+    outcome: contextlib.nullcontext | pytest.RaisesExc,
+) -> None:
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_element_type`.
 
     Tests both the expection raising version and the system exit version
@@ -189,7 +201,7 @@ return_genfromtxt = {
         None,
         None,
         numpy.array([[0, 0], [1, 1]]),
-        does_not_raise(),
+        does_not_raise,
     ),
     "unexpected column": (
         "dummy",
@@ -218,13 +230,13 @@ return_genfromtxt = {
     ids=return_genfromtxt.keys(),
 )
 def test_return_genfromtxt(
-    file_name,
-    delimiter,
-    header_lines,
-    expected_dimensions,
-    expected_columns,
-    expected,
-    outcome,
+    file_name: str,
+    delimiter: str,
+    header_lines: int | None,
+    expected_dimensions: int | None,
+    expected_columns: int | None,
+    expected: numpy.ndarray,
+    outcome: contextlib.nullcontext | pytest.RaisesExc,
 ) -> None:
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.return_genfromtxt`.
 
@@ -283,7 +295,8 @@ remove_duplicate_items = {
     remove_duplicate_items.values(),
     ids=remove_duplicate_items.keys(),
 )
-def test_remove_duplicate_items(string_list, expected) -> None:
+def test_remove_duplicate_items(string_list: list[str], expected: list[str]) -> None:
+    """Test :func:`turbo_turtle._abaqus_python._mixed_utilities.remove_duplicate_items`."""
     with patch("sys.stderr.write") as mock_stderr_write:
         unique = _mixed_utilities.remove_duplicate_items(string_list)
         assert unique == expected
@@ -305,7 +318,8 @@ intersection_of_lists = {
     intersection_of_lists.values(),
     ids=intersection_of_lists.keys(),
 )
-def test_intersection_of_lists(requested, available, expected) -> None:
+def test_intersection_of_lists(requested: list[str | None], available: list[str], expected: list[str]) -> None:
+    """Test :func:`turbo_turtle._abaqus_python._mixed_utilities.intersection_of_lists`."""
     intersection = _mixed_utilities.intersection_of_lists(requested, available)
     assert intersection == expected
 
@@ -329,12 +343,14 @@ element_type_regex = {
     element_type_regex.values(),
     ids=element_type_regex.keys(),
 )
-def test_element_type_regex(content, element_type, expected) -> None:
+def test_element_type_regex(content: str, element_type: str, expected: str) -> None:
+    """Test :func:`turbo_turtle._abaqus_python._mixed_utilities._element_type_regex`."""
     new_contents = _mixed_utilities._element_type_regex(content, element_type)
     assert new_contents == expected
 
 
 def test_substitute_element_type() -> None:
+    """Test :func:`turbo_turtle._abaqus_python._mixed_utilities.substitute_element_type`."""
     with (
         patch("builtins.open", mock_open(read_data="old_content")) as open_mock,
         patch(
@@ -367,6 +383,7 @@ cubit_part_names = {
     cubit_part_names.values(),
     ids=cubit_part_names.keys(),
 )
-def test_cubit_part_names(part_name, expected) -> None:
+def test_cubit_part_names(part_name: list[str], expected: list[str]) -> None:
+    """Test :func:`turbo_turtle._abaqus_python._mixed_utilities.cubit_part_names`."""
     result = _mixed_utilities.cubit_part_names(part_name)
     assert result == expected
