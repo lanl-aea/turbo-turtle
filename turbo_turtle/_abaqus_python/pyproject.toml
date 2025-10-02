@@ -5,5 +5,5 @@ extend-exclude = ["*/test*.py"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 # Abaqus Python 2 compatible files
-"*.py" = ["ANN", "PTH", "UP", "FURB188", "B905"]
-"*/*.py" = ["ANN", "PTH", "UP", "FURB188", "B905"]
+"*.py" = ["ANN", "PTH", "UP", "FURB188", "B905", "E402"]
+"*/*.py" = ["ANN", "PTH", "UP", "FURB188", "B905", "E402"]
