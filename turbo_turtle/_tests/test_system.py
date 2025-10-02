@@ -764,13 +764,6 @@ gmsh_sphere_3D = [
     ],
     # TODO: Fix solid sphere revolve
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/218
-    # [
-    #    string.Template(
-    #        "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
-    #        "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. "
-    #        "--backend gmsh"
-    #    )
-    # ],
     [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
