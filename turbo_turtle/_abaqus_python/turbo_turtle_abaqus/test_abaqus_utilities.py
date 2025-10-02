@@ -15,9 +15,9 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402,I001
+from turbo_turtle_abaqus import _abaqus_utilities  # noqa: I001
 
-import abaqusConstants  # noqa: E402
+import abaqusConstants
 
 
 class TestAbaqusUtilities(unittest.TestCase):

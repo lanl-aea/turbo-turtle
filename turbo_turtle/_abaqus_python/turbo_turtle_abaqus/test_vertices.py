@@ -18,7 +18,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import vertices  # noqa: E402
+from turbo_turtle_abaqus import vertices
 
 
 class TestVertices(unittest.TestCase):
