@@ -49,16 +49,16 @@ if not installed:
 
 
 def setup_sphere_commands(
-    model,
-    inner_radius,
-    outer_radius,
-    angle,
-    y_offset,
-    quadrant,
-    element_type,
-    element_replacement,
-    backend,
-    output_type,
+    model: str,
+    inner_radius: float,
+    outer_radius: float,
+    angle: float,
+    y_offset: float,
+    quadrant: str,
+    element_type: str,
+    element_replacement: str,
+    backend: str,
+    output_type: str,
 ) -> typing.List[string.Template]:
     """Return the sphere/partition/mesh commands for system testing.
 
@@ -118,7 +118,10 @@ def setup_sphere_commands(
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_geometry_xyplot_commands(model, input_file, backend) -> typing.List[string.Template]:
+def setup_geometry_xyplot_commands(
+    model: str, input_file: list[pathlib.Path], backend: str
+) -> typing.List[string.Template]:
+    """Return system test geometry xyplot commands."""
     part_name = _utilities.character_delimited_list(csv.stem for csv in input_file)
     input_file = _utilities.character_delimited_list(input_file)
     commands = [
@@ -133,12 +136,13 @@ def setup_geometry_xyplot_commands(model, input_file, backend) -> typing.List[st
 
 
 def setup_geometry_commands(
-    model,
-    input_file,
-    revolution_angle,
-    y_offset,
-    backend,
+    model: str,
+    input_file: list[pathlib.Path],
+    revolution_angle: float,
+    y_offset: float,
+    backend: str,
 ) -> typing.List[string.Template]:
+    """Return system test geometry commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
@@ -159,15 +163,16 @@ def setup_geometry_commands(
 
 
 def setup_sets_commands(
-    model,
-    input_file,
-    revolution_angle,
-    face_sets,
-    edge_sets,
-    edge_seeds,
-    element_type,
-    backend,
+    model: str,
+    input_file: pathlib.Path,
+    revolution_angle: float,
+    face_sets: typing.Sequence[tuple[str, str]] | None,
+    edge_sets: typing.Sequence[tuple[str, str]] | None,
+    edge_seeds: typing.Sequence[tuple[str, str]] | None,
+    element_type: str,
+    backend: str,
 ) -> typing.List[string.Template]:
+    """Return system test sets commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
@@ -203,7 +208,8 @@ def setup_sets_commands(
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_cylinder_commands(model, revolution_angle, backend) -> typing.List[string.Template]:
+def setup_cylinder_commands(model: str, revolution_angle: float, backend: str) -> typing.List[string.Template]:
+    """Return system test cylinder commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
@@ -221,7 +227,8 @@ def setup_cylinder_commands(model, revolution_angle, backend) -> typing.List[str
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
+def setup_merge_commands(part_name: str, backend: str) -> typing.List[string.Template]:
+    """Return system test merge commands."""
     commands = []
 
     sphere_model = pathlib.Path("merge-sphere.cae")
