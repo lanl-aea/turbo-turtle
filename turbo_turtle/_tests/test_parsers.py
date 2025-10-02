@@ -1,5 +1,7 @@
+"""Test :mod:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers`."""
+
 import argparse
-from contextlib import nullcontext as does_not_raise
+import contextlib
 from unittest.mock import patch
 
 import numpy
@@ -7,9 +9,11 @@ import pytest
 
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
+does_not_raise = contextlib.nullcontext()
+
 positive_float = {
-    "zero": ("0.", 0.0, does_not_raise()),
-    "one": ("1.", 1.0, does_not_raise()),
+    "zero": ("0.", 0.0, does_not_raise),
+    "one": ("1.", 1.0, does_not_raise),
     "negative": ("-1.", None, pytest.raises(argparse.ArgumentTypeError)),
     "string": ("negative_one", None, pytest.raises(argparse.ArgumentTypeError)),
 }
@@ -20,7 +24,10 @@ positive_float = {
     positive_float.values(),
     ids=positive_float.keys(),
 )
-def test_positive_float(input_string, expected_float, outcome) -> None:
+def test_positive_float(
+    input_string: str, expected_float: float | None, outcome: contextlib.nullcontext | pytest.RaisesExc
+) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.positive_float`."""
     with outcome:
         try:
             argument = parsers.positive_float(input_string)
@@ -30,8 +37,8 @@ def test_positive_float(input_string, expected_float, outcome) -> None:
 
 
 positive_int = {
-    "zero": ("0", 0, does_not_raise()),
-    "one": ("1", 1, does_not_raise()),
+    "zero": ("0", 0, does_not_raise),
+    "one": ("1", 1, does_not_raise),
     "negative": ("-1", None, pytest.raises(argparse.ArgumentTypeError)),
     "string": ("negative_one", None, pytest.raises(argparse.ArgumentTypeError)),
 }
@@ -42,7 +49,10 @@ positive_int = {
     positive_int.values(),
     ids=positive_int.keys(),
 )
-def test_positive_int(input_string, expected_int, outcome) -> None:
+def test_positive_int(
+    input_string: str, expected_int: int | None, outcome: contextlib.nullcontext | pytest.RaisesExc
+) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.positive_int`."""
     with outcome:
         try:
             argument = parsers.positive_int(input_string)
@@ -59,7 +69,8 @@ construct_prog = {"script": ("script", "abaqus cae -noGui script --")}
     construct_prog.values(),
     ids=construct_prog.keys(),
 )
-def test_construct_prog(basename, expected_prog) -> None:
+def test_construct_prog(basename: str, expected_prog: str) -> None:
+    """Test :func:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.construct_prog`."""
     prog = parsers.construct_prog(basename)
     assert prog == expected_prog
 
@@ -86,7 +97,7 @@ subcommand_parser = {
     subcommand_parser.values(),
     ids=subcommand_parser.keys(),
 )
-def test_subcommand_parser(subcommand, required_argv, exclude_keys) -> None:
+def test_subcommand_parser(subcommand: str, required_argv: list[str], exclude_keys: list[str]) -> None:
     """Test the default value assignments in the subcommand parsers.
 
     :param str subcommand: the subcommand parser to test
