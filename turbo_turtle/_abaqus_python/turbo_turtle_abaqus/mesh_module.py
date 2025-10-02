@@ -77,7 +77,7 @@ def mesh(
     """
     import abaqus  # noqa: PLC0415
     import abaqusConstants  # noqa: PLC0415
-    import mesh
+    import mesh  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
