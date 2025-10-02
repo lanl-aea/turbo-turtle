@@ -183,7 +183,7 @@ def test_validate_element_type(
             pass
 
     # TODO: Figure out how to check against pytest.raises() instead.
-    if not isinstance(outcome, does_not_raise):
+    if not isinstance(outcome, contextlib.nullcontext):
         outcome = pytest.raises(SystemExit)
     with outcome:
         try:
@@ -268,7 +268,7 @@ def test_return_genfromtxt(
             pass
 
     # TODO: Figure out how to check against pytest.raises() instead.
-    if not isinstance(outcome, does_not_raise):
+    if not isinstance(outcome, contextlib.nullcontext):
         outcome = pytest.raises(SystemExit)
     with patch("builtins.open"), patch("numpy.genfromtxt", return_value=expected), outcome:
         try:
