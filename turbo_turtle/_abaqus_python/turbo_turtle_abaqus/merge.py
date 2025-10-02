@@ -67,7 +67,8 @@ def main(
                         )
                     )
                     sys.stdout.write(success_message)
-                except abaqus.AbaqusException as err:
+                # Abaqus Python API design forces try:except in for loops.
+                except abaqus.AbaqusException as err:  # noqa: PERF203
                     message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n{}".format(
                         this_part, this_model, cae_file, err
                     )
