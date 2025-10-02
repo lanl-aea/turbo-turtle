@@ -86,7 +86,10 @@ Author Info
 Installation
 ************
 
-.. installation-start-do-not-remove
+Conda
+=====
+
+.. installation-conda-start-do-not-remove
 
 `Turbo-Turtle`_ can be installed in a `Conda`_ environment with the `Conda`_ package manager. See the `Conda
 installation`_ and `Conda environment management`_ documentation for more details about using `Conda`_.
@@ -95,7 +98,27 @@ installation`_ and `Conda environment management`_ documentation for more detail
 
    $ conda install --channel conda-forge turbo_turtle
 
-.. installation-end-do-not-remove
+.. installation-conda-end-do-not-remove
+
+pip
+===
+
+.. installation-pip-start-do-not-remove
+
+`Turbo-Turtle`_ may also be installed from `PyPI`_ with `pip`_ under the distribution name ``turbo-turtle``:
+https://pypi.org/project/turbo-turtle/.
+
+.. code-block::
+
+   $ pip install turbo-turtle
+
+The `PyPI`_ package has an optional dependency for the Gmsh features that may be specified during installation as
+
+.. code-block::
+
+   $ pip install turbo-turtle[gmsh]
+
+.. installation-pip-end-do-not-remove
 
 ***********
 Quick Start

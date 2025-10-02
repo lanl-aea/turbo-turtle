@@ -10,9 +10,19 @@ Installation
    Open source
    ***********
 
-.. include:: README.txt
-   :start-after: installation-start-do-not-remove
-   :end-before: installation-end-do-not-remove
+   Conda
+   =====
+
+   .. include:: README.txt
+      :start-after: installation-conda-start-do-not-remove
+      :end-before: installation-conda-end-do-not-remove
+
+   pip
+   ===
+
+   .. include:: README.txt
+      :start-after: installation-pip-start-do-not-remove
+      :end-before: installation-pip-end-do-not-remove
 
 .. only:: aea
 
