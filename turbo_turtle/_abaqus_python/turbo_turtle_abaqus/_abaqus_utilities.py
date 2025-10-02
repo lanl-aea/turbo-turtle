@@ -110,7 +110,8 @@ def set_from_mask(part, feature, name_mask):
     for name, mask in name_mask:
         try:
             objects = attribute.getSequenceFromMask(mask=(mask,))
-        except abaqus.AbaqusException:
+        # Abaqus Python 2 API design makes it difficult to avoid try:except statements in loops.
+        except abaqus.AbaqusException:  # noqa: PERF203
             bad_masks.append((name, mask))
         else:
             part.Set(**{feature: objects, "name": name})
@@ -141,7 +142,8 @@ def surface_from_mask(part, feature, name_mask):
     for name, mask in name_mask:
         try:
             objects = attribute.getSequenceFromMask(mask=(mask,))
-        except abaqus.AbaqusException:
+        # Abaqus Python 2 API design makes it difficult to avoid try:except statements in loops.
+        except abaqus.AbaqusException:  # noqa: PERF203
             bad_masks.append((name, mask))
         else:
             part.Surface(**{"name": name, surface_keyword: objects})
@@ -170,7 +172,8 @@ def edge_seeds(part, name_number):
             part.seedEdgeBySize(edges=edges, size=number)
 
 
-def _view_part(model_name, part_name, **kwargs):
+# Function design intentionally allows, but ignores, additional keyword arguments.
+def _view_part(model_name, part_name, **kwargs):  # noqa: ARG001
     """Place a part in the current viewport as a GUI post-action.
 
     Depending on if ``part_name`` is a list or a string, either place the last part in the list or the string part name
@@ -207,7 +210,7 @@ def _conditionally_create_model(model_name):
 
 
 def gui_wrapper(inputs_function, subcommand_function, post_action_function=None):
-    """Wrapper for a function calling ``abaqus.getInputs``, then the wrapper calls a ``turbo_turtle`` subcommand module.
+    """Wrap a function calling ``abaqus.getInputs``, then call a ``turbo_turtle`` subcommand module.
 
     ``inputs_function`` cannot have any function arguments. ``inputs_function`` must return
     a dictionary of key-value pairs that match the ``subcommand_function`` arguments. ``post_action_function`` must have
