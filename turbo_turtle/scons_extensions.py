@@ -1,14 +1,17 @@
+"""Provide common SCons builders wrapping the Turbo-Turtle command-line interface."""
+
 import typing
 
 import SCons.Builder
 from waves.scons_extensions import first_target_emitter
 
-from turbo_turtle._settings import _cd_action_prefix
-from turbo_turtle._settings import _redirect_action_postfix
-from turbo_turtle._settings import _default_abaqus_options
-from turbo_turtle._settings import _default_cubit_options
-from turbo_turtle._settings import _default_backend
-
+from turbo_turtle._settings import (
+    _cd_action_prefix,
+    _default_abaqus_options,
+    _default_backend,
+    _default_cubit_options,
+    _redirect_action_postfix,
+)
 
 _exclude_from_namespace = set(globals().keys())
 
@@ -119,7 +122,7 @@ def geometry(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle geometry subcommand CLI builder
+    """Return a Turbo-Turtle geometry subcommand CLI builder.
 
     See the :ref:`geometry_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -184,7 +187,7 @@ def geometry_xyplot(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder
+    """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder.
 
     See the :ref:`geometry_xyplot_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -243,16 +246,16 @@ def geometry_xyplot(
 def cylinder(
     program: str = "turbo-turtle",
     subcommand: str = "cylinder",
-    # fmt: off
-    required: str = "--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius} "
-                    "--height ${height}",
-    # fmt: on
+    required: str = (
+        "--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius} "
+        "--height ${height}"
+    ),
     options: str = "",
     abaqus_command: typing.List[str] = _default_abaqus_options,
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle cylinder subcommand CLI builder
+    """Return a Turbo-Turtle cylinder subcommand CLI builder.
 
     See the :ref:`cylinder_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -324,7 +327,7 @@ def sphere(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle sphere subcommand CLI builder
+    """Return a Turbo-Turtle sphere subcommand CLI builder.
 
     See the :ref:`sphere_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -394,7 +397,7 @@ def partition(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle partition subcommand CLI builder
+    """Return a Turbo-Turtle partition subcommand CLI builder.
 
     See the :ref:`partition_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -457,7 +460,7 @@ def sets(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle sets subcommand CLI builder
+    """Return a Turbo-Turtle sets subcommand CLI builder.
 
     See the :ref:`sets_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -530,7 +533,7 @@ def mesh(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle mesh subcommand CLI builder
+    """Return a Turbo-Turtle mesh subcommand CLI builder.
 
     See the :ref:`mesh_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -598,7 +601,7 @@ def image(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle image subcommand CLI builder
+    """Return a Turbo-Turtle image subcommand CLI builder.
 
     See the :ref:`image_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -661,7 +664,7 @@ def merge(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle merge subcommand CLI builder
+    """Return a Turbo-Turtle merge subcommand CLI builder.
 
     See the :ref:`merge_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.
@@ -724,7 +727,7 @@ def export(
     cubit_command: typing.List[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
-    """Return a Turbo-Turtle export subcommand CLI builder
+    """Return a Turbo-Turtle export subcommand CLI builder.
 
     See the :ref:`export_cli` CLI documentation for detailed subcommand usage and options.
     Builds subcommand specific options for the :meth:`turbo_turtle.scons_extensions.cli_builder` function.

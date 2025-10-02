@@ -88,49 +88,49 @@ in ``pyproject.toml``.
 test_main
 =========
 
-.. automodule:: turbo_turtle.tests.test_main
+.. automodule:: turbo_turtle._tests.test_main
    :members:
    :private-members:
 
 test_cubit_python
 =================
 
-.. automodule:: turbo_turtle.tests.test_cubit_python
+.. automodule:: turbo_turtle._tests.test_cubit_python
    :members:
    :private-members:
 
 test_fetch
 ==========
 
-.. automodule:: turbo_turtle.tests.test_fetch
+.. automodule:: turbo_turtle._tests.test_fetch
    :members:
    :private-members:
 
 test_utilities
 ==============
 
-.. automodule:: turbo_turtle.tests.test_utilities
+.. automodule:: turbo_turtle._tests.test_utilities
    :members:
    :private-members:
 
 test_geometry_xyplot.py
 =======================
 
-.. automodule:: turbo_turtle.tests.test_geometry_xyplot
+.. automodule:: turbo_turtle._tests.test_geometry_xyplot
    :members:
    :private-members:
 
 test_parsers.py
 ===============
 
-.. automodule:: turbo_turtle.tests.test_parsers
+.. automodule:: turbo_turtle._tests.test_parsers
    :members:
    :private-members:
 
 test_scons_extensions.py
 ========================
 
-.. automodule:: turbo_turtle.tests.test_scons_extensions
+.. automodule:: turbo_turtle._tests.test_scons_extensions
    :members:
    :private-members:
 
@@ -141,28 +141,28 @@ The system tests are not included in the default pytest options. They are marked
 executed with ``pytest -m systemtest``. They are also collected under the SCons alias ``systemtest`` which contains
 additional pytest command line options to control test failure output more convenient to the system test execution.
 
-.. automodule:: turbo_turtle.tests.test_system
+.. automodule:: turbo_turtle._tests.test_system
    :members:
    :private-members:
 
 test_wrappers.py
 ================
 
-.. automodule:: turbo_turtle.tests.test_wrappers
+.. automodule:: turbo_turtle._tests.test_wrappers
    :members:
    :private-members:
 
 test_vertices
 =============
 
-.. automodule:: turbo_turtle.tests.test_vertices
+.. automodule:: turbo_turtle._tests.test_vertices
    :members:
    :private-members:
 
 test_mixed_utilities
 ====================
 
-.. automodule:: turbo_turtle.tests.test_mixed_utilities
+.. automodule:: turbo_turtle._tests.test_mixed_utilities
    :members:
    :private-members:
 

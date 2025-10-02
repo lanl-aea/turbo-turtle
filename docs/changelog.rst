@@ -8,10 +8,15 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+Documentation
+=============
+- Improved type annotations (:issue:`258`, :merge:`261`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Drop Python 3.9 support for its end-of-life by the Python Software Foundation and deprecation by conda-forge
   (:issue:`260`, :merge:`260`). By `Kyle Brindley`_.
+- Replace flake8 and black with ruff for linting and formatting (:issue:`258`, :merge:`261`). By `Kyle Brindley`_.
 
 *******************
 v1.2.7 (2025-07-23)

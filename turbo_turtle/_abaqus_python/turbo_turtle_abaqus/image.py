@@ -1,18 +1,21 @@
+"""Export a model image through Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
+import ast
+import inspect
 import os
 import sys
-import inspect
-import ast
-
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_settings,
+    _mixed_utilities,
+    parsers,
+)
 
 
 def main(
@@ -26,7 +29,7 @@ def main(
     part_name=parsers.image_defaults["part_name"],
     color_map=parsers.image_color_map_choices[0],
 ):
-    """Wrap image with file input handling
+    """Wrap image with file input handling.
 
     :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
@@ -42,7 +45,7 @@ def main(
 
     :returns: writes image to ``{output_file}``
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     try:
         input_file_extension = os.path.splitext(input_file)[1]
@@ -111,8 +114,8 @@ def image(
 
     :raises RuntimeError: if the extension of ``output_file`` is not recognized by Abaqus
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     output_file_stem, output_file_extension = os.path.splitext(output_file)
     output_file_extension = output_file_extension.lstrip(".")
@@ -158,7 +161,7 @@ def image(
 
 
 def _validate_color_map(color_map, valid_color_maps):
-    """Validate the user-provided color map against a provided list of valid color maps
+    """Validate the user-provided color map against a provided list of valid color maps.
 
     :param str color_map: user provided color map
     :param list valid_color_maps: valid color maps to check against
@@ -171,7 +174,7 @@ def _validate_color_map(color_map, valid_color_maps):
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -209,7 +212,7 @@ def _gui_get_inputs():
     :raises RuntimeError: if ``output_file`` is not specified, if ``output_file`` extension is not valid, if
         ``color_map`` is not valid
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
 
@@ -269,7 +272,10 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs required for driving the plugin"""
+    """Drive the Abaqus CAE GUI plugin.
+
+    Function with no inputs required for driving the plugin.
+    """
     _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs, subcommand_function=image, post_action_function=None)
 
 

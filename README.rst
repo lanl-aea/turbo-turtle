@@ -2,15 +2,17 @@
 
 .. _`Turbo-Turtle`: https://lanl-aea.github.io/turbo-turtle/index.html
 .. _`Turbo-Turtle repository`: https://re-git.lanl.gov/aea/python-projects/turbo-turtle
-.. _`AEA Gitlab Group`: https://re-git.lanl.gov/aea
-.. _`Gitlab CI/CD`: https://docs.gitlab.com/ee/ci/
 .. _`AEA Compute Environment`: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
 .. _`AEA Conda channel`: https://aea.re-pages.lanl.gov/developer-operations/aea_compute_environment/aea_compute_environment.html#aea-conda-channel
+.. _`AEA Gitlab Group`: https://re-git.lanl.gov/aea
 .. _`Bash rsync`: https://re-git.lanl.gov/aea/developer-operations/aea_compute_environment
-.. _Conda: https://docs.conda.io/en/latest/
-.. _Conda installation: https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html
-.. _Conda environment management: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
-.. _SCons: https://scons.org/
+.. _`Conda environment management`: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+.. _`Conda installation`: https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html
+.. _`Conda`: https://docs.conda.io/en/latest/
+.. _`Gitlab CI/CD`: https://docs.gitlab.com/ee/ci/
+.. _`PyPI`: https://pypi.org/
+.. _`SCons`: https://scons.org/
+.. _`pip`: https://pip.pypa.io/en/stable/
 
 .. _`Kyle Brindley`: kbrindley@lanl.gov
 .. _`Thomas Roberts`: tproberts@lanl.gov
@@ -86,7 +88,10 @@ Author Info
 Installation
 ************
 
-.. installation-start-do-not-remove
+Conda
+=====
+
+.. installation-conda-start-do-not-remove
 
 `Turbo-Turtle`_ can be installed in a `Conda`_ environment with the `Conda`_ package manager. See the `Conda
 installation`_ and `Conda environment management`_ documentation for more details about using `Conda`_.
@@ -95,7 +100,27 @@ installation`_ and `Conda environment management`_ documentation for more detail
 
    $ conda install --channel conda-forge turbo_turtle
 
-.. installation-end-do-not-remove
+.. installation-conda-end-do-not-remove
+
+pip
+===
+
+.. installation-pip-start-do-not-remove
+
+`Turbo-Turtle`_ may also be installed from `PyPI`_ with `pip`_ under the distribution name ``turbo-turtle``:
+https://pypi.org/project/turbo-turtle/.
+
+.. code-block::
+
+   $ pip install turbo-turtle
+
+The `PyPI`_ package has an optional dependency for the Gmsh features that may be specified during installation as
+
+.. code-block::
+
+   $ pip install turbo-turtle[gmsh]
+
+.. installation-pip-end-do-not-remove
 
 ***********
 Quick Start
@@ -199,7 +224,7 @@ There is also a separate style guide check run as
 
 .. code-block::
 
-    $ scons flake8 black-check
+    $ scons style
 
 The full list of available aliases can be found as ``scons -h``.
 

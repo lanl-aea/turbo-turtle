@@ -1,12 +1,27 @@
-"""Thin unpacking of the command line argparse namespace into full function interfaces"""
+"""Unpack command-line argparse namespace into full function interfaces.
+
+The wrapper functions must have the API form
+
+.. code-block::
+
+   def wrapper(args: argparse.Namespace, command: str) -> None:
+       pass
+
+The ``command`` argument is required for compatibility with :mod:`turbo_turtle._abaqus_wrappers` and
+:mod:`turbo_turtle._cubit_wrappers`.
+"""
+
+import argparse
+import typing
 
 from turbo_turtle import _gmsh_python
 
 
-def geometry(args, command):
-    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.geometry`
+def geometry(args: argparse.Namespace, command: str) -> None:  # noqa: ARG001
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.geometry`.
 
-    Unpack the argument namespace into the full function interface
+    Unpack the argument namespace into the full function interface. The ``command`` argument is required for
+    compatibility with :mod:`turbo_turtle._abaqus_wrappers` and :mod:`turbo_turtle._cubit_wrappers`.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: gmsh executable path, unused. Kept for API compatibility with
@@ -29,8 +44,8 @@ def geometry(args, command):
     )
 
 
-def cylinder(args, command):
-    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.cylinder`
+def cylinder(args: argparse.Namespace, command: str) -> None:  # noqa: ARG001
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.cylinder`.
 
     Unpack the argument namespace into the full function interface
 
@@ -50,8 +65,8 @@ def cylinder(args, command):
     )
 
 
-def sphere(args, command):
-    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.sphere`
+def sphere(args: argparse.Namespace, command: str) -> None:  # noqa: ARG001
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.sphere`.
 
     Unpack the argument namespace into the full function interface
 
@@ -72,16 +87,16 @@ def sphere(args, command):
     )
 
 
-def partition(args, command):
+def partition(args: argparse.Namespace, command: str) -> typing.NoReturn:  # noqa: ARG001
     raise RuntimeError("partition subcommand is not yet implemented")
 
 
-def sets(args, command):
+def sets(args: argparse.Namespace, command: str) -> typing.NoReturn:  # noqa: ARG001
     raise RuntimeError("sets subcommand is not yet implemented")
 
 
-def mesh(args, command):
-    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.mesh`
+def mesh(args: argparse.Namespace, command: str) -> None:  # noqa: ARG001
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.mesh`.
 
     Unpack the argument namespace into the full function interface
 
@@ -100,16 +115,16 @@ def mesh(args, command):
     )
 
 
-def merge(args, command):
+def merge(args: argparse.Namespace, command: str) -> typing.NoReturn:  # noqa: ARG001
     raise RuntimeError("merge subcommand is not yet implemented")
 
 
-def export(args, command):
+def export(args: argparse.Namespace, command: str) -> typing.NoReturn:  # noqa: ARG001
     raise RuntimeError("export subcommand is not yet implemented")
 
 
-def image(args, command):
-    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.image`
+def image(args: argparse.Namespace, command: str) -> None:  # noqa: ARG001
+    """Python 3 wrapper around Gmsh calling :meth:`turbo_turtle._gmsh_python.image`.
 
     Unpack the argument namespace into the full function interface
 

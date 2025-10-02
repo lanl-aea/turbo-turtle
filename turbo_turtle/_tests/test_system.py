@@ -1,19 +1,17 @@
 import os
+import pathlib
 import shlex
 import string
-import typing
-import pathlib
-import tempfile
 import subprocess
-from importlib.metadata import version, PackageNotFoundError
+import tempfile
+import typing
+from importlib.metadata import PackageNotFoundError, version
 
 import pytest
 
-from turbo_turtle import _settings
-from turbo_turtle import _utilities
+from turbo_turtle import _settings, _utilities
 from turbo_turtle._main import get_parser
 from turbo_turtle.conftest import missing_display
-
 
 parser = get_parser()
 subcommand_list = parser._subparsers._group_actions[0].choices.keys()
@@ -52,7 +50,7 @@ def setup_sphere_commands(
     backend,
     output_type,
 ) -> typing.List[string.Template]:
-    """Return the sphere/partition/mesh commands for system testing
+    """Return the sphere/partition/mesh commands for system testing.
 
     :returns: list of string or string template commands
     """
@@ -247,8 +245,8 @@ def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
     geometry_options = (
         str(geometry_model),
         [
-            _settings._project_root_abspath / "tests" / "washer.csv",
-            _settings._project_root_abspath / "tests" / "vase.csv",
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
         ],
         360.0,
         0.0,
@@ -274,7 +272,7 @@ commands_list = []
 # Legacy geometry system tests requires a series of commands before the temp directory is removed
 # TODO: Decide if we should package or drop the legacy geometry tests
 name = "Turbo-Turtle-Tests"
-legacy_geometry_file = _settings._project_root_abspath / "tests" / "legacy_geometry.py"
+legacy_geometry_file = _settings._project_root_abspath / "_tests" / "legacy_geometry.py"
 commands_list.append(
     pytest.param(
         [
@@ -307,35 +305,123 @@ commands_list.append(
 system_tests = (
     # model/part, inner_radius, outer_radius, angle, y-offset, quadrant, element_type, element_replacement,  backend, output_type  # noqa: E501
     # Abaqus CAE
-    ("sphere.cae",                   1., 2.,   360.,       0.,   "both",       "C3D8",             "C3D8R", "abaqus", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("solid-sphere.cae",             0., 2.,   360.,       0.,   "both",       "C3D8",             "C3D8R", "abaqus", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("axisymmetric.cae",             1., 2.,     0.,       0.,   "both",       "CAX4",             "CAX4R", "abaqus", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("quarter-sphere.cae",           1., 2.,    90.,       0.,   "both",       "C3D8",             "C3D8R", "abaqus", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("offset-sphere.cae",            1., 2.,   360.,       1.,   "both",       "C3D8",             "C3D8R", "abaqus", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("eigth-sphere.cae",             1., 2.,    90.,       0.,  "upper",       "C3D8",             "C3D8R", "abaqus", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("half-sphere.cae",              1., 2.,   360.,       0.,  "upper",       "C3D8",             "C3D8R", "abaqus", "abaqus"),  # fmt: skip # noqa: E241,E501
+    ("sphere.cae", 1.0, 2.0, 360.0, 0.0, "both", "C3D8", "C3D8R", "abaqus", "abaqus"),
+    ("solid-sphere.cae", 0.0, 2.0, 360.0, 0.0, "both", "C3D8", "C3D8R", "abaqus", "abaqus"),
+    ("axisymmetric.cae", 1.0, 2.0, 0.0, 0.0, "both", "CAX4", "CAX4R", "abaqus", "abaqus"),
+    ("quarter-sphere.cae", 1.0, 2.0, 90.0, 0.0, "both", "C3D8", "C3D8R", "abaqus", "abaqus"),
+    ("offset-sphere.cae", 1.0, 2.0, 360.0, 1.0, "both", "C3D8", "C3D8R", "abaqus", "abaqus"),
+    ("eigth-sphere.cae", 1.0, 2.0, 90.0, 0.0, "upper", "C3D8", "C3D8R", "abaqus", "abaqus"),
+    ("half-sphere.cae", 1.0, 2.0, 360.0, 0.0, "upper", "C3D8", "C3D8R", "abaqus", "abaqus"),
     # Cubit: for Abaqus INP
-    ("sphere.cae",                   1., 2.,   360.,       0.,   "both",         None,             "C3D8R",  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("solid-sphere.cae",             0., 2.,   360.,       0.,   "both",         None,             "C3D8R",  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("axisymmetric.cae",             1., 2.,     0.,       0.,   "both",         None,             "CAX4R",  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("quarter-sphere.cae",           1., 2.,    90.,       0.,   "both",         None,             "C3D8R",  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("offset-sphere.cae",            1., 2.,   360.,       1.,   "both",         None,             "C3D8R",  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("eigth-sphere.cae",             1., 2.,    90.,       0.,  "upper",         None,             "C3D8R",  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("half-sphere.cae",              1., 2.,   360.,       0.,  "upper",         None,             "C3D8R",  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
+    ("sphere.cae", 1.0, 2.0, 360.0, 0.0, "both", None, "C3D8R", "cubit", "abaqus"),
+    ("solid-sphere.cae", 0.0, 2.0, 360.0, 0.0, "both", None, "C3D8R", "cubit", "abaqus"),
+    ("axisymmetric.cae", 1.0, 2.0, 0.0, 0.0, "both", None, "CAX4R", "cubit", "abaqus"),
+    ("quarter-sphere.cae", 1.0, 2.0, 90.0, 0.0, "both", None, "C3D8R", "cubit", "abaqus"),
+    ("offset-sphere.cae", 1.0, 2.0, 360.0, 1.0, "both", None, "C3D8R", "cubit", "abaqus"),
+    ("eigth-sphere.cae", 1.0, 2.0, 90.0, 0.0, "upper", None, "C3D8R", "cubit", "abaqus"),
+    ("half-sphere.cae", 1.0, 2.0, 360.0, 0.0, "upper", None, "C3D8R", "cubit", "abaqus"),
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets.cae",              1., 2.,   360.,       0.,   "both",    "tetmesh",                None,  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("axisymmetric-tri.cae",         1., 2.,     0.,       0.,   "both",    "trimesh",                None,  "cubit", "abaqus"),  # fmt: skip # noqa: E241,E501
+    ("sphere-tets.cae", 1.0, 2.0, 360.0, 0.0, "both", "tetmesh", None, "cubit", "abaqus"),
+    ("axisymmetric-tri.cae", 1.0, 2.0, 0.0, 0.0, "both", "trimesh", None, "cubit", "abaqus"),
     # Cubit: for Genesis INP
-    ("sphere-genesis.cae",           1., 2.,   360.,       0.,   "both",         None,               "HEX",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E501
-    ("solid-sphere-genesis.cae",     0., 2.,   360.,       0.,   "both",         None,               "HEX",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E501
-    ("axisymmetric-genesis.cae",     1., 2.,     0.,       0.,   "both",         None,              "QUAD",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E501
-    ("quarter-sphere-genesis.cae",   1., 2.,    90.,       0.,   "both",         None,               "HEX",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E501
-    ("offset-sphere-genesis.cae",    1., 2.,   360.,       1.,   "both",         None,               "HEX",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E501
-    ("eigth-sphere-genesis.cae",     1., 2.,    90.,       0.,  "upper",         None,               "HEX",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E501
-    ("half-sphere-genesis.cae",      1., 2.,   360.,       0.,  "upper",         None,               "HEX",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E501
+    ("sphere-genesis.cae", 1.0, 2.0, 360.0, 0.0, "both", None, "HEX", "cubit", "genesis"),
+    (
+        "solid-sphere-genesis.cae",
+        0.0,
+        2.0,
+        360.0,
+        0.0,
+        "both",
+        None,
+        "HEX",
+        "cubit",
+        "genesis",
+    ),
+    (
+        "axisymmetric-genesis.cae",
+        1.0,
+        2.0,
+        0.0,
+        0.0,
+        "both",
+        None,
+        "QUAD",
+        "cubit",
+        "genesis",
+    ),
+    (
+        "quarter-sphere-genesis.cae",
+        1.0,
+        2.0,
+        90.0,
+        0.0,
+        "both",
+        None,
+        "HEX",
+        "cubit",
+        "genesis",
+    ),
+    (
+        "offset-sphere-genesis.cae",
+        1.0,
+        2.0,
+        360.0,
+        1.0,
+        "both",
+        None,
+        "HEX",
+        "cubit",
+        "genesis",
+    ),
+    (
+        "eigth-sphere-genesis.cae",
+        1.0,
+        2.0,
+        90.0,
+        0.0,
+        "upper",
+        None,
+        "HEX",
+        "cubit",
+        "genesis",
+    ),
+    (
+        "half-sphere-genesis.cae",
+        1.0,
+        2.0,
+        360.0,
+        0.0,
+        "upper",
+        None,
+        "HEX",
+        "cubit",
+        "genesis",
+    ),
     # Cubit "element type" is really a "meshing scheme"
-    ("sphere-tets-genesis.cae",      1., 2.,   360.,       0.,   "both",    "tetmesh",               "TRI",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E501
-    ("axisymmetric-tri-genesis.cae", 1., 2.,     0.,       0.,   "both",    "trimesh",             "TETRA",  "cubit", "genesis"),  # fmt: skip # noqa: E241,E231,E501
+    (
+        "sphere-tets-genesis.cae",
+        1.0,
+        2.0,
+        360.0,
+        0.0,
+        "both",
+        "tetmesh",
+        "TRI",
+        "cubit",
+        "genesis",
+    ),
+    (
+        "axisymmetric-tri-genesis.cae",
+        1.0,
+        2.0,
+        0.0,
+        0.0,
+        "both",
+        "trimesh",
+        "TETRA",
+        "cubit",
+        "genesis",
+    ),
 )
 for test in system_tests:
     commands_list.append(setup_sphere_commands(*test))
@@ -343,10 +429,16 @@ for test in system_tests:
 # Geometry XY Plot tests
 system_tests = (
     # model/part,                                                  input_file, backend
-    ("washer",     [_settings._project_root_abspath / "tests" / "washer.csv"], "abaqus"),  # fmt: skip # noqa: E241
-    ("vase",       [_settings._project_root_abspath / "tests" / "vase.csv"],   "abaqus"),  # fmt: skip # noqa: E241
-    ("multi-part", [_settings._project_root_abspath / "tests" / "washer.csv",
-                    _settings._project_root_abspath / "tests" / "vase.csv"],   "abaqus"),  # fmt: skip # noqa: E241
+    ("washer", [_settings._project_root_abspath / "_tests" / "washer.csv"], "abaqus"),
+    ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], "abaqus"),
+    (
+        "multi-part",
+        [
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
+        ],
+        "abaqus",
+    ),
 )
 for test in system_tests:
     commands_list.append(setup_geometry_xyplot_commands(*test))
@@ -356,35 +448,155 @@ for test in system_tests:
 system_tests = (
     # model/part,                                                           input_file, angle, y-offset, backend
     # Abaqus
-    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0,       0., "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0,       1., "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0,       0., "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0,       0., "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0,       0., "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # fmt: skip # noqa: E241
-                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0,       0., "abaqus"),  # fmt: skip # noqa: E241,E501
-    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # fmt: skip # noqa: E241
-                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0,       0., "abaqus"),  # fmt: skip # noqa: E241,E501
+    (
+        "washer",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        360.0,
+        0.0,
+        "abaqus",
+    ),
+    (
+        "offset-washer",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        360.0,
+        1.0,
+        "abaqus",
+    ),
+    (
+        "washer-axisymmetric",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        0.0,
+        0.0,
+        "abaqus",
+    ),
+    ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], 360.0, 0.0, "abaqus"),
+    (
+        "vase-axisymmetric",
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
+        0.0,
+        0.0,
+        "abaqus",
+    ),
+    (
+        "multi-part-3D",
+        [
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
+        ],
+        360.0,
+        0.0,
+        "abaqus",
+    ),
+    (
+        "multi-part-2D",
+        [
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
+        ],
+        0.0,
+        0.0,
+        "abaqus",
+    ),
     # Cubit
-    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0,       0., "cubit"),  # fmt: skip # noqa: E241,E501
-    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0,       1., "cubit"),  # fmt: skip # noqa: E241,E501
-    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0,       0., "cubit"),  # fmt: skip # noqa: E241,E501
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0,       0., "cubit"),  # fmt: skip # noqa: E241,E501
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0,       0., "cubit"),  # fmt: skip # noqa: E241,E501
-    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # fmt: skip # noqa: E241
-                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0,       0., "cubit"),  # fmt: skip # noqa: E241,E501
-    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # fmt: skip # noqa: E241
-                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0,       0., "cubit"),  # fmt: skip # noqa: E241,E501
+    (
+        "washer",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        360.0,
+        0.0,
+        "cubit",
+    ),
+    (
+        "offset-washer",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        360.0,
+        1.0,
+        "cubit",
+    ),
+    (
+        "washer-axisymmetric",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        0.0,
+        0.0,
+        "cubit",
+    ),
+    ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], 360.0, 0.0, "cubit"),
+    (
+        "vase-axisymmetric",
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
+        0.0,
+        0.0,
+        "cubit",
+    ),
+    (
+        "multi-part-3D",
+        [
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
+        ],
+        360.0,
+        0.0,
+        "cubit",
+    ),
+    (
+        "multi-part-2D",
+        [
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
+        ],
+        0.0,
+        0.0,
+        "cubit",
+    ),
     # Gmsh
-    ("washer",              [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0,       0., "gmsh"),  # fmt: skip # noqa: E241,E501
-    ("offset-washer",       [_settings._project_root_abspath / "tests" / "washer.csv"], 360.0,       1., "gmsh"),  # fmt: skip # noqa: E241,E501
-    ("washer-axisymmetric", [_settings._project_root_abspath / "tests" / "washer.csv"],   0.0,       0., "gmsh"),  # fmt: skip # noqa: E241,E501
-    ("vase",                [_settings._project_root_abspath / "tests" / "vase.csv"],   360.0,       0., "gmsh"),  # fmt: skip # noqa: E241,E501
-    ("vase-axisymmetric",   [_settings._project_root_abspath / "tests" / "vase.csv"],     0.0,       0., "gmsh"),  # fmt: skip # noqa: E241,E501
-    ("multi-part-3D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # fmt: skip # noqa: E241
-                             _settings._project_root_abspath / "tests" / "vase.csv"],   360.0,       0., "gmsh"),  # fmt: skip # noqa: E241,E501
-    ("multi-part-2D",       [_settings._project_root_abspath / "tests" / "washer.csv",  # fmt: skip # noqa: E241
-                             _settings._project_root_abspath / "tests" / "vase.csv"],     0.0,       0., "gmsh"),  # fmt: skip # noqa: E241,E501
+    (
+        "washer",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        360.0,
+        0.0,
+        "gmsh",
+    ),
+    (
+        "offset-washer",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        360.0,
+        1.0,
+        "gmsh",
+    ),
+    (
+        "washer-axisymmetric",
+        [_settings._project_root_abspath / "_tests" / "washer.csv"],
+        0.0,
+        0.0,
+        "gmsh",
+    ),
+    ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], 360.0, 0.0, "gmsh"),
+    (
+        "vase-axisymmetric",
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
+        0.0,
+        0.0,
+        "gmsh",
+    ),
+    (
+        "multi-part-3D",
+        [
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
+        ],
+        360.0,
+        0.0,
+        "gmsh",
+    ),
+    (
+        "multi-part-2D",
+        [
+            _settings._project_root_abspath / "_tests" / "washer.csv",
+            _settings._project_root_abspath / "_tests" / "vase.csv",
+        ],
+        0.0,
+        0.0,
+        "gmsh",
+    ),
 )
 for test in system_tests:
     commands_list.append(setup_geometry_commands(*test))
@@ -396,7 +608,7 @@ system_tests = (
     # TODO: Pick some Abaqus edge sets for the system tests
     (
         "vase",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         360.0,
         [["top", "'[#4 ]'"], ["bottom", "'[#40 ]'"]],
         None,
@@ -406,7 +618,7 @@ system_tests = (
     ),
     (
         "vase-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         0.0,
         None,
         [["top", "'[#10 ]'"], ["bottom", "'[#1 ]'"]],
@@ -417,7 +629,7 @@ system_tests = (
     # Cubit
     (
         "vase",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         360.0,
         [["top", "4"], ["bottom", "7"], ["outer", "'2 3 8'"]],
         [["top_outer", "13"]],
@@ -427,7 +639,7 @@ system_tests = (
     ),
     (
         "vase-axisymmetric",
-        [_settings._project_root_abspath / "tests" / "vase.csv"],
+        [_settings._project_root_abspath / "_tests" / "vase.csv"],
         0.0,
         None,
         [["top", "2"], ["bottom", "6"], ["outer", "'1 7 8'"]],
@@ -442,12 +654,12 @@ for test in system_tests:
 # Cylinder tests
 system_tests = (
     # model/part,   angle, backend
-    ("cylinder_3d",  360., "abaqus"),  # fmt: skip # noqa: E241
-    ("cylinder_2d",    0., "abaqus"),  # fmt: skip # noqa: E241
-    ("cylinder_3d",  360., "cubit"),  # fmt: skip # noqa: E241
-    ("cylinder_2d",    0., "cubit"),  # fmt: skip # noqa: E241
-    ("cylinder_3d",  360., "gmsh"),  # fmt: skip # noqa: E241
-    ("cylinder_2d",    0., "gmsh"),  # fmt: skip # noqa: E241
+    ("cylinder_3d", 360.0, "abaqus"),
+    ("cylinder_2d", 0.0, "abaqus"),
+    ("cylinder_3d", 360.0, "cubit"),
+    ("cylinder_2d", 0.0, "cubit"),
+    ("cylinder_3d", 360.0, "gmsh"),
+    ("cylinder_2d", 0.0, "gmsh"),
 )
 for test in system_tests:
     commands_list.append(setup_cylinder_commands(*test))
@@ -542,13 +754,13 @@ gmsh_sphere_3D = [
     ],
     # TODO: Fix solid sphere revolve
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/218
-    # [  # fmt: skip # noqa: E265
+    # [
     #    string.Template(
     #        "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
     #        "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. "
     #        "--backend gmsh"
     #    )
-    # ],  # fmt: skip # noqa: E265
+    # ],
     [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
@@ -576,14 +788,14 @@ for test in gmsh_sphere_3D:
         test.append(
             string.Template(
                 "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
-                "--input-file sphere.step --output-file sphere.step.png --x-angle 45 --y-angle -45 "
+                "--input-file sphere.step --output-file sphere.step.png --x-angle 45.0 --y-angle -45.0 "
                 "--backend gmsh"
             )
         )
         test.append(
             string.Template(
                 "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
-                "--input-file sphere.msh --output-file sphere.msh.png --x-angle 45 --y-angle -45 --backend gmsh"
+                "--input-file sphere.msh --output-file sphere.msh.png --x-angle 45.0 --y-angle -45.0 --backend gmsh"
             )
         )
     commands_list.append(pytest.param(test, marks=pytest.mark.gmsh))
@@ -597,7 +809,7 @@ for part_name in ("washer vase merge-sphere", ""):
 # System tests as SCons tasks
 # TODO: Decide how to handle this system test which requires both Abaqus and Cubit.
 # Separate the SConstruct file into Abaqus/Cubit halves? Dedicated, non-matrixed construction environment?
-sconstruct = _settings._project_root_abspath / "tests/SConstruct"
+sconstruct = _settings._project_root_abspath / "_tests/SConstruct"
 commands_list.append(
     pytest.param(
         [
@@ -633,7 +845,7 @@ for files in sconstruct_files:
         string.Template("${turbo_turtle_command} fetch SConstruct SConscript"),
         # FIXME: Figure out why this command fails on the CI server, but not in local user tests
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/159
-        # f"scons . --turbo-turtle-command="{turbo_turtle_command}""  # fmt: skip # noqa: E265
+        # f"scons . --turbo-turtle-command="{turbo_turtle_command}""
     ]
     commands_list.append(scons_test_commands)
 
@@ -642,7 +854,7 @@ for files in sconstruct_files:
 @pytest.mark.require_third_party
 @pytest.mark.parametrize("commands", commands_list)
 def test_require_third_party(abaqus_command, cubit_command, commands: list) -> None:
-    """Run system tests that require third-party software
+    """Run system tests that require third-party software.
 
     Executes with a temporary directory that is cleaned up after each test execution.
 
@@ -659,7 +871,9 @@ def test_require_third_party(abaqus_command, cubit_command, commands: list) -> N
     test_project_shell_commands(abaqus_command, cubit_command, commands)
 
 
-def run_commands(commands, build_directory, template_substitution={}) -> None:
+def run_commands(commands, build_directory, template_substitution=None) -> None:
+    if template_substitution is None:
+        template_substitution = {}
     for command in commands:
         if isinstance(command, string.Template):
             command = command.substitute(template_substitution)

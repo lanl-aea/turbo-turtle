@@ -1,13 +1,13 @@
 from unittest.mock import patch
 
-import numpy
 import matplotlib
+import numpy
 
 from turbo_turtle import geometry_xyplot
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
 
 
-def test_geometry_xyplot():
+def test_geometry_xyplot() -> None:
     kwargs = {}
     coordinates_list = [numpy.array([[0.0, 0.0], [1.0, 1.0]])]
     figure = geometry_xyplot.geometry_xyplot(coordinates_list, **kwargs)
@@ -24,7 +24,7 @@ def test_geometry_xyplot():
     mock_set_aspect.assert_called_once_with("equal", adjustable="box")
 
 
-def test_main():
+def test_main() -> None:
     kwargs = {}
     expected_call_kwargs = {
         "unit_conversion": parsers.geometry_xyplot_defaults["unit_conversion"],

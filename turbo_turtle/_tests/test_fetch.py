@@ -1,7 +1,7 @@
 import pathlib
 import platform
-from unittest.mock import patch
 from contextlib import nullcontext as does_not_raise
+from unittest.mock import patch
 
 import pytest
 
@@ -9,7 +9,7 @@ from turbo_turtle import _fetch
 
 
 def platform_check():
-    """Check platform and set platform specific variables
+    """Check platform and set platform specific variables.
 
     :return: tuple (root_fs, testing_windows)
     :rtype: (str, bool)
@@ -41,7 +41,7 @@ two_file_source_tree = [root_directory / path for path in source_files]
 two_file_destination_tree = [destination / path for path in source_files]
 
 
-def test_fetch():
+def test_fetch() -> None:
     # Test the "unreachable" exit code used as a sign-of-life that the installed package structure assumptions in
     # _settings.py are correct.
     with patch("turbo_turtle._fetch.recursive_copy") as mock_recursive_copy, pytest.raises(RuntimeError):
@@ -79,7 +79,7 @@ conditional_copy_input = {
     conditional_copy_input.values(),
     ids=conditional_copy_input.keys(),
 )
-def test_conditional_copy(copy_tuples, exists_side_effect, filecmp_side_effect, copyfile_call):
+def test_conditional_copy(copy_tuples, exists_side_effect, filecmp_side_effect, copyfile_call) -> None:
     with (
         patch("pathlib.Path.exists", side_effect=exists_side_effect),
         patch("filecmp.cmp", side_effect=filecmp_side_effect),
@@ -166,7 +166,7 @@ def test_available_files(
     expected_files,
     expected_missing,
     mock_rglob_argument,
-):
+) -> None:
     with (
         patch("pathlib.Path.is_file", side_effect=is_file_side_effect),
         patch("pathlib.Path.is_dir", side_effect=is_dir_side_effect),
@@ -201,15 +201,15 @@ build_source_files_input = {
 
 
 @pytest.mark.parametrize(
-    "root_directory, relative_paths, exclude_patterns, " "available_files_side_effect, " "expected_source_files",
+    "root_directory, relative_paths, exclude_patterns, available_files_side_effect, expected_source_files",
     build_source_files_input.values(),
     ids=build_source_files_input.keys(),
 )
 def test_build_source_files(
     root_directory, relative_paths, exclude_patterns, available_files_side_effect, expected_source_files
-):
+) -> None:
     with patch("turbo_turtle._fetch.available_files", return_value=available_files_side_effect):
-        source_files, not_found = _fetch.build_source_files(
+        source_files, _not_found = _fetch.build_source_files(
             root_directory, relative_paths, exclude_patterns=exclude_patterns
         )
         assert source_files == expected_source_files
@@ -230,7 +230,7 @@ longest_common_path_prefix_input = {
     longest_common_path_prefix_input.values(),
     ids=longest_common_path_prefix_input.keys(),
 )
-def test_longest_common_path_prefix(file_list, expected_path, outcome):
+def test_longest_common_path_prefix(file_list, expected_path, outcome) -> None:
     with outcome:
         try:
             path_prefix = _fetch.longest_common_path_prefix(file_list)
@@ -251,13 +251,13 @@ build_destination_files_input = {
 
 
 @pytest.mark.parametrize(
-    "destination, requested_paths, " "exists_side_effect, " "expected_destination_files, expected_existing_files",
+    "destination, requested_paths, exists_side_effect, expected_destination_files, expected_existing_files",
     build_destination_files_input.values(),
     ids=build_destination_files_input.keys(),
 )
 def test_build_destination_files(
     destination, requested_paths, exists_side_effect, expected_destination_files, expected_existing_files
-):
+) -> None:
     with patch("pathlib.Path.exists", side_effect=exists_side_effect):
         destination_files, existing_files = _fetch.build_destination_files(destination, requested_paths)
         assert destination_files == expected_destination_files
@@ -270,32 +270,32 @@ build_copy_tuples_input = {
         two_file_source_tree,
         True,
         (two_file_destination_tree, [two_file_destination_tree[1]]),
-        list(zip(two_file_source_tree, two_file_destination_tree)),
+        list(zip(two_file_source_tree, two_file_destination_tree, strict=True)),
     ),
     "two files, one exists, no overwrite": (
         "/path/to/destination",
         two_file_source_tree,
         False,
         (two_file_destination_tree, [two_file_destination_tree[1]]),
-        list(zip([two_file_source_tree[0]], [two_file_destination_tree[0]])),
+        list(zip([two_file_source_tree[0]], [two_file_destination_tree[0]], strict=True)),
     ),
 }
 
 
 @pytest.mark.parametrize(
-    "destination, requested_paths_resolved, overwrite, " "build_destination_files_side_effect, " "expected_copy_tuples",
+    "destination, requested_paths_resolved, overwrite, build_destination_files_side_effect, expected_copy_tuples",
     build_copy_tuples_input.values(),
     ids=build_copy_tuples_input.keys(),
 )
 def test_build_copy_tuples(
     destination, requested_paths_resolved, overwrite, build_destination_files_side_effect, expected_copy_tuples
-):
+) -> None:
     with patch("turbo_turtle._fetch.build_destination_files", return_value=build_destination_files_side_effect):
         copy_tuples = _fetch.build_copy_tuples(destination, requested_paths_resolved, overwrite=overwrite)
         assert copy_tuples == expected_copy_tuples
 
 
-def test_print_list():
+def test_print_list() -> None:
     # TODO: implement stdout tests
     pass
 
@@ -307,10 +307,9 @@ def test_print_list():
         (root_directory, source_files, two_file_source_tree, two_file_destination_tree, 6),
     ],
 )
-def test_recursive_copy(root_directory, source_files, source_tree, destination_tree, tutorial):
-
+def test_recursive_copy(root_directory, source_files, source_tree, destination_tree, tutorial) -> None:
     # Dummy modsim_template tree
-    copy_tuples = list(zip(source_tree, destination_tree))
+    copy_tuples = list(zip(source_tree, destination_tree, strict=True))
     not_found = []
     available_files_output = (source_tree, not_found)
     single_file_requested = ([source_tree[0]], not_found)

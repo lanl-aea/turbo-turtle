@@ -1,20 +1,23 @@
+"""Create a sphere geometry through Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
+import inspect
 import os
 import sys
-import inspect
 
 import numpy
-
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import vertices  # noqa: E402
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_settings,
+    _mixed_utilities,
+    parsers,
+    vertices,
+)
 
 
 def main(
@@ -28,7 +31,7 @@ def main(
     model_name=parsers.sphere_defaults["model_name"],
     part_name=parsers.sphere_defaults["part_name"],
 ):
-    """Wrap sphere function with file open and file write operations
+    """Wrap sphere function with file open and file write operations.
 
     :param float inner_radius: inner radius (size of hollow)
     :param float outer_radius: outer radius (size of sphere)
@@ -40,7 +43,7 @@ def main(
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
 
@@ -87,8 +90,9 @@ def sphere(
     model_name=parsers.sphere_defaults["model_name"],
     part_name=parsers.sphere_defaults["part_name"],
 ):
-    """Create a hollow, spherical geometry from a sketch in the X-Y plane with upper (+X+Y), lower (+X-Y), or both
-    quadrants.
+    """Create a hollow, spherical geometry from a sketch in the X-Y plane.
+
+    Sketch may be defined in the upper (+X+Y), lower (+X-Y), or both quadrants.
 
     .. warning::
 
@@ -102,8 +106,8 @@ def sphere(
     :param str model_name: name of the Abaqus model
     :param str part_name: name of the part to be created in the Abaqus model
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     revolution_direction = _abaqus_utilities.revolution_direction(revolution_angle)
     revolution_angle = abs(revolution_angle)
@@ -143,7 +147,7 @@ def sphere(
 
 
 def _validate_sphere_quadrant(quadrant, valid_quadrants):
-    """Validate the user-provided sphere quadrant against a provided list of valid quadrants
+    """Validate the user-provided sphere quadrant against a provided list of valid quadrants.
 
     :param str quadrant: user provided sphere quadrant
     :param list valid_quadrants: valid quadrant to check against
@@ -156,7 +160,7 @@ def _validate_sphere_quadrant(quadrant, valid_quadrants):
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -187,7 +191,7 @@ def _gui_get_inputs():
 
     :raises RuntimeError: if inner radius or  outer radius are not specified.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     fields = (
         ("Part Name:", parsers.sphere_defaults["part_name"]),
@@ -230,7 +234,10 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs required for driving the plugin"""
+    """Drive the Abaqus CAE GUI plugin.
+
+    Function with no inputs required for driving the plugin.
+    """
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=sphere, post_action_function=_abaqus_utilities._view_part
     )

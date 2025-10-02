@@ -1,4 +1,4 @@
-"""Turbo-Turtle Plugin Driver Script
+"""Turbo-Turtle Plugin Driver Script.
 
 This script defines Abaqus CAE plugin toolkit options
 """
@@ -10,9 +10,9 @@ import sys
 filename = inspect.getfile(lambda: None)
 parent = os.path.dirname(filename)
 sys.path.insert(0, parent)
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import _mixed_settings  # noqa: I001
 
-from abaqusGui import *  # noqa: E402,F403
+from abaqusGui import *  # noqa: F403
 
 # Do this only once
 toolset = getAFXApp().getAFXMainWindow().getPluginToolset()  # noqa: F405

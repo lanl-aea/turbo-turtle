@@ -1,13 +1,12 @@
-from unittest.mock import patch
 from contextlib import nullcontext as does_not_raise
+from unittest.mock import patch
 
 import pytest
 
-from turbo_turtle import _settings
-from turbo_turtle import _docs
+from turbo_turtle import _docs, _settings
 
 
-def test_docs():
+def test_docs() -> None:
     # No print. Should call webbrowser.open successfully
     with (
         patch("builtins.print") as mock_print,

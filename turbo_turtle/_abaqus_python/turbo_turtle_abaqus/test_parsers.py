@@ -1,12 +1,13 @@
-"""
+"""Test Abaqus Python compatibility of the command-line parsers.
+
 .. warning::
 
    These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_parsers`
 """
 
+import inspect
 import os
 import sys
-import inspect
 import unittest
 
 import numpy
@@ -20,7 +21,7 @@ from turbo_turtle_abaqus import parsers  # noqa: E402
 
 
 class TestParsers(unittest.TestCase):
-    """Abaqus Python unittests for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers`"""
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers` against Abaqus Python."""
 
     def test_positive_float(self):
         tests = [

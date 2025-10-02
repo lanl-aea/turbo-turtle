@@ -1,16 +1,14 @@
-"""Test Turbo-Turtle SCons builders and support functions"""
+"""Test Turbo-Turtle SCons builders and support functions."""
 
 import pytest
 import SCons
 
 from turbo_turtle import scons_extensions
-from turbo_turtle._settings import _default_abaqus_options
-from turbo_turtle._settings import _default_cubit_options
-from turbo_turtle._settings import _default_backend
+from turbo_turtle._settings import _default_abaqus_options, _default_backend, _default_cubit_options
 
 
-def check_nodes(nodes, post_action, node_count, action_count, expected_string, expected_env_kwargs):
-    """Verify the expected action string against a builder's target nodes
+def check_nodes(nodes, post_action, node_count, action_count, expected_string, expected_env_kwargs) -> None:
+    """Verify the expected action string against a builder's target nodes.
 
     :param SCons.Node.NodeList nodes: Target node list returned by a builder
     :param list post_action: list of post action strings passed to builder
@@ -77,7 +75,7 @@ test_cli_builder = {
     test_cli_builder.values(),
     ids=test_cli_builder.keys(),
 )
-def test_cli_builder(builder, kwargs, node_count, action_count, source_list, target_list, builder_env):
+def test_cli_builder(builder, kwargs, node_count, action_count, source_list, target_list, builder_env) -> None:
     env = SCons.Environment.Environment()
     expected_string = (
         "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} "
@@ -244,7 +242,7 @@ test_builders = {
     test_builders.values(),
     ids=test_builders.keys(),
 )
-def test_builders(builder, kwargs, node_count, action_count, source_list, target_list, builder_env):
+def test_builders(builder, kwargs, node_count, action_count, source_list, target_list, builder_env) -> None:
     env = SCons.Environment.Environment()
     expected_string = (
         "${cd_action_prefix} ${program} ${subcommand} ${required} ${options} "

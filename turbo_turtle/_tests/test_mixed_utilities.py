@@ -1,4 +1,5 @@
-"""
+"""Test Python 3 compatibility of the mixed utilities module.
+
 .. warning::
 
    These are tests of a mixed Python 2/3 compatible module. When updating, be sure to update the Abaqus Python tests to
@@ -6,8 +7,8 @@
 """
 
 import sys
-from unittest.mock import patch, mock_open
 from contextlib import nullcontext as does_not_raise
+from unittest.mock import mock_open, patch
 
 import numpy
 import pytest
@@ -15,7 +16,7 @@ import pytest
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
 
 
-def test_sys_exit():
+def test_sys_exit() -> None:
     """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.sys_exit` sys.exit wrapper.
 
     We can't test the Abaqus Python override print to ``sys.__stderr__`` because the print statement is not valid Python
@@ -81,8 +82,8 @@ validate_part_name = {
     validate_part_name.values(),
     ids=validate_part_name.keys(),
 )
-def test_validate_part_name(input_file, original_part_name, expected, outcome):
-    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_part_name`
+def test_validate_part_name(input_file, original_part_name, expected, outcome) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_part_name`.
 
     Tests both the expection raising version and the system exit version
     :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_part_name_or_exit`
@@ -150,8 +151,8 @@ validate_element_type = {
     validate_element_type.values(),
     ids=validate_element_type.keys(),
 )
-def test_validate_element_type(length_part_name, original_element_type, expected, outcome):
-    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_element_type`
+def test_validate_element_type(length_part_name, original_element_type, expected, outcome) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_element_type`.
 
     Tests both the expection raising version and the system exit version
     :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.validate_element_type_or_exit`
@@ -224,8 +225,8 @@ def test_return_genfromtxt(
     expected_columns,
     expected,
     outcome,
-):
-    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.return_genfromtxt`
+) -> None:
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.return_genfromtxt`.
 
     Tests both the expection raising version and the system exit version
     :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities.return_genfromtxt_or_exit`
@@ -282,7 +283,7 @@ remove_duplicate_items = {
     remove_duplicate_items.values(),
     ids=remove_duplicate_items.keys(),
 )
-def test_remove_duplicate_items(string_list, expected):
+def test_remove_duplicate_items(string_list, expected) -> None:
     with patch("sys.stderr.write") as mock_stderr_write:
         unique = _mixed_utilities.remove_duplicate_items(string_list)
         assert unique == expected
@@ -304,7 +305,7 @@ intersection_of_lists = {
     intersection_of_lists.values(),
     ids=intersection_of_lists.keys(),
 )
-def test_intersection_of_lists(requested, available, expected):
+def test_intersection_of_lists(requested, available, expected) -> None:
     intersection = _mixed_utilities.intersection_of_lists(requested, available)
     assert intersection == expected
 
@@ -328,12 +329,12 @@ element_type_regex = {
     element_type_regex.values(),
     ids=element_type_regex.keys(),
 )
-def test_element_type_regex(content, element_type, expected):
+def test_element_type_regex(content, element_type, expected) -> None:
     new_contents = _mixed_utilities._element_type_regex(content, element_type)
     assert new_contents == expected
 
 
-def test_substitute_element_type():
+def test_substitute_element_type() -> None:
     with (
         patch("builtins.open", mock_open(read_data="old_content")) as open_mock,
         patch(
@@ -366,6 +367,6 @@ cubit_part_names = {
     cubit_part_names.values(),
     ids=cubit_part_names.keys(),
 )
-def test_cubit_part_names(part_name, expected):
+def test_cubit_part_names(part_name, expected) -> None:
     result = _mixed_utilities.cubit_part_names(part_name)
     assert result == expected

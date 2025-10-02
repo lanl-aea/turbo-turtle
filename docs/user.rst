@@ -19,11 +19,21 @@ Quick Start
 Installation
 ************
 
-This project builds and deploys as a `Conda`_ package :cite:`conda,conda-gettingstarted`.
+This project builds and deploys as a `Conda`_ package :cite:`conda,conda-gettingstarted` and `PyPI`_/`pip` package.
+
+Conda
+=====
 
 .. include:: README.txt
-   :start-after: installation-start-do-not-remove
-   :end-before: installation-end-do-not-remove
+   :start-after: installation-conda-start-do-not-remove
+   :end-before: installation-conda-end-do-not-remove
+
+pip
+===
+
+.. include:: README.txt
+   :start-after: installation-pip-start-do-not-remove
+   :end-before: installation-pip-end-do-not-remove
 
 .. _quickstart:
 

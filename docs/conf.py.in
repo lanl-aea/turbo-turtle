@@ -22,11 +22,13 @@ author_manpage = ", ".join(f"{author} {email}" for author, email in author_conta
 # Mock modules unavailable in the Conda development environment, e.g. Abaqus Python modules, and large imports not
 # required by the documentation build, e.g. cubit.
 mock_modules = [
-    # Python 2/3 and Cubit
-    "matplotlib", "matplotlib.pyplot", "numpy", "cubit", "gmsh",
-    "waves", "waves.scons_extensions", "waves._settings",
-    # Abaqus Python
-    "abaqus", "abaqusConstants", "caeModules", "mesh",
+    # Cubit not available in an open-source Python 3 environment
+    "cubit",
+    # Abaqus Python not available in an open-source Python 3 environment
+    "abaqus",
+    "abaqusConstants",
+    "caeModules",
+    "mesh",
 ]
 for mod_name in mock_modules:
     sys.modules[mod_name] = unittest.mock.Mock()

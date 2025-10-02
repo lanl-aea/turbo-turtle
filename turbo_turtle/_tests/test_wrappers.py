@@ -1,11 +1,12 @@
-import copy
+"""Test the Python 3 wrappers of third-party interfaces."""
 import argparse
+import copy
+import typing
 from unittest.mock import patch
 
 import pytest
 
-from turbo_turtle import _abaqus_wrappers
-
+from turbo_turtle import _abaqus_wrappers, _gmsh_wrappers
 
 command = "/dummy/command"
 
@@ -25,7 +26,7 @@ geometry_namespace_sparse = {
     "atol": None,
 }
 geometry_namespace_full = copy.deepcopy(geometry_namespace_sparse)
-geometry_namespace_full.update({"planar": True, "part_name": ["part_name"], "rtol": 1.0e-9, "atol": 1.0e-9}),
+(geometry_namespace_full.update({"planar": True, "part_name": ["part_name"], "rtol": 1.0e-9, "atol": 1.0e-9}),)
 geometry_expected_options_sparse = [
     "--input-file",
     "--output-file",
@@ -73,7 +74,7 @@ sphere_namespace_sparse = {
     "part_name": "part_name",
 }
 sphere_namespace_full = copy.deepcopy(sphere_namespace_sparse)
-sphere_namespace_full.update({"input_file": "input_file"}),
+(sphere_namespace_full.update({"input_file": "input_file"}),)
 sphere_expected_options_sparse = [
     command,
     "--inner-radius",
@@ -98,7 +99,7 @@ partition_namespace_sparse = {
     "big_number": 0.0,
 }
 partition_namespace_full = copy.deepcopy(partition_namespace_sparse)
-partition_namespace_full.update({"output_file": "output_file"}),
+(partition_namespace_full.update({"output_file": "output_file"}),)
 partition_expected_options_sparse = [
     command,
     "--input-file",
@@ -142,7 +143,7 @@ mesh_namespace_sparse = {
     "edge_seeds": None,
 }
 mesh_namespace_full = copy.deepcopy(mesh_namespace_sparse)
-mesh_namespace_full.update({"output_file": "output_file", "edge_seeds": [["name", "1"]]}),
+(mesh_namespace_full.update({"output_file": "output_file", "edge_seeds": [["name", "1"]]}),)
 mesh_expected_options_sparse = [
     command,
     "--input-file",
@@ -161,12 +162,14 @@ merge_namespace_sparse = {
     "part_name": [None],
 }
 merge_namespace_full = copy.deepcopy(merge_namespace_sparse)
-merge_namespace_full.update(
-    {
-        "model_name": ["model_name"],
-        "part_name": ["part_name"],
-    }
-),
+(
+    merge_namespace_full.update(
+        {
+            "model_name": ["model_name"],
+            "part_name": ["part_name"],
+        }
+    ),
+)
 merge_expected_options_sparse = [
     "--input-file",
     "--output-file",
@@ -183,12 +186,14 @@ export_namespace_sparse = {
     "assembly": None,
 }
 export_namespace_full = copy.deepcopy(export_namespace_sparse)
-export_namespace_full.update(
-    {
-        "element_type": ["element_type"],
-        "assembly": True,
-    }
-),
+(
+    export_namespace_full.update(
+        {
+            "element_type": ["element_type"],
+            "assembly": True,
+        }
+    ),
+)
 export_expected_options_sparse = ["--input-file", "--model-name", "--part-name", "--destination"]
 export_unexpected_options_sparse = ["--element-type", "--assembly"]
 
@@ -204,7 +209,7 @@ image_namespace_sparse = {
     "color_map": "color_map",
 }
 image_namespace_full = copy.deepcopy(image_namespace_sparse)
-image_namespace_full.update({"part_name": "part_name"}),
+(image_namespace_full.update({"part_name": "part_name"}),)
 image_expected_options_sparse = [
     command,
     "--input-file",
@@ -324,7 +329,10 @@ wrapper_tests = {
     wrapper_tests.values(),
     ids=wrapper_tests.keys(),
 )
-def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_options):
+def test_abaqus_wrappers(
+    subcommand: str, namespace: dict[str, typing.Any], expected_options: list[str], unexpected_options: list[str]
+) -> None:
+    """Test the :mod:`turbo_turtle._abaqus_wrappers` module."""
     args = argparse.Namespace(**namespace)
     with patch("turbo_turtle._utilities.run_command") as mock_run:
         subcommand_wrapper = getattr(_abaqus_wrappers, subcommand)
@@ -337,8 +345,8 @@ def test_abaqus_wrappers(subcommand, namespace, expected_options, unexpected_opt
         assert option not in command_string
 
 
-def trim_namespace(original, pop_keys):
-    """Create a modified dictionary deepcopy by removing the provided keys
+def trim_namespace(original: dict, pop_keys: typing.Sequence[str]) -> dict:
+    """Create a modified dictionary deepcopy by removing the provided keys.
 
     :returns: Modified dictionary deepcopy with pop keys removed
     :rtype: dict
@@ -350,7 +358,8 @@ def trim_namespace(original, pop_keys):
     return modified
 
 
-def test_trim_namespace():
+def test_trim_namespace() -> None:
+    """Test :func:`.trim_namespace` function."""
     original = {"keep": "keep", "pop": "pop"}
     modified = trim_namespace(original, ("pop",))
     assert modified == {"keep": "keep"}
@@ -407,13 +416,17 @@ cubit_wrapper_tests = {
     cubit_wrapper_tests.values(),
     ids=cubit_wrapper_tests.keys(),
 )
-def test_cubit_wrappers(subcommand, namespace, positional, keywords):
+def test_cubit_wrappers(
+    subcommand: str, namespace: dict[str, typing.Any], positional: tuple[str], keywords: dict[str, typing.Any]
+) -> None:
+    """Test the :mod:`turbo_turtle._cubit_wrappers` module."""
     args = argparse.Namespace(**namespace)
     with (
         patch("turbo_turtle._utilities.import_cubit"),
         patch(f"turbo_turtle._cubit_python.{subcommand}") as mock_function,
     ):
-        from turbo_turtle import _cubit_wrappers
+        # Third-party module requires Cubit imports, which require special handling.
+        from turbo_turtle import _cubit_wrappers  # noqa: PLC0415
 
         subcommand_wrapper = getattr(_cubit_wrappers, subcommand)
         subcommand_wrapper(args, command)
@@ -489,7 +502,10 @@ gmsh_wrapper_tests = {
     gmsh_wrapper_tests.values(),
     ids=gmsh_wrapper_tests.keys(),
 )
-def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
+def test_gmsh_wrappers(
+    subcommand: str, namespace: dict[str, typing.Any], positional: tuple[str], keywords: dict[str, typing.Any]
+) -> None:
+    """Test the :mod:`turbo_turtle._gmsh_wrappers` module."""
     args = argparse.Namespace(**namespace)
     implemented = ["geometry", "cylinder", "sphere", "mesh", "image"]
     if subcommand in implemented:
@@ -497,8 +513,6 @@ def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
             patch("turbo_turtle._utilities.import_gmsh"),
             patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function,
         ):
-            from turbo_turtle import _gmsh_wrappers
-
             subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
             subcommand_wrapper(args, command)
         mock_function.assert_called_once()
@@ -512,7 +526,6 @@ def test_gmsh_wrappers(subcommand, namespace, positional, keywords):
             patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function,
             pytest.raises(RuntimeError),
         ):
-            from turbo_turtle import _gmsh_wrappers
 
             subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
             subcommand_wrapper(args, command)

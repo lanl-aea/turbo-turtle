@@ -1,23 +1,21 @@
-import typing
+"""Provide a public API for the internal implementation of the geometry plotting command-line interface."""
+
 import argparse
+import typing
 
-import numpy
 import matplotlib.pyplot
+import numpy
 
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import vertices
-from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities
-
+from turbo_turtle._abaqus_python.turbo_turtle_abaqus import _mixed_utilities, parsers, vertices
 
 _exclude_from_namespace = set(globals().keys())
 
 
 def _get_parser() -> argparse.ArgumentParser:
-    """Return a partial parser for the geometry-xyplot subcommand options appended to the geometry subcommand options
+    """Return a partial parser for the geometry-xyplot subcommand options appended to the geometry subcommand options.
 
     :return: parser
     """
-
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument(
         "--no-markers", action="store_true", help="Exclude vertex markers and only plot lines (default: %(default)s)"
@@ -47,8 +45,7 @@ def geometry_xyplot(
     annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
     scale: bool = parsers.geometry_xyplot_defaults["scale"],
 ) -> matplotlib.pyplot.Figure:
-    """Return a matplotlib figure with the coordinates plotted consistently with geometry and geometry-xyplot
-    subcommands
+    """Return a matplotlib figure with the coordinates plotted consistently with geometry/geometry-xyplot subcommands.
 
     :param coordinates_list: List of 2D numpy arrays of (X, Y) coordinates
     :param unit_conversion: multiplication factor applies to all coordinates
@@ -65,7 +62,6 @@ def geometry_xyplot(
 
     :returns: matplotlib figure
     """
-
     if no_markers:
         line_kwargs = {}
         spline_kwargs = {}
@@ -78,9 +74,9 @@ def geometry_xyplot(
         colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(coordinates_list)))
     else:
         colors = ["black"]
-    for coordinates, color in zip(coordinates_list, colors):
-        coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
-        lines, splines = vertices.lines_and_splines(coordinates, euclidean_distance, rtol=rtol, atol=atol)
+    for coordinates, color in zip(coordinates_list, colors, strict=True):
+        transformed_coordinates = vertices.scale_and_offset_coordinates(coordinates, unit_conversion, y_offset)
+        lines, splines = vertices.lines_and_splines(transformed_coordinates, euclidean_distance, rtol=rtol, atol=atol)
         for line in lines:
             array = numpy.array(line)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, markerfacecolor="none", **line_kwargs)
@@ -88,7 +84,7 @@ def geometry_xyplot(
             array = numpy.array(spline)
             matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, linestyle="dashed", **spline_kwargs)
         if annotate:
-            for index, coordinate in enumerate(coordinates):
+            for index, coordinate in enumerate(transformed_coordinates):
                 matplotlib.pyplot.annotate(str(index), coordinate, color=color)
 
     if scale:
@@ -137,7 +133,7 @@ def _main(
     :param scale: Change the plot aspect ratio to use the same scale for the X and Y axes.
 
     :returns: writes ``{output_file}`` matplotlib image
-    """
+    """  # noqa: D205
     part_name = _mixed_utilities.validate_part_name_or_exit(input_file, part_name)
     coordinates_list = [
         _mixed_utilities.return_genfromtxt_or_exit(

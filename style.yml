@@ -3,8 +3,7 @@ channels:
   - nodefaults
 
 dependencies:
-  - black
-  - flake8
+  - ruff
   - scons >=4.6
   - setuptools >=77
   - setuptools_scm >=8

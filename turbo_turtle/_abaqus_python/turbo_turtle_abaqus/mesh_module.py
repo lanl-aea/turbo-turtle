@@ -1,17 +1,20 @@
+"""Mesh partitioned geometry through the Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
+import inspect
 import os
 import sys
-import inspect
-
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_settings,
+    _mixed_utilities,
+    parsers,
+)
 
 
 def main(
@@ -23,7 +26,7 @@ def main(
     global_seed=parsers.mesh_defaults["global_seed"],
     edge_seeds=parsers.mesh_defaults["edge_seeds"],
 ):
-    """Wrap mesh function for input file handling
+    """Wrap mesh function for input file handling.
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str element_type: Abaqus element type
@@ -33,7 +36,7 @@ def main(
     :param float global_seed: The global mesh seed size
     :param list[tuple[str, number]] edge_seeds: List of edge seed (name, number) pairs
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     try:
         if output_file is None:
@@ -60,7 +63,7 @@ def mesh(
     global_seed=parsers.mesh_defaults["global_seed"],
     edge_seeds=parsers.mesh_defaults["edge_seeds"],
 ):
-    """Apply a global seed, optional edge seed(s), and mesh the specified part
+    """Apply a global seed, optional edge seed(s), and mesh the specified part.
 
     Always creates sets
 
@@ -73,9 +76,9 @@ def mesh(
     :param float global_seed: The global mesh seed size
     :param list[tuple[str, number]] edge_seeds: List of edge seed (name, number) pairs
     """
-    import mesh
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
+    import mesh  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
@@ -106,7 +109,7 @@ def mesh(
 
 
 def _gui_get_default_elem_type(model_name, part_name):
-    """Set default element types for the _gui_get_inputs_function
+    """Set default element types for the _gui_get_inputs_function.
 
     Use a one-time dump of the Abaqus default element types for known part dimensionality
 
@@ -116,7 +119,7 @@ def _gui_get_default_elem_type(model_name, part_name):
     :return: element type from a hard-coded mapping of Abaqus default element types
     :rtype: str
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     known_dimensions = {  # Abaqus 2023.HF5 default element types for Abaqus Standard/Explicit dimensions
         "Axisymmetric": "CAX4R",
@@ -136,7 +139,7 @@ def _gui_get_default_elem_type(model_name, part_name):
 
 
 def _gui_get_inputs():
-    """Mesh Interactive Inputs
+    """Mesh Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -160,7 +163,7 @@ def _gui_get_inputs():
 
     :raises RuntimeError: if a element type or global mesh seed are not specified.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
 
@@ -168,8 +171,9 @@ def _gui_get_inputs():
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
     except AttributeError:
         print(
-            "Warning: could not determine a default part name using the current viewport. "
-            "Using default '{}'".format(parsers.mesh_defaults["part_name"][0])
+            "Warning: could not determine a default part name using the current viewport. Using default '{}'".format(
+                parsers.mesh_defaults["part_name"][0]
+            )
         )
         default_part_name = parsers.mesh_defaults["part_name"][0]  # part_name defaults to list of length 1
 
@@ -206,7 +210,10 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs that drives the plug-in"""
+    """Drive the Abaqus CAE GUI plugin.
+
+    Function with no inputs required for driving the plugin.
+    """
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=mesh, post_action_function=_abaqus_utilities._view_part
     )

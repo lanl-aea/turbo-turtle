@@ -1,5 +1,4 @@
-"""
-Copyright (c) 2023, Triad National Security, LLC. All rights reserved.
+"""Copyright (c) 2023, Triad National Security, LLC. All rights reserved.
 
 This program was produced under U.S. Government contract 89233218CNA000001 for Los Alamos National Laboratory (LANL),
 which is operated by Triad National Security, LLC for the U.S.  Department of Energy/National Nuclear Security
@@ -33,10 +32,9 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWIS
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, version
 
 import lazy_loader
-
 
 submodules = [
     "scons_extensions",

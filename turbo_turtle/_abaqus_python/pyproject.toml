@@ -1,0 +1,11 @@
+[tool.ruff]
+extend = "../../pyproject.toml"
+# TODO: include test modules in the linter. Remove ``"*/test*.py"`` from extend-exclude list.
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/262
+extend-exclude = ["*/test*.py"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+# Abaqus Python 2 compatible files
+"__init__.py" = ["D104"]
+"*.py" = ["ANN", "PTH", "UP", "FURB188", "B905", "E402", "B904"]
+"*/*.py" = ["ANN", "PTH", "UP", "FURB188", "B905", "E402", "B904"]

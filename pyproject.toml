@@ -28,13 +28,17 @@ dependencies = [
     "waves-workflows >=0.13.0"
 ]
 
+[project.optional-dependencies]
+gmsh = ["gmsh"]
+
+
 [tool.setuptools]
 packages = [
     "turbo_turtle",
-    "turbo_turtle.tests",
-    "turbo_turtle.tutorials",
     "turbo_turtle._abaqus_python",
-    "turbo_turtle._abaqus_python.turbo_turtle_abaqus"
+    "turbo_turtle._abaqus_python.turbo_turtle_abaqus",
+    "turbo_turtle._tests",
+    "turbo_turtle.tutorials",
 ]
 zip-safe = false
 
@@ -61,11 +65,26 @@ markers = [
 ]
 addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -m 'not systemtest'"
 
-[tool.black]
-target-version = ["py310", "py311", "py312", "py313"]
-extend-exclude = ".txt|test_vertices.py"
-force-exclude = "build*/|conda-environment*/|conda-pkgs*/|pip-build-test*/"
+[tool.ruff]
+target-version = "py310"
 line-length = 120
+# TODO: include test modules in the linter. Remove ``"turbo_turtle/_tests"`` from extend-exclude list.
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/262
+extend-exclude = ["build", "install", "conda-environment", "conda-pkgs", "pip-build-test", "turbo_turtle/_tests"]
+extend-include = ["SConstruct", "SConscript", "*.scons"]
+
+[tool.ruff.lint]
+extend-select = [
+    "A", "B", "D", "E", "F", "I", "N", "W",
+    "ANN", "ARG", "BLE", "C4", "ERA", "FURB", "ISC", "NPY", "PD", "PERF", "PGH", "PL", "PTH", "RUF", "T10"
+]
+# TODO: decide how to handle *args/**kwargs type annotations and remove ignores for ANN00[23]
+extend-ignore = ["ANN002", "ANN003", "B028", "D203", "D213", "PLR0912", "PLR0913", "PLR0915", "PLR1730", "PLR2004"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"*SConstruct" = ["F821"]
+"*SConscript" = ["F821"]
+"*.scons" = ["F821"]
 
 [tool.mypy]
 disable_error_code = [
@@ -73,7 +92,7 @@ disable_error_code = [
     "import-not-found"
 ]
 exclude = [
-    "tests",
+    "_tests",
     "_abaqus_python"
 ]
 packages = ["turbo_turtle"]

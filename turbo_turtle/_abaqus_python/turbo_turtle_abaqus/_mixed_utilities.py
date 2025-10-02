@@ -1,17 +1,17 @@
-"""Python 2/3 compatible utilities for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
+"""Python 2/3 compatible utilities for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules."""
 
 from __future__ import print_function
 
+import functools
 import os
 import re
 import sys
-import functools
 
 import numpy
 
 
 def sys_exit(err):
-    """Thin wrapper on ``sys.exit`` to force print to STDERR from Abaqus Python
+    """Thin wrapper on ``sys.exit`` to force print to STDERR from Abaqus Python.
 
     Python 2/3 compatible system exit that forces Abaqus CAE to print to system STDERR
 
@@ -22,7 +22,7 @@ def sys_exit(err):
 
 
 def print_exception_message(function):
-    """Decorate a function to catch bare exception and instead call sys.exit with the message
+    """Decorate a function to catch bare exception and instead call sys.exit with the message.
 
     :param function: function to decorate
     """
@@ -31,7 +31,8 @@ def print_exception_message(function):
     def wrapper(*args, **kwargs):
         try:
             output = function(*args, **kwargs)
-        except Exception as err:
+        # Decorator design intent specifically requires catching a blind Exception.
+        except Exception as err:  # noqa: BLE001
             sys_exit(err)
         return output
 
@@ -39,7 +40,9 @@ def print_exception_message(function):
 
 
 def validate_part_name(input_file, part_name):
-    """Validate the structure of the ``part_name`` list to the following rules:
+    """Validate the structure of the ``part_name`` list.
+
+    Validated against the following rules:
 
     * If ``part_name`` is ``[None]``, assign the base names of ``input_file`` to ``part_name``
     * Else if the length of ``part_name`` is not equal to the length of ``input_file``, raise an exception
@@ -66,7 +69,9 @@ def validate_part_name_or_exit(*args, **kwargs):
 
 
 def validate_element_type(length_part_name, element_type):
-    """Validate the structure of the ``element_type`` list to the following rules:
+    """Validate the structure of the ``element_type`` list.
+
+    Validated against the following rules:
 
     * If the length of ``element_type`` is 1, propagate to match ``length_part_name``
     * Raise a RuntimeError if ``element_type`` is greater than 1, but not equal to the length of ``part_name``
@@ -100,7 +105,7 @@ def return_genfromtxt(
     expected_dimensions=None,
     expected_columns=None,
 ):
-    """Parse a text file of XY coordinates into a numpy array
+    """Parse a text file of XY coordinates into a numpy array.
 
     If the resulting numpy array doesn't have the specified dimensions or column count, return an error exit code
 
@@ -133,7 +138,7 @@ def return_genfromtxt_or_exit(*args, **kwargs):
 
 
 def remove_duplicate_items(string_list):
-    """Remove duplicates from  ``string_list`` and print a warning to STDERR of all duplicates removed
+    """Remove duplicates from  ``string_list`` and print a warning to STDERR of all duplicates removed.
 
     :param list string_list: list of strings to remove duplicates
 
@@ -152,7 +157,7 @@ def remove_duplicate_items(string_list):
 
 
 def intersection_of_lists(requested, available):
-    """Return sorted intersection of available and requested items or all available items if none requested
+    """Return sorted intersection of available and requested items or all available items if none requested.
 
     :param list requested: requested items
     :param list available: available items
@@ -168,7 +173,7 @@ def intersection_of_lists(requested, available):
 
 
 def _element_type_regex(content, element_type):
-    """Place element type in Abaqus element keywords. RegEx uses MULTILINE and IGNORECASE
+    """Place element type in Abaqus element keywords. RegEx uses MULTILINE and IGNORECASE.
 
     :param str content: String of Abaqus keyword text
     :param str element_type: New element type to place in the ``*element, type=`` text
@@ -178,12 +183,11 @@ def _element_type_regex(content, element_type):
     """
     regex = r"(\*element,\s+type=)([a-zA-Z0-9]*)"
     subst = "\\1{}".format(element_type)
-    return re.sub(regex, subst, content, 0, re.MULTILINE | re.IGNORECASE)
+    return re.sub(regex, subst, content, count=0, flags=re.MULTILINE | re.IGNORECASE)
 
 
 def substitute_element_type(mesh_file, element_type):
-    """Use regular expressions to substitute element types in an existing orphan mesh file via the
-    ``*Element`` keyword.
+    """Substitute element types in an existing orphan mesh file via the ``*Element`` keyword.
 
     :param str mesh_file: existing orphan mesh file
     :param str element_type: element type to substitute into the ``*Element`` keyword phrase
@@ -199,7 +203,7 @@ def substitute_element_type(mesh_file, element_type):
 
 
 def cubit_part_names(part_name):
-    """Replace hyphens with underscores in strings for ACIS name compliance
+    """Replace hyphens with underscores in strings for ACIS name compliance.
 
     :param list part_name: list of strings for character replacement(s)
 

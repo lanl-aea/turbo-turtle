@@ -1,14 +1,18 @@
+"""Merge models into one file through the Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
+import inspect
 import os
 import sys
-import inspect
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
+from turbo_turtle_abaqus import (
+    _mixed_utilities,
+    parsers,
+)
 
 
 def main(
@@ -18,7 +22,7 @@ def main(
     model_name=parsers.merge_defaults["model_name"],
     part_name=parsers.merge_defaults["part_name"],
 ):
-    """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model
+    """Merge parts from multiple Abaqus CAE files and models into one Abaqus CAE file and model.
 
     This script loops through all input file(s) specified and merges the intersection of provided model/part name(s) and
     available model/part combinations. Duplicate part names are removed from the part name list. If a part name exists
@@ -32,8 +36,8 @@ def main(
 
     :returns: writes ``{output_file}.cae`` with the merged model
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     part_name = _mixed_utilities.remove_duplicate_items(part_name)
     requested_part_count = len(part_name)
@@ -64,7 +68,8 @@ def main(
                         )
                     )
                     sys.stdout.write(success_message)
-                except abaqus.AbaqusException as err:
+                # Abaqus Python API design forces try:except in for loops.
+                except abaqus.AbaqusException as err:  # noqa: PERF203
                     message = "ERROR: could not merge part '{}' in model '{}' in database '{}'\n{}".format(
                         this_part, this_model, cae_file, err
                     )

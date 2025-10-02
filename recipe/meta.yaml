@@ -25,6 +25,7 @@ requirements:
   host:
     - python
     - python-build
+    - python-gmsh >=4
     - pip
     - pytest
     - lazy_loader >=0.4
@@ -49,6 +50,7 @@ test:
     - pip
     - pytest
     - pytest-xdist
+    - python-gmsh >=4
   imports:
     - turbo_turtle
 

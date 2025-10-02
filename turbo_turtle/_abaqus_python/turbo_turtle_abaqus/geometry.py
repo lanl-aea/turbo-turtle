@@ -1,22 +1,25 @@
+"""Create axisymmetric geometry through Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
 import ast
+import glob
 import inspect
 import os
 import sys
-import glob
 
 import numpy
-
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import vertices  # noqa: E402
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_settings,
+    _mixed_utilities,
+    parsers,
+    vertices,
+)
 
 
 def main(
@@ -62,7 +65,7 @@ def main(
 
     :returns: writes ``{output_file}.cae``
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     output_file = os.path.splitext(output_file)[0] + ".cae"
     try:
@@ -122,7 +125,7 @@ def geometry(
 
     :raises RuntimeError: failure to create a sketch or part from a CSV file.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     _abaqus_utilities._conditionally_create_model(model_name)
 
@@ -159,18 +162,21 @@ def geometry(
         raise RuntimeError("\n".join(error_message))
 
 
+# TODO: Decide if unused arguments (ARG001) should be removed or find where they should have been used.
 def draw_part_from_splines(
     lines,
     splines,
     planar=parsers.geometry_defaults["planar"],
     model_name=parsers.geometry_defaults["model_name"],
     part_name=parsers.geometry_defaults["part_name"],
-    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],
+    euclidean_distance=parsers.geometry_defaults["euclidean_distance"],  # noqa: ARG001
     revolution_angle=parsers.geometry_defaults["revolution_angle"],
-    rtol=parsers.geometry_defaults["rtol"],
-    atol=parsers.geometry_defaults["atol"],
+    rtol=parsers.geometry_defaults["rtol"],  # noqa: ARG001
+    atol=parsers.geometry_defaults["atol"],  # noqa: ARG001
 ):
-    """Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
+    """Create a part from connected lines and splines.
+
+    Given a series of line/spline definitions, draw lines/splines in an Abaqus sketch and generate either a 2D part
     or a 3D body of revolution about the global Y-axis using the sketch. A 2D part can be either axisymmetric or planar
     depending on the ``planar`` and ``revolution_angle`` parameters.
 
@@ -198,8 +204,8 @@ def draw_part_from_splines(
 
     :returns: creates ``{part_name}`` within an Abaqus CAE database, not yet saved to local memory
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     revolution_direction = _abaqus_utilities.revolution_direction(revolution_angle)
     revolution_angle = abs(revolution_angle)
@@ -213,12 +219,10 @@ def draw_part_from_splines(
     sketch.FixedConstraint(entity=sketch.geometry[3])
 
     for spline in splines:
-        spline = tuple(map(tuple, spline))
-        sketch.Spline(points=spline)
+        spline_tuples = tuple(map(tuple, spline))
+        sketch.Spline(points=spline_tuples)
     for point1, point2 in lines:
-        point1 = tuple(point1)
-        point2 = tuple(point2)
-        sketch.Line(point1=point1, point2=point2)
+        sketch.Line(point1=tuple(point1), point2=tuple(point2))
     if planar:
         part = abaqus.mdb.models[model_name].Part(
             name=part_name, dimensionality=abaqusConstants.TWO_D_PLANAR, type=abaqusConstants.DEFORMABLE_BODY
@@ -239,7 +243,7 @@ def draw_part_from_splines(
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -281,7 +285,7 @@ def _gui_get_inputs():
 
     :raises RuntimeError: if at least one input file is not specified
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     default_input_files = "File1.csv,File2.csv OR *.csv"
     default_part_names = "Part-1,Part-2, OR None OR blank"
@@ -329,7 +333,7 @@ def _gui_get_inputs():
             error_message = "Error: You must specify at least one input file"
             raise RuntimeError(error_message)
 
-        if part_name_strings == "None" or part_name_strings == default_part_names or not part_name_strings:
+        if part_name_strings in ("None", default_part_names) or not part_name_strings:
             part_name = [None]
         else:
             part_name = part_name_strings.split(",")
@@ -364,7 +368,10 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs required for driving the plugin"""
+    """Drive the Abaqus CAE GUI plugin.
+
+    Function with no inputs required for driving the plugin.
+    """
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=geometry, post_action_function=_abaqus_utilities._view_part
     )

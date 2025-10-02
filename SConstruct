@@ -1,14 +1,13 @@
 #! /usr/bin/env python
+"""Configure the Turbo-Turtle project."""
 
-import os
 import inspect
+import os
 import pathlib
-import platform
 import warnings
 
-import waves
 import setuptools_scm
-
+import waves
 
 warnings.filterwarnings(action="ignore", message="tag", category=UserWarning, module="setuptools_scm")
 
@@ -20,7 +19,7 @@ project_configuration = pathlib.Path(inspect.getfile(lambda: None))
 project_directory = project_configuration.parent
 distribution_name = project_name.replace("-", "_")
 package_specification = f"{distribution_name}-{version}"
-package_directory = project_directory / distribution_name 
+package_directory = project_directory / distribution_name
 project_variables = {
     "name": project_name,
     "version": version,
@@ -84,7 +83,7 @@ env["ENV"]["PYTHONDONTWRITEBYTECODE"] = 1
 
 # Find third-party software
 abaqus_commands = env["abaqus_command"]
-abaqus_environments = dict()
+abaqus_environments = {}
 for command in abaqus_commands:
     # TODO: more robust version/name recovery without CI server assumptions
     version = pathlib.Path(command).name
@@ -93,7 +92,7 @@ for command in abaqus_commands:
     abaqus_environments.update({version: abaqus_environment})
 
 cubit_commands = env["cubit_command"]
-cubit_environments = dict()
+cubit_environments = {}
 for command in cubit_commands:
     # TODO: more robust version/name recovery without CI server assumptions
     version = pathlib.Path(command).parent.name
@@ -157,16 +156,16 @@ env.AlwaysBuild(install)
 env.ProjectAlias("install", install, description="Install pip package to ``prefix``")
 
 # Documentation
-build_dir = env["build_directory"] / "docs"
-SConscript(dirs="docs", variant_dir=build_dir, exports=["env", "project_variables"])
+variant_directory = env["build_directory"] / "docs"
+SConscript(dirs="docs", variant_dir=variant_directory, exports=["env", "project_variables"])
 
 # Pytests, style checks, and static type checking
-workflow_configurations = ["pytest", "style", "mypy", "cProfile"]
+workflow_configurations = ["pytest.scons", "style.scons", "mypy.scons", "cProfile.scons"]
 for workflow in workflow_configurations:
-    build_dir = env["build_directory"] / workflow
+    variant_directory = env["build_directory"] / workflow.replace(".scons", "")
     SConscript(
-        build_dir.name,
-        variant_dir=build_dir,
+        workflow,
+        variant_dir=variant_directory,
         exports=["env", "abaqus_environments", "cubit_environments"],
         duplicate=False,
     )

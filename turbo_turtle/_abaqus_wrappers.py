@@ -1,14 +1,15 @@
-from turbo_turtle import _settings
-from turbo_turtle import _utilities
+import argparse
+
+from turbo_turtle import _settings, _utilities
 
 
-def geometry(args, command):
+def geometry(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.geometry_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.geometry_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "geometry.py"
 
     command = f"{command} cae -noGui {script} -- "
@@ -32,13 +33,13 @@ def geometry(args, command):
     _utilities.run_command(command)
 
 
-def cylinder(args, command):
+def cylinder(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.cylinder_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.cylinder_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "cylinder.py"
 
     command = f"{command} cae -noGui {script} -- "
@@ -53,13 +54,13 @@ def cylinder(args, command):
     _utilities.run_command(command)
 
 
-def sphere(args, command):
+def sphere(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sphere_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sphere_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "sphere.py"
 
     command = f"{command} cae -noGui {script} -- "
@@ -73,13 +74,13 @@ def sphere(args, command):
     _utilities.run_command(command)
 
 
-def partition(args, command):
+def partition(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.partition_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.partition_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "partition.py"
 
     command = f"{command} cae -noGui {script} -- "
@@ -94,13 +95,13 @@ def partition(args, command):
     _utilities.run_command(command)
 
 
-def sets(args, command):
+def sets(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sets_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.sets_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "sets.py"
 
     command = f"{command} cae -noGui {script} -- "
@@ -120,13 +121,13 @@ def sets(args, command):
     _utilities.run_command(command)
 
 
-def mesh(args, command):
+def mesh(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.mesh_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.mesh_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "mesh_module.py"
 
     command = f"{command} cae -noGui {script} -- "
@@ -141,13 +142,13 @@ def mesh(args, command):
     _utilities.run_command(command)
 
 
-def merge(args, command):
+def merge(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.merge_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.merge_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "merge.py"
 
     command = f"{command} cae -noGui {script} -- "
@@ -161,13 +162,13 @@ def merge(args, command):
     _utilities.run_command(command)
 
 
-def export(args, command):
+def export(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.export_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.export_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "export.py"
 
     command = f"{command} cae -noGui {script} -- "
@@ -181,13 +182,13 @@ def export(args, command):
     _utilities.run_command(command)
 
 
-def image(args, command):
+def image(args: argparse.Namespace, command: str) -> None:
     """Python 3 wrapper around the Abaqus Python
-    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.image_parser` CLI
+    :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.parsers.image_parser` CLI.
 
     :param argparse.Namespace args: namespace of parsed arguments
     :param str command: abaqus executable path
-    """
+    """  # noqa: D205
     script = _settings._abaqus_python_abspath / "image.py"
 
     command = f"{command} cae -noGui {script} -- "

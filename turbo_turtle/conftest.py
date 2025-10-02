@@ -1,8 +1,9 @@
+"""Define the project's custom pytest options and CLI extensions."""
+
 import os
 import pathlib
 
 import pytest
-
 
 display = os.environ.get("DISPLAY")
 if not display:
@@ -11,7 +12,8 @@ else:
     missing_display = False
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser: pytest.Parser) -> None:
+    """Add the custom pytest options to the pytest command-line parser."""
     parser.addoption(
         "--abaqus-command",
         action="store",
@@ -29,10 +31,12 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture
-def abaqus_command(request):
+def abaqus_command(request: pytest.FixtureRequest) -> pathlib.Path:
+    """Return the argument of custom pytest ``--abaqus-command`` command-line option."""
     return request.config.getoption("--abaqus-command")
 
 
 @pytest.fixture
-def cubit_command(request):
+def cubit_command(request: pytest.FixtureRequest) -> pathlib.Path:
+    """Return the argument of custom pytest ``--cubit-command`` command-line option."""
     return request.config.getoption("--cubit-command")

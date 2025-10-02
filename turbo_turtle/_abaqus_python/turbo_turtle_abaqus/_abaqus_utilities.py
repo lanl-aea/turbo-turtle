@@ -1,7 +1,7 @@
-import os
-import sys
-import shutil
 import inspect
+import os
+import shutil
+import sys
 import tempfile
 
 filename = inspect.getfile(lambda: None)
@@ -9,7 +9,7 @@ basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
+from turbo_turtle_abaqus import _mixed_utilities
 
 
 class AbaqusNamedTemporaryFile:
@@ -22,7 +22,7 @@ class AbaqusNamedTemporaryFile:
     """
 
     def __init__(self, input_file, *args, **kwargs):
-        import abaqus
+        import abaqus  # noqa: PLC0415
 
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
         shutil.copyfile(input_file, self.temporary_file.name)
@@ -32,7 +32,7 @@ class AbaqusNamedTemporaryFile:
         return self.temporary_file
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        import abaqus
+        import abaqus  # noqa: PLC0415
 
         abaqus.mdb.close()
         self.temporary_file.close()
@@ -49,7 +49,7 @@ def return_abaqus_constant(search):
     :return value: abaqusConstants attribute
     :rtype: abaqusConstants.<search>
     """
-    import abaqusConstants
+    import abaqusConstants  # noqa: PLC0415
 
     search = search.upper()
     attribute = None
@@ -66,7 +66,7 @@ def return_abaqus_constant_or_exit(*args, **kwargs):
 
 
 def part_dimensionality(part):
-    """Return part dimensionality as an int
+    """Return part dimensionality as an int.
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
 
@@ -83,7 +83,7 @@ def part_dimensionality(part):
 
 
 def part_dimensionality_key(part):
-    """Get the Abaqus dimensionality key for the current part
+    """Get the Abaqus dimensionality key for the current part.
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
 
@@ -95,7 +95,7 @@ def part_dimensionality_key(part):
 
 
 def set_from_mask(part, feature, name_mask):
-    """Create named set(s) from the geometric feature and mask(s)
+    """Create named set(s) from the geometric feature and mask(s).
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges', 'vertices'
@@ -103,14 +103,15 @@ def set_from_mask(part, feature, name_mask):
 
     :raises RuntimeError: If Abaqus throws an empty sequence abaqus.AbaqusException on one or more masks
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     attribute = getattr(part, feature)
     bad_masks = []
     for name, mask in name_mask:
         try:
             objects = attribute.getSequenceFromMask(mask=(mask,))
-        except abaqus.AbaqusException:
+        # Abaqus Python 2 API design makes it difficult to avoid try:except statements in loops.
+        except abaqus.AbaqusException:  # noqa: PERF203
             bad_masks.append((name, mask))
         else:
             part.Set(**{feature: objects, "name": name})
@@ -119,7 +120,7 @@ def set_from_mask(part, feature, name_mask):
 
 
 def surface_from_mask(part, feature, name_mask):
-    """Create named surface(s) from the geometric feature and mask(s)
+    """Create named surface(s) from the geometric feature and mask(s).
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges'
@@ -128,7 +129,7 @@ def surface_from_mask(part, feature, name_mask):
     :raises ValueError: If feature is not one of 'faces' or 'edges'
     :raises RuntimeError: If Abaqus throws an empty sequence abaqus.AbaqusException on one or more masks
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     attribute = getattr(part, feature)
     if feature == "faces":
@@ -141,7 +142,8 @@ def surface_from_mask(part, feature, name_mask):
     for name, mask in name_mask:
         try:
             objects = attribute.getSequenceFromMask(mask=(mask,))
-        except abaqus.AbaqusException:
+        # Abaqus Python 2 API design makes it difficult to avoid try:except statements in loops.
+        except abaqus.AbaqusException:  # noqa: PERF203
             bad_masks.append((name, mask))
         else:
             part.Surface(**{"name": name, surface_keyword: objects})
@@ -150,7 +152,7 @@ def surface_from_mask(part, feature, name_mask):
 
 
 def edge_seeds(part, name_number):
-    """Seed edges by number (if passed integer) or size (if passed float)
+    """Seed edges by number (if passed integer) or size (if passed float).
 
     :param abaqus.models[model].parts[part] part: Abaqus part object
     :param str feature: Abaqus part geometric attribute, e.g. 'faces', 'edges'
@@ -170,8 +172,9 @@ def edge_seeds(part, name_number):
             part.seedEdgeBySize(edges=edges, size=number)
 
 
-def _view_part(model_name, part_name, **kwargs):
-    """Place a part in the current viewport as a GUI post-action
+# Function design intentionally allows, but ignores, additional keyword arguments.
+def _view_part(model_name, part_name, **kwargs):  # noqa: ARG001
+    """Place a part in the current viewport as a GUI post-action.
 
     Depending on if ``part_name`` is a list or a string, either place the last part in the list or the string part name
     in the viewport.
@@ -184,7 +187,7 @@ def _view_part(model_name, part_name, **kwargs):
     :param str/list part_name: name of the part to place in the viewport. If ``list`` type, use the last part name in
         the list. If ``str`` type, use that part name directly.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     if isinstance(part_name, list):
         part_name = part_name[-1]
@@ -195,19 +198,19 @@ def _view_part(model_name, part_name, **kwargs):
 
 
 def _conditionally_create_model(model_name):
-    """Create a new model in an Abaqus database if the specified model name is not already existing
+    """Create a new model in an Abaqus database if the specified model name is not already existing.
 
     :param str model_name: Abaqus model name
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     if model_name not in abaqus.mdb.models.keys():
         abaqus.mdb.Model(name=model_name, modelType=abaqusConstants.STANDARD_EXPLICIT)
 
 
 def gui_wrapper(inputs_function, subcommand_function, post_action_function=None):
-    """Wrapper for a function calling ``abaqus.getInputs``, then the wrapper calls a ``turbo_turtle`` subcommand module
+    """Wrap a function calling ``abaqus.getInputs``, then call a ``turbo_turtle`` subcommand module.
 
     ``inputs_function`` cannot have any function arguments. ``inputs_function`` must return
     a dictionary of key-value pairs that match the ``subcommand_function`` arguments. ``post_action_function`` must have
@@ -236,14 +239,14 @@ def gui_wrapper(inputs_function, subcommand_function, post_action_function=None)
 
 
 def revolution_direction(revolution_angle):
-    """Pick revolution direction constant consistent with +Y revolve direction
+    """Pick revolution direction constant consistent with +Y revolve direction.
 
     Positive rotation angles should result in +Y revolve direction (abaqusConstants.ON)
     Negative rotation angles should result in -Y revolve direction (abaqusConstants.OFF)
 
     :param float revolution_angle: angle of solid revolution for ``3D`` geometries
     """
-    import abaqusConstants
+    import abaqusConstants  # noqa: PLC0415
 
     if revolution_angle < 0.0:
         revolution_direction = abaqusConstants.OFF

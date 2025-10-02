@@ -1,12 +1,13 @@
-"""
+"""Test the Abaqus Python compatibility for the mixed utilities module.
+
 .. warning::
 
    These tests are duplicates of the Python 3 tests in :meth:`turbo_turtle.tests.test_mixed_utilities`
 """
 
+import inspect
 import os
 import sys
-import inspect
 import unittest
 
 filename = inspect.getfile(lambda: None)
@@ -18,7 +19,7 @@ from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
 
 
 class TestMixedUtilities(unittest.TestCase):
-    """Abaqus Python unittests for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities`"""
+    """Test :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus._mixed_utilities` against Abaqus Python."""
 
     def test_validate_element_type(self):
         tests = [

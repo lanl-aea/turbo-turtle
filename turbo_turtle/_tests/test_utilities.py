@@ -1,14 +1,14 @@
-from unittest.mock import patch, MagicMock
-from contextlib import nullcontext as does_not_raise
 import subprocess
+from contextlib import nullcontext as does_not_raise
+from unittest.mock import MagicMock, patch
 
 import pytest
 
 from turbo_turtle import _utilities
 
 
-def test_search_commands():
-    """Test :meth:`turbo_turtle._utilities.search_command`"""
+def test_search_commands() -> None:
+    """Test :meth:`turbo_turtle._utilities.search_command`."""
     with patch("shutil.which", return_value=None):
         command_abspath = _utilities.search_commands(["notfound"])
         assert command_abspath is None
@@ -42,8 +42,8 @@ find_command = {
     find_command.values(),
     ids=find_command.keys(),
 )
-def test_find_command(options, found, outcome):
-    """Test :meth:`turbo_turtle._utilities.find_command`"""
+def test_find_command(options, found, outcome) -> None:
+    """Test :meth:`turbo_turtle._utilities.find_command`."""
     with patch("turbo_turtle._utilities.search_commands", return_value=found), outcome:
         try:
             command_abspath = _utilities.find_command(options)
@@ -52,8 +52,8 @@ def test_find_command(options, found, outcome):
             pass
 
 
-def test_run_command():
-    """Test :meth:`turbo_turtle._utilities.run_command`"""
+def test_run_command() -> None:
+    """Test :meth:`turbo_turtle._utilities.run_command`."""
     with (
         patch("subprocess.check_output", side_effect=subprocess.CalledProcessError(1, "dummy", b"output")),
         pytest.raises(RuntimeError),
@@ -61,7 +61,7 @@ def test_run_command():
         _utilities.run_command("dummy")
 
 
-def test_cubit_os_bin():
+def test_cubit_os_bin() -> None:
     with patch("platform.system", return_value="Darwin"):
         bin_directory = _utilities.cubit_os_bin()
         assert bin_directory == "MacOS"
@@ -76,7 +76,7 @@ def test_cubit_os_bin():
         assert bin_directory == "bin"
 
 
-def test_import_gmsh():
+def test_import_gmsh() -> None:
     with patch.dict("sys.modules", gmsh=MagicMock), does_not_raise():
         _utilities.import_gmsh()
 
@@ -84,7 +84,7 @@ def test_import_gmsh():
         _utilities.import_gmsh()
 
 
-def test_import_cubit():
+def test_import_cubit() -> None:
     with patch.dict("sys.modules", cubit=MagicMock), does_not_raise():
         _utilities.import_cubit()
 
@@ -121,7 +121,7 @@ construct_append_options = {
     construct_append_options.values(),
     ids=construct_append_options.keys(),
 )
-def test_construct_append_options(option, array, expected):
+def test_construct_append_options(option, array, expected) -> None:
     option_string = _utilities.construct_append_options(option, array)
     assert option_string == expected
 
@@ -165,6 +165,6 @@ character_delimited_list = {
     character_delimited_list.values(),
     ids=character_delimited_list.keys(),
 )
-def test_character_delimited_list(sequence, character, expected):
+def test_character_delimited_list(sequence, character, expected) -> None:
     string = _utilities.character_delimited_list(sequence, character=character)
     assert string == expected

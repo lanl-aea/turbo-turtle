@@ -1,4 +1,4 @@
-"""Python 2/3 compatible coordinate handling for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules"""
+"""Provide Python 2/3 compatible coordinate handling for Abaqus Python scripts and Turbo-Turtle Python 3 modules."""
 
 import cmath
 
@@ -6,7 +6,7 @@ import numpy
 
 
 def rectalinear_coordinates(radius_list, angle_list):
-    """Calculate 2D rectalinear XY coordinates from 2D polar coordinates
+    """Calculate 2D rectalinear XY coordinates from 2D polar coordinates.
 
     :param list radius: length N list of polar coordinate radius
     :param list angle: length N list of polar coordinate angle measured from the positive X-axis in radians
@@ -20,8 +20,7 @@ def rectalinear_coordinates(radius_list, angle_list):
 
 
 def cylinder(inner_radius, outer_radius, height, y_offset=0.0):
-    """Return a :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` compatible vertex
-    array
+    """Return :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` compatible vertex array.
 
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
@@ -29,10 +28,10 @@ def cylinder(inner_radius, outer_radius, height, y_offset=0.0):
 
     :returns: vertex coordinate array
     :rtype: numpy.array
-    """
+    """  # noqa: E501
     coordinates = (
-        (inner_radius, height / 2.0 + y_offset),  # fmt: skip # noqa: E241
-        (outer_radius, height / 2.0 + y_offset),  # fmt: skip # noqa: E241
+        (inner_radius, height / 2.0 + y_offset),
+        (outer_radius, height / 2.0 + y_offset),
         (outer_radius, -height / 2.0 + y_offset),
         (inner_radius, -height / 2.0 + y_offset),
     )
@@ -40,7 +39,7 @@ def cylinder(inner_radius, outer_radius, height, y_offset=0.0):
 
 
 def cylinder_lines(inner_radius, outer_radius, height, y_offset=0.0):
-    """Return the line coordinate pairs defining a cylinder
+    """Return the line coordinate pairs defining a cylinder.
 
     :param float inner_radius: Radius of the hollow center
     :param float outer_radius: Outer radius of the cylinder
@@ -51,12 +50,12 @@ def cylinder_lines(inner_radius, outer_radius, height, y_offset=0.0):
     """
     coordinates = cylinder(inner_radius, outer_radius, height, y_offset=y_offset)
     euclidean_distance = min(inner_radius, height) / 2.0
-    lines, splines = lines_and_splines(coordinates, euclidean_distance)
+    lines, _splines = lines_and_splines(coordinates, euclidean_distance)
     return lines
 
 
 def sphere(center, inner_radius, outer_radius, quadrant):
-    """Return the inner and outer radii vertices defining a 2D sketh of a sphere for revolution
+    """Return the inner and outer radii vertices defining a 2D sketh of a sphere for revolution.
 
     :param tuple center: tuple of floats (X, Y) location for the center of the sphere
     :param float inner_radius: inner radius (size of hollow)
@@ -86,7 +85,7 @@ def sphere(center, inner_radius, outer_radius, quadrant):
 
 
 def scale_and_offset_coordinates(coordinates, unit_conversion=1.0, y_offset=0.0):
-    """Scale and offset XY coordinates in a 2 column numpy array
+    """Scale and offset XY coordinates in a 2 column numpy array.
 
     First multiply by the unit conversion. Then offset the Y coordinates (2nd column) by adding the y offset
 
@@ -101,7 +100,7 @@ def scale_and_offset_coordinates(coordinates, unit_conversion=1.0, y_offset=0.0)
 
 
 def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
-    """Accept a [N, 2] numpy array of XY coordinates and return line point pairs and splines
+    """Accept a [N, 2] numpy array of XY coordinates and return line point pairs and splines.
 
     Array is broken into a list of [M, 2] arrays according to the following rules
 
@@ -132,10 +131,12 @@ def lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
 
 
 def ordered_lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=None):
-    """Return a single, closed loop list of [M, 2] arrays with lines (length 2) and splines (length >2)"""
+    """Return a single, closed loop list of [M, 2] arrays with lines (length 2) and splines (length >2)."""
     all_splines = _break_coordinates(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     lines_and_splines = [all_splines[0]]
-    for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:]):
+    # Abaqus 2023 Python does not have ``itertools.pairwise``.
+    # TODO: Remove RUF007 exception when Abaqus 2024 is the oldest supported Abaqus version.
+    for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:]):  # noqa: RUF007
         lines_and_splines.append(numpy.stack((spline1[-1], spline2[0])))
         lines_and_splines.append(spline2)
     lines_and_splines.append(numpy.stack((all_splines[-1][-1], all_splines[0][0])))
@@ -145,7 +146,7 @@ def ordered_lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=N
 
 
 def _break_coordinates(coordinates, euclidean_distance, rtol=None, atol=None):
-    """Accept a [N, 2] numpy array and break into a list of [M, 2] arrays
+    """Accept a [N, 2] numpy array and break into a list of [M, 2] arrays.
 
     This function follows this methodology to turn a [N, 2] numpy array into a list of [M, 2] arrays denoting
     individual lines or splines.
@@ -171,7 +172,7 @@ def _break_coordinates(coordinates, euclidean_distance, rtol=None, atol=None):
 
 
 def _compare_euclidean_distance(coordinates, euclidean_distance):
-    """Compare the distance between coordinates in a 2D numpy array of XY data to a provided euclidean distance
+    """Compare the distance between coordinates in a 2D numpy array of XY data to a provided euclidean distance.
 
     The distance comparison is performed as ``numpy_array_distance > euclidean_distance``. The distance between
     coordinates in the numpy array is computed such that the "current point" is compared to the previous point in the
@@ -192,7 +193,7 @@ def _compare_euclidean_distance(coordinates, euclidean_distance):
 
 
 def _compare_xy_values(coordinates, rtol=None, atol=None):
-    """Check neighboring XY values in an [N, 2] array of coordinates for vertical or horizontal relationships
+    """Check neighboring XY values in an [N, 2] array of coordinates for vertical or horizontal relationships.
 
     This function loops through lists of coordinates checking to see if a "current point" and the previous point in the
     numpy array are vertical or hozitonal from one another. As such, a single ``False`` is always prepended to the
@@ -212,15 +213,15 @@ def _compare_xy_values(coordinates, rtol=None, atol=None):
     if atol is not None:
         isclose_kwargs.update({"atol": atol})
     vertical_horizontal_bools = [False] + [
-        numpy.isclose(coords1[0], coords2[0], **isclose_kwargs)  # noqa: W504
-        or numpy.isclose(coords1[1], coords2[1], **isclose_kwargs)  # noqa: W503
+        numpy.isclose(coords1[0], coords2[0], **isclose_kwargs)
+        or numpy.isclose(coords1[1], coords2[1], **isclose_kwargs)
         for coords1, coords2 in zip(coordinates[1:, :], coordinates[0:-1, :])
     ]
     return vertical_horizontal_bools
 
 
 def _bool_via_or(bools_list_1, bools_list_2):
-    """Compare two lists of bools using an ``or`` statement
+    """Compare two lists of bools using an ``or`` statement.
 
     :param list bools_list_1: first set of bools
     :param list bools_list_2: second set of bools
@@ -233,7 +234,7 @@ def _bool_via_or(bools_list_1, bools_list_2):
 
 
 def _line_pairs(all_splines):
-    """Accept a list of [N, 2] arrays and return a list of paired coordinates to connect as lines
+    """Accept a list of [N, 2] arrays and return a list of paired coordinates to connect as lines.
 
     Given a list of [N, 2] numpy arrays, create tuple pairs of coordinates between the end and beginning of subsequent
     arrays. Also return a pair from the last array's last coordinate to the first array's first coordinate.
@@ -243,14 +244,16 @@ def _line_pairs(all_splines):
     :returns: line pairs
     :rtype: list of [2, 2] numpy arrays
     """
-    zipped_splines = zip(all_splines[0:-1], all_splines[1:])
+    # Abaqus 2023 Python does not have ``itertools.pairwise``.
+    # TODO: Remove RUF007 exception when Abaqus 2024 is the oldest supported Abaqus version.
+    zipped_splines = zip(all_splines[0:-1], all_splines[1:])  # noqa: RUF007
     line_pairs = [numpy.stack((spline1[-1], spline2[0])) for spline1, spline2 in zipped_splines]
     line_pairs.append((all_splines[-1][-1], all_splines[0][0]))
     return line_pairs
 
 
 def normalize_vector(vector):
-    """Normalize a cartesian vector
+    """Normalize a cartesian vector.
 
     :param list vector: List of three floats defining a cartesian vector
 
@@ -265,7 +268,7 @@ def normalize_vector(vector):
 
 
 def midpoint_vector(first, second, third=None):
-    """Calculate the vector between two vectors (summation / 2)
+    """Calculate the vector between two vectors (summation / 2).
 
     :param numpy.array first: First vector
     :param numpy.array second: Second vector
@@ -304,7 +307,7 @@ def is_parallel(first, second, rtol=None, atol=None):
 
 
 def any_parallel(first, options, rtol=None, atol=None):
-    """If the first vector is parellel to any of the options, return True
+    """If the first vector is parellel to any of the options, return True.
 
     :param numpy.array first: First vector
     :param list options: List of vectors to compare against the first vector
@@ -319,7 +322,7 @@ def any_parallel(first, options, rtol=None, atol=None):
 
 
 def datum_planes(xvector, zvector):
-    """Calculate the sphere partitioning datum plane normal vectors on a local coordinate system
+    """Calculate the sphere partitioning datum plane normal vectors on a local coordinate system.
 
     The x- and z-vectors must be orthogonal. They will be normalized prior to calculating the normalized plane normal
     vectors.
@@ -346,12 +349,12 @@ def datum_planes(xvector, zvector):
     primary_planes = [xy_plane, yz_plane, zx_plane]
 
     midpoints = [
-        midpoint_vector(xvector,  yvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(xvector, -yvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(yvector,  zvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(yvector, -zvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(zvector,  xvector),  # fmt: skip # noqa: E201,E241
-        midpoint_vector(zvector, -xvector),  # fmt: skip # noqa: E201,E241
+        midpoint_vector(xvector, yvector),
+        midpoint_vector(xvector, -yvector),
+        midpoint_vector(yvector, zvector),
+        midpoint_vector(yvector, -zvector),
+        midpoint_vector(zvector, xvector),
+        midpoint_vector(zvector, -xvector),
     ]
     midpoints = [normalize_vector(midpoint) for midpoint in midpoints]
 
@@ -359,8 +362,7 @@ def datum_planes(xvector, zvector):
 
 
 def fortyfive_vectors(xvector, zvector):
-    """Return the normalized (1, 1, 1) vector variants of a local coordinate system defined by the x- and z-vector"""
-
+    """Return the normalized (1, 1, 1) vector variants of a local coordinate system defined by the x- and z-vector."""
     dot = numpy.dot(xvector, zvector)
     if not numpy.isclose(dot, 0.0):
         raise RuntimeError("Provided x-vector '{}' and z-vector '{}' are not orthogonal".format(xvector, zvector))
@@ -370,14 +372,14 @@ def fortyfive_vectors(xvector, zvector):
     yvector = numpy.cross(zvector, xvector)
 
     fortyfives = [
-        midpoint_vector( xvector,  yvector,  zvector),  # 0  # fmt: skip # noqa: E201,E241
-        midpoint_vector(-xvector,  yvector,  zvector),  # 1  # fmt: skip # noqa: E201,E241
-        midpoint_vector(-xvector,  yvector, -zvector),  # 2  # fmt: skip # noqa: E201,E241
-        midpoint_vector( xvector,  yvector, -zvector),  # 3  # fmt: skip # noqa: E201,E241
-        midpoint_vector( xvector, -yvector,  zvector),  # 4  # fmt: skip # noqa: E201,E241
-        midpoint_vector(-xvector, -yvector,  zvector),  # 5  # fmt: skip # noqa: E201,E241
-        midpoint_vector(-xvector, -yvector, -zvector),  # 6  # fmt: skip # noqa: E201,E241
-        midpoint_vector( xvector, -yvector, -zvector),  # 7  # fmt: skip # noqa: E201,E241
+        midpoint_vector(xvector, yvector, zvector),  # 0
+        midpoint_vector(-xvector, yvector, zvector),  # 1
+        midpoint_vector(-xvector, yvector, -zvector),  # 2
+        midpoint_vector(xvector, yvector, -zvector),  # 3
+        midpoint_vector(xvector, -yvector, zvector),  # 4
+        midpoint_vector(-xvector, -yvector, zvector),  # 5
+        midpoint_vector(-xvector, -yvector, -zvector),  # 6
+        midpoint_vector(xvector, -yvector, -zvector),  # 7
     ]
     fortyfives = [normalize_vector(vector) for vector in fortyfives]
 
@@ -385,7 +387,7 @@ def fortyfive_vectors(xvector, zvector):
 
 
 def pyramid_surfaces(center, xvector, zvector, big_number):
-    """Return the pyramid surfaces defined by the center and vertices of a cube
+    """Return the pyramid surfaces defined by the center and vertices of a cube.
 
     Returns arrays of [N, 2] coordinates defining 12 triangular surfaces and 6 square surfaces defining the 4 edge
     pyramids from the center of a cube to the cube vertices.

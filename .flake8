@@ -1,3 +1,0 @@
-[flake8]
-exclude = build,conda-environment,conda-pkgs,pip-build-test
-max-line-length = 120

@@ -1,19 +1,22 @@
-import re
-import os
-import sys
-import inspect
-import fnmatch
+"""Export a mesh through Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
 
+import fnmatch
+import inspect
+import os
+import re
+import sys
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_settings,
+    _mixed_utilities,
+    parsers,
+)
 
 
 def main(
@@ -24,7 +27,7 @@ def main(
     destination=parsers.export_defaults["destination"],
     assembly=parsers.export_defaults["assembly"],
 ):
-    """Wrap orphan mesh export function for input file handling
+    """Wrap orphan mesh export function for input file handling.
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param str model_name: model to query in the Abaqus model database
@@ -46,7 +49,7 @@ def main(
 
 
 def export(model_name, part_name, element_type, destination, assembly):
-    """Driver function for exporting part and assembly files
+    """Driver function for exporting part and assembly files.
 
     :param str model_name: model to query in the Abaqus model database
     :param list part_name: list of parts to query in the specified Abaqus model
@@ -68,8 +71,8 @@ def export(model_name, part_name, element_type, destination, assembly):
 
 
 def _export_assembly(assembly_file, model_name, part_name):
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     assembly = model.rootAssembly
@@ -95,7 +98,7 @@ def _export_assembly(assembly_file, model_name, part_name):
 
 
 def export_multiple_parts(model_name, part_name, element_type, destination):
-    """Export orphan mesh files for multiple parts, and allow element type changes
+    """Export orphan mesh files for multiple parts, and allow element type changes.
 
     Specify a model name and one or multiple part names for exporting orphan mesh files. This function will write one
     orphan mesh file per part name specified, and the orphan mesh file name will be the part name.
@@ -108,8 +111,8 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
     :returns: uses :meth:`turbo_turtle._export.export` to write an orphan mesh file and optionally modifies element
               types with :turbo_turtle._export.substitute_element_type`
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     for new_part, new_element in zip(part_name, element_type):
         tmp_name = "tmp" + new_part
@@ -126,7 +129,7 @@ def export_multiple_parts(model_name, part_name, element_type, destination):
 def export_mesh_file(
     output_file, model_name=parsers.export_defaults["model_name"], part_name=parsers.export_defaults["part_name"][0]
 ):
-    """Export an orphan mesh from a single part
+    """Export an orphan mesh from a single part.
 
     :param str output_file: Abaqus CAE file to save with the newly meshed part
     :param str model_name: model to query in the Abaqus model database
@@ -134,8 +137,8 @@ def export_mesh_file(
 
     :returns: writes ``output_file``
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     assembly = model.rootAssembly
@@ -147,7 +150,9 @@ def export_mesh_file(
     block = model.keywordBlock.sieBlocks
     block_string = "\n".join(block)
     orphan_mesh = re.findall(
-        r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name), block_string, re.DOTALL | re.I | re.M
+        r".*?\*Part, name=({})$\n(.*?)\*End Part".format(part_name),
+        block_string,
+        re.DOTALL | re.IGNORECASE | re.MULTILINE,
     )
     part_definition = orphan_mesh[0]
     with open(output_file, "w") as output:
@@ -155,7 +160,7 @@ def export_mesh_file(
 
 
 def _gui_get_inputs():
-    """Interactive Inputs
+    """Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -183,7 +188,7 @@ def _gui_get_inputs():
     * ``assembly``: ``str`` type, assembly keword block file. If provided and no instances are found, all part names are
       instanced before exporting the file.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
 
@@ -234,7 +239,10 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs that drives the plug-in"""
+    """Drive the Abaqus CAE GUI plugin.
+
+    Function with no inputs required for driving the plugin.
+    """
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs, subcommand_function=export, post_action_function=None
     )

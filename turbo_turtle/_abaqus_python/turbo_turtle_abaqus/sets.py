@@ -1,16 +1,19 @@
+"""Create geometry and mesh sets through the Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
+import inspect
 import os
 import sys
-import inspect
-
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_utilities  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_utilities,
+    parsers,
+)
 
 
 def main(
@@ -22,7 +25,7 @@ def main(
     model_name=parsers.sets_defaults["model_name"],
     part_name=parsers.sets_defaults["part_name"],
 ):
-    """Wrap sets function for input file handling
+    """Wrap sets function for input file handling.
 
     :param str input_file: Abaqus CAE file to open that already contains a model with a part to be meshed
     :param list[tuple[str, str]] face_sets: Face set tuples (name, mask)
@@ -32,7 +35,7 @@ def main(
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     if not any([face_sets, edge_sets, vertex_sets]):
         _mixed_utilities.sys_exit("Must specify at least one of: face_sets, edge_sets, vertex_sets")
@@ -62,7 +65,7 @@ def sets(
     model_name=parsers.sets_defaults["model_name"],
     part_name=parsers.sets_defaults["part_name"],
 ):
-    """Create sets from masks
+    """Create sets from masks.
 
     :param list[tuple[str, str]] face_sets: Face set tuples (name, mask)
     :param list[tuple[str, str]] edge_sets: Edge set tuples (name, mask)
@@ -72,7 +75,7 @@ def sets(
 
     :raises RuntimeError: Collection of all set creation RuntimeError(s)
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]

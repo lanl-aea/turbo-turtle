@@ -4,9 +4,7 @@ channels:
 
 dependencies:
   - python >=3.10
-  - black
   - boa
-  - flake8
   - ipython
   - lazy_loader >=0.4
   - mypy
@@ -18,6 +16,7 @@ dependencies:
   - pytest-xdist
   - python-build
   - python-gmsh >=4
+  - ruff
   - scons >=4.6
   - setuptools >=77
   - setuptools_scm >=8

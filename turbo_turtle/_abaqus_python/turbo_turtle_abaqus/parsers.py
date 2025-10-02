@@ -1,4 +1,4 @@
-"""Python 2/3 compatible parsers for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules
+"""Define Python 2/3 compatible parsers for use in both Abaqus Python scripts and Turbo-Turtle Python 3 modules.
 
 Content *must* be compatible with Python 2 and 3. Content should be limited to those things necessary to construct the
 CLI parser(s). Other content, such as project/package settings type variables, can be included to minimize the required
@@ -6,13 +6,13 @@ CLI parser(s). Other content, such as project/package settings type variables, c
 as the Abaqus Python package settings file and the parsers file.
 """
 
-import os
-import copy
 import argparse
+import copy
+import os
 
 
 def positive_float(argument):
-    """Type function for argparse - positive floats including zero
+    """Validate argparse custom type: positive floats including zero.
 
     Abaqus Python 2 and Python 3 compatible argparse type method:
     https://docs.python.org/3/library/argparse.html#type.
@@ -22,7 +22,8 @@ def positive_float(argument):
     :returns: argument
     :rtype: float
     """
-    MINIMUM_VALUE = 0.0
+    # Abaqus Python 2 does not support the type annotations that would mark this as a constant. Use common style.
+    MINIMUM_VALUE = 0.0  # noqa: N806
     try:
         argument = float(argument)
     except ValueError:
@@ -33,7 +34,7 @@ def positive_float(argument):
 
 
 def positive_int(argument):
-    """Type function for argparse - positive integers including zero
+    """Validate argparse custom type: positive integers including zero.
 
     Abaqus Python 2 and Python 3 compatible argparse type method:
     https://docs.python.org/3/library/argparse.html#type.
@@ -43,7 +44,8 @@ def positive_int(argument):
     :returns: argument
     :rtype: int
     """
-    MINIMUM_VALUE = 0
+    # Abaqus Python 2 does not support the type annotations that would mark this as a constant. Use common style.
+    MINIMUM_VALUE = 0  # noqa: N806
     try:
         argument = int(argument)
     except ValueError:
@@ -54,7 +56,7 @@ def positive_int(argument):
 
 
 def construct_prog(basename):
-    """Construct the Abaqus Python usage string
+    """Construct the Abaqus Python usage string.
 
     :param str basename: Abaqus Python script basename
 
@@ -87,7 +89,7 @@ geometry_cli_description = (
 
 
 def geometry_parser(basename="geometry.py", add_help=True, description=geometry_cli_description, cubit=False):
-    """Return the geometry subcommand parser
+    """Return the geometry subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
@@ -100,7 +102,7 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -132,15 +134,15 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
         "--euclidean-distance",
         type=positive_float,
         default=geometry_defaults["euclidean_distance"],
-        # fmt: off
-        help="Connect points with a straight line if the distance between them is larger than this "
-             "in units *after* the unit conversion (default: %(default)s)",
-        # fmt: on
+        help=(
+            "Connect points with a straight line if the distance between them is larger than this "
+            "in units *after* the unit conversion (default: %(default)s)"
+        ),
     )
     optional.add_argument(
         "--planar",
         action="store_true",
-        help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric " "(default: %(default)s)",
+        help="Switch to indicate that 2D model dimensionality is planar, not axisymmetric (default: %(default)s)",
     )
     optional.add_argument(
         "--model-name",
@@ -183,19 +185,13 @@ def geometry_parser(basename="geometry.py", add_help=True, description=geometry_
         "--rtol",
         type=positive_float,
         default=geometry_defaults["rtol"],
-        # fmt: off
-        help="relative tolerance used by ``numpy.isclose``. If not provided, use numpy defaults "
-             "(default: %(default)s)",
-        # fmt: on
+        help="relative tolerance used by ``numpy.isclose``. If not provided, use numpy defaults (default: %(default)s)",
     )
     optional.add_argument(
         "--atol",
         type=positive_float,
         default=geometry_defaults["atol"],
-        # fmt: off
-        help="absolute tolerance used by ``numpy.isclose``. If not provided, use numpy defaults "
-             "(default: %(default)s)",
-        # fmt: on
+        help="absolute tolerance used by ``numpy.isclose``. If not provided, use numpy defaults (default: %(default)s)",
     )
     return parser
 
@@ -210,12 +206,12 @@ cylinder_defaults = {
 }
 cylinder_cli_help = "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry"
 cylinder_cli_description = (
-    "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved " "geometry."
+    "Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry."
 )
 
 
 def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_cli_description, cubit=False):
-    """Return the cylinder subcommand parser
+    """Return the cylinder subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
@@ -225,11 +221,10 @@ def cylinder_parser(basename="cylinder.py", add_help=True, description=cylinder_
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name. Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name. Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -307,7 +302,7 @@ sphere_cli_description = (
 
 
 def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_description, cubit=False):
-    """Return the sphere subcommand parser
+    """Return the sphere subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
@@ -317,11 +312,10 @@ def sphere_parser(basename="sphere.py", add_help=True, description=sphere_cli_de
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name. Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name. Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -407,7 +401,7 @@ partition_cli_description = (
 
 
 def partition_parser(basename="partition.py", add_help=True, description=partition_cli_description, cubit=False):
-    """Return the partition subcommand parser
+    """Return the partition subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
@@ -417,11 +411,10 @@ def partition_parser(basename="partition.py", add_help=True, description=partiti
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name. Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name. Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -506,7 +499,7 @@ sets_cli_description = (
 
 
 def sets_parser(basename="sets.py", add_help=True, description=sets_cli_description, cubit=False):
-    """Return the sets subcommand parser
+    """Return the sets subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
@@ -596,7 +589,7 @@ mesh_cli_description = (
 
 
 def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_description, cubit=False):
-    """Return the mesh subcommand parser
+    """Return the mesh subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
@@ -605,11 +598,10 @@ def mesh_parser(basename="mesh_module.py", add_help=True, description=mesh_cli_d
     :returns: argparse parser
     :rtype: argparse.ArgumentParser
     """
-
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name. Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name. Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -685,7 +677,7 @@ merge_cli_description = (
 
 
 def merge_parser(basename="merge.py", add_help=True, description=merge_cli_description, cubit=False):
-    """Return the merge subcommand parser
+    """Return the merge subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
@@ -728,7 +720,7 @@ def merge_parser(basename="merge.py", add_help=True, description=merge_cli_descr
         type=str,
         nargs="+",
         default=merge_defaults["model_name"],
-        help="Model name(s) to query in the input model database file(s) " "(default: %(default)s)",
+        help="Model name(s) to query in the input model database file(s) (default: %(default)s)",
     )
     optional.add_argument(
         "--part-name",
@@ -755,7 +747,7 @@ export_cli_description = "Export a part mesh as an orphan mesh"
 
 
 def export_parser(basename="export.py", add_help=True, description=export_cli_description, cubit=False):
-    """Return the export subcommand parser
+    """Return the export subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface
@@ -767,7 +759,7 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
     part_name_help_cubit = ""
     if cubit:
         part_name_help_cubit = (
-            "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for " "ACIS compatibility. "
+            "or Cubit volume name(s). Cubit implementation converts hyphens to underscores for ACIS compatibility. "
         )
     part_name_help = "Part name(s) {}(default: %(default)s)".format(part_name_help_cubit)
 
@@ -797,10 +789,10 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
         type=str,
         nargs="+",
         default=export_defaults["element_type"],
-        # fmt: off
-        help="List of element types, one per part name or one global replacement for every part name "
-             "(default: %(default)s)",
-        # fmt: off
+        help=(
+            "List of element types, one per part name or one global replacement for every part name "
+            "(default: %(default)s)"
+        ),
     )
     optional.add_argument(
         "--destination",
@@ -812,22 +804,22 @@ def export_parser(basename="export.py", add_help=True, description=export_cli_de
         "--assembly",
         type=str,
         default=export_defaults["assembly"],
-        # fmt: off
-        help="Assembly file for exporting the assembly keyword block. If a file is provided, but no "
-             "assembly instances are found, instance all provided part names and export assembly "
-             "block (default: %(default)s)",
-        # fmt: on
+        help=(
+            "Assembly file for exporting the assembly keyword block. If a file is provided, but no "
+            "assembly instances are found, instance all provided part names and export assembly "
+            "block (default: %(default)s)"
+        ),
     )
     if cubit:
         optional.add_argument(
             "--output-type",
             choices=export_output_type_choices,
             default=export_defaults["output_type"],
-            # fmt: off
-            help="Cubit output type. When 'abaqus' is selected, each part name is exported as an  "
-                 "orphan mesh to a ``part_name``.inp file. When 'genesis' is selected all blocks "
-                 "are output to a single file ``input_file``.g (default: %(default)s)",
-            # fmt: on
+            help=(
+                "Cubit output type. When 'abaqus' is selected, each part name is exported as an  "
+                "orphan mesh to a ``part_name``.inp file. When 'genesis' is selected all blocks "
+                "are output to a single file ``input_file``.g (default: %(default)s)"
+            ),
         )
 
     return parser
@@ -878,7 +870,7 @@ image_color_map_choices = [
 
 
 def image_parser(basename="image.py", add_help=True, description=image_cli_description, cubit=False):
-    """Return the image subcommand parser
+    """Return the image subcommand parser.
 
     :param str basename: Explicit script basename for the usage.
     :param bool add_help: ``add_help`` argument value for the ``argparse.ArgumentParser`` class interface

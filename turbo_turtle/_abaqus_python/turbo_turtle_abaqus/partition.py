@@ -1,21 +1,24 @@
+"""Partition spheres through the Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
+
 import ast
+import fnmatch
+import inspect
 import os
 import sys
-import inspect
-import fnmatch
 
 import numpy
-
 
 filename = inspect.getfile(lambda: None)
 basename = os.path.basename(filename)
 parent = os.path.dirname(filename)
 grandparent = os.path.dirname(parent)
 sys.path.insert(0, grandparent)
-from turbo_turtle_abaqus import parsers  # noqa: E402
-from turbo_turtle_abaqus import vertices  # noqa: E402
-from turbo_turtle_abaqus import _abaqus_utilities  # noqa: E402
-from turbo_turtle_abaqus import _mixed_settings  # noqa: E402
+from turbo_turtle_abaqus import (
+    _abaqus_utilities,
+    _mixed_settings,
+    parsers,
+    vertices,
+)
 
 
 def main(
@@ -28,7 +31,7 @@ def main(
     part_name=parsers.partition_defaults["part_name"],
     big_number=parsers.partition_defaults["big_number"],
 ):
-    """Wrap  partition function with file open and file write operations
+    """Wrap  partition function with file open and file write operations.
 
     :param str input_file: Abaqus CAE model database to open
     :param str output_file: Abaqus CAE model database to write. If none is provided, use the input file.
@@ -43,7 +46,7 @@ def main(
 
     :returns: Abaqus CAE database named ``{output_file}.cae``
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     if output_file is None:
         output_file = input_file
@@ -55,7 +58,7 @@ def main(
 
 
 def datum_axis(center, vector, part):
-    """Return an Abaqus DataAxis object by center and normal axis
+    """Return an Abaqus DataAxis object by center and normal axis.
 
     :param numpy.array center: center location of the axis
     :param numpy.array vector: axis vector
@@ -69,7 +72,7 @@ def datum_axis(center, vector, part):
 
 
 def datum_plane(center, normal, part):
-    """Return an Abaqus DataPlane object by center and normal axis
+    """Return an Abaqus DataPlane object by center and normal axis.
 
     :param numpy.array center: center location of the plane
     :param numpy.array normal: plane normal vector
@@ -101,7 +104,7 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
         cae -nogui``)
     :param float big_number: Number larger than the outer radius of the part to partition.
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     # Process input and calculate local coordinate system properties
     xvector = vertices.normalize_vector(xvector)
@@ -114,12 +117,12 @@ def partition(center, xvector, zvector, model_name, part_name, big_number=parser
 
     sketch_vertex_pairs = (
         (
-            (-big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
-            ( big_number_coordinates[0], big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
+            (-big_number_coordinates[0], big_number_coordinates[1]),
+            (big_number_coordinates[0], big_number_coordinates[1]),
         ),
         (
-            (-big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
-            ( big_number_coordinates[0], -big_number_coordinates[1]),  # fmt: skip # noqa: E201,E241
+            (-big_number_coordinates[0], -big_number_coordinates[1]),
+            (big_number_coordinates[0], -big_number_coordinates[1]),
         ),
     )
 
@@ -146,8 +149,8 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
     :param tuple sketch_vertex_pairs: Tuple of vertices that make up the 3D partioning scheme's sketch (See
         :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`)
     """
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     # Process input and calculate local coordinate system properties
     plane_normals = vertices.datum_planes(xvector, zvector)
@@ -165,9 +168,10 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
 
     # Partition by three (3) local coordinate system x/y/z planes
     for plane in partition_planes[0:3]:
+        # Abaqus Python API design requires a try:except, despite the performance penalty
         try:
             part.PartitionCellByDatumPlane(datumPlane=plane, cells=part.cells[:])
-        except abaqus.AbaqusException:
+        except abaqus.AbaqusException:  # noqa: PERF203
             pass
 
     # Partition by sketch on the six (6) 45 degree planes
@@ -206,7 +210,7 @@ def partition_3d(model_name, part_name, center, xvector, yvector, zvector, sketc
 
 
 def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs):
-    """Partition a 2D-axisymmetric part by three lines using the same vertex pairs computed for the 3D case
+    """Partition a 2D-axisymmetric part by three lines using the same vertex pairs computed for the 3D case.
 
     :param str model_name: model to query in the Abaqus model database (only applies when used with ``abaqus cae
         -nogui``)
@@ -217,9 +221,8 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
     :param tuple sketch_vertex_pairs: Tuple of vertices that make up the 3D partioning scheme's sketch (See
         :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.rectalinear_coordinates`)
     """
-
-    import abaqus
-    import abaqusConstants
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     model = abaqus.mdb.models[model_name]
     part = model.parts[part_name]
@@ -259,7 +262,7 @@ def partition_2d(model_name, part_name, center, big_number, sketch_vertex_pairs)
 
 
 def _gui_get_inputs():
-    """Partition Interactive Inputs
+    """Partition Interactive Inputs.
 
     Prompt the user for inputs with this interactive data entry function. When called, this function opens an Abaqus CAE
     GUI window with text boxes to enter the values given below. Note to developers - if you update this 'GUI-INPUTS'
@@ -285,7 +288,7 @@ def _gui_get_inputs():
     * ``model_name``: ``str`` type, name of the model in the current viewport
     * ``part_name``: ``list`` type, name of the part in the current viewport, or a list of all part names in the model
     """
-    import abaqus
+    import abaqus  # noqa: PLC0415
 
     try:
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
@@ -323,7 +326,7 @@ def _gui_get_inputs():
         print("Center: {}".format(center))
         print("X-Vector: {}".format(xvector))
         print("Z-Vector: {}".format(zvector))
-        print("")
+        print()
 
         model_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.modelName
         part_name = []
@@ -343,7 +346,10 @@ def _gui_get_inputs():
 
 
 def _gui():
-    """Function with no inputs that drives the plug-in"""
+    """Drive the Abaqus CAE GUI plugin.
+
+    Function with no inputs required for driving the plugin.
+    """
     _abaqus_utilities.gui_wrapper(
         inputs_function=_gui_get_inputs,
         subcommand_function=partition,
