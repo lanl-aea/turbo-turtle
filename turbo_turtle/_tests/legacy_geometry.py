@@ -2,7 +2,7 @@ import abaqus
 import abaqusConstants
 
 
-def main(model_name, output_file) -> None:
+def main(model_name, output_file):
     """Wrap test geometry creation.
 
     :param str model_name: name of the Abaqus model
@@ -14,7 +14,7 @@ def main(model_name, output_file) -> None:
     swiss_cheese(model_name)
 
 
-def seveneigths_sphere(model_name, part_name="seveneigths-sphere") -> None:
+def seveneigths_sphere(model_name, part_name="seveneigths-sphere"):
     """Create a hollow, seveneigths-sphere geometry.
 
     :param str model_name: name of the Abaqus model
@@ -97,7 +97,7 @@ def seveneigths_sphere(model_name, part_name="seveneigths-sphere") -> None:
     abaqus.mdb.saveAs(pathName=output_file)
 
 
-def swiss_cheese(model_name, part_name="swiss-cheese") -> None:
+def swiss_cheese(model_name, part_name="swiss-cheese"):
     """Create a hollow, spherical geometry with a few holes sparsely placed through the thickness.
 
     :param str model_name: name of the Abaqus model
