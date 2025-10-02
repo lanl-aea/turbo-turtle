@@ -1,3 +1,13 @@
+"""System test wrapper for executing shell commands with pytest results reporting.
+
+All tests should be marked ``pytest.mark.systemtest`` (handled in the test function markers).
+
+All tests that require a third-party software unavailable on conda-forge should be marked as
+``pytest.mark.require_third_party``.
+
+All tests should use string template substitution instead of f-strings, if possible. See :meth:`test_system` for
+available substitutions.
+"""
 import os
 import pathlib
 import shlex
@@ -853,7 +863,9 @@ for files in sconstruct_files:
 @pytest.mark.systemtest
 @pytest.mark.require_third_party
 @pytest.mark.parametrize("commands", commands_list)
-def test_require_third_party(abaqus_command, cubit_command, commands: list) -> None:
+def test_require_third_party(
+    abaqus_command: pathlib.Path, cubit_command: pathlib.Path, commands: list[str | string.Template]
+) -> None:
     """Run system tests that require third-party software.
 
     Executes with a temporary directory that is cleaned up after each test execution.
@@ -871,14 +883,21 @@ def test_require_third_party(abaqus_command, cubit_command, commands: list) -> N
     test_project_shell_commands(abaqus_command, cubit_command, commands)
 
 
-def run_commands(commands, build_directory, template_substitution=None) -> None:
+def run_commands(
+    commands: list[str | string.Template],
+    build_directory: str | pathlib.Path | tempfile.TemporaryDirectory,
+    template_substitution: dict | None = None,
+) -> None:
+    """Run shell commands with a dedicated test shell environment in a temporary working directory."""
     if template_substitution is None:
         template_substitution = {}
     for command in commands:
         if isinstance(command, string.Template):
-            command = command.substitute(template_substitution)
-        command = shlex.split(command)
-        subprocess.check_output(command, env=env, cwd=build_directory).decode("utf-8")
+            command_string = command.substitute(template_substitution)
+        else:
+            command_string = command
+        command_list = shlex.split(command_string)
+        subprocess.check_output(command_list, env=env, cwd=build_directory).decode("utf-8")
 
 
 # Help/Usage sign-of-life
@@ -891,7 +910,9 @@ project_only_commands_list.append(string.Template("${turbo_turtle_command} fetch
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", project_only_commands_list)
-def test_project_shell_commands(abaqus_command, cubit_command, commands: list) -> None:
+def test_project_shell_commands(
+    abaqus_command: pathlib.Path, cubit_command: pathlib.Path, commands: list[str | string.Template]
+) -> None:
     """Run the system tests.
 
     Executes with a temporary directory that is cleaned up after each test execution.

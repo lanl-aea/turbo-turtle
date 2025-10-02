@@ -31,7 +31,6 @@ dependencies = [
 [project.optional-dependencies]
 gmsh = ["gmsh"]
 
-
 [tool.setuptools]
 packages = [
     "turbo_turtle",
@@ -68,9 +67,7 @@ addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=lon
 [tool.ruff]
 target-version = "py310"
 line-length = 120
-# TODO: include test modules in the linter. Remove ``"turbo_turtle/_tests"`` from extend-exclude list.
-# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/262
-extend-exclude = ["build", "install", "conda-environment", "conda-pkgs", "pip-build-test", "turbo_turtle/_tests"]
+extend-exclude = ["build", "install", "conda-environment", "conda-pkgs", "pip-build-test"]
 extend-include = ["SConstruct", "SConscript", "*.scons"]
 
 [tool.ruff.lint]
