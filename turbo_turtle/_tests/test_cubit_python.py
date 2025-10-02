@@ -1,5 +1,5 @@
+import contextlib
 import math
-from contextlib import nullcontext as does_not_raise
 
 import numpy
 import pytest
@@ -10,9 +10,11 @@ from turbo_turtle import _cubit_python  # noqa: E402
 
 pytestmark = pytest.mark.cubit_python
 
+does_not_raise = contextlib.nullcontext()
+
 
 cubit_command_or_exception = {
-    "good command": ("reset aprepro", does_not_raise()),
+    "good command": ("reset aprepro", does_not_raise),
     "bad command": ("definitetlynotacubitcommand", pytest.raises(RuntimeError)),
 }
 
@@ -22,7 +24,9 @@ cubit_command_or_exception = {
     cubit_command_or_exception.values(),
     ids=cubit_command_or_exception.keys(),
 )
-def test_cubit_command_or_exception(command, outcome) -> None:
+def test_cubit_command_or_exception(
+    command: str, outcome: contextlib.nullcontext | pytest.RaisesExc
+) -> None:
     with outcome:
         try:
             success = _cubit_python.cubit_command_or_exception(command)
@@ -52,7 +56,9 @@ create_curve_from_coordinates = {
     create_curve_from_coordinates.values(),
     ids=create_curve_from_coordinates.keys(),
 )
-def test_create_curve_from_coordinates(point1, point2, center, length) -> None:
+def test_create_curve_from_coordinates(
+    point1: tuple, point2: tuple, center: tuple, length: float
+) -> None:
     curve = _cubit_python.create_curve_from_coordinates(point1, point2)
     assert curve.dimension() == 1
     assert numpy.isclose(curve.length(), length)
@@ -66,15 +72,15 @@ create_spline_from_coordinates = {
     ),
     "two points": (
         numpy.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]]),
-        does_not_raise(),
+        does_not_raise,
     ),
     "three points": (
         numpy.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]),
-        does_not_raise(),
+        does_not_raise,
     ),
     "four points": (
         numpy.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]),
-        does_not_raise(),
+        does_not_raise,
     ),
 }
 
@@ -84,7 +90,9 @@ create_spline_from_coordinates = {
     create_spline_from_coordinates.values(),
     ids=create_spline_from_coordinates.keys(),
 )
-def test_create_spline_from_coordinates(coordinates, outcome) -> None:
+def test_create_spline_from_coordinates(
+    coordinates: numpy.ndarray, outcome: contextlib.nullcontext | pytest.RaisesExc
+) -> None:
     with outcome:
         try:
             curve = _cubit_python.create_spline_from_coordinates(coordinates)
@@ -115,7 +123,12 @@ create_arc_from_coordinates = {
     create_arc_from_coordinates.values(),
     ids=create_arc_from_coordinates.keys(),
 )
-def test_create_arc_from_coordinates(center, point1, point2, length) -> None:
+def test_create_arc_from_coordinates(
+    center: tuple[float, float, float],
+    point1: tuple[float, float, float],
+    point2: tuple[float, float, float],
+    length: float,
+) -> None:
     curve = _cubit_python.create_arc_from_coordinates(center, point1, point2)
     assert numpy.isclose(curve.length(), length)
 
@@ -127,11 +140,11 @@ create_surface_from_coordinates = {
     ),
     "three points": (
         numpy.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]),
-        does_not_raise(),
+        does_not_raise,
     ),
     "four points": (
         numpy.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]),
-        does_not_raise(),
+        does_not_raise,
     ),
 }
 
@@ -141,7 +154,9 @@ create_surface_from_coordinates = {
     create_surface_from_coordinates.values(),
     ids=create_surface_from_coordinates.keys(),
 )
-def test_create_surface_from_coordinates(coordinates, outcome) -> None:
+def test_create_surface_from_coordinates(
+    coordinates: numpy.ndarray, outcome: contextlib.nullcontext | pytest.RaisesExc
+) -> None:
     with outcome:
         try:
             surface = _cubit_python.create_surface_from_coordinates(coordinates)
