@@ -1,8 +1,10 @@
+"""Run package import tests from a command-line interface."""
 import argparse
 import importlib
 
 
 def get_parser() -> argparse.Namespace:
+    """Return the command-line parser."""
     parser = argparse.ArgumentParser("Import modules of a package. Always performs package import.")
     parser.add_argument("-p", "--package", required=True, help="Name of base package. Will always be imported")
     parser.add_argument(
@@ -12,6 +14,7 @@ def get_parser() -> argparse.Namespace:
 
 
 def main() -> None:
+    """Run package import tests from a command-line interface."""
     parser = get_parser()
     args = parser.parse_args()
 

@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+"""Configure the Turbo-Turtle project."""
 
 import inspect
 import os
