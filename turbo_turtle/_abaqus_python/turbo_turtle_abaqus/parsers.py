@@ -22,7 +22,8 @@ def positive_float(argument):
     :returns: argument
     :rtype: float
     """
-    MINIMUM_VALUE = 0.0
+    # Abaqus Python 2 does not support the type annotations that would mark this as a constant. Use common style.
+    MINIMUM_VALUE = 0.0  # noqa: N806
     try:
         argument = float(argument)
     except ValueError:
@@ -43,7 +44,8 @@ def positive_int(argument):
     :returns: argument
     :rtype: int
     """
-    MINIMUM_VALUE = 0
+    # Abaqus Python 2 does not support the type annotations that would mark this as a constant. Use common style.
+    MINIMUM_VALUE = 0  # noqa: N806
     try:
         argument = int(argument)
     except ValueError:
