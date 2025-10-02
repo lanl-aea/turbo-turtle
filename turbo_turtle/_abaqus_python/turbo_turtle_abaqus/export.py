@@ -1,3 +1,4 @@
+"""Export a mesh through Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
 import fnmatch
 import inspect
 import os

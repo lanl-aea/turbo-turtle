@@ -1,3 +1,4 @@
+"""Create geometry and mesh sets through the Abaqus CAE GUI, Abaqus Python API, or through a command-line interface."""
 import inspect
 import os
 import sys
