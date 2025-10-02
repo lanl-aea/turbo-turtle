@@ -1,10 +1,15 @@
+"""Test the :mod:`turbo_turtle._utilities` module."""
+
+import contextlib
 import subprocess
-from contextlib import nullcontext as does_not_raise
+import typing
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 from turbo_turtle import _utilities
+
+does_not_raise = contextlib.nullcontext()
 
 
 def test_search_commands() -> None:
@@ -22,12 +27,12 @@ find_command = {
     "first": (
         ["first", "second"],
         "first",
-        does_not_raise(),
+        does_not_raise,
     ),
     "second": (
         ["first", "second"],
         "second",
-        does_not_raise(),
+        does_not_raise,
     ),
     "none": (
         ["first", "second"],
@@ -42,7 +47,9 @@ find_command = {
     find_command.values(),
     ids=find_command.keys(),
 )
-def test_find_command(options, found, outcome) -> None:
+def test_find_command(
+    options: list[str], found: str | None, outcome: contextlib.nullcontext | pytest.RaisesExc
+) -> None:
     """Test :meth:`turbo_turtle._utilities.find_command`."""
     with patch("turbo_turtle._utilities.search_commands", return_value=found), outcome:
         try:
@@ -62,6 +69,7 @@ def test_run_command() -> None:
 
 
 def test_cubit_os_bin() -> None:
+    """Test :func:`turbo_turtle._utilities.cubit_os_bin`."""
     with patch("platform.system", return_value="Darwin"):
         bin_directory = _utilities.cubit_os_bin()
         assert bin_directory == "MacOS"
@@ -77,7 +85,8 @@ def test_cubit_os_bin() -> None:
 
 
 def test_import_gmsh() -> None:
-    with patch.dict("sys.modules", gmsh=MagicMock), does_not_raise():
+    """Test :func:`turbo_turtle._utilities.import_gmsh`."""
+    with patch.dict("sys.modules", gmsh=MagicMock), does_not_raise:
         _utilities.import_gmsh()
 
     with patch.dict("sys.modules", gmsh=None, side_effect=ImportError()), pytest.raises(RuntimeError):
@@ -85,7 +94,8 @@ def test_import_gmsh() -> None:
 
 
 def test_import_cubit() -> None:
-    with patch.dict("sys.modules", cubit=MagicMock), does_not_raise():
+    """Test :func:`turbo_turtle._utilities.import_cubit`."""
+    with patch.dict("sys.modules", cubit=MagicMock), does_not_raise:
         _utilities.import_cubit()
 
     with patch.dict("sys.modules", cubit=None, side_effect=ImportError()), pytest.raises(RuntimeError):
@@ -121,7 +131,8 @@ construct_append_options = {
     construct_append_options.values(),
     ids=construct_append_options.keys(),
 )
-def test_construct_append_options(option, array, expected) -> None:
+def test_construct_append_options(option: str, array: typing.Sequence, expected: str) -> None:
+    """Test :func:`turbo_turtle._utilities.construct_append_options`."""
     option_string = _utilities.construct_append_options(option, array)
     assert option_string == expected
 
@@ -165,6 +176,7 @@ character_delimited_list = {
     character_delimited_list.values(),
     ids=character_delimited_list.keys(),
 )
-def test_character_delimited_list(sequence, character, expected) -> None:
+def test_character_delimited_list(sequence: typing.Sequence, character: str, expected: str) -> None:
+    """Test :func:`turbo_turtle._utilities.character_delimited_list`."""
     string = _utilities.character_delimited_list(sequence, character=character)
     assert string == expected

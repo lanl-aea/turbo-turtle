@@ -1,3 +1,14 @@
+"""System test wrapper for executing shell commands with pytest results reporting.
+
+All tests should be marked ``pytest.mark.systemtest`` (handled in the test function markers).
+
+All tests that require a third-party software unavailable on conda-forge should be marked as
+``pytest.mark.require_third_party``.
+
+All tests should use string template substitution instead of f-strings, if possible. See :meth:`test_system` for
+available substitutions.
+"""
+
 import os
 import pathlib
 import shlex
@@ -39,16 +50,16 @@ if not installed:
 
 
 def setup_sphere_commands(
-    model,
-    inner_radius,
-    outer_radius,
-    angle,
-    y_offset,
-    quadrant,
-    element_type,
-    element_replacement,
-    backend,
-    output_type,
+    model: str,
+    inner_radius: float,
+    outer_radius: float,
+    angle: float,
+    y_offset: float,
+    quadrant: str,
+    element_type: str,
+    element_replacement: str,
+    backend: str,
+    output_type: str,
 ) -> typing.List[string.Template]:
     """Return the sphere/partition/mesh commands for system testing.
 
@@ -108,7 +119,10 @@ def setup_sphere_commands(
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_geometry_xyplot_commands(model, input_file, backend) -> typing.List[string.Template]:
+def setup_geometry_xyplot_commands(
+    model: str, input_file: list[pathlib.Path], backend: str
+) -> typing.List[string.Template]:
+    """Return system test geometry xyplot commands."""
     part_name = _utilities.character_delimited_list(csv.stem for csv in input_file)
     input_file = _utilities.character_delimited_list(input_file)
     commands = [
@@ -123,12 +137,13 @@ def setup_geometry_xyplot_commands(model, input_file, backend) -> typing.List[st
 
 
 def setup_geometry_commands(
-    model,
-    input_file,
-    revolution_angle,
-    y_offset,
-    backend,
+    model: str,
+    input_file: list[pathlib.Path],
+    revolution_angle: float,
+    y_offset: float,
+    backend: str,
 ) -> typing.List[string.Template]:
+    """Return system test geometry commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
@@ -149,15 +164,16 @@ def setup_geometry_commands(
 
 
 def setup_sets_commands(
-    model,
-    input_file,
-    revolution_angle,
-    face_sets,
-    edge_sets,
-    edge_seeds,
-    element_type,
-    backend,
+    model: str,
+    input_file: pathlib.Path,
+    revolution_angle: float,
+    face_sets: typing.Sequence[tuple[str, str]] | None,
+    edge_sets: typing.Sequence[tuple[str, str]] | None,
+    edge_seeds: typing.Sequence[tuple[str, str]] | None,
+    element_type: str,
+    backend: str,
 ) -> typing.List[string.Template]:
+    """Return system test sets commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
@@ -193,7 +209,8 @@ def setup_sets_commands(
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_cylinder_commands(model, revolution_angle, backend) -> typing.List[string.Template]:
+def setup_cylinder_commands(model: str, revolution_angle: float, backend: str) -> typing.List[string.Template]:
+    """Return system test cylinder commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
         model = model.with_suffix(".cub")
@@ -211,7 +228,8 @@ def setup_cylinder_commands(model, revolution_angle, backend) -> typing.List[str
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_merge_commands(part_name, backend) -> typing.List[string.Template]:
+def setup_merge_commands(part_name: str, backend: str) -> typing.List[string.Template]:
+    """Return system test merge commands."""
     commands = []
 
     sphere_model = pathlib.Path("merge-sphere.cae")
@@ -302,8 +320,10 @@ commands_list.append(
 )
 
 # Sphere/partition/mesh
-system_tests = (
-    # model/part, inner_radius, outer_radius, angle, y-offset, quadrant, element_type, element_replacement,  backend, output_type  # noqa: E501
+sphere_tests = (
+    # Arguments:
+    #   model/part, inner_radius, outer_radius, angle, y-offset,
+    #   quadrant, element_type, element_replacement, backend, output_type
     # Abaqus CAE
     ("sphere.cae", 1.0, 2.0, 360.0, 0.0, "both", "C3D8", "C3D8R", "abaqus", "abaqus"),
     ("solid-sphere.cae", 0.0, 2.0, 360.0, 0.0, "both", "C3D8", "C3D8R", "abaqus", "abaqus"),
@@ -423,11 +443,10 @@ system_tests = (
         "genesis",
     ),
 )
-for test in system_tests:
-    commands_list.append(setup_sphere_commands(*test))
+commands_list.extend([setup_sphere_commands(*test) for test in sphere_tests])
 
 # Geometry XY Plot tests
-system_tests = (
+geometry_xyplot_tests = (
     # model/part,                                                  input_file, backend
     ("washer", [_settings._project_root_abspath / "_tests" / "washer.csv"], "abaqus"),
     ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], "abaqus"),
@@ -440,13 +459,11 @@ system_tests = (
         "abaqus",
     ),
 )
-for test in system_tests:
-    commands_list.append(setup_geometry_xyplot_commands(*test))
-
+commands_list.extend([setup_geometry_xyplot_commands(*test) for test in geometry_xyplot_tests])
 
 # Geometry tests
-system_tests = (
-    # model/part,                                                           input_file, angle, y-offset, backend
+geometry_tests = (
+    # model/part, input_file, angle, y-offset, backend
     # Abaqus
     (
         "washer",
@@ -598,11 +615,10 @@ system_tests = (
         "gmsh",
     ),
 )
-for test in system_tests:
-    commands_list.append(setup_geometry_commands(*test))
+commands_list.extend([setup_geometry_commands(*test) for test in geometry_tests])
 
 # Sets/mesh tests
-system_tests = (
+sets_tests = (
     # model/part, input_file, angle, face_sets, edge_sets, edge seeds, element_type, backend
     # Abaqus
     # TODO: Pick some Abaqus edge sets for the system tests
@@ -648,11 +664,10 @@ system_tests = (
         "cubit",
     ),
 )
-for test in system_tests:
-    commands_list.append(setup_sets_commands(*test))
+commands_list.extend([setup_sets_commands(*test) for test in sets_tests])
 
 # Cylinder tests
-system_tests = (
+cylinder_tests = (
     # model/part,   angle, backend
     ("cylinder_3d", 360.0, "abaqus"),
     ("cylinder_2d", 0.0, "abaqus"),
@@ -661,12 +676,11 @@ system_tests = (
     ("cylinder_3d", 360.0, "gmsh"),
     ("cylinder_2d", 0.0, "gmsh"),
 )
-for test in system_tests:
-    commands_list.append(setup_cylinder_commands(*test))
+commands_list.extend([setup_cylinder_commands(*test) for test in cylinder_tests])
 
 # TODO: Merge Gmsh sphere system tests when partition/mesh/image subcommands are implemented
 # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/217
-gmsh_sphere_2D = [
+gmsh_sphere_2D = [  # noqa: N816
     [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
@@ -730,7 +744,7 @@ for test in gmsh_sphere_2D:
             )
         )
     commands_list.append(pytest.param(test, marks=pytest.mark.gmsh))
-gmsh_sphere_3D = [
+gmsh_sphere_3D = [  # noqa: N816
     [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
@@ -754,13 +768,7 @@ gmsh_sphere_3D = [
     ],
     # TODO: Fix solid sphere revolve
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/218
-    # [
-    #    string.Template(
-    #        "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
-    #        "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. "
-    #        "--backend gmsh"
-    #    )
-    # ],
+    # Undo changes in commit 72579ae84a82071cee349b05046cabb26f835f55
     [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
@@ -853,7 +861,9 @@ for files in sconstruct_files:
 @pytest.mark.systemtest
 @pytest.mark.require_third_party
 @pytest.mark.parametrize("commands", commands_list)
-def test_require_third_party(abaqus_command, cubit_command, commands: list) -> None:
+def test_require_third_party(
+    abaqus_command: pathlib.Path, cubit_command: pathlib.Path, commands: list[str | string.Template]
+) -> None:
     """Run system tests that require third-party software.
 
     Executes with a temporary directory that is cleaned up after each test execution.
@@ -871,14 +881,21 @@ def test_require_third_party(abaqus_command, cubit_command, commands: list) -> N
     test_project_shell_commands(abaqus_command, cubit_command, commands)
 
 
-def run_commands(commands, build_directory, template_substitution=None) -> None:
+def run_commands(
+    commands: list[str | string.Template],
+    build_directory: str | pathlib.Path | tempfile.TemporaryDirectory,
+    template_substitution: dict | None = None,
+) -> None:
+    """Run shell commands with a dedicated test shell environment in a temporary working directory."""
     if template_substitution is None:
         template_substitution = {}
     for command in commands:
         if isinstance(command, string.Template):
-            command = command.substitute(template_substitution)
-        command = shlex.split(command)
-        subprocess.check_output(command, env=env, cwd=build_directory).decode("utf-8")
+            command_string = command.substitute(template_substitution)
+        else:
+            command_string = command
+        command_list = shlex.split(command_string)
+        subprocess.check_output(command_list, env=env, cwd=build_directory).decode("utf-8")
 
 
 # Help/Usage sign-of-life
@@ -891,7 +908,9 @@ project_only_commands_list.append(string.Template("${turbo_turtle_command} fetch
 
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", project_only_commands_list)
-def test_project_shell_commands(abaqus_command, cubit_command, commands: list) -> None:
+def test_project_shell_commands(
+    abaqus_command: pathlib.Path, cubit_command: pathlib.Path, commands: list[str | string.Template]
+) -> None:
     """Run the system tests.
 
     Executes with a temporary directory that is cleaned up after each test execution.

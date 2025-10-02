@@ -1,4 +1,5 @@
 """Test the Python 3 wrappers of third-party interfaces."""
+
 import argparse
 import copy
 import typing
@@ -526,6 +527,5 @@ def test_gmsh_wrappers(
             patch(f"turbo_turtle._gmsh_python.{subcommand}") as mock_function,
             pytest.raises(RuntimeError),
         ):
-
             subcommand_wrapper = getattr(_gmsh_wrappers, subcommand)
             subcommand_wrapper(args, command)
