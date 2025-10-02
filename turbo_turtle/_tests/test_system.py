@@ -312,8 +312,10 @@ commands_list.append(
 )
 
 # Sphere/partition/mesh
-system_tests = (
-    # model/part, inner_radius, outer_radius, angle, y-offset, quadrant, element_type, element_replacement,  backend, output_type  # noqa: E501
+sphere_tests = (
+    # Arguments:
+    #   model/part, inner_radius, outer_radius, angle, y-offset,
+    #   quadrant, element_type, element_replacement, backend, output_type
     # Abaqus CAE
     ("sphere.cae", 1.0, 2.0, 360.0, 0.0, "both", "C3D8", "C3D8R", "abaqus", "abaqus"),
     ("solid-sphere.cae", 0.0, 2.0, 360.0, 0.0, "both", "C3D8", "C3D8R", "abaqus", "abaqus"),
@@ -433,11 +435,10 @@ system_tests = (
         "genesis",
     ),
 )
-for test in system_tests:
-    commands_list.append(setup_sphere_commands(*test))
+commands_list.extend([setup_sphere_commands(*test) for test in sphere_tests])
 
 # Geometry XY Plot tests
-system_tests = (
+geometry_xyplot_tests = (
     # model/part,                                                  input_file, backend
     ("washer", [_settings._project_root_abspath / "_tests" / "washer.csv"], "abaqus"),
     ("vase", [_settings._project_root_abspath / "_tests" / "vase.csv"], "abaqus"),
@@ -450,13 +451,11 @@ system_tests = (
         "abaqus",
     ),
 )
-for test in system_tests:
-    commands_list.append(setup_geometry_xyplot_commands(*test))
-
+commands_list.extend([setup_geometry_xyplot_commands(*test) for test in geometry_xyplot_tests])
 
 # Geometry tests
-system_tests = (
-    # model/part,                                                           input_file, angle, y-offset, backend
+geometry_tests = (
+    # model/part, input_file, angle, y-offset, backend
     # Abaqus
     (
         "washer",
@@ -608,11 +607,10 @@ system_tests = (
         "gmsh",
     ),
 )
-for test in system_tests:
-    commands_list.append(setup_geometry_commands(*test))
+commands_list.extend([setup_geometry_commands(*test) for test in geometry_tests])
 
 # Sets/mesh tests
-system_tests = (
+sets_tests = (
     # model/part, input_file, angle, face_sets, edge_sets, edge seeds, element_type, backend
     # Abaqus
     # TODO: Pick some Abaqus edge sets for the system tests
@@ -658,11 +656,10 @@ system_tests = (
         "cubit",
     ),
 )
-for test in system_tests:
-    commands_list.append(setup_sets_commands(*test))
+commands_list.extend([setup_sets_commands(*test) for test in sets_tests])
 
 # Cylinder tests
-system_tests = (
+cylinder_tests = (
     # model/part,   angle, backend
     ("cylinder_3d", 360.0, "abaqus"),
     ("cylinder_2d", 0.0, "abaqus"),
@@ -671,12 +668,11 @@ system_tests = (
     ("cylinder_3d", 360.0, "gmsh"),
     ("cylinder_2d", 0.0, "gmsh"),
 )
-for test in system_tests:
-    commands_list.append(setup_cylinder_commands(*test))
+commands_list.extend([setup_cylinder_commands(*test) for test in cylinder_tests])
 
 # TODO: Merge Gmsh sphere system tests when partition/mesh/image subcommands are implemented
 # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/217
-gmsh_sphere_2D = [
+gmsh_sphere_2D = [  # noqa: N816
     [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
@@ -740,7 +736,7 @@ for test in gmsh_sphere_2D:
             )
         )
     commands_list.append(pytest.param(test, marks=pytest.mark.gmsh))
-gmsh_sphere_3D = [
+gmsh_sphere_3D = [  # noqa: N816
     [
         string.Template(
             "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
