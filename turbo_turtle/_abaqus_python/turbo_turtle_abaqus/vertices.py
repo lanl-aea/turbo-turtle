@@ -135,7 +135,9 @@ def ordered_lines_and_splines(coordinates, euclidean_distance, rtol=None, atol=N
     """Return a single, closed loop list of [M, 2] arrays with lines (length 2) and splines (length >2)."""
     all_splines = _break_coordinates(coordinates, euclidean_distance, rtol=rtol, atol=atol)
     lines_and_splines = [all_splines[0]]
-    for spline1, spline2 in itertools.pairwise(all_splines):
+    # Abaqus 2023 Python does not have ``itertools.pairwise``.
+    # TODO: Remove RUF007 exception when Abaqus 2024 is the oldest supported Abaqus version.
+    for spline1, spline2 in zip(all_splines[0:-1], all_splines[1:]):  # noqa: RUF007
         lines_and_splines.append(numpy.stack((spline1[-1], spline2[0])))
         lines_and_splines.append(spline2)
     lines_and_splines.append(numpy.stack((all_splines[-1][-1], all_splines[0][0])))
@@ -243,7 +245,9 @@ def _line_pairs(all_splines):
     :returns: line pairs
     :rtype: list of [2, 2] numpy arrays
     """
-    zipped_splines = itertools.pairwise(all_splines)
+    # Abaqus 2023 Python does not have ``itertools.pairwise``.
+    # TODO: Remove RUF007 exception when Abaqus 2024 is the oldest supported Abaqus version.
+    zipped_splines = zip(all_splines[0:-1], all_splines[1:])  # noqa: RUF007
     line_pairs = [numpy.stack((spline1[-1], spline2[0])) for spline1, spline2 in zipped_splines]
     line_pairs.append((all_splines[-1][-1], all_splines[0][0]))
     return line_pairs
