@@ -109,7 +109,7 @@ def test_validate_part_name(
             pass
 
     # TODO: Figure out how to check against pytest.raises() instead.
-    if not isinstance(outcome, does_not_raise):
+    if not isinstance(outcome, contextlib.nullcontext):
         outcome = pytest.raises(SystemExit)
     with outcome:
         try:
