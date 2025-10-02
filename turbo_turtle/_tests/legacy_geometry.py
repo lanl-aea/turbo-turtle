@@ -10,11 +10,11 @@ def main(model_name, output_file):
 
     :returns: ``{output_file}.cae`` Abaqus database
     """
-    seveneigths_sphere(model_name)
-    swiss_cheese(model_name)
+    seveneigths_sphere(model_name, output_file)
+    swiss_cheese(model_name, output_file)
 
 
-def seveneigths_sphere(model_name, part_name="seveneigths-sphere"):
+def seveneigths_sphere(model_name, output_file, part_name="seveneigths-sphere"):
     """Create a hollow, seveneigths-sphere geometry.
 
     :param str model_name: name of the Abaqus model
@@ -45,11 +45,11 @@ def seveneigths_sphere(model_name, part_name="seveneigths-sphere"):
     p.DatumPlaneByPrincipalPlane(principalPlane=abaqusConstants.XYPLANE, offset=0.0)
     p = abaqus.mdb.models[model_name].parts[part_name]
     c = p.cells
-    pickedCells = c.getSequenceFromMask(
+    picked_cells = c.getSequenceFromMask(
         mask=("[#1 ]",),
     )
     d1 = p.datums
-    p.PartitionCellByDatumPlane(datumPlane=d1[2], cells=pickedCells)
+    p.PartitionCellByDatumPlane(datumPlane=d1[2], cells=picked_cells)
     p = abaqus.mdb.models[model_name].parts[part_name]
     f, e = p.faces, p.edges
     t = p.MakeSketchTransform(
@@ -97,7 +97,7 @@ def seveneigths_sphere(model_name, part_name="seveneigths-sphere"):
     abaqus.mdb.saveAs(pathName=output_file)
 
 
-def swiss_cheese(model_name, part_name="swiss-cheese"):
+def swiss_cheese(model_name, output_file, part_name="swiss-cheese"):
     """Create a hollow, spherical geometry with a few holes sparsely placed through the thickness.
 
     :param str model_name: name of the Abaqus model

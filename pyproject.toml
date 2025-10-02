@@ -82,6 +82,7 @@ extend-ignore = ["ANN002", "ANN003", "B028", "D203", "D213", "PLR0912", "PLR0913
 "*SConstruct" = ["F821"]
 "*SConscript" = ["F821"]
 "*.scons" = ["F821"]
+"legacy_geometry.py" = ["ANN", "PTH", "UP", "FURB188", "B905", "E402", "B904"]
 
 [tool.mypy]
 disable_error_code = [
