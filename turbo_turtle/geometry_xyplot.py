@@ -79,10 +79,10 @@ def geometry_xyplot(
         lines, splines = vertices.lines_and_splines(transformed_coordinates, euclidean_distance, rtol=rtol, atol=atol)
         for line in lines:
             array = numpy.array(line)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, markerfacecolor="none", **line_kwargs)
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, markerfacecolor="none", **line_kwargs)  # type: ignore[arg-type]
         for spline in splines:
             array = numpy.array(spline)
-            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, linestyle="dashed", **spline_kwargs)
+            matplotlib.pyplot.plot(array[:, 0], array[:, 1], color=color, linestyle="dashed", **spline_kwargs)  # type: ignore[arg-type]
         if annotate:
             for index, coordinate in enumerate(transformed_coordinates):
                 matplotlib.pyplot.annotate(str(index), coordinate, color=color)
