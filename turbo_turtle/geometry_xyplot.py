@@ -71,7 +71,7 @@ def geometry_xyplot(
 
     figure = matplotlib.pyplot.figure()
     if len(coordinates_list) > 1:
-        colors = matplotlib.cm.rainbow(numpy.linspace(0, 1, len(coordinates_list)))
+        colors = matplotlib.colormaps["rainbow"](numpy.linspace(0, 1, len(coordinates_list)))
     else:
         colors = ["black"]
     for coordinates, color in zip(coordinates_list, colors, strict=True):
