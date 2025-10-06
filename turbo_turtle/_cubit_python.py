@@ -792,10 +792,10 @@ def sets(
 def mesh(
     input_file: str | pathlib.Path,
     element_type: str,
-    output_file: str | pathlib.Path | None = parsers.mesh_defaults["output_file"],
-    part_name: str | None = parsers.mesh_defaults["part_name"],
-    global_seed: float = parsers.mesh_defaults["global_seed"],
-    edge_seeds: tuple[str, int] | None = parsers.mesh_defaults["edge_seeds"],
+    output_file: str | pathlib.Path | None = parsers.mesh_defaults["output_file"],  # type: ignore[assignment]
+    part_name: str | None = parsers.mesh_defaults["part_name"],  # type: ignore[assignment]
+    global_seed: float = parsers.mesh_defaults["global_seed"],  # type: ignore[assignment]
+    edge_seeds: tuple[str, str | int | float] | None = parsers.mesh_defaults["edge_seeds"],  # type: ignore[assignment]
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name.
 
