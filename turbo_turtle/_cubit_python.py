@@ -32,8 +32,8 @@ def cubit_command_or_exception(command: str) -> bool:
 
 
 def geometry(
-    input_file: str,
-    output_file: str,
+    input_file: typing.Sequence[str | pathlib.Path],
+    output_file: str | pathlib.Path,
     planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
     part_name: str = parsers.geometry_defaults["part_name"],  # type: ignore[assignment]
     unit_conversion: float = parsers.geometry_defaults["unit_conversion"],  # type: ignore[assignment]
@@ -365,7 +365,7 @@ def cylinder(
     inner_radius: float,
     outer_radius: float,
     height: float,
-    output_file: str,
+    output_file: str | pathlib.Path,
     part_name: str = parsers.cylinder_defaults["part_name"],  # type: ignore[assignment]
     revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
     y_offset: float = parsers.cylinder_defaults["y_offset"],  # type: ignore[assignment]
