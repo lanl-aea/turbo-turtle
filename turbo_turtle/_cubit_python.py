@@ -714,7 +714,7 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
             cubit_command_or_exception(f'sideset {sideset_id} name "{name}"')
 
 
-def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
+def _feature_seeds(feature: str, name_number: typing.Tuple[str, str | int | float]) -> None:
     """Create mesh seeds on features by name.
 
     If the number is an integer, seed by interval. If the number is a float, seed by size
@@ -881,7 +881,12 @@ def _mesh_multiple_volumes(volumes: list, global_seed: float, element_type: str 
             _mesh_volume(volume, global_seed, element_type=element_type)
 
 
-def _mesh(element_type: str, part_name: str, global_seed: float, edge_seeds: tuple[str, int]) -> None:
+def _mesh(
+    element_type: str,
+    part_name: str,
+    global_seed: float,
+    edge_seeds: tuple[str, str | int | float] | None,
+) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name.
 
     :param element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
@@ -889,7 +894,7 @@ def _mesh(element_type: str, part_name: str, global_seed: float, edge_seeds: tup
     :param global_seed: The global mesh seed size
     :param edge_seeds: Edge seed tuples (name, number)
     """
-    parts = _get_volumes_from_name(part_name)
+    parts = _get_volumes_from_name([part_name])
     element_type = element_type.lower()
     # TODO: Cubit can support more than just edge seeds
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
@@ -898,7 +903,7 @@ def _mesh(element_type: str, part_name: str, global_seed: float, edge_seeds: tup
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
 
 
-def merge(input_file: list[str], output_file: str) -> None:
+def merge(input_file: list[str | pathlib.Path], output_file: str | pathlib.Path) -> None:
     """Merge Cubit ``*.cub`` files with forced unique block IDs and save to output file.
 
     :param input_file: List of Cubit ``*.cub`` file(s) to merge
