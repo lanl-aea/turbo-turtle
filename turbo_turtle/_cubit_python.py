@@ -1047,8 +1047,8 @@ def _export_abaqus(output_file: pathlib.Path, part_name: str) -> None:
 
 
 def image(
-    input_file: str,
-    output_file: str,
+    input_file: str | pathlib.Path,
+    output_file: str | pathlib.Path,
     cubit_command: str,
     x_angle: float = parsers.image_defaults["x_angle"],  # type: ignore[assignment]
     y_angle: float = parsers.image_defaults["y_angle"],  # type: ignore[assignment]
