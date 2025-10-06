@@ -630,8 +630,8 @@ def create_pyramid_partitions(
 
 
 def partition(
-    input_file: str,
-    output_file: str = parsers.partition_defaults["output_file"],
+    input_file: str | pathlib.Path,
+    output_file: str | pathlib.Path = parsers.partition_defaults["output_file"],
     center: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["center"],
     xvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["xvector"],
     zvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["zvector"],
