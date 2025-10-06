@@ -12,8 +12,8 @@ gmsh = _utilities.import_gmsh()
 
 
 def geometry(
-    input_file: str,
-    output_file: str,
+    input_file: typing.Sequence[str | pathlib.Path],
+    output_file: str | pathlib.Path,
     planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
     model_name: str = parsers.geometry_defaults["model_name"],  # type: ignore[assignment]
     part_name: str = parsers.geometry_defaults["part_name"],  # type: ignore[assignment]
@@ -188,7 +188,7 @@ def cylinder(
     inner_radius: float,
     outer_radius: float,
     height: float,
-    output_file: str,
+    output_file: str | pathlib.Path,
     model_name: str = parsers.geometry_defaults["model_name"],  # type: ignore[assignment]
     part_name: str = parsers.cylinder_defaults["part_name"],  # type: ignore[assignment]
     revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
@@ -234,8 +234,8 @@ def cylinder(
 def sphere(
     inner_radius: float,
     outer_radius: float,
-    output_file: str,
-    input_file: str = parsers.sphere_defaults["input_file"],
+    output_file: str | pathlib.Path,
+    input_file: str | pathlib.Path | None = parsers.sphere_defaults["input_file"],
     quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],
     revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
     y_offset: float = parsers.sphere_defaults["y_offset"],
@@ -377,13 +377,13 @@ def sets(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
 
 # Argument(s) retained for compatibility with ``_cubit_python.mesh`` API
 def mesh(
-    input_file: str,
+    input_file: str | pathlib.Path,
     element_type: str,  # noqa: ARG001
-    output_file: str | None = parsers.mesh_defaults["output_file"],
+    output_file: str | pathlib.Path | None = parsers.mesh_defaults["output_file"],
     model_name: str | None = parsers.mesh_defaults["model_name"],  # noqa: ARG001
     part_name: str | None = parsers.mesh_defaults["part_name"],  # noqa: ARG001
-    global_seed: float | None = parsers.mesh_defaults["global_seed"],
-    edge_seeds: tuple[str, int] | None = parsers.mesh_defaults["edge_seeds"],  # noqa: ARG001
+    global_seed: float = parsers.mesh_defaults["global_seed"],
+    edge_seeds: typing.Sequence[tuple[str, str | int | float]] | None = parsers.mesh_defaults["edge_seeds"],  # noqa: ARG001
 ) -> None:
     """Mesh Gmsh physical entities by part name.
 
@@ -439,8 +439,8 @@ def export(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
 
 
 def image(
-    input_file: str,
-    output_file: str,
+    input_file: str | pathlib.Path,
+    output_file: str | pathlib.Path,
     x_angle: float = parsers.image_defaults["x_angle"],  # type: ignore[assignment]
     y_angle: float = parsers.image_defaults["y_angle"],  # type: ignore[assignment]
     z_angle: float = parsers.image_defaults["z_angle"],  # type: ignore[assignment]
