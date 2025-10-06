@@ -631,12 +631,12 @@ def create_pyramid_partitions(
 
 def partition(
     input_file: str | pathlib.Path,
-    output_file: str | pathlib.Path = parsers.partition_defaults["output_file"],
-    center: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["center"],
-    xvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["xvector"],
-    zvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["zvector"],
-    part_name: list[str] = parsers.partition_defaults["part_name"],
-    big_number: float = parsers.partition_defaults["big_number"],
+    output_file: str | pathlib.Path = parsers.partition_defaults["output_file"],  # type: ignore[assignment]
+    center: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["center"],  # type: ignore[assignment]
+    xvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["xvector"],  # type: ignore[assignment]
+    zvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["zvector"],  # type: ignore[assignment]
+    part_name: list[str] = parsers.partition_defaults["part_name"],  # type: ignore[assignment]
+    big_number: float = parsers.partition_defaults["big_number"],  # type: ignore[assignment]
 ) -> None:
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
