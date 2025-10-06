@@ -36,14 +36,14 @@ def _get_parser() -> argparse.ArgumentParser:
 
 def geometry_xyplot(
     coordinates_list: list,
-    unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],
-    euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
-    y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],
-    rtol: typing.Optional[float] = parsers.geometry_defaults["rtol"],
-    atol: typing.Optional[float] = parsers.geometry_defaults["atol"],
-    no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
-    annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
-    scale: bool = parsers.geometry_xyplot_defaults["scale"],
+    unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],  # type: ignore[assignment]
+    euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],  # type: ignore[assignment]
+    y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],  # type: ignore[assignment]
+    rtol: typing.Optional[float] = parsers.geometry_defaults["rtol"],  # type: ignore[assignment]
+    atol: typing.Optional[float] = parsers.geometry_defaults["atol"],  # type: ignore[assignment]
+    no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],  # type: ignore[assignment]
+    annotate: bool = parsers.geometry_xyplot_defaults["annotate"],  # type: ignore[assignment]
+    scale: bool = parsers.geometry_xyplot_defaults["scale"],  # type: ignore[assignment]
 ) -> matplotlib.pyplot.Figure:
     """Return a matplotlib figure with the coordinates plotted consistently with geometry/geometry-xyplot subcommands.
 
@@ -96,17 +96,17 @@ def geometry_xyplot(
 def _main(
     input_file: list,
     output_file: str,
-    part_name: typing.List[typing.Union[str, None]] = parsers.geometry_xyplot_defaults["part_name"],
-    unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],
-    euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],
-    delimiter: str = parsers.geometry_xyplot_defaults["delimiter"],
-    header_lines: int = parsers.geometry_xyplot_defaults["header_lines"],
-    y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],
-    rtol: typing.Optional[float] = parsers.geometry_defaults["rtol"],
-    atol: typing.Optional[float] = parsers.geometry_defaults["atol"],
-    no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],
-    annotate: bool = parsers.geometry_xyplot_defaults["annotate"],
-    scale: bool = parsers.geometry_xyplot_defaults["scale"],
+    part_name: typing.List[typing.Union[str, None]] = parsers.geometry_xyplot_defaults["part_name"],  # type: ignore[assignment]
+    unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],  # type: ignore[assignment]
+    euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],  # type: ignore[assignment]
+    delimiter: str = parsers.geometry_xyplot_defaults["delimiter"],  # type: ignore[assignment]
+    header_lines: int = parsers.geometry_xyplot_defaults["header_lines"],  # type: ignore[assignment]
+    y_offset: float = parsers.geometry_xyplot_defaults["y_offset"],  # type: ignore[assignment]
+    rtol: typing.Optional[float] = parsers.geometry_defaults["rtol"],  # type: ignore[assignment]
+    atol: typing.Optional[float] = parsers.geometry_defaults["atol"],  # type: ignore[assignment]
+    no_markers: bool = parsers.geometry_xyplot_defaults["no_markers"],  # type: ignore[assignment]
+    annotate: bool = parsers.geometry_xyplot_defaults["annotate"],  # type: ignore[assignment]
+    scale: bool = parsers.geometry_xyplot_defaults["scale"],  # type: ignore[assignment]
 ) -> None:
     """Plotter for :meth:`turbo_turtle._abaqus_python.turbo_turtle_abaqus.vertices.lines_and_splines` division of
     coordinates into lines and splines.

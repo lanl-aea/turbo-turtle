@@ -34,16 +34,16 @@ def cubit_command_or_exception(command: str) -> bool:
 def geometry(
     input_file: str,
     output_file: str,
-    planar: bool = parsers.geometry_defaults["planar"],
-    part_name: str = parsers.geometry_defaults["part_name"],
-    unit_conversion: float = parsers.geometry_defaults["unit_conversion"],
-    euclidean_distance: float = parsers.geometry_defaults["euclidean_distance"],
-    delimiter: str = parsers.geometry_defaults["delimiter"],
-    header_lines: int = parsers.geometry_defaults["header_lines"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
-    y_offset: float = parsers.geometry_defaults["y_offset"],
-    rtol: float = parsers.geometry_defaults["rtol"],
-    atol: float = parsers.geometry_defaults["atol"],
+    planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
+    part_name: str = parsers.geometry_defaults["part_name"],  # type: ignore[assignment]
+    unit_conversion: float = parsers.geometry_defaults["unit_conversion"],  # type: ignore[assignment]
+    euclidean_distance: float = parsers.geometry_defaults["euclidean_distance"],  # type: ignore[assignment]
+    delimiter: str = parsers.geometry_defaults["delimiter"],  # type: ignore[assignment]
+    header_lines: int = parsers.geometry_defaults["header_lines"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.geometry_defaults["y_offset"],  # type: ignore[assignment]
+    rtol: float = parsers.geometry_defaults["rtol"],  # type: ignore[assignment]
+    atol: float = parsers.geometry_defaults["atol"],  # type: ignore[assignment]
 ) -> None:
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
@@ -306,8 +306,8 @@ def _rename_and_sweep(  # noqa: ANN202
     surface,  # noqa: ANN001
     part_name: str,
     center: tuple[float, float, float] | numpy.ndarray = (0.0, 0.0, 0.0),
-    planar: bool = parsers.geometry_defaults["planar"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
+    planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
 ):
     """Recover body or volume from body surface, sweep part if required, and rename body/volume by part name.
 
@@ -366,9 +366,9 @@ def cylinder(
     outer_radius: float,
     height: float,
     output_file: str,
-    part_name: str = parsers.cylinder_defaults["part_name"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
-    y_offset: float = parsers.cylinder_defaults["y_offset"],
+    part_name: str = parsers.cylinder_defaults["part_name"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.cylinder_defaults["y_offset"],  # type: ignore[assignment]
 ) -> None:
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry.
 
@@ -1050,10 +1050,10 @@ def image(
     input_file: str,
     output_file: str,
     cubit_command: str,
-    x_angle: float = parsers.image_defaults["x_angle"],
-    y_angle: float = parsers.image_defaults["y_angle"],
-    z_angle: float = parsers.image_defaults["z_angle"],
-    image_size: tuple[int, int] = parsers.image_defaults["image_size"],
+    x_angle: float = parsers.image_defaults["x_angle"],  # type: ignore[assignment]
+    y_angle: float = parsers.image_defaults["y_angle"],  # type: ignore[assignment]
+    z_angle: float = parsers.image_defaults["z_angle"],  # type: ignore[assignment]
+    image_size: tuple[int, int] = parsers.image_defaults["image_size"],  # type: ignore[assignment]
 ) -> None:
     """Open a Cubit ``*.cub`` file and save an image.
 
