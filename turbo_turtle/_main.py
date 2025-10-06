@@ -248,7 +248,7 @@ def get_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     parser = get_parser()
-    subcommand_list = parser._subparsers._group_actions[0].choices.keys()
+    subcommand_list = parser._subparsers._group_actions[0].choices.keys()  # type: ignore[union-attr]
     args = parser.parse_args()
 
     try:
