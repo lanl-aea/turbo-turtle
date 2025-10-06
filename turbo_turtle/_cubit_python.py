@@ -914,7 +914,7 @@ def merge(input_file: list[str], output_file: str) -> None:
 
 def export(
     input_file: str | pathlib.Path,
-    part_name: list[str] = parsers.export_defaults["part_name"]  # type: ignore[assignment],
+    part_name: list[str] = parsers.export_defaults["part_name"],  # type: ignore[assignment],
     element_type: list[str | None] = parsers.export_defaults["element_type"],  # type: ignore[assignment]
     destination: str | pathlib.Path = parsers.export_defaults["destination"],  # type: ignore[assignment]
     output_type: typing.Literal["abaqus", "genesis", "genesis-normal", "genesis-hdf5"] = parsers.export_defaults[  # type: ignore[assignment]
