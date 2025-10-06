@@ -757,12 +757,12 @@ def _sets(
 
 
 def sets(
-    input_file: str,
-    output_file: str | None = parsers.sets_defaults["output_file"],
+    input_file: str | pathlib.Path,
+    output_file: str | pathlib.Path | None = parsers.sets_defaults["output_file"],
     part_name: str | None = parsers.sets_defaults["part_name"],
-    face_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["face_sets"],
-    edge_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["edge_sets"],
-    vertex_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["vertex_sets"],
+    face_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["face_sets"],  # type: ignore[assignment]
+    edge_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["edge_sets"],  # type: ignore[assignment]
+    vertex_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["vertex_sets"],  # type: ignore[assignment]
 ) -> None:
     """Create Cubit sidesets and nodesets from feature numbers.
 
