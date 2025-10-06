@@ -693,7 +693,7 @@ def _partition(
         imprint_and_merge([current_part_name])
 
 
-def _set_from_mask(feature: str, name_mask: tuple[str, str | int]) -> None:
+def _set_from_mask(feature: str, name_mask: typing.Sequence[tuple[str, str | int]]) -> None:
     """Create named features, with associated node and sidesets, by feature ID.
 
     :param feature: Cubit feature name
@@ -736,9 +736,9 @@ def _feature_seeds(feature: str, name_number: typing.Sequence[tuple[str, str | i
 
 
 def _sets(
-    face_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["face_sets"],
-    edge_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["edge_sets"],
-    vertex_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["vertex_sets"],
+    face_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["face_sets"],  # type: ignore[assignment]
+    edge_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["edge_sets"],  # type: ignore[assignment]
+    vertex_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["vertex_sets"],  # type: ignore[assignment]
 ) -> None:
     """Create named features, with associated node and sidesets, by feature ID.
 
