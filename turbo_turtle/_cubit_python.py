@@ -794,7 +794,7 @@ def mesh(
     element_type: str,
     output_file: str | None = parsers.mesh_defaults["output_file"],
     part_name: str | None = parsers.mesh_defaults["part_name"],
-    global_seed: float | None = parsers.mesh_defaults["global_seed"],
+    global_seed: float = parsers.mesh_defaults["global_seed"],
     edge_seeds: tuple[str, int] | None = parsers.mesh_defaults["edge_seeds"],
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name.
