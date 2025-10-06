@@ -235,12 +235,12 @@ def sphere(
     inner_radius: float,
     outer_radius: float,
     output_file: str | pathlib.Path,
-    input_file: str | pathlib.Path | None = parsers.sphere_defaults["input_file"],
-    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],
-    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
-    y_offset: float = parsers.sphere_defaults["y_offset"],
-    model_name: str = parsers.sphere_defaults["model_name"],
-    part_name: str = parsers.sphere_defaults["part_name"],
+    input_file: str | pathlib.Path | None = parsers.sphere_defaults["input_file"],  # type: ignore[assignment]
+    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.sphere_defaults["y_offset"],  # type: ignore[assignment]
+    model_name: str = parsers.sphere_defaults["model_name"],  # type: ignore[assignment]
+    part_name: str = parsers.sphere_defaults["part_name"],  # type: ignore[assignment]
 ) -> None:
     """Create a sphere geometry with file I/O handling.
 
@@ -305,10 +305,10 @@ def sphere(
 def _sphere(
     inner_radius: float,
     outer_radius: float,
-    quadrant: str = parsers.sphere_defaults["quadrant"],
-    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
-    center: tuple[float, float] = parsers.sphere_defaults["center"],
-    part_name: str = parsers.sphere_defaults["part_name"],
+    quadrant: str = parsers.sphere_defaults["quadrant"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],  # type: ignore[assignment]
+    center: tuple[float, float] = parsers.sphere_defaults["center"],  # type: ignore[assignment]
+    part_name: str = parsers.sphere_defaults["part_name"],  # type: ignore[assignment]
 ) -> None:
     """Create a sphere geometry without file I/O handling.
 
