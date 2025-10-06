@@ -195,7 +195,7 @@ def set_wrappers_and_command(args: argparse.Namespace) -> tuple[types.ModuleType
 
 def construct_append_options(
     option: str,
-    array: typing.Iterable[typing.Tuple],
+    array: typing.Sequence[typing.Sequence],
 ) -> str:
     """Construct a command string to match the argparse append action.
 
