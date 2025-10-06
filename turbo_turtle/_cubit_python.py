@@ -975,7 +975,7 @@ def _create_volume_name_block(name: str) -> int:
 
     :returns: New block ID
     """
-    volumes = _get_volumes_from_name(name)
+    volumes = _get_volumes_from_name([name])
     new_block_id = _create_new_block(volumes)
     cubit_command_or_exception(f"block {new_block_id} name '{name}'")
     return new_block_id
