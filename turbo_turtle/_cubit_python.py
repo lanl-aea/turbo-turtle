@@ -913,11 +913,11 @@ def merge(input_file: list[str], output_file: str) -> None:
 
 
 def export(
-    input_file: str,
-    part_name: list[str] = parsers.export_defaults["part_name"],
-    element_type: list[str] = parsers.export_defaults["element_type"],
-    destination: str = parsers.export_defaults["destination"],
-    output_type: typing.Literal["abaqus", "genesis", "genesis-normal", "genesis-hdf5"] = parsers.export_defaults[
+    input_file: str | pathlib.Path,
+    part_name: list[str] = parsers.export_defaults["part_name"]  # type: ignore[assignment],
+    element_type: list[str | None] = parsers.export_defaults["element_type"],  # type: ignore[assignment]
+    destination: str | pathlib.Path = parsers.export_defaults["destination"],  # type: ignore[assignment]
+    output_type: typing.Literal["abaqus", "genesis", "genesis-normal", "genesis-hdf5"] = parsers.export_defaults[  # type: ignore[assignment]
         "output_type"
     ],
 ) -> None:
@@ -999,7 +999,7 @@ def _set_genesis_output_type(output_type: typing.Literal["genesis", "genesis-nor
 def _export_genesis(
     output_file: pathlib.Path,
     part_name: list[str],
-    element_type: list[str],
+    element_type: list[str | None],
     output_type: typing.Literal["genesis", "genesis-normal", "genesis-hdf5"] = "genesis",
 ) -> None:
     """Export all volumes with part name prefix to the output file.
@@ -1021,7 +1021,7 @@ def _export_genesis(
     cubit_command_or_exception(f"export mesh '{output_file}' block {block_string} overwrite")
 
 
-def _export_abaqus_list(part_name: list[str], element_type: list[str], destination: pathlib.Path) -> None:
+def _export_abaqus_list(part_name: list[str], element_type: list[str | None], destination: pathlib.Path) -> None:
     """Export one Abaqus orphan mesh per part in the destination directory.
 
     :param part_name: list of part/volume names to create as blocks from all volumes with a matching prefix
