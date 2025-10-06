@@ -727,7 +727,7 @@ def _feature_seeds(feature: str, name_number: typing.Sequence[tuple[str, str | i
     positive_numbers = [number > 0.0 for number in float_numbers]
     if not all(positive_numbers):
         raise ValueError("Feature seeds must be positive numbers")
-    for name, number in zip(names, numbers, strict=True):
+    for name, number in zip(names, float_numbers, strict=True):
         feature_ids = _utilities.character_delimited_list(cubit.get_all_ids_from_name(feature, name))
         if number.is_integer():
             cubit_command_or_exception(f"{feature} {feature_ids} interval {int(number)}")
