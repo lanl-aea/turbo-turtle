@@ -25,7 +25,7 @@ class NamedTemporaryFileCopy:
     """
 
     def __init__(self, input_file: str, *args, **kwargs) -> None:
-        self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
+        self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)  # type: ignore[call-overload]
         shutil.copyfile(input_file, self.temporary_file.name)
 
     def __enter__(self) -> tempfile._TemporaryFileWrapper:
