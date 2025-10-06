@@ -36,7 +36,7 @@ class NamedTemporaryFileCopy:
     ) -> bool | None:
         self.temporary_file.close()
         pathlib.Path(self.temporary_file.name).unlink()
-
+        return None
 
 def search_commands(options: typing.Iterable[str]) -> typing.Union[str, None]:
     """Return the first found command in the list of options. Return None if none are found.
