@@ -24,7 +24,7 @@ class NamedTemporaryFileCopy:
     :param input_file: The input file to copy into a temporary file
     """
 
-    def __init__(self, input_file: str, *args, **kwargs) -> None:
+    def __init__(self, input_file: str | pathlib.Path, *args, **kwargs) -> None:
         self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)  # type: ignore[call-overload]
         shutil.copyfile(input_file, self.temporary_file.name)
 
