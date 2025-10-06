@@ -347,7 +347,9 @@ def _sphere(
 
 
 def _create_arc_from_coordinates(
-    center: tuple[float, float, float], point1: tuple[float, float, float], point2: tuple[float, float, float]
+    center: tuple[float, float, float] | numpy.ndarray,
+    point1: tuple[float, float, float] | numpy.ndarray,
+    point2: tuple[float, float, float] | numpy.ndarray,
 ) -> int:
     """Create a circle arc Gmsh object from center and points on the curve.
 
@@ -379,11 +381,11 @@ def sets(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
 def mesh(
     input_file: str | pathlib.Path,
     element_type: str,  # noqa: ARG001
-    output_file: str | pathlib.Path | None = parsers.mesh_defaults["output_file"],
-    model_name: str | None = parsers.mesh_defaults["model_name"],  # noqa: ARG001
-    part_name: str | None = parsers.mesh_defaults["part_name"],  # noqa: ARG001
-    global_seed: float = parsers.mesh_defaults["global_seed"],
-    edge_seeds: typing.Sequence[tuple[str, str | int | float]] | None = parsers.mesh_defaults["edge_seeds"],  # noqa: ARG001
+    output_file: str | pathlib.Path | None = parsers.mesh_defaults["output_file"],  # type: ignore[assignment]
+    model_name: str | None = parsers.mesh_defaults["model_name"],  # type: ignore[assignment] # noqa: ARG001
+    part_name: str | None = parsers.mesh_defaults["part_name"],  # type: ignore[assignment] # noqa: ARG001
+    global_seed: float = parsers.mesh_defaults["global_seed"],  # type: ignore[assignment]
+    edge_seeds: typing.Sequence[tuple[str, str | int | float]] | None = parsers.mesh_defaults["edge_seeds"],  # type: ignore[assignment] # noqa: ARG001
 ) -> None:
     """Mesh Gmsh physical entities by part name.
 
