@@ -693,7 +693,7 @@ def _partition(
         imprint_and_merge([current_part_name])
 
 
-def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
+def _set_from_mask(feature: str, name_mask: tuple[str, str | int]) -> None:
     """Create named features, with associated node and sidesets, by feature ID.
 
     :param feature: Cubit feature name
@@ -714,7 +714,7 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
             cubit_command_or_exception(f'sideset {sideset_id} name "{name}"')
 
 
-def _feature_seeds(feature: str, name_number: typing.Tuple[str, str | int | float]) -> None:
+def _feature_seeds(feature: str, name_number: typing.Sequence[tuple[str, str | int | float]]) -> None:
     """Create mesh seeds on features by name.
 
     If the number is an integer, seed by interval. If the number is a float, seed by size
@@ -736,9 +736,9 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str | int | floa
 
 
 def _sets(
-    face_sets: list | None = parsers.sets_defaults["face_sets"],
-    edge_sets: list | None = parsers.sets_defaults["edge_sets"],
-    vertex_sets: list | None = parsers.sets_defaults["vertex_sets"],
+    face_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["face_sets"],
+    edge_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["edge_sets"],
+    vertex_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["vertex_sets"],
 ) -> None:
     """Create named features, with associated node and sidesets, by feature ID.
 
@@ -760,9 +760,9 @@ def sets(
     input_file: str,
     output_file: str | None = parsers.sets_defaults["output_file"],
     part_name: str | None = parsers.sets_defaults["part_name"],
-    face_sets: tuple[str, int] = parsers.sets_defaults["face_sets"],
-    edge_sets: tuple[str, int] = parsers.sets_defaults["edge_sets"],
-    vertex_sets: list | None = parsers.sets_defaults["vertex_sets"],
+    face_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["face_sets"],
+    edge_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["edge_sets"],
+    vertex_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["vertex_sets"],
 ) -> None:
     """Create Cubit sidesets and nodesets from feature numbers.
 
@@ -795,7 +795,7 @@ def mesh(
     output_file: str | pathlib.Path | None = parsers.mesh_defaults["output_file"],  # type: ignore[assignment]
     part_name: str | None = parsers.mesh_defaults["part_name"],  # type: ignore[assignment]
     global_seed: float = parsers.mesh_defaults["global_seed"],  # type: ignore[assignment]
-    edge_seeds: tuple[str, str | int | float] | None = parsers.mesh_defaults["edge_seeds"],  # type: ignore[assignment]
+    edge_seeds: typing.Sequence[tuple[str, str | int | float]] | None = parsers.mesh_defaults["edge_seeds"],  # type: ignore[assignment]
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name.
 
@@ -885,7 +885,7 @@ def _mesh(
     element_type: str,
     part_name: str,
     global_seed: float,
-    edge_seeds: tuple[str, str | int | float] | None,
+    edge_seeds: typing.Sequence[tuple[str, str | int | float]] | None,
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name.
 
@@ -903,7 +903,7 @@ def _mesh(
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
 
 
-def merge(input_file: list[str | pathlib.Path], output_file: str | pathlib.Path) -> None:
+def merge(input_file: typing.Sequence[str | pathlib.Path], output_file: str | pathlib.Path) -> None:
     """Merge Cubit ``*.cub`` files with forced unique block IDs and save to output file.
 
     :param input_file: List of Cubit ``*.cub`` file(s) to merge
