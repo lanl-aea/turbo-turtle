@@ -938,7 +938,7 @@ def export(
 
     cubit_command_or_exception(f"open '{input_file}'")
 
-    if output_type.lower() == "abaqus":
+    if output_type == "abaqus":
         _export_abaqus_list(part_name, element_type, destination)
     elif output_type.lower().startswith("genesis"):
         output_file = destination / input_file.with_suffix(".g").name
