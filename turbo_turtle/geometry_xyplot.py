@@ -70,6 +70,7 @@ def geometry_xyplot(
         spline_kwargs = {"marker": "+"}
 
     figure = matplotlib.pyplot.figure()
+    colors: numpy.ndarray | list[str]
     if len(coordinates_list) > 1:
         colors = matplotlib.colormaps["rainbow"](numpy.linspace(0, 1, len(coordinates_list)))
     else:
