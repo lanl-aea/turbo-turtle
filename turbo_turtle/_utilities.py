@@ -164,7 +164,7 @@ def run_command(command: str) -> None:
         raise RuntimeError(err.output.decode()) from err
 
 
-def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
+def set_wrappers_and_command(args: argparse.Namespace) -> tuple[types.ModuleType, pathlib.Path | None]:
     """Read an argument namespace and set the wrappers and command appropriately.
 
     :param args: namespace of parsed arguments from :meth:`turbo_turtle._main.get_parser`
@@ -173,7 +173,7 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
     """
     keys = vars(args).keys()
     if "backend" in keys and args.backend == "gmsh":
-        command = "unused"
+        command = None
         from turbo_turtle import _gmsh_wrappers as _wrappers  # noqa: PLC0415
     elif "backend" in keys and args.backend == "cubit":
         command = find_command_or_exit(args.cubit_command)
@@ -185,10 +185,10 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
 
         if importlib.util.find_spec("cubit") is None:
             sys.path.append(str(cubit_bin))
-        from turbo_turtle import _cubit_wrappers as _wrappers  # noqa: PLC0415
+        from turbo_turtle import _cubit_wrappers as _wrappers  # type: ignore[no-redef] # noqa: PLC0415
     elif "abaqus_command" in keys:
         command = find_command_or_exit(args.abaqus_command)
-        from turbo_turtle import _abaqus_wrappers as _wrappers  # noqa: PLC0415
+        from turbo_turtle import _abaqus_wrappers as _wrappers  # type: ignore[no-redef] # noqa: PLC0415
 
     return _wrappers, command
 
