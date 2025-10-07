@@ -97,7 +97,7 @@ def geometry_xyplot(
 def _main(
     input_file: list,
     output_file: str,
-    part_name: typing.List[typing.Union[str, None]] = parsers.geometry_xyplot_defaults["part_name"],  # type: ignore[assignment]
+    part_name: list[typing.Union[str, None]] = parsers.geometry_xyplot_defaults["part_name"],  # type: ignore[assignment]
     unit_conversion: float = parsers.geometry_xyplot_defaults["unit_conversion"],  # type: ignore[assignment]
     euclidean_distance: float = parsers.geometry_xyplot_defaults["euclidean_distance"],  # type: ignore[assignment]
     delimiter: str = parsers.geometry_xyplot_defaults["delimiter"],  # type: ignore[assignment]

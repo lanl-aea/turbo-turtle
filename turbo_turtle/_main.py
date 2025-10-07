@@ -23,7 +23,7 @@ def _print_abaqus_path_location() -> None:
         print(_settings._abaqus_python_parent_abspath)
 
 
-def add_abaqus_and_cubit(parsers: typing.List[argparse.ArgumentParser]) -> None:
+def add_abaqus_and_cubit(parsers: list[argparse.ArgumentParser]) -> None:
     """Add the Abaqus and Cubit command arguments to each parser in the parsers list.
 
     :param list parsers: List of parsers to run ``add_argument`` for the command options

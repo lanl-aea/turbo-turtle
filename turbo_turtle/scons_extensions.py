@@ -21,8 +21,8 @@ def cli_builder(
     subcommand: str = "",
     required: str = "",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a generic Turbo-Turtle CLI builder.
@@ -118,8 +118,8 @@ def geometry(
     subcommand: str = "geometry",
     required: str = "--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle geometry subcommand CLI builder.
@@ -183,8 +183,8 @@ def geometry_xyplot(
     subcommand: str = "geometry-xyplot",
     required: str = "--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle geometry-xyplot subcommand CLI builder.
@@ -251,8 +251,8 @@ def cylinder(
         "--height ${height}"
     ),
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle cylinder subcommand CLI builder.
@@ -323,8 +323,8 @@ def sphere(
     subcommand: str = "sphere",
     required: str = "--output-file ${TARGET.abspath} --inner-radius ${inner_radius} --outer-radius ${outer_radius}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle sphere subcommand CLI builder.
@@ -393,8 +393,8 @@ def partition(
     subcommand: str = "partition",
     required: str = "--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle partition subcommand CLI builder.
@@ -456,8 +456,8 @@ def sets(
     subcommand: str = "sets",
     required: str = "--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle sets subcommand CLI builder.
@@ -529,8 +529,8 @@ def mesh(
     subcommand: str = "mesh",
     required: str = "--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath} --element-type ${element_type}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle mesh subcommand CLI builder.
@@ -597,8 +597,8 @@ def image(
     subcommand: str = "image",
     required: str = "--input-file ${SOURCE.abspath} --output-file ${TARGET.abspath}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle image subcommand CLI builder.
@@ -660,8 +660,8 @@ def merge(
     subcommand: str = "merge",
     required: str = "--input-file ${SOURCES.abspath} --output-file ${TARGET.abspath}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle merge subcommand CLI builder.
@@ -723,8 +723,8 @@ def export(
     subcommand: str = "export",
     required: str = "--input-file ${SOURCE.abspath}",
     options: str = "",
-    abaqus_command: typing.List[str] = _default_abaqus_options,
-    cubit_command: typing.List[str] = _default_cubit_options,
+    abaqus_command: list[str] = _default_abaqus_options,
+    cubit_command: list[str] = _default_cubit_options,
     backend: str = _default_backend,
 ) -> SCons.Builder.Builder:
     """Return a Turbo-Turtle export subcommand CLI builder.

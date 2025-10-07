@@ -60,7 +60,7 @@ def setup_sphere_commands(
     element_replacement: str,
     backend: str,
     output_type: str,
-) -> typing.List[string.Template]:
+) -> list[string.Template]:
     """Return the sphere/partition/mesh commands for system testing.
 
     :returns: list of string or string template commands
@@ -121,7 +121,7 @@ def setup_sphere_commands(
 
 def setup_geometry_xyplot_commands(
     model: str, input_file: list[pathlib.Path], backend: str
-) -> typing.List[string.Template]:
+) -> list[string.Template]:
     """Return system test geometry xyplot commands."""
     part_name = _utilities.character_delimited_list(csv.stem for csv in input_file)
     input_file = _utilities.character_delimited_list(input_file)
@@ -142,7 +142,7 @@ def setup_geometry_commands(
     revolution_angle: float,
     y_offset: float,
     backend: str,
-) -> typing.List[string.Template]:
+) -> list[string.Template]:
     """Return system test geometry commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
@@ -172,7 +172,7 @@ def setup_sets_commands(
     edge_seeds: typing.Sequence[tuple[str, str]] | None,
     element_type: str,
     backend: str,
-) -> typing.List[string.Template]:
+) -> list[string.Template]:
     """Return system test sets commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
@@ -209,7 +209,7 @@ def setup_sets_commands(
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_cylinder_commands(model: str, revolution_angle: float, backend: str) -> typing.List[string.Template]:
+def setup_cylinder_commands(model: str, revolution_angle: float, backend: str) -> list[string.Template]:
     """Return system test cylinder commands."""
     model = pathlib.Path(model).with_suffix(".cae")
     if backend == "cubit":
@@ -228,7 +228,7 @@ def setup_cylinder_commands(model: str, revolution_angle: float, backend: str) -
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_merge_commands(part_name: str, backend: str) -> typing.List[string.Template]:
+def setup_merge_commands(part_name: str, backend: str) -> list[string.Template]:
     """Return system test merge commands."""
     commands = []
 
