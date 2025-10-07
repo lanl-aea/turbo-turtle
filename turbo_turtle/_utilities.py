@@ -88,7 +88,7 @@ def cubit_os_bin() -> str:
     return bin_directory
 
 
-def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional[str] = None) -> pathlib.Path:
+def find_cubit_bin(options: typing.Iterable[str], bin_directory: str | None = None) -> pathlib.Path:
     """Search for the bin directory provided a few options for the Cubit executable.
 
     Recommend first checking to see if cubit will import.
