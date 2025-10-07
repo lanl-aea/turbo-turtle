@@ -292,7 +292,7 @@ sphere_defaults = {
     "model_name": "Model-1",
     "part_name": "Part-1",
 }
-sphere_defaults["center"] = (0.0, sphere_defaults["y_offset"])
+sphere_defaults["center"] = (0.0, sphere_defaults["y_offset"])  # type: ignore[assignment]
 sphere_quadrant_options = ["both", "upper", "lower"]
 sphere_cli_help = "Create a hollow, spherical geometry from a sketch in the X-Y plane"
 sphere_cli_description = (
