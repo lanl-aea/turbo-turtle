@@ -160,7 +160,9 @@ def create_spline_from_coordinates(  # noqa: ANN202
 
 # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
 def create_arc_from_coordinates(  # noqa: ANN202
-    center: tuple[float, float, float], point1: tuple[float, float, float], point2: tuple[float, float, float]
+    center: tuple[float, float, float] | numpy.ndarray,
+    point1: tuple[float, float, float] | numpy.ndarray,
+    point2: tuple[float, float, float] | numpy.ndarray,
 ):
     """Create a circular arc cubit.Curve object from center and points on the curve.
 
@@ -215,7 +217,7 @@ def create_surface_from_coordinates(  # noqa: ANN202
     return cubit.create_surface(curves)
 
 
-def _surface_numbers(surfaces: list) -> list[int]:
+def _surface_numbers(surfaces: typing.Sequence | numpy.ndarray) -> list[int]:
     """Return a list of surface IDs from the provided list of surface objects.
 
     :param surfaces: list of Cubit surface objects
@@ -278,7 +280,7 @@ def _surfaces_by_vector(
 
 
 # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
-def _create_volume_from_surfaces(surfaces: list, keep: bool = True):  # noqa: ANN202
+def _create_volume_from_surfaces(surfaces: typing.Sequence | numpy.ndarray, keep: bool = True):  # noqa: ANN202
     """Create a volume from the provided surfaces. Surfaces must create a closed volume.
 
     :param surfaces: List of Cubit surface objects
