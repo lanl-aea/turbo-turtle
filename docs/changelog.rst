@@ -10,7 +10,7 @@ v1.3.0 (unreleased)
 
 Documentation
 =============
-- Improved type annotations (:issue:`258`, :merge:`261`). By `Kyle Brindley`_.
+- Improved type annotations (:issue:`258`, :merge:`261`, :issue:`261`, :merge:`263`). By `Kyle Brindley`_.
 
 Internal Changes
 ================
@@ -18,6 +18,8 @@ Internal Changes
   (:issue:`260`, :merge:`260`). By `Kyle Brindley`_.
 - Replace flake8 and black with ruff for linting and formatting (:issue:`258`, :merge:`261`). By `Kyle Brindley`_.
 - Lint test modules with ruff (:issue:`262`, :merge:`262`). By `Kyle Brindley`_.
+- Passing mypy static type checks, with skips on Abaqus Python 2 compatible files. (:issue:`261`, :merge:`263`). By
+  `Kyle Brindley`_.
 
 *******************
 v1.2.7 (2025-07-23)
