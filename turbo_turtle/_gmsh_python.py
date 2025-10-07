@@ -146,7 +146,7 @@ def _rename_and_sweep(
     center: tuple[float, float, float] | numpy.ndarray = (0.0, 0.0, 0.0),
     planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
     revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
-) -> typing.Tuple[int, int]:
+) -> tuple[int, int]:
     """Recover surface, sweep part if required, and rename surface/volume by part name.
 
     Hyphens are replaced by underscores to make the ACIS engine happy.
