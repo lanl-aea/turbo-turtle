@@ -39,7 +39,7 @@ class NamedTemporaryFileCopy:
         return None
 
 
-def search_commands(options: typing.Iterable[str]) -> typing.Union[str, None]:
+def search_commands(options: typing.Iterable[str]) -> str | None:
     """Return the first found command in the list of options. Return None if none are found.
 
     :param options: executable path(s) to test
