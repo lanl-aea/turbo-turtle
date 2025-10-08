@@ -31,6 +31,7 @@ requirements:
     - pip
     - pytest
     - lazy_loader >=0.4
+    - matplotlib-base >=3
     - setuptools >=77
     - setuptools_scm >=8
     - sphinx >=7.1
@@ -44,6 +45,7 @@ requirements:
     # Force a Python variant package build
     - python {{ python }}
     - lazy_loader >=0.4
+    - matplotlib-base >=3
     # Force an SCons variant package build
     - scons {{ scons }}
     - waves >=0.13

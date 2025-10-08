@@ -12,19 +12,19 @@ gmsh = _utilities.import_gmsh()
 
 
 def geometry(
-    input_file: str,
-    output_file: str,
-    planar: bool = parsers.geometry_defaults["planar"],
-    model_name: str = parsers.geometry_defaults["model_name"],
-    part_name: str = parsers.geometry_defaults["part_name"],
-    unit_conversion: float = parsers.geometry_defaults["unit_conversion"],
-    euclidean_distance: float = parsers.geometry_defaults["euclidean_distance"],
-    delimiter: str = parsers.geometry_defaults["delimiter"],
-    header_lines: int = parsers.geometry_defaults["header_lines"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
-    y_offset: float = parsers.geometry_defaults["y_offset"],
-    rtol: float = parsers.geometry_defaults["rtol"],
-    atol: float = parsers.geometry_defaults["atol"],
+    input_file: typing.Sequence[str | pathlib.Path],
+    output_file: str | pathlib.Path,
+    planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
+    model_name: str = parsers.geometry_defaults["model_name"],  # type: ignore[assignment]
+    part_name: str = parsers.geometry_defaults["part_name"],  # type: ignore[assignment]
+    unit_conversion: float = parsers.geometry_defaults["unit_conversion"],  # type: ignore[assignment]
+    euclidean_distance: float = parsers.geometry_defaults["euclidean_distance"],  # type: ignore[assignment]
+    delimiter: str = parsers.geometry_defaults["delimiter"],  # type: ignore[assignment]
+    header_lines: int = parsers.geometry_defaults["header_lines"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.geometry_defaults["y_offset"],  # type: ignore[assignment]
+    rtol: float = parsers.geometry_defaults["rtol"],  # type: ignore[assignment]
+    atol: float = parsers.geometry_defaults["atol"],  # type: ignore[assignment]
 ) -> None:
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
@@ -144,9 +144,9 @@ def _rename_and_sweep(
     surface: int,
     part_name: str,
     center: tuple[float, float, float] | numpy.ndarray = (0.0, 0.0, 0.0),
-    planar: bool = parsers.geometry_defaults["planar"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
-) -> typing.Tuple[int, int]:
+    planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
+) -> tuple[int, int]:
     """Recover surface, sweep part if required, and rename surface/volume by part name.
 
     Hyphens are replaced by underscores to make the ACIS engine happy.
@@ -188,11 +188,11 @@ def cylinder(
     inner_radius: float,
     outer_radius: float,
     height: float,
-    output_file: str,
-    model_name: str = parsers.geometry_defaults["model_name"],
-    part_name: str = parsers.cylinder_defaults["part_name"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
-    y_offset: float = parsers.cylinder_defaults["y_offset"],
+    output_file: str | pathlib.Path,
+    model_name: str = parsers.geometry_defaults["model_name"],  # type: ignore[assignment]
+    part_name: str = parsers.cylinder_defaults["part_name"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.cylinder_defaults["y_offset"],  # type: ignore[assignment]
 ) -> None:
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry.
 
@@ -234,13 +234,13 @@ def cylinder(
 def sphere(
     inner_radius: float,
     outer_radius: float,
-    output_file: str,
-    input_file: str = parsers.sphere_defaults["input_file"],
-    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],
-    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
-    y_offset: float = parsers.sphere_defaults["y_offset"],
-    model_name: str = parsers.sphere_defaults["model_name"],
-    part_name: str = parsers.sphere_defaults["part_name"],
+    output_file: str | pathlib.Path,
+    input_file: str | pathlib.Path | None = parsers.sphere_defaults["input_file"],  # type: ignore[assignment]
+    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.sphere_defaults["y_offset"],  # type: ignore[assignment]
+    model_name: str = parsers.sphere_defaults["model_name"],  # type: ignore[assignment]
+    part_name: str = parsers.sphere_defaults["part_name"],  # type: ignore[assignment]
 ) -> None:
     """Create a sphere geometry with file I/O handling.
 
@@ -305,10 +305,10 @@ def sphere(
 def _sphere(
     inner_radius: float,
     outer_radius: float,
-    quadrant: str = parsers.sphere_defaults["quadrant"],
-    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
-    center: tuple[float, float] = parsers.sphere_defaults["center"],
-    part_name: str = parsers.sphere_defaults["part_name"],
+    quadrant: str = parsers.sphere_defaults["quadrant"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],  # type: ignore[assignment]
+    center: tuple[float, float] = parsers.sphere_defaults["center"],  # type: ignore[assignment]
+    part_name: str = parsers.sphere_defaults["part_name"],  # type: ignore[assignment]
 ) -> None:
     """Create a sphere geometry without file I/O handling.
 
@@ -347,7 +347,9 @@ def _sphere(
 
 
 def _create_arc_from_coordinates(
-    center: tuple[float, float, float], point1: tuple[float, float, float], point2: tuple[float, float, float]
+    center: tuple[float, float, float] | numpy.ndarray,
+    point1: tuple[float, float, float] | numpy.ndarray,
+    point2: tuple[float, float, float] | numpy.ndarray,
 ) -> int:
     """Create a circle arc Gmsh object from center and points on the curve.
 
@@ -377,13 +379,13 @@ def sets(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
 
 # Argument(s) retained for compatibility with ``_cubit_python.mesh`` API
 def mesh(
-    input_file: str,
+    input_file: str | pathlib.Path,
     element_type: str,  # noqa: ARG001
-    output_file: str | None = parsers.mesh_defaults["output_file"],
-    model_name: str | None = parsers.mesh_defaults["model_name"],  # noqa: ARG001
-    part_name: str | None = parsers.mesh_defaults["part_name"],  # noqa: ARG001
-    global_seed: float | None = parsers.mesh_defaults["global_seed"],
-    edge_seeds: tuple[str, int] | None = parsers.mesh_defaults["edge_seeds"],  # noqa: ARG001
+    output_file: str | pathlib.Path | None = parsers.mesh_defaults["output_file"],  # type: ignore[assignment]
+    model_name: str | None = parsers.mesh_defaults["model_name"],  # type: ignore[assignment] # noqa: ARG001
+    part_name: str | None = parsers.mesh_defaults["part_name"],  # type: ignore[assignment] # noqa: ARG001
+    global_seed: float = parsers.mesh_defaults["global_seed"],  # type: ignore[assignment]
+    edge_seeds: typing.Sequence[tuple[str, str | int | float]] | None = parsers.mesh_defaults["edge_seeds"],  # type: ignore[assignment] # noqa: ARG001
 ) -> None:
     """Mesh Gmsh physical entities by part name.
 
@@ -439,13 +441,13 @@ def export(*args, **kwargs) -> typing.NoReturn:  # noqa: ARG001
 
 
 def image(
-    input_file: str,
-    output_file: str,
-    x_angle: float = parsers.image_defaults["x_angle"],
-    y_angle: float = parsers.image_defaults["y_angle"],
-    z_angle: float = parsers.image_defaults["z_angle"],
-    # Argument retained for compatibility with ``_cubit_python.image`` API
-    image_size: tuple[int, int] = parsers.image_defaults["image_size"],  # noqa: ARG001
+    input_file: str | pathlib.Path,
+    output_file: str | pathlib.Path,
+    x_angle: float = parsers.image_defaults["x_angle"],  # type: ignore[assignment]
+    y_angle: float = parsers.image_defaults["y_angle"],  # type: ignore[assignment]
+    z_angle: float = parsers.image_defaults["z_angle"],  # type: ignore[assignment]
+    # ARG001: Argument retained for compatibility with ``_cubit_python.image`` API
+    image_size: tuple[int, int] = parsers.image_defaults["image_size"],  # type: ignore[assignment] # noqa: ARG001
 ) -> None:
     """Open a Gmsh geometry or mesh file and save an image.
 

@@ -28,6 +28,7 @@ requirements:
     - pip
     - pytest
     - lazy_loader >=0.4
+    - matplotlib-base >=3
     - scons >=4.6
     - setuptools >=77
     - setuptools_scm >=8
@@ -41,6 +42,7 @@ requirements:
   run:
     - python >={{ python_min }}
     - lazy_loader >=0.4
+    - matplotlib-base >=3
     - scons >=4.6
     - waves >=0.13
 

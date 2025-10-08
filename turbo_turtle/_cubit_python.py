@@ -32,18 +32,18 @@ def cubit_command_or_exception(command: str) -> bool:
 
 
 def geometry(
-    input_file: str,
-    output_file: str,
-    planar: bool = parsers.geometry_defaults["planar"],
-    part_name: str = parsers.geometry_defaults["part_name"],
-    unit_conversion: float = parsers.geometry_defaults["unit_conversion"],
-    euclidean_distance: float = parsers.geometry_defaults["euclidean_distance"],
-    delimiter: str = parsers.geometry_defaults["delimiter"],
-    header_lines: int = parsers.geometry_defaults["header_lines"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
-    y_offset: float = parsers.geometry_defaults["y_offset"],
-    rtol: float = parsers.geometry_defaults["rtol"],
-    atol: float = parsers.geometry_defaults["atol"],
+    input_file: typing.Sequence[str | pathlib.Path],
+    output_file: str | pathlib.Path,
+    planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
+    part_name: str = parsers.geometry_defaults["part_name"],  # type: ignore[assignment]
+    unit_conversion: float = parsers.geometry_defaults["unit_conversion"],  # type: ignore[assignment]
+    euclidean_distance: float = parsers.geometry_defaults["euclidean_distance"],  # type: ignore[assignment]
+    delimiter: str = parsers.geometry_defaults["delimiter"],  # type: ignore[assignment]
+    header_lines: int = parsers.geometry_defaults["header_lines"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.geometry_defaults["y_offset"],  # type: ignore[assignment]
+    rtol: float = parsers.geometry_defaults["rtol"],  # type: ignore[assignment]
+    atol: float = parsers.geometry_defaults["atol"],  # type: ignore[assignment]
 ) -> None:
     """Create 2D planar, 2D axisymmetric, or 3D revolved geometry from an array of XY coordinates.
 
@@ -160,7 +160,9 @@ def create_spline_from_coordinates(  # noqa: ANN202
 
 # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
 def create_arc_from_coordinates(  # noqa: ANN202
-    center: tuple[float, float, float], point1: tuple[float, float, float], point2: tuple[float, float, float]
+    center: tuple[float, float, float] | numpy.ndarray,
+    point1: tuple[float, float, float] | numpy.ndarray,
+    point2: tuple[float, float, float] | numpy.ndarray,
 ):
     """Create a circular arc cubit.Curve object from center and points on the curve.
 
@@ -215,7 +217,7 @@ def create_surface_from_coordinates(  # noqa: ANN202
     return cubit.create_surface(curves)
 
 
-def _surface_numbers(surfaces: list) -> list[int]:
+def _surface_numbers(surfaces: typing.Sequence | numpy.ndarray) -> list[int]:
     """Return a list of surface IDs from the provided list of surface objects.
 
     :param surfaces: list of Cubit surface objects
@@ -278,7 +280,7 @@ def _surfaces_by_vector(
 
 
 # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
-def _create_volume_from_surfaces(surfaces: list, keep: bool = True):  # noqa: ANN202
+def _create_volume_from_surfaces(surfaces: typing.Sequence | numpy.ndarray, keep: bool = True):  # noqa: ANN202
     """Create a volume from the provided surfaces. Surfaces must create a closed volume.
 
     :param surfaces: List of Cubit surface objects
@@ -306,8 +308,8 @@ def _rename_and_sweep(  # noqa: ANN202
     surface,  # noqa: ANN001
     part_name: str,
     center: tuple[float, float, float] | numpy.ndarray = (0.0, 0.0, 0.0),
-    planar: bool = parsers.geometry_defaults["planar"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
+    planar: bool = parsers.geometry_defaults["planar"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
 ):
     """Recover body or volume from body surface, sweep part if required, and rename body/volume by part name.
 
@@ -365,10 +367,10 @@ def cylinder(
     inner_radius: float,
     outer_radius: float,
     height: float,
-    output_file: str,
-    part_name: str = parsers.cylinder_defaults["part_name"],
-    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],
-    y_offset: float = parsers.cylinder_defaults["y_offset"],
+    output_file: str | pathlib.Path,
+    part_name: str = parsers.cylinder_defaults["part_name"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.geometry_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.cylinder_defaults["y_offset"],  # type: ignore[assignment]
 ) -> None:
     """Accept dimensions of a right circular cylinder and generate an axisymmetric revolved geometry.
 
@@ -396,12 +398,12 @@ def cylinder(
 def sphere(
     inner_radius: float,
     outer_radius: float,
-    output_file: str,
-    input_file: str = parsers.sphere_defaults["input_file"],
-    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],
-    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
-    y_offset: float = parsers.sphere_defaults["y_offset"],
-    part_name: str = parsers.sphere_defaults["part_name"],
+    output_file: str | pathlib.Path,
+    input_file: str | pathlib.Path | None = parsers.sphere_defaults["input_file"],  # type: ignore[assignment]
+    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],  # type: ignore[assignment]
+    y_offset: float = parsers.sphere_defaults["y_offset"],  # type: ignore[assignment]
+    part_name: str = parsers.sphere_defaults["part_name"],  # type: ignore[assignment]
 ) -> None:
     """Create a sphere geometry with file I/O handling.
 
@@ -453,10 +455,10 @@ def sphere(
 def _sphere(
     inner_radius: float,
     outer_radius: float,
-    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],
-    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],
-    center: tuple[float, float] = parsers.sphere_defaults["center"],
-    part_name: str = parsers.sphere_defaults["part_name"],
+    quadrant: typing.Literal["upper", "lower", "both"] = parsers.sphere_defaults["quadrant"],  # type: ignore[assignment]
+    revolution_angle: float = parsers.sphere_defaults["revolution_angle"],  # type: ignore[assignment]
+    center: tuple[float, float] = parsers.sphere_defaults["center"],  # type: ignore[assignment]
+    part_name: str = parsers.sphere_defaults["part_name"],  # type: ignore[assignment]
 ) -> None:
     """Create a sphere geometry without file I/O.
 
@@ -630,13 +632,13 @@ def create_pyramid_partitions(
 
 
 def partition(
-    input_file: str,
-    output_file: str = parsers.partition_defaults["output_file"],
-    center: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["center"],
-    xvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["xvector"],
-    zvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["zvector"],
-    part_name: list[str] = parsers.partition_defaults["part_name"],
-    big_number: float = parsers.partition_defaults["big_number"],
+    input_file: str | pathlib.Path,
+    output_file: str | pathlib.Path = parsers.partition_defaults["output_file"],  # type: ignore[assignment]
+    center: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["center"],  # type: ignore[assignment]
+    xvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["xvector"],  # type: ignore[assignment]
+    zvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["zvector"],  # type: ignore[assignment]
+    part_name: list[str] = parsers.partition_defaults["part_name"],  # type: ignore[assignment]
+    big_number: float = parsers.partition_defaults["big_number"],  # type: ignore[assignment]
 ) -> None:
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
@@ -663,11 +665,11 @@ def partition(
 
 
 def _partition(
-    center: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["center"],
-    xvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["xvector"],
-    zvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["zvector"],
-    part_name: list[str] = parsers.partition_defaults["part_name"],
-    big_number: float = parsers.partition_defaults["big_number"],
+    center: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["center"],  # type: ignore[assignment]
+    xvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["xvector"],  # type: ignore[assignment]
+    zvector: tuple[float, float, float] | numpy.ndarray = parsers.partition_defaults["zvector"],  # type: ignore[assignment]
+    part_name: list[str] = parsers.partition_defaults["part_name"],  # type: ignore[assignment]
+    big_number: float = parsers.partition_defaults["big_number"],  # type: ignore[assignment]
 ) -> None:
     """Partition Cubit files with pyramidal body intersections defined by a cube's center and vertices and with local
     coordinate planes.
@@ -693,7 +695,7 @@ def _partition(
         imprint_and_merge([current_part_name])
 
 
-def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
+def _set_from_mask(feature: str, name_mask: typing.Sequence[tuple[str, str | int]]) -> None:
     """Create named features, with associated node and sidesets, by feature ID.
 
     :param feature: Cubit feature name
@@ -714,7 +716,7 @@ def _set_from_mask(feature: str, name_mask: typing.Tuple[str, str]) -> None:
             cubit_command_or_exception(f'sideset {sideset_id} name "{name}"')
 
 
-def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
+def _feature_seeds(feature: str, name_number: typing.Sequence[tuple[str, str | int | float]]) -> None:
     """Create mesh seeds on features by name.
 
     If the number is an integer, seed by interval. If the number is a float, seed by size
@@ -723,11 +725,11 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
     :param name_number: Feature seed tuples (name, number)
     """
     names, numbers = zip(*name_number, strict=True)
-    numbers = [float(number) for number in numbers]
-    positive_numbers = [number > 0.0 for number in numbers]
+    float_numbers = [float(number) for number in numbers]
+    positive_numbers = [number > 0.0 for number in float_numbers]
     if not all(positive_numbers):
         raise ValueError("Feature seeds must be positive numbers")
-    for name, number in zip(names, numbers, strict=True):
+    for name, number in zip(names, float_numbers, strict=True):
         feature_ids = _utilities.character_delimited_list(cubit.get_all_ids_from_name(feature, name))
         if number.is_integer():
             cubit_command_or_exception(f"{feature} {feature_ids} interval {int(number)}")
@@ -736,9 +738,9 @@ def _feature_seeds(feature: str, name_number: typing.Tuple[str, str]) -> None:
 
 
 def _sets(
-    face_sets: list | None = parsers.sets_defaults["face_sets"],
-    edge_sets: list | None = parsers.sets_defaults["edge_sets"],
-    vertex_sets: list | None = parsers.sets_defaults["vertex_sets"],
+    face_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["face_sets"],  # type: ignore[assignment]
+    edge_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["edge_sets"],  # type: ignore[assignment]
+    vertex_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["vertex_sets"],  # type: ignore[assignment]
 ) -> None:
     """Create named features, with associated node and sidesets, by feature ID.
 
@@ -757,12 +759,12 @@ def _sets(
 
 
 def sets(
-    input_file: str,
-    output_file: str | None = parsers.sets_defaults["output_file"],
+    input_file: str | pathlib.Path,
+    output_file: str | pathlib.Path | None = parsers.sets_defaults["output_file"],
     part_name: str | None = parsers.sets_defaults["part_name"],
-    face_sets: tuple[str, int] = parsers.sets_defaults["face_sets"],
-    edge_sets: tuple[str, int] = parsers.sets_defaults["edge_sets"],
-    vertex_sets: list | None = parsers.sets_defaults["vertex_sets"],
+    face_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["face_sets"],  # type: ignore[assignment]
+    edge_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["edge_sets"],  # type: ignore[assignment]
+    vertex_sets: typing.Sequence[tuple[str, str | int]] | None = parsers.sets_defaults["vertex_sets"],  # type: ignore[assignment]
 ) -> None:
     """Create Cubit sidesets and nodesets from feature numbers.
 
@@ -790,12 +792,12 @@ def sets(
 
 
 def mesh(
-    input_file: str,
+    input_file: str | pathlib.Path,
     element_type: str,
-    output_file: str | None = parsers.mesh_defaults["output_file"],
-    part_name: str | None = parsers.mesh_defaults["part_name"],
-    global_seed: float | None = parsers.mesh_defaults["global_seed"],
-    edge_seeds: tuple[str, int] | None = parsers.mesh_defaults["edge_seeds"],
+    output_file: str | pathlib.Path | None = parsers.mesh_defaults["output_file"],  # type: ignore[assignment]
+    part_name: str | None = parsers.mesh_defaults["part_name"],  # type: ignore[assignment]
+    global_seed: float = parsers.mesh_defaults["global_seed"],  # type: ignore[assignment]
+    edge_seeds: typing.Sequence[tuple[str, str | int | float]] | None = parsers.mesh_defaults["edge_seeds"],  # type: ignore[assignment]
 ) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name.
 
@@ -881,7 +883,12 @@ def _mesh_multiple_volumes(volumes: list, global_seed: float, element_type: str 
             _mesh_volume(volume, global_seed, element_type=element_type)
 
 
-def _mesh(element_type: str, part_name: str, global_seed: float, edge_seeds: tuple[str, int]) -> None:
+def _mesh(
+    element_type: str,
+    part_name: str,
+    global_seed: float,
+    edge_seeds: typing.Sequence[tuple[str, str | int | float]] | None,
+) -> None:
     """Mesh Cubit volumes and sheet bodies by part/volume name.
 
     :param element_type: Cubit scheme "trimesh" or "tetmesh". Else ignored.
@@ -889,7 +896,7 @@ def _mesh(element_type: str, part_name: str, global_seed: float, edge_seeds: tup
     :param global_seed: The global mesh seed size
     :param edge_seeds: Edge seed tuples (name, number)
     """
-    parts = _get_volumes_from_name(part_name)
+    parts = _get_volumes_from_name([part_name])
     element_type = element_type.lower()
     # TODO: Cubit can support more than just edge seeds
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
@@ -898,7 +905,7 @@ def _mesh(element_type: str, part_name: str, global_seed: float, edge_seeds: tup
     _mesh_multiple_volumes(parts, global_seed, element_type=element_type)
 
 
-def merge(input_file: list[str], output_file: str) -> None:
+def merge(input_file: typing.Sequence[str | pathlib.Path], output_file: str | pathlib.Path) -> None:
     """Merge Cubit ``*.cub`` files with forced unique block IDs and save to output file.
 
     :param input_file: List of Cubit ``*.cub`` file(s) to merge
@@ -913,11 +920,11 @@ def merge(input_file: list[str], output_file: str) -> None:
 
 
 def export(
-    input_file: str,
-    part_name: list[str] = parsers.export_defaults["part_name"],
-    element_type: list[str] = parsers.export_defaults["element_type"],
-    destination: str = parsers.export_defaults["destination"],
-    output_type: typing.Literal["abaqus", "genesis", "genesis-normal", "genesis-hdf5"] = parsers.export_defaults[
+    input_file: str | pathlib.Path,
+    part_name: list[str] = parsers.export_defaults["part_name"],  # type: ignore[assignment]
+    element_type: list[str | None] = parsers.export_defaults["element_type"],  # type: ignore[assignment]
+    destination: str | pathlib.Path = parsers.export_defaults["destination"],  # type: ignore[assignment]
+    output_type: typing.Literal["abaqus", "genesis", "genesis-normal", "genesis-hdf5"] = parsers.export_defaults[  # type: ignore[assignment]
         "output_type"
     ],
 ) -> None:
@@ -938,7 +945,7 @@ def export(
 
     cubit_command_or_exception(f"open '{input_file}'")
 
-    if output_type.lower() == "abaqus":
+    if output_type == "abaqus":
         _export_abaqus_list(part_name, element_type, destination)
     elif output_type.lower().startswith("genesis"):
         output_file = destination / input_file.with_suffix(".g").name
@@ -975,7 +982,7 @@ def _create_volume_name_block(name: str) -> int:
 
     :returns: New block ID
     """
-    volumes = _get_volumes_from_name(name)
+    volumes = _get_volumes_from_name([name])
     new_block_id = _create_new_block(volumes)
     cubit_command_or_exception(f"block {new_block_id} name '{name}'")
     return new_block_id
@@ -999,7 +1006,7 @@ def _set_genesis_output_type(output_type: typing.Literal["genesis", "genesis-nor
 def _export_genesis(
     output_file: pathlib.Path,
     part_name: list[str],
-    element_type: list[str],
+    element_type: list[str | None],
     output_type: typing.Literal["genesis", "genesis-normal", "genesis-hdf5"] = "genesis",
 ) -> None:
     """Export all volumes with part name prefix to the output file.
@@ -1021,7 +1028,7 @@ def _export_genesis(
     cubit_command_or_exception(f"export mesh '{output_file}' block {block_string} overwrite")
 
 
-def _export_abaqus_list(part_name: list[str], element_type: list[str], destination: pathlib.Path) -> None:
+def _export_abaqus_list(part_name: list[str], element_type: list[str | None], destination: pathlib.Path) -> None:
     """Export one Abaqus orphan mesh per part in the destination directory.
 
     :param part_name: list of part/volume names to create as blocks from all volumes with a matching prefix
@@ -1047,13 +1054,13 @@ def _export_abaqus(output_file: pathlib.Path, part_name: str) -> None:
 
 
 def image(
-    input_file: str,
-    output_file: str,
+    input_file: str | pathlib.Path,
+    output_file: str | pathlib.Path,
     cubit_command: str,
-    x_angle: float = parsers.image_defaults["x_angle"],
-    y_angle: float = parsers.image_defaults["y_angle"],
-    z_angle: float = parsers.image_defaults["z_angle"],
-    image_size: tuple[int, int] = parsers.image_defaults["image_size"],
+    x_angle: float = parsers.image_defaults["x_angle"],  # type: ignore[assignment]
+    y_angle: float = parsers.image_defaults["y_angle"],  # type: ignore[assignment]
+    z_angle: float = parsers.image_defaults["z_angle"],  # type: ignore[assignment]
+    image_size: tuple[int, int] = parsers.image_defaults["image_size"],  # type: ignore[assignment]
 ) -> None:
     """Open a Cubit ``*.cub`` file and save an image.
 

@@ -93,6 +93,16 @@ aea-style:
   script:
     - scons style
 
+aea-static-type-check:
+  extends:
+    - .nix-job-environment
+    - .aea-tags
+  stage: test
+  variables:
+    environment_file: "static-type-check.yml"
+  script:
+    - scons mypy
+
 aea-conda-build-internal:
   extends:
     - .nix-job-environment

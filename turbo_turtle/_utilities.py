@@ -24,8 +24,8 @@ class NamedTemporaryFileCopy:
     :param input_file: The input file to copy into a temporary file
     """
 
-    def __init__(self, input_file: str, *args, **kwargs) -> None:
-        self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)
+    def __init__(self, input_file: str | pathlib.Path, *args, **kwargs) -> None:
+        self.temporary_file = tempfile.NamedTemporaryFile(*args, delete=False, **kwargs)  # type: ignore[call-overload]
         shutil.copyfile(input_file, self.temporary_file.name)
 
     def __enter__(self) -> tempfile._TemporaryFileWrapper:
@@ -36,9 +36,10 @@ class NamedTemporaryFileCopy:
     ) -> bool | None:
         self.temporary_file.close()
         pathlib.Path(self.temporary_file.name).unlink()
+        return None
 
 
-def search_commands(options: typing.Iterable[str]) -> typing.Union[str, None]:
+def search_commands(options: typing.Iterable[str]) -> str | None:
     """Return the first found command in the list of options. Return None if none are found.
 
     :param options: executable path(s) to test
@@ -87,7 +88,7 @@ def cubit_os_bin() -> str:
     return bin_directory
 
 
-def find_cubit_bin(options: typing.Iterable[str], bin_directory: typing.Optional[str] = None) -> pathlib.Path:
+def find_cubit_bin(options: typing.Iterable[str], bin_directory: str | None = None) -> pathlib.Path:
     """Search for the bin directory provided a few options for the Cubit executable.
 
     Recommend first checking to see if cubit will import.
@@ -164,7 +165,7 @@ def run_command(command: str) -> None:
         raise RuntimeError(err.output.decode()) from err
 
 
-def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
+def set_wrappers_and_command(args: argparse.Namespace) -> tuple[types.ModuleType, pathlib.Path | None]:
     """Read an argument namespace and set the wrappers and command appropriately.
 
     :param args: namespace of parsed arguments from :meth:`turbo_turtle._main.get_parser`
@@ -173,7 +174,7 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
     """
     keys = vars(args).keys()
     if "backend" in keys and args.backend == "gmsh":
-        command = "unused"
+        command = None
         from turbo_turtle import _gmsh_wrappers as _wrappers  # noqa: PLC0415
     elif "backend" in keys and args.backend == "cubit":
         command = find_command_or_exit(args.cubit_command)
@@ -185,17 +186,17 @@ def set_wrappers_and_command(args: argparse.Namespace) -> typing.Tuple:
 
         if importlib.util.find_spec("cubit") is None:
             sys.path.append(str(cubit_bin))
-        from turbo_turtle import _cubit_wrappers as _wrappers  # noqa: PLC0415
+        from turbo_turtle import _cubit_wrappers as _wrappers  # type: ignore[no-redef] # noqa: PLC0415
     elif "abaqus_command" in keys:
         command = find_command_or_exit(args.abaqus_command)
-        from turbo_turtle import _abaqus_wrappers as _wrappers  # noqa: PLC0415
+        from turbo_turtle import _abaqus_wrappers as _wrappers  # type: ignore[no-redef] # noqa: PLC0415
 
     return _wrappers, command
 
 
 def construct_append_options(
     option: str,
-    array: typing.Iterable[typing.Tuple],
+    array: typing.Sequence[typing.Sequence],
 ) -> str:
     """Construct a command string to match the argparse append action.
 

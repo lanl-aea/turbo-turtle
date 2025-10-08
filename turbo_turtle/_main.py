@@ -1,6 +1,5 @@
 import argparse
 import sys
-import typing
 
 from turbo_turtle import __version__, _docs, _fetch, _settings, _utilities, geometry_xyplot
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers
@@ -23,7 +22,7 @@ def _print_abaqus_path_location() -> None:
         print(_settings._abaqus_python_parent_abspath)
 
 
-def add_abaqus_and_cubit(parsers: typing.List[argparse.ArgumentParser]) -> None:
+def add_abaqus_and_cubit(parsers: list[argparse.ArgumentParser]) -> None:
     """Add the Abaqus and Cubit command arguments to each parser in the parsers list.
 
     :param list parsers: List of parsers to run ``add_argument`` for the command options
@@ -248,7 +247,7 @@ def get_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     parser = get_parser()
-    subcommand_list = parser._subparsers._group_actions[0].choices.keys()
+    subcommand_list = parser._subparsers._group_actions[0].choices.keys()  # type: ignore[union-attr]
     args = parser.parse_args()
 
     try:
