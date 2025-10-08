@@ -11,11 +11,11 @@ title: "turbo-turtle"
 doi: 10.5281/zenodo.13787499
 url: "https://github.com/lanl-aea/turbo-turtle"
 license: BSD-3-Clause
-date-released: 2025-05-21
+date-released: 2025-10-08
 identifiers:
   - description: "All versions"
     type: doi
     value: 10.5281/zenodo.13787499
-  - description: "1.2.6"
+  - description: "1.2.7"
     type: doi
-    value: 10.5281/zenodo.15484840
+    value: 10.5281/zenodo.16538880

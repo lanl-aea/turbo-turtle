@@ -8,6 +8,10 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+*******************
+v1.2.8 (2025-10-08)
+*******************
+
 Documentation
 =============
 - Improved type annotations (:issue:`258`, :merge:`261`, :issue:`261`, :merge:`263`). By `Kyle Brindley`_.
