@@ -1,6 +1,5 @@
 import argparse
 import sys
-import typing
 
 from turbo_turtle import __version__, _docs, _fetch, _settings, _utilities, geometry_xyplot
 from turbo_turtle._abaqus_python.turbo_turtle_abaqus import parsers

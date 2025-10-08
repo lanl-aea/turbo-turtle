@@ -119,9 +119,7 @@ def setup_sphere_commands(
     return pytest.param(commands, marks=getattr(pytest.mark, backend))
 
 
-def setup_geometry_xyplot_commands(
-    model: str, input_file: list[pathlib.Path], backend: str
-) -> list[string.Template]:
+def setup_geometry_xyplot_commands(model: str, input_file: list[pathlib.Path], backend: str) -> list[string.Template]:
     """Return system test geometry xyplot commands."""
     part_name = _utilities.character_delimited_list(csv.stem for csv in input_file)
     input_file = _utilities.character_delimited_list(input_file)

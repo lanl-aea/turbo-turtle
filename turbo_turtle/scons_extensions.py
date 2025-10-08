@@ -1,7 +1,5 @@
 """Provide common SCons builders wrapping the Turbo-Turtle command-line interface."""
 
-import typing
-
 import SCons.Builder
 from waves.scons_extensions import first_target_emitter
 
