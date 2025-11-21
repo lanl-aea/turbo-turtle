@@ -158,7 +158,9 @@ def run_command(command: str) -> None:
 
     :param command: String to run on the shell
     """
-    command_list = shlex.split(command)
+    system = platform.system().lower()
+    posix = False if system == "windows" else True
+    command_list = shlex.split(command, posix=posix)
     try:
         subprocess.check_output(command_list)
     except subprocess.CalledProcessError as err:
