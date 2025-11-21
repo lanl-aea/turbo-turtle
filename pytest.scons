@@ -86,13 +86,13 @@ for extra_markers, alias_suffix, environments in matrix:
                 (
                     '${pytest_command} -v --no-showlocals -m "systemtest ${extra_markers}" --tb=short --cache-clear '
                     "--cov --cov-report=xml:${TARGET.abspath} "
-                    "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
+                    "${abaqus_command} ${cubit_command}"
                 ),
             ],
             pytest_command=pytest_command,
             extra_markers=extra_markers,
-            abaqus_command=environment["abaqus"] if "abaqus" in environment else None,
-            cubit_command=environment["cubit"] if "cubit" in environment else None,
+            abaqus_command=f"--abaqus-command={environment["abaqus"]}" if "abaqus" in environment else "",
+            cubit_command=f"--cubit-command={environment["cubit"]}" if "cubit" in environment else "",
         )
         environment.Alias("systemtest", targets)
         environment.Alias(f"systemtest_{alias_suffix}", targets)

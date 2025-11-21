@@ -11,6 +11,7 @@ available substitutions.
 
 import os
 import pathlib
+import platform
 import shlex
 import string
 import subprocess
@@ -80,30 +81,30 @@ def setup_sphere_commands(
 
     commands = [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             f"--inner-radius {inner_radius} --outer-radius {outer_radius} --output-file {model} "
             f"--model-name {model.stem} --part-name {model.stem} --quadrant {quadrant} "
             f"--revolution-angle {angle} --y-offset {y_offset} {backend_option}"
         ),
         string.Template(
-            "${turbo_turtle_command} partition --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} partition ${abaqus_command} ${cubit_command} "
             f"--input-file {model} --output-file {model} "
             f"--model-name {model.stem} --part-name {model.stem} --center {center} "
             f"--xvector {xvector} --zvector {zvector} {backend_option}"
         ),
         string.Template(
-            "${turbo_turtle_command} mesh --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} mesh ${abaqus_command} ${cubit_command} "
             f"--input-file {model} --output-file {model} "
             f"--model-name {model.stem} --part-name {model.stem} --global-seed 0.15 "
             f"--element-type {element_type} {backend_option}"
         ),
         string.Template(
-            "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} image ${abaqus_command} ${cubit_command} "
             f"--input-file {model} --output-file {image} "
             f"--model-name {model.stem} --part-name {model.stem} {backend_option}"
         ),
         string.Template(
-            "${turbo_turtle_command} export --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} export ${abaqus_command} ${cubit_command} "
             f"--input-file {model} --model-name {model.stem} --part-name {model.stem} "
             f"--element-type {element_replacement} --destination . "
             f"--assembly {assembly} --output-type {output_type} {backend_option}"
@@ -126,7 +127,7 @@ def setup_geometry_xyplot_commands(model: str, input_file: list[pathlib.Path], b
     commands = [
         string.Template(
             "${turbo_turtle_command} geometry-xyplot "
-            "--abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${abaqus_command} ${cubit_command} "
             f"--input-file {input_file} --output-file {model}.png --part-name {part_name} "
             f"--backend {backend}"
         )
@@ -152,7 +153,7 @@ def setup_geometry_commands(
     backend_option = f"--backend {backend}" if backend is not None else ""
     commands = [
         string.Template(
-            "${turbo_turtle_command} geometry --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} geometry ${abaqus_command} ${cubit_command} "
             f"--input-file {input_file} --model-name {model.stem} "
             f"--part-name {part_name} --output-file {model} --revolution-angle {revolution_angle} "
             f"--y-offset {y_offset} {backend_option}"
@@ -192,12 +193,12 @@ def setup_sets_commands(
     backend_option = f"--backend {backend}" if backend is not None else ""
     sets_commands = [
         string.Template(
-            "${turbo_turtle_command} sets --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sets ${abaqus_command} ${cubit_command} "
             f"--input-file {model} --model-name {model.stem} "
             f"--part-name {part_name} --output-file {model} {face_sets} {edge_sets} {backend_option}"
         ),
         string.Template(
-            "${turbo_turtle_command} mesh --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} mesh ${abaqus_command} ${cubit_command} "
             f"--input-file {model} --model-name {model.stem} "
             f"--part-name {part_name} --output-file {model} --global-seed 1. --element-type {element_type} "
             f"{edge_seeds} {backend_option}"
@@ -217,7 +218,7 @@ def setup_cylinder_commands(model: str, revolution_angle: float, backend: str) -
     backend_option = f"--backend {backend}" if backend is not None else ""
     commands = [
         string.Template(
-            "${turbo_turtle_command} cylinder --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} cylinder ${abaqus_command} ${cubit_command} "
             f"--model-name {model.stem} --part-name {model.stem} "
             f"--output-file {model} --revolution-angle {revolution_angle} "
             f"--inner-radius 1 --outer-radius 2 --height 1 {backend_option}"
@@ -274,7 +275,7 @@ def setup_merge_commands(part_name: str, backend: str) -> list[string.Template]:
     part_name = f"--part-name {part_name}" if part_name else ""
     backend_option = f"--backend {backend}" if backend is not None else ""
     merge_command = string.Template(
-        "${turbo_turtle_command} merge --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+        "${turbo_turtle_command} merge ${abaqus_command} ${cubit_command} "
         f"--input-file {sphere_model} {geometry_model} "
         f"--output-file {output_file} --merged-model-name merge "
         f"--model-name merge-multi-part merge-sphere {part_name} {backend_option}"
@@ -294,22 +295,22 @@ commands_list.append(
         [
             string.Template(f"${{abaqus_command}} cae -noGui {legacy_geometry_file}"),
             string.Template(
-                "${turbo_turtle_command} partition --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+                "${turbo_turtle_command} partition ${abaqus_command} ${cubit_command} "
                 f"--input-file {name}.cae --output-file {name}.cae --model-name {name} "
                 f"--part-name seveneigths-sphere --center 0 0 0 --xvector 1 0 0 --zvector 0 0 1"
             ),
             string.Template(
-                "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+                "${turbo_turtle_command} image ${abaqus_command} ${cubit_command} "
                 f"--input-file {name}.cae --model-name {name} "
                 f"--output-file seveneigths-sphere.png --part-name seveneigths-sphere"
             ),
             string.Template(
-                "${turbo_turtle_command} partition --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+                "${turbo_turtle_command} partition ${abaqus_command} ${cubit_command} "
                 f"--input-file {name}.cae --output-file {name}.cae --model-name {name} --part-name swiss-cheese "
                 "--center 0 0 0 --xvector 1 0 0 --zvector 0 0 1"
             ),
             string.Template(
-                "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+                "${turbo_turtle_command} image ${abaqus_command} ${cubit_command} "
                 f"--input-file {name}.cae --model-name {name} --output-file swiss-cheese.png --part-name swiss-cheese"
             ),
         ],
@@ -681,40 +682,40 @@ commands_list.extend([setup_cylinder_commands(*test) for test in cylinder_tests]
 gmsh_sphere_2D = [  # noqa: N816
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. --backend gmsh"
         )
     ],
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. "
             "--backend gmsh --quadrant upper"
         ),
     ],
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=0. "
             "--backend gmsh --quadrant lower"
         ),
     ],
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. --backend gmsh"
         ),
     ],
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. "
             "--backend gmsh --quadrant upper"
         ),
     ],
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=0. "
             "--backend gmsh --quadrant lower"
         ),
@@ -723,7 +724,7 @@ gmsh_sphere_2D = [  # noqa: N816
 for test in gmsh_sphere_2D:
     test.append(
         string.Template(
-            "${turbo_turtle_command} mesh --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} mesh ${abaqus_command} ${cubit_command} "
             "--input-file sphere.step --output-file sphere.msh --global-seed 1. --element-type unused "
             "--backend gmsh"
         )
@@ -731,13 +732,13 @@ for test in gmsh_sphere_2D:
     if not missing_display:
         test.append(
             string.Template(
-                "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+                "${turbo_turtle_command} image ${abaqus_command} ${cubit_command} "
                 "--input-file sphere.step --output-file sphere.step.png --x-angle 0 --y-angle 0 --backend gmsh"
             )
         )
         test.append(
             string.Template(
-                "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+                "${turbo_turtle_command} image ${abaqus_command} ${cubit_command} "
                 "--input-file sphere.msh --output-file sphere.msh.png --x-angle 0 --y-angle 0 --backend gmsh"
             )
         )
@@ -745,21 +746,21 @@ for test in gmsh_sphere_2D:
 gmsh_sphere_3D = [  # noqa: N816
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. "
             "--backend gmsh"
         ),
     ],
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. "
             "--backend gmsh --quadrant upper"
         ),
     ],
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 1. --outer-radius 2. --output-file sphere.step --revolution-angle=360. "
             "--backend gmsh --quadrant lower"
         ),
@@ -769,14 +770,14 @@ gmsh_sphere_3D = [  # noqa: N816
     # Undo changes in commit 72579ae84a82071cee349b05046cabb26f835f55
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. "
             "--backend gmsh --quadrant upper"
         )
     ],
     [
         string.Template(
-            "${turbo_turtle_command} sphere --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} sphere ${abaqus_command} ${cubit_command} "
             "--inner-radius 0. --outer-radius 1. --output-file sphere.step --revolution-angle=360. "
             "--backend gmsh --quadrant lower"
         )
@@ -785,7 +786,7 @@ gmsh_sphere_3D = [  # noqa: N816
 for test in gmsh_sphere_3D:
     test.append(
         string.Template(
-            "${turbo_turtle_command} mesh --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+            "${turbo_turtle_command} mesh ${abaqus_command} ${cubit_command} "
             "--input-file sphere.step --output-file sphere.msh --global-seed 1. --element-type unused "
             "--backend gmsh"
         )
@@ -793,14 +794,14 @@ for test in gmsh_sphere_3D:
     if not missing_display:
         test.append(
             string.Template(
-                "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+                "${turbo_turtle_command} image ${abaqus_command} ${cubit_command} "
                 "--input-file sphere.step --output-file sphere.step.png --x-angle 45.0 --y-angle -45.0 "
                 "--backend gmsh"
             )
         )
         test.append(
             string.Template(
-                "${turbo_turtle_command} image --abaqus-command ${abaqus_command} --cubit-command ${cubit_command} "
+                "${turbo_turtle_command} image ${abaqus_command} ${cubit_command} "
                 "--input-file sphere.msh --output-file sphere.msh.png --x-angle 45.0 --y-angle -45.0 --backend gmsh"
             )
         )
@@ -870,7 +871,7 @@ def test_require_third_party(
 
     .. code-block::
 
-       pytest --abaqus-command /my/system/abaqus --cubit-command /my/system/cubit
+       pytest /my/system/abaqus /my/system/cubit
 
     :param abaqus_command: string absolute path to Abaqus executable
     :param cubit_command: string absolute path to Cubit executable
@@ -892,7 +893,8 @@ def run_commands(
             command_string = command.substitute(template_substitution)
         else:
             command_string = command
-        command_list = shlex.split(command_string)
+        testing_posix = False if platform.system().lower() == "windows" else True
+        command_list = shlex.split(command_string, posix=testing_posix)
         subprocess.check_output(command_list, env=env, cwd=build_directory).decode("utf-8")
 
 
@@ -907,7 +909,7 @@ project_only_commands_list.append(string.Template("${turbo_turtle_command} fetch
 @pytest.mark.systemtest
 @pytest.mark.parametrize("commands", project_only_commands_list)
 def test_project_shell_commands(
-    abaqus_command: pathlib.Path, cubit_command: pathlib.Path, commands: list[str | string.Template]
+    abaqus_command: list[str], cubit_command: list[str], commands: list[str | string.Template]
 ) -> None:
     """Run the system tests.
 
@@ -917,7 +919,7 @@ def test_project_shell_commands(
 
     .. code-block::
 
-       pytest --abaqus-command /my/system/abaqus --cubit-command /my/system/cubit
+       pytest /my/system/abaqus /my/system/cubit
 
     :param abaqus_command: string absolute path to Abaqus executable
     :param cubit_command: string absolute path to Cubit executable
@@ -925,8 +927,8 @@ def test_project_shell_commands(
     """
     template_substitution = {
         "turbo_turtle_command": turbo_turtle_command,
-        "abaqus_command": abaqus_command,
-        "cubit_command": cubit_command,
+        "abaqus_command": " ".join(f"--abaqus-command={command}" for command in abaqus_command),
+        "cubit_command": " ".join(f"--cubit-command={command}" for command in cubit_command),
     }
     if isinstance(commands, str) or isinstance(commands, string.Template):
         commands = [commands]
