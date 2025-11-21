@@ -819,7 +819,7 @@ commands_list.append(
     pytest.param(
         [
             string.Template(
-                f"scons . --sconstruct={sconstruct} --turbo-turtle-command='${{turbo_turtle_command}}' "
+                f'scons . --sconstruct={sconstruct} --turbo-turtle-command="${{turbo_turtle_command}}" '
                 "${abaqus_command} --backend=abaqus"
             )
         ],
@@ -830,7 +830,7 @@ commands_list.append(
     pytest.param(
         [
             string.Template(
-                f"scons . --sconstruct={sconstruct} --turbo-turtle-command='${{turbo_turtle_command}}' "
+                f'scons . --sconstruct={sconstruct} --turbo-turtle-command="${{turbo_turtle_command}}" '
                 "${cubit_command} --backend=cubit"
             )
         ],
@@ -850,7 +850,7 @@ for files in sconstruct_files:
         string.Template("${turbo_turtle_command} fetch SConstruct SConscript"),
         # FIXME: Figure out why this command fails on the CI server, but not in local user tests
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/159
-        # f"scons . --turbo-turtle-command="{turbo_turtle_command}""
+        # f'scons . --turbo-turtle-command="{turbo_turtle_command}"'
     ]
     commands_list.append(scons_test_commands)
 
