@@ -292,7 +292,7 @@ legacy_geometry_file = _settings._project_root_abspath / "_tests" / "legacy_geom
 commands_list.append(
     pytest.param(
         [
-            string.Template(f"${{abaqus_command}} cae -noGui {legacy_geometry_file}"),
+            string.Template(f"${{abaqus_command_path}} cae -noGui {legacy_geometry_file}"),
             string.Template(
                 "${turbo_turtle_command} partition ${abaqus_command} ${cubit_command} "
                 f"--input-file {name}.cae --output-file {name}.cae --model-name {name} "
@@ -924,6 +924,7 @@ def test_project_shell_commands(
     """
     template_substitution = {
         "turbo_turtle_command": turbo_turtle_command,
+        "abaqus_command_path": "abaqus" if len(abaqus_command) == 0 else abaqus_command[0],
         "abaqus_command": " ".join(f"--abaqus-command={command}" for command in abaqus_command),
         "cubit_command": " ".join(f"--cubit-command={command}" for command in cubit_command),
     }
