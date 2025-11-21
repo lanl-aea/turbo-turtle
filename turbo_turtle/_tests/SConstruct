@@ -60,6 +60,7 @@ env = waves.scons_extensions.WAVESEnvironment(
 env["turbo_turtle"] = env["turbo_turtle_command"]
 env.AddProgram([env["abaqus_command"]])
 # TODO: Replace try:except with ``AddCubit(..., quotes_spaces_in_path=False``) when WAVES v1.1.0 is on conda-forge VVV
+# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/266
 try:
     env.AddCubit([env["cubit_command"]])
 except FileNotFoundError:
