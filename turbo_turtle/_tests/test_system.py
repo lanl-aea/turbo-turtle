@@ -919,7 +919,7 @@ def test_project_shell_commands(
 
     .. code-block::
 
-       pytest /my/system/abaqus /my/system/cubit
+       pytest --abaqus-command=/my/system/abaqus --cubit-command=/my/system/cubit
 
     :param abaqus_command: string absolute path to Abaqus executable
     :param cubit_command: string absolute path to Cubit executable
