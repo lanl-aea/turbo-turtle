@@ -44,7 +44,7 @@ if not installed:
     package_parent_path = _settings._project_root_abspath.parent
     key = "PYTHONPATH"
     if key in env:
-        env[key] = f"{package_parent_path}:{env[key]}"
+        env[key] = f"{package_parent_path}{os.pathsep}{env[key]}"
     else:
         env[key] = f"{package_parent_path}"
 
