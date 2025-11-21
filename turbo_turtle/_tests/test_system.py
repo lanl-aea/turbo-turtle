@@ -12,7 +12,6 @@ available substitutions.
 import os
 import pathlib
 import platform
-import shlex
 import string
 import subprocess
 import tempfile
@@ -893,9 +892,7 @@ def run_commands(
             command_string = command.substitute(template_substitution)
         else:
             command_string = command
-        testing_posix = False if platform.system().lower() == "windows" else True
-        command_list = shlex.split(command_string, posix=testing_posix)
-        subprocess.check_output(command_list, env=env, cwd=build_directory).decode("utf-8")
+        subprocess.check_output(command_string, env=env, cwd=build_directory, shell=True).decode("utf-8")
 
 
 # Help/Usage sign-of-life
