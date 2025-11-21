@@ -850,7 +850,7 @@ for files in sconstruct_files:
         string.Template("${turbo_turtle_command} fetch SConstruct SConscript"),
         # FIXME: Figure out why this command fails on the CI server, but not in local user tests
         # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/159
-        # f'scons . --turbo-turtle-command="{turbo_turtle_command}"'
+        # f'scons . --turbo-turtle-command="{turbo_turtle_command}"'  # noqa: ERA001
     ]
     commands_list.append(scons_test_commands)
 
