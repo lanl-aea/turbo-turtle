@@ -59,7 +59,17 @@ env = waves.scons_extensions.WAVESEnvironment(
 )
 env["turbo_turtle"] = env["turbo_turtle_command"]
 env.AddProgram([env["abaqus_command"]])
-env.AddCubit([env["cubit_command"]])
+# TODO: Replace try:except with ``AddCubit(..., quotes_spaces_in_path=False``) when WAVES v1.1.0 is on conda-forge VVV
+try:
+    env.AddCubit([env["cubit_command"]])
+except FileNotFoundError:
+    cubit_command = env.CheckProgram(env["cubit_command"])
+    if cubit_command is not None:
+        cubit_path = pathlib.Path(cubit_command).resolve()
+        cubit_bin_path = waves._utilities.find_cubit_bin([str(cubit_path)])
+        env.PrependENVPath("PATH", str(cubit_path.parent), delete_existing=False)
+        env.PrependENVPath("PYTHONPATH", str(cubit_bin_path))
+# TODO: Replace try:except with ``AddCubit(..., quotes_spaces_in_path=False``) when WAVES v1.1.0 is on conda-forge ^^^
 env["backend_list"] = env["backend_list"] if env["backend_list"] is not None else ["abaqus", "cubit"]
 env.Append(BUILDERS={
     "geometry": turbo_turtle.scons_extensions.geometry(
