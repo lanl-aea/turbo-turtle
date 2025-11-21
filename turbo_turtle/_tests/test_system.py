@@ -11,7 +11,6 @@ available substitutions.
 
 import os
 import pathlib
-import platform
 import string
 import subprocess
 import tempfile
