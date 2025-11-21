@@ -822,7 +822,7 @@ commands_list.append(
         [
             string.Template(
                 f"scons . --sconstruct={sconstruct} --turbo-turtle-command='${{turbo_turtle_command}}' "
-                "--abaqus-command=${abaqus_command} --backend=abaqus"
+                "${abaqus_command} --backend=abaqus"
             )
         ],
         marks=pytest.mark.abaqus,
@@ -833,7 +833,7 @@ commands_list.append(
         [
             string.Template(
                 f"scons . --sconstruct={sconstruct} --turbo-turtle-command='${{turbo_turtle_command}}' "
-                "--cubit-command=${cubit_command} --backend=cubit"
+                "${cubit_command} --backend=cubit"
             )
         ],
         marks=pytest.mark.cubit,
