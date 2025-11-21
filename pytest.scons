@@ -23,7 +23,7 @@ targets = env.Command(
     source=pytest_source_list,
     action=[
         (
-            "${pytest_command} -vvv -m \"not systemtest\" --cov --cov-report=term "
+            '${pytest_command} -vvv -m "not systemtest" --cov --cov-report=term '
             "--cov-report=xml:${TARGETS[0].abspath} --cov-report=html:${TARGETS[1].abspath}"
         )
     ],
@@ -41,7 +41,7 @@ for name, cubit_environment in cubit_environments.items():
         target=[f"test_{name}_results.xml"],
         source=[*pytest_source_list, "turbo_turtle/_tests/test_cubit_python.py"],
         action=[
-            "${pytest_command} ${SOURCES[1].abspath} -vvv -m \"cubit_python\" --cov --cov-report=xml:${TARGET.abspath}",
+            '${pytest_command} ${SOURCES[1].abspath} -vvv -m "cubit_python" --cov --cov-report=xml:${TARGET.abspath}',
         ],
         pytest_command=pytest_command,
     )
@@ -84,7 +84,7 @@ for extra_markers, alias_suffix, environments in matrix:
             source=source,
             action=[
                 (
-                    "${pytest_command} -v --no-showlocals -m \"systemtest ${extra_markers}\" --tb=short --cache-clear "
+                    '${pytest_command} -v --no-showlocals -m "systemtest ${extra_markers}" --tb=short --cache-clear '
                     "--cov --cov-report=xml:${TARGET.abspath} "
                     "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
                 ),
