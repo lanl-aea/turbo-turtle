@@ -55,12 +55,7 @@ for name, abaqus_environment in abaqus_environments.items():
     targets = abaqus_environment.Command(
         target=[f"test_{name}_python.txt"],
         source=source,
-        action=[
-            (
-                "PYTHONDONTWRITEBYTECODE=1 ${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose "
-                "2>&1 | tee ${TARGET.abspath}"
-            )
-        ],
+        action=["${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose"],
         program=abaqus_environment["abaqus"],
     )
     abaqus_environment.Alias("test_abaqus_python", targets)
