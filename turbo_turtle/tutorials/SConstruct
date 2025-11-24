@@ -31,7 +31,7 @@ AddOption(
 
 env = Environment(
     ENV=os.environ.copy(),
-    variant_dir_base=pathlib.Path(GetOption("variant_dir_base"))
+    variant_dir_base=pathlib.Path(GetOption("variant_dir_base")),
     turbo_turtle_command=GetOption("turbo_turtle_command"),
 )
 
