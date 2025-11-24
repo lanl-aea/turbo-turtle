@@ -103,8 +103,8 @@ for command in cubit_commands:
     except FileNotFoundError:
         command_path = cubit_environment.CheckProgram(command)
         if command_path is not None:
+            cubit_environment["cubit"] = command_path
             cubit_path = pathlib.Path(command_path).resolve()
-            cubit_environment["cubit"] = waves._utilities._quote_spaces_in_path(cubit_path)
             cubit_bin_path = waves._utilities.find_cubit_bin([str(cubit_path)])
             cubit_environment.PrependENVPath("PATH", str(cubit_path.parent), delete_existing=False)
             cubit_environment.PrependENVPath("PYTHONPATH", str(cubit_bin_path))

@@ -924,8 +924,8 @@ def test_project_shell_commands(
     template_substitution = {
         "turbo_turtle_command": turbo_turtle_command,
         "abaqus_command_path": "abaqus" if len(abaqus_command) == 0 else abaqus_command[0],
-        "abaqus_command": " ".join(f"--abaqus-command={command}" for command in abaqus_command),
-        "cubit_command": " ".join(f"--cubit-command={command}" for command in cubit_command),
+        "abaqus_command": " ".join(f'--abaqus-command="{command}"' for command in abaqus_command),
+        "cubit_command": " ".join(f'--cubit-command="{command}"' for command in cubit_command),
     }
     if isinstance(commands, str) or isinstance(commands, string.Template):
         commands = [commands]
