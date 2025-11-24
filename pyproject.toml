@@ -63,7 +63,7 @@ markers = [
     "cubit: tests requiring the Cubit executable",
     "gmsh: tests requiring the Gmsh executable",
 ]
-addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -m 'not systemtest'"
+addopts = "--ignore=_abaqus_python --ignore=turbo_turtle/_abaqus_python --tb=long --showlocals --failed-first --strict-markers -m 'not systemtest' -ra"
 
 [tool.ruff]
 target-version = "py310"
