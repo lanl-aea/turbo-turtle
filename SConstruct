@@ -97,7 +97,18 @@ for command in cubit_commands:
     # TODO: more robust version/name recovery without CI server assumptions
     version = pathlib.Path(command).parent.name
     cubit_environment = env.Clone()
-    cubit_environment["cubit"] = cubit_environment.AddCubit([command])
+    # TODO: Replace try:except with WAVES v1.1.0 ``AddCubit(..., quotes_spaces_in_path=False``) conda-forge VVV
+    try:
+        cubit_environment["cubit"] = cubit_environment.AddCubit([command])
+    except FileNotFoundError:
+        command_path = cubit_environment.CheckProgram(command)
+        if command_path is not None:
+            cubit_path = pathlib.Path(command_path).resolve()
+            cubit_environment["cubit"] = waves._utilities._quote_spaces_in_path(cubit_path)
+            cubit_bin_path = waves._utilities.find_cubit_bin([str(cubit_path)])
+            cubit_environment.PrependENVPath("PATH", str(cubit_path.parent), delete_existing=False)
+            cubit_environment.PrependENVPath("PYTHONPATH", str(cubit_bin_path))
+    # TODO: Replace try:except with WAVES v1.1.0 ``AddCubit(..., quotes_spaces_in_path=False``) conda-forge ^^^
     cubit_environments.update({version: cubit_environment})
 
 # Build
