@@ -16,7 +16,7 @@ AddOption(
     type=str,
     action="store",
     metavar="DIR",
-    help="SCons build (variant) root directory. Relative or absolute path. (default: '%default')"
+    help="SCons build (variant) root directory. Relative or absolute path. (default: '%default')",
 )
 AddOption(
     "--turbo-turtle-command",
@@ -25,49 +25,71 @@ AddOption(
     nargs=1,
     type="string",
     action="store",
-    metavar="DIR",
-    help="Override for the Turbo-Turtle command (default: '%default')"
+    metavar="COMMAND",
+    help="Override for the Turbo-Turtle command (default: '%default')",
+)
+AddOption(
+    "--abaqus-command",
+    dest="abaqus_command",
+    default="abaqus",
+    nargs=1,
+    type="string",
+    action="store",
+    metavar="COMMAND",
+    help=f"Override for the Abaqus command (default: '%default')",
+)
+AddOption(
+    "--cubit-command",
+    dest="cubit_command",
+    default="cubit",
+    nargs=1,
+    type="string",
+    action="store",
+    metavar="COMMAND",
+    help=f"Override for the Cubit command (default: '%default')",
 )
 
-env = Environment(
+env = waves.scons_extensions.WAVESEnvironment(
     ENV=os.environ.copy(),
     variant_dir_base=pathlib.Path(GetOption("variant_dir_base")),
     turbo_turtle_command=GetOption("turbo_turtle_command"),
 )
+env.PrintBuildFailures()
 
-env["abaqus"] = waves.scons_extensions.add_program(env, ["/apps/abaqus/Commands/abq2024", "abq2024"])
-env["cubit"] = waves.scons_extensions.add_cubit(env, ["/apps/Cubit-16.16/cubit", "cubit"])
+# Find required programs for conditional target ignoring and absolute path for use in target actions
+env["ABAQUS_PROGRAM"] = env.AddProgram([GetOption("abaqus_command")])
+env["CUBIT_PROGRAM"] = f"'{env.CheckProgram(GetOption('cubit_command'))}'"
 
 env.Append(BUILDERS={
     "TurboTurtleSphere": turbo_turtle.scons_extensions.sphere(
         program=env["turbo_turtle_command"],
         options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
-        abaqus_command=[env['abaqus']],
-        cubit_command=[env['cubit']],
+        abaqus_command=[env["ABAQUS_PROGRAM"]],
+        cubit_command=[env["CUBIT_PROGRAM"]],
     ),
     "TurboTurtlePartition": turbo_turtle.scons_extensions.partition(
         program=env["turbo_turtle_command"],
         options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
-        abaqus_command=[env['abaqus']],
-        cubit_command=[env['cubit']],
+        abaqus_command=[env["ABAQUS_PROGRAM"]],
+        cubit_command=[env["CUBIT_PROGRAM"]],
     ),
     "TurboTurtleMesh": turbo_turtle.scons_extensions.mesh(
         program=env["turbo_turtle_command"],
         options="--model-name ${model_name} --part-name ${part_name} --backend ${backend} --global-seed ${global_seed}",
-        abaqus_command=[env['abaqus']],
-        cubit_command=[env['cubit']],
+        abaqus_command=[env["ABAQUS_PROGRAM"]],
+        cubit_command=[env["CUBIT_PROGRAM"]],
     ),
     "TurboTurtleImage": turbo_turtle.scons_extensions.image(
         program=env["turbo_turtle_command"],
         options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
-        abaqus_command=[env['abaqus']],
-        cubit_command=[env['cubit']],
+        abaqus_command=[env["ABAQUS_PROGRAM"]],
+        cubit_command=[env["CUBIT_PROGRAM"]],
     ),
     "TurboTurtleExport": turbo_turtle.scons_extensions.export(
         program=env["turbo_turtle_command"],
         options="--model-name ${model_name} --part-name ${part_name} --backend ${backend}",
-        abaqus_command=[env['abaqus']],
-        cubit_command=[env['cubit']],
+        abaqus_command=[env["ABAQUS_PROGRAM"]],
+        cubit_command=[env["CUBIT_PROGRAM"]],
     )
 })
 
