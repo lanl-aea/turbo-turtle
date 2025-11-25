@@ -156,7 +156,17 @@ def setup_sphere_commands(
     # Skip the partition/mesh/image/export
     if inner_radius == 0:
         commands = [commands[0]]
-    return pytest.param(commands, marks=getattr(pytest.mark, backend))
+    marks = [getattr(pytest.mark, backend)]
+    if backend == "abaqus":
+        # TODO: Remove user check when Windows CI Gitlab-Runner account can access the Abaqus license server
+        # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
+        marks.append(
+            pytest.mark.skipif(
+                testing_windows and testing_ci_user,
+                reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
+            )
+        )
+    return pytest.param(commands, marks=marks)
 
 
 def setup_geometry_xyplot_commands(model: str, input_file: list[pathlib.Path], backend: str) -> list[string.Template]:
@@ -171,7 +181,17 @@ def setup_geometry_xyplot_commands(model: str, input_file: list[pathlib.Path], b
             f"--backend {backend}"
         )
     ]
-    return pytest.param(commands, marks=getattr(pytest.mark, backend))
+    marks = [getattr(pytest.mark, backend)]
+    if backend == "abaqus":
+        # TODO: Remove user check when Windows CI Gitlab-Runner account can access the Abaqus license server
+        # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
+        marks.append(
+            pytest.mark.skipif(
+                testing_windows and testing_ci_user,
+                reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
+            )
+        )
+    return pytest.param(commands, marks=marks)
 
 
 def setup_geometry_commands(
@@ -198,7 +218,17 @@ def setup_geometry_commands(
             f"--y-offset {y_offset} {backend_option}"
         )
     ]
-    return pytest.param(commands, marks=getattr(pytest.mark, backend))
+    marks = [getattr(pytest.mark, backend)]
+    if backend == "abaqus":
+        # TODO: Remove user check when Windows CI Gitlab-Runner account can access the Abaqus license server
+        # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
+        marks.append(
+            pytest.mark.skipif(
+                testing_windows and testing_ci_user,
+                reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
+            )
+        )
+    return pytest.param(commands, marks=marks)
 
 
 def setup_sets_commands(
@@ -244,7 +274,17 @@ def setup_sets_commands(
         ),
     ]
     commands.extend(sets_commands)
-    return pytest.param(commands, marks=getattr(pytest.mark, backend))
+    marks = [getattr(pytest.mark, backend)]
+    if backend == "abaqus":
+        # TODO: Remove user check when Windows CI Gitlab-Runner account can access the Abaqus license server
+        # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
+        marks.append(
+            pytest.mark.skipif(
+                testing_windows and testing_ci_user,
+                reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
+            )
+        )
+    return pytest.param(commands, marks=marks)
 
 
 def setup_cylinder_commands(model: str, revolution_angle: float, backend: str) -> list[string.Template]:
@@ -263,7 +303,17 @@ def setup_cylinder_commands(model: str, revolution_angle: float, backend: str) -
             f"--inner-radius 1 --outer-radius 2 --height 1 {backend_option}"
         )
     ]
-    return pytest.param(commands, marks=getattr(pytest.mark, backend))
+    marks = [getattr(pytest.mark, backend)]
+    if backend == "abaqus":
+        # TODO: Remove user check when Windows CI Gitlab-Runner account can access the Abaqus license server
+        # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
+        marks.append(
+            pytest.mark.skipif(
+                testing_windows and testing_ci_user,
+                reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
+            )
+        )
+    return pytest.param(commands, marks=marks)
 
 
 def setup_merge_commands(part_name: str, backend: str) -> list[string.Template]:
@@ -321,7 +371,17 @@ def setup_merge_commands(part_name: str, backend: str) -> list[string.Template]:
     )
     commands.append(merge_command)
 
-    return pytest.param(commands, marks=getattr(pytest.mark, backend))
+    marks = [getattr(pytest.mark, backend)]
+    if backend == "abaqus":
+        # TODO: Remove user check when Windows CI Gitlab-Runner account can access the Abaqus license server
+        # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
+        marks.append(
+            pytest.mark.skipif(
+                testing_windows and testing_ci_user,
+                reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
+            )
+        )
+    return pytest.param(commands, marks=marks)
 
 
 commands_list = []
@@ -353,7 +413,15 @@ commands_list.append(
                 f"--input-file {name}.cae --model-name {name} --output-file swiss-cheese.png --part-name swiss-cheese"
             ),
         ],
-        marks=pytest.mark.abaqus,
+        marks=[
+            pytest.mark.abaqus,
+            # TODO: Remove user check when Windows CI Gitlab-Runner account can access the Abaqus license server
+            # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
+            pytest.mark.skipif(
+                testing_windows and testing_ci_user,
+                reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
+            ),
+        ],
     )
 )
 
@@ -864,7 +932,15 @@ commands_list.append(
                 "${abaqus_command} --backend=abaqus"
             )
         ],
-        marks=pytest.mark.abaqus,
+        marks=[
+            pytest.mark.abaqus,
+            # TODO: Remove user check when Windows CI Gitlab-Runner account can access the Abaqus license server
+            # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
+            pytest.mark.skipif(
+                testing_windows and testing_ci_user,
+                reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
+            ),
+        ]
     )
 )
 commands_list.append(
