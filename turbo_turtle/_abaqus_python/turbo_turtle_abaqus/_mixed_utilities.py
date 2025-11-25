@@ -17,7 +17,10 @@ def sys_exit(err):
 
     :param Exception err: The exception object to print and pass to ``sys.exit``
     """
-    print(err, file=sys.__stderr__)
+    try:
+        print(err, file=sys.__stderr__)
+    except OSError:
+        pass
     sys.exit(str(err))
 
 

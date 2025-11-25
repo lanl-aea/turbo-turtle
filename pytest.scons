@@ -2,6 +2,7 @@
 """Configure the unit and system test workflows."""
 
 import pathlib
+import platform
 
 # Inherit the parent construction environment
 Import("env", "abaqus_environments", "cubit_environments")
@@ -11,13 +12,18 @@ pytest_source_list = [
     "pyproject.toml",
 ]
 
-pytest_command = "cd turbo_turtle/ && pytest -n 4"
+# TODO: Remove system check when Windows ``-n 4`` works.
+system = platform.system().lower()
+if system == "windows":
+    pytest_command = "cd turbo_turtle/ && pytest -n 0"
+else:
+    pytest_command = "cd turbo_turtle/ && pytest -n 4"
 targets = env.Command(
     target=["coverage.xml", Dir("./coverage")],
     source=pytest_source_list,
     action=[
         (
-            "${pytest_command} -vvv -m 'not systemtest' --cov --cov-report=term "
+            '${pytest_command} -vvv -m "not systemtest" --cov --cov-report=term '
             "--cov-report=xml:${TARGETS[0].abspath} --cov-report=html:${TARGETS[1].abspath}"
         )
     ],
@@ -35,7 +41,7 @@ for name, cubit_environment in cubit_environments.items():
         target=[f"test_{name}_results.xml"],
         source=[*pytest_source_list, "turbo_turtle/_tests/test_cubit_python.py"],
         action=[
-            "${pytest_command} ${SOURCES[1].abspath} -vvv -m 'cubit_python' --cov --cov-report=xml:${TARGET.abspath}",
+            '${pytest_command} ${SOURCES[1].abspath} -vvv -m "cubit_python" --cov --cov-report=xml:${TARGET.abspath}',
         ],
         pytest_command=pytest_command,
     )
@@ -55,12 +61,7 @@ for name, abaqus_environment in abaqus_environments.items():
     targets = abaqus_environment.Command(
         target=[f"test_{name}_python.txt"],
         source=source,
-        action=[
-            (
-                "PYTHONDONTWRITEBYTECODE=1 ${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose "
-                "2>&1 | tee ${TARGET.abspath}"
-            )
-        ],
+        action=["${program} python -m unittest discover ${SOURCE.dir.abspath} --verbose"],
         program=abaqus_environment["abaqus"],
     )
     abaqus_environment.Alias("test_abaqus_python", targets)
@@ -83,15 +84,15 @@ for extra_markers, alias_suffix, environments in matrix:
             source=source,
             action=[
                 (
-                    "${pytest_command} -v --no-showlocals -m 'systemtest ${extra_markers}' --tb=short --cache-clear "
+                    '${pytest_command} -v --no-showlocals -m "systemtest ${extra_markers}" --tb=short --cache-clear '
                     "--cov --cov-report=xml:${TARGET.abspath} "
-                    "--abaqus-command=${abaqus_command} --cubit-command=${cubit_command}"
+                    "${abaqus_command} ${cubit_command}"
                 ),
             ],
             pytest_command=pytest_command,
             extra_markers=extra_markers,
-            abaqus_command=environment["abaqus"] if "abaqus" in environment else None,
-            cubit_command=environment["cubit"] if "cubit" in environment else None,
+            abaqus_command=f'--abaqus-command="{environment["abaqus"]}"' if "abaqus" in environment else "",
+            cubit_command=f'--cubit-command="{environment["cubit"]}"' if "cubit" in environment else "",
         )
         environment.Alias("systemtest", targets)
         environment.Alias(f"systemtest_{alias_suffix}", targets)
