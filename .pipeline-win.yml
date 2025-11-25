@@ -44,7 +44,7 @@ win-developer-test:
   extends:
     - .win-job-environment
   stage: test
-  script: scons regression --abaqus-command='C:\SIMULIA\Commands\abq2024.bat' --cubit-command='C:\Program Files\Cubit 16.18\cubit.exe'
+  script: scons regression --abaqus-command='C:\SIMULIA\Commands\abq2024.bat' --cubit-command='C:\Program Files\Cubit 16.18\bin\cubit.exe'
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   rules:
     - if: $PARENT_CI_PIPELINE_SOURCE == "schedule"
