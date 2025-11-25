@@ -18,7 +18,6 @@ import string
 import subprocess
 import tempfile
 import typing
-from importlib.metadata import PackageNotFoundError, version
 from unittest.mock import patch
 
 import pytest
