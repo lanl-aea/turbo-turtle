@@ -15,6 +15,7 @@ Documentation
 Internal Changes
 ================
 - Improved test suite support for Windows (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
+- Add Windows CI server (:issue:`265`, :merge:`265`). By `Kyle Brindley`_.
 
 Bug fixes
 =========
