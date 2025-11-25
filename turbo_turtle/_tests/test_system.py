@@ -939,7 +939,7 @@ commands_list.append(
                 testing_windows and testing_ci_user,
                 reason="Windows CI server Gitlab-Runner user does not have access to Abaqus license server",
             ),
-        ]
+        ],
     )
 )
 commands_list.append(

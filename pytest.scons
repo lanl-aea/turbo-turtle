@@ -2,6 +2,7 @@
 """Configure the unit and system test workflows."""
 
 import pathlib
+import platform
 
 # Inherit the parent construction environment
 Import("env", "abaqus_environments", "cubit_environments")
