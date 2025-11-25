@@ -11,7 +11,12 @@ pytest_source_list = [
     "pyproject.toml",
 ]
 
-pytest_command = "cd turbo_turtle/ && pytest -n 4"
+# TODO: Remove system check when Windows ``-n 4`` works.
+system = platform.system().lower()
+if system == "windows":
+    pytest_command = "cd turbo_turtle/ && pytest -n 0"
+else:
+    pytest_command = "cd turbo_turtle/ && pytest -n 4"
 targets = env.Command(
     target=["coverage.xml", Dir("./coverage")],
     source=pytest_source_list,
