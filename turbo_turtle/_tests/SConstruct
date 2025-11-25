@@ -57,6 +57,7 @@ env = waves.scons_extensions.WAVESEnvironment(
     cubit_command=GetOption("cubit_command"),
     backend_list=GetOption("backend_list"),
 )
+env.PrintBuildFailures()
 env["turbo_turtle"] = env["turbo_turtle_command"]
 env.AddProgram([env["abaqus_command"]])
 # TODO: Replace try:except with ``AddCubit(..., quotes_spaces_in_path=False``) when WAVES v1.1.0 is on conda-forge VVV
