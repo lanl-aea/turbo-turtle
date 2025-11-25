@@ -8,6 +8,18 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+Documentation
+=============
+- Improve SCons tutorial configuration for Windows path compatibility (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
+
+Internal Changes
+================
+- Improved test suite support for Windows (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
+
+Bug fixes
+=========
+- Improve compatibility with Abaqus Python exit behavior on Windows (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
+
 *******************
 v1.2.8 (2025-10-08)
 *******************
