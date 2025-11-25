@@ -98,6 +98,7 @@ for command in cubit_commands:
     version = pathlib.Path(command).parent.name
     cubit_environment = env.Clone()
     # TODO: Replace try:except with WAVES v1.1.0 ``AddCubit(..., quotes_spaces_in_path=False``) conda-forge VVV
+    # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/266
     try:
         cubit_environment["cubit"] = cubit_environment.AddCubit([command])
     except FileNotFoundError:
