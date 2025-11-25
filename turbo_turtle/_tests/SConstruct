@@ -14,7 +14,7 @@ AddOption(
     nargs=1,
     type="string",
     action="store",
-    metavar="DIR",
+    metavar="COMMAND",
     help="Override for the Turbo-Turtle command (default: '%default')"
 )
 AddOption(
@@ -25,7 +25,7 @@ AddOption(
     type="string",
     action="store",
     metavar="COMMAND",
-    help="Override for the Abaqus command (default: '%default')"
+    help="Override for the Abaqus command (default: '%default')",
 )
 AddOption(
     "--cubit-command",
@@ -35,7 +35,7 @@ AddOption(
     type="string",
     action="store",
     metavar="COMMAND",
-    help="Override for the Cubit command (default: '%default')"
+    help="Override for the Cubit command (default: '%default')",
 )
 AddOption(
     "--backend",
@@ -50,88 +50,74 @@ AddOption(
 project_configuration = pathlib.Path(inspect.getfile(lambda: None))
 project_directory = project_configuration.parent
 
-env = waves.scons_extensions.WAVESEnvironment(
-    ENV=os.environ.copy(),
-    turbo_turtle_command=GetOption("turbo_turtle_command"),
-    abaqus_command=GetOption("abaqus_command"),
-    cubit_command=GetOption("cubit_command"),
-    backend_list=GetOption("backend_list"),
-)
+env = waves.scons_extensions.WAVESEnvironment(ENV=os.environ.copy())
 env.PrintBuildFailures()
-env["turbo_turtle"] = env["turbo_turtle_command"]
-env.AddProgram([env["abaqus_command"]])
-# TODO: Replace try:except with ``AddCubit(..., quotes_spaces_in_path=False``) when WAVES v1.1.0 is on conda-forge VVV
-# https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/266
-try:
-    env.AddCubit([env["cubit_command"]])
-except FileNotFoundError:
-    cubit_command = env.CheckProgram(env["cubit_command"])
-    if cubit_command is not None:
-        cubit_path = pathlib.Path(cubit_command).resolve()
-        cubit_bin_path = waves._utilities.find_cubit_bin([str(cubit_path)])
-        env.PrependENVPath("PATH", str(cubit_path.parent), delete_existing=False)
-        env.PrependENVPath("PYTHONPATH", str(cubit_bin_path))
-# TODO: Replace try:except with ``AddCubit(..., quotes_spaces_in_path=False``) when WAVES v1.1.0 is on conda-forge ^^^
-env["backend_list"] = env["backend_list"] if env["backend_list"] is not None else ["abaqus", "cubit"]
+
+turbo_turtle_command = GetOption("turbo_turtle_command")
+abaqus_commands = [f'"{env.CheckProgram(GetOption("abaqus_command"))}"']
+cubit_commands = [f'"{env.CheckProgram(GetOption("cubit_command"))}"']
+backend_list_cli = GetOption("backend_list")
+backend_list = backend_list_cli if backend_list_cli is not None else ["abaqus", "cubit"]
+
 env.Append(BUILDERS={
     "geometry": turbo_turtle.scons_extensions.geometry(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
     "geometry_xyplot": turbo_turtle.scons_extensions.geometry_xyplot(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
     "cylinder": turbo_turtle.scons_extensions.cylinder(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
     "sphere": turbo_turtle.scons_extensions.sphere(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
     "partition": turbo_turtle.scons_extensions.partition(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
     "sets": turbo_turtle.scons_extensions.sets(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name} ${face_sets}"
     ),
     "mesh": turbo_turtle.scons_extensions.mesh(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name} --global-seed ${global_seed}"
     ),
     "image": turbo_turtle.scons_extensions.image(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name}"
     ),
     "merge": turbo_turtle.scons_extensions.merge(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name} --merged-model-name ${merged_model_name}"
     ),
     "export": turbo_turtle.scons_extensions.export(
-        program=env["turbo_turtle"],
-        abaqus_command=[env["abaqus_command"]],
-        cubit_command=[env["cubit_command"]],
+        program=turbo_turtle_command,
+        abaqus_command=abaqus_commands,
+        cubit_command=cubit_commands,
         options="--model-name ${model_name} --part-name ${part_name}"
     )
 })
@@ -140,13 +126,13 @@ backend_extensions = {
     "abaqus": "cae",
     "cubit": "cub",
 }
-for backend in env["backend_list"]:
+for backend in backend_list:
     targets = list()
     extension = backend_extensions[backend]
 
     # Geometry
-    builder = f"geometry"
-    part_name = [f"scons-vase"]
+    builder = "geometry"
+    part_name = ["scons-vase"]
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -154,11 +140,11 @@ for backend in env["backend_list"]:
             source=[project_directory / "vase.csv"],
             backend=backend,
             output_file="${TARGET.abspath}",
-            model_name=f"scons-vase",
+            model_name="scons-vase",
             part_name=" ".join(part_name),
         )
     )
-    part_name = [f"scons-washer"]
+    part_name = ["scons-washer"]
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -166,11 +152,11 @@ for backend in env["backend_list"]:
             source=[project_directory / "washer.csv"],
             backend=backend,
             output_file="${TARGET.abspath}",
-            model_name=f"scons-washer",
+            model_name="scons-washer",
             part_name=" ".join(part_name),
         )
     )
-    part_name = [f"scons-vase", f"scons-washer"]
+    part_name = ["scons-vase", "scons-washer"]
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -181,14 +167,14 @@ for backend in env["backend_list"]:
             ],
             backend=backend,
             output_file="${TARGET.abspath}",
-            model_name=f"scons-multi-part",
+            model_name="scons-multi-part",
             part_name=" ".join(part_name),
         )
     )
 
     # Geometry-XY Plot
-    builder = f"geometry_xyplot"
-    part_name = [f"scons-vase"]
+    builder = "geometry_xyplot"
+    part_name = ["scons-vase"]
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -196,11 +182,11 @@ for backend in env["backend_list"]:
             source=[project_directory / "vase.csv"],
             backend=backend,
             output_file="${TARGET.abspath}",
-            model_name=f"scons-vase",
+            model_name="scons-vase",
             part_name=" ".join(part_name),
         )
     )
-    part_name = [f"scons-washer"]
+    part_name = ["scons-washer"]
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -208,11 +194,11 @@ for backend in env["backend_list"]:
             source=[project_directory / "washer.csv"],
             backend=backend,
             output_file="${TARGET.abspath}",
-            model_name=f"scons-washer",
+            model_name="scons-washer",
             part_name=" ".join(part_name),
         )
     )
-    part_name = [f"scons-vase", f"scons-washer"]
+    part_name = ["scons-vase", "scons-washer"]
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -223,15 +209,15 @@ for backend in env["backend_list"]:
             ],
             backend=backend,
             output_file="${TARGET.abspath}",
-            model_name=f"scons-multi-part",
+            model_name="scons-multi-part",
             part_name=" ".join(part_name),
         )
     )
 
     # Merge
-    builder = f"merge"
-    model_name = [f"scons-vase", f"scons-washer"]
-    part_name = [f"scons-vase", f"scons-washer"]
+    builder = "merge"
+    model_name = ["scons-vase", "scons-washer"]
+    part_name = ["scons-vase", "scons-washer"]
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -241,7 +227,7 @@ for backend in env["backend_list"]:
             output_file="${TARGET.abspath}",
             model_name=" ".join(model_name),
             part_name=" ".join(part_name),
-            merged_model_name=f"scons-merge-multi-part",
+            merged_model_name="scons-merge-multi-part",
         )
     )
 
@@ -253,15 +239,15 @@ for backend in env["backend_list"]:
     elif backend == "cubit":
         face_sets = '--face-set top 4 --face-set bottom 7 --face-set outer "2 3 8"'
         edge_sets = "--top_outer 13"
-    builder = f"sets"
+    builder = "sets"
     targets.extend(
         env["BUILDERS"][builder](
             env,
             target=[f"scons-vase-sets.{extension}"],
             source=[f"scons-vase.{extension}"],
             backend=backend,
-            model_name=f"scons-vase",
-            part_name=f"scons-vase",
+            model_name="scons-vase",
+            part_name="scons-vase",
             face_sets=face_sets,
             edge_sets=edge_sets
         )
@@ -271,7 +257,7 @@ for backend in env["backend_list"]:
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/174
 
     # Cylinder
-    builder = f"cylinder"
+    builder = "cylinder"
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -281,13 +267,13 @@ for backend in env["backend_list"]:
             inner_radius=1.,
             outer_radius=2.,
             height=1.,
-            model_name=f"scons-cylinder",
-            part_name=f"scons-cylinder"
+            model_name="scons-cylinder",
+            part_name="scons-cylinder"
         )
     )
 
     # Sphere
-    builder = f"sphere"
+    builder = "sphere"
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -302,7 +288,7 @@ for backend in env["backend_list"]:
     )
 
     # Partition
-    builder = f"partition"
+    builder = "partition"
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -315,7 +301,7 @@ for backend in env["backend_list"]:
     )
 
     # Mesh
-    builder = f"mesh"
+    builder = "mesh"
     targets.extend(
         env["BUILDERS"][builder](
             env,
@@ -332,7 +318,7 @@ for backend in env["backend_list"]:
     # Image
     # TODO: chase down why this fails in the CI jobs, but not locally
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/issues/129
-    #builder = f"image"
+    #builder = "image"
     #env["BUILDERS"][builder](env,
     #    target=[f"scons-image-{extension}.png"],
     #    source=[f"scons-mesh.{extension}"],
@@ -342,7 +328,7 @@ for backend in env["backend_list"]:
     #)
 
     # Export
-    builder = f"export"
+    builder = "export"
     input_file = f"scons-sphere-{extension}.inp"
     if backend == "cubit":
         input_file = input_file.replace("-", "_")
