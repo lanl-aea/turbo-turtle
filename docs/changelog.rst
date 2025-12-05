@@ -8,6 +8,10 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+*******************
+v1.2.9 (2025-12-05)
+*******************
+
 Documentation
 =============
 - Improve SCons tutorial configuration for Windows path compatibility (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
