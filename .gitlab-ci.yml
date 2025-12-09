@@ -25,7 +25,7 @@ default:
     environment_file: "environment.yml"
   before_script:
     # FIXME: trace the Gitlab-CI behavior that unsets LANG VVV
-    - if [[ -z "${LANG}" ]]; then export LANG='en_US.UTF-8'; fi
+    - if [[ -z "${LANG}" ]]; then export LANG='en_US.UTF-8'; echo "LANG was unset. Now LANG=${LANG}"; fi
     - function check_variable () { echo "$1"; if [[ -z $1 ]]; then exit 1; fi; }
     - check_variable "${LANG}"
     # FIXME: trace the Gitlab-CI behavior that unsets LANG ^^^
