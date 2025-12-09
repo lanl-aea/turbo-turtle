@@ -92,5 +92,5 @@ win-pip-build:
     # Python venv environment active
     - pip-build-test\Scripts\Activate.ps1
     - python -m pip install --verbose --disable-pip-version-check --require-virtualenv --no-cache-dir build\dist\$distribution_name-$version.tar.gz pytest pytest-xdist
-    - cd pip-build-test\Lib\site-packages\waves
+    - cd pip-build-test\Lib\site-packages\turbo_turtle
     - python -m pytest -vvv -n 4
