@@ -71,6 +71,8 @@ def test_check_installed() -> None:
 parser = get_parser()
 subcommand_list = parser._subparsers._group_actions[0].choices.keys()
 env = os.environ.copy()
+if not "LANG" in env or not env["LANG"]:
+    env["LANG"] = "en_US.UTF-8"
 turbo_turtle_command = "turbo-turtle"
 testing_windows = True if platform.system().lower() == "windows" else False
 testing_ci_user = check_ci_user()
