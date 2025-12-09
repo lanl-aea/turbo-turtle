@@ -8,6 +8,10 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+Internal Changes
+================
+- Update the GitHub Actions for conda package testing. By `Kyle Brindley`_.
+
 *******************
 v1.2.9 (2025-12-05)
 *******************
