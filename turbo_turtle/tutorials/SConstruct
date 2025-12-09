@@ -55,7 +55,6 @@ env = waves.scons_extensions.WAVESEnvironment(
     turbo_turtle_command=GetOption("turbo_turtle_command"),
 )
 env.PrintBuildFailures()
-import pdb; pdb.set_trace()
 
 # Find required programs for conditional target ignoring and absolute path for use in target actions
 abaqus_commands = [f'"{env.CheckProgram(GetOption("abaqus_command"))}"']
