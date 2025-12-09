@@ -10,7 +10,8 @@ v1.3.0 (unreleased)
 
 Internal Changes
 ================
-- Update the GitHub Actions for conda package testing. By `Kyle Brindley`_.
+- Update the GitHub Actions for conda package testing (:merge:`266`). By `Kyle Brindley`_.
+- Update the Windows pip package build/test CI job (:merge:`267`). By `Kyle Brindley`_.
 
 *******************
 v1.2.9 (2025-12-05)

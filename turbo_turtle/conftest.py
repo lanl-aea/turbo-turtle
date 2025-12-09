@@ -3,8 +3,10 @@
 import os
 import pathlib
 
+import matplotlib
 import pytest
 
+matplotlib.use("Agg")
 display = os.environ.get("DISPLAY")
 if not display:
     missing_display = True
