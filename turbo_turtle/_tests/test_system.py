@@ -979,7 +979,8 @@ commands_list.append(
             pytest.mark.require_third_party,
             pytest.mark.abaqus,
             pytest.mark.skipif(testing_windows, reason="bash specific shell commands."),
-        ]
+        ],
+        id="DO_NOT_MERGE_abq2025_shell_environment",
     )
 )
 
