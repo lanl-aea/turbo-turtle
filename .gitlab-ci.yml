@@ -75,6 +75,7 @@ aea-temporary-do-not-merge:
   script:
     - echo $LANG
     - echo $DISPLAY
+    - echo $LC_ALL
     - env
     - /apps/abaqus/Commands/abq2025 cae -nogui temporary.py
 
@@ -87,6 +88,7 @@ aea-conda-environment-temporary-do-not-merge:
   script:
     - echo $LANG
     - echo $DISPLAY
+    - echo $LC_ALL
     - env
     - /apps/abaqus/Commands/abq2025 cae -nogui temporary.py
 
