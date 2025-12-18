@@ -24,10 +24,6 @@ default:
     conda_installation: "/apps/miniconda3/3.13-miniconda-25.5.1"
     environment_file: "environment.yml"
   before_script:
-    # FIXME: trace the Gitlab-CI behavior that unsets LANG VVV
-    - function check_variable () { echo "$1"; if [[ -z $1 ]]; then exit 1; fi; }
-    - check_variable "${LANG}"
-    # FIXME: trace the Gitlab-CI behavior that unsets LANG ^^^
     - function check_directory_variable () { echo "$1"; if [[ -z $1 ]] || [[ ! -d $1 ]]; then exit 1; fi; }
     - check_directory_variable "${conda_installation}"
     - echo ${environment_file}
