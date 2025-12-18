@@ -50,6 +50,8 @@ default:
     - conda activate ${prefix}
     - conda info
     - conda env export
+    # texlive module setting LC_ALL breaks Abaqus 2025
+    - unset LC_ALL
   after_script:
     - rm -r $PWD/conda-environment $PWD/conda-pkgs || true
 
