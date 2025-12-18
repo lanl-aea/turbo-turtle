@@ -970,20 +970,6 @@ for files in sconstruct_files:
     ]
     commands_list.append(scons_test_commands)
 
-# TEMPORARY DO NOT MERGE
-# Chasing abq2025 errors on startup
-commands_list.append(
-    pytest.param(
-        ["echo ${LANG} >&2 && /apps/abaqus/Commands/abq2025 cae -nogui"],
-        marks=[
-            pytest.mark.require_third_party,
-            pytest.mark.abaqus,
-            pytest.mark.skipif(testing_windows, reason="bash specific shell commands."),
-        ],
-        id="DO_NOT_MERGE_abq2025_shell_environment",
-    )
-)
-
 
 @pytest.mark.systemtest
 @pytest.mark.require_third_party
