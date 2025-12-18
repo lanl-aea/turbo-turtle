@@ -75,7 +75,7 @@ aea-temporary-do-not-merge:
   script:
     - echo $LANG
     - echo $DISPLAY
-    - /apps/abaqus/Commands/abq2025 cae -nogui
+    - /apps/abaqus/Commands/abq2025 cae -nogui temporary.py
 
 aea-developer-test:
   extends:
