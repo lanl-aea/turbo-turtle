@@ -974,7 +974,7 @@ for files in sconstruct_files:
 # Chasing abq2025 errors on startup
 commands_list.append(
     pytest.param(
-        ["echo ${LANG} >&2 && ${abaqus_command} cae -nogui"],
+        ["echo ${LANG} >&2 && ${abaqus_command_path} cae -nogui"],
         marks=[
             pytest.mark.require_third_party,
             pytest.mark.abaqus,
