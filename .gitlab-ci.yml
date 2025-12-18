@@ -9,6 +9,7 @@ workflow:
       when: never
 
 stages:
+  - troubleshooting
   - test
   - deploy
 
@@ -66,6 +67,15 @@ default:
     # Job commands
     - mkdir ${conda_artifacts_directory}
     - VERSION=$(python -m setuptools_scm) conda mambabuild ${recipe_directory} --channel conda-forge --no-anaconda-upload --output-folder ${conda_artifacts_directory}
+
+# TEMPORARY DO NOT MERGE
+# Chasing abq2025 errors on startup
+aea-temporary-do-not-merge:
+  stage: troubleshooting
+  script:
+    - echo $LANG
+    - echo $DISPLAY
+    - /apps/abaqus/Commands/abq2025 cae -nogui
 
 aea-developer-test:
   extends:
