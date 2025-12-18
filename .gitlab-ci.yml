@@ -77,6 +77,17 @@ aea-temporary-do-not-merge:
     - echo $DISPLAY
     - /apps/abaqus/Commands/abq2025 cae -nogui temporary.py
 
+# TEMPORARY DO NOT MERGE
+# Chasing abq2025 errors on startup
+aea-conda-environment-temporary-do-not-merge:
+  stage: troubleshooting
+  extends:
+    - .nix-job-environment
+  script:
+    - echo $LANG
+    - echo $DISPLAY
+    - /apps/abaqus/Commands/abq2025 cae -nogui temporary.py
+
 aea-developer-test:
   extends:
     - .nix-job-environment
