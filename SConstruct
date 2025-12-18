@@ -47,7 +47,7 @@ AddOption(
     metavar="DIR",
     help="SCons installation pip prefix ``--prefix``. Relative or absolute path. (default: '%default')",
 )
-default_abaqus_command = "/apps/abaqus/Commands/abq2024"
+default_abaqus_command = "/apps/abaqus/Commands/abq2025"
 AddOption(
     "--abaqus-command",
     dest="abaqus_command",
@@ -87,7 +87,7 @@ abaqus_environments = {}
 for command in abaqus_commands:
     # TODO: more robust version/name recovery without CI server assumptions
     version = pathlib.Path(command).name
-    abaqus_environment = env.Clone()
+    abaqus_environment = waves.scons_extensions.WAVESEnvironment(ENV=os.environ.copy())
     abaqus_environment["abaqus"] = abaqus_environment.AddProgram([command])
     abaqus_environments.update({version: abaqus_environment})
 

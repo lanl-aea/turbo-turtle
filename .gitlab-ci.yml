@@ -45,6 +45,8 @@ default:
     - conda activate ${prefix}
     - conda info
     - conda env export
+    # texlive module setting LC_ALL breaks Abaqus 2025
+    - unset LC_ALL
   after_script:
     - rm -r $PWD/conda-environment $PWD/conda-pkgs || true
 
@@ -68,7 +70,7 @@ aea-developer-test:
     - .nix-job-environment
   stage: test
   script:
-    - abaqus_command='--abaqus-command=/apps/abaqus/Commands/abq2024 --abaqus-command=/apps/abaqus/Commands/abq2023'
+    - abaqus_command='--abaqus-command=/apps/abaqus/Commands/abq2025 --abaqus-command=/apps/abaqus/Commands/abq2024 --abaqus-command=/apps/abaqus/Commands/abq2023'
     - cubit_command=''
     - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then cubit_command='--cubit-command=/apps/Cubit-16.16/cubit --cubit-command=/apps/Cubit-16.12/cubit'; fi
     - echo ${abaqus_command}

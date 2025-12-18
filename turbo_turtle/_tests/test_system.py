@@ -1007,7 +1007,7 @@ def run_commands(
             command_string = command.substitute(template_substitution)
         else:
             command_string = command
-        subprocess.check_output(command_string, env=env, cwd=build_directory, shell=True).decode("utf-8")
+        subprocess.check_output(command_string, env=env, cwd=build_directory, shell=True, text=True)
 
 
 # Help/Usage sign-of-life
