@@ -111,7 +111,7 @@ def _draw_surface(  # noqa: ANN202
         curves.append(create_curve_from_coordinates(point1, point2))
     for spline in splines:
         zero_column = numpy.zeros([len(spline), 1])
-        spline_3d = numpy.append(spline, zero_column, axis=1)
+        spline_3d = numpy.append(numpy.array(spline), zero_column, axis=1)
         curves.append(create_spline_from_coordinates(spline_3d))
     return cubit.create_surface(curves)
 

@@ -13,6 +13,8 @@ Internal Changes
 - Update the GitHub Actions for conda package testing (:merge:`266`). By `Kyle Brindley`_.
 - Update the Windows pip package build/test CI job (:merge:`267`). By `Kyle Brindley`_.
 - Use and test Abaqus 2025 by default. By `Kyle Brindley`_.
+- Explicit numpy type conversion for static type checking of Cubit Python implementation (:issue:`268`, :merge:`269`).
+  By `Kyle Brindley`_.
 
 *******************
 v1.2.9 (2025-12-05)
