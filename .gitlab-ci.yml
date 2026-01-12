@@ -63,7 +63,7 @@ default:
     - if [[ -z ${conda_artifacts_directory} ]]; then exit 1; fi
     # Job commands
     - mkdir ${conda_artifacts_directory}
-    - VERSION=$(python -m setuptools_scm) conda mambabuild ${recipe_directory} --channel conda-forge --no-anaconda-upload --output-folder ${conda_artifacts_directory}
+    - VERSION=$(python -m setuptools_scm) conda build ${recipe_directory} --channel conda-forge --no-anaconda-upload --output-folder ${conda_artifacts_directory}
 
 aea-developer-test:
   extends:

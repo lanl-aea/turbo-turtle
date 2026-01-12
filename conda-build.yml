@@ -3,6 +3,6 @@ channels:
   - nodefaults
 
 dependencies:
-  - boa
+  - conda-build
   - setuptools >=77
   - setuptools_scm >=8

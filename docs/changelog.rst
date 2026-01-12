@@ -15,6 +15,7 @@ Internal Changes
 - Use and test Abaqus 2025 by default. By `Kyle Brindley`_.
 - Explicit numpy type conversion for static type checking of Cubit Python implementation (:issue:`268`, :merge:`269`).
   By `Kyle Brindley`_.
+- Replace deprecated boa packaging tool with vanilla conda-build (:issue:`269`, :merge:`270`). By `Kyle Brindley`_.
 
 *******************
 v1.2.9 (2025-12-05)
