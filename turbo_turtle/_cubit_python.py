@@ -20,14 +20,22 @@ cubit = _utilities.import_cubit()
 def cubit_command_or_exception(command: str) -> bool:
     """Thin wrapper around ``cubit.cmd`` to raise an exception when returning False.
 
-    Cubit returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
+    Cubit <17 returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
     RuntimeError when the command returns False.
 
     :param command: Cubit APREPRO command to execute
+
+    :raises RuntimeError: if Cubit raises a SyntaxError or returns False
     """
-    success = cubit.cmd(command)
+    message = f"Command '{command}' returned an error. Please see the Cubit log for details."
+    try:
+        success = cubit.cmd(command)
+    # Cubit >=17 unknown commands raise a syntaxerror
+    except SyntaxError as err:
+        raise RuntimeError(message) from err
+    # Cubit <17 and possible execution errors return False
     if not success:
-        raise RuntimeError(f"Command '{command}' returned an error. Please see the Cubit log for details.")
+        raise RuntimeError(message)
     return success
 
 
