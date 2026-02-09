@@ -50,7 +50,7 @@ execution. Testing against a non-default or range of third-party software paths 
 .. code-block::
 
    scons regression --abaqus-command /my/local/intallation/abaqus --cubit-command /my/local/installation/cubit
-   scons regression --abaqus-command /apps/abaqus/Commands/abq2025 --abaqus-command /apps/abaqus/Commands/abq2024 --cubit-command /apps/Cubit-16.16/cubit --cubit-command /apps/Cubit-16.12/cubit
+   scons regression --abaqus-command /apps/abaqus/Commands/abq2025 --abaqus-command /apps/abaqus/Commands/abq2024 --cubit-command /apps/Cubit-17.06/cubit --cubit-command /apps/Cubit-16.16/cubit
 
 The pytest command only accepts a single version of third-party software at a time because the design intent is to wrap the
 matrix of third-party software around the pytest command and limit the pytest suite to a single construction environment
@@ -59,7 +59,7 @@ at a time.
 .. code-block::
 
    pytest -m 'systemtest' --abaqus-command /my/local/intallation/abaqus --cubit-command /my/local/installation/cubit
-   pytest -m 'systemtest' --abaqus-command /apps/abaqus/Commands/abq2025 --cubit-command /apps/Cubit-16.16/cubit
+   pytest -m 'systemtest' --abaqus-command /apps/abaqus/Commands/abq2025 --cubit-command /apps/Cubit-17.06/cubit
 
 ================================
 Package Interfaces and Structure

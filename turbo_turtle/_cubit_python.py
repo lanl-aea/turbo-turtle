@@ -20,14 +20,22 @@ cubit = _utilities.import_cubit()
 def cubit_command_or_exception(command: str) -> bool:
     """Thin wrapper around ``cubit.cmd`` to raise an exception when returning False.
 
-    Cubit returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
+    Cubit <17 returns True/False on ``cubit.cmd("")`` calls, but does not raise an exception. This method will raise a
     RuntimeError when the command returns False.
 
     :param command: Cubit APREPRO command to execute
+
+    :raises RuntimeError: if Cubit raises a SyntaxError or returns False
     """
-    success = cubit.cmd(command)
+    message = f"Command '{command}' returned an error. Please see the Cubit log for details."
+    try:
+        success = cubit.cmd(command)
+    # Cubit >=17 unknown commands raise a syntaxerror
+    except SyntaxError as err:
+        raise RuntimeError(message) from err
+    # Cubit <17 and possible execution errors return False
     if not success:
-        raise RuntimeError(f"Command '{command}' returned an error. Please see the Cubit log for details.")
+        raise RuntimeError(message)
     return success
 
 
@@ -118,7 +126,8 @@ def _draw_surface(  # noqa: ANN202
 
 # Cannot use Cubit object type annotations because Cubit may not be importable at build/runtime
 def create_curve_from_coordinates(  # noqa: ANN202
-    point1: tuple[float, float, float], point2: tuple[float, float, float]
+    point1: tuple[float, float, float] | numpy.ndarray,
+    point2: tuple[float, float, float] | numpy.ndarray,
 ):
     """Create a curve from 2 three-dimensional coordinates.
 
@@ -472,16 +481,16 @@ def _sphere(
     # TODO: consolidate pure Python 3 logic in a common module for both Gmsh and Cubit
     # https://re-git.lanl.gov/aea/python-projects/turbo-turtle/-/boards
     arc_points = vertices.sphere(center, inner_radius, outer_radius, quadrant)
-    inner_point1 = arc_points[0]
-    inner_point2 = arc_points[1]
-    outer_point1 = arc_points[2]
-    outer_point2 = arc_points[3]
+    inner_point1 = numpy.array([*arc_points[0], 0.0])
+    inner_point2 = numpy.array([*arc_points[1], 0.0])
+    outer_point1 = numpy.array([*arc_points[2], 0.0])
+    outer_point2 = numpy.array([*arc_points[3], 0.0])
 
     center_3d = numpy.append(center, [0.0])
     curves = []
-    if numpy.allclose(inner_point1, center) and numpy.allclose(inner_point2, center):
-        inner_point1 = center
-        inner_point2 = center
+    if numpy.allclose(inner_point1, center_3d) and numpy.allclose(inner_point2, center_3d):
+        inner_point1 = center_3d
+        inner_point2 = center_3d
     else:
         curves.append(create_arc_from_coordinates(center_3d, inner_point1, inner_point2))
     curves.append(create_arc_from_coordinates(center_3d, outer_point1, outer_point2))
