@@ -16,6 +16,7 @@ Internal Changes
 - Explicit numpy type conversion for static type checking of Cubit Python implementation (:issue:`268`, :merge:`269`).
   By `Kyle Brindley`_.
 - Replace deprecated boa packaging tool with vanilla conda-build (:issue:`269`, :merge:`270`). By `Kyle Brindley`_.
+- Run tests against Cubit 17 and 16 (:isssue:`272`, :merge:`272`). By `Kyle Brindley`_.
 
 *******************
 v1.2.9 (2025-12-05)

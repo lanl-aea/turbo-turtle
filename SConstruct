@@ -57,7 +57,7 @@ AddOption(
     metavar="COMMAND",
     help=f"Override for the Abaqus command. Repeat to specify more than one (default: '[{default_abaqus_command}]')",
 )
-default_cubit_command = "/apps/Cubit-16.16/cubit"
+default_cubit_command = "/apps/Cubit-17.06/cubit"
 AddOption(
     "--cubit-command",
     dest="cubit_command",

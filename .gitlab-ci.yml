@@ -72,7 +72,7 @@ aea-developer-test:
   script:
     - abaqus_command='--abaqus-command=/apps/abaqus/Commands/abq2025 --abaqus-command=/apps/abaqus/Commands/abq2024 --abaqus-command=/apps/abaqus/Commands/abq2023'
     - cubit_command=''
-    - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then cubit_command='--cubit-command=/apps/Cubit-16.16/cubit --cubit-command=/apps/Cubit-16.12/cubit'; fi
+    - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then cubit_command='--cubit-command=/apps/Cubit-17.06/cubit --cubit-command=/apps/Cubit-16.16/cubit'; fi
     - echo ${abaqus_command}
     - echo ${cubit_command}
     - scons regression ${abaqus_command} ${cubit_command}
