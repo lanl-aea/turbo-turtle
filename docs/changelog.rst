@@ -8,6 +8,10 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+********************
+v1.2.10 (2026-02-09)
+********************
+
 Bug fixes
 =========
 - Fix Cubit 17 incompatibility caused by a breaking change in the Cubit Python API between 16 and 17 (:issue:`272`,
