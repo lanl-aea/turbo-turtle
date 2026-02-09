@@ -8,6 +8,11 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+Bug fixes
+=========
+- Fix Cubit 17 incompatibility caused by a breaking change in the Cubit Python API between 16 and 17 (:issue:`272`,
+  :merge:`272`). By `Kyle Brindley`_.
+
 Internal Changes
 ================
 - Update the GitHub Actions for conda package testing (:merge:`266`). By `Kyle Brindley`_.
@@ -22,6 +27,10 @@ Internal Changes
 v1.2.9 (2025-12-05)
 *******************
 
+Bug fixes
+=========
+- Improve compatibility with Abaqus Python exit behavior on Windows (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
+
 Documentation
 =============
 - Improve SCons tutorial configuration for Windows path compatibility (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
@@ -30,10 +39,6 @@ Internal Changes
 ================
 - Improved test suite support for Windows (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
 - Add Windows CI server (:issue:`265`, :merge:`265`). By `Kyle Brindley`_.
-
-Bug fixes
-=========
-- Improve compatibility with Abaqus Python exit behavior on Windows (:issue:`264`, :merge:`264`). By `Kyle Brindley`_.
 
 *******************
 v1.2.8 (2025-10-08)
