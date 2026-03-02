@@ -29,8 +29,8 @@ default:
     - echo ${environment_file}
     - if [[ -z ${environment_file} ]]; then exit 1; fi
     # Common job variables
-    - prefix="$PWD/conda-environment"
-    - conda_pkgs_dirs="$PWD/conda-pkgs"
+    - prefix="$PWD/env"
+    - conda_pkgs_dirs="$PWD/pkgs"
     - echo ${prefix}
     - echo ${conda_pkgs_dirs}
     - if [[ -z ${prefix} ]]; then exit 1; fi
@@ -48,7 +48,7 @@ default:
     # texlive module setting LC_ALL breaks Abaqus 2025
     - unset LC_ALL
   after_script:
-    - rm -r $PWD/conda-environment $PWD/conda-pkgs || true
+    - rm -r $PWD/env $PWD/pkgs || true
 
 .conda-build: &conda-build
   variables:
