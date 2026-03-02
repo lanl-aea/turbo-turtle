@@ -20,8 +20,8 @@ default:
     - if ([string]::IsNullOrEmpty($environment_file)) { exit 1 }
     - if ([string]::IsNullOrEmpty($conda_installation)) { exit 1 }
     # Common job variables
-    - $prefix="$pwd\conda-environment"
-    - $conda_pkgs_dirs="$pwd\conda-pkgs"
+    - $prefix="$pwd\env"
+    - $conda_pkgs_dirs="$pwd\pkgs"
     - Write-Output $conda_installation
     - Write-Output $environment_file
     - Write-Output $prefix
@@ -37,8 +37,8 @@ default:
     - conda info
     - python -c "import getpass; print(getpass.getuser())"
   after_script:
-    - Remove-Item -Force -Recurse $pwd\conda-environment -ErrorAction Continue
-    - Remove-Item -Force -Recurse $pwd\conda-pkgs -ErrorAction Continue
+    - Remove-Item -Force -Recurse $pwd\env -ErrorAction Continue
+    - Remove-Item -Force -Recurse $pwd\pkgs -ErrorAction Continue
 
 win-developer-test:
   extends:
