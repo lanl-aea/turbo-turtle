@@ -1,0 +1,83 @@
+schema_version: 1
+
+context:
+  name: turbo_turtle
+  version: ${{ env.get("VERSION", default="0.0.0") }}
+  python_min: 3.10
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  git: ..
+  lfs: true
+
+build:
+  number: 0
+  noarch: python
+  script:
+    env:
+      SETUPTOOLS_SCM_PRETEND_VERSION: ${{ version }}
+    content:
+      - if: unix
+        then: scons install --prefix=${PREFIX}
+      - if: win
+        then: scons install --prefix=%PREFIX%
+  python:
+    entry_points:
+      - turbo-turtle = turbo_turtle._main:main
+
+requirements:
+  host:
+    - python
+    - python-build
+    - python-gmsh >=4
+    - pip
+    - pytest
+    - lazy_loader >=0.4
+    - matplotlib-base >=3
+    - scons >=4.6
+    - setuptools >=77
+    - setuptools_scm >=8
+    - sphinx >=7.1
+    - sphinx-argparse
+    - sphinx-book-theme
+    - sphinx-copybutton >=0.5.1
+    - sphinx-design
+    - sphinxcontrib-bibtex
+    - waves >=0.13
+  run:
+    - python >={{ python_min }}
+    - matplotlib-base >=3
+    - lazy_loader >=0.4
+    - scons >=4.6
+    - waves >=0.13
+
+tests:
+  - python:
+      imports:
+        - turbo_turtle
+      pip_check: false
+  - script:
+      - if: unix
+        then: ./run_test.sh
+      - if: win
+        then: ./run_test.bat
+    requirements:
+      run:
+        - pip
+        - pytest
+        - pytest-xdist
+        - python-gmsh >=4
+
+about:
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  summary: Solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved models
+  description: |
+    Turbo-Turtle (LANL code O4765) is a solid body modeling tools for 2D sketched, 2D axisymmetric, and 3D revolved
+    models.
+  homepage: https://github.com/lanl-aea/turbo-turtle
+  repository: https://github.com/lanl-aea/turbo-turtle
+  documentation: https://lanl-aea.github.io/turbo-turtle/index.html
