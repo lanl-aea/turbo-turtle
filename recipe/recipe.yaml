@@ -61,9 +61,14 @@ tests:
       pip_check: false
   - script:
       - if: unix
-        then: ./run_test.sh
+        then:
+          - cd $SP_DIR/$PKG_NAME
+          - pytest -vvv -n 4 --ignore=_abaqus_python -m "not require_third_party"
       - if: win
-        then: ./run_test.bat
+        then:
+          - cd %SP_DIR%\%PKG_NAME%
+          - pytest -vvv -n 4 --ignore=_abaqus_python -m "not require_third_party"
+
     requirements:
       run:
         - pip
