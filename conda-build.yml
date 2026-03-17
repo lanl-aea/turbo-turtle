@@ -3,6 +3,6 @@ channels:
   - nodefaults
 
 dependencies:
-  - conda-build
+  - rattler-build
   - setuptools >=77
   - setuptools_scm >=8
