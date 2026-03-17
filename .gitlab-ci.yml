@@ -1,4 +1,9 @@
-# Do not create pipelines for non-default branches
+# https://re-git.lanl.gov/aea/developer-operations/aea-job-environment
+include:
+  - project: aea/developer-operations/aea-job-environment
+    ref: main
+    file: .pipeline-common.yml
+
 workflow:
   rules:
     - if: $CI_COMMIT_TAG
@@ -17,38 +22,6 @@ default:
     - shell
     - aea
     - linux
-
-.nix-job-environment: &nix-job-environment
-  variables:
-    GIT_STRATEGY: clone
-    conda_installation: "/apps/miniconda3/3.13-miniconda-25.5.1"
-    environment_file: "environment.yml"
-  before_script:
-    - function check_directory_variable () { echo "$1"; if [[ -z $1 ]] || [[ ! -d $1 ]]; then exit 1; fi; }
-    - check_directory_variable "${conda_installation}"
-    - echo ${environment_file}
-    - if [[ -z ${environment_file} ]]; then exit 1; fi
-    # Common job variables
-    - prefix="$PWD/env"
-    - conda_pkgs_dirs="$PWD/pkgs"
-    - echo ${prefix}
-    - echo ${conda_pkgs_dirs}
-    - if [[ -z ${prefix} ]]; then exit 1; fi
-    - if [[ -z ${conda_pkgs_dirs} ]]; then exit 1; fi
-    # Put texlive on PATH for AEA/HPC
-    - module load texlive || true
-    # Environment creation
-    - export CONDA_PKGS_DIRS="${conda_pkgs_dirs}"
-    - source ${conda_installation}/etc/profile.d/conda.sh
-    - conda info
-    - conda env create --prefix ${prefix} --file ${environment_file} --yes
-    - conda activate ${prefix}
-    - conda info
-    - conda env export
-    # texlive module setting LC_ALL breaks Abaqus 2025
-    - unset LC_ALL
-  after_script:
-    - rm -r $PWD/env $PWD/pkgs || true
 
 .conda-build: &conda-build
   variables:
