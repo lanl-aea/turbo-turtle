@@ -48,7 +48,7 @@ requirements:
     - sphinxcontrib-bibtex
     - waves >=0.13
   run:
-    - python >={{ python_min }}
+    - python >=${{ python_min }}
     - matplotlib-base >=3
     - lazy_loader >=0.4
     - scons >=4.6
