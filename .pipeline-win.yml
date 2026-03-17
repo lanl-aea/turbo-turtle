@@ -1,3 +1,9 @@
+# https://re-git.lanl.gov/aea/developer-operations/aea-job-environment
+include:
+  - project: aea/developer-operations/aea-job-environment
+    ref: main
+    file: .pipeline-common.yml
+
 stages:
   - test
 
