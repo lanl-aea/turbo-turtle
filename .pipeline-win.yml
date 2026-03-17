@@ -14,7 +14,7 @@ default:
 
 win-developer-test:
   extends:
-    - .win-job-environment
+    - .win-temp-environment
   stage: test
   script: scons regression --abaqus-command='C:\SIMULIA\Commands\abq2024.bat' --cubit-command='C:\Program Files\Cubit 16.18\bin\cubit.exe'
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
@@ -24,7 +24,7 @@ win-developer-test:
 
 win-conda-build:
   extends:
-    - .win-job-environment
+    - .win-temp-environment
   stage: test
   rules:
     - if: $PARENT_CI_PIPELINE_SOURCE == "schedule"
@@ -42,7 +42,7 @@ win-conda-build:
 
 win-pip-build:
   extends:
-    - .win-job-environment
+    - .win-temp-environment
   stage: test
   rules:
     - if: $PARENT_CI_PIPELINE_SOURCE == "schedule"
