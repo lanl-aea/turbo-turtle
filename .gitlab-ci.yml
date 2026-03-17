@@ -58,12 +58,11 @@ default:
     # Job variables
     - echo ${recipe_directory}
     - echo ${conda_artifacts_directory}
-    - echo ${tag_path_root}
     - if [[ -z ${recipe_directory} ]]; then exit 1; fi
     - if [[ -z ${conda_artifacts_directory} ]]; then exit 1; fi
     # Job commands
     - mkdir ${conda_artifacts_directory}
-    - VERSION=$(python -m setuptools_scm) conda build ${recipe_directory} --channel conda-forge --no-anaconda-upload --output-folder ${conda_artifacts_directory}
+    - VERSION=$(python -m setuptools_scm) rattler-build build --recipe ${recipe_directory} --channel conda-forge --output-dir ${conda_artifacts_directory}
 
 aea-developer-test:
   extends:
