@@ -13,7 +13,7 @@ OUTPUT_FOLDER = "--output-folder ${conda_build_artifacts}" if "conda_build_artif
 repository_directory = pathlib.Path(os.path.realpath(__file__)).parent.parent
 
 command_template = string.Template(
-    "VERSION=$(python -m setuptools_scm) rattler-build build --recipe recipe-matrix --channel fierromechanics "
+    "VERSION=$(python -m setuptools_scm) rattler-build build --recipe recipe-matrix "
     "--channel conda-forge "
     "--output-dir conda-bld "
     '--variant python="${python_version}" --variant scons="${scons_version}"'
