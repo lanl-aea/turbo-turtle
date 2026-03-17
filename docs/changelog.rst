@@ -8,6 +8,11 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+Internal Changes
+================
+- Convert to conda-forge v1 recipes using rattler-build (:issue:`270`, :merge:`276`). By `Kyle Brindley`_.
+- Use common multi-project CI job environment script (:issue:`270`, :merge:`276`). By `Kyle Brindley`_.
+
 ********************
 v1.2.11 (2026-02-09)
 ********************
