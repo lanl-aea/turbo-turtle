@@ -25,6 +25,7 @@ dynamic = ["version"]
 dependencies = [
     "lazy_loader >=0.4",
     "matplotlib >=3",
+    "numpy >=2",
     "scons >=4.6",
     "waves-workflows >=0.13.0"
 ]
