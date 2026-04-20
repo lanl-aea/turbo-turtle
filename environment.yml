@@ -15,7 +15,7 @@ dependencies:
   - pytest-xdist
   - python-build
   - python-gmsh >=4
-  - rattler-build
+  - rattler-build >=0.62
   - ruff
   - scons >=4.6
   - setuptools >=77

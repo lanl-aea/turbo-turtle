@@ -27,6 +27,7 @@ default:
   variables:
     recipe_directory: "recipe"
     conda_artifacts_directory: "conda-bld"
+    rattler_build_extra_options: ""
   script:
     # Job variables
     - echo ${recipe_directory}
@@ -35,7 +36,7 @@ default:
     - if [[ -z ${conda_artifacts_directory} ]]; then exit 1; fi
     # Job commands
     - mkdir ${conda_artifacts_directory}
-    - VERSION=$(python -m setuptools_scm) rattler-build build --recipe ${recipe_directory} --channel conda-forge --output-dir ${conda_artifacts_directory}
+    - VERSION=$(python -m setuptools_scm) rattler-build build --recipe ${recipe_directory} --channel conda-forge --output-dir ${conda_artifacts_directory} ${rattler_build_extra_options}
 
 aea-developer-test:
   extends:
@@ -83,7 +84,7 @@ aea-conda-build-internal:
   variables:
     environment_file: "conda-build.yml"
     recipe_directory: "recipe-internal"
-    conda_artifacts_directory: "conda-bld"
+    rattler_build_extra_options: "--env-isolation conda-build"
   artifacts:
     expire_in: '2 hrs'
     paths:
@@ -109,8 +110,6 @@ aea-conda-build-matrix:
     - .nix-job-environment
   timeout: 4h
   stage: test
-  variables:
-    conda_artifacts_directory: "conda-bld"
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   script:
