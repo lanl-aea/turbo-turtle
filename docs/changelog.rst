@@ -15,6 +15,8 @@ Internal Changes
 - Add missing numpy explicit dependency. Used as a first-order import, so it should be found in the direct dependency
   list. Was previously included from WAVES as a second-order, implicit dependency (:issue:`257`, :merge:`278`). By `Kyle
   Brindley`_.
+- Adapt internal recipe rattler-build command to pass-through shell environment variables required for the internal
+  recipe system tests (:issue:`274`, :merge:`279`. By `Kyle Brindley`_.
 
 ********************
 v1.2.11 (2026-02-09)

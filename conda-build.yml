@@ -3,6 +3,6 @@ channels:
   - nodefaults
 
 dependencies:
-  - rattler-build
+  - rattler-build >=0.62
   - setuptools >=77
   - setuptools_scm >=8
