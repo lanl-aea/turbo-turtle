@@ -17,6 +17,7 @@ Internal Changes
   Brindley`_.
 - Adapt internal recipe rattler-build command to pass-through shell environment variables required for the internal
   recipe system tests (:issue:`274`, :merge:`279`. By `Kyle Brindley`_.
+- Fix the Windows conda-build CI test. By `Kyle Brindley`_.
 
 ********************
 v1.2.11 (2026-02-09)
