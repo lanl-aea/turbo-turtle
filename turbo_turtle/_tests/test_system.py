@@ -30,25 +30,34 @@ from turbo_turtle.conftest import missing_display
 # TODO: Remove user check when Windows CI server Gitlab-Runner account has access to the Abaqus license server
 # https://re-git.lanl.gov/aea/python-projects/waves/-/issues/984
 def check_ci_user() -> bool:
-    user = getpass.getuser().lower()
+    """Return ``True`` if active user is a known CI server username.
+
+    If no user can be found, e.g. in clean rattler-build environments, treat like a CI user because the Abaqus license
+    server won't be accessible when user is unknown.
+    """
+    try:
+        user = getpass.getuser().lower()
+    except OSError:
+        return True
     return "pn2606796" in user or user == "gitlab-runner"
 
 
 test_check_ci_user_cases = {
-    "windows ci user": ("PN2606796$", True),
-    "windows ci user without trailing service account character": ("PN2606796", True),
-    "macos ci user": ("gitlab-runner", True),
-    "player character": ("roppenheimer", False),
+    "windows ci user": ("PN2606796$", None, True),
+    "windows ci user without trailing service account character": ("PN2606796", None, True),
+    "macos ci user": ("gitlab-runner", None, True),
+    "player character": ("roppenheimer", None, False),
+    "No user in environment": (None, OSError("No username set in the environment"), True),
 }
 
 
 @pytest.mark.parametrize(
-    ("mock_user", "expected"),
+    ("mock_user", "mock_user_side_effect", "expected"),
     test_check_ci_user_cases.values(),
     ids=test_check_ci_user_cases.keys(),
 )
-def test_check_ci_user(mock_user: str, expected: bool) -> None:
-    with patch("getpass.getuser", return_value=mock_user):
+def test_check_ci_user(mock_user: str, mock_user_side_effect: None | Exception, expected: bool) -> None:
+    with patch("getpass.getuser", return_value=mock_user, side_effect=mock_user_side_effect):
         testing_ci_user = check_ci_user()
     assert testing_ci_user is expected
 
