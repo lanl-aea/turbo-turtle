@@ -110,9 +110,15 @@ aea-conda-build-matrix:
     - .nix-job-environment
   timeout: 4h
   stage: test
+  variables:
+    conda_artifacts_directory: "conda-bld"
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   script:
+    # Job variables
+    - echo ${conda_artifacts_directory}
+    - if [[ -z ${conda_artifacts_directory} ]]; then exit 1; fi
+    # Job commands
     - mkdir ${conda_artifacts_directory}
     - pytest recipe-matrix/matrix.py -v --no-showlocals --tb=short
 
