@@ -8,6 +8,10 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+********************
+v1.2.12 (2026-06-01)
+********************
+
 Internal Changes
 ================
 - Convert to conda-forge v1 recipes using rattler-build (:issue:`270`, :merge:`276`). By `Kyle Brindley`_.
