@@ -1,7 +1,7 @@
 build*/
 install*/
 dist/
-conda-bld/
+conda-bld*/
 *.egg-info*/
 *.eggs/
 _version.py
@@ -23,5 +23,5 @@ config.log
 ABQ*
 *.zip
 *.pyc
-*pycache*/
+*cache*/
 *.jou

@@ -19,6 +19,8 @@ Internal Changes
   recipe system tests (:issue:`274`, :merge:`279`. By `Kyle Brindley`_.
 - Fix the Windows conda-build CI test. By `Kyle Brindley`_.
 - Add missing CI job variable to scheduled package matrix test. By `Kyle Brindley`_.
+- Limit conda package matrix build to unit tests for increased OS and CI server compatibility. By `Kyle Brindley`_.
+- Enable parallel conda package matrix builds. By `Kyle Brindley`_.
 
 ********************
 v1.2.11 (2026-02-09)
