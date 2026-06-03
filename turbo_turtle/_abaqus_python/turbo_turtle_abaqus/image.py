@@ -243,12 +243,12 @@ def odb_image(
     import displayGroupOdbToolset  # noqa: PLC0415
 
     # Always display the ODB
-    odb_object = session.odbs[session.odbs.keys()[0]]
+    odb_object = abaqus.session.odbs[abaqus.session.odbs.keys()[0]]
     abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=odb_object)
 
     if part_name is not None:
         leaf = displayGroupOdbToolset.LeafFromPartInstance(partInstanceName=(part_name,))
-        session.viewports["Viewport: 1"].odbDisplay.displayGroup.replace(leaf=leaf)
+        abaqus.session.viewports["Viewport: 1"].odbDisplay.displayGroup.replace(leaf=leaf)
 
     _set_image_view(x_angle, y_angle, z_angle, image_size, color_map)
     _export_image(output_file)
