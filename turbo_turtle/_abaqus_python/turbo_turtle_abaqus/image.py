@@ -80,6 +80,20 @@ def main(
         _mixed_utilities.sys_exit(str(err))
 
 
+def _set_image_view(x_angle, y_angle, z_angle, color_map, image_size):
+    abaqus.session.viewports["Viewport: 1"].view.rotate(
+        xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL
+    )
+    abaqus.session.viewports["Viewport: 1"].view.fitView()
+    abaqus.session.viewports["Viewport: 1"].enableMultipleColors()
+    abaqus.session.viewports["Viewport: 1"].setColor(initialColor="#BDBDBD")
+    cmap = abaqus.session.viewports["Viewport: 1"].colorMappings[color_map]
+    abaqus.session.viewports["Viewport: 1"].setColor(colorMapping=cmap)
+    abaqus.session.viewports["Viewport: 1"].disableMultipleColors()
+    abaqus.session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
+    abaqus.session.pngOptions.setValues(imageSize=image_size)
+
+
 def image(
     output_file,
     x_angle=parsers.image_defaults["x_angle"],
@@ -136,17 +150,7 @@ def image(
         part_object = abaqus.mdb.models[model_name].parts[part_name]
         abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=part_object)
 
-    abaqus.session.viewports["Viewport: 1"].view.rotate(
-        xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL
-    )
-    abaqus.session.viewports["Viewport: 1"].view.fitView()
-    abaqus.session.viewports["Viewport: 1"].enableMultipleColors()
-    abaqus.session.viewports["Viewport: 1"].setColor(initialColor="#BDBDBD")
-    cmap = abaqus.session.viewports["Viewport: 1"].colorMappings[color_map]
-    abaqus.session.viewports["Viewport: 1"].setColor(colorMapping=cmap)
-    abaqus.session.viewports["Viewport: 1"].disableMultipleColors()
-    abaqus.session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
-    abaqus.session.pngOptions.setValues(imageSize=image_size)
+    _set_image_view(x_angle, y_angle, z_angle, color_map, image_size)
 
     output_format = _abaqus_utilities.return_abaqus_constant_or_exit(output_file_extension)
     if output_format is None:
