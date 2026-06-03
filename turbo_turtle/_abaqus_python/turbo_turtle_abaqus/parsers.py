@@ -893,7 +893,7 @@ def image_parser(basename="image.py", add_help=True, description=image_cli_descr
         "--input-file",
         type=str,
         required=True,
-        help="Abaqus input file. Supports ``*.inp`` and ``*.cae``.",
+        help="Abaqus input file. Supports ``*.inp``, ``*.cae``, and ``*.odb``.",
     )
     required.add_argument(
         "--output-file",
