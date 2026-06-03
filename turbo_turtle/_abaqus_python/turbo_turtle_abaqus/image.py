@@ -39,6 +39,7 @@ def main(
         method
     :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
         method
+    :param list image_size: width and height of the viewport, in pixels.
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
@@ -80,9 +81,22 @@ def main(
         _mixed_utilities.sys_exit(str(err))
 
 
-def _set_image_view(x_angle, y_angle, z_angle, color_map, image_size):
-    import abaqus
-    import abaqusConstants
+def _set_image_view(x_angle, y_angle, z_angle, image_size, color_map):
+    """Set viewport to fit the view.
+
+    The color map is set to color by material.
+
+    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param list image_size: width and height of the viewport, in pixels.
+    :param str color_map: color map key
+    """
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
 
     abaqus.session.viewports["Viewport: 1"].view.rotate(
         xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL
@@ -95,6 +109,30 @@ def _set_image_view(x_angle, y_angle, z_angle, color_map, image_size):
     abaqus.session.viewports["Viewport: 1"].disableMultipleColors()
     abaqus.session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
     abaqus.session.pngOptions.setValues(imageSize=image_size)
+
+
+def _export_image(output_file):
+    """Save a part or assembly view image for a given Abaqus file.
+
+    :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
+
+    :returns: writes image to ``{output_file}``
+
+    :raises RuntimeError: if the extension of ``output_file`` is not recognized by Abaqus
+    """
+    import abaqus  # noqa: PLC0415
+
+    output_file_stem, output_file_extension = os.path.splitext(output_file)
+    output_file_extension = output_file_extension.lstrip(".")
+    output_format = _abaqus_utilities.return_abaqus_constant_or_exit(output_file_extension)
+    if output_format is None:
+        error_message = "Abaqus does not recognize the output extension '{}'".format(output_file_extension)
+        raise RuntimeError(error_message)
+    abaqus.session.printToFile(
+        fileName=output_file_stem,
+        format=output_format,
+        canvasObjects=(abaqus.session.viewports["Viewport: 1"],),
+    )
 
 
 def image(
@@ -123,6 +161,7 @@ def image(
         method
     :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
         method
+    :param list image_size: width and height of the viewport, in pixels.
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
@@ -134,8 +173,6 @@ def image(
     import abaqus  # noqa: PLC0415
     import abaqusConstants  # noqa: PLC0415
 
-    output_file_stem, output_file_extension = os.path.splitext(output_file)
-    output_file_extension = output_file_extension.lstrip(".")
     if part_name is None:
         model = abaqus.mdb.models[model_name]
         assembly = model.rootAssembly
@@ -153,18 +190,8 @@ def image(
         part_object = abaqus.mdb.models[model_name].parts[part_name]
         abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=part_object)
 
-    _set_image_view(x_angle, y_angle, z_angle, color_map, image_size)
-
-    output_format = _abaqus_utilities.return_abaqus_constant_or_exit(output_file_extension)
-    if output_format is None:
-        error_message = "Abaqus does not recognize the output extension '{}'".format(output_file_extension)
-        raise RuntimeError(error_message)
-
-    abaqus.session.printToFile(
-        fileName=output_file_stem,
-        format=output_format,
-        canvasObjects=(abaqus.session.viewports["Viewport: 1"],),
-    )
+    _set_image_view(x_angle, y_angle, z_angle, image_size, color_map)
+    _export_image_view(output_file)
 
 
 def _validate_color_map(color_map, valid_color_maps):
