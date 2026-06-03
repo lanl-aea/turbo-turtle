@@ -314,7 +314,7 @@ def _gui_get_inputs():
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
         if default_part_name == "rootAssembly":
             default_color_map = "Assembly"
-            default_part_name = ""  # Need to reset to blank string for proper handling in the image() function
+            default_part_name = ""  # Need to reset to blank string for proper handling in the cae_image() function
         else:
             default_color_map = "Part geometry"
     except AttributeError:
@@ -344,7 +344,7 @@ def _gui_get_inputs():
             raise RuntimeError(error_message)
 
         if not part_name:
-            part_name = None  # Blank string needs to be None when passed to image()
+            part_name = None  # Blank string needs to be None when passed to cae_image()
 
         _validate_color_map(color_map, parsers.image_color_map_choices)
 
@@ -370,7 +370,7 @@ def _gui():
 
     Function with no inputs required for driving the plugin.
     """
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs, subcommand_function=image, post_action_function=None)
+    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs, subcommand_function=cae_image, post_action_function=None)
 
 
 if __name__ == "__main__":
