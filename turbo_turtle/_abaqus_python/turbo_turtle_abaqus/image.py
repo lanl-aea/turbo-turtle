@@ -81,6 +81,9 @@ def main(
 
 
 def _set_image_view(x_angle, y_angle, z_angle, color_map, image_size):
+    import abaqus
+    import abaqusConstants
+
     abaqus.session.viewports["Viewport: 1"].view.rotate(
         xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL
     )
