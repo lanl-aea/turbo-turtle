@@ -31,7 +31,7 @@ def main(
 ):
     """Wrap image with file input handling.
 
-    :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
+    :param str input_file: Abaqus input file. Suports ``*.inp``, ``*.cae``, and ``*.odb``.
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
     :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
         method
@@ -40,7 +40,7 @@ def main(
     :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
         method
     :param list image_size: width and height of the viewport, in pixels.
-    :param str model_name: model to query in the Abaqus model database
+    :param str model_name: model to query in the Abaqus model database. Unused when input file is an ``*.odb`` file.
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
 
@@ -71,6 +71,17 @@ def main(
                 z_angle=z_angle,
                 image_size=image_size,
                 model_name=model_name,
+                part_name=part_name,
+                color_map=color_map,
+            )
+        elif input_file_extension.lower() == ".odb":
+            abaqus.session.openOdb(name=input_file, readOnly=True)
+            odb_image(
+                output_file,
+                x_angle=x_angle,
+                y_angle=y_angle,
+                z_angle=z_angle,
+                image_size=image_size,
                 part_name=part_name,
                 color_map=color_map,
             )
