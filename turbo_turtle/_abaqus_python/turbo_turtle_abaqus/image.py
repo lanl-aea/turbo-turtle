@@ -145,7 +145,7 @@ def cae_image(
     part_name=parsers.image_defaults["part_name"],
     color_map=parsers.image_color_map_choices[0],
 ):
-    """Script for saving a part or assembly view image for a given Abaqus input file.
+    """Script for saving a part or assembly view image for a given Abaqus CAE ``*.cae`` or input ``*.inp`` file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
 
@@ -189,6 +189,55 @@ def cae_image(
     else:
         part_object = abaqus.mdb.models[model_name].parts[part_name]
         abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=part_object)
+
+    _set_image_view(x_angle, y_angle, z_angle, image_size, color_map)
+    _export_image(output_file)
+
+
+def odb_image(
+    output_file,
+    x_angle=parsers.image_defaults["x_angle"],
+    y_angle=parsers.image_defaults["y_angle"],
+    z_angle=parsers.image_defaults["z_angle"],
+    image_size=parsers.image_defaults["image_size"],
+    part_name=parsers.image_defaults["part_name"],
+    color_map=parsers.image_color_map_choices[0],
+):
+    """Script for saving a part instance or assembly view image for a given Abaqus ODB ``*.odb`` file.
+
+    The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
+
+    If ``part_name`` is specified, an image of that part instance will be exported. If no ``part_name`` is specified,
+    the model's root assembly will be queried and if empty, all parts in the model will be instanced into the root
+    assembly. Then, an image of the root assembly will be exported. The ``input_file`` is not modified to include any
+    generated instances.
+
+    :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
+    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param list image_size: width and height of the viewport, in pixels.
+    :param str part_name: part **instance** to query in the specified Abaqus model
+    :param str color_map: color map key
+
+    :returns: writes image to ``{output_file}``
+
+    :raises RuntimeError: if the extension of ``output_file`` is not recognized by Abaqus
+    """
+    import abaqus  # noqa: PLC0415
+    import caeModules  # noqa: PLC0415
+    import displayGroupOdbToolset  # noqa: PLC0415
+
+    # Always display the ODB
+    odb_object = session.odbs[session.odbs.keys()[0]]
+    abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=odb_object)
+
+    if part_name is not None:
+        leaf = displayGroupOdbToolset.LeafFromPartInstance(partInstanceName=(part_name, ))
+        session.viewports['Viewport: 1'].odbDisplay.displayGroup.replace(leaf=leaf)
 
     _set_image_view(x_angle, y_angle, z_angle, image_size, color_map)
     _export_image(output_file)
