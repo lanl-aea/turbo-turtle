@@ -8,6 +8,11 @@ Changelog
 v1.3.0 (unreleased)
 *******************
 
+Enhancements
+============
+- Add ODB support to the CLI image subcommand. Not yet implemented for Abaqus CAE plugin style interface. By `Kyle
+  Brindley`_ and `Thomas Roberts`_.
+
 ********************
 v1.2.12 (2026-06-01)
 ********************
