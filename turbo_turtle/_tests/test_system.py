@@ -986,7 +986,8 @@ commands_list.append(
             string.Template("${abaqus_command_path} fetch -job w-reactor_global.odb"),
             string.Template("${abaqus_command_path} -upgrade -job w-reactor_global.new.odb -odb w-reactor_global.odb"),
             string.Template(
-                "${turbo_turtle_command} image ${abaqus_command} --input-file w-reactor_global.new.odb --output-file w-reactor_global.png"
+                "${turbo_turtle_command} image ${abaqus_command}"
+                " --input-file w-reactor_global.new.odb --output-file w-reactor_global.png"
             ),
         ],
         id="turbo-turtle_image_w-reactor_global.odb",
