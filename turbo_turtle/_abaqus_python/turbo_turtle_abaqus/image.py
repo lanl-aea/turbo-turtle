@@ -191,7 +191,7 @@ def image(
         abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=part_object)
 
     _set_image_view(x_angle, y_angle, z_angle, image_size, color_map)
-    _export_image_view(output_file)
+    _export_image(output_file)
 
 
 def _validate_color_map(color_map, valid_color_maps):
