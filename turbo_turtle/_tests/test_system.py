@@ -979,6 +979,23 @@ for files in sconstruct_files:
     ]
     commands_list.append(scons_test_commands)
 
+# Image tests
+commands_list.append(
+    pytest.param(
+        [
+            string.Template("${abaqus_command} fetch -job=w-reactor_global.odb"),
+            string.Template(
+                "${turbo_turtle_command image --input-file w-reactor_global.odb --output-file w-reactor_global.png"
+            ),
+        ],
+        id="turbo-turtle image w-reactor_global.odb",
+        marks=[
+            pytest.mark.abaqus,
+            pytest.mark.skipif(missing_display, reason="DISPLAY not available"),
+        ],
+    )
+)
+
 
 @pytest.mark.systemtest
 @pytest.mark.require_third_party
