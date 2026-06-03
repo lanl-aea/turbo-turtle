@@ -31,7 +31,7 @@ def main(
 ):
     """Wrap image with file input handling.
 
-    :param str input_file: Abaqus input file. Suports ``*.inp`` and ``*.cae``.
+    :param str input_file: Abaqus input file. Suports ``*.inp``, ``*.cae``, and ``*.odb``.
     :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
     :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
         method
@@ -39,7 +39,8 @@ def main(
         method
     :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
         method
-    :param str model_name: model to query in the Abaqus model database
+    :param list image_size: width and height of the viewport, in pixels.
+    :param str model_name: model to query in the Abaqus model database. Unused when input file is an ``*.odb`` file.
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
 
@@ -51,7 +52,7 @@ def main(
         input_file_extension = os.path.splitext(input_file)[1]
         if input_file_extension.lower() == ".cae":
             with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir="."):
-                image(
+                cae_image(
                     output_file,
                     x_angle=x_angle,
                     y_angle=y_angle,
@@ -63,13 +64,24 @@ def main(
                 )
         elif input_file_extension.lower() == ".inp":
             abaqus.mdb.ModelFromInputFile(name=model_name, inputFileName=input_file)
-            image(
+            cae_image(
                 output_file,
                 x_angle=x_angle,
                 y_angle=y_angle,
                 z_angle=z_angle,
                 image_size=image_size,
                 model_name=model_name,
+                part_name=part_name,
+                color_map=color_map,
+            )
+        elif input_file_extension.lower() == ".odb":
+            abaqus.session.openOdb(name=input_file, readOnly=True)
+            odb_image(
+                output_file,
+                x_angle=x_angle,
+                y_angle=y_angle,
+                z_angle=z_angle,
+                image_size=image_size,
                 part_name=part_name,
                 color_map=color_map,
             )
@@ -80,7 +92,61 @@ def main(
         _mixed_utilities.sys_exit(str(err))
 
 
-def image(
+def _set_image_view(x_angle, y_angle, z_angle, image_size, color_map):
+    """Set viewport to fit the view.
+
+    The color map is set to color by material.
+
+    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param list image_size: width and height of the viewport, in pixels.
+    :param str color_map: color map key
+    """
+    import abaqus  # noqa: PLC0415
+    import abaqusConstants  # noqa: PLC0415
+
+    abaqus.session.viewports["Viewport: 1"].view.rotate(
+        xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL
+    )
+    abaqus.session.viewports["Viewport: 1"].view.fitView()
+    abaqus.session.viewports["Viewport: 1"].enableMultipleColors()
+    abaqus.session.viewports["Viewport: 1"].setColor(initialColor="#BDBDBD")
+    cmap = abaqus.session.viewports["Viewport: 1"].colorMappings[color_map]
+    abaqus.session.viewports["Viewport: 1"].setColor(colorMapping=cmap)
+    abaqus.session.viewports["Viewport: 1"].disableMultipleColors()
+    abaqus.session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
+    abaqus.session.pngOptions.setValues(imageSize=image_size)
+
+
+def _export_image(output_file):
+    """Save a part or assembly view image for a given Abaqus file.
+
+    :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
+
+    :returns: writes image to ``{output_file}``
+
+    :raises RuntimeError: if the extension of ``output_file`` is not recognized by Abaqus
+    """
+    import abaqus  # noqa: PLC0415
+
+    output_file_stem, output_file_extension = os.path.splitext(output_file)
+    output_file_extension = output_file_extension.lstrip(".")
+    output_format = _abaqus_utilities.return_abaqus_constant_or_exit(output_file_extension)
+    if output_format is None:
+        error_message = "Abaqus does not recognize the output extension '{}'".format(output_file_extension)
+        raise RuntimeError(error_message)
+    abaqus.session.printToFile(
+        fileName=output_file_stem,
+        format=output_format,
+        canvasObjects=(abaqus.session.viewports["Viewport: 1"],),
+    )
+
+
+def cae_image(
     output_file,
     x_angle=parsers.image_defaults["x_angle"],
     y_angle=parsers.image_defaults["y_angle"],
@@ -90,7 +156,7 @@ def image(
     part_name=parsers.image_defaults["part_name"],
     color_map=parsers.image_color_map_choices[0],
 ):
-    """Script for saving a part or assembly view image for a given Abaqus input file.
+    """Script for saving a part or assembly view image for a given Abaqus CAE ``*.cae`` or input ``*.inp`` file.
 
     The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
 
@@ -106,6 +172,7 @@ def image(
         method
     :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
         method
+    :param list image_size: width and height of the viewport, in pixels.
     :param str model_name: model to query in the Abaqus model database
     :param str part_name: part to query in the specified Abaqus model
     :param str color_map: color map key
@@ -117,8 +184,6 @@ def image(
     import abaqus  # noqa: PLC0415
     import abaqusConstants  # noqa: PLC0415
 
-    output_file_stem, output_file_extension = os.path.splitext(output_file)
-    output_file_extension = output_file_extension.lstrip(".")
     if part_name is None:
         model = abaqus.mdb.models[model_name]
         assembly = model.rootAssembly
@@ -136,28 +201,57 @@ def image(
         part_object = abaqus.mdb.models[model_name].parts[part_name]
         abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=part_object)
 
-    abaqus.session.viewports["Viewport: 1"].view.rotate(
-        xAngle=x_angle, yAngle=y_angle, zAngle=z_angle, mode=abaqusConstants.MODEL
-    )
-    abaqus.session.viewports["Viewport: 1"].view.fitView()
-    abaqus.session.viewports["Viewport: 1"].enableMultipleColors()
-    abaqus.session.viewports["Viewport: 1"].setColor(initialColor="#BDBDBD")
-    cmap = abaqus.session.viewports["Viewport: 1"].colorMappings[color_map]
-    abaqus.session.viewports["Viewport: 1"].setColor(colorMapping=cmap)
-    abaqus.session.viewports["Viewport: 1"].disableMultipleColors()
-    abaqus.session.printOptions.setValues(vpDecorations=abaqusConstants.OFF)
-    abaqus.session.pngOptions.setValues(imageSize=image_size)
+    _set_image_view(x_angle, y_angle, z_angle, image_size, color_map)
+    _export_image(output_file)
 
-    output_format = _abaqus_utilities.return_abaqus_constant_or_exit(output_file_extension)
-    if output_format is None:
-        error_message = "Abaqus does not recognize the output extension '{}'".format(output_file_extension)
-        raise RuntimeError(error_message)
 
-    abaqus.session.printToFile(
-        fileName=output_file_stem,
-        format=output_format,
-        canvasObjects=(abaqus.session.viewports["Viewport: 1"],),
-    )
+def odb_image(
+    output_file,
+    x_angle=parsers.image_defaults["x_angle"],
+    y_angle=parsers.image_defaults["y_angle"],
+    z_angle=parsers.image_defaults["z_angle"],
+    image_size=parsers.image_defaults["image_size"],
+    part_name=parsers.image_defaults["part_name"],
+    color_map=parsers.image_color_map_choices[0],
+):
+    """Script for saving a part instance or assembly view image for a given Abaqus ODB ``*.odb`` file.
+
+    The color map is set to color by material. Finally, viewport is set to fit the view to the viewport screen.
+
+    If ``part_name`` is specified, an image of that part instance will be exported. If no ``part_name`` is specified,
+    the model's root assembly will be queried and if empty, all parts in the model will be instanced into the root
+    assembly. Then, an image of the root assembly will be exported. The ``input_file`` is not modified to include any
+    generated instances.
+
+    :param str output_file: Output image file. Supports ``*.png`` and ``*.svg``.
+    :param float x_angle: Rotation about X-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float y_angle: Rotation about Y-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param float z_angle: Rotation about Z-axis in degrees for ``abaqus.session.viewports[].view.rotate`` Abaqus Python
+        method
+    :param list image_size: width and height of the viewport, in pixels.
+    :param str part_name: part **instance** to query in the specified Abaqus model
+    :param str color_map: color map key
+
+    :returns: writes image to ``{output_file}``
+
+    :raises RuntimeError: if the extension of ``output_file`` is not recognized by Abaqus
+    """
+    import abaqus  # noqa: PLC0415
+    import caeModules  # noqa: PLC0415,F401
+    import displayGroupOdbToolset  # noqa: PLC0415
+
+    # Always display the ODB
+    odb_object = abaqus.session.odbs[abaqus.session.odbs.keys()[0]]
+    abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=odb_object)
+
+    if part_name is not None:
+        leaf = displayGroupOdbToolset.LeafFromPartInstance(partInstanceName=(part_name,))
+        abaqus.session.viewports["Viewport: 1"].odbDisplay.displayGroup.replace(leaf=leaf)
+
+    _set_image_view(x_angle, y_angle, z_angle, image_size, color_map)
+    _export_image(output_file)
 
 
 def _validate_color_map(color_map, valid_color_maps):
@@ -220,7 +314,7 @@ def _gui_get_inputs():
         default_part_name = abaqus.session.viewports[abaqus.session.currentViewportName].displayedObject.name
         if default_part_name == "rootAssembly":
             default_color_map = "Assembly"
-            default_part_name = ""  # Need to reset to blank string for proper handling in the image() function
+            default_part_name = ""  # Need to reset to blank string for proper handling in the cae_image() function
         else:
             default_color_map = "Part geometry"
     except AttributeError:
@@ -250,7 +344,7 @@ def _gui_get_inputs():
             raise RuntimeError(error_message)
 
         if not part_name:
-            part_name = None  # Blank string needs to be None when passed to image()
+            part_name = None  # Blank string needs to be None when passed to cae_image()
 
         _validate_color_map(color_map, parsers.image_color_map_choices)
 
@@ -276,7 +370,9 @@ def _gui():
 
     Function with no inputs required for driving the plugin.
     """
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs, subcommand_function=image, post_action_function=None)
+    _abaqus_utilities.gui_wrapper(
+        inputs_function=_gui_get_inputs, subcommand_function=cae_image, post_action_function=None
+    )
 
 
 if __name__ == "__main__":
