@@ -239,6 +239,7 @@ def odb_image(
     :raises RuntimeError: if the extension of ``output_file`` is not recognized by Abaqus
     """
     import abaqus  # noqa: PLC0415
+    import caeModules  # noqa: PLC0415,F401
     import displayGroupOdbToolset  # noqa: PLC0415
 
     # Always display the ODB
