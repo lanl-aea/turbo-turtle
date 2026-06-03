@@ -244,11 +244,11 @@ def odb_image(
 
     # Always display the ODB
     odb_object = session.odbs[session.odbs.keys()[0]]
-    abaqus.session.viewports['Viewport: 1'].setValues(displayedObject=odb_object)
+    abaqus.session.viewports["Viewport: 1"].setValues(displayedObject=odb_object)
 
     if part_name is not None:
-        leaf = displayGroupOdbToolset.LeafFromPartInstance(partInstanceName=(part_name, ))
-        session.viewports['Viewport: 1'].odbDisplay.displayGroup.replace(leaf=leaf)
+        leaf = displayGroupOdbToolset.LeafFromPartInstance(partInstanceName=(part_name,))
+        session.viewports["Viewport: 1"].odbDisplay.displayGroup.replace(leaf=leaf)
 
     _set_image_view(x_angle, y_angle, z_angle, image_size, color_map)
     _export_image(output_file)
@@ -370,7 +370,9 @@ def _gui():
 
     Function with no inputs required for driving the plugin.
     """
-    _abaqus_utilities.gui_wrapper(inputs_function=_gui_get_inputs, subcommand_function=cae_image, post_action_function=None)
+    _abaqus_utilities.gui_wrapper(
+        inputs_function=_gui_get_inputs, subcommand_function=cae_image, post_action_function=None
+    )
 
 
 if __name__ == "__main__":
