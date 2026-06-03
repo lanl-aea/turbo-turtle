@@ -52,7 +52,7 @@ def main(
         input_file_extension = os.path.splitext(input_file)[1]
         if input_file_extension.lower() == ".cae":
             with _abaqus_utilities.AbaqusNamedTemporaryFile(input_file, suffix=".cae", dir="."):
-                image(
+                cae_image(
                     output_file,
                     x_angle=x_angle,
                     y_angle=y_angle,
@@ -64,7 +64,7 @@ def main(
                 )
         elif input_file_extension.lower() == ".inp":
             abaqus.mdb.ModelFromInputFile(name=model_name, inputFileName=input_file)
-            image(
+            cae_image(
                 output_file,
                 x_angle=x_angle,
                 y_angle=y_angle,
@@ -135,7 +135,7 @@ def _export_image(output_file):
     )
 
 
-def image(
+def cae_image(
     output_file,
     x_angle=parsers.image_defaults["x_angle"],
     y_angle=parsers.image_defaults["y_angle"],
